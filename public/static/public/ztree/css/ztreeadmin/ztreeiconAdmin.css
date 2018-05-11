@@ -1,0 +1,12 @@
+#ztree .level0 a .button{
+    background:url('/static/public/ztree/css/ztreeadmin/img/bumen.png') 0 0 no-repeat;
+}
+#ztree .level0 a .button{
+    background:url('/static/public/ztree/css/ztreeadmin/img/top.png') 0 0 no-repeat;
+}
+#ztree .level1 a .button{
+    background:url('/static/public/ztree/css/ztreeadmin/img/jigou.png') 0 0 no-repeat;
+}
+#ztree .level2 a .button{
+    background:url('/static/public/ztree/css/ztreeadmin/img/bumen.png') 0 0 no-repeat;
+}

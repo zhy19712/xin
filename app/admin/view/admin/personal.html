@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/admin/personal/index.css">
+  <div class="body-div">
+    <div style="margin-top: 20px;">
+    </div>
+    <form class="layui-form" id="admin">
+     <!-- <div class="layui-form-item">
+        <label class="layui-form-label">昵称</label>
+        <div class="layui-input-inline">
+          <input name="nickname" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$info.admin.nickname"}value="{$info.admin.nickname}"{/notempty}>
+        </div>
+      </div>-->
+
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">姓名</label>
+          <div class="layui-input-inline">
+            <input type="text" name="nickname" placeholder="请输入姓名" value="{$info.admin.nickname}" lay-verify="required|username" maxlength="12" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">性别</label>
+          <div class="layui-input-inline">
+            <select name="gender" lay-verify="">
+              {if condition="$info.admin.gender eq 1" }
+                <option value="1"  selected>男</option>
+                <option value="0" >女</option>
+              {else/}
+                <option value="1" >男</option>
+                <option value="0" selected>女</option>
+              {/if}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">邮箱地址</label>
+          <div class="layui-input-inline">
+            <input type="text" name="mail" placeholder="请输入邮箱地址" value="{$info.admin.mail}" lay-verify="email" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">手机号码</label>
+          <div class="layui-input-inline">
+            <input type="text" name="mobile" placeholder="请输入手机号码" value="{$info.admin.mobile}" lay-verify="phone" maxlength="11" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">办公电话</label>
+          <div class="layui-input-inline">
+            <input type="text" name="tele" placeholder="请输入办公电话" value="{$info.admin.tele}" lay-verify="tel" maxlength="12" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">登录名</label>
+          <div class="layui-input-inline">
+            <input type="text" name="name" placeholder="请输入登录名" value="{$info.admin.name}" lay-verify="required|loginName" maxlength="12" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">所属岗位</label>
+          <div class="layui-input-inline">
+            <input type="text" name="position" placeholder="请输入所属岗位" value="{$info.admin.position}" lay-verify="chinese" maxlength="30" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">微信号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="wechat" placeholder="请输入微信号" value="{$info.admin.wechat}" maxlength="30" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+          <textarea name="remark" placeholder="请输入内容" value="" class="layui-textarea" maxlength="500">{$info.admin.remark}</textarea>
+        </div>
+      </div>
+      <div class="layui-form-item" id="uploadInline">
+        <label class="layui-form-label">电子签名</label>
+        <button type="button" class="layui-btn" id="upload">上传头像</button>
+        <div class="layui-upload-list">
+          <label class="layui-form-label"></label>
+          <img class="layui-upload-img" id="uploadImg" width="150" height="150" src="{$info['signature']}">
+          <p id="uploadText"></p>
+        </div>
+      </div>
+      <div class="layui-upload" id="upload-thumb">
+        <label class="layui-form-label">头像</label>
+        <button type="button" class="layui-btn" id="thumb">上传头像</button>
+        <div class="layui-upload-list">
+          <label class="layui-form-label"></label>
+          <img class="layui-upload-img" id="demo1" width="150" height="150" src="{$info['thumb']}" >
+          <p id="demoText"></p>
+        </div>
+      </div>
+      {notempty name="$info.admin"}
+      <input type="hidden" name="id" value="{$info.admin.id}">
+      {/notempty}
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit lay-filter="admin">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/admin/personal/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+.panel-fit, .panel-fit body,.layout ,.panel-noscroll {
+    overflow-y: auto;
+}

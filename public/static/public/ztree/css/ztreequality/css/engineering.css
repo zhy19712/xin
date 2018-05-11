@@ -1,0 +1,15 @@
+#ztree .level0 a .button{
+    background:url('/static/public/ztree/css/ztreequality/img/1.png') 0 0 no-repeat;
+}
+#ztree .level1 a .button{
+    background:url('/static/public/ztree/css/ztreequality/img/2.png') 0 0 no-repeat;
+}
+#ztree .level2 a .button{
+    background:url('/static/public/ztree/css/ztreequality/img/3.png') 0 0 no-repeat;
+}
+#ztree .level3 a .button{
+    background:url('/static/public/ztree/css/ztreequality/img/4.png') 0 0 no-repeat;
+}
+#ztree .level4 a .button{
+    background:url('/static/public/ztree/css/ztreequality/img/5.png') 0 0 no-repeat;
+}

@@ -1,0 +1,5 @@
+runtime/*
+*.log
+.idea/*
+/public/uploads
+/public/temp

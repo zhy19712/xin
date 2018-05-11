@@ -1,0 +1,183 @@
+body{
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+.panel-title,.current-path h3{
+    font-size: 14px;
+}
+.panel-body{
+    overflow: hidden;
+}
+/* 图标 */
+.layout-panel-west .layout-body{
+    position: relative;
+}
+i.fa{
+    text-align: center;
+    cursor: pointer;
+}
+i.fa:before{
+    color: #00c0ef;
+}
+i.fa:hover:before{
+    color: #009dc3;
+}
+/* 路径 */
+.current-path .add{
+    float: right;
+}
+.current-path i.fa:before{
+    margin-right: 5px;
+    color: #FFF;
+    background: none;
+    border-color: #FFF;
+}
+/* 树 */
+.ztree-title{
+    position: absolute;
+    /*top: -31px;*/
+    left: -1px;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #cecece;
+    z-index: 99;
+    background: #FFF;
+}
+@media screen and(-ms-high-contrast:active),(-ms-high-contrast:none) {
+　　.ztree-title{
+        top: 0;
+    }
+}
+.ztree li a.curSelectedNode{
+    background-color: #ececec;
+}
+.ztree{
+    margin-top: 30px;
+    height: 95%;
+    overflow-y: auto;
+}
+.layui-layer-content .ztree{
+    margin-top: 0;
+}
+/* 当前路径 */
+.current-path{
+    height: 30px;
+    line-height: 30px;
+}
+.current-path h3{
+    float: left;
+    color: #0E2D5F;
+    font-weight: bold;
+}
+/* layui表单 */
+
+.layui-input[disabled],.layui-textarea[disabled],.layui-disabled,.layui-input[readonly],.layui-textarea[readonly],.layui-readonly{
+    cursor: not-allowed;
+    background: #e0e0e0 !important;
+    color: #545454 !important;
+}
+.layui-form-select .layui-input{
+    cursor: pointer !important;
+}
+.layui-form-item .autograph .layui-form-mid{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.layui-form-item .autograph .webuploader-pick{~
+    padding: 9px 15px;
+}
+.layui-form-item .autograph .layui-input-inline{
+    margin-right: 0;
+    width: 70%;
+}
+
+/* 分页 */
+.tbcontainer:before,.tbcontainer:after {
+    content: " ";
+    display: table;
+}
+.tbcontainer:after{
+    clear: both;
+}
+.tbcontainer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 5px;
+    width: 100%;
+    line-height: 34px;
+    background: #FFF;
+    border: 1px solid #cecece;
+    border-top: none;
+}
+.pagination li{
+    display: inline;
+}
+.pagination li a{
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover{
+    z-index: 3;
+    color: #fff;
+    /*cursor: default;*/
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+.pagination .disabled a{
+    cursor: not-allowed;
+}
+select.form-control {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 12px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    padding: 0;
+}
+.dataTables_wrapper .dataTables_paginate{
+    padding: 0;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+    border: 1px solid transparent;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:active{
+    background: none;
+    box-shadow: none;
+}
+/* 表格 */
+.dataTables_wrapper,.tbcontainer{
+    display: none;
+}
+table.dataTable.no-footer{
+    float: left;
+    margin-top: 5px;
+    border-top: 1px solid #cecece;
+}
+/* 弹层 */
+.layui-layer-content{
+    padding-top: 15px;
+}
+.layui-layer-content .layui-btn{
+    height: 30px;
+    line-height: 30px;
+}
+.layui-layer-content .layui-form-item:last-child .layui-input-block{
+    margin-right: 30px;
+    min-height: 30px;
+    text-align: right;
+}

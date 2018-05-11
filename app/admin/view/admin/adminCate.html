@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html style="height: 96%;">
+<head>
+  <meta charset="utf-8">
+  <title>layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all" />
+  <link rel="stylesheet" href="__PUBLIC__/w2ui/css/w2ui-1.5.rc1.min.css" media="all" />
+    <link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
+  <link rel="stylesheet" href="__CSS__/admin.css"  media="all">
+</head>
+<style>
+  #adminCate{
+    width:100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  .body-div{
+    width: 100%;
+    height: 100%;
+  }
+  #left{
+    float: left;
+    background-color:red;
+    width: 10%;
+    height: 100%;
+  }
+  #middle{
+    float: left;
+    background-color: blue;
+    height: 100%;
+    width: 60%;
+  }
+  #right{
+    float: left;
+    height: 100%;
+    width: 20%;
+      background-color: yellow;
+  }
+
+</style>
+<body style="padding:10px; height: 100%;">
+  <div class="body-div ">
+    <div class="layui-tab">
+      <ul class="layui-tab-title">
+        <li class="layui-this">角色管理</li>
+        <li><a href="{:url('admin/admin/adminCatePublish')}" class="a_menu">新增角色</a></li>
+      </ul>
+    </div>
+    <form class="layui-form serch" action="{:url('admin/admin/admincate')}" method="post">
+        <div class="layui-form-item" style="float: left;">
+          <div class="layui-input-inline">
+            <input type="text" name="keywords" lay-verify="title" autocomplete="off" placeholder="请输入关键词" class="layui-input layui-btn-sm">
+          </div>
+          <div class="layui-input-inline">
+            <div class="layui-inline">
+              <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="create_time" placeholder="创建时间" name="create_time">
+              </div>
+            </div>
+          </div>
+          <button class="layui-btn layui-btn-danger layui-btn-sm" lay-submit="" lay-filter="serch">立即提交</button>
+        </div>
+      </form>
+    <table class="layui-table" lay-size="sm">
+      <colgroup>
+        <col width="50">
+        <col width="100">
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="300">
+        <col width="100">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>角色名称</th>
+          <th>权限预览</th>
+          <th>创建时间</th>
+          <th>最后修改时间</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {volist name="cate" id="vo"}
+        <tr>
+          <td>{$vo.id}</td>
+          <td>{$vo.name}</td>
+          <td><a href="{:url('admin/admin/preview',['id'=>$vo.id])}" class="preview" style="margin-right: 0;font-size:12px;">点击查看</a></td>
+          <td>{$vo.create_time}</td>
+          <td>{$vo.update_time}</td>
+          <td>{$vo.desc}</td>
+          <td class="operation-menu">
+            <div class="layui-btn-group">
+              <a href="{:url('admin/admin/adminCatePublish',['id'=>$vo.id])}" class="layui-btn layui-btn-xs a_menu layui-btn-primary" style="margin-right: 0;font-size:12px;"><i class="layui-icon"></i></a>
+              <a class="layui-btn layui-btn-xs layui-btn-primary delete" id="{$vo.id}" style="margin-right: 0;font-size:12px;"><i class="layui-icon"></i></a>
+            </div>
+          </td>
+        </tr>
+        {/volist}
+      </tbody>
+    </table>
+
+    <div id="adminCate" >
+        <div id="ztree">
+            <ul id="treeZo" class="ztree" style="overflow: auto; height: 100%; width: 100%;"></ul>
+        </div>
+    </div>
+    <div style="padding:0 20px;">{$cate->render()}</div>
+            
+   {include file="public/foot"}
+      <script src="__JS__/jquery.ztree.all.js"></script>
+      <script type="text/javascript" src="__PUBLIC__/w2ui/js/w2ui-1.5.rc1.min.js"></script>
+    <script type="text/javascript">
+        //调节框大小
+        var pstyle = 'border: 1px solid #dfdfdf; padding: 5px;';
+        $('#adminCate').w2layout({
+            name: 'layout',
+            padding: 4,
+            panels: [
+                { type: 'left', size: 200, resizable: true, style: pstyle, content: 'left' },
+                { type: 'main', style: pstyle, content: 'main' },
+                { type: 'right', size: 200, resizable: true, style: pstyle, content: 'right' }
+            ]
+        });
+        //组织结构
+        var zTreeObj;
+        var selfid,groupid;
+
+        //点击获取路径
+        function onClick(e, treeId, node) {
+            $("#path").text("");
+            var sNodes = zTreeObj.getSelectedNodes();//选中节点
+            selfid = zTreeObj.getSelectedNodes()[0].id
+            var path = sNodes[0].name; //选中节点的名字
+            node = sNodes[0].getParentNode();//获取父节点
+
+            //判断是否还有父节点
+            if (node) {
+                //判断是否还有父节点
+                while (node){
+                    path = node.name + ">>" + path;
+                    node = node.getParentNode();
+                }
+            }else{
+                $("#path").text(sNodes[0].name);
+            }
+            //判断是否拉数据
+            groupid = sNodes[0].pId //父节点的id
+            if (!sNodes[0].children && groupid !== 1 && groupid !== 12 && groupid !== 13){
+                switch (Number(groupid)){
+                    case 111:
+                        break;
+                }
+            }
+            $("#path").text("当前路径:"+path)
+        }
+        //配置信息
+        var setting = {
+            view: {
+                showLine: true, //设置 zTree 是否显示节点之间的连线。
+                selectedMulti: false, //设置是否允许同时选中多个节点。
+                dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+            },
+            async: {
+                enable : true,
+                autoParam: ["pId"],
+                type : "post",
+                url : "../Rolemanagement/roletree",
+                dataType :"json"
+            },
+            data:{
+                keep: {
+                    leaf : true,
+                    parent : true
+                },
+                simpleData : {
+                    enable:true,
+                    idkey: "id",
+                    pIdKey: "pId",
+                    rootPId:0
+                }
+            },
+            callback: {
+                // beforeClick: this.beforeClick,
+                onClick: this.onClick
+
+            }
+        };
+        zTreeObj = $.fn.zTree.init($("#ztree"), setting,null);
+      </script>
+    <script type="text/javascript">
+    layui.use('layer', function(){
+      var layer = layui.layer;
+
+      $('.preview').click(function(){
+        var url = $(this).attr('href');
+        layer.open({
+          type:2,
+          content:url,
+          area: ['550px', '400px']
+        });
+        return false;
+      })
+    });
+    </script>
+  </div>
+</body>
+</html>

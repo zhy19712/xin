@@ -1,0 +1,35 @@
+.current-path{
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #cecece;
+}
+.ztree-title i.fa{
+    width: 11%;
+}
+.current-path i.fa:hover:before{
+    color: #FFF;
+}
+.layui-form-select .layui-input{
+    padding-right: 0;
+}
+.upload label{
+    width: 58px;
+    height: 39px;
+}
+.layui-input[name="pname"]{
+    cursor: no-drop;
+    background: #ccc;
+}
+.layui-form-item .department .layui-input-inline{
+    margin: 0;
+}
+.layui-form-item .department .layui-form-mid{
+    padding: 9px 12px !important;
+    background: #1E9FFF;
+}
+.layui-form-item .department .layui-form-mid i.fa:before{
+    color: #FFF;
+}
+.layui-textarea{
+    width: 94.5%;
+}
