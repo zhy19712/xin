@@ -1,0 +1,280 @@
+{include file="../../public/common_header"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+    .layui-tab {
+        margin: 3px 0px;
+    }
+    .ztree {
+         margin-top: 0px;
+    }
+    .layui-tab-title .layui-this {
+        color: white;
+        background: #00c0ef;
+        border-radius: 3px;
+    }
+    table.dataTable thead .sorting_asc {
+        background-image: none !important;
+    }
+    #ecSonFile .saveCon{
+        position: absolute;
+        right: .7%;
+        top: 14.3%;
+    }
+    #ecSonFile .saveCon button{
+        background: #00c0ef;
+    }
+    #tableContent .even {
+        background-color: #ffffff;
+    }
+    #tableContent .odd {
+        background-color: #f9f9f9;
+    }
+    .selected{
+        background-color: #FDD5B5 !important;
+    }
+</style>
+<div id="ecSonFile"  data-options="region:'north',title:'',split:true" style="height: 50px;">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li id="A1"><a href="./selectfile.shtml">图册管理</a></li>
+            <li id="A2" class="layui-this">文档管理</li>
+            <li id="A3"><a href="./qualityfile.shtml">质量管理</a></li>
+        </ul>
+    </div>
+    <div class="saveCon">
+        <button onclick="save();" class="layui-btn layui-btn-sm" type="button"><span class="bold">保存</span></button>
+    </div>
+</div>
+<div id="nodeZtree" data-options="region:'west',title:'文档目录树',split:true" style="width:220px;">
+    <ul class="ztree" id="ztree"></ul>
+</div>
+<div id="tableContent" data-options="region:'center',title:'当前路径：'" style="padding:5px;background:#ffffff;">
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>
+                <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;"></label>
+                <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
+            </th>
+            <th>文件名称</th>
+            <th>文件大小</th>
+            <th>上传人</th>
+            <th>上传时间</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="tbcontainer">
+        <div class="mark"></div>
+    </div>
+</div>
+{include file="../../public/common_footer"}
+<script type="text/javascript">
+    //组织结构表格
+    var tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        // sScrollX: '600px',
+        ajax: {
+            "url": "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="
+        },
+        dom: 'lrtip',
+        columns: [
+            {
+                name: "id"
+            },
+            {
+                name: "docname"
+            },
+            {
+                name: "nickname"
+            },
+            {
+                name: "create_time"
+            },
+            {
+                name: "status"
+            }
+
+        ],
+        columnDefs: [
+            {
+                "targets":[0],
+                "searchable": false,
+                "orderable": false,
+                "render": function(data, type, full, meta) {
+                    var html = "<input type='checkbox' name='checkList' idv='"+data+"' onclick='getSelectId(this)'>";
+                    return html;
+                },
+            },
+            {
+                "targets":[1],
+                "searchable": false,
+                "orderable": false
+
+            },
+            {
+                "targets":[2],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [3],
+                render: function (data, type, row) {
+                    if (data == 1) {
+                        return "已归档";
+                    }
+                    return "待归档";
+                }
+            },
+            {
+                "targets": [4],
+                "searchable": false,
+                "orderable": false
+            }
+
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItem_length').insertBefore(".mark");
+            $('#tableItem_info').insertBefore(".mark");
+            $('#tableItem_paginate').insertBefore(".mark");
+        }
+    });
+    //初始化树节点
+    var selfid, nodeName, nodePid, zTreeObj, groupid, sNodes;
+
+    var setting = {
+        view: {
+            showLine: true, //设置 zTree 是否显示节点之间的连线。
+            selectedMulti: false, //设置是否允许同时选中多个节点。
+            // dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+        },
+        async: {
+            enable: true,
+            autoParam: ["pid"],
+            type: "post",
+            url: "{:url('/archive/documenttype/getAll')}",
+            dataType: "json",
+            // dataFilter: ajaxDataFilter
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idkey: "id",
+                pIdKey: "pid",
+                rootPId: 0
+            }
+        },
+        callback: {
+            onClick: this.nodeClick
+        }
+    };
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
+
+    //点击获取路径
+    function nodeClick(e, treeId, node) {
+        console.log(node);
+        selectData = "";
+        sNodes = zTreeObj.getSelectedNodes()[0];//选中节点
+        console.log(sNodes);
+        selfid = zTreeObj.getSelectedNodes()[0].id;//当前id
+        nodeName = zTreeObj.getSelectedNodes()[0].name;//当前name
+        nodePid = zTreeObj.getSelectedNodes()[0].pid;//当前pid
+        console.log(selfid + '---id');
+        console.log(nodeName + '---name');
+        console.log(nodePid + '---pid');
+        var path = sNodes.name; //选中节点的名字
+        node = sNodes.getParentNode();//获取父节点
+        //判断是否还有父节点
+        if (node) {
+            //判断是否还有父节点
+            while (node) {
+                path = node.name + "-" + path;
+                node = node.getParentNode();
+            }
+        } else {
+            $(".layout-panel-center .panel-title").text(sNodes.name);
+        }
+        groupid = sNodes.pId //父节点的id
+        var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+        tableItem.ajax.url(url).load();
+        $("#tableContent .dataTables_wrapper").css('display','block');
+        $("#tableContent .tbcontainer").css('display','block');
+        $(".layout-panel-center .panel-title").text("当前路径:" + path)
+    }
+
+
+    //翻页事件
+    tableItem.on('draw',function () {
+        $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+        $('#all_checked').prop('checked',false);
+        idArr.length=0;
+    });
+
+    //获取选中行ID
+    var idArr = [];
+    function getId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).attr('idv');
+        var checkedLen = $('input[type="checkbox"][name="checkList"]:checked').length;
+        var checkboxLen = $('input[type="checkbox"][name="checkList"]').length;
+        if(checkedLen===checkboxLen){
+            $('#all_checked').prop('checked',true);
+        }else{
+            $('#all_checked').prop('checked',false);
+        }
+        if(isChecked){
+            idArr.push(id);
+            idArr.removalArray();
+            $(that).parents("tr").addClass('selected');
+        }else{
+            idArr.remove(id);
+            idArr.removalArray();
+            $('#all_checked').prop('checked',false);
+            $(that).parents("tr").removeClass('selected');
+        }
+    }
+
+    //单选
+    function getSelectId(that) {
+        getId(that);
+        console.log(idArr);
+    }
+
+    //checkbox全选
+    $("#all_checked").on("click", function () {
+        var that = $(this);
+        if (that.prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", that.prop("checked"));
+            $('#tableItem tbody tr').addClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        } else {
+            $("input[name='checkList']").prop("checked", false);
+            $('#tableItem tbody tr').removeClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        }
+        console.log(idArr);
+    });
+
+</script>
+</html>

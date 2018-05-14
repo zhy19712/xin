@@ -1,0 +1,481 @@
+{include file="../app/public/common_header.html"}
+<script src="__PUBLIC__/echarts/echarts.min.js"></script>
+<style>
+    .main{
+        float: left;
+        margin-top: 20px;
+    }
+    #tableItem{
+        margin-left: 30px;
+    }
+    h5{
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .imageItem img{
+        width: 100%;
+        height: 360px;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-sm6">
+            <div id="mainBar" style="width:100%;height:500px;" class="main"></div>
+        </div>
+        <div class="layui-col-sm6" style="padding: 40px 20px 0;height: 520px">
+            <h5>近期施工照片</h5>
+            <div class="layui-carousel" id="progressCarousel">
+                <div carousel-item style="height: 520px">
+                    <div class="imageItem">
+                        <img src="__PUBLIC__/images/dixia1.jpg" alt="">
+                        <p style="padding: 5px;font-weight: bold">厂房地质编录查看</p>
+                        <div>
+                            <span>拍摄日期：2018-03-02</span>
+                            <span>拍摄者：吴元柳</span>
+                        </div>
+                    </div>
+                    <div class="imageItem">
+                        <img src="__PUBLIC__/images/dixia2.jpg" alt="">
+                        <p style="padding: 5px;font-weight: bold">厂房锚杆安装</p>
+                        <div>
+                            <span>拍摄日期：2018-03-09</span>
+                            <span>拍摄者：吴元柳</span>
+                        </div>
+                    </div>
+                    <div class="imageItem">
+                        <img src="__PUBLIC__/images/dixia3.jpg" alt="">
+                        <p style="padding: 5px;font-weight: bold">尾闸洞洞室查看</p>
+                        <div>
+                            <span>拍摄日期：2018-03-16</span>
+                            <span>拍摄者：吴元柳</span>
+                        </div>
+                    </div>
+                    <div class="imageItem">
+                        <img src="__PUBLIC__/images/dixia4.jpg" alt="">
+                        <p style="padding: 5px;font-weight: bold">尾闸洞钢筋网安装</p>
+                        <div>
+                            <span>拍摄日期：2018-03-22 &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span>拍摄者：吴元柳</span>
+                        </div>
+                    </div>
+                    <div class="imageItem">
+                        <img src="__PUBLIC__/images/dixia5.jpg" alt="">
+                        <p style="padding: 5px;font-weight: bold">拦河坝溢洪道</p>
+                        <div>
+                            <span>拍摄日期：2018-03-22 &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span>拍摄者：吴元柳</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-col-sm6">
+            <div class="layui-row">
+                <table id="tableItem2" style="width: 90%;" border="1" class="layui-table">
+                    <caption style="font-weight: bold;font-size: 16px;color: #000;padding: 20px 0;text-align: left">实物工程量</caption>
+                    <thead>
+                    <tr>
+                        <th>标段名称</th>
+                        <th>开挖量（万m³）</th>
+                        <th>浇筑量（万m³）</th>
+                        <th>钢材（万吨）</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>一期地下厂房</td>
+                        <td>19</td>
+                        <td>12</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td>二期地下厂房</td>
+                        <td>16</td>
+                        <td>8</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>一期引水工程</td>
+                        <td>22</td>
+                        <td>9</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td>二期引水工程</td>
+                        <td>15</td>
+                        <td>8</td>
+                        <td>9</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="layui-col-sm6">
+            <div class="layui-row">
+                <table id="tableItem" style="width: 90%;margin-left: 30px" border="1" class="layui-table">
+                    <caption style="font-weight: bold;font-size: 16px;color: #000;padding: 20px 0;text-align: left">近期开工单元名称</caption>
+                    <thead>
+                    <tr>
+                        <th>标段名称</th>
+                        <th>分部名称</th>
+                        <th>单元名称</th>
+                        <th>完成情况</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>一期地下厂房</td>
+                        <td>一期地下开挖</td>
+                        <td>开挖浇筑</td>
+                        <td>已建</td>
+                    </tr>
+                    <tr>
+                        <td>二期地下厂房</td>
+                        <td>二期地下开挖</td>
+                        <td>开挖施工</td>
+                        <td>待建</td>
+                    </tr>
+                    <tr>
+                        <td>一期引水工程</td>
+                        <td>引水渠开挖</td>
+                        <td>引水浇筑</td>
+                        <td>待建</td>
+                    </tr>
+                    <tr>
+                        <td>二期引水工程</td>
+                        <td>引水渠开挖</td>
+                        <td>引水浇筑</td>
+                        <td>待建</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="../app/public/common_footer.html"}
+<script>
+    //
+    // 基于准备好的dom，初始化echarts实例
+    var myChartBar = echarts.init(document.getElementById('mainBar'));
+
+    optionBar = null;
+    // 指定图表的配置项和数据
+    optionBar = {
+        title: {
+            text: '施工进度统计'
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        legend: {
+            data: ['完成单元', '在建单元']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis:  {
+            type: 'value'
+        },
+        yAxis: {
+            type: 'category',
+            data: ['一期地下厂房','二期地下厂房','一期引水工程','二期引水工程']
+        },
+        series: [
+            {
+                name: '完成单元',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [320, 302, 301, 334]
+            },
+            {
+                name: '在建单元',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [120, 132, 101, 134]
+            },
+
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChartBar.setOption(optionBar);
+//    轮播
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#progressCarousel',
+            width: '100%',
+            height:'360',
+            arrow: 'always',
+            interval:6000,
+            indicator:'none'
+
+
+        });
+    });
+    layui.use('form', function(){
+
+
+    });
+//    实物工程量
+    $('#versonPro').dataTable( {
+        "aLengthMenu" : [10, 15,20],
+        "iDisplayLength" : 15,
+        data:[
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },{
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            },
+            {
+                "event":    "排水走廊开挖验收",
+                "date":   "2016-12-22",
+                "maker": "管理员",
+                "createDate": "2018-02-03",
+                "enclosure":    "",
+                "status":"有效",
+                "extn":    "54212"
+            }
+
+
+        ],
+        columns: [
+            {
+                "data": "event",
+                "title":"事由",
+                "orderable": false
+            },
+            {
+                "data": "date",
+                "title":"时间",
+                "orderable": false
+            },
+            {
+                "data": 'maker',
+                "title":"编制人",
+                "orderable": false
+
+            },
+            {
+                "data": "createDate",
+                "title":"编制日期",
+                "orderable": false
+            },
+            {
+                "data": "enclosure",
+                "title":"附件",
+                "orderable": false,
+                render: function(data, type, row)
+                {
+                    return '<a href="###" style="color: #1E9FFF">附件</a>';
+                }
+            },
+            {
+                "data": null,
+                "title":"操作",
+                "orderable": false,
+                "defaultContent": '<a href="../Yearplan/index" class="layui-btn layui-btn-sm layui-btn-primary">查看</a><a href="../Yearplan/index" class="layui-btn layui-btn-sm layui-btn-normal">编辑</a><button class="layui-btn layui-btn-sm layui-btn-danger">删除</button>'
+            }
+
+        ]
+        ,
+        "oLanguage": {
+            "sProcessing" : "正在获取数据，请稍后...",
+            "sLengthMenu" : "显示 _MENU_ 条",
+            "sZeroRecords" : "没有您要搜索的内容",
+            "sInfo" : "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+            "sInfoEmpty" : "记录数为0",
+            "sInfoFiltered" : "(全部记录数 _MAX_ 条)",
+            "sInfoPostFix" : "",
+            "sSearch" : "搜索",
+            "sUrl" : "",
+            "oPaginate": {
+                "sFirst" : "第一页",
+                "sPrevious" : "上一页",
+                "sNext" : "下一页",
+                "sLast" : "最后一页"
+            }
+        },
+        "dom": '<"top"rt><"bottom"pl><"clear">'
+    } );
+</script>
+</body>
+</html>

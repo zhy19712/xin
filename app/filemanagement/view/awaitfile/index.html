@@ -1,0 +1,1228 @@
+{include file="../../public/common_header"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+
+    #nodeZtree .ztree-title i.fa {
+        width: 12%;
+    }
+    #nodeZtree .ztree-title #add {
+        margin-left: 6px;
+    }
+    #nodeZtree .select .layui-input-inline,#nodeZtree .select .layui-inline {
+        width: 100%;
+    }
+
+    #tableContent .mybtn i.fa:before,
+    .mybtnAdd i.fa:before,
+    #tableContent .assModel i.fa:before,
+    #tableContent .move i.fa:before,
+    #tableContent .addFile i.fa:before,
+    #tableContent .import i.fa:before,
+    #tableContent .export i.fa:before {
+        background: #00c0ef;
+        color: #ffffff;
+    }
+
+    #tableContent .mybtn,
+    .mybtnAdd,
+    #tableContent .assModel,
+    #tableContent .move,
+    #tableContent .addFile,
+    #tableContent .import,
+    #tableContent .export{
+        float: right;
+        background-color: #00c0ef;
+    }
+
+    #tableContent .mybtn,
+    .mybtnAdd,
+    #tableContent .assModel,
+    #tableContent .move,
+    #tableContent .addFile,
+    #tableContent .import,
+    #tableContent .export{
+        margin-right: 0%;
+        margin-left: 10px;
+        margin-bottom: 5px;
+    }
+
+    #tableContent table.dataTable.no-footer {
+        border-top: 1px dotted;
+    }
+    #tableContent #tableItem_filter {
+        float: left;
+    }
+    #tableContent .select-color {
+        background-color: #FDD5B5 !important;
+    }
+    #tableContent h3 {
+        margin-top: 5px;
+        font-weight: 600;
+        font-size: 16px;
+        display: inline-block;
+    }
+    #tableContent .even {
+        background-color: #ffffff;
+    }
+    #tableContent .odd {
+        background-color: #f9f9f9;
+    }
+    #tableContent .dataTables_wrapper .dataTables_scroll {
+        position: relative;
+        top: 15px;
+        border-top: 1px dotted #cecece;
+    }
+    #tableContent #tableItem tr td a{
+        color: #337ab7;
+    }
+    #tableContent .dataTables_wrapper {
+        display: none;
+    }
+    #tableContent table.dataTable thead .sorting_asc {
+        background-image: none !important;
+    }
+    .layui-layer-content {
+         padding: 0px 5px;
+    }
+    .selected{
+        background-color: #FDD5B5 !important;
+    }
+
+
+    /*.point-layer-hidden {*/
+        /*visibility: hidden;*/
+    /*}*/
+    /*#memberAdd{*/
+        /*margin-top: 10px;*/
+    /*}*/
+    /*#memberAdd .layui-form-item .layui-input-inline {*/
+        /*float: left;*/
+        /*width: 420px;*/
+        /*margin-right: 10px;*/
+    /*}*/
+    /*#memberAdd .layui-form-item {*/
+        /*margin-bottom: 6px;*/
+    /*}*/
+    /*#memberAdd #txtArea {*/
+        /*width: 90.3%;*/
+        /*height: 25px;*/
+        /*padding: 8px;*/
+    /*}*/
+    /*#memberAdd .layui-input[readonly]{*/
+        /*background: #FFFFFF !important;*/
+    /*}*/
+    /*.dataTables_wrapper, .tbcontainer {*/
+         /*display: block;*/
+    /*}*/
+    /*#tableItemAdd_wrapper{*/
+         /*height: 90% !important;*/
+    /*}*/
+    /*#tableSelect .dataTables_scroll{*/
+         /*height: 90%;*/
+    /*}*/
+    /*#tableSelect .dataTables_scrollBody{*/
+         /*max-height: none!important;*/
+         /*width: 100%;*/
+         /*height: calc(100% - 34px)!important;*/
+         /*border-bottom: none!important;*/
+    /*}*/
+    /*#tableSelect table.dataTable thead .sorting_asc {*/
+        /*background-image: none !important;*/
+    /*}*/
+</style>
+
+<div id="nodeZtree" data-options="region:'west',title:'目录树',split:true" style="width:260px;">
+    <div class="select">
+        <form class="layui-form" action="">
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <select name="type" id="typeName" lay-filter="type">
+                        <option value="">-请选择表格类型-</option>
+                        <option value="1">质量</option>
+                        <option value="2">其他</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ztree-title">
+        <i title="展开所有" class="fa fa-lg fa-plus-square" id="openNode"></i>
+        <i title="收起所有" class="fa fa-lg fa-minus-square" id="closeNode"></i>
+    </div>
+    <ul class="ztree" id="ztree"></ul>
+</div>
+<div id="tableContent" data-options="region:'center',title:'当前路径：'" style="padding:5px;background:#ffffff;">
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+            <tr>
+                <th>
+                    <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;"></label>
+                    <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
+                </th>
+                <th>档号</th>
+                <th>案卷号</th>
+                <th>卷内序号</th>
+                <th>题名</th>
+                <th>分类号</th>
+                <th>分类名称</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="form_container"></div>
+    <div class="tbcontainer">
+        <div class="mark"></div>
+    </div>
+</div>
+
+
+<!--<div class="point-layer-hidden" id="addLayer" style="width:100%;height:100%;">-->
+    <!--<input type="hidden" name="enginId" id="enginId">-->
+    <!--<div id="easyuiLayout" class="easyui-layout" data-options="fit:true" style="width:100%;height:100%;">-->
+        <!--<div id="con" data-options="region:'center',split:true" style="width:100%;height:100%;">-->
+            <!--<div data-options="region:'north',split:true" style="width:100%;height: 52.5%; position: relative;">-->
+                <!--&lt;!&ndash;新增用户信息开始&ndash;&gt;-->
+                <!--<form class="layui-form" name="memberAdd" id="memberAdd" method="post"  action="#" onsubmit="return false">-->
+                    <!--<input type="hidden" name="id" id="addId" style="display: none;">-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">全宗号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="contractCode" placeholder="全宗号" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">目录代号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="contractName" placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">分类号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="contractName" placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">分类名称</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="firstParty"  placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">案卷号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="secondParty" placeholder="案卷号" disabled lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">卷内序号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="secondParty" placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">文件档号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="number" name="contractAmount" placeholder="" disabled lay-verify="required" disabled autocomplete="off" class="layui-input" placeholder="合同金额(万元) 只能填数字">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">文件编号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="secondPartyCorporation" placeholder="文件编号" lay-verify="required" autocomplete="off" class="layui-input" placeholder="乙方法定代表人">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">文件题名</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="secondPartyCorporation" placeholder="文件题名" lay-verify="required" autocomplete="off" class="layui-input" placeholder="乙方法定代表人">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">责任者</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="firstPartyCorporation" placeholder="责任者"  lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">成文日期</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="signingDate" id="date1" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">                        </div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">页数/页号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="createUser" placeholder="页数/页号" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">保管期限</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<select name="term" id="term" lay-filter="term">-->
+                                    <!--<option value="">-请选择-</option>-->
+                                    <!--<option value="1">永久</option>-->
+                                    <!--<option value="2">30年</option>-->
+                                    <!--<option value="2">10年</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">密级</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<select name="rank" id="rank" lay-filter="rank">-->
+                                    <!--<option value="">-请选择-</option>-->
+                                    <!--<option value="1">工作秘密</option>-->
+                                    <!--<option value="2">商密二级</option>-->
+                                    <!--<option value="2">商密一级</option>-->
+                                    <!--<option value="2">秘密</option>-->
+                                    <!--<option value="2">机密</option>-->
+                                    <!--<option value="2">绝密</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">归档日期</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="signingDate" id="date2" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">归档份数</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="number" name="contractDay" placeholder="" value="一正一副" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">互见号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="number" name="mutualNum" placeholder="互见号" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">库位号</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="number" name="contractDay" placeholder="库位号" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">文本页数</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="number" name="contractDay" placeholder="" value="0" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">照片张数</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="number" name="contractDay" placeholder="照片张数" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">照片张数</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="number" name="contractDay" placeholder="" value="0" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">图幅</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="projectName" placeholder="图幅" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">折合A4张数</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="projectName" placeholder="" value="0" lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-inline">-->
+                            <!--<label class="layui-form-label">录入人</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input type="text" name="secondPartShortName" placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                        <!--<label class="layui-form-label">内容描述</label>-->
+                        <!--<textarea name="remark" id="txtArea" placeholder="内容描述"></textarea>-->
+                    <!--</div>-->
+
+                    <!--&lt;!&ndash;<div class="layui-form-item">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="col-xs-12" style="text-align: center;">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button class="layui-btn" lay-submit="" lay-filter="demo1"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button type="reset" class="layui-btn layui-btn-danger"><i class="fa fa-close"></i> 返回</button>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</form>-->
+                <!--&lt;!&ndash;新增用户信息结束&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div id="tableSelect" data-options="region:'center',title:''" style="padding:5px;background:#ffffff;">-->
+                <!--<table id="tableItemAdd" class="table table-striped table-bordered" cellspacing="0"  width="100%">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>电子文件名</th>-->
+                        <!--<th>文件部位</th>-->
+                        <!--&lt;!&ndash;<th>文件大小</th>&ndash;&gt;-->
+                        <!--<th>类型代码</th>-->
+                        <!--<th>创建时间</th>-->
+                        <!--<th>操作</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                <!--</table>-->
+                <!--<div class="tbcontainer">-->
+                    <!--<div class="markAdd"></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+
+
+
+{include file="../../public/common_footer"}
+<script type="text/javascript">
+
+    //组织结构表格
+    var tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        ajax: {
+            "url": "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="
+        },
+        dom: 'lf' +
+        '<"export layui-btn layui-btn-sm">' +
+        '<"import layui-btn layui-btn-sm">' +
+        '<"addFile layui-btn layui-btn-sm">' +
+        '<"move layui-btn layui-btn-sm">' +
+        '<"assModel layui-btn layui-btn-sm">' +
+        '<"mybtn layui-btn layui-btn-sm">rtip',
+        columns: [
+            {
+                name: "id"
+            },
+            {
+                name: "docname"
+            },
+            {
+                name: "nickname"
+            },
+            {
+                name: "create_time"
+            },
+            {
+                name: "status"
+            }
+
+        ],
+        columnDefs: [
+            {
+                "targets":[0],
+                "searchable": false,
+                "orderable": false,
+                "render": function(data, type, full, meta) {
+                    var html = "<input type='checkbox' name='checkList' idv='"+data+"' onclick='getSelectId(this)'>";
+                    return html;
+                }
+            },
+            {
+                "targets":[1],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets":[2],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets":[3],
+                "searchable": false,
+                "orderable": false,
+                render: function (data, type, row) {
+                    if (data == 1) {
+                        return "已归档";
+                    }
+                    return "待归档";
+                }
+            },
+            {
+                "targets": [4],
+                "searchable": false,
+                "orderable": false,
+                "render": function (data, type, row) {
+                    var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='seaFile("+row[4]+")'><i title='查看' class='fa fa fa-search'></i></a>";
+                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='editFile("+row[4]+")'><i title='编辑' class='fa fa fa-pencil'></i></a>";
+                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile("+row[4]+")'><i title='删除' class='bfa fa fa-remove'></i></a>";
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItem_length').insertBefore(".mark");
+            $('#tableItem_info').insertBefore(".mark");
+            $('#tableItem_paginate').insertBefore(".mark");
+        }
+    });
+
+    //点击上传文件
+    $(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>&nbsp;添加</div>");
+    $(".assModel").html("<div id='model'><i class='fa fa-puzzle-piece'></i>&nbsp;组卷</div>");
+    $(".move").html("<div id='moveClick'><i class='fa fa-ban'></i>&nbsp;转不归档</div>");
+    $(".addFile").html("<div id='addFileClick'><i class='fa fa-plus-circle'></i>&nbsp;加入案卷</div>");
+    $(".import").html("<div id='importClick'><i class='fa fa-sign-in'></i>&nbsp;导入</div>");
+    $(".export").html("<div id='exportClick'><i class='fa fa-sign-out'></i>&nbsp;导出</div>");
+
+    var clickId ;
+    var clickTreeId ;//一键归档选树的id
+    var fileStatus ;
+
+    //管理信息的tab 切换
+    // layui.use(['element', "layer", 'form', 'upload'], function () {
+    //     var $ = layui.jquery
+    //         , element = layui.element //Tab的切换功能，切换事件监听等，需要依赖element模块
+    //         , upload = layui.upload;
+    //
+    //     var form = layui.form
+    //         , layer = layui.layer
+    //         , layedit = layui.layedit
+    //         , laydate = layui.laydate;
+    //     upload.render({
+    //         elem: '#test3',
+    //         url: "{:url('admin/common/upload?module=document&use=archive')}",
+    //         // exts: 'doc|docx|pdf|png|jpg|xls',
+    //         accept:"file",
+    //         before: function(obj){
+    //             obj.preview(function(index, file, result){
+    //                 uploadName = file.name;
+    //                 console.log(file.name);//获取文件名，result就是base64
+    //             })
+    //         },
+    //         done: function(res){
+    //             console.log(res)
+    //             if(res.code == 2){
+    //                 uploadId = res.id;
+    //                 $.ajax({
+    //                     url:"{:url('document/add')}",
+    //                     data:{
+    //                         docname: uploadName, //名称
+    //                         attachmentId: uploadId,  //文档关联Id
+    //                         type:selfid,
+    //                     },
+    //                     type:'post',
+    //                     success:function(res) {
+    //                         console.log(res)
+    //                         if(res.code == 1) {
+    //                             var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+    //                             tableItem.ajax.url(url).load();
+    //                         } else {
+    //                             layer.msg('获取数据失败！');
+    //                         }
+    //                     }
+    //                 })
+    //                 layer.msg("上传成功！",{time:1500})
+    //             }else{
+    //                 layer.msg("上传失败！",{time:1500})
+    //             }
+    //         },
+    //     });
+    // });
+
+    //添加
+    $("#tableContent").on("click",".mybtn #test3",function () {
+        layer.open({
+            type: 2,
+            title:'基本信息',
+            shadeClose: true,
+            area: ['100%', '100%'],
+            content: '{:url("filemanagement/awaitfile/addoredit")}',
+            success:function () {
+            }
+        });
+        // var index = layer.open({
+        //     type: 1,
+        //     title:'基本信息',
+        //     shadeClose: true,
+        //     area: ['100%', '100%'],
+        //     content: $('#addLayer'),
+        //     success:function () {
+        //         $('#addLayer').css('visibility','initial');
+        //     },
+        //     cancel: function(index, layero){
+        //         $('#addLayer').css('visibility','hidden');
+        //         layer.close(index);
+        //     }
+        //     // end:function () {
+        //     //     onlineFill.ajax.url("{:url('/quality/common/datatablesPre')}?tableName=quality_form_info&DivisionId="+selfidUnit+"&ProcedureId="+conThisId+"&cpr_id="+clickId).load();
+        //     // }
+        // });
+    });
+
+    var tableItemAdd = $('#tableItemAdd').DataTable({
+        pagingType: "full_numbers",
+        retrieve: true,
+        processing: true,
+        serverSide: true,
+        "scrollY": "50px",
+        "scrollCollapse": "true",
+        ajax: {
+            "url": "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="
+        },
+        dom: 'l' +
+        '<"mybtnAdd layui-btn layui-btn-sm">rtip'+
+        '<"nav">rtip',
+        columns: [
+            {
+                name: "id"
+            },
+            {
+                name: "docname"
+            },
+            {
+                name: "nickname"
+            },
+            {
+                name: "create_time"
+            },
+            {
+                name: "status"
+            }
+
+        ],
+        columnDefs: [
+            {
+                "targets":[0],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets":[1],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets":[2],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets":[3],
+                "searchable": false,
+                "orderable": false,
+                render: function (data, type, row) {
+                    if (data == 1) {
+                        return "已归档";
+                    }
+                    return "待归档";
+                }
+            },
+            {
+                "targets": [4],
+                "searchable": false,
+                "orderable": false,
+                "render": function (data, type, row) {
+                    var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='delFile("+row[4]+")'><i title='删除' class='fa fa-trash'></i></a>";
+                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='downFile("+row[4]+")'><i title='下载' class='fa fa-download'></i></a>";
+                    // html += "<a type='button' class='' style='margin-left: 5px;' onclick='AssFile(this)'><i title='关联文件' class='fa fa-chain'></i></a>";
+                    // html += "<a type='button' class='' style='margin-left: 5px;' onclick='reviewHistory(this)'><i title='审阅历史' class='fa fa-file-text'></i></a>";
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItemAdd_length').insertBefore(".markAdd");
+            $('#tableItemAdd_info').insertBefore(".markAdd");
+            $('#tableItemAdd_paginate').insertBefore(".markAdd");
+        }
+    });
+
+    //点击上传文件
+    $(".mybtnAdd").html("<div id='test3'><i class='fa fa-check'></i>选择文件</div>");
+    // $(".nav").html("<div id='fileLeft'><i class='fa fa-file-text-o'></i> &nbsp;电子文件挂接</div>");
+
+
+    //组卷
+    $("#tableContent").on("click",".assModel #model",function () {
+        // if (!clickId) {
+        //     layer.msg("请先选择一条数据！", {time: 1500, shade: 0.1});
+        //     return;
+        // }else {
+            layer.open({
+                type: 2,
+                title: '添加',
+                shadeClose: true,
+                area: ['70%', '80%'],
+                content: '{:url("filemanagement/awaitfile/testass")}',
+                success: function(layero, index){
+                    var body = layer.getChildFrame('body', index);
+                    // console.log(body.html())
+                    // body.find("#moveZtreeId").val(clickId);
+                },
+                end: function () {
+                    // var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=" + selfid;
+                    // tableItem.ajax.url(url).load();
+                }
+            });
+        // }
+    });
+
+    //转不归档
+    $("#tableContent").on("click",".move #moveClick",function () {
+        if (!clickId) {
+            layer.msg("请选择移动的目标！", {time: 1500, shade: 0.1});
+            return;
+        }else {
+            layer.open({
+                type: 2,
+                title: '移动文档到',
+                shadeClose: true,
+                area: ['480px', '550px'],
+                content: '{:url("move")}',
+                success: function(layero, index){
+                    var body = layer.getChildFrame('body', index);
+                    // console.log(body.html())
+                    body.find("#moveZtreeId").val(clickId);
+                },
+                end: function () {
+                    var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=" + selfid;
+                    tableItem.ajax.url(url).load();
+                }
+            });
+        }
+    });
+
+    //加入案卷
+    $("#tableContent").on("click",".addFile #addFileClick",function () {
+        if(fileStatus == 1){
+            layer.msg("归档文件不能重复归档！")
+        }else{
+            if (!clickId) {
+            layer.msg("请选择节点", {time: 1500, shade: 0.1});
+            return;
+        }else {
+            $.ajax({
+                type: "post",
+                url: "{:url('document/archiving')}",
+                data: {id: clickId},
+                success: function (res) {
+                    console.log(res)
+                    if (res.code == 1) {
+                        var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=" + selfid;
+                        tableItem.ajax.url(url).load();
+                        layer.msg("归档成功！")
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            })
+        }
+        }
+    });
+
+    //导入
+    $("#tableContent").on("click",".import #importClick",function () {
+        if (!selfid) {
+            layer.msg("请选择节点", {time: 1500, shade: 0.1});
+            return;
+        }else{
+            $.ajax({
+                type:"post",
+                url:"{:url('document/batchArchiving')}",
+                data:{tid:clickTreeId},
+                success: function (res) {
+                    console.log(res)
+                    if(res.code == 1){
+                        var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+                        tableItem.ajax.url(url).load();
+                        layer.msg("一键归档成功！")
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            })
+        }
+    });
+
+    //导出
+    $("#tableContent").on("click",".export #exportClick",function () {
+        if (!selfid) {
+            layer.msg("请选择节点", {time: 1500, shade: 0.1});
+            return;
+        }else{
+            $.ajax({
+                type:"post",
+                url:"{:url('document/batchArchiving')}",
+                data:{tid:clickTreeId},
+                success: function (res) {
+                    console.log(res)
+                    if(res.code == 1){
+                        var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+                        tableItem.ajax.url(url).load();
+                        layer.msg("一键归档成功！")
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            })
+        }
+    });
+
+    //初始化树节点
+    var selfid, nodeName, nodePid, zTreeObj, groupid, sNodes;
+
+    var setting = {
+        view: {
+            showLine: true, //设置 zTree 是否显示节点之间的连线。
+            selectedMulti: false, //设置是否允许同时选中多个节点。
+            // dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+        },
+        async: {
+            enable: true,
+            autoParam: ["pid"],
+            type: "post",
+            url: "{:url('archive/documenttype/getAll')}",
+            dataType: "json",
+            // dataFilter: ajaxDataFilter
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idkey: "id",
+                pIdKey: "pid",
+                rootPId: 0
+            }
+        },
+        callback: {
+            onClick: this.nodeClick
+        }
+    };
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
+
+    //点击获取路径
+    function nodeClick(e, treeId, node) {
+        console.log(node);
+        selectData = "";
+        sNodes = zTreeObj.getSelectedNodes()[0];//选中节点
+        console.log(sNodes);
+        selfid = zTreeObj.getSelectedNodes()[0].id;//当前id
+        nodeName = zTreeObj.getSelectedNodes()[0].name;//当前name
+        nodePid = zTreeObj.getSelectedNodes()[0].pid;//当前pid
+        console.log(selfid + '---id');
+        console.log(nodeName + '---name');
+        console.log(nodePid + '---pid');
+        var path = sNodes.name; //选中节点的名字
+        node = sNodes.getParentNode();//获取父节点
+        //判断是否还有父节点
+        if (node) {
+            //判断是否还有父节点
+            while (node) {
+                path = node.name + "-" + path;
+                node = node.getParentNode();
+            }
+        } else {
+            $(".layout-panel-center .panel-title").text(sNodes.name);
+        }
+        groupid = sNodes.pId //父节点的id
+        var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+        tableItem.ajax.url(url).load();
+        $("#tableContent .dataTables_wrapper").css('display','block');
+        $("#tableContent .tbcontainer").css('display','block');
+        $(".layout-panel-center .panel-title").text("当前路径:" + path)
+        getPathText(sNodes);
+        clickTreeId = selfid;
+    }
+
+    //全部展开
+    $('#openNode').click(function () {
+        zTreeObj.expandAll(true);
+    });
+
+    //收起所有
+    $('#closeNode').click(function () {
+        zTreeObj.expandAll(false);
+    });
+
+    //删除
+    function delFileFun(id,url) {
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {id: id},
+            success: function (res) {
+                if(res.code == 1){
+                    console.log(res);
+                    layer.msg("删除成功！");
+                    var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=" + selfid;
+                    tableItem.ajax.url(url).load();
+                }else if(res.code==0){
+                    layer.msg(res.msg);
+                }
+            },
+            error: function (data) {
+                debugger;
+            }
+        });
+    }
+
+    //删除调用
+    function delFile(id){
+        console.log(id);
+        delFileFun(id,"{:url('document/del')}")
+    }
+
+    //下载的历史记录
+    function record(id) {
+        $.ajax({
+            type: "post",
+            url: "{:url('document/downloadrecord')}",
+            data: {id: id},
+            success: function (res) {
+                // if(res.code == 1){
+                console.log(res);
+                $("#downInfo").html("");
+                var strTr = '';
+                for (var i = 0; i < res.length; i++) {
+                    strTr += '<tr>\n' +
+                        '       <td>' + res[i].create_time + '</td>\n' +
+                        '       <td>' + res[i].user + '</td>\n' +
+                        '    </tr>'
+                }
+                $("#downInfo").append(strTr);
+                // }
+                if(res.code == 0){
+                    layer.msg('历史记录' + res.msg);
+                }
+            }
+        })
+    }
+
+    //下载的方法
+    function download(id,url) {
+        $.ajax({
+            url: url,
+            data:{id:id},
+            type:"post",
+            success: function (res) {
+                if(res.code != 1){
+                    console.log(res)
+                    layer.msg(res.msg)
+                }else {
+                    $("#form_container").empty();
+                    var str = "";
+                    str += ""
+                        + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                        + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
+                        + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                        + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                        + "<button type='submit' class=btn" + id +"></button>"
+                        + "</form>"
+                    $("#form_container").append(str);
+                    $("#form_container").find(".btn" + id).click();
+                }
+            }
+        })
+    }
+
+    //下载调用
+    function downFile(id){
+        download(id,"{:url('document/download')}");
+        record(id);
+    }
+
+    //预览
+    function showPdf(id,url) {
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                if(res.code === 1){
+                    var path = res.path;
+                    console.log(res.path.split(".")[1]);
+                    if(res.path.split(".")[1]==="pdf"){
+                        window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
+                    }else{
+                        layer.photos({
+                            photos: {
+                                "title": "", //相册标题
+                                "id": id, //相册id
+                                "start": 0, //初始显示的图片序号，默认0
+                                "data": [   //相册包含的图片，数组格式
+                                    {
+                                        "alt": "图片名",
+                                        "pid": id, //图片id
+                                        "src": "../../../"+res.path, //原图地址
+                                        "thumb": "" //缩略图地址
+                                    }
+                                ]
+                            }
+                            ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                        });
+                    }
+
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    }
+
+    //预览文件
+    function previewList(id){
+        layer.load(1, {shade: [0.8, '#393D49']})
+        $.ajax({
+            url: "{:url('document/preview')}",
+            data:{id:id},
+            type:"get",
+            success: function (res) {
+                console.log(res);
+                setTimeout(function () {
+                    var index = layer.load();
+                    layer.close(index);
+                },3000)
+                layer.msg("暂不支持该功能！")
+                // if(res.code == 1){
+                //     console.log(res);
+                //     layer.msg(res.msg)
+                //     // showPdf(id,'./atlascatePreview')
+                //
+                // }else {
+                //     layer.msg(res.msg)
+                // }
+            }
+        })
+
+    }
+
+    //右边的属性
+    var uploadPle;//上传人
+    var treefileCategory;//文件类别
+
+    //获取点击行
+    $("#tableItem").delegate("tbody tr","click",function (e) {
+        if($(e.target).hasClass("dataTables_empty")){
+            return;
+        }
+        $(".path").html("");
+        // console.log($(this))
+        // var isChecked = $(this).prop('checked');
+        // var id = $(this).attr('idv');
+        // var checkedLen = $('input[type="checkbox"][name="checkList"]:checked').length;
+        // var checkboxLen = $('input[type="checkbox"][name="checkList"]').length;
+        // console.log(checkedLen)
+        // console.log(checkboxLen)
+        // if(checkedLen===checkboxLen){
+        //     $('#all_checked').prop('checked',true);
+        // }else{
+        //     $('#all_checked').prop('checked',false);
+        // }
+
+
+        $(this).addClass('selected');
+
+        // console.log($(this).children("td:nth-of-type(1)").children('input').attr("checked"));
+        var isChecked = $(this).children("td:nth-of-type(1)").children('input').prop("checked","checked");
+        var id = $(this).children("td:nth-of-type(1)").children('input').attr('idv');
+        if(isChecked){
+            console.log(444444444444+"选中")
+            idArr.push(id);
+            idArr.removal(id);
+            idArr.removalArray();
+            console.log(idArr)
+            $(this).children("td:nth-of-type(1)").children('input').prop("checked",true);
+        }else{
+            console.log(444444444444+"没选中")
+            idArr.remove(id);
+            idArr.removal(id);
+            idArr.removalArray();
+            $('#all_checked').prop('checked',false);
+            $(this).children("td:nth-of-type(1)").children('input').prop("checked",false);
+            $(that).parents("tr").removeClass('selected');
+            console.log(idArr)
+        }
+
+
+        // $(this).addClass("select-color").siblings().removeClass("select-color");
+        // $(this).addClass("select-color");
+        // selectData = tableItem.row(".select-color").data();//获取选中行数据
+        // console.log(selectData);
+        // uploadPle = selectData[1];
+        // clickId = selectData[4];
+        // fileStatus = selectData[3];
+        // console.log(clickId);
+        // getAttrList(selectData[4]);
+    });
+
+
+    //掉后台接口
+    // function getAttrList(id){
+    //     $.ajax({
+    //         type:"post",
+    //         url:"{:url('document/getOne')}",
+    //         data:{id:id},
+    //         success: function (res) {
+    //             console.log(res);
+    //             if(res.code == 0){
+    //                 layer.msg('获取一条数据' + res.msg);
+    //             }
+    //             $("#fileName").text(res.name);
+    //             $("#fileCategory").text(treefileCategory);
+    //             $("#uploadPerson").text(uploadPle);
+    //             $("#uploadTime").text(res.attachment_info.create_time);
+    //             $("#fileSize").text((res.attachment_info.filesize)/1000+' KB');
+    //         },
+    //         error: function (data) {
+    //             debugger;
+    //         }
+    //     })
+    // }
+
+    //属性拼接的方法
+    function getPathText(node) {
+        var s = node.name;
+        while (node = node.getParentNode()) {
+            s = node.name + '>>' + s;
+        }
+        treefileCategory = s;
+        return s;
+    }
+
+    //title
+    $('#tableAttr thead').on( 'mouseover', 'td', function () {
+        $(this).attr('title',$(this).text());
+    }).on( 'mouseleave', 'td', function () {
+        $(this).removeAttr("title");
+    });
+
+    //翻页事件
+    tableItem.on('draw',function () {
+        $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+        $('#all_checked').prop('checked',false);
+        idArr.length=0;
+    });
+
+    //驱虫
+    Array.prototype.removal = function(){
+        var newArr = [];
+        for (var i = 0; i < this.length; i++) {
+            if(newArr.indexOf(this[i]) == -1){  //判断在newArr数组中是否存在，不存在则push到newArr数组中 indexOf 不兼容IE8及以下
+                newArr.push(this[i]);
+            }
+        }
+        return newArr;
+    }
+    //删除数组中的指定元素
+    Array.prototype.remove = function(val){
+        for (var i = 0; i < this.length; i++) {
+            if(this[i] === val){
+                this.splice(i,1);
+                break;
+            }
+        }
+        return this;
+    }
+    //获取选中行ID
+    var idArr = [];
+    function getId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).attr('idv');
+        var checkedLen = $('input[type="checkbox"][name="checkList"]:checked').length;
+        var checkboxLen = $('input[type="checkbox"][name="checkList"]').length;
+        if(checkedLen===checkboxLen){
+            $('#all_checked').prop('checked',true);
+        }else{
+            $('#all_checked').prop('checked',false);
+        }
+        if(isChecked){
+
+            idArr.push(id);
+            idArr.removalArray();
+            $(that).parents("tr").addClass('selected');
+        }else{
+            idArr.remove(id);
+            idArr.removalArray();
+            console.log(666666666666666666)
+            // $("#tableItem").undelegate("tbody tr","click");
+            $('#all_checked').prop('checked',false);
+            $("input[name='checkList']").prop('checked',false);
+            $(that).parents("tr").removeClass('selected');
+            // $("#tableItem").delegate("tbody tr","click");
+        }
+    }
+
+    //单选
+    function getSelectId(that) {
+        getId(that);
+        console.log(idArr);
+    }
+
+    //checkbox全选
+    $("#all_checked").on("click", function () {
+        var that = $(this);
+        if (that.prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", that.prop("checked"));
+            $('#tableItem tbody tr').addClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        } else {
+            $("input[name='checkList']").prop("checked", false);
+            $('#tableItem tbody tr').removeClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        }
+        console.log(idArr);
+    });
+
+
+
+</script>
+</html>

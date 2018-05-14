@@ -1,0 +1,68 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/quality/unitqualitymanage/common/common.css">
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
+<div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
+    <ul id="controlZtree" class="ztree"></ul>
+</div>
+<div class="content" data-options="region:'center',title:''">
+    <input type="hidden" name="enginId" id="enginId">
+    <input type="hidden" name="type" id="type" value="100">
+    <input type="hidden" name="controlId" id="controlId">
+    <input type="hidden" name="index" id="index">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',title:'',split:true" style="height: 60%">
+            <input type="hidden" name="wordId" id="workId">
+            <div class="current-path">
+                <h3><i class="fa fa-dot-circle-o"></i>控制点</h3>
+            </div>
+            <div class="control-point" id="controlPoint">
+                <div class="control-point-item" id="controlPointItem"></div>
+            </div>
+            <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                <thead>
+                <tr>
+                    <th>控制点编号</th>
+                    <th>控制点名称</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div data-options="region:'center',split:true" class="tab-content"  style="height: 40%">
+            <div id="tabs" class="easyui-tabs" style="width: 100%;height:100%;">
+                <div title="控制点执行情况" style="padding:5px 0;display:none;">
+                    <table id="implement" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                        <thead>
+                            <tr>
+                                <th>文件名称</th>
+                                <th>负责人</th>
+                                <th>单位</th>
+                                <th>拍摄时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div title="图像资料"style="overflow:auto;padding:5px 0;display:none;">
+                    <table id="imageData" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                        <thead>
+                        <tr>
+                            <th>图像名称</th>
+                            <th>上传人</th>
+                            <th>单位</th>
+                            <th>上传时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/quality/unitqualitymanage/control.js"></script>
+<script src="__WEBSITE__/quality/unitqualitymanage/common/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+
+.panel{
+    top: 96px;
+}
+#queryCriteria{
+    width: 100%;
+    height: 90px;
+    /*border: 1px dotted #00c0ef;*/
+}
+#queryCriteria .title{
+    margin-left: 10px;
+    margin-top: 5px;
+}
+#queryCriteria .selectItem{
+    margin-left: 250px;
+    margin-top: 30px;
+    position: relative;
+}
+#queryCriteria .selectItem .layui-select-title{
+    width: 400px;
+}
+#queryCriteria .selectItem .layui-form-label{
+    font-weight: bolder;
+}
+#queryCriteria .sea{
+    position: absolute;
+    right: 1%;
+    /*top: -62%;*/
+    top: 0%;
+}
+#queryCriteria .sea button{
+    background-color: #00c0ef;
+    color: #FFFFFF;
+}
+
+#tableContent .mybtn i.fa:before,#tableContent .assModel i.fa:before,#tableContent .move i.fa:before,#tableContent .file i.fa:before,#tableContent .oneKeyArchiv i.fa:before {
+    background: #00c0ef;
+    color: #ffffff;
+}
+#tableContent .mybtn,#tableContent .assModel,#tableContent .move,#tableContent .file,#tableContent .oneKeyArchiv{
+    float: right;
+    background-color: #00c0ef;
+}
+#tableContent .mybtn{
+    margin-right: 0%;
+    margin-bottom: 5px;
+}
+#tableContent .assModel{
+    margin-right: 0%;
+    margin-bottom: 5px;
+}
+#tableContent .move{
+    margin-right: 0%;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+#tableContent table.dataTable.no-footer {
+    border-top: 1px dotted;
+}
+#tableContent #funKuai{
+    width: 100%;
+    position: absolute;
+    left: 72%;
+}
+#tableContent #funKuai>span{
+    background-color: #00c0ef;
+    margin-left: 5px;
+    color: #FFFFFF;
+}
+#tableContent #funKuai>span i.fa:before {
+    padding-right: 3px;
+    color: #FFFFFF;
+}
+#tableContent #tableItem_filter {
+    float: left;
+}
+#tableContent .select-color {
+    background-color: #FDD5B5 !important;
+}
+#tableContent h3 {
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 16px;
+    display: inline-block;
+}
+#tableContent .even {
+    background-color: #ffffff;
+}
+#tableContent .odd {
+    background-color: #f9f9f9;
+}
+#tableContent .ibox-tools {
+    float: right;
+    margin-right: 30px;
+    margin-top: 10px;
+}
+#tableContent .ibox-tools2 {
+    float: right;
+    margin-right: 15px;
+}
+#tableContent .dataTables_wrapper .dataTables_scroll {
+    position: relative;
+    top: 15px;
+    border-top: 1px dotted #cecece;
+}
+#tableContent #tableItem tr td a{
+    color: #337ab7;
+}
+#tableContent .dataTables_wrapper,#tableContent .tbcontainer{
+    display: block;
+}
+#tableContent .tableHeadName{
+    width: 100%;
+    font-size: 14px;
+    font-weight: 800;
+    color: #0E2D5F;
+    height: 22px;
+    padding: 5px;
+    border-bottom: 1px solid #cecece;
+    line-height: 22px;
+    border-top: 1px solid #cecece ;
+    margin: 4px 0 4px -5px;
+}
+
+#tableItem .dataTables_wrapper {
+    position: relative;
+    clear: both;
+    zoom: 1;
+    overflow-x: auto;
+}
+#tableItem table{
+    width: 800px;
+}
+table td{
+    word-break:break-all;
+}
+
+table{
+    table-layout:fixed;
+}
+
+#tableContent .layui-input[disabled], .layui-textarea[disabled], .layui-disabled, .layui-input[readonly], .layui-textarea[readonly], .layui-readonly{
+    background: #FFFFFF !important;
+}
+.dataTables_scrollHeadInner,#tableItem_wrapper table{
+    width: 100% !important;
+}
+#tableItem_wrapper{
+    height: 90% !important;
+}
+#tableContent .dataTables_scroll{
+    height: 90%;
+}
+#tableContent .dataTables_scrollBody{
+    max-height: none!important;
+    width: 100%;
+    height: calc(100% - 125px)!important;
+    border-bottom: none!important;
+}

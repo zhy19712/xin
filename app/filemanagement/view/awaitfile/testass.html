@@ -1,0 +1,257 @@
+{include file="../app/public/common_header.html"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreestandard/ztreeiconStyle.css">
+<style>
+    #nodeZtree .ztree{
+        margin-top: 0px;
+    }
+    /*#tableContent .dataTables_wrapper, .tbcontainer{*/
+    /*display: block;*/
+    /*}*/
+    #tableContent .mybtn{
+        float: right;
+        background-color: #00c0ef;
+    }
+    #tableContent .dataTables_wrapper {
+        position: relative;
+        clear: both;
+        zoom: 1;
+        overflow: auto;
+    }
+    table.dataTable thead .sorting_asc {
+        background-image:none;
+    }
+    #tableContent table{
+        width: 800px;
+    }
+    table td{word-break:break-all;}
+
+    table{table-layout:fixed;}
+
+    .select-color {
+        background-color: #FDD5B5 !important;
+    }
+    #tableContent .even {
+        background-color: #ffffff;
+    }
+    #tableContent .odd {
+        background-color: #f9f9f9;
+    }
+</style>
+
+<div id="nodeZtree" data-options="region:'west',title:' 标准分类',split:true" style="width:220px;height: 520px">
+    <ul class="ztree" id="ztree"></ul>
+</div>
+<div id="tableContent" data-options="region:'center',title:'控制点标准'" style="height:520px;padding:5px;background:#ffffff;">
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>选择</th>
+            <th>编号</th>
+            <th>名称</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="tbcontainer">
+        <div class="mark"></div>
+    </div>
+    <!--<input type="hidden" name="zTreeValId" id="zTreeValId" value="">-->
+    <!--<input type="hidden" name="unitValId" id="unitValId" value="">-->
+</div>
+
+{include file="../app/public/common_footer.html"}
+<script>
+
+    //组织结构表格
+    var tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        "scrollY": "450px",
+        ajax: {
+            "url": "{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="
+        },
+        dom: 'l<"mybtn layui-btn layui-btn-sm">rtip',
+        columns: [
+            {
+                name: "id"
+            },
+            {
+                name: "code",
+                width:"15%"
+            },
+            {
+                name: "name"
+            }
+
+        ],
+        columnDefs: [
+            {
+                targets: [0],
+                width:'50px',
+                "searchable": false,
+                "orderable": false,
+                "render": function (data, type, row) {
+                    var a = data;
+                    var html = "<a type='button' href='javasrcipt:;' class=''>" +
+                        "<input type='radio' name='sex' class='sex' onclick='checkFile(this)'>" +
+                        "</a>";
+                    return html;
+                }
+            },
+            {
+                "targets": [1]
+            },
+            {
+                "targets": [2]
+            }
+
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItem_length').insertBefore(".mark");
+            $('#tableItem_info').insertBefore(".mark");
+            $('#tableItem_paginate').insertBefore(".mark");
+        }
+    });
+
+    //保存
+    $(".mybtn").html("<div id='test3'>保存</div>");
+
+    //初始化树节点
+    var selfidAdd, nodeNameAdd, nodePidAdd, zTreeObjAdd, groupidAdd, sNodesAdd, procedureIdAdd;
+
+    var setting = {
+        view: {
+            showLine: true, //设置 zTree 是否显示节点之间的连线。
+            selectedMulti: false//设置是否允许同时选中多个节点。
+        },
+        async: {
+            enable: true,
+            autoParam: ["pid"],
+            type: "post",
+            url: "{:url('standard/library/GetDivsionTree')}?cat=5",
+            dataType: "json"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idkey: "id",
+                pIdKey: "pid",
+                rootPId: null
+            }
+        },
+        callback: {
+            onClick: this.nodeClick
+        }
+    };
+    zTreeObjAdd = $.fn.zTree.init($("#ztree"), setting, null);
+
+    //点击获取路径
+    function nodeClick(e, treeId, node) {
+        // console.log(node);
+        selectData = "";
+        sNodesAdd = zTreeObjAdd.getSelectedNodes()[0];//选中节点
+        console.log(sNodesAdd);
+        selfidAdd = zTreeObjAdd.getSelectedNodes()[0].id;//当前id
+        nodeNameAdd = zTreeObjAdd.getSelectedNodes()[0].name;//当前name
+        nodePidAdd = zTreeObjAdd.getSelectedNodes()[0].pid;//当前pid
+        console.log(selfidAdd + '---id');
+        console.log(nodeNameAdd + '---name');
+        console.log(nodePidAdd + '---pid');
+        var path = sNodesAdd.name; //选中节点的名字
+        node = sNodesAdd.getParentNode();//获取父节点
+        if (node) {
+            //判断是否还有父节点
+            while (node) {
+                path = node.name + "-" + path;
+                node = node.getParentNode();
+            }
+        } else {
+            $(".layout-panel-center .panel-title").text(sNodesAdd.name);
+        }
+        groupidAdd = sNodesAdd.pId ;//父节点的id
+        procedureIdAdd = selfidAdd;
+        if(sNodesAdd.level == 3){
+            tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfidAdd).load();
+            $("#tableContent .dataTables_wrapper").css('display','block');
+            $("#tableContent .tbcontainer").css('display','block');
+            $(".layout-panel-center .panel-title").text("当前路径:" + path);
+        }else if(sNodesAdd.level != 3){
+            $("#tableContent .dataTables_wrapper").css('display','none');
+            $("#tableContent .tbcontainer").css('display','none');
+            $(".layout-panel-center .panel-title").text("当前路径:");
+        }
+    }
+
+    var checkId;
+    var checkName;
+    var flag;
+    var form;
+
+    //点击选中单选
+    function checkFile(that) {
+        console.log(that);
+        if(that.checked){
+            flag = true;
+        }else{
+            flag = false;
+        }
+    }
+
+    //点击选中变色
+    $("#tableItem").delegate("tbody tr","click",function (e) {
+        if($(e.target).hasClass("dataTables_empty")){
+            return;
+        }
+
+        $(this).addClass("select-color").siblings().removeClass("select-color");
+        selectData = tableItem.row(".select-color").data();//获取选中行数据
+        checkId = selectData[0];
+        checkName = selectData[2];
+        $(this).children("td:nth-of-type(1)").children('a').children('input').prop("checked",true);
+        // $("input[type='radio']").removeAttr('checked')//移除单选的选中事件
+    });
+
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        form = layui.form;
+        var layer = layui.layer;
+
+        function closWin() {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        };
+
+        //点击保存
+        $("#test3").click(function () {
+            // console.log($("#tableItemChose tbody td:nth-of-type(1) a"));
+            if(flag){
+                $("#hiddenValId").val(checkId);
+                $("#hiddenValName").val(checkName);
+                $(window.parent.document).find("#getValId").val(checkId);
+                $(window.parent.document).find("#getValName").val(checkName);
+
+                $(window.parent.document).find("#selectTem").val(checkName);
+
+                setTimeout(function () {
+                    closWin();
+                },800)
+            }
+        });
+    });
+
+</script>
+</html>

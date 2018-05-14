@@ -1,0 +1,136 @@
+<!--<!DOCTYPE html>-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="__PUBLIC__/easyui/easyui.css">
+    <link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all" />
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all" />
+    <script src="__PUBLIC__/jquery/jquery.min.js"></script>
+    <script src="__PUBLIC__/easyui/jquery.easyui.min.js"></script>
+    <style type="text/css">
+
+    .btn {
+        line-height: 1.02857;
+        border-radius: 60px;
+        margin-right: 15px;
+        float: right;
+    }
+
+    </style>
+</head>
+<body style="position: relative;">
+<input type="hidden" id="positionUrl" value="">
+<div class="easyui-layout" data-options="fit:true" >
+    <div class="" data-options="region:'north',title:'',split:true" >
+        <button id="FT1" onclick="FT1_onclick()" class="layui-btn btn" type="button"><i class="fa fa-check-circle"></i> 保存</button>
+        <button id="FT2" onclick="FT2_onclick()" class="layui-btn btn" type="button"><i class="fa fa-reply"></i> 恢复位置</button>
+
+    </div>
+    <div class="" data-options="region:'center',title:''" id="objBox" style="overflow: hidden" >
+
+        <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD" width="100%" height="90%" style="margin-top: 99%" >
+            <param name="wmode" value="transparent">
+            <span style="color: red;font-weight: bold;font-size: 22px; display: block;width: 100%;text-align: center;">请用ie11打开</span>
+        </object>
+
+    </div>
+</div>
+
+<script>
+  var str=location.search;
+  str=str.substr(1); //取得所有参数   stringvar.substr(start [, length ]
+  var arr=str.split("="); //各个参数放到数组里
+  var positionid = arr[1];
+  // $("#objBox").hide();
+</script>
+<script type="text/javascript">
+
+
+  var base64PicData = "";
+  var base64RenData = "";
+  // $("#positionUrl").val(window.opener.getpositionUrl());
+// alert(window.opener.getpositionUrl());
+  function FT1_onclick() {
+    //请求创建一个屏幕快照，数据以Base64字符串的形式通过SnapShootData事件参数返回给调用者
+    RealBimOcx.CreateSnapShootInMem(true, 0, 0, true, true); // 1 是否保留截图 2.3 宽高  4  是否保存创建快照时的渲染状态数据 5，是否禁用功能ui
+
+  }
+
+  function FT2_onclick() {
+    if(base64RenData==""){
+      return ;
+    }
+    //载入Base64形式的标注数据块并显示标注文件创建时的场景状态
+    RealBimOcx.ShowSnapshotOrMarkerInMem(base64RenData);
+  }
+
+</script>
+
+<script language="javascript" for="RealBimOcx" EVENT="SnapShootData(strPicData,picWidth,picHeight,strRenData)" type="text/javascript">
+
+  base64PicData = strPicData;
+  base64RenData = strRenData;
+  positionUrl = $("#positionUrl").val();
+  if(positionUrl !="./editPosition"){
+    positionUrl += '/editPosition';
+  }
+  $.ajax({
+    type: "Post",
+    url: positionUrl,
+    data: { "id": positionid, "position": base64RenData },
+    success: function (res) {
+      if (res.code == 1){
+        alert("保存成功。");
+        // window.close(); //用ie就崩了
+        // window.location.reload();
+
+        // window.opener.refreshTable();
+      }
+      else alert("保存失败。");
+    }
+  });
+
+</script>
+
+<script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+
+  RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+  RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+
+  RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+  RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+
+
+
+</script>
+<script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+  if(CompleteEvent == "LoadMainScene" && retError==0 ){
+    RealBimOcx.SetSceHugeObjVisible(true);
+    getposition = $("#positionUrl").val();
+    if(getposition !="./editPosition"){
+      getposition += '/getindex';
+    }else{
+      getposition =  "./getindex";
+    }
+    $.ajax({
+      type: "Post",
+      url: getposition,
+      data: {"id": positionid },
+      success: function (res) {
+        if(res.data.position==0||!res.data.position){
+          $("object").css("margin",0);
+          RealBimOcx.SetAllHugeObjSubValidState(1);
+          RealBimOcx.SetSuitableCam();
+        }else{
+          RealBimOcx.SetAllHugeObjSubValidState(1);
+          RealBimOcx.ShowSnapshotOrMarkerInMem(res.data.position);
+          $("object").css("margin",0);
+        }
+      }
+    });
+  }
+
+</script>
+
+</body>
+</html>

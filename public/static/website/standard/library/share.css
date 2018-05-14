@@ -1,0 +1,87 @@
+#nodeZtree .ztree-title i.fa {
+    width: 12%;
+}
+#nodeZtree .ztree-title #add {
+    margin-left: 6px;
+}
+
+#tableContent .mybtn i.fa:before,#tableContent .assModel i.fa:before,#tableContent .move i.fa:before,#tableContent .file i.fa:before,#tableContent .oneKeyArchiv i.fa:before {
+    background: #00c0ef;
+    color: #ffffff;
+}
+#tableContent .mybtn,#tableContent .assModel,#tableContent .move,#tableContent .file,#tableContent .oneKeyArchiv{
+    float: right;
+    background-color: #00c0ef;
+}
+#tableContent .mybtn{
+    margin-right: 0%;
+    margin-bottom: 5px;
+}
+#tableContent .assModel{
+    margin-right: 0%;
+    margin-bottom: 5px;
+}
+#tableContent .move{
+    margin-right: 0%;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+#tableContent table.dataTable.no-footer {
+    border-top: 1px dotted;
+}
+#tableContent #funKuai{
+    width: 100%;
+    position: absolute;
+    left: 72%;
+}
+#tableContent #funKuai>span{
+    background-color: #00c0ef;
+    margin-left: 5px;
+    color: #FFFFFF;
+}
+#tableContent #funKuai>span i.fa:before {
+    padding-right: 3px;
+    color: #FFFFFF;
+}
+#tableContent #tableItem_filter {
+    float: left;
+}
+#tableContent .select-color {
+    background-color: #FDD5B5 !important;
+}
+#tableContent h3 {
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 16px;
+    display: inline-block;
+}
+#tableContent .ibox-tools {
+    float: right;
+    margin-right: 30px;
+    margin-top: 10px;
+}
+#tableContent .ibox-tools2 {
+    float: right;
+    margin-right: 15px;
+}
+#tableContent .dataTables_wrapper .dataTables_scroll {
+    position: relative;
+    top: 15px;
+    border-top: 1px dotted #cecece;
+}
+#tableContent #tableItem tr td a{
+    color: #337ab7;
+}
+#tableContent .even {
+    background-color: #ffffff;
+}
+#tableContent .odd {
+    background-color: #f9f9f9;
+}
+#bodyBig .layui-this{
+    background: #00c0ef;
+    color: white;
+}
+#bodyBig .layui-tab-content {
+    padding-left: 4px;
+}

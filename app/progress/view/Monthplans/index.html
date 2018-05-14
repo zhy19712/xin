@@ -1,0 +1,494 @@
+{include file="../../public/common_header"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<link rel="stylesheet" href="__WEBSITE__/progress/monthplan/index.css">
+<style>
+    #fu{
+        width:90%;
+        height: 15px;
+        /*border:1px solid darkcyan;*/
+        margin: 20px auto;
+        display: block;
+        background-color: #e2e2e2;
+        position: relative;
+    }
+    #zi{
+        width:2px;
+        height: 15px;
+        background:lightseagreen;
+    }
+
+    #bai{
+        text-align: center;
+        line-height: 15px;
+        color: white;
+    }
+    #ad i{
+        margin: 0 15px;
+    }
+    .tipStyle{
+        width: 96px;
+        height: 20px;
+        border: 1px solid darkseagreen;
+        color: white;
+        background: darkseagreen;
+        text-align: center;
+    }
+    #leftTips,#leftTop{
+        position: absolute;
+        top: -25px;
+        left: -48px;
+        /*border: 1px solid red;*/
+    }
+    #rightTips{
+        position: absolute;
+        top: -25px;
+        right: -48px;
+    }
+
+
+    .progress{
+        position: relative;
+        width:90%;
+        margin:100px auto;
+    }
+    .progress_bg{
+        height: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        background-color:#f2f2f2;
+    }
+    .progress_bar{
+        background: #5FB878;
+        width: 0;
+        height: 10px;
+        border-radius: 5px;
+    }
+    .progress_btn{
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        position: absolute;
+        background:#fff;
+
+        left: 0px;
+        margin-left: -10px;
+        top:-5px;
+        cursor: pointer;
+        border:1px #ddd solid;
+        box-sizing:border-box;
+    }
+    .progress_btn:hover{
+        border-color:#F7B824;
+    }
+</style>
+<div id="content">
+    <div class="layui-row page-head">
+        <div class="layui-col-xs2">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择计划：</label>
+                    <div class="layui-input-block">
+                        <select name="city" lay-verify="required">
+                            <option value="0">全部</option>
+                            <option value="1">一级进度计划</option>
+                            <option value="2">年度计划</option>
+                            <option value="3">月度计划</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-col-xs1 layui-col-sm-offset9">
+            <button class="layui-btn layui-btn-normal" id="addPlan">
+                <i class="layui-icon">&#xe608;</i> 添加
+            </button>
+        </div>
+    </div>
+    <!--<div id="ad" style="margin-bottom: 40px">-->
+        <!--<i id="backward" class="fa fa-fast-backward"></i>-->
+        <!--<i id="start" class="fa fa-play"></i>-->
+        <!--<i id="suspend" class="fa fa-pause" style="display: none"></i>-->
+        <!--<i id="forward" class="fa fa-fast-forward"></i>-->
+    <!--</div>-->
+
+    <!--<div class="progress">-->
+        <!--<div class="progress_bg">-->
+            <!--<div class="progress_bar"></div>-->
+        <!--</div>-->
+        <!--<div class="progress_btn"></div>-->
+        <!--<div class="text">0%</div>-->
+    <!--</div>-->
+
+    <!--<div id="fu">-->
+        <!--<div id="zi">-->
+            <!--<div id="bai"></div>-->
+            <!--<div id="leftTips" class="tipStyle">2017-5-1</div>-->
+        <!--</div>-->
+
+        <!--<div id="leftTop" class="tipStyle">2017-5-1</div>-->
+        <!--<div id="rightTips" class="tipStyle">2017-5-15</div>-->
+    <!--</div>-->
+
+    <div id="layuiRow" style="width: 100%;height: 100%">
+        <table id="versonPro" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+            <thead>
+                <th>月份</th>
+                <th>计划名称</th>
+                <th>所属标段</th>
+                <th>编制人</th>
+                <th>编制日期</th>
+                <th>操作</th>
+            </thead>
+        </table>
+        <div class="tbcontainer">
+            <div class="mark"></div>
+        </div>
+    </div>
+</div>
+<!--添加新计划DOM代码-->
+<form class="layui-form" action="" id="addForm" style="display: none;padding: 10px">
+    <div class="layui-row">
+        <div class="layui-col-sm5">
+            <div class="layui-form-item">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-block">
+
+                    <select name="city" lay-verify="required">
+                        <option value=""></option>
+                        <option value="0">年度计划</option>
+                        <option value="1">一级进度计划</option>
+                        <option value="2">施工总进度计划</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm7">
+            <div class="layui-form-item">
+                <label class="layui-form-label">计划名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm5">
+            <div class="layui-form-item">
+                <label class="layui-form-label">编制时间</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="modifiedDate">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm7">
+            <div class="layui-form-item">
+                <label class="layui-form-label">编制人</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入编制人" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">版本描述</label>
+        <div class="layui-input-block">
+            <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="test1">
+                <i class="layui-icon">&#xe67c;</i>上传文件
+            </button>
+        </div>
+    </div>
+</form>
+<!--删除计划DOM-->
+<div class="" id="deletePlan">
+    <p>确认要删除该计划吗？</p>
+</div>
+
+{include file="../../public/common_footer"}
+<script type="text/javascript">
+
+    var proWidth = $(".progress").width();
+    $(function(){
+        var tag = false,ox = 0,left = 0,bgleft = 0;
+        $('.progress_btn').mousedown(function(e) {
+            ox = e.pageX - left;
+            tag = true;
+        });
+        $(document).mouseup(function() {
+            tag = false;
+        });
+        $('.progress').mousemove(function(e) {
+            if (tag) {
+                left = e.pageX - ox;
+                if (left <= 0) {
+                    left = 0;
+                }else if (left > proWidth) {
+                    left = proWidth;
+                }
+                $('.progress_btn').css('left', left);
+                $('.progress_bar').width(left);
+                $('.text').html(parseInt((left/proWidth)*100) + '%');
+            }
+        });
+
+        $('.progress_bg').click(function(e) {
+            if(!tag) {
+                bgleft = $('.progress_bg').offset().left;
+                left = e.pageX - bgleft;
+
+                if (left <= 0) {
+                    left = 0;
+                }
+
+                if(left > proWidth) {
+                    left = proWidth;
+                }
+
+                $('.progress_btn').css('left', left);
+                $('.progress_bar').animate({width:left},proWidth);
+                $('.text').html(parseInt((left/proWidth)*100) + '%');
+            }
+        });
+    });
+
+    var stime, stimeBackward, stimeForward, times = 1200, backTime = 1200;
+
+    //清除叠加
+    function cleanSupTime() {
+        window.clearInterval(stime);
+        window.clearInterval(stimeBackward);
+        window.clearInterval(stimeForward);
+    }
+
+    //暂停样式
+    function cleanSupElement() {
+        cleanSupTime();
+        $("#start").css("display","inline-block").siblings("#suspend").css("display","none");
+    }
+
+    //开始
+    $("#start").click(function () {
+        //开始
+        $("#start").css("display","none").siblings("#suspend").css("display","inline-block");
+         cleanSupTime();
+        stime = setInterval(function (){
+            $("#fu").css("display","block");
+            var oleft = $("#zi")[0].offsetWidth + 96;
+            var tipsLeft = Math.round($("#leftTips").offset().left+10);
+            var ob = oleft/$("#fu")[0].offsetWidth;
+            $("#zi").css("width",oleft+"px");
+            $("#leftTips").css("left",tipsLeft+"px");
+            if($("#zi")[0].offsetWidth -12 == $("#fu")[0].offsetWidth){
+                cleanSupElement();
+            }
+        },1200)
+        if($("#zi")[0].offsetWidth-12 == $("#fu")[0].offsetWidth){
+            cleanSupElement();
+        }
+    });
+
+    //暂停
+    $("#suspend").click(function () {
+        $("#start").css("display","inline-block").siblings("#suspend").css("display","none");
+        cleanSupTime();
+    });
+
+    //快退
+    $("#backward").click(function () {
+        console.log($("#start").css("display"))
+        if($("#start").css("display") == 'none'){
+            cleanSupTime();
+            backTime /= 1.5;
+            if(parseInt(backTime) == 237){
+                backTime =237
+                alert("亲，不能再退这么快了！")
+            }
+            stime = setInterval(function (){
+                $("#fu").css("display","block");
+                var oleft = $("#zi")[0].offsetWidth - 96;
+                var tipsLeft = Math.round($("#leftTips").offset().left);
+                console.log(tipsLeft + "left ")
+                var ob = oleft/$("#fu")[0].offsetWidth;
+                $("#zi").css("width",oleft+"px");
+                tipsLeft -= 181;
+                $("#leftTips").css("left",tipsLeft+"px");
+                if(oleft == 2){
+                    cleanSupElement()
+                }
+            },backTime)
+        }
+    });
+
+    //快进
+    $("#forward").click(function () {
+        console.log($("#start").css("display"))
+        if($("#start").css("display") == 'none'){
+            cleanSupTime();
+            times /= 1.5;
+            if(parseInt(times) == 237){
+                times =237
+                layer.msg("亲，不能再快了！")
+            }
+            stime = setInterval(function (){
+                $("#fu").css("display","block");
+                var oleft = $("#zi")[0].offsetWidth + 96;
+                var tipsLeft = Math.round($("#leftTips").offset().left+10);
+                var ob = oleft/$("#fu")[0].offsetWidth;
+                $("#zi").css("width",oleft+"px");
+                $("#leftTips").css("left",tipsLeft+"px");
+                if($("#zi")[0].offsetWidth -12 == $("#fu")[0].offsetWidth){
+                    cleanSupElement();
+                }
+            },times)
+
+        }
+
+    });
+
+    // 初始化
+    var versonPro = $('#versonPro').dataTable( {
+        pagingType: "full_numbers",
+        processing: true,
+        retrieve: true,
+        serverSide: true,
+        ajax: {
+            "url": "{:url('/progress/monthplans/datatablesPre')}?tableName=progress_monthplan"
+        },
+        "scrollY": "200px",
+        "scrollCollapse": "true",
+        dom: 'lrtip',
+        columns: [
+            {
+                "name": "month"
+            },
+            {
+                "name": "planname"
+            },
+            {
+                "name": "position"
+            },
+            {
+                "name": 'maker'
+            },
+            {
+                "name": "createdate"
+            },
+            {
+                "name": "id"
+            }
+
+        ],
+        columnDefs: [
+            {
+                "targets": [5],
+                "searchable": false,
+                "orderable": false,
+                "render": function (data, type, row) {
+                    var html = "<a class='styleColor' type='button' style='margin-left: 5px;' href='../Yearplan/index'><i title='查看' class='fa fa fa-search'></i></a>";
+                    html += "<a class='styleColor' type='button' href='../Yearplan/index' style='margin-left: 5px;'><i title='编辑' class='fa fa fa-pencil'></i></a>";
+                    html += "<a class='styleColor' type='button' href='javascript:;' style='margin-left: 5px;'><i title='删除' class='fa fa fa-remove'></i></a>";
+                    html += "<a class='styleColor' href='javascript:;' style='margin-left: 7px;' onclick='viewFile("+row[5]+")'><i title='关联视图' class='fa fa-chain'></i></a>";
+                    html += "<a class='styleColor' href='javascript:;' style='margin-left: 7px;' onclick='monthFile("+row[5]+")'><i title='月度计划' class='fa fa-list-ol'></i></a>";
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#versonPro_length').insertBefore(".mark");
+            $('#versonPro_info').insertBefore(".mark");
+            $('#versonPro_paginate').insertBefore(".mark");
+        }
+    } );
+
+    //关联视图
+    function viewFile(id) {
+        document.cookie="monthId="+id;
+        window.open('./assview.shtml');
+        console.log(id)
+    }
+    //关联视图
+    function monthFile(id) {
+        document.cookie="proId="+id;
+        window.open('./progress.shtml');
+        console.log(id)
+    }
+
+    //添加计划
+    layui.use('layer', function(){
+        var layer = layui.layer;
+        $("#addPlan").click(function () {
+            addNewPlan();
+        });
+        $(".versonBody .layui-btn-danger").click(function () {
+            deletePlan();
+        });
+    });
+
+    //编制时间
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#modifiedDate' //指定元素
+        });
+    });
+
+    //添加新计划
+    function addNewPlan() {
+        layer.open({
+            title:['添加新计划','font-size:18px'],
+            type: 1,
+            content: $("#addForm") ,
+            area:['680px','420px'],
+            btn: ['确认', '取消'],
+            yes: function(index, layero){
+                alert('添加成功')
+            },
+            btn2: function(index, layero){
+
+            },
+            cancel: function(){
+
+            }
+        });
+    }
+
+    //删除计划
+    function deletePlan() {
+        layer.open({
+            title:['删除计划','font-size:18px'],
+            type: 1,
+            content: $("#deletePlan") ,
+            area:['680px','320px'],
+            btn: ['确认', '取消'],
+            yes: function(index, layero){
+                alert('删除成功');
+            },
+            btn2: function(index, layero){
+            },
+            cancel: function(){
+            }
+        });
+    }
+
+
+</script>
+</html>

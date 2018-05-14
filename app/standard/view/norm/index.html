@@ -1,0 +1,120 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreestandard/ztreeiconStyle.css">
+<style>
+    .search{
+        margin-bottom: 5px;
+        border-bottom: 1px solid #cecece;
+    }
+    .search .layui-form-item{
+        margin: 0;
+    }
+    .ztree{
+        margin: 0;
+    }
+
+</style>
+<div data-options="region:'west',title:'国家标准分类',split:true" style="width:260px;">
+    <ul class="ztree" id="ztree"></ul>
+</div>
+<div data-options="region:'center',title:'查询条件'" style="padding:5px;">
+    <!--<div class="search">
+        <form action="" class="layui-form" id="search">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">标准编号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="standard_number" placeholder="请输入标准编号" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">标准名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="standard_name" placeholder="请输入标准名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn" lay-submit lay-filter="search" id="searchBtn">查询</button>
+                </div>
+            </div>
+        </form>
+    </div>-->
+    <!--<div class="current-path">
+        <button class="layui-btn layui-btn-normal layui-btn-sm add" id="add">
+            <i class="fa fa-plus"></i>新增
+        </button>
+    </div>-->
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>标准编号</th>
+            <th>标准名称</th>
+            <th>实施日期</th>
+            <th>替代标准</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<!-- 新增表单 -->
+<form action="" class="layui-form" id="formLayer" style="display: none">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">标准编号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="standard_number" placeholder="请输入标准编号" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">标准名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="standard_name" placeholder="请输入标准名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">实施日期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="material_date" placeholder="请输入标准编号" lay-verify="required" autocomplete="off" id="material_date" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">替代标准</label>
+            <div class="layui-input-inline">
+                <input type="text" name="alternate_standard" placeholder="请输入标准名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <div class="layui-block">
+                <label class="layui-form-label">附件</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="file_name" placeholder="请输入标准名称" autocomplete="off" class="layui-input" disabled>
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <div id="upload" class="upload"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save" id="save">保存</button>
+            <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+        </div>
+    </div>
+</form>
+<div id="form_container" style="display: none;"></div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/standard/norm/index.js"></script>
+<script></script>
+</body>
+</html>

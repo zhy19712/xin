@@ -1,0 +1,118 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/treetable/jquery.treetable.css">
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/treetable//jquery.treetable.theme.default.css">
+<link rel="stylesheet" href="__WEBSITE__/filemanagement/Branchcatalog/index.css">
+
+<div data-options="region:'west',title:'分类目录',split:true" style="width:260px;">
+    <div class="ztree-title">
+        <i title="新增节点" class="fa fa-lg fa-sitemap" onclick="changeNodeTree('add')"></i>
+        <i title="编辑节点" class="fa fa-lg fa-pencil" onclick="changeNodeTree('edit')"></i>
+        <i title="删除节点" class="fa fa-lg fa-trash" onclick="changeNodeTree('del')"></i>
+        <i title="展开所有" class="fa fa-lg fa-plus-square" id="openNode"></i>
+        <i title="收起所有" class="fa fa-lg fa-minus-square" id="closeNode"></i>
+    </div>
+    <ul id="ztree" class="ztree"></ul>
+</div>
+<div data-options="region:'center'">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',title:'',split:true" style="width:100%; position: relative;">
+            <button id="FT2" onclick="addbranch()" class="layui-btn btn " type="button"><i class="fa fa-plus"></i> 新增</button>
+            <button id="FT1" onclick="importExcel()" class="layui-btn-warm btn layui-btn" type="button"><i class="fa fa-sign-in"></i> 导入</button>
+        </div>
+        <div data-options="region:'center',split:true">
+            <!--<table id="tableItem" class="table table-striped table-bordered cell-border" cellspacing="0"  width="100%">-->
+
+            <!--</table>-->
+            <table id="tableItem" border="1" style="display: none">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+            <div class="tbcontainer" id="tbcontainer" style="display: block;">
+            </div>
+        </div>
+    </div>
+</div>
+<form  id="branchform" action="#" onsubmit="return false" class="layui-form" style="display: none">
+    <input type="hidden" name="id" id="addId" style="display: none;">
+    <input type="hidden" name="classifyid" id="classifyid" style="display: none;">
+    <input type="hidden" name="pid" id="pid" style="display: none;">
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">父节点(序号)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="parent_code" id="parent_code" placeholder="无" disabled autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">编号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="code" id="code" placeholder="编号" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="class_name" id="class_name" placeholder="名称" lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <hr class="layui-bg-gray">
+    <div class="layui-form-item">
+        <div style="text-align: center;">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+            <button type="reset" class="layui-btn layui-btn-danger layui-layer-close"><i class="fa fa-close"></i> 返回</button>
+        </div>
+    </div>
+</form>
+<form id="excel" action="#" onsubmit="return false" class="layui-form" style="display: none;">
+    <input type="hidden" name="classifyid" id="classifyid_2" style="display: none;">
+    <div class="layui-form-item">
+        <div class="autograph">
+            <h3 style="text-align: center;color: #3c8dbc; font-size: 22px;margin:0 20px;">数据导入</h3>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">文件域：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="filename_1" id="file_name_1"  lay-verify="required" readonly autocomplete="off" class="layui-input">
+                <input type="hidden" name="filename" id="file_name" >
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <button type="button" class="layui-btn" id="upload">浏览</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <p style="text-align: center;">提示：只能导入格式为xls、xlsx的文件。请先下载导入模版：<span onclick=" download()" style="color: #ff0000;text-decoration: underline;">分支目录</span></p>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div style="text-align: center;">
+            <button class="layui-btn sub2" lay-submit="" lay-filter="demo2" ><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+            <button type="reset" class="layui-btn layui-btn-danger layui-layer-close"><i class="fa fa-close"></i> 返回</button>
+        </div>
+    </div>
+</form>
+<div id="form_container" style="display: none;"></div>
+
+{include file="../app/public/common_footer.html"}
+
+<script src="__PUBLIC__/ztree/js/jquery.treetable.js"></script>
+<script src="__WEBSITE__/filemanagement/Branchcatalog/index.js"></script>
+</body>
+</html>

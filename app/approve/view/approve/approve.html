@@ -1,0 +1,317 @@
+{include file="../../public/common_header"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+
+    #tableContent .mybtn i.fa:before,#tableContent .move i.fa:before{
+        background: #00c0ef;
+        color: #ffffff;
+    }
+
+    #tableContent .mybtn,#tableContent .move{
+        float: right;
+        background-color: #00c0ef;
+    }
+
+    #tableContent .mybtn{
+        margin-right: 0%;
+        margin-bottom: 5px;
+    }
+
+    #tableContent .move{
+        margin-top: -.5%;
+        margin-bottom: 3px;
+    }
+
+    #tableContent .select-color {
+        background-color: #FDD5B5 !important;
+    }
+
+    #tableContent h3 {
+        margin-top: 5px;
+        font-weight: 600;
+        font-size: 16px;
+        display: inline-block;
+    }
+
+    #tableContent .dataTables_wrapper .dataTables_scroll {
+        position: relative;
+    }
+
+    #tableContent #tableItem tr td a{
+        color: #337ab7;
+    }
+
+    #tableContent .dataTables_wrapper ,#tableContent .tbcontainer {
+        display: block;
+    }
+
+    #tableContent .borderColor{
+        height:25px;
+        padding-top: 5px;
+        padding-bottom: 3px;
+        border-bottom: 1px dashed #e7eaec;
+    }
+
+    #tableContent #txtArea {
+        width: 73.5%;
+        height: 60px;
+        padding: 8px;
+    }
+
+    #tableContent .even {
+        background-color: #ffffff;
+    }
+
+    #tableContent .odd {
+        background-color: #f9f9f9;
+    }
+
+    /*.layui-input[disabled], .layui-textarea[disabled], .layui-disabled, .layui-input[readonly], .layui-textarea[readonly], .layui-readonly {*/
+    /*background: #FFFFFF !important;*/
+    /*}*/
+
+    .layui-input-inline p{
+        height: 34px;
+        line-height: 40px;
+        font-weight: 800;
+        margin-left: -25px;
+    }
+
+    .layui-layer-content {
+        padding-top: 0px;
+    }
+
+    .colorRed{
+        background: #eee;;
+    }
+</style>
+
+<div id="tableContent" data-options="region:'center'" style="padding:5px;background:#ffffff;">
+    <input type="hidden" id="dataId" value="">
+    <input type="hidden" id="dataType" value="">
+    <input type="hidden" id="valId" value='{$dataId}'>
+    <input type="hidden" id="valType" value='{$dataType}'>
+    <div class="borderColor">
+        <div class="ibox-tools" style="float: left;margin-left:10px;">
+            <i class="fa fa-file-text-o" style="margin-right: 0px;"></i>
+            <p2>审批信息</p2>
+        </div>
+        <div class="move layui-btn layui-btn-sm"></div>
+    </div>
+    <div class="hr-line-dashed" style="margin: 8px 10px 10px;"></div>
+    <div>
+        <form class="layui-form" name="memberAdd" id="memberAdd" method="post"  action="#" onsubmit="return false">
+            <input type="hidden" name="id" id="addId" style="display: none;">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">当前审批人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="contractCode" value="" id="conCode" readonly lay-verify="required" autocomplete="off" class="layui-input colorRed">
+                    </div>
+                </div>
+                <div class="layui-inline" style="margin-left: 58px;">
+                    <label class="layui-form-label">审批日期</label>
+                    <div class="layui-input-inline" style="margin-left: 36px;">
+                        <input type="text" name="contractName" readonly lay-verify="required" autocomplete="off" class="layui-input colorRed">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">审批结果</label>
+                    <div class="layui-input-inline" style="width: 92px;margin-right: 0px">
+                        <input id="adopt" type="radio" name="sex" value="1" title="通过，" checked lay-filter="not">
+                    </div>
+                    <div class="layui-input-inline">
+                        <p><a href="javascript:;" id="nextStep">下一步执行人</a>：<span>审批完成</span></p>
+                    </div>
+
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 92px;">
+                        <input id="not" type="radio" name="sex" value="-1" title="不通过" lay-filter="not">
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="isneedtemplate" id="itNeed" lay-filter="aihao">
+                            <option value="">返回提交人：管理员</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">审批意见</label>
+                <textarea name="remark" id="txtArea" placeholder="审批意见"></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="clearBoth"></div>
+    <div class="borderColor" style=" border-top: 1px dashed #e7eaec;margin-top: 5px;">
+        <div class="ibox-tools" style="float: left;margin-left:10px;">
+            <i class="fa fa-history" style="margin-right: 0px;margin-top: 5px;"></i>
+            <p2>审批历史</p2>
+        </div>
+    </div>
+    <input type="hidden" value="" id="hidVal">
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>审批人</th>
+            <th>审批日期</th>
+            <th>审批结果</th>
+            <th>审批意见</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="tbcontainer">
+        <div class="mark"></div>
+    </div>
+</div>
+{include file="../../public/common_footer"}
+<script type="text/javascript">
+
+    //组织结构表格
+    var tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        "scrollY": "360px",
+        "scrollCollapse": "true",
+        ajax: {
+            "url": "{:url('/Approve/Common/datatablesPre')}?tableName=approve&dataId="+$("#valId").val()+"&dataType="+$("#valType").val()
+        },
+        dom: 'lrtip',
+        columns: [
+            {
+                name: "nickname"
+            },
+            {
+                name: "create_time"
+            },
+            {
+                name: "result"
+            },
+            {
+                name: "mark"
+            }
+        ],
+        columnDefs: [
+            {
+                targets: [0]
+            },
+            {
+                targets:[1],
+                "render": function (data, type, row) {
+                    if (data == null || data == undefined || data == '') return '';
+                    var time = new Date(data*1000);
+                    var y = time.getFullYear();
+                    var M = time.getMonth() + 1;
+                    M = M < 10 ? '0' + M : M;
+                    var d = time.getDate();
+                    d = d < 10 ? ('0' + d) : d;
+                    var h = time.getHours() + ':';
+                    h = h < 10 ? '0' + h : h;
+                    var m = time.getMinutes() + ':';
+                    m = m < 10 ? '0' + m : m;
+                    var s = time.getSeconds();
+                    s = s < 10 ? '0' + s : s;
+                    return y + '-' + M + '-' + d +' '+ h + m + s;
+                }
+            },
+            {
+                targets:[2]
+            },
+            {
+                targets: [3]
+            }
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItem_length').insertBefore(".mark");
+            $('#tableItem_info').insertBefore(".mark");
+            $('#tableItem_paginate').insertBefore(".mark");
+        }
+    });
+
+    //保存
+    $(".move").html("<div id='test3'>保存</div>");
+
+    $(document).ready(function () {
+        getTime();
+    });
+    // 关闭窗体
+    function close() {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index)
+    };
+    var subtime;
+    function getTime() {
+        subtime = new Date().toLocaleString();
+        $("input[name='contractName']").val(subtime);
+    }
+    //todo 逻辑不明确 暂缓
+    //点击下一步执行人
+    // $("#nextStep").click(function () {
+    //     layer.open({
+    //         type: 2,
+    //         title: '选择审批人',
+    //         shadeClose: true,
+    //         area: ['450px', '550px'],
+    //         content: '{:url("approve/approve/selectMumber")}?dataType=app\\quality\\model\\QualityFormInfoModel\n'
+    //     });
+    // });
+
+    var layer = layui.layer;
+    var typeId;
+    var form;
+    //查询提交
+    layui.use(['form', 'layedit', 'laydate','layer'], function(){
+        form = layui.form
+            ,layer = layui.layer;
+
+        form.on('radio(not)', function(data){
+            typeId = data.value;
+        });
+    });
+
+    //点击保存
+    $("#test3").click(function () {
+        console.log(typeId);
+        $.ajax({
+            url: "{:url('approve/approve/Approve')}",
+            type: "post",
+            data:{
+                dataId:$("#dataId").val(),
+                dataType:$("#dataType").val(),
+                res:(typeId == -1)?"-1":"1",
+                mark:$("#txtArea").val()
+            },
+            success: function (res) {
+                console.log(res);
+                if(res.code == 1){
+                    parent.layer.msg("保存成功!");
+                    close();
+                }else  if(res.code != 1){
+                    parent.layer.msg("审批保存失败,请稍后再试!");
+                }
+            }
+        });
+    });
+
+
+
+
+</script>
+</html>

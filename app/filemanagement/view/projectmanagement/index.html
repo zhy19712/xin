@@ -1,0 +1,335 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/filemanagement/projectmanagement/index.css">
+
+<div data-options="region:'center'">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',title:'',split:true" style="width:100%; position: relative;">
+            <button id="FT1" onclick="importExcel()" class="layui-btn-warm btn layui-btn" type="button"><i class="fa fa-sign-out"></i> 导出</button>
+            <button id="FT2" onclick="addproject()" class="layui-btn btn " type="button"><i class="fa fa-plus"></i> 新增</button>
+            <button id="FT3" onclick="setcog()" class="layui-btn btn layui-btn-normal " type="button"><i class="fa fa-cog"></i> 配置</button>
+        </div>
+        <div data-options="region:'center',split:true">
+            <table id="tableItem" class="table row-border table-bordered" cellspacing="0"  width="100%">
+                <thead>
+                    <tr>
+                       <th>目录代号</th>
+                       <th>项目名称</th>
+                       <th>建设单位</th>
+                       <th>案卷数量</th>
+                       <th>文件数量</th>
+                       <th>带原文的文件数量</th>
+                       <th>操作</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="tbcontainer" id="tbcontainer" style="display: block;">
+                <div class="mark"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="config" style="display: none;">
+    <input type="hidden" id="conid" value="">
+    <div class="col-md-5">
+        <div class="boder">
+            <div style="height:20px">
+                <div class="ibox-tools" style="float: left;margin-left:5px;margin-top: 4px;">
+                    <i class="fa fa-home" style="margin-right: 0px;margin-top: 5px;float: left;"></i>
+                    <h4 style="margin-left: 3px; width: 70px;margin-top: 4px;">配置目录</h4>
+                </div>
+            </div>
+            <div class="hr-line-dashed" style=" margin:10px; margin-bottom:0px"></div>
+            <div class="ligtop" style="text-align: left;">
+                <ul id="ztree" class="ztree" style="overflow: auto; height: 100%; width: 100%;"></ul>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: right;margin-top: 5px;margin-right:10px;">
+        <button type="button" class="layui-btn" onclick="savecog();" style="margin-right: 5px;">确定</button>
+        <button id="closeIframe" type="button" class="layui-btn layui-btn-danger layui-layer-close" style="margin-right: 5px;">关闭</button>
+    </div>
+
+</div>
+
+<form class="layui-form layui-form-pane" name="memberAdd" id="memberAdd" method="post"  action="#" onsubmit="return false" style="display: none;">
+    <input type="hidden" name="id" id="addId" style="display: none;">
+
+    <div id="btnBox" class="layui-form-item" style="float:right;margin-right: 4%; margin-top: 3px; margin-bottom: 3px; ">
+        <button  class="layui-btn layui-btn-radius layui-btn-sm layui-btn-normal" lay-submit="" lay-filter="demo1" ><i class="fa fa-save"></i>&nbsp;&nbsp;保存</button>
+        <button  class="layui-btn layui-btn-sm layui-btn-radius" lay-submit=""  lay-filter="demo2"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;保存并新建</button>
+        <button onclick="setInherit()" class="layui-btn layui-btn-radius layui-btn-sm layui-btn-warm" ><i class="fa fa-mercury"></i>&nbsp;&nbsp;继承设置</button>
+        <button  class="layui-btn layui-btn-radius layui-btn-sm layui-btn-danger layui-layer-close" ><i class="fa fa-mail-forward"></i>&nbsp;&nbsp;返回</button>
+    </div>
+    <hr>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">目录代号*</label>
+            <div class="layui-input-inline">
+                <input type="text" name="directory_code" id="directory_code" placeholder="目录代号" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">项目代号*</label>
+            <div class="layui-input-inline">
+                <input type="text" name="project_code" placeholder="项目代号" id="project_code" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">改扩建目录代号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="revision_code" id="revision_code" placeholder="改扩建目录代号"  lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">项目名称*</label>
+            <div class="layui-input-inline">
+                <input type="text" name="entry_name" placeholder="项目名称" id="entry_name" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">建设单位*</label>
+            <div class="layui-input-inline">
+                <select id="construction_unit" name="construction_unit" lay-verify="required">
+                    <option value="">-请选择-</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">项目类别*</label>
+            <div class="layui-input-inline">
+                <select name="project_category" id="project_category" lay-verify="required">
+                    <option value="">-请选择-</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">运营使用单位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="operation_use_unit" id="operation_use_unit" placeholder="运营使用单位"  lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">电压等级</label>
+            <div class="layui-input-inline">
+                <input type="text" name="voltage_level" id="voltage_level" lay-verify="required" placeholder="电压等级" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">主营单位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="main_unit" id="main_unit" lay-verify="required" placeholder="主营单位" autocomplete="off" class="layui-input">
+
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">立项时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="standing_time" id="standing_time" lay-verify="date required" placeholder="立项时间" autocomplete="off" class="layui-input datepickers">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">招标单位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="tendering_unit" id="tendering_unit" placeholder="招标单位"  lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">开工时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="start_time" id="start_time" placeholder="开工时间" lay-verify="required date" autocomplete="off" class="layui-input datepickers">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">中标单位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="winning_bid_unit" id="winning_bid_unit" placeholder="中标单位"  lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">竣工时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="completion_time" id="completion_time" placeholder="竣工时间" lay-verify="date required" autocomplete="off" class="layui-input datepickers">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">施工单位</label>
+            <div class="layui-input-inline">
+                <select name="builder_unit" id="builder_unit" lay-verify="required">
+                    <option value="">-请选择-</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">设计单位</label>
+            <div class="layui-input-inline">
+                <select name="design_unit" id="design_unit" lay-verify="required">
+                    <option value="">-请选择-</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">监理单位</label>
+            <div class="layui-input-inline">
+                <select name="construction_control_unit" id="construction_control_unit" lay-verify="required">
+                    <option value="">-请选择-</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+        <label class="layui-form-label">备注</label>
+            <div class="layui-input-inline">
+
+                <textarea name="remark" id="remark" placeholder="备注"></textarea>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="inherit" style="display: none;">
+    <div class="col-md-5">
+    <div class="hr-line-dashed" style="margin:5px;"></div>
+    <div  style="text-align: center;">
+        <label>
+            <span class="cBoxT">是否全选</span>
+            <input type="checkbox" class="checkAll" value="all" >
+        </label>
+    </div>
+    <table class="full-width" style="width:100%">
+        <tr>
+            <td style="width:33%">
+                <label>
+                    <input type="checkbox" value="CatCode" class="checkChild" >目录代号
+                </label>
+            </td>
+            <td style="width:33%">
+                <label>
+                    <input type="checkbox" value="ProjectCode" class="checkChild" >项目代号
+                </label>
+            </td>
+            <td style="width:33%">
+                <label>
+                    <input type="checkbox" value="CatExtensionCode" class="checkChild" >改扩建目录代号
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    <input type="checkbox" value="ProjectName" class="checkChild" >项目名称
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="BuilderId" class="checkChild" >建设单位
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="ProjcetType" class="checkChild" >项目类别
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    <input type="checkbox" value="OperatorUnit" class="checkChild" >运营使用单位
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="ElectricLevel" class="checkChild" >电压等级
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="MajorUnit" class="checkChild" >主营单位
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    <input type="checkbox" value="ApprovalTime" class="checkChild" >立项时间
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="BidsUnit" class="checkChild" >招标单位
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="StartTime" class="checkChild" >开工时间
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    <input type="checkbox" value="BidUnit" class="checkChild" >中标单位
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="EndTime" class="checkChild" >竣工时间
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="WorkerId" class="checkChild" >施工单位
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    <input type="checkbox" value="DesignerId" class="checkChild" >设计单位
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="SupervisionId" class="checkChild" >监理单位
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" value="Comment" class="checkChild" >备注
+                </label>
+            </td>
+        </tr>
+    </table>
+    <div class="hr-line-dashed" style="margin:20px 0 0;"></div>
+    <div style="text-align: right;margin-top: 5px;">
+
+        <button type="button" style="margin-right: 5px;" class="layui-btn layui-btn-sm layui-btn-normal" onclick="SaveOpt();">保存</button>
+
+        <button  type="button" style="margin-right: 5px;" class="layui-btn layui-btn-sm layui-btn-danger layui-layer-close">关闭</button>
+    </div>
+
+</div>
+
+</div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/filemanagement/projectmanagement/index.js"></script>
+</body>
+</html>

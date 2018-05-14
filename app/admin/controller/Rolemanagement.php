@@ -418,7 +418,6 @@ class Rolemanagement extends Permissions
                     if (false == $model->allowField(true)->save($post, ['id' => $id])) {
                         return json(["code" => -1, "msg" => "修改角色信息失败！"]);
                     } else {
-                        addlog($model->id);//写入日志
                         return json(["code" => 1, "msg" => "修改角色信息成功！"]);
                     }
 

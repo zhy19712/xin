@@ -1,0 +1,65 @@
+{include file="../app/public/common_header.html"}
+<script src="__PUBLIC__/echarts/echarts.min.js"></script>
+<style>
+    .main{
+        float: left;
+        margin-top: 20px;
+        /*margin-left: 30px;*/
+    }
+    #tableItem{
+        margin-left: 30px;
+    }
+</style>
+<div style="display: block;overflow: auto;">
+    <div style="width: 50%;float: left;">
+        <span style="font-size: 16px; font-weight: bold;">历史记录：</span>
+        <select name="" id="historic">
+        </select>
+        <div id="mainBar" style="width: 90%;height:400px;" class="main"></div>
+        <div style="clear: both;overflow: auto;margin-top: 20px;display: none;" class="tableBox">
+            <table id="tableItem" style="width: 90%;" border="1" class="layui-table">
+                <caption style="font-weight: bold;font-size: 16px;color: #000;">
+                    <span id="historic_table"></span>
+                    <span id="historic_table_slot" style="display: block;"></span>
+                </caption>
+                <thead>
+                <tr>
+                    <th>类型</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>合格单元工程</th>
+                </tr>
+                <tr>
+                    <th>优良单元工程</th>
+                </tr>
+                <tr>
+                    <th>验收总数量</th>
+                </tr>
+                <tr>
+                    <th>优良率</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="width: 50%;float: left;">
+        <div>
+            <h3 style="display: inline-block;">年度查询:</h3>
+            <select id="year">
+            </select>
+            <h3 style="display: inline-block;">显示选择：</h3>
+            <select name="" id="showSelect">
+                <option value="yes全部">全部</option>
+            </select>
+        </div>
+        <div id="mainLine" style="width: 96%;height:700px; margin-left:4%;" class="main"></div>
+    </div>
+</div>
+
+{include file="../app/public/common_footer.html"}
+
+<script src="__WEBSITE__/statistics/qualityanalysis/index.js"></script>
+</body>
+</html>

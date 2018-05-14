@@ -1,0 +1,302 @@
+{include file="../../public/common_header"}
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/modules/layer/default/layer.css" media="all">
+    <link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="__PUBLIC__/jquery/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <style type="text/css">
+        body{
+            height: 100%;
+            background: #ffffff;
+        }
+        #conTable #path{
+            line-height: 30px;
+            font-weight: 800;
+            font-size: 14px;
+            border-bottom: 1px dotted #cecece;
+        }
+        #conTable .highlight {
+            background: #FDD5B5 !important;
+        }
+        #conTable .dataTables_filter label{
+            font-size: 12px;
+            font-weight: 800;
+        }
+        #conTable #mytable1_wrapper th{
+            font-size: 12px;
+        }
+        #conTable .mybtn{
+            position: absolute;
+            right: 1%;
+            top: -5px;
+        }
+        #conTable .float_left{
+            float: left;
+            margin-bottom: 4px;
+        }
+        #conTable .float_left input:focus{
+            border-color: #9ac6ff;
+        }
+        #conTable #spanPath{
+            display: inline-block;
+            float: left;
+        }
+        #conTable #mytable1_wrapper table{
+            margin-top: 12px;
+        }
+        #conTable #admin_table .odd{
+            background-color: #f9f9f9;
+        }
+        #conTable #admin_table .even{
+            background-color: white;
+        }
+        #conTable .layui-btn{
+            background-color: #00c0ef;
+        }
+        #conTable #mytable1_wrapper thead th{
+            border-top: 1px dotted #cecece;
+        }
+        #conTable .layui-btn-sm {
+            height: 28px;
+            line-height: 34px;
+            padding: 0 10px;
+            font-size: 12px;
+        }
+
+        #conTable #mytable1_wrapper{
+            position: relative;
+            margin-top: 10px;
+        }
+        #conTable #mytable1_wrapper .dataTables_wrapper {
+            position: relative;
+            clear: both;
+            zoom: 1;
+            overflow-x: auto;
+        }
+        #conTable table {
+            table-layout:fixed;
+        }
+        #conTable table td{
+            word-break:break-all;
+        }
+
+        #conTable .dataTables_wrapper .dataTables_paginate {
+            position: fixed;
+            bottom: -3px;
+            left: 98px;
+            z-index: 4;
+        }
+        #conTable .dataTables_wrapper .dataTables_info {
+            position: fixed;
+            bottom: 8px;
+            right: 0px;
+            z-index: 4;
+        }
+        #conTable .dataTables_length{
+            height: 8px;
+            position: fixed;
+            bottom: 26px;
+            left: 19px;
+            z-index: 4;
+        }
+        #conTable .xia{
+            width: 100%;
+            height: 26px;
+            background-color: white;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding-top: -3px;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0;
+        }
+        #conTable .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border: none;
+        }
+        #conTable .dataTables_wrapper, .tbcontainer {
+                display: block;
+        }
+
+    </style>
+<!--<body class="easyui-layout" style="overflow-y:hidden;">-->
+    <!--表格-->
+    <div id="conTable" class="wrapper wrapper-content" style="width: 99.5%;vertical-align: top;padding: 0;margin-left: 4px;text-align: center">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row">
+                    <div id="path"><span id="spanPath">合同登记</span><div style="clear: both;"></div></div>
+                    <div id="mytable1_wrapper">
+                        <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>合同编号</th>
+                                    <th>合同名称</th>
+                                    <th>乙方</th>
+                                    <th>乙方简称</th>
+                                    <th>合同总金额（万元）</th>
+                                    <th>签订日期</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="xia"></div>
+            </div>
+        </div>
+    </div>
+<!--</body>-->
+{include file="../../public/common_footer"}
+<script type="text/javascript">
+     var admin_table = $('#admin_table').DataTable({
+            pagingType: "full_numbers",
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url:"{:url('contract/common/datatablesPre?tableName=contract')}"
+            },
+            dom: '<"mybtn layui-btn layui-btn-sm"><"selectyear"><"myl"l><"float_left"f>tip',
+            columns:[
+                {
+                    name: "contractCode"
+                },
+                {
+                    name: "contractName"
+                },
+                {
+                    name: "secondParty"
+                },
+                {
+                    name: "secondPartShortName"
+                },
+                {
+                    name: "contractAmount"
+                },
+                {
+                    name: "signingDate"
+                },{
+                    name: "id"
+                }
+            ],
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: [6],
+                    render :  function(data,type,row) {
+                        // adminId = data;
+                        var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='conEdit(this)'><i class='fa fa-pencil' title='编辑'></i></a>" ;
+                        html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDel(this)'><i class='fa fa-trash' title='删除'></i></a>" ;
+                        return html;
+                    }
+                },
+            ],
+            language: {
+                "lengthMenu": "_MENU_ ",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索：",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "sFirst": "<<",
+                    "sPrevious": "<",
+                    "sNext": ">",
+                    "sLast": ">>"
+                }
+            }
+        });
+     $("div.mybtn").html('<div><span style="font-size: 22px;float: left;">+</span><span>&nbsp;新增</span></div>');
+     //变色
+     $('#admin_table tbody').on( 'mouseover', 'td', function () {
+         $(this).parent("tr").addClass('highlight');
+     }).on( 'mouseleave', 'td', function () {
+         $(this).parent("tr").removeClass( 'highlight' );
+     });
+     //新增
+     $("#admin_table_wrapper .mybtn").click(function () {
+        layer.open({
+            type: 2,
+            title: '新增合同',
+            shadeClose: true,
+            area: ['780px', '550px'],
+            content: '{:url("add")}',
+            end:function () {
+                admin_table.ajax.url("{:url('contract/common/datatablesPre?tableName=contract')}").load();
+            }
+        });
+    })
+     //编辑
+     function conEdit(that){
+        var id = admin_table.row(".highlight").data()[6];
+        console.log(id)
+        $.ajax({
+            url: "{:url('./contract/contract/getOne')}?id="+id,
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                layer.open({
+                    type: 2,
+                    title: '编辑合同',
+                    shadeClose: true,
+                    area: ['780px', '550px'],
+                    content: '{:url("add")}',
+                    success: function(layero, index){
+                        var body = layer.getChildFrame('body', index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                        // console.log(body.html()) //得到iframe页的body内容
+                        body.find('input[name="id"]').val(id);
+                        body.find('input[name="contractCode"]').val(res.contractCode);
+                        body.find('input[name="contractName"]').val(res.contractName);
+                        body.find('input[name="firstParty"]').val(res.firstParty);
+                        body.find('input[name="secondParty"]').val(res.secondParty);
+                        body.find('input[name="contractAmount"]').val(res.contractAmount);
+                        body.find('input[name="secondPartyCorporation"]').val(res.secondPartyCorporation);
+                        body.find('input[name="firstPartyCorporation"]').val(res.firstPartyCorporation);
+                        body.find('input[name="createUser"]').val(res.createUser);
+                        body.find('input[name="signingDate"]').val(res.signingDate);
+                        body.find('input[name="secondProjectManager"]').val(res.secondProjectManager);
+                        body.find('input[name="firstLinkMan"]').val(res.firstLinkMan);
+                        body.find('input[name="contractDay"]').val(res.contractDay);
+                        body.find('input[name="startDate"]').val(res.startDate);
+                        body.find('input[name="endDate"]').val(res.endDate);
+                        body.find('input[name="contractLive"]').val(res.contractLive);
+                        body.find('input[name="projectName"]').val(res.projectName);
+                        body.find('input[name="secondPartShortName"]').val(res.secondPartShortName);
+
+                    }
+                });
+            }
+        })
+    }
+     //删除
+     function conDel(that){
+        var id = admin_table.row(".highlight").data()[6];
+        console.log(id)
+        layer.confirm('是否删除该合同?', function(index){
+            $.ajax({
+                url: "{:url('./contract/contract/del')}",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if(res.code == 1){
+                        layer.msg("删除成功！");
+                        admin_table.ajax.url("{:url('contract/common/datatablesPre?tableName=contract')}").load();
+                    }
+                }
+            });
+            layer.close(index);
+        });
+    }
+     $(".float_left input").click(function () {
+        $(".float_left input").attr({'border':'1px solid #9ac6ff'});
+    })
+</script>
+</html>

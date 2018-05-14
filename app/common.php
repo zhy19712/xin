@@ -61,7 +61,7 @@ function SendMail($address)
     // 添加收件人地址，可以多次使用来添加多个收件人
     $mail->AddAddress($address);
 
-    $data = \think\Db::name('emailconfig')->where('email', 'email')->find();
+    $data = \think\Db::name('admin_emailconfig')->where('email', 'email')->find();
     $title = $data['title'];
     $message = $data['content'];
     $from = $data['from_email'];
@@ -112,7 +112,7 @@ function SendSms($param, $phone)
     import('dayu.top.RequestCheckUtil');
 
     //获取短信配置
-    $data = \think\Db::name('smsconfig')->where('sms', 'sms')->find();
+    $data = \think\Db::name('admin_smsconfig')->where('sms', 'sms')->find();
     $appkey = $data['appkey'];
     $secretkey = $data['secretkey'];
     $type = $data['type'];

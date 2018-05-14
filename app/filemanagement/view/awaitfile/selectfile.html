@@ -1,0 +1,395 @@
+{include file="../../public/common_header"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+    .layui-tab {
+        margin: 3px 0px;
+    }
+    .ztree {
+        margin-top: 0px;
+    }
+    .layui-tab-title .layui-this {
+        color: white;
+        background: #00c0ef;
+        border-radius: 3px;
+    }
+    table.dataTable thead .sorting_asc {
+        background-image: none !important;
+    }
+    #ecSonFile .saveCon{
+        position: absolute;
+        right: .7%;
+        top: 14.3%;
+    }
+    #ecSonFile .saveCon button{
+        background: #00c0ef;
+    }
+    #tableContent .even {
+        background-color: #ffffff;
+    }
+    #tableContent .odd {
+        background-color: #f9f9f9;
+    }
+    .selected{
+        background-color: #FDD5B5 !important;
+    }
+</style>
+<div id="ecSonFile"  data-options="region:'north',title:'',split:true" style="height: 50px;">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li id="A1" class="layui-this">图册管理</li>
+            <li id="A2"><a href="./documentfile.shtml">文档管理</a></li>
+            <li id="A3"><a href="./qualityfile.shtml">质量管理</a></li>
+        </ul>
+    </div>
+    <div class="saveCon">
+        <button onclick="save();" class="layui-btn layui-btn-sm" type="button"><span class="bold">保存</span></button>
+    </div>
+</div>
+<div data-options="region:'west',title:'图册文件树',split:true" style="width:220px;">
+    <ul class="ztree" id="ztree"></ul>
+</div>
+<div id="tableContent" data-options="region:'center',title:'当前路径：'" style="padding:5px;background:#fff;">
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>
+                <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;"></label>
+                <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
+            </th>
+            <th>图号</th>
+            <th>图名</th>
+            <th>图纸张数</th>
+            <th>折合A1图纸</th>
+            <th>设计</th>
+            <th>校核</th>
+            <th>审查</th>
+            <th>完成日期</th>
+            <th>标段</th>
+            <th>图纸类别</th>
+            <th>上传人</th>
+            <th>上传日期</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="tbcontainer">
+        <div class="mark"></div>
+    </div>
+</div>
+
+{include file="../../public/common_footer"}
+
+<script type="text/javascript">
+
+    var isAtlas;//是否是图册
+    var userList=[];//
+    var drawingId='';
+
+    //表格里是否有孩子
+    function showDrawing(that,data){
+        if(data.length<=0){
+            return;
+        };
+        for(var i = 0;i<data.length;i++){
+            loadDrawing(that,data[i]);
+        }
+
+    };
+
+    //添加折叠表格
+    function loadDrawing(that,data) {
+        var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 2px;' onclick='conDown("+data[13]+")'><i class='fa fa-download'></i></a>" ;
+        html += "<a type='button' class=''  onclick='conDel("+data[13]+")'><i class='fa fa-trash'></i></a>" ;
+        html += "<a type='button' class=''  onclick='conPicshow("+data[13]+")'><i class='fa fa-search'></i></a>" ;
+        var trDom = '<tr role="row" data-sid="'+data[13]+'" class="c'+data[14]+' drawing">' +
+            '<td >'+data[0]+'</td>' +
+            '<td >'+data[1]+'</td>' +
+            '<td >'+data[2]+'</td>' +
+            '<td >'+data[3]+'</td>' +
+            '<td >'+data[4]+'</td>' +
+            '<td >'+data[5]+'</td>' +
+            '<td >'+data[6]+'</td>' +
+            '<td >'+data[7]+'</td>' +
+            '<td >'+data[8]+'</td>' +
+            '<td >'+data[9]+'</td>' +
+            '<td >'+data[10]+'</td>' +
+            '<td >'+data[11]+'</td>' +
+            '<td >'+data[12]+'</td>' +
+            '<td >'+html+'</td>' +
+            '</tr>';
+        $(that).after(trDom);
+    }
+
+    //初始化
+    var tableItem = $('#tableItem').DataTable( {
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        ordering: false, // 禁止排序
+        ajax: {
+            "url":"{:url('archive/common/datatablesPre?tableName=archive_atlas_cate&selfid=-1')}"
+        },
+        dom: 'frtlip',
+        columns:[
+            {
+                name: "cate_number"
+            },
+            {
+                name: "picture_number"
+            },
+            {
+                name: "picture_name"
+            },
+            {
+                name: "picture_papaer_num"
+            },
+            {
+                name: "a1_picture"
+            },
+            {
+                name: "design_name"
+            },
+            {
+                name: "check_name"
+            },
+            {
+                name: "examination_name"
+            },
+            {
+                name: "completion_date"
+            },
+            {
+                name: "section"
+            },
+            {
+                name: "paper_category"
+            },
+            {
+                name: "owner"
+            },
+            {
+                name: "date"
+            },
+            {
+                name: "id"
+            }
+
+        ],
+        columnDefs: [
+            {
+                "targets":[0],
+                "searchable": false,
+                "orderable": false,
+                "render": function(data, type, full, meta) {
+                    var html = "<input type='checkbox' name='checkList' idv='"+data+"' onclick='getSelectId(this)'>";
+                    return html;
+                },
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [13],
+                "render" :  function(data,type,row) {
+                    var a = data;
+                    var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='conEdit("+row[13]+")'><i class='fa fa-pencil'></i></a>" ;
+                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDownAll("+row[13]+")'><i class='fa fa-download'></i></a>" ;
+                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDel("+row[13]+")'><i class='fa fa-trash'></i></a>" ;
+                    return html;
+                }
+            },
+            {
+                "orderable": false,
+                "targets": [2],
+                "render": function (data,type,row) {
+                    var a= data;
+                    if(row[14].length<=0){
+                        var html = data;
+                    }else{
+                        var html = '<i class="showclick fa fa-caret-down" style="float: left;"></i>'+data;
+                    }
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 共 _PAGES_ 页, _TOTAL_ 项 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItem_length').insertBefore(".mark");
+            $('#tableItem_info').insertBefore(".mark");
+            $('#tableItem_paginate').insertBefore(".mark");
+            $('.dataTables_wrapper,.tbcontainer').css("display","block");
+
+        },
+        //每次重绘后回调
+        "fnDrawCallback":function () {
+            var that = this.api();
+            $("#tableItem tbody tr").each(function (idx,item) {
+                var data =  that.row($(item)).data();//数据
+                if(!data){
+                    return;
+                }
+                showDrawing($(item),data[14]);
+            })
+        }
+    });
+
+    var selfid,zTreeObj,groupid,sNodes,selectData="";//选中的节点id，ztree对象，父节点id，选中的节点，选中的表格的信息
+
+    //字符解码
+    function ajaxDataFilter(treeId, parentNode, responseData) {
+
+        if (responseData) {
+            for(var i =0; i < responseData.length; i++) {
+                responseData[i] = JSON.parse(responseData[i]);
+                responseData[i].name = decodeURIComponent(responseData[i].name);
+            }
+        }
+        return responseData;
+    }
+    //组织结构树
+    var setting = {
+        view: {
+            showLine: true, //设置 zTree 是否显示节点之间的连线。
+            selectedMulti: false, //设置是否允许同时选中多个节点。
+            // dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+        },
+        async: {
+            enable : true,
+            autoParam: ["pid","id"],
+            type : "post",
+            url : "{:url('/archive/atlas/atlastree')}",
+            dataType :"json"
+        },
+        data:{
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pid",
+                rootPId:0
+            }
+        },
+        callback: {
+            onClick: this.onClick
+        }
+    };
+    //初始化树
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
+    //点击获取路径
+    function onClick(e, treeId, node) {
+        selectData = "";
+        $(".layout-panel-center .panel-title").text("");
+        sNodes = zTreeObj.getSelectedNodes();//选中节点
+        selfid = zTreeObj.getSelectedNodes()[0].id;
+        var path = sNodes[0].name; //选中节点的名字
+        node = sNodes[0].getParentNode();//获取父节点
+        //判断是否还有父节点
+        if (node) {
+            //判断是否还有父节点
+            while (node){
+                path = node.name + "-" + path;
+                node = node.getParentNode();
+            }
+        }else{
+            $(".layout-panel-center .panel-title").text(sNodes[0].name);
+        }
+        groupid = sNodes[0].pId //父节点的id
+        var url = "/archive/common/datatablespre/tableName/archive_atlas_cate/selfid/"+selfid+".shtml";
+        // // tableItem.clear();
+        tableItem.ajax.url(url).load();
+        $(".layout-panel-center .panel-title").text("当前路径:"+path)
+    }
+
+    //获取点击行
+    $("#tableItem").delegate("tbody tr","click",function (e) {
+        if($(e.target).hasClass("dataTables_empty")){
+            return;
+        }
+        //点击展示图片
+        if($(e.target).hasClass("showclick")){
+            var data =  tableItem.row($(this)).data();//数据
+            //判断显示隐藏
+            if($(e.target).hasClass("fa-caret-down")){
+                $(e.target).removeClass("fa-caret-down").addClass("fa-caret-right");
+                $("#tableItem tbody tr.c"+data[13]).hide();
+            }else{
+                $(e.target).removeClass("fa-caret-right").addClass("fa-caret-down");
+                $("#tableItem tbody tr.c"+data[13]).show();
+            };
+        }
+        selectData="";
+        drawingId='';
+        $(".path").html("");
+        $(this).addClass("select-color").siblings().removeClass("select-color");
+    });
+
+    //翻页事件
+    tableItem.on('draw',function () {
+        $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+        $('#all_checked').prop('checked',false);
+        idArr.length=0;
+    });
+
+    //获取选中行ID
+    var idArr = [];
+    function getId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).attr('idv');
+        var checkedLen = $('input[type="checkbox"][name="checkList"]:checked').length;
+        var checkboxLen = $('input[type="checkbox"][name="checkList"]').length;
+        if(checkedLen===checkboxLen){
+            $('#all_checked').prop('checked',true);
+        }else{
+            $('#all_checked').prop('checked',false);
+        }
+        if(isChecked){
+            idArr.push(id);
+            idArr.removalArray();
+            $(that).parents("tr").addClass('selected');
+            // $('#tableItem tbody tr').addClass('selected');
+        }else{
+            idArr.remove(id);
+            idArr.removalArray();
+            $('#all_checked').prop('checked',false);
+            // $(that).parents("tr").removeClass('selected');
+            $('#tableItem tbody tr').removeClass('selected');
+        }
+    }
+
+    //单选
+    function getSelectId(that) {
+        getId(that);
+        console.log(idArr);
+    }
+
+    //checkbox全选
+    $("#all_checked").on("click", function () {
+        var that = $(this);
+        if (that.prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", that.prop("checked"));
+            $('#tableItem tbody tr').addClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        } else {
+            $("input[name='checkList']").prop("checked", false);
+            $('#tableItem tbody tr').removeClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        }
+        console.log(idArr);
+    });
+</script>
+</html>

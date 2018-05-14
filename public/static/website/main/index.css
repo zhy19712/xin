@@ -1,0 +1,278 @@
+.centent{
+    border: 0;
+}
+/* 圆形图标 */
+.round{
+    text-align: right;
+}
+.round i.fa{
+    margin: 0 5px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    background: #00c0ef;
+    border-radius: 50%;
+}
+.round i.fa-danger{
+    background: #FF5722;
+}
+.round i.fa:before ,.round i.fa:hover:before{
+    color: #FFF;
+}
+/* 标注/快照滚动 */
+.swiper-container {
+    padding: 10px 0;
+    width: 100%;
+    height: 165px;
+}
+.swiper-container img{
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide{
+    position: relative;
+    cursor: pointer;
+}
+.mask{
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #333;
+    line-height: 12px;
+    filter:alpha(opacity=70);-moz-opacity:0.7;opacity:0.7;
+}
+.mask .right{
+    padding: 5px 0;
+    text-align: right;
+}
+.mask .right a{
+    margin-right: 5px;
+    display: inline-block;
+}
+.mask .scenter,.mask .center{
+    text-align: center;
+}
+.mask .scenter{
+    padding: 20px 0;
+}
+.mask .center{
+    padding: 10px 0;
+    color: #FFF;
+    font-size: 14px;
+}
+.mask i.fa:before,.mask i.fa:hover:before{
+    color: #FFF;
+}
+.mask .fa-search{
+    font-size: 30px;
+}
+.tabs,.tabs-panels,.tabs-header{
+    border: none;
+}
+.tabs{
+    border-bottom: 1px solid #cecece;
+}
+.tabs-header{
+    background: none;
+}
+/* 管理信息 */
+.toggle-attr li{
+    line-height: 1;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+.toggle-attr li:first-child{
+    padding-right: 5px;
+    border-right: 1px solid #666666;
+}
+.toggle-attr li.active,.toggle-attr li:hover{
+    color: #0c91e5;
+}
+/* 模型基本属性 */
+.layui-collapse{
+    margin-top: 20px;
+}
+.layui-colla-item,.layui-collapse,.layui-show{
+    border: none;
+}
+.layui-colla-item{
+    margin-bottom: 20px;
+}
+.layui-colla-title{
+    padding: 0 15px 0 20px;
+    height: auto;
+    line-height: 1;
+    background: none;
+    font-size: 12px;
+}
+.layui-colla-icon{
+    left: 0;
+}
+/* 模型管理属性 */
+.custom-attr{
+    margin-top: 5px;
+}
+.custom-attr .layui-form-item{
+    margin: 0;
+}
+.custom-attr .layui-form-label{
+    padding: 9px 0;
+    width: auto;
+    color: #333;
+}
+.custom-attr .layui-form-mid{
+    float: right;
+}
+.custom-attr .layui-input-block{
+    margin: 0;
+}
+.attr-group,.attr-group .layui-input-inline{
+    width: 100%;
+}
+.attr-group .layui-input-inline{
+    margin-bottom: 10px;
+}
+.attr-group .layui-input{
+    width: 40%;
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.attr-group i.fa{
+    display: block;
+    margin: 3px 0;
+    font-size: 14px;
+}
+.attr-group .layui-form-mid{
+    padding: 0 !important;
+}
+/* 标注基本属性 */
+.add-tag{
+    padding-bottom: 10px;
+    text-align: right;
+}
+.add-tag h2{
+    text-align: center;
+}
+.layui-form-text .layui-input-inline{
+    width: 100%;
+}
+.layui-form-text .layui-textarea:hover{
+    border: 1px solid #0c91e5 !important;
+}
+/* 讨论 */
+.operate .fa-wrap,.operate .btn-wrap{
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+.operate .fa-wrap i.fa{
+    font-size: 14px;
+}
+.operate .fa-wrap .webuploader-pick{
+    padding: 6px;
+    margin-left: -11px;
+    background: transparent !important;
+}
+.operate .btn-wrap{
+    float: right;
+}
+/* 讨论@人员 */
+.tag{
+    display: inline-block;
+    margin: 5px;
+    padding: 0px 9px;
+    border-radius: 50px;
+    background: #00c0ef;
+    color: #fff;
+}
+.tag i.fa{
+    margin-left: 5px;
+}
+
+/* 锚点 */
+.anchor-list .layui-form-label,.anchor-list .layui-form-mid{
+    float: none;
+    display: inline-block;
+    width: 180px;
+    vertical-align: top;
+}
+.anchor-list .layui-form-label{
+    padding-left: 0;
+    width: 85px;
+    font-size: 14px;
+    color: #666666;
+    text-align: left;
+}
+.anchor-title{
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: #56abe4;
+}
+.anchor-title i.fa{
+    margin-right: 10px;
+}
+/* 锚点附件 */
+.img-item{
+    margin: 5px;
+    position: relative;
+    width: 85px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.img-item img{
+    width: 100%;
+}
+.img-item a{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+}
+.img-item span{
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 17px;
+    background: #666;
+    filter:alpha(opacity=80);-moz-opacity:0.8;opacity:0.8;
+    z-index: 0;
+}
+.img-item a i.fa{
+    font-size: 16px;
+}
+.img-item a i.fa:before{
+    color: #FFF;
+}
+.file-list p{
+    display: inline-block;
+}
+.file-list a{
+    margin: 0 5px;
+}
+.file-info{
+    text-align: right;
+}
+.file-info span{
+    margin: 0 5px;
+    color: #1ab394;
+}
+/* 上传按钮 */
+.webuploader-container{
+    text-align: right;
+}
+.webuploader-pick,.webuploader-pick:hover{
+    background:#fb9974;
+    padding: 2px 6px;
+}
