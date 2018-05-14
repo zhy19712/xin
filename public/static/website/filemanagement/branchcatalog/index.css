@@ -1,0 +1,53 @@
+.ztree-title i.fa{
+    width: 18%;
+}
+.btn {
+    line-height: 0.82857;
+    border-radius: 60px;
+    margin-right: 5px;
+    float: right;
+}
+
+
+.btn i.fa:before,#branchform i.fa:before,#excel i.fa:before{
+    color: #ffffff;
+}
+#tableItem{
+    text-align: center;
+    font-size: 12px;
+    border-color:#ccc;
+    overflow: auto;
+}
+#tableItem tr{
+    height: 28px;
+}
+#tableItem thead th{
+    border-right: 1px solid #ccc;
+    border-collapse: collapse;
+    text-align: center;
+    width: 33.3%;
+}
+#tableItem tbody tr td:first-child{
+    text-align: left;
+    border-left: 0;
+}
+#tableItem tbody tr:hover{
+    background-color: #FDD5B5
+}
+table.treetable thead{
+    background: none;
+}
+
+.select-color{
+    background-color: #FDD5B5!important;
+}
+.layui-box{
+    width: 100%;
+}
+.layui-laypage-count{
+    float: right;
+
+}
+.layui-laypage>:last-child{
+    margin-right: 10px!important;
+}

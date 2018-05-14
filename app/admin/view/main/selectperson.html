@@ -1,0 +1,49 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/main/selectperson.css">
+<div class="select-user" id="selectUser" >
+    <div class="user-title" id="userTittle">已选角色 ></div>
+    <div class="user-content layui-clear">
+        <div class="user-ztree">
+            <div class="search">
+                <form action="" class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">组织机构</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="ztreeName" id="ztreeName"  placeholder="机构/部门/人员" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" id="searchZtreeBtn">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <ul id="userZtree" class="ztree"></ul>
+        </div>
+        <div class="user-selected">
+            <div class="search">
+                <form action="" class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色用户</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="userName" id="userName"  placeholder="人员" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" id="searchUserNameBtn">
+                            <i class="fa fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="selected-user" id="selectedUser">
+
+                    </div>
+                    <div class="layui-input-inline btn-wrap">
+                        <i class="fa fa-check-circle" lay-submit lay-filter="saveUser"></i>
+                        <i class="fa fa-times-circle"></i>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/main/selectperson.js"></script>
+</body>
+</html>

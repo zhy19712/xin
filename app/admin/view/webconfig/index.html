@@ -39,13 +39,6 @@
       </div>
 
       <div class="layui-form-item">
-        <label class="layui-form-label">开启日志</label>
-        <div class="layui-input-block">
-          <input name="is_log" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF" type="checkbox" {if condition="$web_config.is_log eq 1"}checked=""{/if} value="1">
-        </div>
-      </div>
-
-      <div class="layui-form-item">
         <label class="layui-form-label">上传类型</label>
         <div class="layui-input-inline" style="max-width: 600px">
           <input name="file_type" lay-verify="pass" placeholder="请用','隔开" autocomplete="off" class="layui-input" type="text" value="{$web_config.file_type}">

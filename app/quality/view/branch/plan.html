@@ -1,0 +1,67 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/quality/branch/common.css">
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
+<div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
+    <ul id="ztree" class="ztree"></ul>
+</div>
+<div id="tableContent" data-options="region:'center',title:'<i class=\'fa fa-dot-circle-o\'></i>控制点'" style="padding:5px;">
+    <div class="imgList">
+        <span id="imgListLeft">
+            <a id="homeWork" class="imgListStyle" onclick="clickConName(0)" href="javascript:;"><img src="__WEBSITE__/quality/branch/work.png" alt="工作">&nbsp;作业</a>
+        </span>
+        <span class="imgListStyle" id="imgListRight">
+
+        </span>
+    </div>
+    <div class="listName" style="padding-left: 1.5%"><h3> 分部策划列表</h3></div>
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>控制点编号</th>
+            <th>控制点名称</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="tbcontainer">
+        <div class="mark"></div>
+    </div>
+    <div id="form_container" style="display: none;"></div>
+</div>
+
+{include file="../app/public/common_footer.html"}
+<script>
+    //获取控制点name
+    function selfidName(id) {
+        $.ajax({
+            type: "GET",
+            url: "./getControlPoint",
+            // data: {id: id},
+            success: function (res) {
+                var res = res.data;
+                var optionStrAfter = '';
+                for(var i = 0;i<res.length;i++) {
+                    $("#imgListRight").html('');
+                    controlPointId = res[i].id;
+                    controlPointName = res[i].name;
+                    if(i==0){
+                        optionStrAfter +=
+                            '<a href="javascript:;"  class="imgListStyle" onclick="clickConName('+res[i].id+')">' +
+                            '<img src="__WEBSITE__/quality/branch/work.png" alt="工作">&nbsp;'+res[i].name+'<span style="display: none;">'+res[i].id+'</span>' +
+                            '</a>\n';
+                        continue;
+                    }
+                    optionStrAfter +=
+                        '<a href="javascript:;"  class="imgListStyle" onclick="clickConName('+res[i].id+')">' +
+                        '<img class="imgNone" src="__WEBSITE__/quality/branch/right.png" alt="箭头">' +
+                        '<img src="__WEBSITE__/quality/branch/work.png" alt="工作">&nbsp;'+res[i].name+'<span style="display: none;">'+res[i].id+'</span>' +
+                        '</a>\n';
+                };
+                $("#imgListRight").append(optionStrAfter);
+            }
+        })
+    }
+</script>
+<script src="__WEBSITE__/quality/branch/plan.js"></script>
+</body>
+</html>

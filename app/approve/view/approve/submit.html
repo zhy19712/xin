@@ -1,0 +1,284 @@
+{include file="../app/public/common_header.html"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+
+    #tableContent .dataTables_wrapper, .tbcontainer{
+        display: block;
+    }
+
+    #tableContent .mybtn,#tableContent .move{
+        float: right;
+        background-color: #00c0ef;
+    }
+
+    #tableContent .dataTables_wrapper {
+        position: relative;
+        clear: both;
+        zoom: 1;
+        overflow: auto;
+    }
+
+    #tableContent table{
+        width: 800px;
+    }
+
+    table td{word-break:break-all;}
+
+    table{table-layout:fixed;}
+
+    #tableContent .select-color {
+        background-color: #FDD5B5 !important;
+    }
+
+    #tableContent .even {
+        background-color: #ffffff;
+    }
+
+    #tableContent .odd {
+        background-color: #f9f9f9;
+    }
+
+    #tableContent .sub{
+        position: absolute;
+        bottom:1%;
+        left: 43%;
+    }
+
+    #tableContent .sub i.fa:before {
+        color: #ffffff;
+    }
+
+    .people, .addpeople {
+        float: left;
+        width: 70px;
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .remove {
+        position: absolute;
+        right: 0px;
+        color: #BFBFBF;
+        cursor: pointer;
+    }
+
+    .arrow {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin: 15px 5px 38px 10px;
+    }
+
+    p2 {
+        font-weight: 700;
+    }
+
+    .layui-layer-content {
+        padding-top: 0px;
+    }
+
+</style>
+<div id="tableContent" data-options="region:'center'" style="padding:0 5px;height: 700px;background:#ffffff;">
+    <div position="center">
+        <div>
+            <div style="height:20px">
+                <div class="ibox-tools" style="float: left;margin-left:5px;margin-top: 4px;">
+                    <i class="fa fa-user" style="margin-right: 0px;margin-top: 5px;"></i>
+                    <p2>选择审批执行人</p2>
+                </div>
+            </div>
+            <div class="hr-line-dashed" style="margin:10px 10px 0;"></div>
+            <div style="height: 200px;margin-top: 10px;">
+                <div id="approverDiv">
+                    <div class="addpeople">
+                        <img alt='image' id="currentUserPhoto" class='img-circle' src='' style='width:50px;height:50px;'>
+                        <p id="currentUserName"></p>
+                    </div>
+                    <img alt='image' class='arrow' src='__WEBSITE__/elementimg/right.png' />
+                </div>
+                <div class="addpeople">
+                    <img alt="image" id="selPeople" class="img-circle" src="__WEBSITE__/elementimg/userAdd.png" style="width:50px;height:50px;margin-top: 3px;">
+                </div>
+            </div>
+        </div>
+        <div style="display:none;border-top: 1px dotted" id="referContentDiv">
+            <div style="height:20px">
+                <div class="ibox-tools" style="float: left;margin-left:5px;margin-top: 4px;">
+                    <i class="fa fa-user" style="margin-right: 0px;margin-top: 5px;"></i>
+                    <p2>参考流程</p2>
+                </div>
+            </div>
+            <div class="hr-line-dashed" style="margin:10px 10px 0;"></div>
+            <div style="height: 150px;margin-top: 10px;">
+                <div id="referDiv">
+                </div>
+            </div>
+        </div>
+        <div class="sub">
+            <div class="col-xs-12" style="text-align: center;">
+                <button id="btnSave" class="layui-btn"><i class="fa fa-save"></i> 保存
+                </button>
+                <button id="btnClose" type="reset" class="layui-btn layui-btn-danger"><i class="fa fa-close"></i> 返回
+                </button>
+            </div>
+        </div>
+    </div>
+    <input id="referFlow" type="hidden" value="" />
+    <input type="hidden" name="inputId" id="dataId" value="{:$dataId}">
+    <input type="hidden" name="inputId" id="hiddenValId" value="">
+    <input type="hidden" name="inputName" id="hiddenValName" value="">
+    <input type="hidden" name="inputName" id="hiddenValUser" value="">
+</div>
+
+{include file="../app/public/common_footer.html"}
+<script>
+    $(function () {
+        $("#referFlow").val($(window.parent.document).find("#resVal").val());
+        $("#btnSave").click(function () { $("#btnSave").attr("disabled", "disabled"); save(); });
+        $("#btnClose").click(function () { close(); });
+        $("#selPeople").click(function () { selPeople(); });
+        $("#currentUserName").text($(top.document).find(".layui-layout-right > li:nth-of-type(2) > a").text().substring(28));
+        var desr = $(top.document).find(".layui-layout-right > li:nth-of-type(2) > a").text()
+        console.log(desr.substring(28));
+        $("#currentUserPhoto").attr("src", $(top.document).find(".layui-layout-right > li:nth-of-type(2) > a >img").attr("src"));
+        initReferFlow();
+        // initLastFlow();
+    });
+
+    var user =  $("#hiddenValUser").val();
+    // 选择审批人
+    function selPeople() {
+        var index = layer.open({
+            type: 2,
+            title: "选择审批人",
+            area: ['450px', '550px'],
+            content: '{:url("approve/approve/selectMumber")}'
+        });
+    }
+
+    var dataArr = [];
+    var subId ;
+
+    // 添加审批人
+    function addPeople(user) {
+        var dataId = $("#hiddenValId").val();
+        if(dataId >= 10000){
+            dataArr.push(dataId-10000)
+        }else{
+            dataArr.push(dataId)
+        }
+        subId = dataArr.join(",");
+        var $dom = $(".people");
+        //var haveAddPeoples = [];
+        //$.each($dom, function (i, item) {
+        //    haveAddPeoples.push(item.id.substring(3, item.id.length)) // 防止重复添加同一个人
+        //});
+        //if (haveAddPeoples.indexOf(user.id) > -1)
+        //    return;
+        var title = "姓名：" + user.name + " \n";
+        title += "所属机构：" + user.organizationName + " \n";
+        title += "岗位：" + user.post + " \n";
+        title += "手机：" + user.mobile + " \n";
+
+        var html = "<div class='people' id='div" + user.id + "'>";
+        html += "<i class='fa fa-times-circle remove' onclick='removeApprover(\"" + user.id + "\")'></i>";
+        html += "<img alt='image' class='img-circle' src='__WEBSITE__/elementimg/1.png' title='"+ title +"' style='width:50px;height:50px;'>";
+        html += "<p>" + $("#hiddenValName").val() + "</p>";
+        html += "</div>";
+        html += "<img id='img" + user.id + "' alt='image' class='arrow' src='__WEBSITE__/elementimg/right.png'/>";
+        $("#approverDiv").append(html);
+    }
+
+    // 移除审批人
+    function removeApprover(id) {
+        $("#div" + id).remove();
+        $("#img" + id).remove();
+    }
+
+    // 关闭窗体
+    function close() {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index)
+    }
+
+    // 保存审批人信息
+    function save() {
+        var $dom = $(".people"); // 获取class为people的div，该div的id属性记录的是审批人id
+        if ($dom.length === 0) {
+            layer.alert("请选择审批人。");
+            $("#btnSave").removeAttr("disabled");
+            return;
+        }
+        if ($("#referFlow").val()) {
+            var $referDom = $("#referDiv").find(".addpeople");
+            if ($dom.length !== $referDom.length - 1) {
+                layer.alert("请按照参考流程选择人员。");
+                $("#btnSave").removeAttr("disabled");
+                return;
+            }
+        }
+        $.ajax({
+            type: "post",
+            url: "{:url('/approve/Approve/Submit')}",
+            data: {
+                dataId:$("#dataId").val(),
+                approveids:subId ,
+                dataType:'app\\quality\\model\\QualityFormInfoModel'
+            },
+            success: function (res){
+                if (res.code === 1 ) {
+                    close();
+                }
+                else {
+                    layer.alert("提交失败。");
+                    $("#btnSave").removeAttr("disabled");
+                };
+            }
+        });
+    };
+
+    // 初始化参考流程信息
+    function initReferFlow() {
+        // if ($("#referFlow").val()) {
+            var temp = $("#referFlow").val().split("@");
+            var html = "";
+            $.each(temp, function (i, item) {
+                html += "<div class='addpeople'>";
+                html += " <img alt='image' class='img-circle' src='__WEBSITE__/elementimg/defaultPhoto.png' style='width:50px;height:50px;'>";
+                html += "  <p>" + item + "</p>";
+                html += "</div>";
+                if (i < temp.length - 1) {
+                    html += "<img alt='image' class='arrow' src='__WEBSITE__/elementimg/right.png' />";
+                }
+            });
+            $("#referDiv").html(html);
+            // $("#referContentDiv").show();
+            $("#referContentDiv").show();
+        // };
+    };
+
+    // 初始化上次流程
+    function initLastFlow() {
+        $.ajax({
+            type: "Get",
+            url: "/Approve/GetLastWorkflow?dataId=" + $("#dataId").val() + "&dataType=" + $("#dataType").val() + "&_t=" + new Date().getTime(),
+            success: function (data) {
+                $.each(data.result, function (i, item) {
+                    var title = "姓名：" + item.name + " \n";
+                    title += "所属机构：" + item.departmentName + " \n";
+                    title += "岗位：" + item.post + " \n";
+                    title += "手机：" + item.mobileNumber + " \n";
+                    var html = "<div class='people' id='div" + item.id + "'>";
+                    html += "<i class='fa fa-times-circle remove' onclick='removeApprover(\"" + item.id + "\")'></i>";
+                    html += "<img alt='image' class='img-circle' src='" + item.photoUrl + "' title='"+ title +"' style='width:50px;height:50px;'>";
+                    html += "<p>" + item.name + "</p>";
+                    html += "</div>";
+                    html += "<img id='img" + item.id + "' alt='image' class='arrow' src='__WEBSITE__/elementimg/right.png'/>";
+                    $("#approverDiv").append(html);
+                });
+            }
+        });
+    };
+</script>
+</html>

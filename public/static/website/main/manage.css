@@ -1,0 +1,119 @@
+.layer-review{
+    float: left;
+    padding: 9px 10px;
+}
+.layer-review li{
+    display: inline-block;
+    font-size: 14px;
+}
+.layer-review span,.layer-review i{
+    display: inline-block;
+    vertical-align: middle;
+}
+.layer-review i{
+    margin-right: 15px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+}
+.layer-review i.blue{
+    background: #529df8;
+}
+.layer-review i.yellow{
+    background: #efb336;
+}
+.layer-review i.green{
+    background: #2aa515;
+}
+.layer-model-nav{
+    float: right;
+}
+.layer-model-nav li{
+    padding: 4px 10px;
+}
+.layer-model-nav i.fa:before{
+    color: #FFF;
+}
+.layer-model-nav i,.layer-model-nav span{
+    display: inline-block;
+    vertical-align: middle;
+}
+ .layer-model-nav .layui-btn{
+    padding: 6px 12px;
+    height: auto;
+    line-height: 1.02857;
+}
+ .layer-center{
+     padding-top: 3px;
+ }
+.layui-form-label{
+    text-align: left;
+}
+.layui-colla-title{
+    padding: 0 15px;
+    color: #337ab7;
+    font-weight: bold;
+    cursor:default;
+}
+.layui-colla-content{
+    padding: 0;
+}
+.layui-colla-content .layui-form-item{
+    margin: 0;
+    border-bottom: 1px solid #cecece;
+}
+.tabs-header,.tabs-panels{
+    border: none;
+}
+.tabs-header{
+    background: none;
+}
+.tabs,.tabs li a.tabs-inner{
+    border-color: #cecece;
+}
+.layui-timeline-axis{
+    left: -14px;
+    top: -6px;
+    width: 40px;
+    height: 36px;
+    line-height: 40px;
+    color: #BFBFBF;
+    font-size: 40px;
+    cursor: default;
+}
+.layui-timeline-axis:hover {
+    color: #BFBFBF
+}
+.layui-timeline-axis.current{
+    color: #00B050
+}
+.layui-timeline-content {
+    padding-left: 35px;
+    font-weight: bold;
+}
+.layui-timeline-item:before{
+    width: 3px;
+}
+.layui-timeline {
+    padding: 30px;
+}
+.layui-table{
+    margin: 0;
+}
+.layui-table i.fa{
+    margin: 0 2px;
+}
+.layui-info-title{
+    padding: 10px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #56abe4;
+}
+.layui-table .bg{
+    background: #00B050;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    opacity:0.5;
+    color: #FFF;
+}

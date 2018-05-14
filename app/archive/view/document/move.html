@@ -1,0 +1,121 @@
+{include file="../../public/common_header"}
+    <style type="text/css">
+        #row{
+            width: 94%;
+            height: 90%;
+            overflow: auto;
+            margin: 0 auto;
+            border: 1px solid #00c0ef;
+        }
+        #row #moveZtree{
+            margin-left: 30px;
+        }
+        #row .saveZtree{
+            position: absolute;
+            right: 3%;
+            bottom: 2%;
+        }
+
+    </style>
+<body>
+<div id="row">
+    <div class="col-sm-12 moveList" style="background-color:#fff;">
+        <input type="hidden" id="moveZtreeId" value="">
+        <div id="moveZtree">
+            <ul class="ztree" id="ztree"></ul>
+        </div>
+        <div class="saveZtree">
+            <button class="layui-btn layui-btn-sm" id="clickList">移动到目录</button>
+        </div>
+    </div>
+</div>
+</body>
+{include file="../../public/common_footer"}
+<script type="text/javascript">
+    //初始化树节点
+    var selfidMove,
+        nodeNameMove,
+        nodePidMove,
+        zTreeObjMove,
+        groupidMove,
+        sNodesMove;
+
+    var setting = {
+        view: {
+            showLine: true, //设置 zTree 是否显示节点之间的连线。
+            selectedMulti: false, //设置是否允许同时选中多个节点。
+            // dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+        },
+        async: {
+            enable: true,
+            autoParam: ["pid"],
+            type: "post",
+            url: "{:url('documenttype/getAll')}",
+            dataType: "json",
+            // dataFilter: ajaxDataFilter
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idkey: "id",
+                pIdKey: "pid",
+                rootPId: 0
+            }
+        },
+        callback: {
+            onClick: this.nodeClick
+        }
+    };
+    zTreeObjMove = $.fn.zTree.init($("#ztree"), setting, null);
+
+    //点击获取路径
+    function nodeClick(e, treeId, node) {
+        console.log(node);
+        selectData = "";
+        sNodesMove = zTreeObjMove.getSelectedNodes()[0];//选中节点
+        console.log(sNodesMove);
+        selfidMove = zTreeObjMove.getSelectedNodes()[0].id;//当前id
+        nodeNameMove = zTreeObjMove.getSelectedNodes()[0].name;//当前name
+        nodePidMove = zTreeObjMove.getSelectedNodes()[0].pid;//当前pid
+        console.log(selfidMove + '---id');
+        console.log(nodeNameMove + '---name');
+        console.log(nodePidMove + '---pid');
+        var path = sNodesMove.name; //选中节点的名字
+        node = sNodesMove.getParentNode();//获取父节点
+        //判断是否还有父节点
+        if (node) {
+            //判断是否还有父节点
+            while (node) {
+                path = node.name + "-" + path;
+                node = node.getParentNode();
+            }
+        } else {
+            $(".layout-panel-center .panel-title").text(sNodesMove.name);
+        }
+        groupidMove = sNodesMove.pId //父节点的id
+    }
+    $("#clickList").click(function () {
+        if (!selfidMove) {
+            parent.layer.msg("请先选择一个节点！", {time: 1500, shade: 0.1});
+            return;
+        }else {
+            $.ajax({
+                type:"post",
+                url:"{:url('document/move')}",
+                data:{id:$("#moveZtreeId").val(),type:selfidMove},
+                success: function (res) {
+                    console.log(res)
+                    if(res.code == 1){
+                        parent.layer.msg("移动成功！")
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            })
+        }
+    })
+</script>
+</html>

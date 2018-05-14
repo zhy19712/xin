@@ -1,0 +1,241 @@
+{include file="../app/public/common_header.html"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+    /*#tableContent{*/
+    /*overflow: auto;*/
+    /*}*/
+    #tableContent .dataTables_wrapper, .tbcontainer{
+        display: block;
+    }
+    /*#tableContent .mybtn,#tableContent .assModel,#tableContent .move,#tableContent .file,#tableContent .oneKeyArchiv{*/
+    /*float: right;*/
+    /*background-color: #00c0ef;*/
+    /*}*/
+    /*#tableContent .dataTables_wrapper {*/
+    /*position: relative;*/
+    /*clear: both;*/
+    /*zoom: 1;*/
+    /*overflow: auto;*/
+    /*}*/
+    /*#tableContent table{*/
+    /*width: 800px;*/
+    /*}*/
+    /*table td{word-break:break-all;}*/
+
+    /*table{table-layout:fixed;}*/
+
+    #tableContent .select-color {
+        background-color: #FDD5B5 !important;
+    }
+    #tableContent .even {
+        background-color: #ffffff;
+    }
+    #tableContent .odd {
+        background-color: #f9f9f9;
+    }
+    .img-circle{
+        border-radius: 50%;
+        border: 0;
+    }
+    /*.addpeople {*/
+        /*float: left;*/
+        /*width: 70px;*/
+        /*text-align: center;*/
+        /*position: relative;*/
+        /*cursor: pointer;*/
+    /*}*/
+    /*.arrow {*/
+        /*width: 18px;*/
+        /*height: 18px;*/
+        /*float: left;*/
+        /*margin: 15px 5px 38px 10px;*/
+    /*}*/
+
+</style>
+<div class="easyui-layout" data-options="fit:true">
+    <div id="tableContentTop" data-options="region:'north',split:true" style="width:100%;height: 30%; position: relative;">
+        <div class="imgList">
+            <div style="height: 145px;margin-top: 10px;overflow-y:auto" id="flowDiv">
+
+            </div>
+        </div>
+    </div>
+    <div id="tableContent" data-options="region:'center',title:''" style="padding:5px;background:#ffffff;">
+        <table id="tableItemChose" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+            <thead>
+            <tr>
+                <th>审批人</th>
+                <th>审批日期</th>
+                <th>审批结果</th>
+                <th>审批意见</th>
+            </tr>
+            </thead>
+        </table>
+        <div class="tbcontainer">
+            <div class="mark"></div>
+        </div>
+        <input type="hidden" name="inputId" id="hiddenValId" value='{$dataId}'>
+        <input type="hidden" name="inputName" id="hiddenValType" value='{$dataType}'>
+        <input type="hidden" name="inputName" id="hiddenValUsers" value='{$users}'>
+        <input type="hidden" name="inputName" id="hiddenValStep" value=''>
+    </div>
+</div>
+
+
+{include file="../app/public/common_footer.html"}
+<script>
+
+    //组织结构表格
+    var tableItemChose = $('#tableItemChose').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        "scrollY": "336px",
+        "scrollCollapse": "true",
+        serverSide: true,
+        ajax: {
+            "url":"{:url('/approve/Common/datatablesPre')}?tableName=approve&dataId="+ $("#hiddenValId").val()+"&dataType="+ $("#hiddenValType").val()
+        },
+        dom: 'lrtip',
+        columns: [
+            {
+                name: "nickname"
+            },
+            {
+                name: "create_time"
+            },
+            {
+                name: "result"
+            },
+            {
+                name: "mark"
+            }
+        ],
+        columnDefs: [
+            {
+                targets: [0]
+            },
+            {
+                targets:[1],
+                "render": function (data, type, row) {
+                    if (data == null || data == undefined || data == '') return '';
+                    var time = new Date(data*1000);
+                    var y = time.getFullYear();
+                    var M = time.getMonth() + 1;
+                    M = M < 10 ? '0' + M : M;
+                    var d = time.getDate();
+                    d = d < 10 ? ('0' + d) : d;
+                    var h = time.getHours() ;
+                    h = h < 10 ? '0' + h : h;
+                    var m = time.getMinutes();
+                    m = m < 10 ? '0' + m : m;
+                    var s = time.getSeconds();
+                    s = s < 10 ? '0' + s : s;
+                    return y + '-' + M + '-' + d +' '+ h + ':'+ m + ':' + s;
+                }
+            },
+            {
+                targets:[2]
+            },
+            {
+                targets: [3]
+            }
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItemChose_length').insertBefore(".mark");
+            $('#tableItemChose_info').insertBefore(".mark");
+            $('#tableItemChose_paginate').insertBefore(".mark");
+        }
+    });
+
+    var checkId;
+    var checkName;
+    var flag;
+    var form;
+
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        form = layui.form;
+        var layer = layui.layer;
+
+        function closWin() {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        };
+
+        //点击保存
+        $("#test3").click(function () {
+            // console.log($("#tableItemChose tbody td:nth-of-type(1) a"));
+            if(flag){
+                $("#hiddenValId").val(checkId);
+                $("#hiddenValName").val(checkName);
+                $(window.parent.document).find("#getValId").val(checkId);
+                $(window.parent.document).find("#getValName").val(checkName);
+
+                $(window.parent.document).find("#selectTem").val(checkName);
+
+                setTimeout(function () {
+                    closWin();
+                },800)
+            }
+        });
+    });
+
+
+    //点击选中变色
+    $("#tableItemChose").delegate("tbody tr","click",function (e) {
+        if($(e.target).hasClass("dataTables_empty")){
+            return;
+        }
+        $(this).addClass("select-color").siblings().removeClass("select-color");
+        selectData = tableItemChose.row(".select-color").data();//获取选中行数据
+        checkId = selectData[0];
+        checkName = selectData[2];
+    });
+    var step = $(window.parent.document).find("#curStepVal").val();
+    $("#hiddenValStep").val($(window.parent.document).find("#curStepVal").val());
+
+    // 初始化当前流程信息
+    function initFlowInfo() {
+        var users = JSON.parse($("#hiddenValUsers").val());
+        console.log(JSON.parse($("#hiddenValUsers").val()));
+        var html = '';
+        html = "<div class='addpeople' style='text-align: left;position: relative;cursor: pointer;'>";
+            $.each(users, function (i, item) {
+                // var title = "姓名：" + item.Name + " \n";
+                // title += "所属机构：" + item.DepartmentName + " \n";
+                // title += "岗位：" + item.Post + " \n";
+                // title += "手机：" + item.MobileNumber + " \n";
+                html += "<div style='display: inline-block;margin-left:10px;'>";
+                html += " <img alt='image' class='img-circle' src='" + item.thumb + "' title='' style='width:50px;height:50px;'>";
+                if (i < step)
+                    html += "  <p style='color:#008000;text-align: center;margin-top: 5px;'>" + item.nickname + "</p>";
+                else
+                    html += "  <p style='color:#CDCDCD;text-align: center;margin-top: 5px;'>" + item.nickname + "</p>";
+                html += "</div>";
+                if (i < users.length - 1) {
+                    if (i < step)
+                        html += "<img alt='image' class='arrow' style='width: 18px;height: 18px;margin: -15px 5px 38px 10px;' src='__WEBSITE__/elementimg/right.png' />";
+                    else
+                        html += "<img alt='image' class='arrow' style = ' width: 18px;height: 18px;margin: -15px 5px 38px 10px;' src='__WEBSITE__/elementimg/right1.png' />";
+                }
+            });
+        html += "</div>";
+        $("#flowDiv").html(html);
+    };
+    initFlowInfo()
+
+</script>
+</html>

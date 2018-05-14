@@ -1,0 +1,102 @@
+.ztree{
+    margin-top: 0;
+}
+.current-path i.fa:before{
+    color: #0E2D5F;
+}
+#tableContent .imgList,.mybtn ,.alldel{
+    display: none;
+}
+#tableContent .mybtn i.fa:before,#tableContent .bitCodes i.fa:before,#tableContent .alldel i.fa:before{
+    background: #00c0ef;
+    color: #ffffff;
+}
+#tableContent .mybtn,#tableContent .bitCodes,#tableContent .alldel{
+    float: right;
+    background-color: #00c0ef;
+}
+#tableContent .mybtn,#tableContent .bitCodes,#tableContent .alldel{
+    margin-right: 0.5%;
+}
+#tableContent .dataTables_wrapper .dataTables_scroll {
+    position: relative;
+    top: 6px;
+    border-top: 1px dotted #cecece;
+}
+#tableContent .even {
+    background-color: #ffffff;
+}
+#tableContent .odd {
+    background-color: #f9f9f9;
+}
+#tableContent .imgList {
+    border-top: 1px dotted;
+    border-bottom: 1px dotted;
+    padding: 5px 3px;
+}
+#tableContent .imgList #homeWork {
+    margin-right:3px;
+}
+#tableContent .imgList img {
+    border-radius: 50%;
+    margin-top: 3px;
+}
+#tableContent .imgListStyle {
+    margin:5px 0px 3px 8px;
+}
+#tableContent .imgList a{
+    cursor: pointer;
+    font-style: inherit;
+    /*color: #2213e9;*/
+    color: #CDCDCD;
+    font-size: 13px;
+    font-weight: 600;
+}
+#tableContent .imgList a:hover{
+    color: #2213e9;
+}
+#tableContent .listName{
+    padding: .5% 0;
+    border-bottom: 1px dotted;
+    margin-bottom: 5px;
+}
+#tableContent .listName h3{
+    font-weight: 800;
+}
+.tabs-header, .tabs-tool {
+    background-color: white;
+    border-color:white;
+}
+.tabs li a.tabs-inner{
+    background:white;
+    border-color:#cecece;
+}
+.tabs-header, .tabs-scroller-left, .tabs-scroller-right, .tabs-tool, .tabs, .tabs-panels, .tabs li a.tabs-inner, .tabs li.tabs-selected a.tabs-inner, .tabs-header-bottom .tabs li.tabs-selected a.tabs-inner, .tabs-header-left .tabs li.tabs-selected a.tabs-inner, .tabs-header-right .tabs li.tabs-selected a.tabs-inner{
+    border-color:#cecece;
+}
+.select-color{
+    background-color: #FDD5B5!important;
+}
+#tableItem tbody tr:hover{
+    background-color: #FDD5B5;
+}
+.uploadBox{
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #1ab394;
+    border-color: #1ab394;
+    color: #FFFFFF;
+    width: 50px;
+    text-align: center;
+    border-radius: 50px;
+    height: 27px;
+    line-height: 26px;
+    margin-top: 2px;
+}
+.uploadBox:hover{
+   background-color: #009dc3;
+}
+.dataTables_wrapper, .tbcontainer {
+    display: block;
+}

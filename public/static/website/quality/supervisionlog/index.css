@@ -1,0 +1,87 @@
+body .panel-title{
+    font-size: 14px;
+}
+.ztree{
+    margin-top: 0;
+}
+.mybtn {
+    position: absolute;
+    right: 1%;
+    top: 0;
+    background-color: #00c0ef;
+}
+.mybtn i.fa:hover:before , .mybtn i.fa:before{
+    color: #fff;
+}
+.mybtn i.fa:before {
+    background: none;
+}
+#tableItem_filter{
+    padding-top: 3px;
+    float: left;
+}
+.ztree-title i.fa{
+    width: 18%;
+}
+i.fa:before{
+    background:none;
+}
+.select-color{
+    background-color: #FDD5B5!important;
+}
+h3{
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 16px;
+    display: inline-block;
+}
+.ibox-tools{
+    float: right;
+    margin-right:30px;
+    margin-top: 10px;
+}
+.ibox-tools2{
+    float: right;
+    margin-right:15px;
+}
+p {
+    float: left;
+    margin: 4px;
+    background-color: #56ABE4;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    border: 1px solid #56ABE4;
+    border-radius: 20px;
+    float: left;
+    line-height: 0.1;
+    padding: 5px;
+}
+p i.fa:before {
+    color: #fff;
+}
+.dataTables_wrapper{
+    margin-bottom: 20px;
+}
+
+#tableItem{
+    padding-top: 10px           ;
+}
+#tableItem_paginate ul li{
+    line-height: 18px;
+}
+#tableItem_filter{
+    font-weight: bold;
+}
+#tableItem .odd{
+    background-color: #f9f9f9;
+}
+#tableItem .highlight {
+    background: #FDD5B5 !important;
+}
+#tableItem .even{
+    background-color: white;
+}
+.fa.fa-save:before ,.fa.fa-close:before,.fa.fa-save:hover:before,.fa.fa-close:hover:before{
+    color: white;
+}

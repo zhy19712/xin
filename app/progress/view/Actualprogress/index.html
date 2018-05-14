@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>实际进度填报</title>
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/modules/layer/default/layer.css" media="all">
+    <link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="__PUBLIC__/jquery/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="__PUBLIC__/layui/layui.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <style>
+        .versonBody{
+        }
+        .page-head{
+            padding-top: 10px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        .versonBody table tr td ,.versonBody table tr th{
+            text-align: center!important;
+        }
+        #deletePlan{
+            display: none;
+            text-align: center;
+            line-height: 180px;
+            font-size: 18px;
+            color: darkred;
+        }
+        .bottom{
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-fluid versonBody">
+    <div class="layui-row page-head">
+        <div class="layui-col-xs2">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择标段：</label>
+                    <div class="layui-input-block">
+                        <select name="city" lay-verify="required">
+                            <option value="0">全部</option>
+                            <option value="1">一级进度计划</option>
+                            <option value="2">年度计划</option>
+                            <option value="3">月度计划</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-col-xs1 layui-col-sm-offset9" style="display: none">
+            <button class="layui-btn layui-btn-normal" id="addPlan">
+                <i class="layui-icon">&#xe608;</i> 添加
+            </button>
+        </div>
+    </div>
+    <div class="layui-row">
+        <table class="layui-table" lay-size="sm" lay-skin="line" id="versonPro" lay-filter="test">
+
+        </table>
+    </div>
+</div>
+<!--添加新计划DOM代码-->
+<form class="layui-form" action="" id="addForm" style="display: none;padding: 10px">
+    <div class="layui-row">
+        <div class="layui-col-sm5">
+            <div class="layui-form-item">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-block">
+                    <select name="city" lay-verify="required">
+                        <option value=""></option>
+                        <option value="0">年度计划</option>
+                        <option value="1">一级进度计划</option>
+                        <option value="2">施工总进度计划</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm7">
+            <div class="layui-form-item">
+                <label class="layui-form-label">计划名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm5">
+            <div class="layui-form-item">
+                <label class="layui-form-label">编制时间</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="modifiedDate">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm7">
+            <div class="layui-form-item">
+                <label class="layui-form-label">编制人</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入编制人" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">版本描述</label>
+        <div class="layui-input-block">
+            <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="test1">
+                <i class="layui-icon">&#xe67c;</i>上传文件
+            </button>
+        </div>
+    </div>
+</form>
+<!--删除计划DOM-->
+<div class="" id="deletePlan">
+    <p>确认要删除该计划吗？</p>
+</div>
+
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="../layui/layui.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#versonPro').dataTable( {
+            "aLengthMenu" : [10, 15,20],
+            "iDisplayLength" : 15,
+            data:[
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },{
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                },
+                {
+                    "month":    "2017-12-12",
+                    "planName":   "一期地下施工",
+                    "position":    "一期地下施工",
+                    "maker": "管理员",
+                    "createDate": "2018-02-03",
+                    "completed":    "0",
+                    "unstar":"12",
+                    "conducting":    "2"
+                }
+            ],
+            columns: [
+                {
+                    "data": "month",
+                    "title":"月份",
+                    "orderable": false
+                },
+                {
+                    "data": "planName",
+                    "title":"计划名称",
+                    "orderable": false,
+                    render: function(data, type, row)
+                    {
+                        return '<a href="planGantts.html" style="color: #1E9FFF">' + data + '</a>';
+                    }
+                },
+                {
+                    "data": "position",
+                    "title":"所属标段",
+                    "orderable": false
+                },
+                {
+                    "data": 'maker',
+                    "title":"编制人",
+                    "orderable": false
+
+                },
+                {
+                    "data": "createDate",
+                    "title":"编制日期",
+                    "orderable": false
+                },
+                {
+                    "data": "completed",
+                    "title":"已完成",
+                    "orderable": false
+                },
+                {
+                    "data": "unstar",
+                    "title":"未开始",
+                    "orderable": false
+                },
+                {
+                    "data": 'conducting',
+                    "title":"进行中",
+                    "orderable": false,
+
+                }
+
+            ]
+            ,
+            "oLanguage": {
+                "sProcessing" : "正在获取数据，请稍后...",
+                "sLengthMenu" : "显示 _MENU_ 条",
+                "sZeroRecords" : "没有您要搜索的内容",
+                "sInfo" : "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                "sInfoEmpty" : "记录数为0",
+                "sInfoFiltered" : "(全部记录数 _MAX_ 条)",
+                "sInfoPostFix" : "",
+                "sSearch" : "搜索",
+                "sUrl" : "",
+                "oPaginate": {
+                    "sFirst" : "第一页",
+                    "sPrevious" : "上一页",
+                    "sNext" : "下一页",
+                    "sLast" : "最后一页"
+                }
+            },
+            "dom": '<"top"rt><"bottom"pl><"clear">'
+        } );
+    } );
+    layui.use('form', function(){
+
+
+    });
+    //添加计划
+    layui.use('layer', function(){
+        var layer = layui.layer;
+        $("#addPlan").click(function () {
+            addNewPlan();
+        });
+        $(".versonBody .layui-btn-danger").click(function () {
+            deletePlan();
+        });
+    });
+    //编制时间
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#modifiedDate' //指定元素
+        });
+    });
+    function addNewPlan() {
+        layer.open({
+            title:['添加新计划','font-size:18px'],
+            type: 1,
+            content: $("#addForm") ,
+            area:['680px','420px'],
+            btn: ['确认', '取消'],
+            yes: function(index, layero){
+                alert('添加成功')
+            },
+            btn2: function(index, layero){
+
+            },
+            cancel: function(){
+
+            }
+        });
+    }
+    //    删除计划
+    function deletePlan() {
+        layer.open({
+            title:['删除计划','font-size:18px'],
+            type: 1,
+            content: $("#deletePlan") ,
+            area:['680px','320px'],
+            btn: ['确认', '取消'],
+            yes: function(index, layero){
+                alert('删除成功');
+            },
+            btn2: function(index, layero){
+
+            },
+            cancel: function(){
+
+            }
+        });
+    }
+</script>
+</body>
+
+</html>

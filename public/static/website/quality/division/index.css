@@ -1,0 +1,92 @@
+.current-path{
+    padding: 5px 5px 0 5px;
+}
+.dataTables_wrapper .dataTables_filter{
+    padding: 5px 0 0 5px;
+}
+.layui-form-label{
+    width: 85px;
+}
+.unit .layui-form-label{
+    width: 100px;
+}
+textarea[name="remark"]{
+    width: 95%;
+}
+input[name="en_type"]{
+
+}
+.ztree-title i.fa {
+    width: 15%;
+    text-align: center;
+}
+i.fa-navicon:before{
+    color: #FFF;
+    padding: 12px;
+    background: #00a0e9;
+}
+i.fa-navicon:hover:before{
+    color: #FFF;
+}
+.layui-form-item .autograph .layui-form-mid {
+    padding: 9px 0!important;
+}
+.autograph{
+    display: none;
+}
+div.icon{
+    margin-left: -11px;
+}
+div.icon i.fa-navicon::before{
+    padding: 11px;
+}
+.ma-bases-layer{
+    padding: 10px;
+}
+.ma-bases-layer .dataTables_wrapper,.ma-bases-layer .tbcontainer{
+    display: block;
+    height: 490px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    padding: 0 !important;
+}
+/*
+.ma-bases-layer .dataTables_info,.ma-bases-layer .dataTables_paginate{
+    position: absolute;
+    bottom: 0;
+}
+.ma-bases-layer .dataTables_info{
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+}
+.ma-bases-layer .dataTables_paginate{
+    right: 0;
+}
+.ma-bases-layer table.table{
+    height: 380px;
+    overflow-y: auto;
+}*/
+input[name="ma_bases"],input[name="en_type"]{
+    cursor: pointer !important;
+}
+
+.import-excel p{
+    padding-top: 20px;
+    color: #F00;
+    text-align: center;
+}
+.btn-wrap{
+    text-align: center;
+}
+.webuploader-pick{
+    padding: 0;
+    background: none;
+}
+i.fa-download:before,i.fa-plus:before,i.fa-download:hover:before,i.fa-plus:hover:before{
+    padding-right: 5px;
+    color: #FFF;
+}
+.content,.tab-content{
+    border: none;
+}

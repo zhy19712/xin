@@ -1,0 +1,343 @@
+{include file="../app/public/common_header.html"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+    #treeFrequentlyUsed .level0 a .button{
+        background:url('/static/public/ztree/css/ztreeadmin/img/people.png') 0 0 no-repeat;
+    }
+</style>
+<style>
+
+    #tableContent .select-color {
+        background-color: #FDD5B5 !important;
+    }
+
+    #tableContent .even {
+        background-color: #ffffff;
+    }
+
+    #tableContent .odd {
+        background-color: #f9f9f9;
+    }
+
+    .boder {
+        border: 1px solid #bed5f3;
+    }
+
+    .sub i.fa:before {
+        color: #ffffff;
+    }
+
+    .ligtop {
+        text-align: center;
+        margin: 10px;
+        height: 273px;
+    }
+
+    .col-md-5 {
+        float: left;
+        width: 98%;
+        padding: 5px;
+        padding-top:0px;
+    }
+
+    .hr-line-dashed {
+        border-top: 1px dashed #e7eaec;
+        color: #ffffff;
+        background-color: #ffffff;
+        height: 1px;
+        margin:0;
+    }
+
+    .rted {
+        color: #CDCDCD;
+    }
+
+    .select {
+        color: #56ABE4;
+    }
+
+    #selectDiv {
+        display: none;
+    }
+
+    .ztree{
+        margin-top: 0;
+    }
+
+</style>
+<div id="bodyCon">
+    <div id="tableContent" data-options="region:'center'" style="background:#ffffff;">
+        <div class="tabCon">
+
+        </div>
+        <input type="hidden" name="inputId" id="hiddenValId" value="">
+        <input type="hidden" name="inputName" id="hiddenValName" value="">
+    </div>
+    <div class="sub">
+        <div class="col-md-5">
+            <div style="text-align: left;">
+                <h4 class="hui rted" style="margin: 10px;font-size: 13px" id="tgd">
+                    <a style="margin-right: 3px;" onclick="frequentlyUsedDivShow()" class="rted select">常用联系人</a>|
+                    <a style="margin-right: 3px;margin-left: 3px;" onclick="selectDivShow()" class="rted">人员选择</a>
+                </h4>
+            </div>
+            <div class="hr-line-dashed" style="margin:0px;"></div>
+        </div>
+        <div class="col-md-5" id="frequentlyUsedDiv">
+            <div class="boder" style="text-align: left; height:408px;">
+                <ul id="treeFrequentlyUsed" class="ztree" style="overflow: auto; height: 100%; width: 100%;"></ul>
+            </div>
+        </div>
+        <div class="col-md-5" id="selectDiv">
+            <div class="boder">
+                <div style="margin-top: 15px;">
+                    <div class="input-group input-group-sm" style="width: 300px;margin-top: -8px;margin-left: 10px;">
+                        <input class="layui-input" type="text" placeholder="请输人员名称" id="keywords" accept="middle">
+                        </span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed" style="margin:10px;margin-bottom: 0px"></div>
+                <div class="ligtop" style="text-align: left;margin-top: 0px">
+                    <ul id="treeDemo" class="ztree" style="overflow: auto; height: 100%; width: 100%;padding-top: 0px"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div style="float:left;margin-top: 5px;margin-left: 5px;">
+                <input id="selectedUserId" type="hidden" />
+                <input id="selectedUserImage" type="hidden" />
+                <input id="selectOrganizationName" type="hidden" />
+                <input id="selectPost" type="hidden" />
+                <input id="selectMobile" type="hidden" />
+                <span>已选择人员：<b style="color:#56ABE4" id="selectedUserName"></b></span>
+            </div>
+            <div style="text-align: right;margin-top: 5px;margin-right: 5px;">
+                <button id="btnSave" type="button" style="margin-right: 5px;" class="layui-btn">保存</button>
+                <button id="btnClose" type="reset" style="margin-right: 5px;" class="layui-btn layui-btn-danger">返回</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{include file="../app/public/common_footer.html"}
+<script>
+
+    $("#btnSave").click(function () { $("#btnSave").attr("disabled", "disabled"); save(); });
+    $("#btnClose").click(function () { close(); });
+
+    // 保存审批人信息
+    function save() {
+        var $dom = $(".selectedUserName"); // 获取class为people的div，该div的id属性记录的是审批人id
+        if (!$("#selectedUserId").val()) {
+            layer.alert("请选择审批人。");
+            $("#btnSave").removeAttr("disabled");
+            return;
+        };
+        $(window.parent.document).find("#hiddenValId").val($("#selectedUserId").val());
+        $(window.parent.document).find("#hiddenValName").val($("#selectedUserName").text());
+        close();
+        var user = {
+            "id": $("#selectedUserId").val(),
+            "name": $("#selectedUserName").html(),
+            "image": $("#selectedUserImage").val(),
+            "post": $("#selectPost").val(),
+            "mobile": $("#selectMobile").val(),
+            "organizationName": $("#selectOrganizationName").val()
+        };
+        $(window.parent.document).find("#hiddenValUser").val(user);
+        parent.addPeople(user);
+        //   if ($("#referFlow").val()) {
+        //       var $referDom = $("#referDiv").find(".addpeople");
+        //       if ($dom.length !== $referDom.length - 1) {
+        //           layer.alert("请按照参考流程选择人员。");
+        //           $("#btnSave").removeAttr("disabled");
+        //           return;
+        //       }
+        //   };
+        //
+        //   var approverIds = "";
+        //   $.each($dom, function (i, item) {
+        //       approverIds += item.id.substring(3, item.id.length) + ","; //去除前面的div字符串
+        //   });
+        //   approverIds = approverIds.substring(0, approverIds.length - 1);
+        //   $.ajax({
+        //       type: "post",
+        //       url: "/Approve/Submit",
+        //       data: { "dataId": $("#dataId").val(), "dataType": $("#dataType").val(), "approverIds": approverIds },
+        //       success: function (data) {
+        //           if (data.result === "Success") {
+        //               var parentWin = window.parent.window.document.getElementById("web");//取到列表页面对象
+        //               parentWin.contentWindow.refresh();//刷新列表数据
+        //               parent.layer.closeAll();
+        //               close();
+        //           }
+        //           else {
+        //               layer.alert("提交失败。");
+        //               $("#btnSave").removeAttr("disabled");
+        //           };
+        //       }
+        //   });
+    };
+
+    // 初始化常用联系人树
+    function initFrequentlyUsedTree() {
+        var setting = {
+            view: {
+                selectedMulti: false
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                onClick: onFrequentlyUsedTreeClick
+            }
+        };
+        $.ajax({
+            type: "Get",
+            url: "{:url('approve/Approve/FrequentlyUsedApprover')}?dataType=app\\quality\\model\\QualityFormInfoModel\n",
+            success: function (res) {
+                // console.log(res);
+                var initArr =[];
+                for(var i=0;i<res.length;i++){
+                    var initObj = {
+                        id:'',
+                        name:''
+                    };
+                    initObj.id = res[i].id;
+                    initObj.name = res[i].nickname;
+                    initArr.push(initObj)
+                }
+                // $.fn.zTree.init($("#treeFrequentlyUsed"), setting, [{"name":"王建伟",id:123},{"name":"丁志超",id:456}]);
+                $.fn.zTree.init($("#treeFrequentlyUsed"), setting, initArr);
+            }
+        });
+    };
+    initFrequentlyUsedTree()
+    // 关闭窗体
+    function close() {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index)
+    };
+    //切换
+    $("#tgd a").click(function () {
+        $(this).siblings('a').removeClass('select');
+        $(this).addClass('select');
+    });
+    // 常用联系人
+    function frequentlyUsedDivShow() {
+        $("#frequentlyUsedDiv").show();
+        $("#selectDiv").hide();
+    };
+    // 人员选择
+    function selectDivShow() {
+        $("#frequentlyUsedDiv").hide();
+        $("#selectDiv").show();
+    };
+    //字符解码
+    function ajaxDataFilter(treeId, parentNode, responseData) {
+
+        if (responseData) {
+            for(var i =0; i < responseData.length; i++) {
+                responseData[i] = JSON.parse(responseData[i]);
+                responseData[i].name = decodeURIComponent(responseData[i].name);
+              ztreeIcon(responseData[i]);
+            }
+        }
+        return responseData;
+    }
+    //处理结构树图标
+    function ztreeIcon(data) {
+      if (!data.level){
+        data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/people.png";
+        return ;
+      }
+      switch (Number(data.level)) {
+        case 1 :
+          data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/top.png";
+          break;
+        case 2 :
+          data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/jigou.png";
+          break;
+        case 3 :
+          data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/bumen.png";
+          break;
+        default:
+          data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/bumen.png";
+          break;
+      }
+    }
+    //组织结构树
+    var setting = {
+        view: {
+            showLine: true, //设置 zTree 是否显示节点之间的连线。
+            selectedMulti: false, //设置是否允许同时选中多个节点。
+            // dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+        },
+        async: {
+            enable : true,
+            autoParam: ["pid"],
+            type : "post",
+            url : "../../admin/rolemanagement/getindex",
+            dataType :"json",
+            dataFilter: ajaxDataFilter
+        },
+        data:{
+            keep: {
+                leaf : true,
+                parent : true
+            },
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pid",
+                rootPId:0
+            }
+        },
+        callback: {
+            onClick: this.onClick,
+        }
+    };
+
+    treeObj = $.fn.zTree.init($("#treeDemo"), setting, null);
+    //搜索树
+    function SearchTree() {
+        var key = $("#keywords").val();
+        var nodes = treeObj.getNodesByParam("name", key);
+        $.each(nodes, function (i, item) {
+            treeObj.expandNode(item.getParentNode(), true, false, true);
+        });
+    }
+    //搜索树
+    $('#keywords').bind('input propertychange', function() {
+        var key = $("#keywords").val();
+        var nodes = treeObj.getNodesByParam("name", key);
+        $.each(nodes, function (i, item) {
+            treeObj.expandNode(item.getParentNode(), true, false, true);
+        });
+    });
+    //左侧组织机构树双击事件处理
+    function onClick(event, treeId, treeNode) {
+        var html = "";
+        if (treeNode.id < 10000) //选择的是单位信息
+            return;
+        else  //选择的是人员信息
+            setSelectedInfo(treeNode);
+    };
+    // 常用联系人树单击事件
+    function onFrequentlyUsedTreeClick(event, treeId, treeNode) {
+        setSelectedInfo(treeNode);
+    };
+    // 设置选中的人员信息
+    function setSelectedInfo(treeNode) {
+        $("#selectedUserId").val(treeNode.id);
+        $("#selectedUserName").html(treeNode.name);
+        $("#selectedUserImage").val(treeNode.data);
+        $("#selectOrganizationName").val(treeNode.viewPoint);
+        $("#selectPost").val(treeNode.post);
+        $("#selectMobile").val(treeNode.dataExt);
+    };
+</script>
+</html>

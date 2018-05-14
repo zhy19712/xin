@@ -1,0 +1,70 @@
+.btn {
+    line-height: 0.82857;
+    border-radius: 60px;
+    margin-right: 5px;
+    float: right;
+    margin-left: 10px;
+}
+
+.btn i.fa:before ,#memberAdd button i.fa:before{
+    color: #ffffff;
+}
+.col-md-5 {
+    float: left;
+    width: 98%;
+    padding: 5px;
+}
+.ligtop {
+    text-align: center;
+    margin: 10px;
+    height: 270px;
+}
+.boder {
+    border: 1px solid #bed5f3;
+}
+.hr-line-dashed {
+    border-top: 1px dashed #e7eaec;
+    color: #ffffff;
+    background-color: #ffffff;
+    height: 1px;
+    margin: 0;
+}
+.layui-layer-close {
+ position: relative;
+}
+.layui-layer-content{
+    padding-top:0;
+}
+table.dataTable tbody tr.odd{
+    background-color: #fff;
+}
+table.dataTable tbody tr:hover, table.dataTable tbody tr.active {
+    background: #Fdd5b5;
+}
+.select-color{
+    background-color: #Fdd5b5!important;
+}
+#memberAdd .layui-form-item .layui-inline{
+    width: 48%;
+    margin-left: 20px;
+}
+#memberAdd .layui-form-item .layui-input-inline {
+    float: left;
+    width:75%;
+    margin-right: 10px;
+}
+#memberAdd .layui-form-item {
+    margin-bottom: 6px;
+}
+#memberAdd #remark {
+    width: 236%;
+    height: 20px;
+    padding: 8px;
+}
+#memberAdd .layui-input[readonly]{
+    background: #FFFFFF !important;
+}
+
+#memberAdd .layui-form-label {
+    width: 20%;
+}

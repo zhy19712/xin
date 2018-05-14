@@ -1,0 +1,279 @@
+{include file="../../public/common_header"}
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="__PUBLIC__/layui/css/modules/layer/default/layer.css" media="all">
+<link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="__PUBLIC__/jquery/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="__PUBLIC__/layui/layui.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/layui/css/modules/layer/default/layer.css" media="all">
+    <style type="text/css">
+        body{
+            /*height: 834px;*/
+            /*border: 1px dotted #cecece;*/
+            background: #ffffff;
+            /*border-bottom: none;*/
+        }
+        #secTable #path{
+            line-height: 30px;
+            font-weight: 800;
+            font-size: 14px;
+            border-bottom: 1px dotted #cecece;
+        }
+        #secTable #spanPath{
+            display: inline-block;
+            float: left;
+        }
+        #secTable .dataTables_filter label{
+            font-size: 12px;
+            font-weight: 800;
+        }
+        #secTable #mytable1_wrapper th{
+            font-size: 12px;
+        }
+        #secTable #mytable1_wrapper{
+            position: relative;
+            margin-top: 10px;
+        }
+        #secTable .mybtn{
+            position: absolute;
+            right: 1%;
+            top: -5px;
+        }
+        #secTable .float_left{
+            float: left;
+            margin-bottom: 4px;
+        }
+        #secTable .float_left input:focus{
+            border-color: #9ac6ff;
+        }
+        #secTable #mytable1_wrapper .dataTables_wrapper {
+            position: relative;
+            clear: both;
+            zoom: 1;
+            overflow-x: auto;
+        }
+        #secTable #mytable1_wrapper table{
+            margin-top: 12px;
+        }
+        #secTable .layui-btn-sm {
+            height: 28px;
+            line-height: 34px;
+            padding: 0 10px;
+            font-size: 12px;
+        }
+        #secTable #mytable1_wrapper thead th{
+            border-top: 1px dotted #cecece;
+        }
+        #secTable #admin_table .odd{
+            background-color: #f9f9f9;
+        }
+        #secTable #admin_table .even{
+            background-color: white;
+        }
+        #secTable .layui-btn{
+            background-color: #00c0ef;
+        }
+        i.fa:before {
+            color: #00c0ef;
+            background: none;
+        }
+
+        #secTable table {
+            table-layout:fixed;
+        }
+        #secTable table td{
+            word-break:break-all;
+        }
+        #secTable .highlight {
+            background: #FDD5B5 !important;
+        }
+        #secTable .dataTables_wrapper .dataTables_paginate {
+            position: fixed;
+            bottom: -3px;
+            left: 98px;
+            z-index: 4;
+        }
+        #secTable .dataTables_wrapper .dataTables_info {
+            position: fixed;
+            bottom:8px;
+            right: 0px;
+            z-index: 4;
+        }
+        #secTable .dataTables_length{
+            height: 8px;
+            position: fixed;
+            bottom: 26px;
+            left: 19px;
+            z-index: 4;
+        }
+        #secTable .dataTables_length select{
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        #secTable .xia{
+            width: 100%;
+            height: 34px;
+            background: white;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding-top: -3px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0;
+        }
+        #secTable .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border: none;
+        }
+        #secTable .dataTables_wrapper, .tbcontainer {
+            display: block;
+        }
+    </style>
+<!--<body class="easyui-layout" style="overflow-y:hidden;">-->
+<!--表格-->
+<div id="secTable" class="wrapper wrapper-content" style="width: 99.5%;vertical-align: top;padding: 0;margin-left: 4px;text-align: center">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="row">
+                <div id="path"><span id="spanPath">标段管理</span><div style="clear: both;"></div></div>
+                <div id="mytable1_wrapper">
+                    <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>标段编码</th>
+                                <th>标段名称</th>
+                                <th>合同金额（万元）</th>
+                                <th>业主单位</th>
+                                <th>施工单位</th>
+                                <th>设计单位</th>
+                                <th>监理单位</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="xia"></div>
+        </div>
+    </div>
+</div>
+
+<!--</body>-->
+{include file="../../public/common_footer"}
+<script type="text/javascript">
+
+    var admin_table = $('#admin_table').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url:"{:url('contract/common/datatablesPre?tableName=section')}"
+        },
+        dom: '<"mybtn layui-btn layui-btn-sm"><"selectyear"><"myl"l><"float_left"f>tip',
+        columns:[
+            {
+                name: "code"
+            },
+            {
+                name: "name"
+            },
+            {
+                name: "money"
+            },
+            {
+                name: "builder"
+            },
+            {
+                name: "constructor"
+            },
+            {
+                name: "designer"
+            },
+            {
+                name: "supervisor"
+            },
+            {
+                name: "id"
+            }
+        ],
+        columnDefs: [
+            {
+                searchable: false,
+                orderable: false,
+                targets: [7],
+                render :  function(data,type,row) {
+                    var html =  "<a class='tt' style='margin-left: 5px;' onclick='secEdit(this)'><i class='fa fa-pencil' title='编辑'></i></a >" ;
+                    html += "<a  class='' style='margin-left: 5px;' onclick='secDel(this)'><i class='fa fa-trash' title='删除'></i></a>" ;
+                    return html;
+                }
+            },
+        ],
+        language: {
+            "lengthMenu": "_MENU_ ",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        }
+    });
+    $("div.mybtn").html('<div><span style="font-size: 22px;float: left;">+</span><span>&nbsp;新增</span></div>');
+    //变色
+    $('#admin_table tbody').on( 'mouseover', 'td', function () {
+            $(this).parent("tr").addClass('highlight');
+        }).on( 'mouseleave', 'td', function () {
+            $(this).parent("tr").removeClass( 'highlight' );
+    });
+    //新增
+    $("#admin_table_wrapper .mybtn").click(function () {
+        layer.open({
+            type: 2,
+            title: '新增标段',
+            shadeClose: true,
+            area: ['780px', '560px'],
+            content: '{:url("add")}',
+        });
+    })
+    //编辑
+    function secEdit(that){
+        var id = admin_table.row(".highlight").data()[7];
+        console.log(id);
+        layer.open({
+            type: 2,
+            title: '编辑标段',
+            shadeClose: true,
+            area: ['780px', '560px'],
+            content: '{:url("add")}?id='+id+'&time='+new Date()
+        });
+    }
+    //删除
+    function secDel(that){
+        var id = admin_table.row(".highlight").data()[7];
+        layer.confirm('是否删除该标段?', function(index){
+            $.ajax({
+                url: "{:url('./contract/section/del')}",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if(res.code == 1){
+                        layer.msg("删除成功！");
+                        admin_table.ajax.url("{:url('contract/common/datatablesPre?tableName=section')}").load();
+                    }
+                }
+            });
+            layer.close(index);
+        });
+    }
+</script>
+</html>

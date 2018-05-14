@@ -1,0 +1,350 @@
+{include file="../app/public/common_header.html"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreestandard/ztreeiconStyle.css">
+<link rel="stylesheet" href="__WEBSITE__/standard/library/share.css">
+<style>
+
+    /*#nodeZtree .ztree-title i.fa {*/
+        /*width: 12%;*/
+    /*}*/
+    /*#nodeZtree .ztree-title #add {*/
+        /*margin-left: 6px;*/
+    /*}*/
+    #nodeZtree #ztree{
+        margin-top: 0px;
+    }
+
+    /*#tableContent .mybtn i.fa:before,#tableContent .assModel i.fa:before,#tableContent .move i.fa:before,#tableContent .file i.fa:before,#tableContent .oneKeyArchiv i.fa:before {*/
+        /*background: #00c0ef;*/
+        /*color: #ffffff;*/
+    /*}*/
+    /*#tableContent .mybtn,#tableContent .assModel,#tableContent .move,#tableContent .file,#tableContent .oneKeyArchiv{*/
+        /*float: right;*/
+        /*background-color: #00c0ef;*/
+    /*}*/
+    /*#tableContent .mybtn{*/
+        /*margin-right: 0%;*/
+        /*margin-bottom: 5px;*/
+    /*}*/
+    /*#tableContent .assModel{*/
+        /*margin-right: 0%;*/
+        /*margin-bottom: 5px;*/
+    /*}*/
+    /*#tableContent .move{*/
+        /*margin-right: 0%;*/
+        /*margin-left: 10px;*/
+        /*margin-bottom: 5px;*/
+    /*}*/
+    /*#tableContent table.dataTable.no-footer {*/
+        /*border-top: 1px dotted;*/
+    /*}*/
+    /*#tableContent #funKuai{*/
+        /*width: 100%;*/
+        /*position: absolute;*/
+        /*left: 72%;*/
+    /*}*/
+    /*#tableContent #funKuai>span{*/
+        /*background-color: #00c0ef;*/
+        /*margin-left: 5px;*/
+        /*color: #FFFFFF;*/
+    /*}*/
+    /*#tableContent #funKuai>span i.fa:before {*/
+        /*padding-right: 3px;*/
+        /*color: #FFFFFF;*/
+    /*}*/
+    /*#tableContent #tableItem_filter {*/
+        /*float: left;*/
+    /*}*/
+    /*#tableContent .select-color {*/
+        /*background-color: #FDD5B5 !important;*/
+    /*}*/
+    /*#tableContent h3 {*/
+        /*margin-top: 5px;*/
+        /*font-weight: 600;*/
+        /*font-size: 16px;*/
+        /*display: inline-block;*/
+    /*}*/
+    /*#tableContent .ibox-tools {*/
+        /*float: right;*/
+        /*margin-right: 30px;*/
+        /*margin-top: 10px;*/
+    /*}*/
+    /*#tableContent .ibox-tools2 {*/
+        /*float: right;*/
+        /*margin-right: 15px;*/
+    /*}*/
+    /*#tableContent .dataTables_wrapper .dataTables_scroll {*/
+        /*position: relative;*/
+        /*top: 15px;*/
+        /*border-top: 1px dotted #cecece;*/
+    /*}*/
+    /*#tableContent #tableItem tr td a{*/
+        /*color: #337ab7;*/
+    /*}*/
+    /*#tableContent .even {*/
+        /*background-color: #ffffff;*/
+    /*}*/
+    /*#tableContent .odd {*/
+        /*background-color: #f9f9f9;*/
+    /*}*/
+    /*#bodyBig .layui-this{*/
+        /*background: #00c0ef;*/
+        /*color: white;*/
+    /*}*/
+    /*#bodyBig .layui-tab-content {*/
+        /*padding-left: 4px;*/
+    /*}*/
+
+</style>
+<div id="bodyBig"  data-options="region:'north',title:'',split:true" style="height: 50px;">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li><a href="./index.shtml">标段</a></li>
+            <li><a href="./com.shtml">单位工程</a></li>
+            <li><a href="./branch.shtml">分部工程</a></li>
+            <li><a href="./item.shtml">分项工程</a></li>
+            <li><a href="./unit.shtml">单元工程</a></li>
+            <li class="layui-this">专项工程</li>
+        </ul>
+    </div>
+</div>
+
+<div id="nodeZtree" data-options="region:'west',title:'专项工程树',split:true" style="width:260px;">
+    <ul class="ztree" id="ztree"></ul>
+</div>
+<div id="tableContent" data-options="region:'center',title:'当前路径：'" style="padding:5px;background:#ffffff;">
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>名称</th>
+            <th>是否重点</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="tbcontainer">
+        <div class="mark"></div>
+    </div>
+    <input type="hidden" id="pruId" value="">
+</div>
+
+{include file="../app/public/common_footer.html"}
+
+<!--<script src="__WEBSITE__/archive/document/index.js"></script>-->
+
+<script type="text/javascript">
+
+    //组织结构表格
+    var tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        ajax: {
+            "url": "{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="
+        },
+        dom: 'lf<"mybtn layui-btn layui-btn-sm">rtip',
+        columns: [
+            {
+                name: "code"
+            },
+            {
+                name: "name"
+            },
+            {
+                name: "isimportant"
+            },
+            {
+                name: "id"
+            }
+        ],
+        columnDefs: [
+            {
+                "targets":[0]
+            },
+            {
+                "targets": [1]
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [2],
+                "render": function (data, type, row) {
+                    if (data == 1) {
+                        return "是";
+                    }
+                    return "否";
+                }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [3],
+                "render": function (data, type, row) {
+                    var a = data;
+                    var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='editFile("+row[3]+")'><i title='编辑' class='fa fa-pencil'></i></a>";
+                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile("+row[3]+")'><i title='删除' class='fa fa-trash'></i></a>";
+                    return html;
+                }
+            }
+
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItem_length').insertBefore(".mark");
+            $('#tableItem_info').insertBefore(".mark");
+            $('#tableItem_paginate').insertBefore(".mark");
+        }
+    });
+
+    //点击上传文件
+    $(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>新增控制点</div>");
+
+    var layer = layui.layer;
+
+    //查询提交
+    layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
+        var form = layui.form,layer = layui.layer;
+    });
+
+    //初始化树节点
+    var selfid, nodeName, nodePid, zTreeObj, groupid, sNodes, procedureId;
+
+    var setting = {
+        view: {
+            showLine: true, //设置 zTree 是否显示节点之间的连线。
+            selectedMulti: false, //设置是否允许同时选中多个节点。
+            // dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+        },
+        async: {
+            enable: true,
+            autoParam: ["pid"],
+            type: "post",
+            url: "{:url('standard/library/GetDivsionTree')}?cat=6",
+            dataType: "json"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idkey: "id",
+                pIdKey: "pid",
+                rootPId: null
+            }
+        },
+        callback: {
+            onClick: this.nodeClick
+        }
+    };
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
+
+    //点击获取路径
+    function nodeClick(e, treeId, node) {
+        console.log(node);
+        selectData = "";
+        sNodes = zTreeObj.getSelectedNodes()[0];//选中节点
+        console.log(sNodes);
+        selfid = zTreeObj.getSelectedNodes()[0].id;//当前id
+        nodeName = zTreeObj.getSelectedNodes()[0].name;//当前name
+        nodePid = zTreeObj.getSelectedNodes()[0].pid;//当前pid
+        console.log(selfid + '---id');
+        console.log(nodeName + '---name');
+        console.log(nodePid + '---pid');
+        var path = sNodes.name; //选中节点的名字
+        node = sNodes.getParentNode();//获取父节点
+        if (node) {
+            //判断是否还有父节点
+            while (node) {
+                path = node.name + "-" + path;
+                node = node.getParentNode();
+            }
+        } else {
+            $(".layout-panel-center .panel-title").text(sNodes.name);
+        }
+        groupid = sNodes.pId ;//父节点的id
+        if(sNodes.level != 0){
+            var url = "{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfid;
+            tableItem.ajax.url(url).load();
+            $("#tableContent .dataTables_wrapper").css('display','block');
+            $("#tableContent .tbcontainer").css('display','block');
+            $(".layout-panel-center .panel-title").text("当前路径:" + path);
+        }else if(sNodes.level == 0){
+            var url = "{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id=";
+            tableItem.ajax.url(url).load();
+            $("#tableContent .dataTables_wrapper").css('display','none');
+            $("#tableContent .tbcontainer").css('display','none');
+            $(".layout-panel-center .panel-title").text("");
+        }
+        clickTreeId = selfid;
+        procedureId = selfid;
+    }
+
+    //点击新增控制节点
+    $(".mybtn #test3").click(function () {
+        layer.open({
+            type: 2,
+            title: '添加控制点信息',
+            shadeClose: true,
+            area: ['780px', '550px'],
+            content: '{:url("addcontrollpoint")}',
+            success: function(layero, index){
+                var body = layer.getChildFrame('body', index);
+                body.find("#denId").val(procedureId);
+            },
+            end:function () {
+                tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfid).load();
+            }
+        });
+    });
+
+    //点击编辑模板
+    function editFile(id) {
+        layer.open({
+            type: 2,
+            title: '编辑控制点信息',
+            shadeClose: true,
+            area: ['780px', '550px'],
+            content: '{:url("addcontrollpoint")}?id='+id,
+            end:function () {
+                tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfid).load();
+            }
+        });
+    };
+
+    //点击删除模板
+    function delFile(id) {
+        console.log(id);
+        layer.confirm('该操作会将数据删除，是否确认删除？', function(index){
+            $.ajax({
+                type: "post",
+                url: "{:url('library/delcontrolpoint')}",
+                data: {id: id},
+                success: function (res) {
+                    if(res.code == 1){
+                        console.log(res)
+                        layer.msg("删除成功！")
+                        tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfid).load();
+                    }else if(res.code==0){
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+            layer.close(index);
+        });
+    };
+
+</script>
+</html>
+

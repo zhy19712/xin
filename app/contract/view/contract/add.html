@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>fengning_main</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="__PUBLIC__/jquery/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="__PUBLIC__/layui/layui.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <style>
+        #memberAdd{
+            padding-bottom: 15px;
+        }
+
+        #memberAdd .layui-form-label{
+            width: 100px;
+            padding: 5px 15px;
+        }
+
+        #memberAdd .layui-form-item .layui-input-inline{
+            width: 200px;
+        }
+
+        #memberAdd .layui-form-item {
+            margin-bottom: 8px;
+        }
+
+        #memberAdd .layui-form-item .layui-inline {
+            margin-top: 10px;
+        }
+        input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+            -webkit-appearance: none !important;
+        }
+        input[type="number"]{
+            -moz-appearance:textfield;
+        }
+    </style>
+    <body>
+<div class="row">
+    <div class="col-sm-12" style="background-color:#fff;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5></h5>
+            </div>
+            <div class="ibox-content">
+                <!--新增用户信息开始-->
+                <form class="layui-form" name="memberAdd" id="memberAdd" method="post"  action="#" onsubmit="return false">
+                    <input type="hidden" name="id" id="addId" style="display: none;">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">合同编号</label>
+                            <div class="layui-input-inline">
+                                <input type="tel" name="contractCode" placeholder="合同编号" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">合同名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="contractName" placeholder="合同名称" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">甲方</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="firstParty"  placeholder="甲方" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">乙方</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="secondParty" placeholder="乙方" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">合同金额(万元)</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="contractAmount" lay-verify="required" autocomplete="off" class="layui-input" placeholder="合同金额(万元) 只能填数字">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">乙方法定代表人</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="secondPartyCorporation" lay-verify="required" autocomplete="off" class="layui-input" placeholder="乙方法定代表人">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">甲方法定代表人</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="firstPartyCorporation" placeholder="甲方法定代表人"  lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">编制人</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="createUser" placeholder="编制人" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">签订日期</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="signingDate" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">乙方项目经理</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="secondProjectManager" placeholder="乙方项目经理" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">甲方联系人</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="firstLinkMan" placeholder="甲方联系人" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">合同工期</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="contractDay" placeholder="合同工期 只能填数字" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">合同开工日期</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="startDate" id="date1" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">合同竣工日期</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="endDate" id="date2" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">保质期(月)</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="contractLive" placeholder="保质期(月) 只能填数字" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">项目名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="projectName" placeholder="项目名称" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">乙方简称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="secondPartShortName" placeholder="乙方简称" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="col-xs-12" style="text-align: center;">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                            <button type="reset" class="layui-btn layui-btn-danger"><i class="fa fa-close"></i> 返回</button>
+                            <!--<a class="layui-btn layui-btn-danger layui-layer-close layui-layer-close1" href="javascript:;"><i class="fa fa-close"></i>返回</a>-->
+                        </div>
+                    </div>
+                </form>
+                <!--新增用户信息结束-->
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script id="nameLay">
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#date'
+        });
+        laydate.render({
+            elem: '#date1'
+        });
+        laydate.render({
+            elem: '#date2'
+        });
+
+        $('input[type=number]').keypress(function(e) {
+            if (!String.fromCharCode(e.keyCode).match(/[0-9\.]/)) {
+                return false;
+            }
+        });
+
+        //自定义验证规则
+        form.verify({
+            // contractDay: [/^[0-9]*$/, '合同工期只能是数字！']
+            // ,phone: [/^1[3|4|5|7|8]\d{9}$/, '只能是数字！']
+            // ,signingDate: [/^1[3|4|5|7|8]\d{9}$/, '日期只能是数字！']
+            // ,contractLive: [/^1[3|4|5|7|8]\d{9}$/, '保质期只能是数字！']
+            // ,contractAmount: [/^1[3|4|5|7|8]\d{9}$/, '合同金额只能是数字！']
+        });
+
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        function closWin() {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        };
+        function refreshSub() {
+            parent.admin_table.ajax.url("{:url('contract/common/datatablesPre?tableName=contract')}").load();
+        }
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            console.log($("#addId").val())
+            console.log(data);
+            if($("#addId").val() == ''){
+                console.log($("#addId").val())
+                $.ajax({
+                    type: "Post",
+                    url:"{:url('addoredit')}",
+                    data:data.field,
+                    success: function (res) {
+                        console.log(res)
+                        if(res.code == 1) {
+                            refreshSub();
+                            parent.layer.msg('保存成功！');
+                            closWin();
+                        }
+                    },
+                    error: function (data) {
+                        debugger;
+                    }
+                })
+            }else if($("#addId").val() != ''){
+                $.ajax({
+                    type: "Post",
+                    url:"{:url('addoredit')}",
+                    data:data.field,
+                    success: function (res) {
+                        console.log(res)
+                        if(res.code == 1) {
+                            refreshSub();
+                            parent.layer.msg('编辑成功！');
+                            closWin();
+                        }
+                    },
+                    error: function (data) {
+                        debugger;
+                    }
+                })
+            }
+            // parent.layer.tips('Look here', '#memberAdd', {time: 1000});
+            return false;
+        });
+        $('button[type="reset"]').click(function () {
+            closWin();
+        })
+
+    });
+</script>
+</html>

@@ -1,0 +1,40 @@
+.page-head{
+    padding-top: 10px;
+    border-bottom: 1px solid #eeeeee;
+}
+.versonBody table tr td ,.versonBody table tr th{
+    text-align: center!important;
+}
+#deletePlan{
+    display: none;
+    text-align: center;
+    line-height: 180px;
+    font-size: 18px;
+    color: darkred;
+}
+.bottom{
+    margin: 20px auto;
+}
+
+.dataTables_wrapper, .tbcontainer {
+    display: block;
+}
+#layuiRow table.dataTable thead .sorting_asc {
+    background-image: none !important;
+}
+#content{
+    width: 100%;
+    height: 100%;
+}
+#versonPro_wrapper{
+    height: 100% !important;
+}
+#layuiRow .dataTables_scroll{
+    height: 100%;
+}
+#layuiRow .dataTables_scrollBody{
+    max-height: none!important;
+    width: 100%;
+    height: calc(100% - 135px)!important;
+    border-bottom: none!important;
+}

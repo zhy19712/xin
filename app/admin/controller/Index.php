@@ -19,19 +19,19 @@ class Index extends Permissions
         $permissions = explode(',',$permissions);
 
         foreach ($menu as $k => $val) {
-            if($val['type'] == 1 and $val['is_display'] == 1 and !in_array($val['id'],$permissions)) {
-                unset($menu[$k]);
-            }
+        	if($val['type'] == 1 and $val['is_display'] == 1 and !in_array($val['id'],$permissions)) {
+        		unset($menu[$k]);
+        	}
         }
 
         //添加url
         foreach ($menu as $key => $value) {
-            if(empty($value['parameter'])) {
-                $url = url($value['module'].'/'.$value['controller'].'/'.$value['function']);
-            } else {
+        	if(empty($value['parameter'])) {
+        		$url = url($value['module'].'/'.$value['controller'].'/'.$value['function']);
+        	} else {
                 $url = url($value['module'].'/'.$value['controller'].'/'.$value['function'],$value['parameter']);
-            }
-            $menu[$key]['url'] = $url;
+        	}
+        	$menu[$key]['url'] = $url;
         }
         $menus = $this->menulist($menu);
         $this->assign('menus',$menus);
@@ -44,33 +44,33 @@ class Index extends Permissions
 
 
     protected function menulist($menu){
-        $menus = array();
-        //先找出顶级菜单
-        foreach ($menu as $k => $val) {
-            if($val['pid'] == 0) {
-                $menus[$k] = $val;
-            }
-        }
-        //通过顶级菜单找到下属的子菜单
-        foreach ($menus as $k => $val) {
-            foreach ($menu as $key => $value) {
-                if($value['pid'] == $val['id']) {
-                    $menus[$k]['list'][] = $value;
-                }
-            }
-        }
-        //三级菜单
-        foreach ($menus as $k => $val) {
-            if(isset($val['list'])) {
-                foreach ($val['list'] as $ks => $vals) {
-                    foreach ($menu as $key => $value) {
-                        if($value['pid'] == $vals['id']) {
-                            $menus[$k]['list'][$ks]['list'][] = $value;
-                        }
-                    }
-                }
-            }
-        }//dump($menus);die;
-        return $menus;
-    }
+		$menus = array();
+		//先找出顶级菜单
+		foreach ($menu as $k => $val) {
+			if($val['pid'] == 0) {
+				$menus[$k] = $val;
+			}
+		}
+		//通过顶级菜单找到下属的子菜单
+		foreach ($menus as $k => $val) {
+			foreach ($menu as $key => $value) {
+				if($value['pid'] == $val['id']) {
+					$menus[$k]['list'][] = $value;
+				}
+			}
+		}
+		//三级菜单
+		foreach ($menus as $k => $val) {
+			if(isset($val['list'])) {
+				foreach ($val['list'] as $ks => $vals) {
+					foreach ($menu as $key => $value) {
+						if($value['pid'] == $vals['id']) {
+							$menus[$k]['list'][$ks]['list'][] = $value;
+						}
+					}
+				}
+			}
+		}//dump($menus);die;
+		return $menus;
+	}
 }

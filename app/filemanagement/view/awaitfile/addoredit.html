@@ -1,0 +1,458 @@
+{include file="../../public/common_header"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+
+    #tableContent .mybtn i.fa:before{
+        background: #00c0ef;
+        color: #ffffff;
+    }
+    #tableContent .mybtn{
+        float: right;
+        background-color: #00c0ef;
+    }
+    #tableContent .mybtn{
+        margin-right: 0%;
+        margin-left: 10px;
+        margin-bottom: 5px;
+    }
+    #tableContent table.dataTable.no-footer {
+        border-top: 1px dotted;
+    }
+    #tableContent .select-color {
+        background-color: #FDD5B5 !important;
+    }
+    #tableContent .dataTables_wrapper .dataTables_scroll {
+        position: relative;
+        top: 15px;
+        border-top: 1px dotted #cecece;
+    }
+    #tableContent #tableItem tr td a{
+        color: #337ab7;
+    }
+    #tableContent .dataTables_wrapper, .tbcontainer {
+         display: block;
+    }
+    #tableContent table.dataTable thead .sorting_asc {
+        background-image: none !important;
+    }
+    #memberAdd{
+        margin-top: 10px;
+    }
+    #memberAdd .layui-form-item .layui-input-inline {
+        float: left;
+        width: 420px;
+        margin-right: 10px;
+    }
+    #memberAdd .layui-form-item {
+        margin-bottom: 6px;
+    }
+    #memberAdd #txtArea {
+        width: 90.3%;
+        height: 25px;
+        padding: 8px;
+    }
+    #memberAdd .layui-input[readonly]{
+        background: #FFFFFF !important;
+    }
+    #tableSelect .even {
+        background-color: #ffffff;
+    }
+    #tableSelect .odd {
+        background-color: #f9f9f9;
+    }
+    .nav{
+        float: left;
+        margin-left: 3px;
+        padding-top: 6px;
+        font-weight: 700;
+    }
+    .nav>div{
+        font-weight: 700;
+    }
+    .layui-layer-content {
+        padding: 0px 5px;
+    }
+    /*#tableItem_wrapper{*/
+        /*height: 90% !important;*/
+    /*}*/
+    /*#tableSelect .dataTables_scroll{*/
+        /*height: 90%;*/
+    /*}*/
+    /*#tableSelect .dataTables_scrollBody{*/
+        /*max-height: none!important;*/
+        /*width: 100%;*/
+        /*height: calc(100% - 34px)!important;*/
+        /*border-bottom: none!important;*/
+    /*}*/
+    #tableContent .colorRed i.fa:before {
+        background: #00c0ef;
+        color: #ffffff;
+    }
+    #tableContent .colorRed{
+        float: right;
+        background-color: #00c0ef;
+    }
+    #tableContent .colorRed{
+        margin-right: .5%;
+        margin-left: 10px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+
+</style>
+
+<div id="tableContent" data-options="region:'center',title:''" style="padding:5px;background:#ffffff;">
+    <div class="easyui-layout" data-options="fit:true">
+        <div id="tableTop" data-options="region:'north',split:true" style="width:100%;height: 61.5%; position: relative;">
+            <div id="config">
+                <button class="layui-btn layui-btn-sm colorRed" onclick="inheritSet()"><i class="fa fa-plus-circle"></i>&nbsp;继承设置</button>
+                <button class="layui-btn layui-btn-sm colorRed" onclick="saveBuild()"><i class="fa fa-mercury"></i>&nbsp;保存并新建</button>
+                <button class="layui-btn layui-btn-sm colorRed" onclick="saveFile()"><i class="fa fa-save"></i>&nbsp;保存</button>
+            </div>
+            <!--新增用户信息开始-->
+            <form class="layui-form" name="memberAdd" id="memberAdd" method="post"  action="#" onsubmit="return false">
+                <input type="hidden" name="id" id="addId" style="display: none;">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">全宗号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="contractCode" placeholder="全宗号" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">目录代号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="contractName" placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">分类号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="contractName" placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">分类名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="firstParty"  placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">案卷号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="secondParty" placeholder="案卷号" disabled lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">卷内序号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="secondParty" placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">文件档号</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="contractAmount" placeholder="" disabled lay-verify="required" disabled autocomplete="off" class="layui-input" placeholder="合同金额(万元) 只能填数字">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">文件编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="secondPartyCorporation" placeholder="文件编号" lay-verify="required" autocomplete="off" class="layui-input" placeholder="乙方法定代表人">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">文件题名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="secondPartyCorporation" placeholder="文件题名" lay-verify="required" autocomplete="off" class="layui-input" placeholder="乙方法定代表人">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">责任者</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="firstPartyCorporation" placeholder="责任者"  lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">成文日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="signingDate" id="date1" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">                        </div>
+                        </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">页数/页号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="createUser" placeholder="页数/页号" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">保管期限</label>
+                        <div class="layui-input-inline">
+                            <select name="term" id="term" lay-filter="term">
+                                <option value="">-请选择-</option>
+                                <option value="1">永久</option>
+                                <option value="2">30年</option>
+                                <option value="2">10年</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">密级</label>
+                        <div class="layui-input-inline">
+                            <select name="rank" id="rank" lay-filter="rank">
+                                <option value="">-请选择-</option>
+                                <option value="1">工作秘密</option>
+                                <option value="2">商密二级</option>
+                                <option value="2">商密一级</option>
+                                <option value="2">秘密</option>
+                                <option value="2">机密</option>
+                                <option value="2">绝密</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">归档日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="signingDate" id="date2" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">归档份数</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="contractDay" placeholder="" value="一正一副" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">互见号</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="mutualNum" placeholder="互见号" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">库位号</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="contractDay" placeholder="库位号" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">文本页数</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="contractDay" placeholder="" value="0" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">照片张数</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="contractDay" placeholder="照片张数" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">照片张数</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="contractDay" placeholder="" value="0" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">图幅</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="projectName" placeholder="图幅" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">折合A4张数</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="projectName" placeholder="" value="0" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">录入人</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="secondPartShortName" placeholder="" disabled lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">内容描述</label>
+                    <textarea name="remark" id="txtArea" placeholder="内容描述"></textarea>
+                </div>
+
+                <!--<div class="layui-form-item">-->
+                    <!--<div class="col-xs-12" style="text-align: center;">-->
+                        <!--<button class="layui-btn" lay-submit="" lay-filter="demo1"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;-->
+                        <!--<button type="reset" class="layui-btn layui-btn-danger"><i class="fa fa-close"></i> 返回</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </form>
+            <!--新增用户信息结束-->
+        </div>
+        <div id="tableSelect" data-options="region:'center',title:''" style="padding:5px;background:#ffffff;">
+            <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                <thead>
+                <tr>
+                    <th>电子文件名</th>
+                    <th>文件部位</th>
+                    <!--<th>文件大小</th>-->
+                    <th>类型代码</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+            <div class="tbcontainer">
+                <div class="mark"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{include file="../../public/common_footer"}
+<script type="text/javascript">
+
+    //组织结构表格
+    var tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        retrieve: true,
+        processing: true,
+        serverSide: true,
+        // "scrollY": "200px",
+        // "scrollCollapse": "true",
+        ajax: {
+            "url": "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="
+        },
+        dom: 'l' +
+        '<"mybtn layui-btn layui-btn-sm">rtip'+
+        '<"nav">rtip',
+        columns: [
+            {
+                name: "id"
+            },
+            {
+                name: "docname"
+            },
+            {
+                name: "nickname"
+            },
+            {
+                name: "create_time"
+            },
+            {
+                name: "status"
+            }
+
+        ],
+        columnDefs: [
+            {
+                "targets":[0],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets":[1],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets":[2],
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets":[3],
+                "searchable": false,
+                "orderable": false,
+                render: function (data, type, row) {
+                    if (data == 1) {
+                        return "已归档";
+                    }
+                    return "待归档";
+                }
+            },
+            {
+                "targets": [4],
+                "searchable": false,
+                "orderable": false,
+                "render": function (data, type, row) {
+                    var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='delFile("+row[4]+")'><i title='删除' class='fa fa-trash'></i></a>";
+                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='downFile("+row[4]+")'><i title='下载' class='fa fa-download'></i></a>";
+                    // html += "<a type='button' class='' style='margin-left: 5px;' onclick='AssFile(this)'><i title='关联文件' class='fa fa-chain'></i></a>";
+                    // html += "<a type='button' class='' style='margin-left: 5px;' onclick='reviewHistory(this)'><i title='审阅历史' class='fa fa-file-text'></i></a>";
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItem_length').insertBefore(".mark");
+            $('#tableItem_info').insertBefore(".mark");
+            $('#tableItem_paginate').insertBefore(".mark");
+        }
+    });
+
+    //点击上传文件
+    $(".mybtn").html("<div id='test3'><i class='fa fa-check'></i>选择文件</div>");
+    $(".nav").html("<div id='fileLeft'><i class='fa fa-file-text-o'></i> &nbsp;电子文件挂接</div>");
+
+    //添加
+    $("#tableContent").on("click",".mybtn #test3",function () {
+        layer.open({
+            type: 2,
+            title:"电子文件",
+            shadeClose: true,
+            area: ['80%', '80%'],
+            content: '{:url("filemanagement/awaitfile/selectfile")}',
+            // end:function () {
+            //     onlineFill.ajax.url("{:url('/quality/common/datatablesPre')}?tableName=quality_form_info&DivisionId="+selfidUnit+"&ProcedureId="+conThisId+"&cpr_id="+clickId).load();
+            // }
+        });
+    });
+
+
+    //查询提交
+    layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
+        var form = layui.form
+            ,layer = layui.layer;
+    });
+
+    //继承设置
+    function inheritSet() {
+        layer.msg("继承设置")
+    }
+
+    //保存并新建
+    function saveBuild() {
+        layer.msg("保存并新建")
+    }
+
+    //保存
+    function saveFile() {
+        layui.layer.msg("保存")
+    }
+
+</script>
+</html>

@@ -1,0 +1,401 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/quality/division/index.css">
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
+<div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
+    <div class="ztree-title">
+        <i title="新增节点" class="fa fa-lg fa-sitemap" id="addNode"></i>
+        <i title="编辑节点" class="fa fa-lg fa-pencil" id="editNode"></i>
+        <i title="删除节点" class="fa fa-lg fa-trash" id="delNode"></i>
+        <i title="展开所有" class="fa fa-lg fa-plus-square" id="openNode"></i>
+        <i title="收起所有" class="fa fa-lg fa-minus-square" id="closeNode"></i>
+        <i title="导入" class="fa fa-lg fa-external-link" id="importExcel"></i>
+    </div>
+    <ul class="ztree" id="ztree"></ul>
+</div>
+<div class="content" data-options="region:'center',title:''">
+    <div class="easyui-layout" data-options="fit:true">
+        <div class="" data-options="region:'north',title:'单元工程段号(单元划分)',split:true" style="height: 30%;">
+            <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                <thead>
+                <tr>
+                    <th>单元工程流水号</th>
+                    <th>单元工程部位</th>
+                    <th>系统编码</th>
+                    <th>关键部位</th>
+                    <th>起止桩号</th>
+                    <th>开工日期</th>
+                    <th>完工日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="" data-options="region:'center',title:'三维视图'" style="height: 70%;">
+            <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
+
+
+
+                // //设置模型的可见性，0为不可见，1为可见。通过模型id进行关联。
+                // RealBimOcx.SetHugeObjSubValidStateBegin();
+                // RealBimOcx.SetHugeObjSubValidStateInfo(uObjSubID, 1);
+                // RealBimOcx.SetHugeObjSubValidStateEnd();
+                // RealBimOcx.SetAllHugeObjSubValidState(0); //全部不显示
+
+
+                //点击树的时候加载
+                //RealBimOcx.SetAllHugeObjSubValidState(0); //全部不显示
+                RealBimOcx.SetHugeObjSubValidStateBegin();
+                   // for(var i = 0;i<arr.length;i++){        //多层关联可见性
+                        RealBimOcx.SetHugeObjSubValidStateInfo(uObjSubID, 1);
+                    //}
+                RealBimOcx.SetHugeObjSubValidStateEnd();
+
+                //点击表格数据的时候 加载
+               // RealBimOcx.FocusCameraToComponent(uObjSubID,3);
+
+
+                //获取一个构件的可见性状态
+                //ULONG uObjSubID:构件ID
+                //返回值表示指定构件的有效性:(0表示构件无效，1表示构件有效）
+                // ULONG GetAHugeObjSubValidState(ULONG uObjSubID);
+
+
+
+                //进入闪烁构件的设置状态
+                //FlickerSwitchTimes:闪烁次数
+                //FlickerInterval：闪烁时间间隔
+                //Alpha0，AlphaAmp0，RGBBlendInfo0，Alpha1，AlphaAmp1，RGBBlendInfo1：两种闪烁状态的透明度，透明度混合系数，以及颜色和颜色混合系数，与AddSubClrInfo()的后三个参数用法相同
+                // void SetSubObjFlickerBegin(LONG FlickerSwitchTimes,LONG FlickerInterval, BYTE Alpha0, BYTE AlphaAmp0, ULONG RGBBlendInfo0, BYTE Alpha1, BYTE AlphaAmp1, ULONG RGBBlendInfo1);
+
+                // RealBimOcx.SetSubObjFlickerBegin(20,1000,255,255,0xff87ceeb,255,255,0x8000008b);
+                // RealBimOcx.AddFlickerSubObjects(uObjSubID);
+                // RealBimOcx.SetSubObjFlickerEnd();
+
+
+                // 设置透明度和颜色：0为全透明，1为不透明
+                if(!isCtrlDown){
+                    RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                    RealBimOcx.BatchAddSubClrInfoBegin();
+                    RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);    //第二个参数为透明度
+                    RealBimOcx.BatchAddSubClrInfoEnd();
+                }else{
+                    RealBimOcx.BatchAddSubClrInfoBegin();
+                    RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);   //第二个参数为透明度
+                    RealBimOcx.BatchAddSubClrInfoEnd();
+                }
+
+
+
+                //设置最佳视角
+               // RealBimOcx.SetSuitableCam();
+
+
+            </script>
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="90%"></object>
+
+            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+                // RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.58:8008/default.aspx?dir=url_res02&path=","res_fengning_kw_03");
+
+                //设置服务url
+                //RealBimOcx.SwitchBIMSceneSimple("F:\\","res_fengning_kw_03");
+                RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+                RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+
+                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+            </script>
+
+            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                    //RealBimOcx.SetSceHugeObjVisible(false);
+                }
+
+
+                //加载全部模型
+                window.getModel = function (treeNode) {
+                    var add_id = treeNode.add_id;
+                    $.ajax({
+                        url: "./modelPictureAllNumber",
+                        type: "post",
+                        data: {
+                            add_id:add_id
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            if(res.numberArr==''){
+                                RealBimOcx.SetAllHugeObjSubValidState(0);
+                            }else{
+                                RealBimOcx.SetAllHugeObjSubValidState(0);
+                                RealBimOcx.SetHugeObjSubValidStateBegin();
+                                for(var i = 0;i<res.numberArr.length;i++){
+                                    RealBimOcx.SetHugeObjSubValidStateInfo(res.numberArr[i], 1);
+                                }
+                                RealBimOcx.SetHugeObjSubValidStateEnd();
+                                RealBimOcx.SetSuitableCam();
+                            }
+                        }
+                    });
+                }
+
+                //加载已关联模型
+                $("#tableItem").on("click","tr",function(){
+                    var data=window.tableItem.row(this).data();
+                    var id = data[7];
+                    $.ajax({
+                        url: "./modelPicturePreview",
+                        type: "post",
+                        data: {
+                            id:id
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            if(res.number==''){
+                                RealBimOcx.SetAllHugeObjSubValidState(0);
+                            }else{
+                                RealBimOcx.SetAllHugeObjSubValidState(0);   //设置模型全部不可见
+                                RealBimOcx.SetHugeObjSubValidStateBegin();  //启用模型可见
+                                RealBimOcx.SetHugeObjSubValidStateInfo(res.number, 1); //设置单个模型可见
+                                RealBimOcx.SetHugeObjSubValidStateEnd();   //停用模型可见
+                                RealBimOcx.SetSuitableCam();
+                                //RealBimOcx.FocusCameraToComponent(res.number,1); //3：视角距离
+
+                            }
+                        }
+                    })
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<div data-options="region:'east',title:'二维码',split:true,collapsed:true" id="qrCode" style="width:260px;">
+
+</div>
+<!-- 新增节点 -->
+<form action="" class="layui-form" id="nodeForm" style="display: none">
+    <input type="hidden" name="add_id" value="">
+    <input type="hidden" name="edit_id" value="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="d_code" placeholder="请输入编码" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="d_name" placeholder="请输入名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">分类</label>
+            <div class="layui-input-inline">
+                <select name="type" lay-verify="required">
+                    <option value="1">单位工程</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">主要单位工程</label>
+            <div class="layui-input-inline">
+                <input type="checkbox" name="primary" lay-skin="switch" lay-filter="toggle" lay-text="是|否" value="0">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph" id="enType">
+            <label class="layui-form-label">工程类型</label>
+            <div class="layui-input-inline">
+                <input type="text" name="en_type" placeholder="请选择工程类型" autocomplete="off" class="layui-input typeZtreeBtn" readonly>
+            </div>
+            <div class="layui-form-mid layui-word-aux typeZtreeBtn">
+                <i class="fa fa-navicon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-block">
+            <textarea name="remark" placeholder="请输入描述" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="save" id="save">保存</button>
+            <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+        </div>
+    </div>
+</form>
+<!-- 新增单元信息 -->
+<form action="" class="layui-form unit" id="unit" style="display: none">
+    <input type="hidden" name="type_ztree">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">单元工程流水号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="serial_number_before" placeholder="编码" autocomplete="off" class="layui-input" readonly>
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" name="serial_number" placeholder="流水号" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">单元工程部位</label>
+            <div class="layui-input-inline">
+                <input type="text" name="site" placeholder="请输入单元工程部位" lay-verify="required" autocomplete="off"lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">系统编码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="coding" placeholder="系统编码" lay-verify="required" autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">施工依据</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ma_bases" placeholder="请选择施工依据" lay-verify="required" autocomplete="off" class="layui-input maBasesBtn" readonly>
+            </div>
+            <div class="layui-form-mid layui-word-aux icon maBasesBtn">
+                <i class="fa fa-navicon"></i>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">补充依据</label>
+            <div class="layui-input-inline">
+                <input type="text" name="su_basis" placeholder="请输入补充依据" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">关键部位</label>
+            <div class="layui-input-inline">
+                <select name="hinge" lay-verify="required">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">工程类型</label>
+            <div class="layui-input-inline">
+                <input type="text" name="en_type" placeholder="请选择工程类型" lay-verify="required" autocomplete="off" class="layui-input typeZtreeBtn" readonly>
+            </div>
+            <div class="layui-form-mid layui-word-aux icon typeZtreeBtn">
+                <i class="fa fa-navicon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">高程（起）</label>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="el-start">EL.</span>
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" name="el_start" placeholder="请输入高程（起）" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">高程（止）</label>
+            <div class="layui-form-mid layui-word-aux" >
+                <span class="el-cease">EL.</span>
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" name="el_cease" placeholder="请输入高程（止）" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">工程量</label>
+            <div class="layui-input-inline">
+                <input type="text" name="quantities" placeholder="请输入工程量" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">起止桩号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="pile_number" placeholder="请输入起止桩号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">开工日期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="start_date" placeholder="请选择开工日期" autocomplete="off" class="layui-input" id="start_date">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">完工日期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="completion_date" placeholder="请选择完工日期" autocomplete="off" class="layui-input" id="completion_date">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="save" id="saveUnit">保存</button>
+            <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+        </div>
+    </div>
+</form>
+<div id="ztreeLayer" style="display: none">
+    <ul class="ztree" id="typeZtree"></ul>
+</div>
+<!-- 添加施工依据 -->
+<div id="maBasesLayer" class="ma-bases-layer" style="display: none">
+    <table id="maBasesItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>
+                <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
+            </th>
+            <th>图号</th>
+            <th>图名</th>
+            <th>图纸张数</th>
+            <th>折合A1图纸</th>
+            <th>设计</th>
+            <th>校核</th>
+            <th>审查</th>
+            <th>完成日期</th>
+            <th>标段</th>
+            <th>图纸类别</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<!-- 数据导入 -->
+<div id="importExcelLayer" class="import-excel" style="display: none">
+    <div class="btn-wrap">
+        <a class="layui-btn layui-btn-warm" id="importExcelBtn">选择文件</a>
+        <a class="layui-btn layui-btn-normal" id="exceldownloadBtn"><i class="fa fa-download"></i>模板下载</a>
+    </div>
+    <p>提示：选择文件之前，请先下载模版，按照模版的样式进行导入。</p>
+</div>
+<div id="form_container" style="display: none;"></div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/quality/division/index.js"></script>
+<script>
+    //键盘事件
+    $(document).keyup(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        if ( KeyCode == 27 ){
+            RealBimOcx.AddAnchorEnd();
+            RealBimOcx.CreateMarkerEnd("", 0, 0, "", true);
+            RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+        }
+    });
+</script>
+</body>
+</html>
