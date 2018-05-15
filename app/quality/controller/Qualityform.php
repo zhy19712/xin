@@ -57,15 +57,15 @@ class Qualityform extends Permissions
     {
         //获取模板路径
         //获取控制点信息，组合模板路径
-        $cp = $this->divisionControlPointService->with('norm_controlpoint')->where('id', $cpr_id)->find();
-        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['norm_controlpoint']['code'] . $cp['norm_controlpoint']['name'] . ".html";
+        $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['controlpoint']['code'] . $cp['controlpoint']['name'] . ".html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
         if (!file_exists($formPath)) {
             return "模板文件不存在";
         }
         $htmlContent = file_get_contents($formPath);
         $htmlContent = str_replace("{id}", $id, $htmlContent);
-        $htmlContent = str_replace("{templateId}", $cp['norm_controlpoint']['qualitytemplateid'], $htmlContent);
+        $htmlContent = str_replace("{templateId}", $cp['controlpoint']['qualitytemplateid'], $htmlContent);
         $htmlContent = str_replace('{divisionId}', $cp['division_id'], $htmlContent);
         $htmlContent = str_replace('{isInspect}', $cp['type'] ? 'true' : 'false', $htmlContent);
         $htmlContent = str_replace('{procedureId}', $cp['ma_division_id'], $htmlContent);
