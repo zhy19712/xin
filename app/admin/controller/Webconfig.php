@@ -37,7 +37,6 @@ class Webconfig extends Permissions
             if(false == Db::name('admin_webconfig')->where('web','web')->update($post)) {
                 return $this->error('提交失败');
             } else {
-                addlog();
                 return $this->success('提交成功','admin/webconfig/index');
             }
         }
