@@ -12,8 +12,12 @@
 namespace app\approvalconfig\model;
 use think\exception\PDOException;
 use \think\Model;
+use think\Db;
 
 class ApprovalconfigModel extends Model
 {
-
+    /**
+     * 首先查询所有的填报表单
+     * @throws \think\Exception
+     */
 }
