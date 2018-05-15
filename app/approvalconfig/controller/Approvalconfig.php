@@ -85,9 +85,12 @@ class Approvalconfig extends Permissions
                 }
                 $new_name = iconv("utf-8","gb2312",$file_obj['code'].$file_obj['name']);
                 $filePath = ROOT_PATH . 'public' . DS . 'Data' . DS . 'form' . DS . 'quality' . DS . $new_name . '.docx';
+
                 if(!file_exists($filePath)){
                     return json(['code' => '-1','msg' => '文件不存在']);
                 }
+
+                $filePath = iconv('UTF-8', 'GB2312', $filePath);
 
                 //设置临时文件，避免C盘Temp不可写报错
         //        Settings::setTempDir('temp');
