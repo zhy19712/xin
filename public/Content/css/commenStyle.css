@@ -1,0 +1,4250 @@
+﻿.layBody {
+    padding: 5px;
+    margin: 0;
+    padding-bottom: 15px;
+    min-height: 400px;
+    height: 100%;
+}
+body {
+    background-color:white !important;
+    overflow:hidden;
+     padding: 5px!important;
+     padding-bottom: 15px!important;
+}
+.ellipse .btn {
+    line-height: 1.02857;
+    border-radius: 60px;
+    margin-top: 0px;
+    font-size: 12px;
+}
+.fontSize12 {
+    font-size:12px;
+}
+.popBodyLay {
+    padding: 5px;
+    background-color: white;
+}
+.height380{
+    height:380px;
+}
+.popBody {
+    background-color: white;
+    font-size: 12px;
+}
+
+.whiteLay .l-layout-collapse-left,
+.l-layout-collapse-right {
+    background: white none repeat scroll 0 0
+}
+
+.whiteLay .l-layout-header {
+    display: none;
+}
+.overflowYAuto{
+    overflow-y:auto!important
+}
+.ztree {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.layBody .btn {
+    line-height: 1.02857;
+    border-radius: 60px;
+    margin-top: 0px;
+    font-size: 12px;
+}
+.fontWeight700 {
+    font-weight: 700;
+}
+.marginTopF7{
+    margin-top:-7px!important
+}
+.baseTab .table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+    background-color: #fff7e1;
+}
+
+.baseTab table {
+    table-layout: fixed;
+}
+.baseTab .table > thead > tr > th{
+    border-left:0;
+    border-right:0
+}
+.baseTab td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-size: 12px;
+}
+
+.baseTab th {
+    text-align: center;
+    font-weight: bold;
+}
+
+.bfa {
+    color: #3C8DBC;
+    margin:0 5px;
+}
+
+/*组织机构*/
+
+.orgPath {
+    float: left;
+    margin-top: 8px;
+    font-weight: 700;
+    font-size: 12xp;
+    margin-left: 5px;
+}
+
+.org Label {
+    /*margin-left: 10px;*/
+    float:right;
+    margin-right:10px;
+}
+
+.height70 {
+    height: 70px!important
+}
+.normalBtn {
+    width:63px;
+    height:26px;
+    line-height: 1.02857;
+    border-radius: 60px !important;
+    font-size:12px;
+}
+.normalBtn2 {
+    padding: 0;
+    margin-top: 7px !important;
+}
+.org p1 {
+    float: right;
+    color: red;
+    font-size: 12px;
+    margin-left: 5px;
+}
+.colorRed {
+    color:red;
+}
+div.chosen-container.chosen-container-single {
+    width: 100% !important;
+}
+
+.searchNone .chosen-search {
+    display: none;
+}
+
+.form-control.error {
+    border: 1px solid #cc5965;
+}
+
+/*必选框*/
+
+.has-error .form-control-feedback {
+    margin-top: 3px;
+    margin-right: -10px;
+}
+
+.has-success .form-control-feedback {
+    margin-top: 3px;
+    margin-right: -10px;
+}
+
+/*组织机构*/
+
+p2 {
+    font-weight: 700
+}
+
+.height20 {
+    height: 20px
+}
+
+.layTools {
+    float: left;
+    margin-left: 5px;
+    margin-top: 4px;
+}
+
+.margin10 {
+    margin: 10px
+}
+
+.marginBottom0 {
+    margin-bottom: 0
+}
+
+.insideLay {
+    margin-top: -1px;
+    margin-left: -1px;
+}
+
+.rightDiv {
+    text-align: right;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.marginRight5 {
+    margin-right: 5px
+}
+
+.overflowAuto {
+    overflow: auto!important
+}
+.marginTop40{
+    margin-top:40px
+}
+.marginTop15 {
+    margin-top: 15px
+}
+
+.searchDiv {
+    width: 300px;
+    margin-top: -8px;
+    margin-left: 10px;
+}
+
+.fullWidth {
+    width: 100%
+}
+.height24 {
+    height:24px;
+}
+.width14 {
+    width: 14%
+}
+.borderRadius0 {
+    border-radius:0 !important;
+}
+.wait {
+    margin: 3px;
+}
+.marginTop2{
+    margin-top:2px!important
+}
+.marginLeft {
+    margin-left: 5px
+}
+.marginLeft1 {
+    margin-left: 1px !important;
+}
+.marginLeft4 {
+    margin-left: 4px
+}
+.marginLeft14 {
+    margin-left: 14px
+}
+.margin5 {
+    margin: 5px
+}
+
+.marginTop30 {
+    margin-top: 30px
+}
+.padding5and10 {
+    padding:5px 10px;
+}
+.clearBoth {
+    clear: both
+}
+
+.displayNone {
+    display: none!important
+}
+
+.diaplayNone {
+    display: none!important
+}
+
+.width15 {
+    width: 15%
+}
+.width35 {
+    width: 35%
+}
+.marginLeft2 {
+    margin-left: 2px;
+}
+.marginLeft3 {
+    margin-left: 3px;
+}
+.marginRightF3 {
+    margin-right: -3px;
+}
+.marginRight8 {
+    margin-right: 8px;
+}
+.marginRightF2 {
+    margin-right: -2px;
+}
+.btomDiv {
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+.marginTop200 {
+    margin-top: 200px;
+}
+
+.marginTop0 {
+    margin-top: 0 !important;
+}
+/*日历*/
+
+        .form-group { margin-bottom: 0; }
+
+        .datepicker-dropdown::before { border-width: 0 0px 7px; }
+
+        .datepicker-dropdown::after { border-width: 0; }
+        .input-group.date .input-group-addon i { margin: 0; }
+        /*日历*/
+/*标段管理*/
+
+.topSearch {
+    margin-left: 5px;
+    margin-top: 3px;
+    width: 300px;
+}
+
+.height25 {
+    height: 25px
+}
+.height45{
+    height:45px
+}
+.rightTools {
+    text-align: right;
+    margin-top: 3px;
+    margin-right: 10px;
+}
+
+.leftTools {
+    float: left;
+    margin-left: 5px;
+    margin-top: 4px;
+}
+
+.divBorder {
+    border: 1px solid #bed5f3;
+    padding: 5px 15px 5px 5px;
+}
+
+.marginTop20 {
+    margin-top: 20px
+}
+
+.height190 {
+    height: 190px;
+}
+
+.pTitle {
+    margin-top: -15px;
+    background-color: white;
+    width: 55px;
+    font-weight: 700;
+}
+.pTitle2 {
+    margin-top: -15px;
+    background-color: white;
+    width: 70px;
+    font-weight: 700;
+}
+.cenLeft {
+    width: 200px;
+    float: left;
+    height: 100%;
+    border-right: 1px solid #BED5F3;
+    border-top: 1px solid #BED5F3;
+}
+
+.cenRight {
+    margin-left: 5px;
+    height: 100%;
+    float: left;
+    border-left: 1px solid #BED5F3;
+}
+.section label {
+    margin-left: 10px;
+    font-weight: normal;
+    color: black;
+}
+
+.section table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+div.chosen-container.chosen-container-multi {
+    width: 100%!important
+}
+.input-group-sm > .form-control, .input-group-sm > .input-group-addon, .input-group-sm > .input-group-btn > .btn { border-radius: 1px; }
+.btomHeight {
+    min-height: 220px;
+    margin-top: 15px;
+    padding-right: 2px
+}
+.paddingTop3 {
+    padding-top: 3px;
+}
+.paddingRight17 {
+    padding-right: 17px;
+}
+.paddingRight15 {
+    padding-right: 15px;
+}
+.paddingRight10{
+    padding-right:10px
+}
+.paddingBottom15 {
+    padding-bottom: 15px;
+}
+.width20 {
+    width: 20%
+}
+.width80 {
+    width: 80%
+}
+.margin0 {
+    margin: 0
+}
+
+.marginTop10 {
+    margin-top: 10px!important
+}
+
+/*标段管理*/
+
+/*角色管理*/
+
+.roleManage div.l-layout-center {
+    border-right: 0;
+    width: 100% !important;
+}
+
+.floatRight {
+    float: right
+}
+.floatLeft{
+    float:left
+}
+.marginTop4 {
+    margin-top: 4px!important
+}
+.marginTopF28 {
+    margin-top: -28px!important
+}
+.minHeight140 {
+    min-height: 140px
+}
+.minHeightBlock14{
+    min-height:14px;
+    display:block!important;
+}
+.minHeight740 {
+    min-height: 740px
+}
+
+.roleRight {
+    padding: 5px 5px 5px 20px;
+}
+
+.roleRight p2 {
+    float: left;
+    margin: 4px;
+    background-color: #56ABE4;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    border: 1px solid #56ABE4;
+    border-radius: 20px;
+    line-height: 0.1;
+    padding: 5px;
+}
+
+.roleRight .fa-times {
+    color: white;
+    font-size: 12px;
+    margin-left: 2px;
+}
+
+ .relat {
+    background: url(/Content/images/peopleAdd.png) no-repeat;
+    display: inline-block;
+    float: left;
+    width: 25px;
+    height: 25px;
+    background-size: 25px;
+}
+
+.roleRight h3 {
+    margin-left: 5px;
+    color: #56abe9;
+}
+
+.roleRight .topTools {
+    float: right;
+    margin-top: -30px;
+}
+
+.roleRight searchInput {
+    padding: 5px 15px 5px 5px;
+    margin-top: -5px;
+}
+
+.roleRight .peopleList {
+    width: 100%;
+    min-height: 280px
+}
+
+.roleRight .topBtnTools {
+    float: right;
+    margin-top: -20px;
+}
+
+.height120 {
+    height: 120px!important
+}
+
+.powShow .col-md-4 {
+    width: 35.4%;
+    height: 400px;
+    float: left;
+    border: 1px solid #CECECE;
+    margin: 5px;
+}
+
+.powShow .col-md-6 {
+    width: 62.8%;
+    height: 400px;
+    float: right;
+    border: 1px solid #CECECE;
+    margin: 5px -4px 5px 5px;
+}
+
+.powShow .col-md-7 {
+    width: 100%;
+    float: left;
+    height: 30px;
+    border: 1px solid #CECECE;
+    margin: 5px;
+    margin-bottom: 3px;
+}
+
+.powShow p2 {
+    float: left;
+    margin: 4px;
+    background-color: #56ABE4;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    border: 1px solid #56ABE4;
+    border-radius: 20px;
+    line-height: 0.1;
+    padding: 5px;
+}
+.powShow p3 { float: left; margin: 4px; background-color: #ff5442; text-align: center; color: white; min-width: 60px; font-size: 12px; border: 1px solid #ff5442; border-radius: 20px; line-height: 0.1; padding: 5px; }
+        
+.powShow .btn-circle {
+    height: 20px;
+    width: 20px;
+    padding: 0;
+    line-height: 0.82857;
+}
+
+.powShow .fa-times {
+    color: white;
+    font-size: 12px;
+    margin-left: 2px;
+}
+
+.powShow .peopleResult {
+    width: 100%;
+    height: 280px;
+    overflow: auto
+}
+
+.powShow p {
+    margin-top: 4px;
+}
+
+.powShow .peopleList {
+    text-align: right;
+    margin-top: 20px;
+    margin-right: 5px;
+    overflow: auto;
+}
+
+.margin30 {
+    margin: 30px
+}
+
+.pTLeft {
+    float: left;
+    margin: 4px 15px 4px 1px;
+    font-size: 12px;
+}
+
+.height80 {
+    height: 80%
+}
+
+.pTRight {
+    float: left;
+    font-size: 12px;
+    margin: 4px 15px 4px 4px;
+}
+
+.marginRight15 {
+    margin-right: 15px;
+}
+
+/*角色管理*/
+
+/*建模信息标准库*/
+
+.buildModel .input-group-sm {
+    margin-left: 5px;
+    margin-top: 3px;
+    width: 300px;
+    float: left;
+}
+
+.buildModel .topMenu {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.buildModel .checkBtn {
+    margin-top: 3px;
+}
+
+.buildModel .panel-body {
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-top: 2px;
+}
+
+.height170 {
+    height: 170px!important
+}
+
+/*建模信息标准库*/
+
+.width10 {
+    width: 10%
+}
+.width13 {
+    width: 13%
+}
+.width37 {
+    width: 37%
+}
+.width40 {
+    width: 40%
+}
+.marginTop5 {
+    margin-top: 5px!important
+}
+.marginTop50 {
+    margin-top: 50px!important
+}
+.height100 {
+    height: 100px!important
+}
+.heightB100{
+    height:100%!important
+}
+.height34 {
+    height: 34px!important
+}
+.padding0 {
+    padding: 0
+}
+.padding16 {
+    padding: 16px !important;
+}
+.divHide {
+    display: none
+}
+.margin4 {
+    margin:4px;
+}
+.marginLeft48{
+    margin-left: 48px;
+}
+.marginTop3 {
+    margin-top: 3px!important
+}
+
+/*模型文件管理*/
+.height330{
+    height:330px;
+}
+.pow {
+    background: url(/Content/images/power.png) no-repeat;
+    display: inline-block;
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-left: 26px;
+    background-size: 16px;
+}
+
+.pow:hover {
+    background: url(/Content/images/power1.png) no-repeat;
+    background-color: #56ABE4;
+    width: 16px;
+    height: 16px;
+    margin-left: 26px;
+    background-size: 16px;
+}
+
+.height30 {
+    height: 30px!important
+}
+.height60 {
+    height: 60px!important
+}
+.marginBottom5 {
+    margin-bottom: 5px
+}
+.marginBottom2 {
+    margin-bottom: 2px
+}
+.width30 {
+    width: 30%
+}
+
+.adaptionText {
+    min-height: 50px;
+    overflow: hidden;
+}
+
+.noBackBtn {
+    border-radius: 0px;
+    background-color: transparent;
+}
+
+.textAlignR {
+    text-align: right
+}
+
+.textAlignC {
+    text-align: center
+}
+.textAlignL{
+    text-align:left!important
+}
+.marginRightF18{
+    margin-right:-18px;
+}
+/*模型文件管理*/
+
+.blues {
+    color: #56ABE4!important;
+}
+.cusorPointer {
+    cursor: pointer;
+}
+.rted {
+    color: #CDCDCD;
+}
+
+.aselect {
+    color: #56ABE4;
+    /*text-decoration: underline;*/
+}
+.textUnderline {
+    text-decoration: underline;
+}
+a:hover {
+    color: #56ABE4
+}
+
+.dLineD {
+    padding: 0 5px
+}
+
+.dLineD h4 {
+    margin: 10px;
+    font-size: 13px
+}
+
+.dLineD a {
+    margin-right: 5px
+}
+
+.paddingTop0 {
+    padding-top: 0!important
+}
+
+/*选项卡*/
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    background: rgba(0, 0, 0, 0) url("/Content/images/bg_x.png") repeat-x scroll 0 -45px!important;
+    border-color: #ccc #ccc transparent;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    color: #555555;
+    cursor: default;
+}
+.nav-tabs > li > a {
+    border-radius: 2px 2px 0 0;
+    line-height: 1.42857;
+    margin-right: 2px;
+    outline: medium none;
+}
+.nav > li > a {
+    display: block;
+    padding: 5px 15px;
+    position: relative;
+}
+.nav {
+    margin-bottom: 5px;
+}
+ul,
+ol {
+    margin-top: 0;
+}
+/*选项卡*/
+/*选择平台标准库*/
+.tDivborder {
+    width: 40%;
+    height: 490px;
+    float: left;
+    border: 1px solid #E5E6E7;
+}
+.kDiv {
+    width: 20%;
+    height: 300px;
+    float: left
+}
+.treeDiv {
+    color: #183152;
+    font-weight: bold;
+    height: 25px;
+    line-height: 24px;
+    overflow: hidden;
+    border-bottom: 1px dashed #e7eaec;
+    text-align: center;
+}
+.tDivborder .pTitle {
+    float: left;
+    margin-top: 2px;
+    width: 70px;
+    font-weight: normal;
+}
+.tDivborder .pTitle2 {
+    float: left;
+    margin-top: 2px;
+    width: 70px;
+    font-weight: normal;
+}
+.tDivborder .bDiv {
+    float: left;
+    margin-top: 7px;
+    margin-left: 5px;
+}
+.tDivborder .sltsex {
+    width: 100%;
+    margin-left: 3px;
+    float: right;
+    width: 200px;
+    padding: 0;
+}
+.tDivborder .chosen-select {
+    height: 24px;
+    padding: 0;
+}
+.marginTop120 {
+    margin-top: 120px
+}
+.marginTop100 {
+    margin-top: 100px
+}
+.marginTop7 {
+    margin-top: 7px
+}
+.kDiv img {
+    width: 50px;
+    margin-top: 190px;
+}
+.marginLeft55 {
+    margin-left: 55px
+}
+.marginLeft5{
+    margin-left:5px
+}
+.marginLeftF20 {
+    margin-left: -20px
+}
+/*选择平台标准库*/
+/*平台标准库*/
+.PlatformLibrary .l-layout-top {
+    border-top: 0
+}
+.PlatformLibrary .marginBottom0 {
+    margin-bottom: 0!important;
+}
+.paddingBottom7 {
+    padding-bottom: 7px
+}
+/*平台标准库*/
+.overflowHide{
+    overflow:hidden
+}
+/*工程量*/
+.quantities h3 {
+    margin: 0px 10px 10px;
+}
+.quantities .table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+    background-color: #fff7e1;
+}
+.quantities table {
+    table-layout: fixed;
+    border: 1px solid #CED4D6;
+}
+.quantities td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-size: 12px;
+}
+.quantities th {
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: #665173;
+    padding: 5px;
+}
+.tabTitle {
+    background-color: #ffefd7;
+    text-align: left !important;
+}
+.quantities td,
+th {
+    border: 1px solid #CED4D6;
+    padding: 5px;
+}
+.tableFont {
+    font-weight: bold;
+    font-size: 12px;
+    color: #665173;
+}
+/*工程量*/
+.height740 {
+    height: 740px
+}
+.backColorWhite{
+    background-color:white
+}
+.marginLeftF1{
+    margin-left:-1px
+}
+/*共享*/
+.modelShare p2{ float: left; margin: 4px; background-color: #56ABE4; text-align: center; color: white; width: 60px; font-size: 12px; border: 1px solid #56ABE4; border-radius: 20px;  line-height: 13px; padding: 5px; }
+.modelShare p3 { float: left; margin: 4px; background-color: #f47264; text-align: center; color: white; min-width: 60px; font-size: 12px; border: 1px solid #f47264; border-radius: 20px; line-height: 13px; padding: 5px; }
+
+/*共享*/
+/*工程管理部位*/
+.manageSite .relat {
+            background: url(/Content/images/relation.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .manageSite .relat:hover {
+                background: url(/Content/images/relation1.png) no-repeat;
+                background-color: #EA8215;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+        .manageSite .relats {
+            background: url(/Content/images/relation1.png) no-repeat;
+            background-color: #EA8215;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+        .impt {
+            background: url(/Content/images/Import.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .impt:hover {
+                background: url(/Content/images/Import1.png) no-repeat;
+                background-color: #3BCAB1;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+            .saveAdditional {
+            background: url(/Content/images/additional2.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .saveAdditional:hover {
+                background: url(/Content/images/additional3.png) no-repeat;
+                background-color: #13227A;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+            .saveCover {
+            background: url(/Content/images/cover2.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .saveCover:hover {
+                background: url(/Content/images/cover3.png) no-repeat;
+                background-color: #D4237A;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+            .saveAngle {
+				background: url(/Content/images/saveView.png) no-repeat;
+				display: inline-block;
+				float: left;
+				width: 16px;
+				height: 16px;
+				margin-left: 20px;
+				background-size: 16px;
+			}
+			
+			.saveAngle:hover {
+				background: url(/Content/images/saveView1.png) no-repeat;
+				background-color: #3BCAB1;
+				width: 16px;
+				height: 16px;
+				margin-left: 20px;
+				background-size: 16px;
+			}
+            .refresh {
+            background: url(/Content/images/refresh.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .refresh:hover {
+                background: url(/Content/images/refresh1.png) no-repeat;
+                background-color: #F8918C;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+            .notRelated {
+            background: url(/Content/images/notRelated.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .notRelated:hover {
+                background: url(/Content/images/notRelated1.png) no-repeat;
+                background-color: #33DA7C;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+            .showAll {
+            background: url(/Content/images/showAll.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .showAll:hover {
+                background: url(/Content/images/showAll1.png) no-repeat;
+                background-color: #F8AC58;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+            .showNot {
+            background: url(/Content/images/showNot.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .showNot:hover {
+                background: url(/Content/images/showNot1.png) no-repeat;
+                background-color: #1CC8E1;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+            .showYes {
+            background: url(/Content/images/showYes.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 20px;
+            background-size: 16px;
+        }
+            .showYes:hover {
+                background: url(/Content/images/showYes1.png) no-repeat;
+                background-color: #8DCB7B;
+                width: 16px;
+                height: 16px;
+                margin-left: 20px;
+                background-size: 16px;
+            }
+            .oneKey {
+				background: url(/Content/images/oneKey4.png) no-repeat;
+				display: inline-block;
+				float: left;
+				width: 16px;
+				height: 16px;
+				margin-left: 20px;
+				background-size: 16px;
+			}			
+			.oneKey:hover {
+				background: url(/Content/images/oneKey5.png) no-repeat;
+				background-color: #1296DB;
+				width: 16px;
+				height: 16px;
+				margin-left: 20px;
+				background-size: 16px;
+			}
+            .marginTop9{
+                margin-top:9px!important
+            }
+            .marginLeft8{
+                margin-left:8px!important;
+            }
+            .marginLeft25{
+                margin-left:25px
+            }
+            .marginLeft15{
+                margin-left:15px;
+            }
+            .marginRight10{
+                margin-right:10px
+            }
+            .paddingLeft10{
+                padding-left:10px
+            }
+            .paddingLeft0{
+                padding-left:0
+            }
+             .paddingRight25{
+                padding-right:25px;
+            }           
+            .height55{
+                height:55px
+            }
+            .manageSite .rted {
+            color: #CDCDCD;
+        }
+
+        .manageSite .aselect {
+            color: #008000;
+        }
+        .manageSite .hui{
+            margin: 10px 0;font-size: 13px;
+        }
+        .manageSite .hui p {
+            cursor: pointer;
+        }
+        .manageSite .hui a:hover {
+            color: #008000;
+        }
+        .manageSite .aLeft1{
+            margin-right: 7px;margin-left: -15px;display: inline-block;
+        }
+        .manageSite .aLeft2{
+            margin-right: 7px;margin-left: 7px;display: inline-block;
+        }
+        .manageSite .workCircle{
+            width:25px;height:25px;margin-top: -6px;
+        }
+        .manageSite .jtCircle{
+            width:18px;height:18px;margin-top: -6px;
+        }
+        .manageSite .radio{
+            width: 50%;float: left;margin-top: 1px;
+        }
+        .marginTopF10{
+            margin-top:-10px
+        }
+        .paddingRight0{
+            padding-right:0
+        }
+/*工程管理部位*/
+.grideToolsNone .l-panel-bar {
+            height: 0;
+        }
+/*工程划分*/
+.add {
+            background: url(/Content/images/img/add3.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+            .add:hover {
+                background: url(/Content/images/img/add4.png) no-repeat;
+                background-color: #56ABE4;
+                width: 16px;
+                height: 16px;
+                margin-left: 26px;
+                background-size: 16px;
+            }
+            .edit {
+            background: url(/Content/images/img/edit3.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+            .edit:hover {
+                background: url(/Content/images/img/edit4.png) no-repeat;
+                background-color: #3BCAB1;
+                width: 16px;
+                height: 16px;
+                margin-left: 26px;
+                background-size: 16px;
+            }
+            .delete {
+            background: url(/Content/images/img/del3.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+            .delete:hover {
+                background: url(/Content/images/img/del4.png) no-repeat;
+                background-color: #F9BB78;
+                width: 16px;
+                height: 16px;
+                margin-left: 26px;
+                background-size: 16px;
+            }
+            .qrImg {
+            background: url(/Content/images/img/QR.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+            .qrImg:hover {
+                background: url(/Content/images/img/QR1.png) no-repeat;
+                background-color: #F9A8A4;
+                width: 16px;
+                height: 16px;
+                margin-left: 26px;
+                background-size: 16px;
+            }
+            .divisionAdd .cNum {
+            width: 150px;
+            float: left;
+        }
+        .divisionAdd .lNum {
+            width: 224px;
+            float: left;
+            margin-right: 0;
+        }
+        .divisionAdd2 .cNum { width: 80px; float: left; }
+        .divisionAdd2 .lNum { width: 163px; float: left; margin-right: 0; }
+        .divisionAdd2 .red{
+            color:red;
+            position:relative;
+            top: -2px;
+        }
+        /*.divisionAdd2 .l-layout-header-inner { text-align: center; }
+        .divisionAdd2 .l-layout-center .l-layout-header { text-align: center; padding-left: 0; }
+        .divisionAdd2 .l-layout-left, .l-layout-right, .l-layout-center, .l-layout-top, .l-layout-bottom, .l-layout-centerbottom{
+            border: 1px solid #E5E6E7;
+        }*/
+        .divisionAdd2 .l-layout-header{
+            background:none;
+            border-bottom: 1px dashed #e7eaec;
+        }
+        .divisionAdd2 .treeDiv{
+                color: #183152;
+    font-weight: bold;
+    height: 25px;
+    line-height: 24px;
+    overflow: hidden;
+    border-bottom: 1px dashed #e7eaec;
+    border-top: 1px dashed #e7eaec;
+    text-align: center;
+        }
+        .height150{
+            height:150px
+        }
+        .boder{
+            border: 1px solid #bed5f3;
+        }
+        .height300{
+            height:300px
+        }
+/*工程划分*/
+.width200{
+    width:200px
+}
+.layNoneBorder div.l-layout-left {
+            border: 0;
+            border-right: 1px solid #bed5f3;
+        }
+.layNoneBorder div.l-layout-center {
+            border: 0;
+            border-left: 1px solid #bed5f3;
+            border-bottom: 1px solid #bed5f3;
+        }
+/*质量策划*/
+.marginTopF15{
+    margin-top:-15px;
+}
+.DYPlan .hui{
+    margin: 10px;font-size: 13px;
+}
+.DYPlan .toolsRight{
+    text-align: right;margin-top: -3px;margin-right: 10px;
+}
+.DYPlan .hui a:hover {
+            color: #008000;
+        }
+.DYPlan .rted {
+            color: #CDCDCD;
+            height: 30px;
+            display: inline-block;
+            margin-right: 7px;
+            margin-left: 7px;
+        }
+        .DYPlan .aselect {
+            color: #008000;
+            /*text-decoration: underline;*/
+        }
+        .marginRigt10{
+            margin-right:10px
+        }
+        .iconBtn{
+            margin-right: 0px;margin-top: 5px;color: #1AB394;
+        }
+/*质量策划*/
+/*审批历史*/
+.approvalHistory .flow{
+    height: 80px;margin-top: 10px;
+}
+.approvalHistory .addpeople {
+            float: left;
+            width: 70px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .approvalHistory .arrow {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin: 15px 5px 0 10px;
+        }
+/*审批历史*/
+/*数据采集*/
+.DA .btn{
+    margin-right:5px
+}
+.DA .leftCheck{
+    margin-top: 7px; margin-left: 10px; float: left;
+}
+.DA .spanCheck{
+    margin-top: 3px; margin-left: 5px; float: left;
+}
+/*数据采集*/
+/*标注管理*/
+.labelManage img {
+            float: left;
+            vertical-align: middle;
+            width: 100px;
+        }
+        .labelManage .container {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ddd;
+            float: left;
+            background: #f7f7f7;
+            position: relative;
+            overflow: hidden;
+            padding: 0px;
+            margin: 5px;
+        }
+        .labelManage .mask {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            position: absolute;
+            display: none;
+            opacity: 0.5;
+        }
+        .labelManage .right {
+            float: right;
+        }
+        .labelManage .center {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+        .labelManage .fa {
+            color: white;
+        }
+        .labelManage .featureBox {
+            width: 250px;
+        }
+        .labelManage .scenter {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .labelManage .photos{
+            width: 220px;margin-left: -5px;
+        }
+/*标注管理*/
+ .aup {
+            background: url(/Content/images/aup.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+            background-size: 16px;
+        }
+            .aup:hover {
+                background: url(/Content/images/aup1.png) no-repeat;
+                background-color: #02A9F6;
+                width: 16px;
+                height: 16px;
+                margin-left: 10px;
+                background-size: 16px;
+            }
+        .aups {
+            background: url(/Content/images/aup1.png) no-repeat;
+            background-color: #02A9F6;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+            background-size: 16px;
+        }
+        .adown {
+            background: url(/Content/images/adown.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+            background-size: 16px;
+        }
+            .adown:hover {
+                background: url(/Content/images/adown1.png) no-repeat;
+                background-color: #02A9F6;
+                width: 16px;
+                height: 16px;
+                margin-left: 10px;
+                background-size: 16px;
+            }
+        .adowns {
+            background: url(/Content/images/adown1.png) no-repeat;
+            background-color: #02A9F6;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+            background-size: 16px;
+        }
+        .saup {
+            background: url(/Content/images/aup.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+            background-size: 16px;
+        }
+            .saup:hover {
+                background: url(/Content/images/aup1.png) no-repeat;
+                background-color: #02A9F6;
+                width: 16px;
+                height: 16px;
+                margin-left: 10px;
+                background-size: 16px;
+            }
+        .saups {
+            background: url(/Content/images/aup1.png) no-repeat;
+            background-color: #02A9F6;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+            background-size: 16px;
+        }
+        .sadown {
+            background: url(/Content/images/adown.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+            background-size: 16px;
+        }
+            .sadown:hover {
+                background: url(/Content/images/adown1.png) no-repeat;
+                background-color: #02A9F6;
+                width: 16px;
+                height: 16px;
+                margin-left: 10px;
+                background-size: 16px;
+            }
+        .sadowns {
+            background: url(/Content/images/adown1.png) no-repeat;
+            background-color: #02A9F6;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+            background-size: 16px;
+        }
+        #aup,#adown,#saup,#sadown{
+            float:right
+        }
+        #saup,#sadown{
+            display:none
+        }
+
+        .marginTop3{
+            margin-top:3px;
+        }
+        .marginTop6{
+            margin-top:6px;
+        }
+        .color999 {
+            color:#999;
+        }
+        .maxWidth400 {
+            max-width:400px;
+        }
+
+
+        /* 系统设置--个人设置--修改密码-----------------------------------------------------------------李毅*/
+        .width10 {
+            width:10%;
+        }
+        .width30 {
+            width:30%;
+        }
+        .width40 {
+            width:40%;
+        }
+        .width400 {
+            width:400px !important;
+        }
+         /* 系统设置--视角管理--质量默认视角-----------------------------------------------------------------李毅*/
+        .mainBody4 div#rMenu,.videomonitor-body div#rMenu {            /* 2017年12月27日 13:52:43*/
+            position: absolute;
+            visibility: hidden;
+            top: 0;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #cecece;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            z-index:100;
+        }
+        .mainBody4 div#rMenu ul,.videomonitor-body div#rMenu ul{               /* 2017年12月27日 13:52:43*/
+            background-color: #FFFFFF;
+        }
+        .mainBody4 div#rMenu ul li,.videomonitor-body div#rMenu ul li {        /* 2017年12月27日 13:52:43*/
+            margin: 2px 0;
+            padding: 0 5px;
+            font-size: 9pt;
+            cursor: pointer;
+            list-style: none outside none;
+            background-color: #FFFFFF;
+            text-align: center;
+        }
+        .mainBody4 div#rMenu ul li:hover ,.videomonitor-body div#rMenu ul li:hover{         /* 2017年12月27日 13:52:43*/
+            background-color: #007EBF;
+            color: #FFFFFF;
+        }
+        .mainBody4 .mboder ,.videomonitor-body .mboder{         /* 2017年12月27日 13:52:43*/           
+            border-bottom: 1px solid #cecece;
+        }
+        .mainBody4 .zxx_text_overflow_1 ,.videomonitor-body .zxx_text_overflow_1{        /* 2017年12月27日 13:52:43*/
+            width: 27em;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .mainBody4 .path ,.videomonitor-body .path{        /* 2017年12月27日 13:52:43*/
+            float: left;
+            margin-top: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .projectlook-body .l-layout-header{        /* 2017年12月27日 13:52:43*/
+            display: none;
+        }
+        .projectlook-body .l-layout-collapse-left,.projectlook-body .l-layout-collapse-right { /* 2017年12月27日 13:52:43*/
+            background: white none repeat scroll 0 0
+        }
+        .videomonitor-body .ibox-tools i,.danger-body .ibox-tools i,.project-body .ibox-tools i{
+            margin-top: 5px;
+        }
+        .widheight100 {
+            height: 100%;
+            width: 100%;
+        }
+        /* 系统设置--常用设置--功能菜单管理-------------------------------------李毅---------------------2017年12月27日 17:39:46 -------------*/        
+        /*.videosetting-body,.danger-body{                   
+            background-color: transparent;
+            padding: 5px;
+            margin: 0;
+            padding-bottom: 15px;
+            min-height: 400px;
+            height: 100%;
+            overflow: hidden;
+        }*/
+        .videomonitor-body #layui-layer1 {
+            position: absolute;
+        }
+        .videomonitor-body .layui-layer, .videomonitor-body .layui-layer-shade{
+            position: absolute !important;
+        }
+        .videomonitor-body #layout1 .l-layout-center .l-layout-header {
+            display: none;
+        }
+
+        .projectlook-body .btns{                            /*  2017年12月27日 14:51:07*/
+            line-height: 1.02857;
+            border-radius: 60px;
+            margin-top: 0px;
+            font-size: 12px;
+        }
+        .videomonitor-body .hr-line-dashed {
+            margin:10px
+        }
+        /* 系统设置--常用设置--功能菜单管理--新增弹窗-----------------------------------------------------------李毅         2017年12月27日 11:28:01*/
+        .float-left {
+            float:left;
+        }
+        .videoadd-body #ccomment{ 
+            height: 120px !important;
+        }
+        .videoadd-body .progress{
+            width: 180px;
+            margin-top: 18px;
+        }
+        .videoadd-body .uploadfilebtn{
+            font-weight: 700;
+            border: 0 none;
+            color: #56abe4;
+            margin-left: -5px;
+        }
+        .videoadd-body .uploadfilebtn:hover{
+            color: #56abe4;
+        }
+        .videoadd-body p{
+            float:left;
+        }
+        .videoadd-body .chosen-search{
+            display: none;
+        }
+        .videoadd-body .m-l{
+            margin-left: -25px;
+        }
+        .videoadd-body .form-control{
+            font-size: 12px;
+        }
+        .videoadd-body .box6{
+            margin:20px 0 0;
+        }
+        .settingadd-body .box7,.videoadd-body .box7{
+            text-align: right;
+            margin-top: 5px;
+        }
+        /* 系统设置--常用设置--常用设置管理---------------------------------------------------------------李毅            2017年12月27日 14:11:36*/
+        .videomonitor-body ,.project-body{
+            padding: 5px;
+            margin: 0;
+            padding-bottom: 15px;
+            min-height: 400px;
+            height: 100%;
+            background-color: white;
+        }
+        .videomonitor-body .ztree li span.button.add{
+            margin-left: 2px;
+            margin-right: -1px;
+            background-position: -144px 0;
+            vertical-align: top;
+        }
+        .videomonitor-body .btn{
+            line-height: 0.82857;
+            border-radius: 60px;
+            margin-right: 15px;
+            font-size: 12px;
+        }
+        .videomonitor-body .bfa{
+            margin-right: 8px;
+            margin-left: 8px;
+        }
+        .videomonitor-body div#layout2.l-layout div.l-layout-center{
+            width: 100% !important;
+        }
+        .videomonitor-body .bDiv{
+            float: left;
+            margin-top: 7px;
+            margin-left: 5px;
+        }
+        .videomonitor-body .sltsex,.project-body .sltsex{
+            width: 100%;
+            margin-left: 3px;
+            float: right;
+            width: 200px;
+            padding: 0;
+        }
+        .videomonitor-body .chosen-select ,.project-body .chosen-select{
+            height: 24px;
+            padding: 0;
+        }
+        .videomonitor-body .btnSave{
+            float: right;
+            margin-top: 7px;
+            margin-right: 5px;
+        }
+        /* 系统设置--常用设置--常用设置管理--新增弹窗-----------------------------------------------------------李毅         2017年12月27日 14:27:01*/
+        .settingadd-body #file {
+            display: none;
+        }
+        .settingadd-body .form-control {
+            font-size: 12px;
+        }
+
+        .settingadd-body .tdW1 {
+            width: 13%;
+        }
+
+        .settingadd-body .tdW2 {
+            width: 37%;
+        }
+
+        .settingadd-body .col-md-9 {
+            width: 100%;
+        }
+        .settingadd-body #selParentSetting {
+            height:30px;
+            line-height:30px;
+        }
+        /*视频监控设置-------------------------------------------------------李毅---------------------2017年12月27日 17:21:15*/
+
+        .videosetting-body .form-control,
+        .videosetting-body .single-line{
+            font-size: 12px;
+        }
+        /*视频监控设置---新增弹窗--------------------------------------------李毅---------------------2017年12月27日 17:21:15*/
+        .videoadd-body .wait {
+            margin: 3px 0;
+        }
+        .videoadd-body label {
+            margin-left: 10px;
+        }
+        .videoadd-body #file {
+            display: none;
+        }
+        .videoadd-body .tdW1 {
+            width: 13%;
+        }
+
+        .videoadd-body .tdW2 {
+            width: 37%;
+        }
+
+        .videoadd-body .col-md-9 {
+            width: 100%;
+        }
+        /*视频监控-------------------------------------------------------李毅---------------------2017年12月27日 19:13:05*/
+        .videomonitor-body #guanli {
+            display: none;
+        }
+        .floatLeft {
+            float:left;
+        }
+        .videomonitor-body .ibox-tools {
+            margin-top: 3px;
+        }
+        .videomonitor-body .form-horizontal .control-label { text-align:left;width:100%;margin-top:-5px }
+        .videomonitor-body .l-layout-header ,.project-body .l-layout-header{
+            display: none
+        }
+        .videomonitor-body .l-layout-collapse-left,
+        .videomonitor-body .l-layout-collapse-right,
+        .danger-body .l-layout-collapse-left,
+        .danger-body .l-layout-collapse-right,
+        .project-body .l-layout-collapse-left,
+        .project-body .l-layout-collapse-right {
+            background: white none repeat scroll 0 0
+        }
+        .videomonitor-body .box1 {
+            display:inline-flex
+        }
+        /*视频监控--视频操控弹窗----------------------------------------------李毅-------------------2017年12月28日 09:25:52*/
+        .videoc-body .pTitle{
+            width:70px;
+            float:left;
+        }
+        .videoc-body .pContent{
+            margin-left:70px
+        }
+        .videoc-body .topBtn{
+            width:69px;
+            margin: 2px;
+        }
+        .videoc-body .pTop1{
+            margin-top:43px;
+            padding-left:20px
+        }
+        .videoc-body .pTop2{
+            margin-top:8px;
+            padding-left:20px
+        }
+         /*危险源工程划分-----------------------------------------------------李毅-------------------2017年12月28日 09:25:52*/
+        .danger-body #topTab {
+            height: 100% !important;
+        }
+        .danger-body .l-layout-header {
+            display: none;
+        }
+        .danger-body .box1 {
+            float: left;
+            margin-left:5px;
+            margin-top: 2px;
+        }    
+        .danger-body .box1 i {
+            margin-right: 0px;
+            margin-top: 0px;
+        }  
+        .danger-body .box2,.danger-body .box4 {
+            text-align: right;
+            margin-top: 3px;
+            margin-right: 10px;
+        }   
+        .danger-body .box3 {
+            float: left;
+            margin-left:5px;
+            margin-top: 4px;
+        } 
+        .danger-body .box3 i {
+            margin-right: 0px;
+            margin-top: 5px;
+        }  
+         /*项目圈-----------------------------------------------------------李毅-------------------2017年12月28日 10:47:14*/
+
+         .project-body .d3Tab1List {
+            width: 350px;
+            height: 240px;
+            border: 1px solid #bbb;
+            float: left;
+            margin: 4px;
+            z-index: 999999999999999999999999999;
+            border-radius: 5px;
+            background-color: #F8F8F8;
+        }
+        .project-body .lizi {
+            background: #A6DBD8;
+            width: 100%;
+            height: 100%
+        }
+        .project-body .img-responsive {
+            z-index: 0;
+            max-height: 170px
+        }
+        .project-body .newDPType {
+            width: 350px;
+            height: 170px;
+        }
+        .project-body .dContent {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            height: 40px;
+            padding: 0px 2px;
+        }
+        .project-body .dGongJu {
+            display: inline-block;
+            font-weight: 700;
+            margin-left: 5px
+        }
+
+        .project-body .dGName {
+            margin-left: 70px
+        }
+        .project-body .bfa {
+            color: #3C8DBC;
+            float: right;
+            margin-right: 15px;
+            margin-top: 3px;
+        }
+
+        .project-body .dJianG {
+            margin-top: 3px
+        }
+        .project-body .dPicAdd {
+            width: 350px;
+            height: 240px;
+            float: left;
+            margin: 4px;
+            z-index: 999999999999999999999999999;
+        }
+        .project-body .dAddPic {
+            margin-top: 80px;
+            margin-left: 150px;
+            cursor: pointer
+        }
+
+        .project-body .d3Tab1 {
+            overflow: auto
+        }
+        .project-body h4 {
+            margin: 10px;
+            font-size: 13px
+        }
+
+        .project-body .a1 {
+            margin-right: 7px;
+        }
+
+        .project-body .a2 {
+            margin-right: 7px;
+            margin-left: 7px;
+        }
+        .project-body .bDiv {
+            float: left;
+            margin-left: 5px;
+            margin-right:5px;
+            margin-top: 5px;
+        }
+        .project-body .dLineD{
+            height:30px
+        }
+
+        /*项目圈-----------查看弹窗---------------------------------------------------李毅-------------------2017年12月28日 11:19:16*/
+
+        .projectlook-body { 
+            background-color: white;
+        }
+        .projectlook-body .collapse { 
+            display: inline;
+        }
+        .projectlook-body .pdfobject { 
+            border: 1px solid #666;
+        }
+        .projectlook-body .ligtop {
+            text-align: center;
+            margin: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
+            font-size: 12px;
+        }
+        .projectlook-body #txtHead {
+            height: 42px;
+            line-height: 42px;
+            padding-left: 10px; 
+            background-color: #F8F8F8;
+        }
+        .projectlook-body .col-md-6 {
+             width: 100%;
+
+        }
+        .projectlook-body .col-md-2 { 
+            width: 25%;
+             float: left;
+        }
+        .projectlook-body .col-md-3 { 
+            width: 50%;
+            float: left; 
+        }
+        .projectlook-body .col-md-4 {
+            width: 100%;
+            padding: 0; 
+            margin: 0; 
+            text-align: center; 
+        }
+        .projectlook-body p1 { 
+            display: inline;
+            margin-left: 10px;
+        }
+        .projectlook-body .picContent {
+            padding: 5px;
+        }
+        .projectlook-body .cropper-bg { 
+            background-color: white; 
+            background-image: none; 
+        }
+        .projectlook-body .pageNumber { 
+            position: absolute;
+            left: 20px; 
+            top: 5px; 
+        }
+        .projectlook-body .layui-laypage { 
+            margin: 0; 
+        }
+        .projectlook-body .layui-laypage a,.projectlook-body .layui-laypage span { 
+            padding: 0; 
+            height: 34px; 
+            line-height: 34px; 
+            width: 37px; 
+        }
+        .projectlook-body .fullWidth {
+            width: 100%;padding:0
+        }
+        .projectlook-body .imgList {
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin-right: 5px;
+        }
+        .projectlook-body .replyPeople {
+            color: #EE8186
+        }
+        .projectlook-body .taoLun a {
+            color: #4586BD
+        }
+        .projectlook-body .taoLun .fa {
+            color: #1AB394;
+        }
+        .projectlook-body .position {
+            color: #4586BD;
+            margin-right: 15px;
+            margin-bottom: 5px;
+        }
+        .projectlook-body .taoLun p {
+            margin: 0 0 10px;
+            font-size: 12px;
+        }
+        .projectlook-body .l-layout-right .l-layout-header-toggle{
+            margin-top:2px
+        }
+        .projectlook-body .orgSpan{
+            font-size: 11px;
+            color: #676a6c;
+        }
+        .marginR10 {
+            margin-right:10px;
+        }
+        .projectlook-body .btn1{
+            position: absolute; 
+            right: 20px;
+            top: 8px;
+        }
+        .projectlook-body .box1{
+            background-color: transparent
+        }
+        .projectlook-body .box2{
+            margin: 5px 0;
+        }
+        .projectlook-body .box3{
+            float: left;
+            margin-left:25px;
+            margin-top: 4px;
+        }
+        .projectlook-body .box3 i{
+            margin-right: 0px;
+            margin-top: 5px;
+        }
+        .projectlook-body .box4{
+            color:#938D91;
+        }
+        .projectlook-body .box4 i{
+            margin-right: 3px;
+            color:#EE8957;
+        }
+        .projectlook-body .box5 i{
+            float:left;
+            margin-left: 5px;
+        }
+        .projectlook-body .box6 i{
+            font-size: 14px;
+            float:left;
+            margin-left: 10px;
+        }
+        .projectlook-body .box7 i{
+            float:left;
+            margin-left: 10px;
+        }
+        .projectlook-body .list-group-item{
+            background-color: #F9F9F9
+        }
+        .projectlook-body .main-a1{
+            color:#938D91;
+            font-size:12px;
+        }
+        .projectlook-body .box8{
+            margin-left: -10px;
+            margin-right: -10px;
+        }
+        .projectlook-body .main-a2{
+            float:left;margin-left: 5px
+        }
+        .projectlook-body .main-a3{
+            font-size: 14px;
+            float:left;
+            margin-left: 10px;
+        }
+        .projectlook-body .main-a4{
+            float:left;
+            margin-left: 10px;
+        }
+
+
+ /*单林涛标注筛选*/
+        .labelManageScreen p{
+            margin-top: 5px;float: left;margin: 5px
+        }
+        .labelManageRight{
+            background-color: white;
+            min-height: 400px;
+            height: 100%;
+            overflow: hidden;
+        }
+        .borderWidth0{
+            border-width:0
+        }
+        /*单林涛标注筛选*/
+        /*单林涛快照管理*/
+        .fontNormal{
+            font-weight:normal
+        }
+        .black{
+            color:black!important
+        }
+        .marginLeft10{
+            margin-left:10px
+        }
+        .marginTopF4{
+            margin-top:-4px
+        }
+        .marginTopF16{
+            margin-top:-16px !important;
+        }
+        .paddingLeft3{
+            padding-left:3px;
+        }
+        .paddingLeft15{
+            padding-left:15px
+        }
+        /*单林涛快照管理*/
+        /*单林涛图纸管理*/
+        .Drawing .newLayTop{
+            text-align: right;
+            padding-top: 5px;
+        }
+        .Drawing .newLayTopBorder{
+            height: 5px;
+            border-top: 1px solid #BED5F3;
+            border-bottom: 1px solid #BED5F3;
+        }
+        .Drawing .searchInput{
+            width: 200px;
+            float: left;
+            margin-left: 5px;
+            margin-top: -2px;
+        }
+        .Drawing .newLayTopBtn{
+            margin-left: 200px;
+        }
+        .Drawing .btn {
+            margin-right: 5px;
+            margin-bottom:5px
+        }
+        .DrawingRight .selectDiv{
+            position: absolute;width: 195px !important;margin-top:-8px;
+        }
+        .DrawingRight textarea{
+            min-height:100px; overflow:hidden;
+        }
+        .slimScrollBar {
+        background: #bbb none repeat scroll 0 0 !important;
+    }
+        .DrawingShare .selectContent {
+        height: 100px;
+        margin-top: 25px;
+        width: 450px;
+        position: absolute;
+    }
+
+    .DrawingShare #outarrow {
+        border-color: transparent transparent #CECECE;
+        border-style: solid;
+        border-width: 14px;
+        height: 0;
+        width: 0;
+        position: absolute;
+        top: -43px;
+        left: 60px;
+        opacity: 0.5;
+    }
+
+    .DrawingShare #innerarrow {
+        border-color: transparent transparent white;
+        border-style: solid;
+        border-width: 14px;
+        height: 0;
+        width: 0;
+        position: absolute;
+        top: -46px;
+        left: 60px;
+        margin-top: 6px;
+    }
+
+    .DrawingShare .selCent {
+        border: 1px solid #CECECE;
+        width: 290px;
+        height: 90px;
+        margin-top: -15px;
+        padding: 5px;
+    }
+
+    .DrawingShare .pImg {
+        width: 35px;
+        margin-left: 5px;
+    }
+
+    .DrawingShare .pTitle {
+        height: 30px;
+        line-height: 30px;
+        color: #676A6C;
+        font-weight: 700;
+    }
+
+    .DrawingShare .selectBox {
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        width: 150px;
+        border: 1px solid #cecece;
+    }
+    .DrawingShare .fillAllSee {
+        background: url(/Content/images/allPeople.png) no-repeat;
+        background-color: #D9D9D9;
+        background-size: 35px;
+        margin: 5px;
+        background-position: 5px;
+    }
+
+    .DrawingShare .fillAppointSee {
+        background: url(/Content/images/onePeople.png) no-repeat;
+        background-color: #D9D9D9;
+        background-size: 35px;
+        margin: 5px;
+        background-position: 5px;
+    }
+
+    .DrawingShare p1 {
+        display: inline-block;
+        color: #757779;
+        margin-left: 45px;
+    }
+    .DrawingShare p2 {
+        float: left;
+        margin: 4px;
+        background-color: #56ABE4;
+        text-align: center;
+        color: white;
+        min-width: 60px;
+        font-size: 12px;
+        border: 1px solid #56ABE4;
+        border-radius: 20px;
+        float: left;
+        line-height: 0.1;
+        padding: 10px;
+    }
+
+    .DrawingShare p3 {
+        float: left;
+        margin: 4px;
+        background-color: #f47264;
+        text-align: center;
+        color: white;
+        min-width: 60px;
+        font-size: 12px;
+        border: 1px solid #f47264;
+        border-radius: 20px;
+        float: left;
+        line-height: 0.1;
+        padding: 10px;
+    }
+    .DrawingShare .aselect {
+        color: #56ABE4;
+    }
+    .DrawingShare .table-hover > tbody > tr:hover > td,
+    .table-hover > tbody > tr:hover > th {
+        background-color: #fff7e1;
+    }
+
+    .DrawingShare #tabob {
+        table-layout: fixed;
+        border: 1px solid #CED4D6;
+    }
+
+        .DrawingShare #tabob td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .DrawingShare #tabob th {
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            background-color: #ffefd7;
+            color: #665173;
+            padding: 5px;
+            vertical-align: middle;
+        }
+
+        .DrawingShare #tabob td,
+        th {
+            border: 1px solid #CED4D6;
+            padding: 5px;
+        }
+        .DrawingAdd{
+            background-color: white;
+            overflow: hidden;
+        }
+        .DrawingAdd .col-md-4 {
+            width: 35.4%;
+            height: 410px;
+            float: left;
+            border: 1px solid #CECECE;
+            margin: 5px;
+        }
+
+        .DrawingAdd .col-md-6 {
+            width: 62.8%;
+            height: 410px;
+            float: right;
+            border: 1px solid #CECECE;
+            margin: 5px -4px 5px 5px;
+        }
+
+        .DrawingAdd .col-md-7 {
+            width: 100%;
+            float: left;
+            height: 30px;
+            border: 1px solid #CECECE;
+            margin: 5px;
+            margin-bottom: 3px;
+        }
+        .DrawingAdd .fa-times {
+            color: white;
+            font-size: 12px;
+            margin-left: 2px;
+        }
+
+        .DrawingAdd .fa-times:hover {
+            color: #F8AC59;
+        }
+        .DrawingAdd p2 {
+            float: left;
+            margin: 4px;
+            background-color: #56ABE4;
+            text-align: center;
+            color: white;
+            min-width: 70px;
+            font-size: 12px;
+            border: 1px solid #56ABE4;
+            border-radius: 20px;
+            float: left;
+            line-height: 0.1;
+            padding: 5px;
+        }
+
+        .DrawingAdd p3 {
+            float: left;
+            margin: 4px;
+            background-color: #f47264;
+            text-align: center;
+            color: white;
+            min-width: 70px;
+            font-size: 12px;
+            border: 1px solid #f47264;
+            border-radius: 20px;
+            float: left;
+            line-height: 0.1;
+            padding: 5px;
+        }
+        .DrawingAdd .selectContent {
+            height: 100px;
+            margin-top: 25px;
+            width: 450px;
+            position: absolute;
+        }
+
+        .DrawingAdd .outarrow {
+            border-color: transparent transparent #CECECE;
+            border-style: solid;
+            border-width: 14px;
+            height: 0;
+            width: 0;
+            position: absolute;
+            top: -43px;
+            left: 214px;
+            opacity: 0.5;
+        }
+
+        .DrawingAdd .outarrowSel {
+            border-color: transparent transparent #06B254 !important;
+        }
+
+        .DrawingAdd .innerarrow {
+            border-color: transparent transparent white;
+            border-style: solid;
+            border-width: 14px;
+            height: 0;
+            width: 0;
+            position: absolute;
+            top: -46px;
+            left: 214px;
+            margin-top: 6px;
+        }
+
+        .DrawingAdd .selCent {
+            border: 1px solid #CECECE;
+            width: 450px;
+            height: 90px;
+            margin-top: -15px;
+            padding: 5px;
+        }
+
+        .DrawingAdd .selCentSel {
+            border: 1px solid #06B254 !important;
+        }
+
+        .DrawingAdd .pImg {
+            width: 35px;
+            margin-left: 5px;
+        }
+
+        .DrawingAdd .pTitle {
+            height: 30px;
+            line-height: 30px;
+            color: #676A6C;
+            font-weight: 700;
+            margin-top: 0px;
+            width: 100%;
+        }
+
+        .DrawingAdd .selectBox {
+            display: inline-block;
+            height: 50px;
+            line-height: 50px;
+            width: 150px;
+            border: 1px solid #cecece;
+        }
+
+        .DrawingAdd .fillAllSee {
+            background: url(/Content/images/allPeople1.png) no-repeat;
+            background-size: 35px;
+            margin: 5px;
+            background-position: 5px;
+        }
+
+            .DrawingAdd .fillAllSee:hover {
+                background: url(/Content/images/allPeople.png) no-repeat;
+                background-color: #D9D9D9;
+                display: inline-block;
+                background-size: 35px;
+                margin: 5px;
+                background-position: 5px;
+            }
+
+        .DrawingAdd .fillAllSees {
+            background: url(/Content/images/allPeople.png) no-repeat;
+            background-color: #D9D9D9;
+            background-size: 35px;
+            margin: 5px;
+            background-position: 5px;
+            border: 1px solid #00B050;
+        }
+
+        .DrawingAdd .fillAppointSee {
+            background: url(/Content/images/onePeople1.png) no-repeat;
+            background-size: 35px;
+            margin: 5px;
+            background-position: 5px;
+        }
+
+            .DrawingAdd .fillAppointSee:hover {
+                background: url(/Content/images/onePeople.png) no-repeat;
+                background-color: #D9D9D9;
+                display: inline-block;
+                background-size: 35px;
+                margin: 5px;
+                background-position: 5px;
+            }
+
+        .DrawingAdd .fillAppointSees {
+            background: url(/Content/images/onePeople.png) no-repeat;
+            background-color: #D9D9D9;
+            background-size: 35px;
+            margin: 5px;
+            background-position: 5px;
+            border: 1px solid #00B050;
+        }
+
+        .DrawingAdd .fillAppointSeeBorder {
+            border: 1px solid #cecece !important;
+        }
+
+        .DrawingAdd p1 {
+            display: inline-block;
+            color: #757779;
+            margin-left: 45px;
+        }
+
+        .DrawingAdd .pSet {
+            font-weight: normal;
+            margin-left: 10px;
+        }
+        .DrawingAdd .input-group-sm > .form-control,
+        .input-group-sm > .input-group-addon,
+        .input-group-sm > .input-group-btn > .btn {
+            /*height: 25px;*/
+            padding: 2px 10px;
+        }
+        .colorWhite{
+            color:white
+        }
+        .width100{
+            width:100px
+        }
+        .height290{
+            height:290px
+        }
+        .height240{
+            height:240px
+        }
+        .DrawingRelate .col-md-6 {
+            float: left;
+            width: 70%;
+            padding: 5px;
+        }
+
+        .DrawingRelate .col-md-4 {
+            float: left;
+            width: 30%;
+            padding: 5px;
+        }
+
+        .DrawingRelate .col-md-5 {
+            float: left;
+            width: 100%;
+            padding: 5px 5px 0;
+        }
+
+        .DrawingRelate .col-md-1 {
+            float: left;
+            width: 70%;
+            padding: 5px;
+        }
+
+        .DrawingRelate .col-md-2 {
+            float: left;
+            width: 30%;
+            padding: 5px;
+        }
+
+        .DrawingRelate .ligtop {
+            text-align: center;
+            margin: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        .DrawingRelate .boder {
+            border: 1px solid #bed5f3;
+            height: 45px;
+        }
+
+        .DrawingRelate .sbtn {
+            line-height: 1.02857;
+            border-radius: 60px;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+        .DrawingRelate .list {
+            border-bottom: 1px solid #bed5f3;
+            line-height: 30px;
+        }
+
+            .DrawingRelate .list:hover {
+                background-color: beige;
+                cursor: pointer;
+            }
+
+        .DrawingRelate .checks {
+            width: 14px;
+            height: 14px;
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 10px;
+        }
+        .input-group-btn button{
+            /*height:30px!important*/
+            height:34px
+        }
+        .height415{
+            height:415px;
+        }
+        .paddingLeft2{
+            padding-left:2px
+        }
+        .DrawingAdjust .webuploader-pick {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background: #00b7ee;
+            padding: 2px 6px;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .width25{
+            width:25%
+        }
+        .margintTop5{
+            margin-top:5px
+        }
+        /*单林涛图纸管理*/
+        /*单林涛业主进度版本管理*/
+        .width6{
+            width:6%
+        }
+        .width8{
+            width:8%
+        }
+        .tips p{
+            margin-left: 10px;color:#676a6c;
+        }
+        .uploadbtn { font-weight: 700; border: 0 none; color: #56abe4; margin-left: -5px; cursor: pointer; display: inline-block; font-size: 12px; line-height: 24px; padding: 0 18px; text-decoration: none; }
+        .paddingTop10{
+            padding-top:10px
+        }
+        .red{
+            color:red
+        }
+        .color676a6c{
+            color:#676a6c;
+        }
+        .colorf00{
+            color:#f00;
+        }
+        .newGansBody{
+            background-color: transparent;
+            padding: 5px 5px 15px !important;
+            margin: 0;
+            min-height: 400px;
+            height: 100%;
+            overflow: hidden;
+        }
+        .newGansBody .input-group-addon {
+            background-color: white;
+        }
+
+        .newGansBody .fa-calendar {
+            color: #676A6C !important;
+        }
+        .newGansBody .btn-primary {
+    background-color: #1AB394;
+    border-color: #1AB394;
+}
+                .newGansBody .btn-danger{
+                    background-color: #ED5565;
+    border-color: #ED5565;
+                }
+                .width365{
+                    width:365px;
+                }
+                .newGansBody .nav-tabs {
+            border-bottom: 1px solid #ddd !important;
+        }
+
+            .newGansBody .nav-tabs > li > a {
+                outline: medium none;
+            }
+            .paddingImLR0{
+                padding-left:0!important;
+                padding-right:0!important;
+            }
+            .newGansBody .checkbox, .form-horizontal .checkbox {
+            display: inline-block;
+            width: 200px;
+        }
+            .heightPX80{
+                height:80px!important
+            }
+            .marginLeft20{
+                margin-left:20px;
+            }
+            .newGansBody .layPad{
+                    padding:0 5px
+                }
+            .newGansBody .l-layout-header-inner { text-align: center; }
+
+         .newGansBody .l-layout-center .l-layout-header { text-align: center; padding-left: 0; }
+       
+        .newGansBody #layout2 .l-layout-header{
+            background:none;
+            border-bottom: 1px dashed #e7eaec;
+        }
+        .newGansBody #tgd a{
+            font-weight:700;
+        }
+        .newGansBody #tgd a:hover {
+            color: #56ABE4;
+            text-decoration: none;
+        }
+        .newGansBody .btnAddDel{
+            margin-top: 2px; float: left; height: 30px; margin-bottom: 5px; margin-left: 5px;
+        }
+        .newGansBody .nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    background: none
+}
+        .marginTopFIm10{
+            margin-top:-10px!important
+        }
+        .width50{
+            width:50%
+        }
+        .newGansBody .treeMenu{
+            text-align: center;
+    border-bottom: 1px dashed #e7eaec;
+        }
+        .newGansBody .treeMenuBtn{
+                margin-right:20px;
+        }
+        /*单林涛业主进度版本管理*/
+        /*施工月度计划*/
+        .marginTop7{
+            margin-top:7px;
+        }
+        .baseSelect{
+            margin-left: 3px;float:right!important;width: 200px;padding: 0;
+        }
+        .baseSelect select{
+            height: 24px;padding: 0;
+        }
+        .selectSign{
+            float:right;margin:2px 0 0 5px
+        }
+        .inputAfter{
+            padding: 5px 10px!important; height: 30px!important; margin-top: -4px;
+        }
+        .uploadPicList{
+            width:20px;height:20px;margin-top: -6px;
+        }
+        .uploadFileList{
+            width:13px;height:13px;margin-top: -6px;margin-left: 4px;
+        }
+        .marginRight20{
+            margin-right:20px
+        }
+        .paddingRight30{
+            padding-right:30px
+        }
+        /*施工月度计划*/
+        /*实际进度填报*/
+        .progressEdit  .progress-mini,
+        .progress-mini .progress-bar {
+            height: 10px;
+        }
+
+        .progressEdit .progress {
+            background-color: #EEEEEE;
+        }
+        .progressEdit #fujian {
+            color: #4E8BB5;
+            margin-top: 10px;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+            .progressEdit #fujian:hover {
+                background-color: #0E6099;
+                color: white;
+            }
+
+        .progressEdit .fileUp {
+            float: left;
+            width: 33.33%;
+        }
+
+        .progressEdit .l-grid td div {
+            font-size: 13px;
+        }
+
+        .progressEdit .fileName {
+            font-weight: normal;
+            float: left;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            display: block;
+            overflow: hidden;
+            max-width: 125px;
+            height: 22px;
+            white-space: nowrap;
+        }
+
+        .progressEdit .fileSize {
+            font-weight: normal;
+            float: left;
+            color: #898699;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .progressEdit .fileImg {
+            width: 13px;
+            height: 13px;
+            float: left;
+            margin: 3px 5px 0 4px;
+        }
+        .progressEdit #treegrid .l-panel-bar{
+            height:0
+        }
+        .progressEdit #treegrid .l-grid-hd-cell-inner{
+            background-color:#EEEEEE
+        }
+        .progressEdit .overWork{
+            background-color:rgba(0,176,80,0.5);
+            height: 100%;
+    width: 100%;
+        }
+        .width110{
+            width:110px;
+        }
+        .width3333{
+            width:33.33%;
+        }
+        .width3733{
+            width:37.33%;
+        }
+        .width210{
+            width:210px
+        }
+        .marginRight0{
+            margin-right:0
+        }
+        .progressEdit .smallSign{
+            cursor: default;display: inline-block;margin-left: -10px;
+        }
+        .progressEdit .smallImpue{
+            display: inline;width: 35px;height:20px;padding:0px;text-align:center
+        }
+        .progressEdit .progressBaatten{
+            display: inline-block;width: 500px;margin-top: 0;margin-left: 10px;
+        }
+        .progressEdit .uploImg{
+            width:13px;height:13px;margin-top: -6px;margin-left: 4px;
+        }
+        .marginTopF5{
+            margin-top:-5px
+        }
+        /*实际进度填报*/
+        /*进度对比*/
+        .speed {
+            background: url(/Content/images/speed.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .speeds {
+            background: url(/Content/images/speed1.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .spplay {
+            background: url(/Content/images/play.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .spplays {
+            background: url(/Content/images/suspend.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .spstop {
+            background: url(/Content/images/stop1.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .spstops {
+            background: url(/Content/images/stop.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .rewind {
+            background: url(/Content/images/rewind.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .rewinds {
+            background: url(/Content/images/rewind1.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .spup {
+            background: url(/Content/images/up.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+
+        .spdown {
+            background: url(/Content/images/down.png) no-repeat;
+            display: inline-block;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-left: 26px;
+            background-size: 16px;
+        }
+        .progressContrast{
+            padding: 5px;
+            margin: 0;
+            padding-bottom: 15px;
+            min-height: 400px;
+            height: 100%;
+            background-color: transparent;
+        }
+        /*进度条*/
+
+        .progressContrast .irs-from,
+        .irs-to,
+        .irs-single {
+            font-size: 14px;
+        }
+
+        .progressContrast .irs-min,
+        .irs-max {
+            font-size: 14px;
+        }
+        /*进度条*/
+
+        .progressContrast #beiSu {
+            display: none;
+        }
+
+        .progressContrast .screenRecording {
+            display: none;
+        }
+
+        .progressContrast .btn-info.active.focus,
+        .btn-info.active:focus,
+        .btn-info.active:hover,
+        .btn-info:active.focus,
+        .btn-info:active:focus,
+        .btn-info:active:hover,
+        .open > .btn-info.dropdown-toggle.focus,
+        .open > .btn-info.dropdown-toggle:focus,
+        .open > .btn-info.dropdown-toggle:hover {
+            background-color: #21b9bb;
+            border-color: #21b9bb;
+        }
+
+        .progressContrast #cangmian {
+            display: none;
+        }
+
+        .progressContrast #xianshi {
+            display: none;
+        }
+
+
+        .progressContrast .l-layout-bottom .l-layout-content {
+            height: 100%;
+            overflow: auto;
+        }
+
+        .progressContrast .ligtop {
+            width: 50%;
+            text-align: center;
+            float: left;
+            /*            padding-top: 5px;*/
+            height: 100%;
+        }
+
+        .progressContrast .col-md-12 {
+            width: 100%;
+            float: left;
+        }
+
+        .progressContrast .titleBorder {
+            width: 100%;
+            height: 100%;
+            padding-top: 5px;
+        }
+        .progressContrast #spdown{
+            margin-top: 5px;margin-right: 15px;position: absolute;right: 0;
+        }
+        .progressContrast .rgDiv{
+            padding: 0 60px;
+        }
+        .progressContrast #speed,#spplay,#spstop,#rewind,#spup{
+            margin-top:9px
+        }
+        .progressContrast #beiSu{
+            color:#20B426;float: right;margin-top: 6px;
+        }
+        .progressContrast .fangDiv{
+            width:140px;margin-left: 5px;float: left;margin-right: 5px;
+        }
+        .progressContrast .zhiZi{
+            width: 30px;text-align: center;
+        }
+        .progressContrast .layDiv24{
+            height: 24px;clear: both;border-top: 1px solid #BED5F3;
+        }
+        .paddingRight2{
+            padding-right:2px
+        }
+        .progressContrast .borderL1{
+            border-right: 1px solid #BED5F3;
+        }
+        .progressContrast .borderR1{
+            border-left: 1px solid #BED5F3;
+        }
+        /*进度对比*/
+        /*全景3D*/
+        .allScene .rted a{
+        margin-right: 3px;
+        line-height:20px
+    }
+        .allScene .font {
+        font-size: 14px;
+        font-weight: bold;
+    }
+        .allScene td {
+        word-break: break-all;
+    }
+        .allScene .panel-group {
+        margin-bottom: 0px;
+    }
+        .allScene .ibox-title {
+        border-width: 0;
+        min-height: 38px;
+    }
+        .allScene .feed-element {
+        padding-bottom: 0px;
+    }
+
+    .allScene .ibox {
+        margin-bottom: 0px;
+    }
+
+    .allScene .ibox-content {
+        padding: 3px 4px 2px;
+    }
+    .allScene .feed-element,
+    .feed-element .media {
+        margin: 5px;
+    }
+   .allScene .ibox-content {
+        border-width: 0px;
+    }
+
+    .allScene .box li img {
+        height: 100px;
+        left: 0px;
+        top: 0px;
+        width: 100px;
+    }
+
+    .allScene .box {
+        width: 280px;
+    }
+
+        .allScene .box li {
+            height: 100px;
+            width: 100px;
+        }
+
+            .allScene .box li p {
+                width: 100px;
+                bottom: 0px;
+                left: 0px;
+                background: none;
+            }
+            .allScene .panel-body {
+        padding: 3px;
+    }
+            .paddingTop5{
+                padding-top:5px
+            }
+            .marginBottom10{
+                margin-bottom:10px
+            }
+            .marginTopF30{
+                margin-top:-30px!important
+            }
+            .qrCodeDiv{
+                border-width: 0px;padding: 6px;min-height: 150px;text-align: center;
+            }
+        /*全景3D*/
+        /*讨论*/
+        .discuss{
+            background-color: white;
+            min-height: 400px;
+            font-size: 12px;
+        }
+        .discuss .ibox-title {
+            border-width: 0;
+            min-height: 38px;
+        }
+        .discuss .feed-element {
+            padding-bottom: 0px;
+        }
+
+        .discuss .ibox {
+            margin-bottom: 0px;
+        }
+
+        .discuss .ibox-content {
+            padding: 3px 4px 2px;
+        }
+        .discuss .feed-element,
+        .feed-element .media {
+            margin: 5px;
+        }
+
+        .discuss .img {
+            width: 50px;
+            height: 40px;
+        }
+
+        .discuss .panel-body {
+            padding: 3px;
+        }
+        .discuss .message-content {
+            margin-top: 3px;
+        }
+
+        .discuss .media-body {
+            padding-bottom: 5px;
+            padding-top: 10px;
+        }
+
+        .discuss a {
+            margin-top: 5px;
+        }
+
+        .discuss .feed-element, .feed-element .media {
+            margin-top: 10px;
+        }
+        .discuss .fa {
+            color: #1AB394;
+        }
+
+        .discuss .wangeditor-menu-img-picture {
+            color: #1AB394;
+        }
+
+        .discuss p2 {
+            margin: 4px;
+            background-color: #56ABE4;
+            text-align: center;
+            color: white;
+            font-size: 10px;
+            border: 1px solid #56ABE4;
+            border-radius: 20px;
+            float: left;
+            line-height: 0.1;
+            padding: 5px;
+        }
+
+        .discuss .fa-times {
+            color: white;
+            font-size: 10px;
+        }
+
+            .discuss .fa-times:hover {
+                color: #F8AC59;
+            }
+            .discuss .text-right{
+                margin-top:10px
+            }
+            .discuss .m-t-n-xs{
+                margin-right:5px
+            }
+            .discuss .fa-paperclip{
+                font-size: 14px;float:left;margin-left: 10px
+            }
+            .discuss .fa-at{
+                float:left;margin-left: 10px
+            }
+            .discuss .fa-comment{
+                margin-right: 3px;color:#EE8957
+            }
+            .discuss .pull-right a{
+                color:#938D91;font-size:12px;
+            }
+            .discuss .list-group-item{
+                background-color: #F9F9F9;margin-bottom:5px
+            }
+         /*讨论*/
+ /*2017年12月29日 11:21:54--------------------------------------------------------------------------------------------------------------------*/
+
+
+
+       /*系统设置--项目策划--项目注册--------------------------------------------李毅-------------------------------------2017年12月28日 14:50:48*/
+        .ibox-tools1 {
+            float: left;
+            margin-left:5px;
+            margin-top: 2px;
+        }
+        .ibox-tools2 {
+            float: left;
+            margin-left:5px;
+            margin-top: 4px;
+        }
+        .paddingTop10 {
+            padding-top:10px;
+        }
+        .marginTop7 {
+            margin-top:7px;
+        }
+        .i-1 {
+            margin-right: 0px;
+            margin-top: 2px;
+        }
+        .i-2 {
+            margin-right: 0px;
+            margin-top: 5px;
+        }
+        .i-3 {
+            margin-right: 0px;
+            margin-top: 8px;
+        }
+        .m0p0 {
+            margin:0;
+            padding:0;
+        }
+        .style1 {
+            text-align: right;
+            margin-top: 5px;
+            margin-right: 10px;
+        }
+        .projectregister-body,.projecttype-body,.projectregister-body,.pjareas-body {
+            background-color: transparent;
+            padding: 5px;
+            margin: 0;
+            min-height: 400px;
+            height: 100%;
+            overflow: hidden;
+        }
+        .projectregister-body #layui-layer1,.projecttype-body #layui-layer1,.pjareas-body #layui-layer1,.selectarea-body #layui-layer1 {
+            position: absolute;
+        }
+        .projectregister-body .layui-layer,
+        .projectregister-body .layui-layer-shade,
+        .projecttype-body .layui-layer,
+        .projecttype-body .layui-layer-shade,
+        .pjareas-body .layui-layer,
+        .pjareas-body .layui-layer-shade,
+        .selectarea-body .layui-layer,
+        .selectarea-body .layui-layer-shade {
+            position: absolute !important;
+        }
+        .projectregister-body #layout3 .l-layout-header,.projecttype-body #layout3 .l-layout-header,.pjareas-body #layout3 .l-layout-header,.selectarea-body #layout3 .l-layout-header {
+            display: none;
+        }
+        .projectregister-body #layout1 .l-layout-center .l-layout-header,.projecttype-body #layout1 .l-layout-center .l-layout-header,.selectarea-body #layout1 .l-layout-center .l-layout-header {
+            display: none;
+        }
+        .projectregister-body .bfa,.projecttype-body .bfa,.pjareas-body .bfa,.selectarea-body .bfa {
+            color: #3C8DBC;
+            margin-right: 8px;
+            margin-left: 8px;
+        }
+
+        .projectregister-body .btn,.projecttype-body .btn {
+            line-height: 1.02857;
+            border-radius: 60px;
+            margin-top: 0px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .projectregister-body .form-control,
+        .projectregister-body .single-line,
+        .projecttype-body .form-control,
+        .projecttype-body .single-line {
+            font-size: 12px;
+        }
+        .projectregister-body p1,.projecttype-body p1,.pjareas-body p1 {
+            font-size: 12px;
+            margin-right: 5px;
+            margin-top: 3px;
+            font-weight: 700;
+        }
+        .projectregister-body .l-selected .l-grid-row-cell,
+        .projectregister-body .l-selected,
+        .projecttype-body .l-selected .l-grid-row-cell,
+        .projecttype-body .l-selected，
+        .pjareas-body .l-selected .l-grid-row-cell,
+        .pjareas-body .l-selected,
+        .selectarea-body .l-selected .l-grid-row-cell,
+        .selectarea-body .l-selected {
+            background: #fff7e1 none repeat scroll 0 0 !important;
+        }
+        .projectregister-body .l-grid-row-cell,.projecttype-body .l-grid-row-cell,.pjareas-body .l-grid-row-cell,.selectarea-body .l-grid-row-cell {
+            border-bottom-color: #E7EAEC;
+            border-bottom-width: 1px;
+            border-right: 0 solid #a3c0e8;
+        }
+        .projectregister-body .l-grid-hd-cell,.projecttype-body .l-grid-hd-cell,.pjareas-body .l-grid-hd-cell,.selectarea-body .l-grid-hd-cell {
+            border-right: 0 solid #a3c0e8;
+        }
+        .projectregister-body .l-grid-header,.projecttype-body .l-grid-header,.pjareas-body .l-grid-header,.selectarea-body .l-grid-header {
+            background: white none repeat scroll 0 0;
+            border-bottom: 1px solid #E7EAEC;
+        }
+        .projectregister-body .l-panel,.projecttype-body .l-panel,.pjareas-body .l-panel {
+            border: 0 solid #99bbe8;
+        }
+        .projectregister-body .l-grid-row-alt .l-grid-row-cell,.projecttype-body .l-grid-row-alt .l-grid-row-cell,.pjareas-body .l-grid-row-alt .l-grid-row-cell {
+            background: #f9f9f9 none repeat scroll 0 0;
+        }
+        .projectregister-body .l-grid-row-over .l-grid-row-cell,
+        .projectregister-body .l-grid-row-over,
+        .projecttype-body .l-grid-row-over .l-grid-row-cell,
+        .projecttype-body .l-grid-row-over，
+        .pjareas-body .l-grid-row-over .l-grid-row-cell,
+        .pjareas-body .l-grid-row-over {
+            background: #fff7e1 none repeat scroll 0 0 !important;
+        }
+        .projectregister-body .l-grid-hd-cell-text,.projecttype-body .l-grid-hd-cell-text,.pjareas-body .l-grid-hd-cell-text {
+            font-weight: 700;
+        }
+        .projectregister-body .col-md-9 ,.projecttype-body .col-md-9 {
+            width: 100%;
+        }
+        .label-1 {
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        .projectregister-body .progress,.addproject-body .progress,.projectdetail-body .progress,.projectedit-body .progress,.projecttype-body .progress,.addprojecttype-body .progress {
+            width: 180px;
+            margin-top: 18px;
+        }
+        .projectregister-body p,.addproject-body p,.projectdetail-body p,.projectedit-body p,.projecttype-body p,.addprojecttype-body p {
+            float: left;
+        }
+        .projectregister-body #sltsex .chosen-search ,.addproject-body #sltsex .chosen-search,.projectdetail-body #sltsex .chosen-search,.projectedit-body #sltsex .chosen-search,.projecttype-body #sltsex .chosen-search,.addprojecttype-body #sltsex .chosen-search{
+            display: none;
+        }
+        .projectregister-body .chosen-single,.projecttype-body .chosen-single {
+            cursor: default !important;
+        }
+        .projectregister-body .m-l ,.addproject-body .m-l ,.projectdetail-body .m-l,.projectedit-body .m-l,.projecttype-body .m-l,.addprojecttype-body .m-l{
+            margin-left: -25px;
+        }
+        .projectregister-body #cangmian td,
+        .projectregister-body th,
+        .projecttype-body #cangmian td,
+        .projecttype-body th {
+            text-align: right;
+        }
+        .projectregister-body .l-panel-bar,.projecttype-body .l-panel-bar,.pjareas-body .l-panel-bar,.selectarea-body .l-panel-bar {
+            background: #f9f9f9 none repeat scroll 0 0;
+            border-color: #e7eaec;
+        }
+        .projectregister-body div#layout1.l-layout div.l-layout-center,.projecttype-body div#layout1.l-layout div.l-layout-center {
+            border-top: 0;
+            border-left: 0;
+        }
+        .projectregister-body div#layout2.l-layout div.l-layout-center,.projecttype-body div#layout2.l-layout div.l-layout-center {
+            border-top: 1px solid #bed5f3;
+            border-left: 1px solid #bed5f3;
+        }
+
+        /*系统设置--项目策划--项目注册--新增弹窗-----------------------------------李毅-------------------------------------2017年12月28日 16:16:40*/
+        .addproject-body ,.projectdetail-body,.projectedit-body,.addprojecttype-body,.aparea-body{
+            background-color: white;
+            font-size: 12px;
+        }
+        .addproject-body label,.projectdetail-body label,.projectedit-body label,.addprojecttype-body label,.aparea-body label {
+            margin-left: 10px;
+        }
+        .addproject-body #ccomment ,.projectdetail-body #ccomment ,.projectedit-body #ccomment,.addprojecttype-body #ccomment{
+            height: 120px !important;
+        }
+        .addproject-body .uploadfilebtn,.projectdetail-body .uploadfilebtn,.projectedit-body .uploadfilebtn,.addprojecttype-body .uploadfilebtn {
+            font-weight: 700;
+            border: 0 none;
+            color: #56abe4;
+            margin-left: -5px;
+        }
+        .addproject-body .uploadfilebtn:hover,.projectdetail-body .uploadfilebtn:hover,.projectedit-body .uploadfilebtn:hover,.addprojecttype-body .uploadfilebtn:hover {
+            color: #56abe4;
+        }
+        .addproject-body .btn,.projectdetail-body .btn,.projectedit-body .btn,.addprojecttype-body .btn {
+            margin-left: 5px;
+        }
+        .addproject-body #file,.projectdetail-body #file,.projectedit-body #file,.addprojecttype-body #file {
+            display: none;
+        }
+        .addproject-body .form-control,.projectdetail-body .form-control,.projectedit-body .form-control,.addprojecttype-body .form-control {
+            font-size: 12px;
+        }
+        .addproject-body #sltsex,.projectedit-body #sltsex {
+            width:100%;
+            margin-bottom: 2px;
+            margin-left: 3px;
+            margin-top: 2px;
+        }
+        .addproject-body .box1,.projectedit-body .box1 {
+            width: 100%;
+            margin-left: 3px;
+            margin-right: -2px;
+            margin-top: 3px;
+        }
+        .addproject-body .paddingTop10 p,.projectedit-body .paddingTop10 p {
+            margin-left: 5px;
+            color:#ED5565;
+        }
+        .addproject-body .box2,.projectdetail-body .box2,.projectedit-body .box2,.addprojecttype-body .box2 {
+            margin:20px 0 0;
+        }
+        .addproject-body .box3,.projectdetail-body .box3,.projectedit-body .box3,.addprojecttype-body .box3 {
+            text-align: right;
+            margin-top: 5px;
+        }
+
+
+
+
+
+       /*系统设置--项目区域-----------------------------------------------李毅-------------------------------------2017年12月28日 16:16:40*/
+       .pjareas-body .btn {
+            line-height: 1.02857;
+            border-radius: 60px;
+            margin-top: 0px;
+            font-size: 12px;
+            margin-left: 5px;
+       } 
+       .pjareas-body .form-control,.selectarea-body .form-control {
+            height: 24px;
+       }
+       .pjareas-body .form-control,.pjareas-body .single-line,
+       .selectarea-body .form-control,.selectarea-body .single-line {
+            font-size: 12px;
+            padding: 0;
+       } 
+       .pjareas-body .box {
+            width: 100% ! important;
+            height:100% ! important;
+       } 
+
+        /*系统设置--项目区域---新增弹窗-------------------------------------李毅-------------------------------------2017年12月29日 17:12:21*/
+        .aparea-body box {
+            margin:40px 0 0;
+        }
+        /*系统设置----SelectArea.cshtml-------------------------------------李毅-------------------------------------2017年12月29日 17:12:21*/
+        .selectarea-body {
+            background-color: transparent;
+            padding: 5px;
+            margin: 0;
+            padding-bottom: 32px;
+            height: 100%;
+            overflow: hidden;
+        }
+        .selectarea-body .btn {
+            line-height: 1.02857;
+            font-size: 12px;
+        }
+        .margin2 {
+            margin:2px;
+        }
+        .selectarea-body .box {
+            width: 100% ! important;
+            height:100% ! important;
+       } 
+        .selectarea-body .box1 {
+            margin-top:8px;
+       } 
+        .selectarea-body .box2 {
+            text-align: right;
+            margin-top: 3px;
+            padding-top:4px; 
+            border-top:1px dashed #E7EAEC;
+       } 
+
+        /* ------------------   Standard-ModelingInfo-buildmodelselectquantity  ------------------------------------------------*/
+        .bmsquantity-body{ 
+            background-color: transparent; 
+            padding: 5px; 
+            margin: 0; 
+            min-height: 400px; 
+            height: 100%; 
+            overflow: hidden; 
+            color: black;
+        }
+        .bmsquantity-body .btn { 
+            line-height: 1.02857; 
+            border-radius: 60px; 
+            margin-top: 0px; 
+            font-size: 12px; 
+        }
+        .bmsquantity-body .box { 
+            text-align: right;
+            margin-right: 5px;
+            margin-top: -28px; 
+        }
+		  /* ---------管理3D---------------------------------------------------------------------------------------2018年1月2日 09:26:32--*/
+        .manage3d-body {
+            padding: 5px;
+            margin: 0;
+            padding-bottom: 15px;
+            min-height: 400px;
+            height: 100%;
+            background-color: transparent;
+        }
+        .manage3d-body .inline {
+            display: inline;
+            margin: 5px;
+        }
+        .manage3d-body .col-sm-6 {
+            width: auto;
+        }
+        .manage3d-body .ztree {
+            float: left;
+        }
+        .manage3d-body .featureContainer {
+            width: 100%;
+        }
+        .manage3d-body .block {
+            width: 90%;
+        }
+        .manage3d-body .page-wrapper {
+            margin: 0;
+        }
+        .manage3d-body .carousel-control {
+            width: 2%;
+        }
+        .manage3d-body .img {
+            width: 100px;
+            height: 70px;
+        }
+        .manage3d-body #picture {
+            display: none;
+        }
+        .manage3d-body td {
+            word-break: keep-all;
+        }
+
+        .manage3d-body #layui-layer1 {
+            position: absolute;
+        }
+        .manage3d-body .layui-layer,
+        .manage3d-body .layui-layer-shade {
+            position: absolute !important;
+        }
+        .manage3d-body .btn {
+            line-height: 1.02857;
+            border-radius: 60px;
+            margin-right: 5px;
+            margin-bottom: 5px
+        }
+        .manage3d-body .nav-tabs > li.active > a,
+        .manage3d-body .nav-tabs > li.active > a:hover,
+        .manage3d-body .nav-tabs > li.active > a:focus {
+            background: rgba(0, 0, 0, 0) url("../../static/public/images/bg_x.png") repeat-x scroll 0 -45px!important;
+            border-color: #ccc #ccc transparent;
+            border-image: none;
+            border-style: solid;
+            border-width: 1px;
+            color: #555555;
+            cursor: default;
+        }
+        .manage3d-body .nav-tabs > li > a {
+            border-radius: 2px 2px 0 0;
+            line-height: 1.42857;
+            margin-right: 2px;
+            outline: medium none;
+        }
+        .manage3d-body .nav > li > a {
+            display: block;
+            padding: 5px 15px;
+            position: relative;
+        }
+        .manage3d-body .nav {
+            margin-bottom: 5px;
+        }
+        .manage3d-body ul,.manage3d-body ol {
+            margin-top: 0;
+        }
+        .manage3d-body div.l-layout-bottom {
+            border-right: 0;
+        }
+        .manage3d-body .table-hover > tbody > tr:hover > td,
+        .manage3d-body .table-hover > tbody > tr:hover > th,
+        .iframe1-body .table-hover > tbody > tr:hover > td,
+        .iframe1-body .table-hover > tbody > tr:hover > th,
+        .iframe2-body .table-hover > tbody > tr:hover > td,
+        .iframe2-body .table-hover > tbody > tr:hover > th,
+        .iframe4-body .table-hover > tbody > tr:hover > td,
+        .iframe4-body .table-hover > tbody > tr:hover > th {
+            background-color: #fff7e1;
+        }
+        .manage3d-body .tabob {
+            table-layout: fixed;
+            border: 1px solid #CED4D6;
+        }
+        .manage3d-body .tabob td {
+            text-align: center;
+            font-size: 12px;
+        }
+        .manage3d-body .tabob th,.iframe1-body .tabob th,.iframe4-body .tabob th {
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            background-color: #ffefd7;
+            color: #665173;
+            padding: 5px;
+        }
+        .manage3d-body .tabob td,.manage3d-body th,.iframe1-body .tabob td,.iframe1-body th {
+            border: 1px solid #CED4D6;
+            padding: 5px;
+        }
+        .manage3d-body .qualityWarning {
+            display: none;
+        }
+        .manage3d-body .qNum {
+            font-weight: 700;
+        }
+        .manage3d-body .qualityFenBu {
+            display: none;
+        }
+        .manage3d-body h3 {
+            margin: 5px;
+        }
+        .manage3d-body .topGetBack {
+            float: left;
+            margin-left: 5px;
+        }
+        .manage3d-body .panel-body {
+            padding: 15px 0;
+        }
+        .manage3d-body .k1,.manage3d-body .k2,.manage3d-body .k3,.manage3d-body .k4,.manage3d-body .k5 {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin-left: 5px;
+            margin-right: 15px;
+        }
+        .manage3d-body .k1 {
+            background-color: #529df8;
+        }
+        .manage3d-body .k2 {
+            background-color: #FFD700;
+        }
+        .manage3d-body .k3 {
+            background-color: #00ff00;
+        }
+        .manage3d-body .k4 {
+            background-color: #808080;
+        }
+        .manage3d-body .k5 {
+            background-color: #ffa500;
+        }
+        .manage3d-body .bDiv {
+            float: left;
+            margin-top: 7px;
+            margin-left: 5px;
+        }
+        .manage3d-body .newLayTop {
+            text-align: right;
+            padding-top: 5px;
+        }
+        .manage3d-body .newLayTopBorder{
+            height: 5px;
+            border-top: 1px solid #BED5F3;
+            border-bottom: 1px solid #BED5F3;
+        }
+        .manage3d-body .pTop1{
+            padding-top:2px;
+            margin-right: 10px;
+        }
+        .manage3d-body .pTop2{
+            padding-top:3px
+        }
+
+       /*------------管理3D------iframe1---------------------------------------------------------------------------2018年1月2日 10:34:26--*/
+        .iframe1-body,.iframe4-body,.iframe5-body {
+            background-color: white;
+            padding: 5px;
+        }
+        .iframe1-body .font,.iframe4-body .font,.iframe5-body .font {
+            font-weight: 700;
+        }
+        .iframe1-body .panel-body,.iframe4-body .panel-body,.iframe5-body .panel-body {
+            padding: 5px;
+        }
+
+        .iframe1-body .tab-pane,.iframe4-body .tab-pane {
+            overflow-y: auto;
+        }
+        .iframe1-body .vertical-timeline-content,.iframe4-body .vertical-timeline-content {
+            padding: 10px;
+            margin-left: 50px;
+        }
+        .iframe1-body .basTime,.iframe4-body .basTime {
+            padding-left: 25px;
+        }
+        .iframe1-body .ok-bg {
+            background-color: #BFBFBF;
+        }
+        .iframe1-body .not-bg {
+            background-color: #00B050;
+        }
+        .iframe1-body .panel-group,.iframe2-body .panel-group,.iframe4-body .panel-group {
+            margin-bottom: 0;
+        }
+        .iframe1-body .pointEnd,.iframe4-body .pointEnd {
+            margin-bottom: 0 !important;
+        }
+        .iframe1-body .vertical-timeline-block,.iframe4-body .vertical-timeline-block {
+            margin: 0;
+            margin-bottom: 2em;
+        }
+        .iframe1-body .tabob {
+            table-layout: fixed;
+        }        
+        .iframe1-body .tabob td,.iframe4-body .tabob td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            font-size: 12px;
+        }
+        .iframe1-body .tuList {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .iframe1-body .tuKuai {
+            width: 100px;
+            height: 80px;
+            margin: 5px;
+            display: inline-block
+        }
+        
+        .iframe1-body .k1 {
+            width: 100px;
+            height: 80px;
+        }
+        .iframe1-body .kColor1{
+            background-color: #2aa515
+        }
+        .iframe1-body .kColor2{
+            background-color: #efb336
+        }
+        .iframe1-body .kColor3{
+            background-color: #529df8
+        }
+        /*------------管理3D------iframe2---------------------------------------------------------------------------2018年1月2日 10:34:26--*/
+        .iframe2-body,.iframe3-body {
+            background-color: white;
+            min-height: 400px;
+        }
+        .iframe2-body .edted,.iframe3-body .edted {
+            background-color: #F2FBFF;
+        }
+        .iframe2-body .ibox-title,.iframe3-body .ibox-title {
+            border-width: 0;
+            min-height: 38px;
+        }
+        .iframe2-body .style1 {
+            width: 50px;
+        }
+        .iframe2-body #edit {
+            display: none;
+        }
+        .iframe2-body #pingl {
+            display: none;
+        }
+        .iframe2-body .feed-element {
+            padding-bottom: 0px;
+        }
+        .iframe2-body .ibox,.iframe3-body .ibox {
+            margin-bottom: 0px;
+        }
+        .iframe2-body .ibox-content,.iframe3-body .ibox-content {
+            padding: 3px 4px 2px;
+        }
+        .iframe2-body table {
+            table-layout: fixed;
+            width: 100%;
+        }
+        .iframe2-body .feed-element,
+        .iframe2-body .feed-element .media,
+        .iframe3-body .feed-element,
+        .iframe3-body .feed-element .media {
+            margin: 5px;
+        }
+        .iframe2-body .img,.iframe3-body .img {
+            width: 50px;
+            height: 40px;
+        }
+        .iframe2-body .panel-body,.iframe3-body .panel-body {
+            padding: 3px;
+        }
+        .iframe2-body .tip-triangle,.iframe3-body .tip-triangle {
+            display: none;
+        }
+        .iframe2-body #file {
+            display: none;
+        }
+        .iframe2-body .wangEditor-menu-container {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .iframe2-body .rted,.iframe3-body .rted,.iframe4-body .rted {
+            color: #CDCDCD;
+        }
+        .iframe2-body a:hover,.iframe4-body a:hover {
+            color: #56ABE4;
+        }
+        .iframe2-body #bents a:hover {
+            color: #56ABE4;
+            text-decoration: none;
+        }
+        .iframe2-body .panel-heading a {
+            color: #CDCDCD;
+        }
+        .iframe2-body .panel-heading a:hover {
+            color: #56ABE4;
+            text-decoration: none;
+        }
+        .iframe2-body .font,.iframe3-body .font {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .iframe2-body tbody,.iframe3-body tbody {
+            font-size: 12px;
+        }
+        .iframe2-body .select,.iframe4-body .select {
+            color: #56ABE4;
+        }
+        .iframe2-body #cail {
+            display: none;
+        }
+        .iframe2-body #jix {
+            display: none;
+        }
+        .iframe2-body .ibox-content,.iframe3-body .ibox-content {
+            border-width: 0px;
+        }
+        .iframe2-body #hnt {
+            display: none;
+        }
+        .iframe2-body #qt {
+            display: none;
+        }
+        .iframe2-body .qdselect {
+            color: #70C9C3;
+            text-decoration: underline;
+        }
+        .iframe2-body #qdtgd a:hover {
+            color: #70C9C3;
+            text-decoration: underline;
+        }
+        .iframe2-body .panel-default > .panel-heading {
+            background-color: #F9F9F9;
+        }
+        .iframe2-body .xdelete:hover {
+            color: #A3A5A6;
+        }
+        .iframe2-body a > table > tbody > tr > td {
+            text-align: left;
+            width: 200%;
+        }
+        .iframe2-body #baseTab table {
+            table-layout: fixed;
+            width: 100%;
+        }
+        .iframe2-body #baseTab td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
+            font-size: 12px;
+        }
+        .iframe2-body #baseTab .table-hover > tbody > tr:hover > td,
+        .iframe2-body .table-hover > tbody > tr:hover > th,
+        .iframe3-body #baseTab .table-hover > tbody > tr:hover > td,
+        .iframe3-body .table-hover > tbody > tr:hover > th {
+            background-color: #fff7e1;
+        }
+        .iframe2-body h3,.iframe3-body h3,.iframe4-body h3,.iframe6-body h3 {
+            margin: 0px 10px 10px;
+        }
+
+      /*------------管理3D------iframe3---------------------------------------------------------------------------2018年1月2日 11:47--*/
+        .iframe3-body table {
+            table-layout: fixed;
+            width: 100%;
+            margin-bottom:0!important
+        }
+        .iframe3-body td {
+         word-break: break-all;
+        }
+      /*------------管理3D------iframe4---------------------------------------------------------------------------2018年1月2日 13:45:41--*/
+
+        .iframe4-body .ok-bg,.iframe5-body .ok-bg {
+            background-color: #00B050;
+        }
+
+        .iframe4-body .not-bg,.iframe5-body .not-bg {
+            background-color: #BFBFBF;
+        }
+        .iframe4-body .checkTable2{
+            display:none
+        }
+        .iframe4-body #tabob {
+            border: 1px solid #CED4D6;
+            width:100%;
+            margin-top:5px
+        }
+        .iframe4-body #tabob td,
+        .iframe4-body th {
+            border: 1px solid #CED4D6;
+            padding: 5px;
+        }
+        .iframe4-body .panel-default{
+            border:0
+        }
+        /*------------管理3D------iframe5---------------------------------------------------------------------------2018年1月2日 15:48:48--*/
+        .iframe5-body .tabob { 
+            table-layout: fixed; 
+            border: 1px solid #CED4D6; 
+        }
+        .iframe5-body .tabob td {
+            text-align: center; 
+            font-size: 12px; 
+        }
+        .iframe5-body .tabob th { 
+            text-align: center; 
+            font-weight: bold; 
+            font-size: 12px; 
+            background-color: #ffefd7; 
+            color: #665173; 
+            vertical-align: middle; 
+            line-height: 8px; 
+        }
+        .iframe5-body .tabob td,
+        .iframe5-body th { 
+            border: 1px solid #CED4D6; 
+            padding: 5px; 
+        }
+        .iframe5-body .verTd { 
+            vertical-align: middle !important; 
+            text-align: center; 
+        }
+        .iframe5-body .operity { 
+            opacity: 0.5; 
+            color: black; 
+        }
+        .iframe5-body .tabAk {
+             display: inline-block; 
+        }
+        .iframe5-body .tdW1 { 
+            width: 80px;
+        }
+        .iframe5-body .tdW3 { 
+            width: 80px;
+        }
+        .iframe5-body .table > thead > tr > th,
+        .iframe5-body .table > tbody > tr > th, 
+        .iframe5-body .table > tfoot > tr > th, 
+        .iframe5-body .table > thead > tr > td, 
+        .iframe5-body .table > tbody > tr > td, 
+        .iframe5-body .table > tfoot > tr > td { 
+           vertical-align: middle; 
+        }
+
+        /*------------管理3D------iframe6---------------------------------------------------------------------------2018年1月2日 15:48:48--*/
+        .iframe6-body {
+            background-color: white;
+            padding: 5px;
+            overflow: auto;
+        }
+        .iframe6-body .d3Tab1List {
+            width: 350px;
+            height: 240px;
+            border: 1px solid #bbb;
+            float: left;
+            margin: 4px;
+            z-index: 999999999999999999999999999;
+            border-radius: 5px;
+            background-color: #F8F8F8;
+        }
+        .iframe6-body .lizi {
+            background: #A6DBD8;
+            width: 100%;
+            height: 100%;
+        }
+        .iframe6-body .img-responsive {
+            z-index: 0;
+            max-height: 170px;
+        }
+        .iframe6-body .newDPType {
+            width: 350px;
+            height: 170px;
+        }
+        .iframe6-body .dContent {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            height: 40px;
+            padding: 0px 2px;
+        }
+        .iframe6-body .dGongJu {
+            display: inline-block;
+            font-weight: 700;
+            margin-left: 5px;
+        }
+        .iframe6-body .dGName {
+            margin-left: 70px;
+        }
+        .iframe6-body .bfa {
+            color: #3C8DBC;
+            float: right;
+            margin-right: 15px;
+            margin-top: 3px;
+        }
+        .iframe6-body .dJianG {
+            margin-top: 3px;
+        }
+        .iframe6-body .dPicAdd {
+            width: 350px;
+            height: 240px;
+            float: left;
+            margin: 4px;
+            z-index: 999999999999999999999999999;
+        }
+        .iframe6-body .dAddPic {
+            margin-top: 80px;
+            margin-left: 150px;
+            cursor: pointer;
+        }
+        .iframe6-body .d3Tab1 {
+            overflow: auto;
+        }
+        /*单林涛*/
+        .paddingIm0{
+            padding:0!important
+        }
+        .numClick{
+            color:#56ABE4;
+            font-weight:700;
+            cursor:pointer
+        }
+        .paddingIm5{
+            padding:5px!important
+        }
+        /*单林涛*/
+        .content1 .l-grid td div {
+            font-size: 13px;
+        }
+        .content1 .fileName {
+            font-weight: normal;
+            float: left;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            display: block;
+            overflow: hidden;
+            max-width: 125px;
+            height: 22px;
+            white-space: nowrap;
+        }
+        .content1 .fileSize {
+            font-weight: normal;
+            float: left;
+            color: #898699;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .headh {
+            font-size:22px;
+            margin-top:-25px;
+            color: #3c8dbc;
+        }
+        .mainBody1 #layout1 .l-layout-center .l-layout-header{  
+            display: none;
+        }
+        /*.mainBody2 .l-layout-header {
+            display: none;
+        }
+        .mainBody2 .l-grid-hd-cell-mul {
+            border-bottom: 0 solid #a3c0e8;
+        }
+        .mainBody2 .ligerEdit {
+            width: 100%;
+            height: 100%;
+            background-color: #C3E4B9
+        }*/
+        .mainBody3 .l-layout-header {
+            height: 0;
+        }
+        .paddingRight40 {
+            padding-right:40px;
+        }
+        /*.mainBody2 .input-group-btn{
+            right: 39px;
+            z-index: 10;
+        }*/
+        /*.clearBoth {
+            clear:both;
+        }
+        .mainBody2 div#layout2.l-layout div.l-layout-center {
+            width: 100% !important;
+            border-right: 0;
+        }*/
+        .mainBody5 #layout3 .l-layout-header {
+            display: none;
+        }
+        .mainlayout2 .l-grid-body {
+            overflow:hidden !important;
+        }
+        /*单林涛*/
+        .marginLeftIm20{
+            margin-left:20px!important
+        }
+        .widthPx140{
+            width:140px;
+        }
+       .width360{
+           width:360px
+       }
+         /*单林涛*/

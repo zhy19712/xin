@@ -703,35 +703,4 @@ class Admin extends Permissions
         }
     }
 
-
-    public function log()
-    {
-        $model = new \app\admin\model\AdminLog();
-
-        $post = $this->request->param();
-        if (isset($post['admin_menu_id']) and $post['admin_menu_id'] > 0) {
-            $where['admin_menu_id'] = $post['admin_menu_id'];
-        }
-        
-        if (isset($post['admin_id']) and $post['admin_id'] > 0) {
-            $where['admin_id'] = $post['admin_id'];
-        }
- 
-        if(isset($post['create_time']) and !empty($post['create_time'])) {
-            $min_time = strtotime($post['create_time']);
-            $max_time = $min_time + 24 * 60 * 60;
-            $where['create_time'] = [['>=',$min_time],['<=',$max_time]];
-        }
-        
-        $log = empty($where) ? $model->order('create_time desc')->paginate(20) : $model->where($where)->order('create_time desc')->paginate(20,false,['query'=>$this->request->param()]);
-        
-        $this->assign('log',$log);
-        //身份列表
-        $admin_cate = Db::name('admin_cate')->select();
-        $this->assign('admin_cate',$admin_cate);
-        $info['menu'] = Db::name('admin_menu')->select();
-        $info['admin'] = Db::name('admin')->select();
-        $this->assign('info',$info);
-        return $this->fetch();
-    }
 }

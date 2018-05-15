@@ -1,0 +1,94 @@
+.tabHeight {
+    height: 843px
+}
+
+.tabWidth {
+    width: 170mm
+}
+
+.A4 {
+    /*    margin: 10mm 15mm 15mm 17mm;*/
+    margin: 0mm 15mm 15mm 17mm;
+    padding-top: 10mm;
+}
+
+
+/*img {
+    width: 30mm;
+    position: absolute;
+    right: 0mm;
+    top: 0mm
+}*/
+
+.textVertical {
+    writing-mode: tb-lr;
+    letter-spacing: 5px;
+	display: inline-block;
+}
+
+.tabTitle {
+    margin: auto
+}
+
+.titleTwo {
+    margin-top: 3mm
+}
+
+.tdOne {
+    width: 82mm
+}
+
+.spanHeard {
+    font-family: 仿宋;
+}
+
+canvas {
+    width: 30mm;
+    position: absolute;
+    right: 0mm;
+    top: 0mm
+}
+
+.paging {
+    page-break-before: always;
+}
+
+.zhuangSpan {
+    font-size: 9pt;
+    line-height: 10pt;
+}
+
+.zhuangSpanP {
+    width: 48mm;
+    text-align: left;
+}
+
+.tcP {
+    margin: 0pt;
+    text-align: center;
+}
+
+.td4 {
+    width: 80mm
+}
+
+/*.btn {
+    line-height: 1.02857;
+    border-radius: 60px;
+    margin-top: 0px;
+    font-size: 12px;
+    margin: 5px
+}*/
+.hr-line-dashed{
+    border: none;
+    margin-top: 10px!important
+}
+.hearBtn {
+    text-align: right;
+    position: fixed!important;
+    right: 5px!important;
+    border-bottom: 1px dashed #e7eaec!important;
+    width: 100%!important;
+    z-index: 2147483647!important;
+    background-color: white!important;
+}

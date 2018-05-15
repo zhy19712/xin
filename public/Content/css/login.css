@@ -1,0 +1,85 @@
+body{
+	margin:0px;
+	padding: 0px;
+}
+.bg{
+	background-image: url('../../static/public/images/login/dh_login_bg.png');
+	background-size: 100%,100%;
+	border:0px;
+}
+.top_line{
+	margin:0px;
+	padding:0px;
+	border:0px;
+	position: absolute;
+	background-repeat: repeat-x;
+	top:120px;
+	height: 1px;
+	width:100%;
+	background-image: url('../../static/public/images/login/dh_line.png');
+}
+.bottom_line{
+	border:0px;
+	position: absolute;
+	background-repeat: repeat-x;
+	bottom:24px;
+	color: #217566;
+	height: 1px;
+	width:100%;
+	background-image: url('../../static/public/images/login/dh_line.png');
+}
+.logo{
+	position: absolute;
+	background-image: url('../../static/public/images/login/Logo.png');
+	background-repeat: repeat-x;
+	width: 466px;
+	height: 60px;
+	top: 30px;
+	left: 50%;
+	margin-left: -233px;
+}
+.loginimg{
+	position: absolute;
+	background-image: url('../../static/public/images/login/dh_loginframe_bg.png');
+	width: 384px;
+	height: 260px;
+	top: 50%;
+	left: 50%;
+	margin-top: -130px;
+	margin-left: -192px;
+}
+.logintable{
+	position: relative;
+	font-family: "΢���ź�";
+	width: 300px;
+	height: 100px;
+	top: 50%;
+	left: 50%;
+	margin-left: -150px;
+	margin-top: -50px;
+}
+.logintable tr{
+	height: 40px;
+}
+.login_button{
+	background-image: url('../../static/public/images/login/dh_login_zc.png');
+	width: 190px;
+	height: 26px;
+	margin-top: 30px;
+	text-align: center;
+	cursor: pointer;
+}
+.textstyle{
+	width: 190px;
+}
+.bottom_bg{
+	position: absolute;
+	text-align: center;
+	background: #217566;
+	color: #fff;
+	font-family: "΢���ź�";
+	width: 100%;
+	border:0px;
+	bottom:0px;
+	height: 22px;
+}

@@ -27,12 +27,6 @@ class Admin extends Model
         return $this->hasOne('Attachment','id','thumb');
     }
 
-    public function log()
-    {
-        //关联日志表
-        return $this->hasOne('AdminLog');
-    }
-
     /**
      * 根据组织机构 编号 关联删除 用户
      * @param $group_id

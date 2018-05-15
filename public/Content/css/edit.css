@@ -1,0 +1,64 @@
+body {
+    background-color: white
+}
+
+
+/*日历*/
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.datepicker-dropdown::before {
+    border-width: 0 0px 7px
+}
+
+.datepicker-dropdown::after {
+    border-width: 0
+}
+
+
+/*日历*/
+
+.input-group .form-control {
+    background-color: #fff7e1;
+}
+
+[disabled].form-control,
+[readonly].form-control,
+fieldset[disabled] .form-control {
+    background-color: #eee !important;
+}
+
+.comment {
+    width: 100%;
+    height: 100%;
+    font-family: 仿宋;
+    font-size: 10.5pt;
+    border: 0;
+}
+
+.texBorder {
+    border: 1px solid #e5e6e7;
+}
+
+.btn {
+    line-height: 1.02857;
+    border-radius: 60px;
+    margin-top: 0px;
+    font-size: 12px;
+    margin: 5px
+}
+
+.qianming {
+    text-align: center
+}
+.editInput{
+    background-color: #fff7e1;
+}
+[disabled].editInput{
+    background-color: #eee !important;
+}
+.dateMargin {
+            margin: 5px 0;
+        }

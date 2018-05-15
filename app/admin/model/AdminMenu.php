@@ -34,9 +34,4 @@ class AdminMenu extends Model
 		return $menus;
 	}
 
-	public function log()
-    {
-        //关联操作日志表
-        return $this->hasOne('AdminLog');
-    }
 }
