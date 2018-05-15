@@ -397,7 +397,6 @@ class Unitqualitymanage extends Permissions
             $res['id'] = Db::name('attachment')->insertGetId($data);
             $res['src'] = DS . 'uploads' . DS . 'quality' . DS . 'Unitqualitymanage' . DS . $info->getSaveName();
             $res['code'] = 2;
-            addlog($res['id']);//记录日志
 
 
             // 执行上传文件 获取文件编号  attachment_id

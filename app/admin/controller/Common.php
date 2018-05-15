@@ -219,8 +219,6 @@ class Common extends Controller
             $res['id'] = Db::name('attachment')->insertGetId($data);
             $res['src'] = DS . 'uploads' . DS . $module . DS . $use . DS . $info->getSaveName();
             $res['code'] = 2;
-            addlog($res['id']);//记录日志
-            return json($res);
         } else {
             // 上传失败获取错误信息
             return $this->error('上传失败：'.$file->getError());

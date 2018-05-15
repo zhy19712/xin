@@ -45,7 +45,6 @@ class Urlsconfig extends Permissions
 	            if(false == $model->allowField(true)->save($post,['id'=>$id])) {
 	            	return $this->error('修改失败');
 	            } else {
-                    addlog($id);//写入日志
 	            	return $this->success('修改成功','admin/urlsconfig/index');
 	            }
     		} else {
@@ -75,7 +74,6 @@ class Urlsconfig extends Permissions
 	            if(false == $model->allowField(true)->save($post)) {
 	            	return $this->error('添加失败');
 	            } else {
-                    addlog($model->id);//写入日志
 	            	return $this->success('添加成功','admin/urlsconfig/index');
 	            }
     		} else {
@@ -94,7 +92,6 @@ class Urlsconfig extends Permissions
             if(false == Db::name('admin_urlconfig')->where('id',$id)->delete()) {
                 return $this->error('删除失败');
             } else {
-                addlog($id);//写入日志
                 return $this->success('删除成功','admin/urlsconfig/index');
             }
     	}
@@ -113,7 +110,6 @@ class Urlsconfig extends Permissions
                 if(false == Db::name('admin_urlconfig')->where('id',$id)->update(['status'=>$status])) {
                     return $this->error('设置失败');
                 } else {
-                    addlog($id);//写入日志
                     return $this->success('设置成功','admin/urlsconfig/index');
                 }
             } 

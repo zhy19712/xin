@@ -37,7 +37,6 @@ class Emailconfig extends Permissions
             if(false == Db::name('admin_emailconfig')->where('email','email')->update($post)) {
             	return $this->error('提交失败');
             } else {
-                addlog();//写入日志
             	return $this->success('提交成功','admin/emailconfig/index');
             }
     	} else {
@@ -64,7 +63,6 @@ class Emailconfig extends Permissions
             if(false == $mailto) {
             	return $this->error('发送失败');
             } else {
-            	addlog($address);//写入日志
             	return $this->success('邮件发送成功');
             }
             dump($mailto);

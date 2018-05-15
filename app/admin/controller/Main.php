@@ -449,8 +449,6 @@ class Main extends Permissions
             $res['id'] = Db::name('attachment')->insertGetId($data);
             $res['src'] = DS . 'uploads' . DS . 'quality' . DS . 'anchor_point' . DS . $info->getSaveName();
             $res['code'] = 2;
-            addlog($res['id']);//记录日志
-
             // 保存上传文件记录
             $param = input('param.');
             // 验证规则

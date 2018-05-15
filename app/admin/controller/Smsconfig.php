@@ -35,7 +35,6 @@ class Smsconfig extends Permissions
             if(false == Db::name('admin_smsconfig')->where('sms','sms')->update($post)) {
             	return $this->error('提交失败');
             } else {
-                addlog();//写入日志
             	return $this->success('提交成功','admin/smsconfig/index');
             }
     	} else {
@@ -68,7 +67,6 @@ class Smsconfig extends Permissions
                 return $this->error('发送失败');
             } else {
                 $phone = hide_phone($phone);
-                addlog($phone);//写入日志
                 return $this->success('短信发送成功');
             }
         } else {

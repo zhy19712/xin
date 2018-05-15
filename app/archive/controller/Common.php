@@ -287,7 +287,6 @@ class Common extends Controller
             $res['filename'] = $info->getFilename();//文件名
             $res['src'] = DS . 'uploads' . DS . $module . DS . $use . DS . $info->getSaveName();
             $res['code'] = 2;
-            addlog($res['id']);//记录日志
             return json($res);
         } else {
             // 上传失败获取错误信息

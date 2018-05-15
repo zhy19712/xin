@@ -57,7 +57,6 @@ class Menu extends Permissions
 	            if(false == $model->allowField(true)->save($post,['id'=>$id])) {
 	            	return $this->error('修改失败');
 	            } else {
-                    addlog($model->id);//写入日志
 	            	return $this->success('修改菜单信息成功','admin/menu/index');
 	            }
     		} else {
@@ -94,7 +93,6 @@ class Menu extends Permissions
 	            if(false == $model->allowField(true)->save($post)) {
 	            	return $this->error('添加菜单失败');
 	            } else {
-                    addlog($model->id);//写入日志
 	            	return $this->success('添加菜单成功','admin/menu/index');
 	            }
     		} else {
@@ -121,7 +119,7 @@ class Menu extends Permissions
                 if(false == Db::name('admin_menu')->where('id',$id)->delete()) {
                     return $this->error('删除失败');
                 } else {
-                    addlog($id);//写入日志
+
                     return $this->success('删除成功','admin/menu/index');
                 }
             } else {
@@ -146,7 +144,6 @@ class Menu extends Permissions
                     }
                 }
             }
-            addlog();//写入日志
             return $this->success('成功更新'.$i.'个数据','admin/menu/index');
         }
     }
