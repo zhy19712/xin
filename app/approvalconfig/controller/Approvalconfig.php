@@ -83,14 +83,13 @@ class Approvalconfig extends Permissions
                 if(empty($file_obj)){
                     return json(['code' => '-1','msg' => '编号无效']);
                 }
-                $new_name = iconv("utf-8","gb2312",$file_obj['code'].$file_obj['name']);
-                $filePath = ROOT_PATH . 'public' . DS . 'Data' . DS . 'form' . DS . 'quality' . DS . $new_name . '.docx';
 
-                if(!file_exists($filePath)){
+                $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $file_obj['code'] . $file_obj['name'] . ".docx";
+                $formPath = iconv('UTF-8', 'GB2312', $formPath);
+
+                if(!file_exists($formPath)){
                     return json(['code' => '-1','msg' => '文件不存在']);
                 }
-
-                $filePath = iconv('UTF-8', 'GB2312', $filePath);
 
                 //设置临时文件，避免C盘Temp不可写报错
         //        Settings::setTempDir('temp');
@@ -105,27 +104,27 @@ class Approvalconfig extends Permissions
                 // 预览
                     $code = 1;
                     $msg = '预览成功';
-                    $path = $filePath;
-                    $extension = strtolower(get_extension(substr($path,1)));
+                    $path = $formPath;
+                    $extension = strtolower(get_extension(substr($path, 1)));
                     $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-                    if(!file_exists($pdf_path)){
-                        if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                    if (!file_exists($pdf_path)) {
+                        if ($extension === 'doc' || $extension === 'docx' || $extension === 'txt') {
                             doc_to_pdf($path);
-                        }else if($extension === 'xls' || $extension === 'xlsx'){
+                        } else if ($extension === 'xls' || $extension === 'xlsx') {
                             excel_to_pdf($path);
-                        }else if($extension === 'ppt' || $extension === 'pptx'){
+                        } else if ($extension === 'ppt' || $extension === 'pptx') {
                             ppt_to_pdf($path);
-                        }else if($extension === 'pdf'){
+                        } else if ($extension === 'pdf') {
                             $pdf_path = $path;
-                        }else if($extension === "jpg" || $extension === "png" || $extension === "jpeg"){
+                        } else if ($extension === "jpg" || $extension === "png" || $extension === "jpeg") {
                             $pdf_path = $path;
-                        }else {
+                        } else {
                             $code = 0;
                             $msg = '不支持的文件格式';
                         }
-                        return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
-                    }else{
-                        return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+                        return json(['code' => $code, 'path' => substr($pdf_path, 1), 'msg' => $msg]);
+                    } else {
+                        return json(['code' => $code, 'path' => substr($pdf_path, 1), 'msg' => $msg]);
                     }
         }
     }
