@@ -142,7 +142,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-            "url": "{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="
+            "url": "{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="
         },
         dom: 'lf<"mybtn layui-btn layui-btn-sm">rtip',
         columns: [
@@ -277,7 +277,7 @@
         clickTreeId = selfid;
         procedureId = selfid;
         if(sNodes.level == 3){
-            tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfid).load();
+            tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="+selfid).load();
             $("#tableContent .dataTables_wrapper").css('display','block');
             $("#tableContent .tbcontainer").css('display','block');
             $(".layout-panel-center .panel-title").text("当前路径:" + path);
@@ -386,7 +386,7 @@
                 body.find("#denId").val(procedureId);
             },
             end:function () {
-                tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfid).load();
+                tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="+selfid).load();
             }
         });
     });
@@ -401,7 +401,7 @@
             area: ['780px', '550px'],
             content: '{:url("addcontrollpoint")}?id='+id,
             end:function () {
-                tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfid).load();
+                tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="+selfid).load();
             }
         });
     }
@@ -418,7 +418,7 @@
                     if(res.code == 1){
                         console.log(res)
                         layer.msg("删除成功！")
-                        tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=controlpoint&id="+selfid).load();
+                        tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="+selfid).load();
                     }else if(res.code==0){
                         layer.msg(res.msg);
                     }
