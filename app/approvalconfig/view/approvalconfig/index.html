@@ -1,0 +1,95 @@
+{include file="../app/public/common_header.html"}
+
+<link rel="stylesheet" href="__WEBSITE__/approvalconfig/approvalconfig/index.css">
+<div data-options="region:'west',title:'全部模板',split:true" style="width:260px;">
+    <div id="searchBox">
+        <input id="search" class="layui-input" type="text" placeholder="搜索" >
+    </div>
+    <hr>
+    <div id="allFrom">
+        <ul></ul>
+    </div>
+</div>
+<div data-options="region:'center'">
+    <div id="btn-box">
+        <a onclick="lookform()" class="layui-btn-normal layui-btn">查看表单</a>
+        <a onclick="addStatus()" class="layui-btn-normal layui-btn">添加状态</a>
+        <a onclick="addSTEP()" class="layui-btn-normal layui-btn">添加步骤</a>
+    </div>
+    <div>
+
+    </div>
+</div>
+<form id="branchform" action="#" onsubmit="return false" class="layui-form" style="display: none">
+    <input type="hidden" name="id" id="addId" style="display: none;">
+    <input type="hidden" name="classifyid" id="classifyid" style="display: none;">
+    <input type="hidden" name="pid" id="pid" style="display: none;">
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">父节点(序号)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="parent_code" id="parent_code" placeholder="无" disabled autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">编号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="code" id="code" placeholder="编号" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="class_name" id="class_name" placeholder="名称" lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <hr class="layui-bg-gray">
+    <div class="layui-form-item">
+        <div style="text-align: center;">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+            <button type="reset" class="layui-btn layui-btn-danger layui-layer-close"><i class="fa fa-close"></i> 返回</button>
+        </div>
+    </div>
+</form>
+<form id="excel" action="#" onsubmit="return false" class="layui-form" style="display: none;">
+    <input type="hidden" name="classifyid" id="classifyid_2" style="display: none;">
+    <div class="layui-form-item">
+        <div class="autograph">
+            <h3 style="text-align: center;color: #3c8dbc; font-size: 22px;margin:0 20px;">数据导入</h3>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">文件域：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="filename_1" id="file_name_1"  lay-verify="required" readonly autocomplete="off" class="layui-input">
+                <input type="hidden" name="filename" id="file_name" >
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <button type="button" class="layui-btn" id="upload">浏览</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <p style="text-align: center;">提示：只能导入格式为xls、xlsx的文件。请先下载导入模版：<span onclick=" download()" style="color: #ff0000;text-decoration: underline;">分支目录</span></p>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div style="text-align: center;">
+            <button class="layui-btn sub2" lay-submit="" lay-filter="demo2" ><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+            <button type="reset" class="layui-btn layui-btn-danger layui-layer-close"><i class="fa fa-close"></i> 返回</button>
+        </div>
+    </div>
+</form>
+<div id="form_container" style="display: none;"></div>
+
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/approvalconfig/approvalconfig/index.js"></script>
+</body>
+</html>
