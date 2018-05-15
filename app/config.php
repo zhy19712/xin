@@ -154,11 +154,11 @@ return [
     ],
 
     // 视图输出字符串内容替换
-    'view_replace_str'       => [
-        '__WEBSITE__'      => '/static/webSite',
+    'view_replace_str' => [
+        '__WEBSITE__'  => '/static/webSite',
         '__PUBLIC__'   => '/static/public',
-        '__COMMONCSS__'      => '/static/webSite/common/css',
-        '__COMMONJS__'       => '/static/webSite/common/js',
+        '__COMMONCSS__'=> '/static/webSite/common/css',
+        '__COMMONJS__' => '/static/webSite/common/js',
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',

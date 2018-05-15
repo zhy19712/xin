@@ -219,7 +219,7 @@ class Common extends Controller
         }
     }
 
-    public function controlpoint($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    public function norm_controlpoint($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //查询
         $c = new ControlPoint();

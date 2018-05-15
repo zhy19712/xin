@@ -13,7 +13,7 @@ use think\Session;
 
 class ContractModel extends Model
 {
-    protected $table='fengning_contract';
+    protected $name='contract';
     //自动写入创建、更新时间
     protected $autoWriteTimestamp = 'datetime';
 

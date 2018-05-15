@@ -183,7 +183,7 @@ class Unitqualitymanage extends Permissions
             return json(['code' => '-1','msg' => '编号有误']);
         }
         $file_obj = Db::name('quality_division_controlpoint_relation')->alias('r')
-            ->join('controlpoint c','c.id=r.control_id','left')
+            ->join('norm_controlpoint c','c.id=r.control_id','left')
             ->where('r.id',$file_id)->field('c.code,c.name,r.division_id')->find();
         if(empty($file_obj)){
             return json(['code' => '-1','msg' => '编号无效']);
@@ -235,7 +235,7 @@ class Unitqualitymanage extends Permissions
             return json(['code' => '-1','msg' => '编号有误']);
         }
         $file_obj = Db::name('quality_division_controlpoint_relation')->alias('r')
-            ->join('controlpoint c','c.id=r.control_id','left')
+            ->join('norm_controlpoint c','c.id=r.control_id','left')
             ->where('r.id',$file_id)->field('c.code,c.name')->find();
         if(empty($file_obj)){
             return json(['code' => '-1','msg' => '编号无效']);

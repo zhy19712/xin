@@ -867,14 +867,14 @@ class Common extends Controller
                 if ($id == 0) {
                     $recordsFilteredResult = Db::name($table)->alias('r')
                         ->field($field_val)
-                        ->join('controlpoint c', 'r.control_id = c.id', 'left')
+                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
                         ->where(['r.division_id' => $division_id, 'type' => 0])
                         ->where($columnString, 'like', '%' . $search . '%')
                         ->order($order)->limit(intval($start), intval($length))->select();
                 } else {
                     $recordsFilteredResult = Db::name($table)->alias('r')
                         ->field($field_val)
-                        ->join('controlpoint c', 'r.control_id = c.id', 'left')
+                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
                         ->where(['r.division_id' => $division_id, 'type' => 0, 'ma_division_id' => $id])
                         ->where($columnString, 'like', '%' . $search . '%')
                         ->order($order)->limit(intval($start), intval($length))->select();
@@ -888,13 +888,13 @@ class Common extends Controller
                 if ($id == 0) {
                     $recordsFilteredResult = Db::name($table)->alias('r')
                         ->field($field_val)
-                        ->join('controlpoint c', 'r.control_id = c.id', 'left')
+                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
                         ->where(['r.division_id' => $division_id, 'type' => 0])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 } else {
                     $recordsFilteredResult = Db::name($table)->alias('r')
                         ->field($field_val)
-                        ->join('controlpoint c', 'r.control_id = c.id', 'left')
+                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
                         ->where(['r.division_id' => $division_id, 'type' => 0, 'ma_division_id' => $id])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
@@ -934,7 +934,7 @@ class Common extends Controller
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)->alias('a')
-                    ->join('controlpoint b', 'a.control_id=b.id', 'left')
+                    ->join('norm_controlpoint b', 'a.control_id=b.id', 'left')
                     ->where($par)
                     ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,b.remark')
                     ->order($order)->limit(intval($start), intval($length))->select();
@@ -945,7 +945,7 @@ class Common extends Controller
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)->alias('a')
-                    ->join('controlpoint b', 'a.control_id=b.id', 'left')
+                    ->join('norm_controlpoint b', 'a.control_id=b.id', 'left')
                     ->where($par)
                     ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,b.remark')
                     ->order($order)->limit(intval($start), intval($length))->select();
@@ -1129,7 +1129,7 @@ class Common extends Controller
     // ht 单位质量管理 单位策划 新增 控制点 获取 单位工程下的每一个工序所对应的控制点
     public function unit_quality_add_control($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
-        $table = 'controlpoint'; // 控制点表
+        $table = 'norm_controlpoint'; // 控制点表
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
