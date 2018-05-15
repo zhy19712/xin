@@ -11,13 +11,30 @@ layui.use(['element',"layer",'form'], function(){
   form.on('submit(demo1)', function(data){
     $.ajax({
       type: "post",
-      url:"./editAtlasCate",
+      url:"./1",
       data:data.field,
       success: function (res) {
-        console.log(selfid)
         if(res.code == 1) {
-          var url = "/archive/common/datatablespre/tableName/archive_atlas_cate/selfid/"+selfid+".shtml";
-          tableItem.ajax.url(url).load();
+          parent.layer.msg('保存成功！');
+          layer.closeAll();
+        }else{
+          layer.msg(res.msg);
+        }
+      },
+      error: function (data) {
+        debugger;
+      }
+    });
+    return false;
+  });
+  form.on('submit(demo2)', function(data){
+    $.ajax({
+      type: "post",
+      url:"./1",
+      data:data.field,
+      success: function (res) {
+        if(res.code == 1) {
+
           parent.layer.msg('保存成功！');
           layer.closeAll();
         }else{
@@ -32,12 +49,112 @@ layui.use(['element',"layer",'form'], function(){
   });
 });
 
+var level1Id = ''  //选中的工程划分id
+  , level2Id = '' ; //选中的单元工Id
+/************************************************工程划分树********************************************/
+var setting = {
+  view: {
+    showLine: true, //设置 zTree 是否显示节点之间的连线。
+    selectedMulti: false //设置是否允许同时选中多个节点。
+  },
+  async: {
+    enable: true,
+    autoParam: ["pId"],
+    type: "post",
+    url: "../../quality/division/index",
+    dataType: "json"
+  },
+  data: {
+    simpleData: {
+      enable: true,
+      idkey: "id",
+      pIdKey: "pId",
+      rootPId: null
+    }
+  },
+  callback: {
+    onClick: this.nodeClick
+  }
+};
+zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
+//点击获取路径
+function nodeClick(e, treeId, node) {
+  level2Id = '';
+  $('#level3').hide();
+  $('#allFrom ul li').removeClass('selectForm');
+ var sNodes = zTreeObj.getSelectedNodes()[0];//选中节点
+  level1Id = sNodes.id;
+  initData(level1Id);//调用单元工
+}
+/*******************************************************************************************************/
+
+/************************************************单元工树********************************************/
+
+//名字拼接过滤方法
+function ajaxDataFilter(treeId, parentNode, responseData) {
+  if (responseData) {
+    for(var i =0; i < responseData.length; i++) {
+      responseData[i].name = responseData[i].el_start + responseData[i].el_cease + responseData[i].pile_number + responseData[i].site;
+      eTypeId = responseData[i].en_type;
+    }
+  }
+  return responseData;
+}
+//
+function initData(selfid){
+  var settingUnit = {
+    view: {
+      showLine: true, //设置 zTree 是否显示节点之间的连线。
+      selectedMulti: false //设置是否允许同时选中多个节点。
+    },
+    async: {
+      enable: true,
+      autoParam: ["pid"],
+      type: "post",
+      url: "../../quality/element/getDivisionUnitTree?id="+selfid,
+      dataType: "json",
+      dataFilter: ajaxDataFilter
+    },
+    data: {
+      simpleData: {
+        enable: true,
+        idkey: "id",
+        pIdKey: "pid",
+        rootPId: null
+      }
+    },
+    callback: {
+      onClick: this.nodeClickUnit
+    }
+  };
+  zTreeObjUnit = $.fn.zTree.init($("#ztreeUnit"), settingUnit, null);
+}
+
+//点击获取路径
+function nodeClickUnit(e, treeId, node) {
+  $('#search').val('');
+  // $("#search").trigger("input propertychange");
+
+  ev = document.createEvent("HTMLEvents");
+  ev.initEvent("input", false, true);
+  document.getElementById('search').dispatchEvent(ev);
+
+  $('#allFrom ul li').removeClass('selectForm');
+  var sNodes = zTreeObjUnit.getSelectedNodes()[0];//选中节点
+  level2Id = sNodes.id;
+  $('#level3').show();
+}
+/*******************************************************************************************************/
+
+
+
+
 //创建li
 function createLi(data) {
   var html = '';
-  data.forEach(function (item,i) {
+  data.forEach(function (item) {
     html += '<li id="'+item.id+'">'+item.code+item.name+'</li>';
-  })
+  });
   $("#allFrom ul").append(html);
 }
 
@@ -62,15 +179,34 @@ function lookform(){
       }
     })
   }
-};
+}
 
-//
+//添加状态
 function addStatus(){
-  layer.open({
-    type:1,
-    area:['300px','300px'],
+  if( $(".selectForm").length == 0 ) {
+    layer.msg('请先选择模板表单');
+    return;
+  }else{
+    layer.open({
+      type:1,
+      area:['600px','260px'],
+      content:$('#addStatus')
+    });
+  }
+}
 
-  })
+//添加步骤
+function addStep(){
+  if( $(".selectForm").length == 0 ) {
+    layer.msg('请先选择模板表单');
+    return;
+  }else{
+    layer.open({
+      type:1,
+      area:['800px','560px'],
+      content:$('#addStep')
+    });
+  }
 }
 
 //拉取全部模板
@@ -88,9 +224,49 @@ $.ajax({
 });
 
 //搜索
-$('#search').bind('input propertychange',function () {
-  var text = $(this).val();
+// $('#search').bind('input propertychange',function () {
+//   var text = $(this).val();
+//   var $form = $("#allFrom ul li");
+//   if( text == '' ){
+//     $form.show();
+//     $form.removeClass('selectForm');
+//     return ;
+//   }
+//   $.each($form, function (i, item) {
+//     if ($.trim($(item).text()).indexOf(text) !==-1 ) {
+//       $(item).show();
+//       if($.trim($(item).text()) === text){
+//         $(item).addClass('selectForm').siblings().removeClass('selectForm');
+//       }
+//     }else{
+//       $(item).hide();
+//     }
+//   });
+// });
+
+//点击选中
+$('#allFrom ul').on('click','li',function () {
+  $(this).addClass('selectForm').siblings().removeClass('selectForm');
+});
+
+
+
+document.getElementById('test').addEventListener('click',function () {
+  alert(123)
+});
+
+ev = document.createEvent("HTMLEvents");
+ev.initEvent("click", false, true);
+document.getElementById('test').dispatchEvent(ev);
+
+document.getElementById('search').addEventListener('input',function () {
+  var text = $("#search").val();
   var $form = $("#allFrom ul li");
+  if( text == '' ){
+    $form.show();
+    $form.removeClass('selectForm');
+    return ;
+  }
   $.each($form, function (i, item) {
     if ($.trim($(item).text()).indexOf(text) !==-1 ) {
       $(item).show();
@@ -101,10 +277,5 @@ $('#search').bind('input propertychange',function () {
       $(item).hide();
     }
   });
-});
-
-//点击选中
-$('#allFrom ul').on('click','li',function () {
-  $(this).addClass('selectForm').siblings().removeClass('selectForm');
 });
 

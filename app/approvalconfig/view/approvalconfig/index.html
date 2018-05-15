@@ -1,42 +1,60 @@
 {include file="../app/public/common_header.html"}
 
 <link rel="stylesheet" href="__WEBSITE__/approvalconfig/approvalconfig/index.css">
-<div data-options="region:'west',title:'全部模板',split:true" style="width:260px;">
-    <div id="searchBox">
-        <input id="search" class="layui-input" type="text" placeholder="搜索" >
-    </div>
-    <hr>
-    <div id="allFrom">
-        <ul></ul>
-    </div>
-</div>
-<div data-options="region:'center'">
-    <div id="btn-box">
-        <a onclick="lookform()" class="layui-btn-normal layui-btn">查看表单</a>
-        <a onclick="addStatus()" class="layui-btn-normal layui-btn">添加状态</a>
-        <a onclick="addSTEP()" class="layui-btn-normal layui-btn">添加步骤</a>
-    </div>
-    <div>
 
-    </div>
+<div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
+    <ul class="ztree" id="ztree"></ul>
 </div>
-<form id="branchform" action="#" onsubmit="return false" class="layui-form" style="display: none">
-    <input type="hidden" name="id" id="addId" style="display: none;">
-    <input type="hidden" name="classifyid" id="classifyid" style="display: none;">
-    <input type="hidden" name="pid" id="pid" style="display: none;">
-    <div class="layui-form-item">
-        <div class="autograph">
-            <label class="layui-form-label">父节点(序号)</label>
-            <div class="layui-input-inline">
-                <input type="text" name="parent_code" id="parent_code" placeholder="无" disabled autocomplete="off" class="layui-input">
+
+<div id="unitWorkParent" data-options="region:'center'" style="background:#fff;">
+    <div class="easyui-layout" data-options="fit:true">
+        <div id="unitWork" data-options="region:'west',title:' 单元工',split:true" style="border-left:none;border-bottom: none;width:210px;background:#fff;">
+            <ul class="ztree" id="ztreeUnit"></ul>
+        </div>
+        <div id="tableContent" data-options="region:'center',split:true" style="border-top: none;width:1255px; position: relative;">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'west',title:'全部模板',split:true" style="border-left:none;border-bottom: none;width:260px;">
+                    <div id="level3" style="width: 100%;height: 100%;">
+                        <div id="searchBox">
+                            <input id="search" class="layui-input" type="text" placeholder="搜索" >
+                        </div>
+                        <hr>
+                        <div id="allFrom">
+                            <ul></ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div data-options="region:'center'" style="border-top: none;">
+                    <div id="btn-box">
+                        <a onclick="lookform()" class="layui-btn-normal layui-btn">查看表单</a>
+                        <a onclick="addStatus()" class="layui-btn-normal layui-btn">添加状态</a>
+                        <a onclick="addStep()" class="layui-btn-normal layui-btn">添加步骤</a>
+                        <button id="test">sdfdsff</button>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+                </div>
             </div>
+
         </div>
     </div>
+</div>
+
+
+
+<form id="addStatus" action="#" onsubmit="return false" class="layui-form" style="display: none">
     <div class="layui-form-item">
         <div class="autograph">
-            <label class="layui-form-label">编号</label>
+            <label class="layui-form-label">类型</label>
             <div class="layui-input-inline">
-                <input type="text" name="code" id="code" placeholder="编号" lay-verify="required" autocomplete="off" class="layui-input">
+                <select name="" id="" lay-verify="required">
+                    <option value="0">未开始</option>
+                    <option value="1">进行中</option>
+                    <option value="2">已完成</option>
+                </select>
             </div>
         </div>
     </div>
@@ -56,28 +74,44 @@
         </div>
     </div>
 </form>
-<form id="excel" action="#" onsubmit="return false" class="layui-form" style="display: none;">
-    <input type="hidden" name="classifyid" id="classifyid_2" style="display: none;">
+<form id="addStep" action="#" onsubmit="return false" class="layui-form" style="display: none;">
     <div class="layui-form-item">
         <div class="autograph">
-            <h3 style="text-align: center;color: #3c8dbc; font-size: 22px;margin:0 20px;">数据导入</h3>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="autograph">
-            <label class="layui-form-label">文件域：</label>
+            <label class="layui-form-label">当前步</label>
             <div class="layui-input-inline">
-                <input type="text" name="filename_1" id="file_name_1"  lay-verify="required" readonly autocomplete="off" class="layui-input">
-                <input type="hidden" name="filename" id="file_name" >
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                <button type="button" class="layui-btn" id="upload">浏览</button>
+                <select name="" id="" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">未开始</option>
+                    <option value="1">进行中</option>
+                    <option value="2">已完成</option>
+                </select>
             </div>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="autograph">
-            <p style="text-align: center;">提示：只能导入格式为xls、xlsx的文件。请先下载导入模版：<span onclick=" download()" style="color: #ff0000;text-decoration: underline;">分支目录</span></p>
+            <label class="layui-form-label">下一步</label>
+            <div class="layui-input-inline">
+                <select name="" id="" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">未开始</option>
+                    <option value="1">进行中</option>
+                    <option value="2">已完成</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="autograph">
+            <label class="layui-form-label">打回步</label>
+            <div class="layui-input-inline">
+                <select name="" id="" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">未开始</option>
+                    <option value="1">进行中</option>
+                    <option value="2">已完成</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="layui-form-item">
