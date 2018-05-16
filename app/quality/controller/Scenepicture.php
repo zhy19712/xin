@@ -151,7 +151,7 @@ class Scenepicture extends Permissions
                     "name" => $day."日",
                     "pid" => $result2['id'],
                     "attachment_id" => $param["attachment_id"],//对应attachment文件上传表中的id
-//                    "filename" => date("YmdHis"),//默认上传的文件名为日期
+                    "filename" => date("YmdHis"),//默认上传的文件名为日期
 //                    "date" => date("Y-m-d H:i:s"),
 //                    "owner" => Session::get('current_name'),
 //                    "company" => $group["name"],//单位
@@ -202,7 +202,7 @@ class Scenepicture extends Permissions
                         "name" => $day."日",
                         "pid" => $result2['id'],
                         "attachment_id" => $param["attachment_id"],//对应attachment文件上传表中的id
-//                        "filename" => date("YmdHis"),//默认上传的文件名为日期
+                        "filename" => date("YmdHis"),//默认上传的文件名为日期
 //                        "date" => date("Y-m-d H:i:s"),
 //                        "owner" => Session::get('current_name'),
 //                        "company" => $group["name"],//单位
@@ -230,7 +230,7 @@ class Scenepicture extends Permissions
                         "name" => $day."日",
                         "pid" => $result['id'],
                         "attachment_id" => $param["attachment_id"],//对应attachment文件上传表中的id
-//                        "filename" => date("YmdHis"),//默认上传的文件名为日期
+                        "filename" => date("YmdHis"),//默认上传的文件名为日期
 //                        "date" => date("Y-m-d H:i:s"),
 //                        "owner" => Session::get('current_name'),
 //                        "company" => $group["name"],//单位
