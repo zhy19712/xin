@@ -221,7 +221,7 @@ class Approvalconfig extends Permissions
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function edit($cpr_id, $currentStep, $isView = false, $id = null)
+    public function edit($currentStep, $isView = false)
     {
         //获取模板路径
         //获取控制点信息，组合模板路径
