@@ -115,11 +115,11 @@ class AtlasCateModel extends Model
                 $children[$k][] = '';
                 $children[$k][] = '';
                 $children[$k][] = '';
-                $children[$k][] = $v['completion_date'];
+                $children[$k][] = $v['completion_time'];
                 $children[$k][] = '';
                 $children[$k][] = $v['paper_category'];
                 $children[$k][] = $v['owner'];
-                $children[$k][] = $v['date'];
+                $children[$k][] = $v['create_time'];
                 $children[$k][] = $v['id'];
                 $children[$k][] = $v['pid'];
             }
