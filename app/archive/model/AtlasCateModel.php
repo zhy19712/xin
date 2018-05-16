@@ -100,7 +100,7 @@ class AtlasCateModel extends Model
         $children = array();
 
         $data = $this
-            ->field('picture_number,picture_name,picture_papaer_num,date,paper_category,owner,completion_date,id,pid')
+            ->field('picture_number,picture_name,picture_papaer_num,create_time,paper_category,owner,completion_time,id,pid')
             ->where('pid', $id)
             ->select();
         if(!empty($data))
