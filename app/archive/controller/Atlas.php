@@ -204,11 +204,11 @@ class Atlas extends Permissions
                     'design_name' => $param['design_name'],//设计
                     'check_name' => $param['check_name'],//校验
                     'examination_name' => $param['examination_name'],//审查
-                    'completion_date' => $param['completion_date'],//完成日期
+                    'completion_time' => strtotime($param['completion_date']),//完成日期
                     'section' => $param['section'],//标段
                     'paper_category' => $param['paper_category'],//图纸类别
                     'owner' => Session::get('current_nickname'),//上传人
-                    'date' => date("Y-m-d")//上传日期
+                    'create_time' => strtotime(date("Y-m-d"))//上传日期
                 ];
                 $flag = $model->insertCate($data);
                 return json($flag);
