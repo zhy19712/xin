@@ -156,7 +156,7 @@ class Rolemanagement extends Permissions
                     'number_id' => $param['number_id'],//编号
                     'role_name' => $param['role_name'],//角色名称
                     'create_owner' => $param['create_owner'],//创建人
-                    'date' => $param['date'],//创建时间
+                    'create_time' => strtotime($param['date']),//创建时间
                     'desc' => $param['desc']//备注
 
                 ];
