@@ -224,7 +224,7 @@ class Common extends Controller
         $recordsTotal = Db::name($table)->where('cate_id',$id)->count(0);
         $recordsFilteredResult = array();
         //没有搜索条件的情况
-        $recordsFilteredResult = Db::name($table)->where('cate_id',$id)->order("date desc")->limit(intval($start), intval($length))->select();
+        $recordsFilteredResult = Db::name($table)->where('cate_id',$id)->order("create_time desc")->limit(intval($start), intval($length))->select();
 
         //*****多表查询join改这里******
         //$recordsFilteredResult = Db::name('datatables_example')->alias('d')->join('datatables_example_join e','d.position = e.id')->field('d.id,d.name,e.name as position,d.office')->select();
@@ -293,6 +293,4 @@ class Common extends Controller
             return $this->error('上传失败：' . $file->getError());
         }
     }
-
-
 }

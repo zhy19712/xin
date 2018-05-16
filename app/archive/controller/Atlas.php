@@ -414,7 +414,7 @@ class Atlas extends Permissions
         $data = [
             "selfid" => $param['selfid'],
             "cate_id" => $id,
-            "date" => date("Y-m-d H:i:s"),//下载时间
+            "create_time" => strtotime(date("Y-m-d H:i:s")),//下载时间
             "user_name" => Session::get('current_nickname')//下载人
         ];
 
@@ -491,7 +491,7 @@ class Atlas extends Permissions
         $data = [
             "selfid" => $param['selfid'],
             "cate_id" => $id,
-            "date" => date("Y-m-d H:i:s"),//下载时间
+            "create_time" => strtotime(date("Y-m-d H:i:s")),//下载时间
             "user_name" => Session::get('current_nickname')//下载人
         ];
 
