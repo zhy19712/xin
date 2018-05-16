@@ -216,7 +216,7 @@
                 name: "create_owner"
             },
             {
-                name: "date"
+                name: "create_time"
             },
             {
                 name: "desc"
@@ -240,7 +240,17 @@
             {
                 "orderable": false,
                 "targets": [4]
+            },
+          {
+            "targets": [3],
+            "render" : function (data , type , row ) {
+              var date = new Date(data*1000);
+              var Y = date.getFullYear() + '-';
+              var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+              var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+              return Y + M + D;
             }
+          }
         ],
         language: {
             "lengthMenu": "_MENU_",

@@ -160,26 +160,21 @@ function createLi(data) {
 
 //查看表单
 function lookform(){
+
   if( $(".selectForm").length == 0 ){
     layer.msg('请先选择模板表单');
     return ;
   }else{
-    $.ajax({
-      url:'./previewTemplate',
-      type:'POST',
-      data:{id:$(".selectForm").attr('id')},
-      dataType:'JSON',
-      success:function (res) {
-        if ( res.code == 1) {
-          var path = res.path;
-          window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
-        }else{
-          layer.msg(res.msg);
-        }
-      }
-    })
+    layer.open({
+      type: 2,
+      title: '查看',
+      shadeClose: true,
+      area: ['980px', '90%'],
+      content: 'edit?id='+ $(".selectForm").attr('id') + '&currentStep=0&isView=True'
+    });
   }
 }
+
 
 //添加状态
 function addStatus(){
@@ -203,7 +198,8 @@ function addStep(){
   }else{
     layer.open({
       type:1,
-      area:['800px','560px'],
+      title:'步骤',
+      area:['1000px','700px'],
       content:$('#addStep')
     });
   }
@@ -224,43 +220,8 @@ $.ajax({
 });
 
 //搜索
-// $('#search').bind('input propertychange',function () {
-//   var text = $(this).val();
-//   var $form = $("#allFrom ul li");
-//   if( text == '' ){
-//     $form.show();
-//     $form.removeClass('selectForm');
-//     return ;
-//   }
-//   $.each($form, function (i, item) {
-//     if ($.trim($(item).text()).indexOf(text) !==-1 ) {
-//       $(item).show();
-//       if($.trim($(item).text()) === text){
-//         $(item).addClass('selectForm').siblings().removeClass('selectForm');
-//       }
-//     }else{
-//       $(item).hide();
-//     }
-//   });
-// });
-
-//点击选中
-$('#allFrom ul').on('click','li',function () {
-  $(this).addClass('selectForm').siblings().removeClass('selectForm');
-});
-
-
-
-document.getElementById('test').addEventListener('click',function () {
-  alert(123)
-});
-
-ev = document.createEvent("HTMLEvents");
-ev.initEvent("click", false, true);
-document.getElementById('test').dispatchEvent(ev);
-
-document.getElementById('search').addEventListener('input',function () {
-  var text = $("#search").val();
+$('#search').bind('input propertychange',function () {
+  var text = $(this).val();
   var $form = $("#allFrom ul li");
   if( text == '' ){
     $form.show();
@@ -279,3 +240,165 @@ document.getElementById('search').addEventListener('input',function () {
   });
 });
 
+/**************************************添加人员***************************************************/
+//点击选中
+$('#allFrom ul').on('click','li',function () {
+  $(this).addClass('selectForm').siblings().removeClass('selectForm');
+});
+
+$("#tgd a").click(function () {
+  $(this).siblings('a').removeClass('select');
+  $(this).addClass('select');
+});
+// 常用联系人
+function frequentlyUsedDivShow() {
+  $("#frequentlyUsedDiv").show();
+  $("#selectDiv").hide();
+}
+// 人员选择
+function selectDivShow() {
+  $("#frequentlyUsedDiv").hide();
+  $("#selectDiv").show();
+}
+
+//字符解码
+function ajaxDataFilter2(treeId, parentNode, responseData) {
+
+  if (responseData) {
+    for(var i =0; i < responseData.length; i++) {
+      responseData[i] = JSON.parse(responseData[i]);
+      responseData[i].name = decodeURIComponent(responseData[i].name);
+      ztreeIcon(responseData[i]);
+    }
+  }
+  return responseData;
+}
+//处理结构树图标
+function ztreeIcon(data) {
+  if (!data.level){
+    data.icon =  "/static/public/ztree/css/ztreeadmin/img/people.png";
+    return ;
+  }
+  switch (Number(data.level)) {
+    case 1 :
+      data.icon =  "/static/public/ztree/css/ztreeadmin/img/top.png";
+      break;
+    case 2 :
+      data.icon =  "/static/public/ztree/css/ztreeadmin/img/jigou.png";
+      break;
+    case 3 :
+      data.icon =  "/static/public/ztree/css/ztreeadmin/img/bumen.png";
+      break;
+    default:
+      data.icon =  "/static/public/ztree/css/ztreeadmin/img/bumen.png";
+      break;
+  }
+}
+//初始化组织结构树
+var settingOrganize = {
+  view: {
+    showLine: true, //设置 zTree 是否显示节点之间的连线。
+    selectedMulti: false, //设置是否允许同时选中多个节点。
+    // dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+  },
+  async: {
+    enable : true,
+    autoParam: ["pid"],
+    type : "post",
+    url : "../../admin/rolemanagement/getindex",
+    dataType :"json",
+    dataFilter: ajaxDataFilter2
+  },
+  data:{
+    keep: {
+      leaf : true,
+      parent : true
+    },
+    simpleData : {
+      enable:true,
+      idkey: "id",
+      pIdKey: "pid",
+      rootPId:0
+    }
+  },
+  callback: {
+    onClick: this.onClick,
+  }
+};
+treeObj = $.fn.zTree.init($("#treeDemo"), settingOrganize, null);
+
+// 初始化常用联系人树
+function initFrequentlyUsedTree() {
+  var setting = {
+    view: {
+      selectedMulti: false
+    },
+    data: {
+      simpleData: {
+        enable: true
+      }
+    },
+    callback: {
+      onClick: onClick
+    }
+  };
+  $.ajax({
+    type: "Get",
+    url: "../../approve/Approve/FrequentlyUsedApprover?dataType=app\\quality\\model\\QualityFormInfoModel",
+    success: function (res) {
+      var initArr =[];
+      for(var i=0;i<res.length;i++){
+        var initObj = {
+          id:'',
+          name:''
+        };
+        initObj.id = res[i].id+10000;
+        initObj.name = res[i].nickname;
+        initArr.push(initObj)
+      }
+      $.fn.zTree.init($("#treeFrequentlyUsed"), setting, initArr);
+    }
+  });
+};
+initFrequentlyUsedTree()
+
+//搜索树
+$('#keywords').bind('input propertychange', function() {
+  var key = $("#keywords").val();
+  var nodes = treeObj.getNodesByParam("name", key);
+  $.each(nodes, function (i, item) {
+    treeObj.expandNode(item.getParentNode(), true, false, true);
+  });
+});
+
+//左侧组织机构树双击事件处理
+function onClick(event, treeId, treeNode) {
+  var element = $("#selectedUserDiv").find("input[value='" + (treeNode.id) + "']");
+  if (element.length > 0)
+    return;
+  var html = "";
+  if (treeNode.id < 10000) //选择的是单位信息
+    return;
+  else  //选择的是人员信息
+    html = "<p2 id='p" + treeNode.id + "'>" + treeNode.name + "&nbsp;<a id='a" + treeNode.id + "'><i class='fa fa-times'></i></a><input type='hidden' value='" + treeNode.id + "' data-type='" + treeNode.componentId + "'></p2>"
+  $("#selectedUserDiv").append(html);
+  $("#a" + treeNode.id).click(function () {
+    $("#p" + treeNode.id).remove();
+  })
+}
+//搜索用户
+$('#username_key').bind('input propertychange', function() {
+  var keyword = $("#username_key").val();
+  var users = $("#selectedUserDiv p2");
+  if(keyword.trim()===""){
+    users.css("background-color", "")
+    return;
+  }
+  $.each(users, function (i, item) {
+    $(item).css("background-color", "");
+    if ($.trim($(item).text()).indexOf(keyword) !==-1 ) {
+      $(item).css("background-color", "#ed5565");
+    }
+  })
+});
+/***************************************************************************************************/

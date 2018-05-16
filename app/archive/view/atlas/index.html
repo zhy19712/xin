@@ -334,7 +334,7 @@
                 name: "examination_name"
             },
             {
-                name: "completion_date"
+                name: "completion_time"
             },
             {
                 name: "section"
@@ -346,7 +346,7 @@
                 name: "owner"
             },
             {
-                name: "date"
+                name: "create_time"
             },
             {
                 name: "id"
@@ -378,7 +378,17 @@
                     }
                     return html;
                 }
+            },
+          {
+            "targets": [8,12],
+            "render": function (data,type,row) {
+              var date = new Date(data*1000);
+              var Y = date.getFullYear() + '-';
+              var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+              var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+              return Y + M + D;
             }
+          }
         ],
         language: {
             "lengthMenu": "_MENU_",
@@ -525,7 +535,7 @@
         },
         columns:[
             {
-                name : "date"
+                name : "create_time"
             },
             {
                 name :"user_name"
