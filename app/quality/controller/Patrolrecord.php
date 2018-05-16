@@ -76,7 +76,6 @@ class Patrolrecord extends Permissions
             //实例化模型类
             $model = new PatrolRecordModel();
             $admin = new Admin();
-            $group = new AdminGroup();
 
             $param = input('post.');
 

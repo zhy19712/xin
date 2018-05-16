@@ -640,39 +640,56 @@ class Common extends Controller
         } else if ($year && $month && $day)//如果年月日都存在
         {
             $search_data = [
-                "year" => $year,
-                "month" => $month,
-                "day" => $day
+                "s.year" => $year,
+                "s.month" => $month,
+                "s.day" => $day
             ];
         } else if ($year && !$month && !$day)//如果年都存在
         {
             $search_data = [
-                "year" => $year
+                "s.year" => $year
             ];
         } else if ($year && $month && !$day)//如果年月都存在
         {
             $search_data = [
-                "year" => $year,
-                "month" => $month
+                "s.year" => $year,
+                "s.month" => $month
             ];
         }
 
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where($search_data)->where("admin_group_id > 0")->count(0);
+        $recordsTotal = Db::name($table)->alias("s")->where($search_data)->where("s.admin_group_id > 0")->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->field("filename,date,owner,company,position,id")->where($search_data)->where("admin_group_id > 0")->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('attachment m', 'm.id = s.attachment_id', 'left')
+                    ->join('admin n', 'n.id = m.user_id', 'left')
+                    ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
+                    ->field("s.filename,m.create_time,n.nickname as owner,g.name as company,s.position,s.id")
+                    ->where($search_data)->where("s.admin_group_id > 0")
+                    ->where($columnString, 'like', '%' . $search . '%')
+                    ->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {
-                $recordsFilteredResult = Db::name($table)->field("filename,date,owner,company,position,id")->where($search_data)->where("admin_group_id > 0")->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('attachment m', 'm.id = s.attachment_id', 'left')
+                    ->join('admin n', 'n.id = m.user_id', 'left')
+                    ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
+                    ->field("s.filename,m.create_time,n.nickname as owner,g.name as company,s.position,s.id")
+                    ->where($search_data)->where("s.admin_group_id > 0")
+                    ->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
@@ -689,8 +706,6 @@ class Common extends Controller
             $temp = [];
 
         }
-
-
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
@@ -728,39 +743,57 @@ class Common extends Controller
         } else if ($year && $month && $day)//如果年月日都存在
         {
             $search_data = [
-                "year" => $year,
-                "month" => $month,
-                "day" => $day
+                "s.year" => $year,
+                "s.month" => $month,
+                "s.day" => $day
             ];
         } else if ($year && !$month && !$day)//如果年都存在
         {
             $search_data = [
-                "year" => $year
+                "s.year" => $year
             ];
         } else if ($year && $month && !$day)//如果年月都存在
         {
             $search_data = [
-                "year" => $year,
-                "month" => $month
+                "s.year" => $year,
+                "s.month" => $month
             ];
         }
 
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where($search_data)->where("admin_group_id > 0")->count(0);
+        $recordsTotal = Db::name($table)->alias("s")->where($search_data)->where("s.admin_group_id > 0")->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->field("filename,date,owner,company,position,id")->where($search_data)->where("admin_group_id > 0")->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('attachment m', 'm.id = s.attachment_id', 'left')
+                    ->join('admin n', 'n.id = m.user_id', 'left')
+                    ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
+                    ->field("s.filename,m.create_time,n.nickname as owner,g.name as company,s.position,s.id")
+                    ->where($search_data)
+                    ->where("s.admin_group_id > 0")
+                    ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {
-                $recordsFilteredResult = Db::name($table)->field("filename,date,owner,company,position,id")->where($search_data)->where("admin_group_id > 0")->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('attachment m', 'm.id = s.attachment_id', 'left')
+                    ->join('admin n', 'n.id = m.user_id', 'left')
+                    ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
+                    ->field("s.filename,m.create_time,n.nickname as owner,g.name as company,s.position,s.id")
+                    ->where($search_data)
+                    ->where("s.admin_group_id > 0")
+                    ->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
@@ -777,8 +810,6 @@ class Common extends Controller
             $temp = [];
 
         }
-
-
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
@@ -816,39 +847,55 @@ class Common extends Controller
         } else if ($year && $month && $day)//如果年月日都存在
         {
             $search_data = [
-                "year" => $year,
-                "month" => $month,
-                "day" => $day
+                "s.year" => $year,
+                "s.month" => $month,
+                "s.day" => $day
             ];
         } else if ($year && !$month && !$day)//如果年都存在
         {
             $search_data = [
-                "year" => $year
+                "s.year" => $year
             ];
         } else if ($year && $month && !$day)//如果年月都存在
         {
             $search_data = [
-                "year" => $year,
-                "month" => $month
+                "s.year" => $year,
+                "s.month" => $month
             ];
         }
 
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where($search_data)->where("admin_group_id > 0")->count(0);
+        $recordsTotal = Db::name($table)->alias("s")->where($search_data)->where("s.admin_group_id > 0")->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->field("filename,date,owner,company,position,id")->where($search_data)->where("admin_group_id > 0")->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('attachment m', 'm.id = s.attachment_id', 'left')
+                    ->join('admin n', 'n.id = m.user_id', 'left')
+                    ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
+                    ->field("s.filename,m.create_time,n.nickname as owner,g.name as company,s.position,s.id")
+                    ->where($search_data)->where("s.admin_group_id > 0")
+                    ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {
-                $recordsFilteredResult = Db::name($table)->field("filename,date,owner,company,position,id")->where($search_data)->where("admin_group_id > 0")->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('attachment m', 'm.id = s.attachment_id', 'left')
+                    ->join('admin n', 'n.id = m.user_id', 'left')
+                    ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
+                    ->field("s.filename,m.create_time,n.nickname as owner,g.name as company,s.position,s.id")
+                    ->where($search_data)->where("s.admin_group_id > 0")
+                    ->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
