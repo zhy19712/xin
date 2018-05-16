@@ -262,6 +262,9 @@ class Common extends Controller
             $res['msg'] = '没有上传文件';
             return json($res);
         }
+        //接收前台传过来的文件
+        $accept_file = $_FILES["file"];
+
         $module = $this->request->has('module') ? $this->request->param('module') : $module;//模块
         $web_config = Db::name('admin_webconfig')->where('web', 'web')->find();
         $info = $file->validate(['size' => $web_config['file_size'] * 1024, 'ext' => $web_config['file_type']])->rule('date')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . $module . DS . $use);
@@ -269,6 +272,7 @@ class Common extends Controller
             //写入到附件表
             $data = [];
             $data['module'] = $module;
+            $data['name'] = $accept_file["name"];
             $data['filename'] = $info->getFilename();//文件名
             $data['filepath'] = DS . 'uploads' . DS . $module . DS . $use . DS . $info->getSaveName();//文件路径
             $data['fileext'] = $info->getExtension();//文件后缀

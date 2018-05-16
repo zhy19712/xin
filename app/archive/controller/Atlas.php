@@ -289,7 +289,6 @@ class Atlas extends Permissions
             $model = new AtlasCateModel();
             $param = input('post.');
             $id = $param['id'];//图册id
-
             $info = $model->getOne($id);
                 $data = [
                     'attachmentId'=>$param['attachmentId'],//文件关联attachment表中的id
@@ -300,9 +299,6 @@ class Atlas extends Permissions
                     'picture_papaer_num' => 1,//图纸张数(输入数字),默认1
                     'completion_date' => date("Y-m"),//完成日期
                     'paper_category' => $info['paper_category'],//图纸类别
-                    'owner' => Session::get('current_nickname'),//上传人
-                    'filename' => $param['filename'],
-                    'date' => date("Y-m-d")//上传日期
                 ];
                 $flag = $model->insertCate($data);
                 return json($flag);
@@ -426,7 +422,7 @@ class Atlas extends Permissions
             //上传文件路径
             $path = $attachment["filepath"];
             $filePath = '.' . $path;
-            $fileName = $param['filename'];
+            $fileName = $attachment['filename'];
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
