@@ -93,7 +93,7 @@ class Scenepicture extends Permissions
             //实例化模型类
             $model = new ScenePictureModel();
             $admin = new Admin();
-            $group = new AdminGroup();
+
             $param = input('post.');
             //获取当前时间的年月日
             $year = date("Y");
@@ -143,7 +143,7 @@ class Scenepicture extends Permissions
                 $result2 = $model->getid($search_info2);
                 $admin_id = Session::get('current_id');
                 $admininfo = $admin->getadmininfo($admin_id);
-                $group = $group->getOne($admininfo["admin_group_id"]);
+
                 $data2 = [
                     "year" => $year,
                     "month" => $month,
@@ -152,9 +152,6 @@ class Scenepicture extends Permissions
                     "pid" => $result2['id'],
                     "attachment_id" => $param["attachment_id"],//对应attachment文件上传表中的id
                     "filename" => date("YmdHis"),//默认上传的文件名为日期
-//                    "date" => date("Y-m-d H:i:s"),
-//                    "owner" => Session::get('current_name'),
-//                    "company" => $group["name"],//单位
                     "admin_group_id" => $admininfo["admin_group_id"]
                 ];
                 $flag = $model->insertScene($data2);
@@ -194,7 +191,7 @@ class Scenepicture extends Permissions
                     $result2 = $model->getid($search_info2);
                     $admin_id = Session::get('current_id');
                     $admininfo = $admin->getadmininfo($admin_id);
-                    $group = $group->getOne($admininfo["admin_group_id"]);
+
                     $data2 = [
                         "year" => $year,
                         "month" => $month,
@@ -203,9 +200,6 @@ class Scenepicture extends Permissions
                         "pid" => $result2['id'],
                         "attachment_id" => $param["attachment_id"],//对应attachment文件上传表中的id
                         "filename" => date("YmdHis"),//默认上传的文件名为日期
-//                        "date" => date("Y-m-d H:i:s"),
-//                        "owner" => Session::get('current_name'),
-//                        "company" => $group["name"],//单位
                         "admin_group_id" => $admininfo["admin_group_id"]
                     ];
                     $flag = $model->insertScene($data2);
@@ -222,7 +216,7 @@ class Scenepicture extends Permissions
                     $result = $model->getid($search_info);
                     $admin_id = Session::get('current_id');
                     $admininfo = $admin->getadmininfo($admin_id);
-                    $group = $group->getOne($admininfo["admin_group_id"]);
+
                     $data = [
                         "year" => $year,
                         "month" => $month,
@@ -231,9 +225,6 @@ class Scenepicture extends Permissions
                         "pid" => $result['id'],
                         "attachment_id" => $param["attachment_id"],//对应attachment文件上传表中的id
                         "filename" => date("YmdHis"),//默认上传的文件名为日期
-//                        "date" => date("Y-m-d H:i:s"),
-//                        "owner" => Session::get('current_name'),
-//                        "company" => $group["name"],//单位
                         "admin_group_id" => $admininfo["admin_group_id"]
                     ];
                     $flag = $model->insertScene($data);
