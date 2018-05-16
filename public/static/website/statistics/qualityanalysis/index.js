@@ -8,6 +8,32 @@
  *
  * *********************/
 // 基于准备好的dom，初始化echarts实例
+
+layui.use(['form', 'layedit', 'laydate','layer'], function(){
+  form = layui.form
+    ,layer = layui.layer;
+
+  form.on('select(historic)', function(data){
+    typeId = data.value;
+    getDefault();
+  });
+
+  form.on('select(year)', function(data){
+    getDefaultLine();
+  });
+
+  form.on('select(showSelect)', function(data){
+    showSelectchange();
+  });
+  //监听提交
+  // form.on('submit(demo1)', function(data){
+  //     tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template&type="+data.field.type+"&use="+data.field.use).load();
+  //     return false;
+  // });
+});
+
+
+
 var myChartBar = echarts.init(document.getElementById('mainBar'));
 // 指定图表的配置项和数据
 optionBar = {
@@ -201,13 +227,14 @@ $.ajax({
       $("#historic_table").html($("#historic option:selected").html()); //表格标题
       $("#historic_table_slot").html(monthslot[0]);//表格时间段
       getDefault();
+      layui.form.render('select');
     }
   }
 });
 //切换历史版本
-$("#historic").on("change",function () {
-  getDefault();
-});
+// $("#historic").on("change",function () {
+//   getDefault();
+// });
 //默认显示的柱状图
 function getDefault() {
   var index = $("#historic").find("option:selected").index(); //选中的index
@@ -247,13 +274,14 @@ $.ajax({
     if(res.code==1){
       createOptionYear(res.data.reverse());
       getDefaultLine();
+      layui.form.render('select');
     }
   }
 });
 //切换年度
-$("#year").on("change",function () {
-  getDefaultLine();
-});
+// $("#year").on("change",function () {
+//   getDefaultLine();
+// });
 //默认显示的折线图
 
 function getDefaultLine(){
@@ -266,6 +294,7 @@ function getDefaultLine(){
     success:function (res) {
       if(res.code==1){
         getIndexRight(res.data.section,res.data.form_result_result);
+        layui.form.render('select');
       }else{
         layer.msg(res.msg);
       }
@@ -295,3 +324,27 @@ $("#showSelect").on("change",function () {
     }
   });
 })
+
+
+function showSelectchange() {
+  var selectArr = myChartLine.getOption().legend[0].data; //全部可选
+  var obj = {};
+  var $that = $('#showSelect').val();
+  var val = false;
+  //遍历找出是否显示
+  for(var key in selectArr){
+    if($that=="yes全部"){
+      obj[selectArr[key]] = true;
+    }else if(selectArr[key]==$that){
+      obj[selectArr[key]] = true
+    }else{
+      obj[selectArr[key]] = val;
+    }
+  }
+  //筛选
+  myChartLine.setOption({
+    legend:{
+      selected : obj
+    }
+  });
+}

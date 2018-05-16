@@ -1,5 +1,5 @@
 {include file="../app/public/common_header.html"}
-
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
 <link rel="stylesheet" href="__WEBSITE__/approvalconfig/approvalconfig/index.css">
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
@@ -61,7 +61,13 @@
         <div class="autograph">
             <label class="layui-form-label">名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="class_name" id="class_name" placeholder="名称" lay-verify="required"  autocomplete="off" class="layui-input">
+                <input style="position: absolute;" type="text" name="class_name" id="class_name" placeholder="名称" lay-verify="required"  autocomplete="off" class="layui-input">
+                <select name="" id="" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">未开始</option>
+                    <option value="1">进行中</option>
+                    <option value="2">已完成</option>
+                </select>
             </div>
         </div>
     </div>

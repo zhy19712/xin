@@ -133,11 +133,11 @@ function initData(selfid){
 //点击获取路径
 function nodeClickUnit(e, treeId, node) {
   $('#search').val('');
-  // $("#search").trigger("input propertychange");
+  $("#search").trigger("input propertychange");
 
-  ev = document.createEvent("HTMLEvents");
-  ev.initEvent("input", false, true);
-  document.getElementById('search').dispatchEvent(ev);
+  // ev = document.createEvent("HTMLEvents");
+  // ev.initEvent("input", false, true);
+  // document.getElementById('search').dispatchEvent(ev);
 
   $('#allFrom ul li').removeClass('selectForm');
   var sNodes = zTreeObjUnit.getSelectedNodes()[0];//选中节点

@@ -26,21 +26,106 @@
 <link rel="stylesheet" href="__WEBSITE__/standard/library/share.css">
 <style>
 
+    /*#nodeZtree .ztree-title i.fa {*/
+        /*width: 12%;*/
+    /*}*/
+    /*#nodeZtree .ztree-title #add {*/
+        /*margin-left: 6px;*/
+    /*}*/
+
+    /*#tableContent .mybtn i.fa:before,#tableContent .assModel i.fa:before,#tableContent .move i.fa:before,#tableContent .file i.fa:before,#tableContent .oneKeyArchiv i.fa:before {*/
+        /*background: #00c0ef;*/
+        /*color: #ffffff;*/
+    /*}*/
+    /*#tableContent .mybtn,#tableContent .assModel,#tableContent .move,#tableContent .file,#tableContent .oneKeyArchiv{*/
+        /*float: right;*/
+        /*background-color: #00c0ef;*/
+    /*}*/
+    /*#tableContent .mybtn{*/
+        /*margin-right: 0%;*/
+        /*margin-bottom: 5px;*/
+    /*}*/
+    /*#tableContent .assModel{*/
+        /*margin-right: 0%;*/
+        /*margin-bottom: 5px;*/
+    /*}*/
+    /*#tableContent .move{*/
+        /*margin-right: 0%;*/
+        /*margin-left: 10px;*/
+        /*margin-bottom: 5px;*/
+    /*}*/
+    /*#tableContent table.dataTable.no-footer {*/
+        /*border-top: 1px dotted;*/
+    /*}*/
+    /*#tableContent #funKuai{*/
+        /*width: 100%;*/
+        /*position: absolute;*/
+        /*left: 72%;*/
+    /*}*/
+    /*#tableContent #funKuai>span{*/
+        /*background-color: #00c0ef;*/
+        /*margin-left: 5px;*/
+        /*color: #FFFFFF;*/
+    /*}*/
+    /*#tableContent #funKuai>span i.fa:before {*/
+        /*padding-right: 3px;*/
+        /*color: #FFFFFF;*/
+    /*}*/
+    /*#tableContent #tableItem_filter {*/
+        /*float: left;*/
+    /*}*/
+    /*#tableContent .select-color {*/
+        /*background-color: #FDD5B5 !important;*/
+    /*}*/
+    /*#tableContent h3 {*/
+        /*margin-top: 5px;*/
+        /*font-weight: 600;*/
+        /*font-size: 16px;*/
+        /*display: inline-block;*/
+    /*}*/
+    /*#tableContent .ibox-tools {*/
+        /*float: right;*/
+        /*margin-right: 30px;*/
+        /*margin-top: 10px;*/
+    /*}*/
+    /*#tableContent .ibox-tools2 {*/
+        /*float: right;*/
+        /*margin-right: 15px;*/
+    /*}*/
+    /*#tableContent .dataTables_wrapper .dataTables_scroll {*/
+        /*position: relative;*/
+        /*top: 15px;*/
+        /*border-top: 1px dotted #cecece;*/
+    /*}*/
+    /*#tableContent .even {*/
+        /*background-color: #ffffff;*/
+    /*}*/
+    /*#tableContent .odd {*/
+        /*background-color: #f9f9f9;*/
+    /*}*/
+    /*#bodyBig .layui-this{*/
+        /*background: #00c0ef;*/
+        /*color: white;*/
+    /*}*/
+    /*#bodyBig .layui-tab-content {*/
+        /*padding-left: 4px;*/
+    /*}*/
+
 </style>
 <div id="bodyBig"  data-options="region:'north',title:'',split:true" style="height: 50px;">
     <div class="layui-tab">
         <ul class="layui-tab-title">
-            <li class="layui-this">标段</li>
-            <li><a href="./com.shtml">单位工程</a></li>
+            <!--<li><a href="./index.shtml">标段</a></li>-->
+            <li class="layui-this">单位工程</li>
             <li><a href="./branch.shtml">分部工程</a></li>
-            <li><a href="./item.shtml">分项工程</a></li>
+            <!--<li><a href="./item.shtml">分项工程</a></li>-->
             <li><a href="./unit.shtml">单元工程</a></li>
-            <li><a href="./special.shtml">专项工程</a></li>
+            <!--<li><a href="./special.shtml">专项工程</a></li>-->
         </ul>
     </div>
 </div>
 
-<div id="nodeZtree" data-options="region:'west',title:'标段树',split:true" style="width:260px;">
+<div id="nodeZtree" data-options="region:'west',title:'单位工程树',split:true" style="width:260px;">
     <div class="ztree-title">
         <i id="add" title="新增节点" class="fa fa-lg fa-sitemap" onclick="addNodetree()"></i>
         <i title="编辑节点" class="fa fa-lg fa-pencil" onclick="editNodetree()"></i>
@@ -67,9 +152,9 @@
     <input type="hidden" id="pruId" value="">
 </div>
 
+
 {include file="../app/public/common_footer.html"}
 <script type="text/javascript">
-
 
     //组织结构表格
     var tableItem = $('#tableItem').DataTable({
@@ -168,7 +253,7 @@
             enable: true,
             autoParam: ["pid"],
             type: "post",
-            url: "{:url('standard/library/GetDivsionTree')}?cat=1",
+            url: "{:url('standard/library/GetDivsionTree')}?cat=2",
             dataType: "json"
         },
         data: {
@@ -240,7 +325,7 @@
             $.ajax({
                 url: "{:url('/standard/library/adddivsiontree')}",
                 type: "post",
-                data: {pid: pid, name: value, cat:1},
+                data: {pid: pid, name: value, cat:2},
                 success: function (res) {
                     console.log(res);
                     if (res.code === 1) {
@@ -268,7 +353,7 @@
             $.ajax({
                 url: "{:url('/standard/library/adddivsiontree')}",
                 type: "post",
-                data: {id: selfid, name: value, cat:1},
+                data: {id: selfid, name: value, cat:2},
                 success: function (res) {
                     if (res.code === 1) {
                         sNodes.name = value;
@@ -323,7 +408,6 @@
 
     //点击新增控制节点
     $(".mybtn #test3").click(function () {
-        console.log(procedureId);
         layer.open({
             type: 2,
             title: '添加控制点信息',
@@ -353,7 +437,7 @@
                 tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="+selfid).load();
             }
         });
-    }
+    };
 
     //点击删除模板
     function delFile(id) {
@@ -375,7 +459,8 @@
             });
             layer.close(index);
         });
-    }
+    };
 
 </script>
 </html>
+

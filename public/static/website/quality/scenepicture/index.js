@@ -298,6 +298,9 @@ function showPdf(id,url) {
                             ]
                         }
                         ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                      ,success:function () {
+                        $('.layui-layer-shade').empty();
+                      }
                     });
                 }else{
                     layer.msg("不支持的文件格式");
