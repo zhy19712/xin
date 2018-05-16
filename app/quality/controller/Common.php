@@ -363,7 +363,7 @@ class Common extends Controller
                     ->join('attachment m', 'm.id = s.attachment_id', 'left')
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
-                    ->field("s.filename,m.create_time,n.nickname,g.name,s.position,s.id")
+                    ->field("s.filename,m.create_time,n.nickname as owner,g.name as company,s.position,s.id")
                     ->where($search_data)->where("s.admin_group_id > 0")
                     ->where($group_data)->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start), intval($length))
@@ -378,7 +378,7 @@ class Common extends Controller
                     ->join('attachment m', 'm.id = s.attachment_id', 'left')
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
-                    ->field("s.filename,m.create_time,n.nickname,g.name,s.position,s.id")
+                    ->field("s.filename,m.create_time,n.nickname as owner,g.name as company,s.position,s.id")
                     ->where($search_data)->where("s.admin_group_id > 0")
                     ->where($group_data)->order($order)->limit(intval($start), intval($length))
                     ->select();
