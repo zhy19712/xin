@@ -1004,7 +1004,7 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    //单元管控：控制点列表
+    //单元策划：控制点列表
     public function quality_division_controlpoint_relation($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //查询
@@ -1026,7 +1026,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)->alias('a')
                     ->join('norm_controlpoint b', 'a.control_id=b.id', 'left')
                     ->where($par)
-                    ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,b.remark')
+                    ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,a.checked,b.remark')
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -1037,7 +1037,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)->alias('a')
                     ->join('norm_controlpoint b', 'a.control_id=b.id', 'left')
                     ->where($par)
-                    ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,b.remark')
+                    ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,a.checked,b.remark')
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
             }
