@@ -17,7 +17,7 @@ class MaterialTrackingDivision extends Model
     /**
      * 添加左侧树节点节点
      */
-    public function insertMa($param)
+    public function insertma($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -28,10 +28,8 @@ class MaterialTrackingDivision extends Model
 
                 $res = $this->where('id',$last_id)->update(['sort_id' => $last_id]);
 
-                $data = $this->where("id",$last_id)->find();
-
                 if($res){
-                    return ['code' => 1,'msg' => '添加成功','data'=>$data];
+                    return ['code' => 1,'msg' => '添加成功','data'=>$last_id];
                 }else{
                     return ['code' => -1,'msg' => $this->getError()];
                 }

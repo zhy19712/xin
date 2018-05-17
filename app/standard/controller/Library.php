@@ -89,7 +89,9 @@ class Library extends Permissions
     {
         //实例化模型类
         $model = new MaterialTrackingDivision();
+
         $mod = input('post.');
+
         if (empty($mod['id'])) {
             $res = $model->insertMa($mod);
         } else {
