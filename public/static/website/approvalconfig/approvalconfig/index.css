@@ -3,7 +3,7 @@
     border-left-color: transparent;
 }
 #level3{
-    display: none;
+    /*display: none;*/
 }
 #searchBox {
     width: 100%;
@@ -41,4 +41,59 @@ i.fa:before,i.fa:hover:before{
 }
 .layui-input[readonly] {
     background: #FFFFFF !important;
+}
+
+
+#treeFrequentlyUsed .level0 a .button{
+    background:url('/static/public/ztree/css/ztreeadmin/img/people.png') 0 0 no-repeat;
+}
+
+.layui-col-md4 {
+    width: 32.4%;
+    height: 400px;
+    float: left;
+    border: 1px solid #CECECE;
+    margin: 5px;
+    position: relative;
+}
+
+.layui-col-md6 {
+    width: 62%;
+    height: 400px;
+    float: right;
+    border: 1px solid #CECECE;
+    margin: 5px 20px 5px 5px;
+}
+
+.rted {
+    color: #CDCDCD;
+}
+
+.select {
+    color: #56ABE4;
+}
+
+#selectDiv {
+    display: none;
+    height: 100%;
+}
+p2 {
+    float: left;
+    margin: 4px;
+    background-color: #56ABE4;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    border: 1px solid #56ABE4;
+    border-radius: 20px;
+    float: left;
+    line-height: 0.1;
+    padding: 5px;
+}
+.boder {
+    border: 1px solid #bed5f3;
+    height: 360px;
+}
+.ztree{
+    margin-top: 0;
 }

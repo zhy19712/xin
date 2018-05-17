@@ -12,6 +12,7 @@
 namespace app\archive\model;
 use think\exception\PDOException;
 use \think\Model;
+use think\Db;
 
 class AtlasCateModel extends Model
 {
@@ -99,8 +100,10 @@ class AtlasCateModel extends Model
         //定义一个空的数组
         $children = array();
 
-        $data = $this
-            ->field('picture_number,picture_name,picture_papaer_num,date,paper_category,owner,completion_date,id,pid')
+        $data = Db::name("archive_atlas_cate")->alias("a")
+            ->join('attachment m', 'm.id = a.attachmentId', 'left')
+            ->join('admin n', 'n.id = m.user_id', 'left')
+            ->field('a.picture_number,a.picture_name,a.picture_papaer_num,a.create_time,a.paper_category,m.create_time,n.nickname as owner,a.id,a.pid')
             ->where('pid', $id)
             ->select();
         if(!empty($data))
@@ -115,11 +118,11 @@ class AtlasCateModel extends Model
                 $children[$k][] = '';
                 $children[$k][] = '';
                 $children[$k][] = '';
-                $children[$k][] = $v['completion_date'];
+                $children[$k][] = '';
                 $children[$k][] = '';
                 $children[$k][] = $v['paper_category'];
                 $children[$k][] = $v['owner'];
-                $children[$k][] = $v['date'];
+                $children[$k][] = $v['create_time'];
                 $children[$k][] = $v['id'];
                 $children[$k][] = $v['pid'];
             }

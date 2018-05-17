@@ -290,6 +290,9 @@ function showPdf(id,url) {
                             ]
                         }
                         ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                      ,success:function () {
+                        $('.layui-layer-shade').empty();
+                      }
                     });
                 }else{
                     layer.msg("不支持的文件格式");
@@ -340,7 +343,7 @@ var tableItem = $('#tableItem').DataTable( {
             name: "filename"
         },
         {
-            name: "date"
+            name: "create_time"
         },
         {
             name: "owner"
@@ -380,7 +383,20 @@ var tableItem = $('#tableItem').DataTable( {
                     return "<img src='/static/webSite/quality/scenepicture/setValid.png'>" ;
                 }
             }
+        },
+      {
+        "targets": [1],
+        "render": function (data,type,row) {
+          var date = new Date(data*1000);
+          var Y = date.getFullYear() + '-';
+          var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+          var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+          var h = (date.getHours() < 10 ? '0' + (date.getHours()):date.getHours())+ ':' ;
+          var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()):date.getMinutes())+ ':' ;
+          var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()):date.getSeconds());
+          return Y + M + D + h + m + s;
         }
+      }
     ],
     language: {
         "lengthMenu": "_MENU_",

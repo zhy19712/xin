@@ -204,11 +204,11 @@ class Atlas extends Permissions
                     'design_name' => $param['design_name'],//设计
                     'check_name' => $param['check_name'],//校验
                     'examination_name' => $param['examination_name'],//审查
-                    'completion_date' => $param['completion_date'],//完成日期
+                    'completion_time' => strtotime($param['completion_date']),//完成日期
                     'section' => $param['section'],//标段
                     'paper_category' => $param['paper_category'],//图纸类别
                     'owner' => Session::get('current_nickname'),//上传人
-                    'date' => date("Y-m-d")//上传日期
+                    'create_time' => strtotime(date("Y-m-d"))//上传日期
                 ];
                 $flag = $model->insertCate($data);
                 return json($flag);
@@ -289,7 +289,6 @@ class Atlas extends Permissions
             $model = new AtlasCateModel();
             $param = input('post.');
             $id = $param['id'];//图册id
-
             $info = $model->getOne($id);
                 $data = [
                     'attachmentId'=>$param['attachmentId'],//文件关联attachment表中的id
@@ -298,11 +297,7 @@ class Atlas extends Permissions
                     'picture_number' => $param['picture_number'],//图号
                     'picture_name' => $param['picture_name'],//图名
                     'picture_papaer_num' => 1,//图纸张数(输入数字),默认1
-                    'completion_date' => date("Y-m"),//完成日期
                     'paper_category' => $info['paper_category'],//图纸类别
-                    'owner' => Session::get('current_nickname'),//上传人
-                    'filename' => $param['filename'],
-                    'date' => date("Y-m-d")//上传日期
                 ];
                 $flag = $model->insertCate($data);
                 return json($flag);
@@ -414,7 +409,7 @@ class Atlas extends Permissions
         $data = [
             "selfid" => $param['selfid'],
             "cate_id" => $id,
-            "date" => date("Y-m-d H:i:s"),//下载时间
+            "create_time" => strtotime(date("Y-m-d H:i:s")),//下载时间
             "user_name" => Session::get('current_nickname')//下载人
         ];
 
@@ -426,7 +421,7 @@ class Atlas extends Permissions
             //上传文件路径
             $path = $attachment["filepath"];
             $filePath = '.' . $path;
-            $fileName = $param['filename'];
+            $fileName = $attachment['filename'];
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
@@ -491,7 +486,7 @@ class Atlas extends Permissions
         $data = [
             "selfid" => $param['selfid'],
             "cate_id" => $id,
-            "date" => date("Y-m-d H:i:s"),//下载时间
+            "create_time" => strtotime(date("Y-m-d H:i:s")),//下载时间
             "user_name" => Session::get('current_nickname')//下载人
         ];
 

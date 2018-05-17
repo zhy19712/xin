@@ -1,5 +1,5 @@
 {include file="../app/public/common_header.html"}
-
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
 <link rel="stylesheet" href="__WEBSITE__/approvalconfig/approvalconfig/index.css">
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
@@ -30,7 +30,6 @@
                         <a onclick="lookform()" class="layui-btn-normal layui-btn">查看表单</a>
                         <a onclick="addStatus()" class="layui-btn-normal layui-btn">添加状态</a>
                         <a onclick="addStep()" class="layui-btn-normal layui-btn">添加步骤</a>
-                        <button id="test">sdfdsff</button>
                     </div>
                     <div>
 
@@ -62,7 +61,13 @@
         <div class="autograph">
             <label class="layui-form-label">名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="class_name" id="class_name" placeholder="名称" lay-verify="required"  autocomplete="off" class="layui-input">
+                <input style="position: absolute;" type="text" name="class_name" id="class_name" placeholder="名称" lay-verify="required"  autocomplete="off" class="layui-input">
+                <select name="" id="" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">未开始</option>
+                    <option value="1">进行中</option>
+                    <option value="2">已完成</option>
+                </select>
             </div>
         </div>
     </div>
@@ -74,6 +79,7 @@
         </div>
     </div>
 </form>
+
 <form id="addStep" action="#" onsubmit="return false" class="layui-form" style="display: none;">
     <div class="layui-form-item">
         <div class="autograph">
@@ -103,7 +109,7 @@
     </div>
     <div class="layui-form-item">
         <div class="autograph">
-            <label class="layui-form-label">打回步</label>
+            <label class="layui-form-label">打回到</label>
             <div class="layui-input-inline">
                 <select name="" id="" lay-verify="required">
                     <option value=""></option>
@@ -112,6 +118,49 @@
                     <option value="2">已完成</option>
                 </select>
             </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-col-md4">
+            <div class="col-md-5">
+                <div style="text-align: left;">
+                    <h4 class="hui rted" style="margin: 10px;font-size: 13px" id="tgd">
+                        <a style="margin-right: 3px;" onclick="frequentlyUsedDivShow()" class="rted select">常用联系人</a>|
+                        <a style="margin-right: 3px;margin-left: 3px;" onclick="selectDivShow()" class="rted">人员选择</a>
+                    </h4>
+                </div>
+                <div class="hr-line-dashed" style="margin:0px;"></div>
+            </div>
+            <div class="col-md-5" id="frequentlyUsedDiv">
+                <div class="boder" style="text-align: left; height:360px;width: 100%;">
+                    <ul id="treeFrequentlyUsed" class="ztree" style="overflow: auto; height: 100%; width: 100%;"></ul>
+                </div>
+            </div>
+            <div class="col-md-5" id="selectDiv">
+                <div class="boder">
+                    <div style="margin-top: 15px;">
+                        <div class="input-group input-group-sm" style="width: 300px;margin-top: -8px;margin-left: 10px;">
+                            <input class="layui-input" type="text" placeholder="请输人员名称" id="keywords" accept="middle">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed" style="margin:10px;margin-bottom: 0px"></div>
+                    <div class="ligtop" style="text-align: left;margin-top: 0px;">
+                        <ul id="treeDemo" class="ztree" style="height: 300px; width: 97%;padding-top: 0px;overflow: auto;"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6 ">
+            <div style="margin-top: 15px;">
+                <p style="float:left;font-size:14px;margin: -4px 15px 4px 4px;">角色用户</p>
+                <div class="input-group input-group-sm" >
+                    <input id="username_key" class="layui-input" type="text" placeholder="人员">
+                </div>
+                <hr>
+            </div>
+            <div class="hr-line-dashed" style="margin:10px;"></div>
+            <div class="peopleResult" id="selectedUserDiv"></div>
         </div>
     </div>
     <div class="layui-form-item">

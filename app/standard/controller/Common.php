@@ -102,7 +102,7 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    public function quality_template($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    public function norm_template($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //查询
          $_type = $this->request->has('type') ? $this->request->param('type') : "";

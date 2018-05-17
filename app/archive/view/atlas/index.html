@@ -334,7 +334,7 @@
                 name: "examination_name"
             },
             {
-                name: "completion_date"
+                name: "completion_time"
             },
             {
                 name: "section"
@@ -346,7 +346,7 @@
                 name: "owner"
             },
             {
-                name: "date"
+                name: "create_time"
             },
             {
                 name: "id"
@@ -378,7 +378,23 @@
                     }
                     return html;
                 }
+            },
+          {
+            "targets": [12],
+            "render": function (data,type,row) {
+
+              return dateNum2date(data);
             }
+          },
+          {
+            "targets": [8],
+            "render": function (data,type,row) {
+              var date = new Date(data*1000);
+              var Y = date.getFullYear() + '-';
+              var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) ;
+              return Y + M ;
+            }
+          }
         ],
         language: {
             "lengthMenu": "_MENU_",
@@ -507,7 +523,7 @@
             '<td >'+data[9]+'</td>' +
             '<td >'+data[10]+'</td>' +
             '<td >'+data[11]+'</td>' +
-            '<td >'+data[12]+'</td>' +
+            '<td >'+dateNum2date(data[12])+'</td>' +
             '<td >'+html+'</td>' +
             '</tr>';
         $(that).after(trDom);
@@ -525,12 +541,27 @@
         },
         columns:[
             {
-                name : "date"
+                name : "create_time"
             },
             {
                 name :"user_name"
             }
         ],
+      columnDefs: [
+        {
+          "targets": [0],
+          "render": function (data,type,row) {
+            var date = new Date(data*1000);
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+            var h = (date.getHours() < 10 ? '0' + (date.getHours()):date.getHours())+ ':' ;
+            var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()):date.getMinutes())+ ':' ;
+            var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()):date.getSeconds());
+            return Y + M + D + h + m + s;
+          }
+        }
+      ],
         ordering: false, // 禁止排序
         language: {
             "lengthMenu": "_MENU_",
@@ -546,9 +577,17 @@
         },
         "fnInitComplete": function (oSettings, json) {
             $('#downlog_paginate').insertBefore(".mark2");
-
         },
     });
+
+    //时间戳边日期
+    function dateNum2date(data) {
+      var date = new Date(data*1000);
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+      var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+      return Y + M + D;
+    }
 </script>
 </body>
 </html>
