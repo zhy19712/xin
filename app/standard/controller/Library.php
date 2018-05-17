@@ -14,6 +14,7 @@ use app\standard\model\MaterialTrackingDivision;
 use app\standard\model\TemplateModel;
 use think\Request;
 use \think\Db;
+use think\exception\PDOException;
 
 /**
  * 标准库
@@ -124,6 +125,7 @@ class Library extends Permissions
                     $sortArr[] = $v['sort_id'];
                 }
                 //按照排序sort_id进行排序
+
                 asort($sortArr);
 
                 foreach ($sortArr as $v){
