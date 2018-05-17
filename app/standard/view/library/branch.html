@@ -235,18 +235,19 @@
     function addNodetree() {
         var pid = selfid ? selfid : 0;
         layer.prompt({title: '请输入节点名称'}, function (value, index, elem) {
+          var type =  sNodes ? Number(sNodes.type)+1 : 0;
             $.ajax({
                 url: "{:url('/standard/library/adddivsiontree')}",
                 type: "post",
-                data: {pid: pid, name: value, cat:3,type:Number(sNodes.type)+1},
+                data: {pid: pid, name: value, cat:3,type:type},
                 success: function (res) {
                     console.log(res);
                     if (res.code === 1) {
                         console.log(sNodes);
                         if (sNodes) {
-                            zTreeObj.addNodes(sNodes, {"id":res.data,"pid":pid,"name":value,type:Number(sNodes.type)+1});
+                            zTreeObj.addNodes(sNodes, {"id":res.data,"pid":pid,"name":value,type:type});
                         } else {
-                            zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":value,type:Number(sNodes.type)+1});
+                            zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":value,type:type});
                         }
                     }
                 }
