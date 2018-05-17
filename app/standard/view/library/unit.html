@@ -111,6 +111,8 @@
         <i id="add" title="新增节点" class="fa fa-lg fa-sitemap" onclick="addNodetree()"></i>
         <i title="编辑节点" class="fa fa-lg fa-pencil" onclick="editNodetree()"></i>
         <i title="删除节点" class="fa fa-lg fa-trash" onclick="delNodetree()"></i>
+        <i title="下移" class="fa fa-lg fa-arrow-circle-down" onclick="getmoveNode('next')"></i>
+        <i title="上移" class="fa fa-lg fa-arrow-circle-up" onclick="getmoveNode('prev')"></i>
         <i title="展开所有" class="fa fa-lg fa-plus-square" id="openNode"></i>
         <i title="收起所有" class="fa fa-lg fa-minus-square" id="closeNode"></i>
     </div>
@@ -292,18 +294,19 @@
     function addNodetree() {
         var pid = selfid ? selfid : 0;
         layer.prompt({title: '请输入节点名称'}, function (value, index, elem) {
+          var type =  sNodes ? Number(sNodes.type)+1 : 0;
             $.ajax({
                 url: "{:url('/standard/library/adddivsiontree')}",
                 type: "post",
-                data: {pid: pid, name: value, cat:5},
+                data: {pid: pid, name: value, cat:5,type:type},
                 success: function (res) {
                     console.log(res);
                     if (res.code === 1) {
                         console.log(sNodes);
                         if (sNodes) {
-                            zTreeObj.addNodes(sNodes, {"id":res.data,"pid":pid,"name":value});
+                            zTreeObj.addNodes(sNodes, {"id":res.data,"pid":pid,"name":value,type:type});
                         } else {
-                            zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":value});
+                            zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":value,type:type});
                         }
                     }
                 }
@@ -428,6 +431,88 @@
         });
     }
 
+    //节点移动方法
+    function moveNode(zTreeObj,selectNode,state) {
+      var changeNode;
+      var change_sort_id; //发生改变的排序id
+      var change_id; //发生改变的id
+      console.log(selectNode.sort_id)
+      var select_sort_id = selectNode.sort_id;//选中的排序id
+      var select_id = selectNode.id;//选中的id
+      if(state === "next"){
+        changeNode = selectNode.getNextNode();
+        if (!changeNode){
+          layer.msg('已经移到底啦');
+          return false;
+        }
+      }else if(state === "prev"){
+        changeNode = selectNode.getPreNode();
+        if (!changeNode){
+          layer.msg('已经移到顶啦');
+          return false;
+        }
+      }
+      change_id = changeNode.id;
+      change_sort_id = changeNode.sort_id;
+      console.log();
+      $.ajax({
+        url: "./sortNode",
+        type: "post",
+        data: {
+          change_id:change_id, //影响节点id
+          change_sort_id:change_sort_id, //影响节点sort_id
+          select_id:select_id,//移动节点id
+          select_sort_id:select_sort_id,//移动节点sort_id
+        },
+        dataType: "json",
+        success: function (res) {
+          if(res.code==1){
+            zTreeObj.moveNode(changeNode, selectNode, state);
+            changeNode.sort_id = select_sort_id;
+            selectNode.sort_id = change_sort_id;
+          }else{
+            layer.msg(res.msg);
+          }
+
+        }
+      });
+    }
+    // 点击节点移动
+    function getmoveNode(state) {
+      if(sNodes===undefined||sNodes.length<=0){
+        layer.msg("请选择节点");
+        return;
+      }
+
+      moveNode(zTreeObj,sNodes,state);
+    }
+
+
+    var  arr = ["记录表","质量评定表","工程照片、强制性条文","验收申请表"];
+    var iiii = 0;
+    function addDate(pid) {
+        $.ajax({
+          url: "{:url('/standard/library/adddivsiontree')}",
+          type: "post",
+          data: {pid: pid, name: arr[iiii], cat:5},
+          success: function (res) {
+            if (res.code === 1) {
+              if (sNodes) {
+                zTreeObj.addNodes(sNodes, {"id":res.data,"pid":pid,"name":arr[iiii]});
+              } else {
+                zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":arr[iiii]});
+              }
+              iiii++;
+              if(iiii<arr.length){
+                addDate(pid)
+              }else{
+                iiii==0;
+              }
+            }
+          }
+        });
+
+    }
 </script>
 </html>
 

@@ -54,7 +54,6 @@ class AtlasCateTypeModel extends Model
                     }
                 }
             }
-
         return "[" . substr($str, 0, -1) . "]";
     }
 
