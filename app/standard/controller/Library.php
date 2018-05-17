@@ -5,7 +5,11 @@
  * Date: 2018/4/8
  * Time: 11:22
  */
-
+/**
+ * 标准库管理，质量验评标准库
+ * Class Library
+ * @package app\standard\controller
+ */
 namespace app\standard\controller;
 
 use app\admin\controller\Permissions;
