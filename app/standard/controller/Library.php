@@ -94,18 +94,13 @@ class Library extends Permissions
     {
         //实例化模型类
         $model = new MaterialTrackingDivision();
-
         $mod = input('post.');
-
         if (empty($mod['id'])) {
-            $res = $model->insertMa($mod);
+            $flag = $model->insertMa($mod);
+            return json($flag);
         } else {
-            $res = $this->materialTrackingDivesionService->allowField(true)->save($mod, ['id' => $mod['id']]);
-        }
-        if ($res) {
-            return json(['code' => 1, 'data' => $res]);
-        } else {
-            return json(['code' => -1]);
+            $flag =  $model->editMa($mod);
+            return json($flag);
         }
     }
 
