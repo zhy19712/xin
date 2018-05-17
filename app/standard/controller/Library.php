@@ -112,9 +112,10 @@ class Library extends Permissions
     {
             //查询所有的数据
             $data = MaterialTrackingDivision::all(['cat' => $cat]);
-
             //定义一个空数组
             $sortArr = [];
+            //定义空字符串
+            $str = "";
             if(!empty($data))
             {
                 foreach ($data as $v){
@@ -122,18 +123,17 @@ class Library extends Permissions
                 }
                 //按照排序sort_id进行排序
                 asort($sortArr);
+
                 foreach ($sortArr as $v){
                     foreach($data as $key=>$vo){
                         if($v == $vo['sort_id']){
-                            $data[$key] = $vo;
+                            $str .= '{ "id": "' . $vo['id'] . '", "pid":"' . $vo['pid'] . '", "name":"' . $vo['name'].'"'.',"sort_id":"'.$vo['sort_id'].'","type":"'.$vo['type'].'","cat":"'.$vo['cat'].'"';
+                            $str .= '},';
                         }
                     }
                 }
-            }else
-            {
-                $data = [];
             }
-            return $data;
+            return "[" . substr($str, 0, -1) . "]";
     }
 
     /**
