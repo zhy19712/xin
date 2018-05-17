@@ -327,7 +327,7 @@ class Common extends Controller
                         ->join('admin u', 's.send_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.nickname as send_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
                         ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     // 发文 查询 收件人的名称和单位
@@ -335,7 +335,7 @@ class Common extends Controller
                         ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,u.nickname as income_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,s.attchment_id,u.nickname as income_name,s.status')
                         ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
                 }
                 $recordsFiltered = sizeof($recordsFilteredResult);
@@ -349,7 +349,7 @@ class Common extends Controller
                         ->join('admin u', 's.send_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.nickname as send_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     // 发文 查询 收件人的名称和单位
@@ -357,7 +357,7 @@ class Common extends Controller
                         ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.nickname as income_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as income_name,s.status')
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
                 $recordsFiltered = $recordsTotal;
