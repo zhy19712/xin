@@ -5,9 +5,12 @@
  * Date: 2018/3/30
  * Time: 18:28
  */
-
+/**
+ * 标准库管理
+ * Class Common
+ * @package app\standard\controller
+ */
 namespace app\standard\controller;
-
 
 use app\standard\model\ControlPoint;
 use app\standard\model\NormModel;
