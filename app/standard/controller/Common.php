@@ -5,9 +5,12 @@
  * Date: 2018/3/30
  * Time: 18:28
  */
-
+/**
+ * 标准库管理
+ * Class Common
+ * @package app\standard\controller
+ */
 namespace app\standard\controller;
-
 
 use app\standard\model\ControlPoint;
 use app\standard\model\NormModel;
@@ -102,7 +105,7 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    public function nom_template($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    public function norm_template($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //查询
          $_type = $this->request->has('type') ? $this->request->param('type') : "";

@@ -1,0 +1,97 @@
+{include file="../../public/common_header"}
+<style>
+    .dataTables_wrapper, .tbcontainer {
+        display: block;
+    }
+    #tableIncome thead tr th{
+        text-align: center;
+    }
+    #file_modal{
+        display: none;
+    }
+    #fileOperation{
+        text-align: center;
+        position: relative;
+        top: 160px;
+    }
+    #fileOperation button{
+        width: 90px;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <table id="tableIncome" class="layui-table" cellspacing="0"  width="100%">
+            <thead>
+            <tr>
+                <th>文件名称</th>
+                <th>文件日期</th>
+                <th>来文单位</th>
+                <th>发件人</th>
+                <th>收件人</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<!--文件查看以及处理-->
+<div id="file_modal">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">文件名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="fileName"  class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文件日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="fileDate"  class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">发件人</label>
+            <div class="layui-input-block">
+                <input type="text" name="fileDate"  class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">来文单位</label>
+            <div class="layui-input-block">
+                <input type="text" name="fileDate"  class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <input type="text" name="fileDate"  class="layui-input" readonly>
+            </div>
+        </div>
+        <!--附件资料-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">文件附件</label>
+            <div class="layui-input-block">
+                <table id="tableFiles" class="layui-table" cellspacing="0"  width="100%">
+                    <thead>
+                    <tr>
+                        <th class="layui-col-xs-9">文件名称</th>
+                        <th class="layui-col-xs-9">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row" id="fileOperation">
+        <button class="layui-btn layui-btn-normal">签收</button>
+        <button class="layui-btn layui-btn-primary">拒收</button>
+    </div>
+</div>
+{include file="../../public/common_footer"}
+<script src="__WEBSITE__/archive/send/index.js"></script>
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

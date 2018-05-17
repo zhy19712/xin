@@ -25,11 +25,6 @@ layui.use(['form', 'layedit', 'laydate','layer'], function(){
   form.on('select(showSelect)', function(data){
     showSelectchange();
   });
-  //监听提交
-  // form.on('submit(demo1)', function(data){
-  //     tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template&type="+data.field.type+"&use="+data.field.use).load();
-  //     return false;
-  // });
 });
 
 

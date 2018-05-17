@@ -5,7 +5,11 @@
  * Date: 2018/4/4
  * Time: 15:45
  */
-
+/**
+ * 表单模板管理
+ * Class Templatemanage
+ * @package app\standard\controller
+ */
 namespace app\standard\controller;
 
 use app\admin\controller\Permissions;

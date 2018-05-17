@@ -7,7 +7,7 @@ var tableItem = $('#tableItem').DataTable({
     "scrollY": "200px",
     "scrollCollapse": "true",
     ajax: {
-        "url":"/standard/common/datatablesPre?tableName=nom_template"
+        "url":"/standard/common/datatablesPre?tableName=norm_template"
     },
     dom: 'lf<"mybtn layui-btn layui-btn-sm">rtip',
     columns: [
@@ -34,10 +34,12 @@ var tableItem = $('#tableItem').DataTable({
         },
         {
             targets: [1],
+          "orderable":false,
             width:'250px'
         },
         {
             "searchable": false,
+          "orderable":false,
             targets:[2],
             render: function (data, type, row) {
                 if (data == 1) {
@@ -49,6 +51,7 @@ var tableItem = $('#tableItem').DataTable({
         },
         {
             "searchable": false,
+          "orderable":false,
             targets: [3],
             render: function (data, type, row) {
                 if (data == 1) {
@@ -107,7 +110,7 @@ layui.use(['form', 'layedit', 'laydate','layer'], function(){
 
     form.on('select(type)', function(data){
         typeId = data.value;
-        tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template&type="+typeId).load();
+        tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&type="+typeId).load();
     });
 
     form.on('select(purpose)', function(data){
@@ -116,16 +119,16 @@ layui.use(['form', 'layedit', 'laydate','layer'], function(){
         console.log(purposeId);
 
         if(purposeId == ""){
-            tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template&type="+typeId).load();
+            tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&type="+typeId).load();
         }else{
-            tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template&type="+typeId+"&use="+purposeId).load();
+            tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&type="+typeId+"&use="+purposeId).load();
         }
-        tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template&use="+purposeId).load();
+        tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&use="+purposeId).load();
     });
 
     //监听提交
     // form.on('submit(demo1)', function(data){
-    //     tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template&type="+data.field.type+"&use="+data.field.use).load();
+    //     tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&type="+data.field.type+"&use="+data.field.use).load();
     //     return false;
     // });
 });
@@ -169,7 +172,7 @@ function delFile(id) {
                 if(res.code == 1){
                     console.log(res)
                     layer.msg("删除成功！")
-                    tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template").load();
+                    tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template").load();
                 }else if(res.code==0){
                     layer.msg(res.msg);
                 }
@@ -181,3 +184,30 @@ function delFile(id) {
         layer.close(index);
     });
 };
+
+// var datainfo = [
+// ];
+// var iiiii = 0;
+// //添加数据
+// function addData() {
+//  var code = datainfo[iiiii].substring(0,8),name = datainfo[iiiii].substring(8);
+//   $.ajax({
+//     type: "Post",
+//     url: "./add",
+//     data: {
+//         id:"",
+//         code:code,
+//         name: name,
+//         type: 1,
+//         use: 1
+//     },
+//     success: function (res) {
+//         console.log(code);
+//         iiiii++;
+//         if(iiiii<datainfo.length){
+//           addData();
+//         }
+//
+//     }
+//   })
+// }

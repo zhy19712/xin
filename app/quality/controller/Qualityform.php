@@ -132,7 +132,7 @@ class Qualityform extends Permissions
      * @param $controlPointId
      * @return mixed
      */
-    public function QalityFormAttachment($cpr_id)
+    public function Index($cpr_id)
     {
         $this->assign('cpr_id', $cpr_id);
         return $this->fetch();
