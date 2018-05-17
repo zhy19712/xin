@@ -112,6 +112,7 @@ layui.define(['jquery', 'element', 'nprogress', 'utils'], function(exports) {
                 case renderType.page:
                     _htm = _htm.replace('{{content}}', that.getBodyContent(_config.mainUrl + '?v=' + new Date().getTime()));
                     break;
+                    //给首页加上name属性，方便JS从父页面操作iframe页面
                 case renderType.iframe:
                     _htm = _htm.replace('{{content}}', '<iframe id="-1" name="-1" src="' + _config.mainUrl + '"></iframe>');
                     break;
@@ -147,9 +148,13 @@ layui.define(['jquery', 'element', 'nprogress', 'utils'], function(exports) {
                                             that.closeLoad(loadIndex);
                                         }));
                                     break;
+                                    //首页模型页面不允许刷新，其他iframe页面可以刷新
                                 case renderType.iframe:
-                                    var item = that._content.children('div[lay-item-id=' + layId + ']').children('iframe');
-                                    item.attr('src', item.attr('src'));
+                                    if(layId != -1){
+                                        var item = that._content.children('div[lay-item-id=' + layId + ']').children('iframe');
+                                        item.attr('src', item.attr('src'));
+                                        break;
+                                    }else
                                     break;
                             }
                             break;

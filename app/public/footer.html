@@ -4,6 +4,7 @@
     <script src="__PUBLIC__/jquery/jquery.min.js"></script>
     <script src="__PUBLIC__/ztree/js/jquery.ztree.all.min.js"></script>
     <script>
+        //将所有模型页面按需装载到同一个iframe中，防止用户打开过多模型页面崩溃
      function replaceTemplate(id){
          $.ajax({
              url: "{:url('./modelmanagement/index/index')}?id=" + id,

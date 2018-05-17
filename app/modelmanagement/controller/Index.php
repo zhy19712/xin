@@ -14,6 +14,7 @@ class Index extends Permissions
 {
     function Index()
     {
+        //将所有模型页面按需装载到同一个iframe中，防止用户打开过多模型页面崩溃
         if(request()->isAjax()) {
             $id = $this->request->param('id');
             switch ($id) {
