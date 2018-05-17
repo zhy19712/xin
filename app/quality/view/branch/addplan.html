@@ -93,8 +93,8 @@
         processing: true,
         serverSide: true,
         "scrollY": "450px",
-        ajax: {
-            "url": "../../standard/common/datatablesPre/tableName/controlpoint/id="
+        ajax:{
+            "url": "../../standard/common/datatablesPre.shtml?tableName=norm_controlpoint&id="
         },
         dom: 'lf<"mybtn layui-btn layui-btn-sm">rtip',
         columns: [
@@ -203,7 +203,7 @@
         groupidAdd = sNodesAdd.pId ;//父节点的id
         procedureIdAdd = selfidAdd;
         if(sNodesAdd.level == 2){
-            tableItem.ajax.url("../../standard/common/datatablesPre/tableName/controlpoint/id/"+selfidAdd).load();
+            tableItem.ajax.url("../../standard/common/datatablesPre.shtml?tableName=norm_controlpoint&id="+selfidAdd).load();
             $("#tableContent .dataTables_wrapper").css('display','block');
             $("#tableContent .tbcontainer").css('display','block');
             $(".layout-panel-center .panel-title").text("当前路径:" + path);
