@@ -67,7 +67,7 @@ class Common extends Controller
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)
-                    ->field('picture_number,picture_name,picture_papaer_num,a1_picture,design_name,check_name,examination_name,FROM_UNIXTIME(completion_time) as completion_time,section,paper_category,id')
+                    ->field('picture_number,picture_name,picture_papaer_num,a1_picture,design_name,check_name,examination_name,FROM_UNIXTIME(completion_time,\'%Y-%m-%d\') as completion_time,section,paper_category,id')
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
@@ -77,7 +77,7 @@ class Common extends Controller
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)
-                    ->field('picture_number,picture_name,picture_papaer_num,a1_picture,design_name,check_name,examination_name,FROM_UNIXTIME(completion_time) as completion_time,section,paper_category,id')
+                    ->field('picture_number,picture_name,picture_papaer_num,a1_picture,design_name,check_name,examination_name,FROM_UNIXTIME(completion_time,\'%Y-%m-%d\') as completion_time,section,paper_category,id')
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
             }
