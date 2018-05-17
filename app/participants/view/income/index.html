@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-收文
+{include file="../../public/common_header"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+
+<div class="container">
+    <div class="row">
+        <table id="tableIncome" class="layui-table" cellspacing="0"  width="100%">
+            <thead>
+                <tr>
+                    <th>文件名称</th>
+                    <th>文件日期</th>
+                    <th>来文单位</th>
+                    <th>发件人</th>
+                    <th>收件人</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{include file="../../public/common_footer"}
 </body>
+<script type="text/javascript">
+    $("#tableIncome").DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        }
+    })
+</script>
 </html>
