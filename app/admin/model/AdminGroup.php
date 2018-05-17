@@ -137,4 +137,19 @@ class AdminGroup extends Model
     {
         return $this->field("id,name")->where("pid > 0")->select();
     }
+
+    public function incomeUsers()
+    {
+
+    }
+
+    public function incomeGroupType($id)
+    {
+        $type_name = Db::name('admin')->alias('u')
+            ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+            ->join('admin_group_type t', 'g.type=t.id', 'left')->where(['u.id'=>$id])->value('t.name');
+        return $type_name;
+    }
+
+
 }

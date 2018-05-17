@@ -51,11 +51,12 @@
     </div>
     <input type="hidden" name="inputId" id="hiddenValId" value="">
     <input type="hidden" name="inputName" id="hiddenValName" value="">
+    <input type="hidden" name="use" id="use" value="{$use}">
 </div>
 
 {include file="../app/public/common_footer.html"}
 <script>
-
+    var use = $('#use').val();
     //组织结构表格
     var tableItemChose = $('#tableItemChose').DataTable({
         pagingType: "full_numbers",
@@ -65,7 +66,7 @@
         "paging": "false",
         serverSide: true,
         ajax: {
-            "url":"{:url('/standard/common/datatablesPre')}?tableName=norm_template"
+            "url":"{:url('/standard/common/datatablesPre')}?tableName=norm_template&type=1&use="+use
         },
         dom: 'lf<"mybtn layui-btn layui-btn-sm">rtip',
         columns: [
@@ -94,7 +95,7 @@
                 "render": function (data, type, row) {
                     var a = data;
                     var html = "<a type='button' href='javasrcipt:;' class=''>" +
-                        "<input type='radio' name='sex' class='sex' checked onclick='checkFile(this)'>" +
+                        "<input type='radio' name='sex' class='sex'  onclick='checkFile(this)'>" +
                         "</a>";
                     return html;
                 }
@@ -161,6 +162,8 @@
     var checkName;
     var flag;
     var form;
+    var temCode;
+    var temName;
 
     layui.use(['form', 'layedit', 'laydate'], function () {
         form = layui.form;
@@ -179,6 +182,8 @@
                 $("#hiddenValName").val(checkName);
                 $(window.parent.document).find("#getValId").val(checkId);
                 $(window.parent.document).find("#getValName").val(checkName);
+                $(window.parent.document).find("#temCode").val(temCode);
+                $(window.parent.document).find("#temName").val(temName);
 
                 $(window.parent.document).find("#selectTem").val(checkName);
 
@@ -205,9 +210,11 @@
             return;
         }
         $(this).addClass("select-color").siblings().removeClass("select-color");
-        selectData = tableItemChose.row(".select-color").data();//获取选中行数据
+        var selectData = tableItemChose.row(".select-color").data();//获取选中行数据
         checkId = selectData[0];
         checkName = selectData[2];
+        temCode = selectData[1];
+        temName =  selectData[2];
     });
 </script>
 </html>

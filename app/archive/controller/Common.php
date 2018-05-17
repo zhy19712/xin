@@ -297,4 +297,85 @@ class Common extends Controller
             return $this->error('上传失败：' . $file->getError());
         }
     }
+
+
+    // 收文 或 发文 列表
+    function archive_income_send($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    {
+        //条件过滤后记录数 必要
+        $recordsFiltered = 0;
+        //表的总记录数 必要
+        //传过来的类别 table_type 1 收文 2 发文
+        $type = input('param.table_type');
+        $uid = Session::has('admin') ? Session::get('admin') : 0;
+        if($type == 1){
+            $recordsTotal = Db::name($table)->where('income_id', $uid)->count();
+        }else{
+            $recordsTotal = Db::name($table)->where('send_id', $uid)->count();
+        }
+
+
+        $recordsFilteredResult = array();
+
+        if (strlen($search) > 0) {
+            //有搜索条件的情况
+            if ($limitFlag) {
+                //*****多表查询join改这里******
+                if($type == 1){
+                    // 收文 查询 发件人的名称和单位
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->join('admin_group_type t', 'g.type=t.id', 'left')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
+                }else{
+                    // 发文 查询 收件人的名称和单位
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.income_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->join('admin_group_type t', 'g.type=t.id', 'left')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,s.attchment_id,u.nickname as income_name,s.status')
+                        ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
+                }
+                $recordsFiltered = sizeof($recordsFilteredResult);
+            }
+        } else {
+            //没有搜索条件的情况
+            if ($limitFlag) {
+                if($type == 1){
+                    // 收文 查询 发件人的名称和单位
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->join('admin_group_type t', 'g.type=t.id', 'left')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }else{
+                    // 发文 查询 收件人的名称和单位
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.income_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->join('admin_group_type t', 'g.type=t.id', 'left')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as income_name,s.status')
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }
+                $recordsFiltered = $recordsTotal;
+            }
+        }
+        $temp = array();
+        $infos = array();
+        foreach ($recordsFilteredResult as $key => $value) {
+            //计算列长度
+            $length = sizeof($columns);
+            for ($i = 0; $i < $length; $i++) {
+                array_push($temp, $value[$columns[$i]['name']]);
+            }
+            $infos[] = $temp;
+            $temp = [];
+        }
+        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+    }
+
+
 }

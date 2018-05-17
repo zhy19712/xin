@@ -9,6 +9,7 @@
 namespace app\standard\model;
 
 use think\Model;
+use think\exception\PDOException;
 
 class MaterialTrackingDivision extends Model
 {
@@ -28,10 +29,8 @@ class MaterialTrackingDivision extends Model
 
                 $res = $this->where('id',$last_id)->update(['sort_id' => $last_id]);
 
-                $data = $this->where("id",$last_id)->find();
-
                 if($res){
-                    return ['code' => 1,'msg' => '添加成功','data'=>$data];
+                    return ['code' => 1,'msg' => '添加成功','data'=>$last_id];
                 }else{
                     return ['code' => -1,'msg' => $this->getError()];
                 }
@@ -39,6 +38,23 @@ class MaterialTrackingDivision extends Model
             }
         }catch (PDOException $e){
             return ['code' => -1,'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * 编辑左侧树节点节点
+     */
+    public function editMa($param)
+    {
+        try{
+            $result = $this->allowField(true)->save($param,['id' => $param['id']]);
+            if(false === $result){
+                return ['code' => -1,'msg' => $this->getError()];
+            }else{
+                return ['code' => 1, 'msg' => '编辑成功'];
+            }
+        }catch(PDOException $e){
+            return ['code' => 0, 'msg' => $e->getMessage()];
         }
     }
 }

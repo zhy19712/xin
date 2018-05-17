@@ -352,4 +352,116 @@ class Element extends Permissions
             return json(['code' => -1]);
         }
     }
+
+    /**
+     * Created by PhpStorm.
+     * User: sry
+     * Date: 2018/5/17
+     * Remark: 单元质量管理新加接口
+     */
+
+    //单元策划
+    //勾选时访问的接口，将该条数据的状态更新为未选中
+    public function checkout()
+    {
+        //获得控制点和单元工关联的数据id
+        $post = input('post.');
+        $id=$post['id'];
+
+        //将该条数据的checked更新为1,1为未勾选状态
+        Db::name('quality_division_controlpoint_relation')
+            ->where(['id'=>$id])
+            ->update(['checked'=>1]);
+
+    }
+
+    //单元管控
+    //访问element中的quality_division_controlpoint_realtion表（单元策划访问common下的该方法）
+    public function datatablesPre()
+    {
+        //接收表名，列名数组 必要
+        $columns = $this->request->param('columns/a');
+        //获取查询条件
+        $id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
+        $table = $this->request->param('tableName');
+        //接收查询条件，可以为空
+        $columnNum = sizeof($columns);
+        $columnString = '';
+        for ($i = 0; $i < $columnNum; $i++) {
+            $columnString = $columns[$i]['name'] . '|' . $columnString;
+        }
+        $columnString = substr($columnString, 0, strlen($columnString) - 1);
+        //获取Datatables发送的参数 必要
+        $draw = $this->request->has('draw') ? $this->request->param('draw', 0, 'intval') : 0;
+        //排序列
+        $order_column = $this->request->param('order/a')['0']['column'];
+        //ase desc 升序或者降序
+        $order_dir = $this->request->param('order/a')['0']['dir'];
+
+        $order = "";
+        if (isset($order_column)) {
+            $i = intval($order_column);
+            $order = $columns[$i]['name'] . ' ' . $order_dir;
+        }
+        //搜索
+        //获取前台传过来的过滤条件
+        $search = $this->request->param('search/a')['value'];
+        //分页
+        $start = $this->request->has('start') ? $this->request->param('start', 0, 'intval') : 0;
+        $length = $this->request->has('length') ? $this->request->param('length', 0, 'intval') : 0;
+        $limitFlag = isset($start) && $length != -1;
+        //新建的方法名与数据库表名保持一致
+        return $this->$table($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString);
+    }
+    public function quality_division_controlpoint_relation($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    {
+        //查询
+        //条件过滤后记录数 必要
+        $recordsFiltered = 0;
+        $recordsFilteredResult = array();
+        $par = array();
+        $par['type'] = 1;
+        $par['checked'] = 0;//0为被选中
+        $par['division_id'] = $this->request->param('division_id');
+        if ($this->request->has('ma_division_id')) {
+            $par['ma_division_id'] = $this->request->param('ma_division_id');
+        }
+        //表的总记录数 必要
+        $recordsTotal = Db::name($table)->where($par)->count();
+        if (strlen($search) > 0) {
+            //有搜索条件的情况
+            if ($limitFlag) {
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name($table)->alias('a')
+                    ->join('norm_controlpoint b', 'a.control_id=b.id', 'left')
+                    ->where($par)
+                    ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,a.checked,b.remark')
+                    ->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFiltered = sizeof($recordsFilteredResult);
+            }
+        } else {
+            //没有搜索条件的情况
+            if ($limitFlag) {
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name($table)->alias('a')
+                    ->join('norm_controlpoint b', 'a.control_id=b.id', 'left')
+                    ->where($par)
+                    ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,a.checked,b.remark')
+                    ->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFiltered = $recordsTotal;
+            }
+        }
+        $temp = array();
+        $infos = array();
+        foreach ($recordsFilteredResult as $key => $value) {
+            $length = sizeof($columns);
+            for ($i = 0; $i < $length; $i++) {
+                array_push($temp, $value[$columns[$i]['name']]);
+            }
+            $infos[] = $temp;
+            $temp = [];
+        }
+        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+    }
+
 }

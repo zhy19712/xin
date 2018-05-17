@@ -5,7 +5,11 @@
  * Date: 2018/4/8
  * Time: 11:22
  */
-
+/**
+ * 标准库管理，质量验评标准库
+ * Class Library
+ * @package app\standard\controller
+ */
 namespace app\standard\controller;
 
 use app\admin\controller\Permissions;
@@ -14,6 +18,7 @@ use app\standard\model\MaterialTrackingDivision;
 use app\standard\model\TemplateModel;
 use think\Request;
 use \think\Db;
+use think\exception\PDOException;
 
 /**
  * 标准库
@@ -91,14 +96,11 @@ class Library extends Permissions
         $model = new MaterialTrackingDivision();
         $mod = input('post.');
         if (empty($mod['id'])) {
-            $res = $model->insertMa($mod);
+            $flag = $model->insertMa($mod);
+            return json($flag);
         } else {
-            $res = $this->materialTrackingDivesionService->allowField(true)->save($mod, ['id' => $mod['id']]);
-        }
-        if ($res) {
-            return json(['code' => 1, 'data' => $res]);
-        } else {
-            return json(['code' => -1]);
+            $flag =  $model->editMa($mod);
+            return json($flag);
         }
     }
 
@@ -112,28 +114,29 @@ class Library extends Permissions
     {
             //查询所有的数据
             $data = MaterialTrackingDivision::all(['cat' => $cat]);
-
             //定义一个空数组
             $sortArr = [];
+            //定义空字符串
+            $str = "";
             if(!empty($data))
             {
                 foreach ($data as $v){
                     $sortArr[] = $v['sort_id'];
                 }
                 //按照排序sort_id进行排序
+
                 asort($sortArr);
+
                 foreach ($sortArr as $v){
                     foreach($data as $key=>$vo){
                         if($v == $vo['sort_id']){
-                            $data[$key] = $vo;
+                            $str .= '{ "id": "' . $vo['id'] . '", "pid":"' . $vo['pid'] . '", "name":"' . $vo['name'].'"'.',"sort_id":"'.$vo['sort_id'].'","type":"'.$vo['type'].'","cat":"'.$vo['cat'].'"';
+                            $str .= '},';
                         }
                     }
                 }
-            }else
-            {
-                $data = [];
             }
-            return $data;
+            return "[" . substr($str, 0, -1) . "]";
     }
 
     /**
@@ -186,6 +189,9 @@ class Library extends Permissions
      */
     public function chosetemplate()
     {
+        $param = input('get.');
+        $this->assign("type",$param["type"]);
+        $this->assign("use",$param["use"]);
         return $this->fetch();
     }
 

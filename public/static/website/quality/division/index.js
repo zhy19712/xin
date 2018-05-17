@@ -379,7 +379,7 @@ function maBasesTable() {
                 name: "examination_name"
             },
             {
-                name: "completion_date"
+                name: "completion_time"
             },
             {
                 name: "section"
@@ -481,7 +481,7 @@ function edit(that) {
         area:['800px','700px'],
         others:function (res) {
             $('input[name="coding"]').val(res.coding);
-            $('input[name="completion_date"]').val(res.completion_date);
+            $('input[name="completion_date"]').val(res.completion_time);
             $('input[name="create_time"]').val(res.create_time);
             $('input[name="el_cease"]').val(res.el_cease);
             $('input[name="el_start"]').val(res.el_start);

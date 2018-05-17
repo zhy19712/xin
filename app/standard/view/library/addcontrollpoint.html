@@ -117,13 +117,13 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">控制点编号</label>
                         <div class="layui-input-block" class="inpLength">
-                            <input type="text" name="code" id="temCode" lay-verify="title" autocomplete="off" placeholder="请输入工作序号" class="layui-input">
+                            <input type="text" name="code" id="temCode" lay-verify="title" readonly  autocomplete="off" placeholder="请输入控制点编号" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">控制点名称</label>
                         <div class="layui-input-block" class="inpLength">
-                            <input type="text" name="name" id="temName" lay-verify="title" autocomplete="off" placeholder="请输入工作名称" class="layui-input">
+                            <input type="text" name="name" id="temName" lay-verify="title" readonly  autocomplete="off" placeholder="请输入控制点名称" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -170,6 +170,7 @@
     </div>
 
     <input type="hidden" name="getName" id="getValName" value="">
+    <input type="hidden" name="use" id="use" value="">
 </div>
 
 </body>
@@ -295,7 +296,12 @@
             title: '选择模板',
             shadeClose: true,
             area: ['780px', '500px'],
-            content: '{:url("chosetemplate")}'
+            content: '{:url("chosetemplate")}?use='+$('#use').val()+"&type=1",
+            success : function (layero,index) {
+              var body = layer.getChildFrame('body', index);
+
+              body.find('#use').val($('#use').val());
+            }
         });
     });
 

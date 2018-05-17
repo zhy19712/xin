@@ -58,7 +58,7 @@ class Unitqualitymanage extends Permissions
      */
     public function productionProcesses()
     {
-        $data = Db::name('norm_materialtrackingdivision')->where(['type'=>3,'cat'=>2])->column('id,name');
+        $data = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id,name');
         $data[0] = '作业';
         return json(['code' => 1,'data' => $data,'msg' => '工序']);
     }

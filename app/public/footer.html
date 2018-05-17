@@ -103,85 +103,104 @@
                         return false;
                       }
 
-                  });
-              })
-        });
-    </script>
-    <script src="__PUBLIC__/jquery/jquery.min.js"></script>
-    <script type="text/javascript">
-    
-        layui.use('jquery', function() {
-            var $ = layui.jquery;
-            $('#clear').on('click', function() {
-                var the = $(this).find('i');
-                the.attr("class","fa fa-spinner");
-                $.ajax({
-                  url:"{:url('admin/common/clear')}"
-                  ,success:function(res) {
-                    if(res.code == 1) {
-                        setTimeout(function(){
-                            parent.message.show({
-                                skin: 'cyan',
-                                msg:res.msg
-                            });
-                            $('#clear i').attr("class","fa fa-institution");
-                        },1000)
-                    }
-                  }
-                })
-            });
-        });
+               });
+           })
+       });
+   </script>
+   <script src="__PUBLIC__/jquery/jquery.min.js"></script>
+   <script type="text/javascript">
 
-      $('#logout').click(function(){
-        layer.confirm('真的要退出?',{icon: 3, title:'提示',anim: 2}, function(index){
-            $.ajax({
-              url:"{:url('admin/common/logout')}"
-              ,success:function(res) {
-                layer.msg(res.msg,{offset: '250px',anim: 4});
-                if(res.code == 1) {
-                    setTimeout(function(){
-                        location.href = res.url;
-                    },2000)
-                }
-              }
-            })
-        }) 
-      })
+       layui.use('jquery', function() {
+           var $ = layui.jquery;
+           $('#clear').on('click', function() {
+               var the = $(this).find('i');
+               the.attr("class","fa fa-spinner");
+               $.ajax({
+                   url:"{:url('admin/common/clear')}"
+                   ,success:function(res) {
+                       if(res.code == 1) {
+                           setTimeout(function(){
+                               parent.message.show({
+                                   skin: 'cyan',
+                                   msg:res.msg
+                               });
+                               $('#clear i').attr("class","fa fa-institution");
+                           },1000)
+                       }
+                   }
+               })
+           });
+       });
 
-      $('.layui-nav-item').click(function(){
-        $(this).siblings('li').attr('class','layui-nav-item');
-      })
-    </script>
+       $('#logout').click(function(){
+           layer.confirm('真的要退出?',{icon: 3, title:'提示',anim: 2}, function(index){
+               $.ajax({
+                   url:"{:url('admin/common/logout')}"
+                   ,success:function(res) {
+                       layer.msg(res.msg,{offset: '250px',anim: 4});
+                       if(res.code == 1) {
+                           setTimeout(function(){
+                               location.href = res.url;
+                           },2000)
+                       }
+                   }
+               })
+           })
+       })
 
-<script type="text/javascript">
-  layui.use('layer', function(){
-    var layer = layui.layer;
-    var remember = '';
-    
-    $('#tag').click(function(){
-        var tag = localStorage.getItem("tag");
-      layer.prompt({
-        formType: 2,
-        anim: 1,
-        offset: ['52px', 'calc(100% - 500px)'],
-        value: tag,
-        title: '便签',
-        skin: 'demo-class',
-        area: ['280px', '150px'],
-        id: 'remember' ,//设定一个id，防止重复弹出
-        btn: ['写好了', '忘了吧'],
-        shade: 0,
-        moveType: 1, //拖拽模式，0或者1
-        btn2: function(index, layero){
-            localStorage.removeItem("tag");
-            $('#remember textarea').val(''); 
-            return false;
-          }
-      },function(value, index, elem){
-        localStorage.setItem("tag",value); 
-      })
-    });
-  });              
-</script>
+       $('.layui-nav-item').click(function(){
+           $(this).siblings('li').attr('class','layui-nav-item');
+       })
+   </script>
+   <script type="text/javascript">
+       layui.use('layer', function(){
+           var layer = layui.layer;
+           var remember = '';
+
+           $('#tag').click(function(){
+               var tag = localStorage.getItem("tag");
+               layer.prompt({
+                   formType: 2,
+                   anim: 1,
+                   offset: ['52px', 'calc(100% - 500px)'],
+                   value: tag,
+                   title: '便签',
+                   skin: 'demo-class',
+                   area: ['280px', '150px'],
+                   id: 'remember' ,//设定一个id，防止重复弹出
+                   btn: ['写好了', '忘了吧'],
+                   shade: 0,
+                   moveType: 1, //拖拽模式，0或者1
+                   btn2: function(index, layero){
+                       localStorage.removeItem("tag");
+                       $('#remember textarea').val('');
+                       return false;
+                   }
+               },function(value, index, elem){
+                   localStorage.setItem("tag",value);
+               })
+           });
+       });
+   </script>
+   <script>
+       //天气预报
+       $.ajax({
+           url: "http://api.map.baidu.com/telematics/v3/weather",
+           type: "post",
+           data: {
+               location:'郑州',
+               output:'json',
+               ak:'m63NiDWKoIiqKqtVB7VzFhfuI1aIPeWa'
+           },
+           dataType: 'jsonp',
+           success: function (res) {
+               console.log(res.results[0].weather_data[0]);
+               var data = res.results[0].weather_data[0];
+               $('#date').text(res.date);
+               $('#temperature').text(data.temperature);
+               $('#weather').text(data.weather);
+           }
+       })
+   </script>
 </body>
 </html>
