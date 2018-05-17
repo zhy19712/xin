@@ -86,9 +86,11 @@ class Library extends Permissions
      */
     public function adddivsiontree()
     {
+        //实例化模型类
+        $model = new MaterialTrackingDivision();
         $mod = input('post.');
         if (empty($mod['id'])) {
-            $res = $this->materialTrackingDivesionService->allowField(true)->insertGetId($mod);
+            $res = $model->insertMa($mod);
         } else {
             $res = $this->materialTrackingDivesionService->allowField(true)->save($mod, ['id' => $mod['id']]);
         }
@@ -107,7 +109,55 @@ class Library extends Permissions
      */
     public function GetDivsionTree($cat)
     {
-        return MaterialTrackingDivision::all(['cat' => $cat]);
+            //查询所有的数据
+            $data = MaterialTrackingDivision::all(['cat' => $cat]);
+
+            //定义一个空数组
+            $sortArr = [];
+            if(!empty($data))
+            {
+                foreach ($data as $v){
+                    $sortArr[] = $v['sort_id'];
+                }
+
+                asort($sortArr);
+
+                foreach ($sortArr as $v){
+                    foreach($data as $key=>$vo){
+                        if($v == $vo['sort_id']){
+                            $data[$key] = $vo;
+                        }
+                    }
+                }
+            }
+            return $data;
+    }
+
+    /**
+     * 上移下移
+     * @return mixed|\think\response\Json
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function sortNode()
+    {
+        if(request()->isAjax()){
+            try {
+                $change_id = $this->request->has('change_id') ? $this->request->param('change_id', 0, 'intval') : 0; //影响节点id,包括上移下移,没有默认0
+                $change_sort_id = $this->request->has('change_sort_id') ? $this->request->param('change_sort_id', 0, 'intval') : 0; //影响节点的排序编号sort_id 没有默认0
+
+                $select_id = input('post.select_id'); // 当前节点的编号
+                $select_sort_id = input('post.select_sort_id'); // 当前节点的排序编号
+
+                Db::name('norm_materialtrackingdivision')->where('id', $select_id)->update(['sort_id' => $change_sort_id]);
+                Db::name('norm_materialtrackingdivision')->where('id', $change_id)->update(['sort_id' => $select_sort_id]);
+
+                return json(['code' => 1,'msg' => '移动成功']);
+
+            }catch (PDOException $e){
+                return ['code' => -1,'msg' => $e->getMessage()];
+            }
+        }
     }
 
     /**
