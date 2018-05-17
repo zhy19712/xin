@@ -21,12 +21,9 @@
                 </li>
             </ul>
             <ul class="layer-model-nav">
-                <li>
-                    <div class="layui-btn layui-btn-radius layui-btn-normal">
-                        <i class="fa fa-check-circle"></i>
-                        质量分布
-                    </div>
-                </li>
+                <li>优良：<a id="excellent_number"></a>个（<a id="excellent_rate"></a>）</li>
+                <li>合格：<a id="qualified_number"></a>个（<a id="qualified_rate"></a>）</li>
+                <li>不合格：<a id="unchecked_number"></a>个（<a id="unchecked_rate"></a>）</li>
             </ul>
         </div>
         <div data-options="region:'center'" class="layer-center">
@@ -239,11 +236,11 @@
     </div>
 </div>
 <div data-options="region:'east',title:'管理信息',split:true" style="width:350px;">
-    <div id="tabs" class="easyui-tabs" style="width:100%;display: none">
-        <div title="基本信息" style="padding:10px;display:none;">
+    <div id="tabs" class="easyui-tabs" style="width:100%;">
+        <div title="属性" style="padding:10px;">
             <div class="layui-collapse" id="layuiCollapse" lay-accordion>
                 <div class="layui-colla-item">
-                    <h2 class="layui-colla-title infoTitle"></h2>
+                    <h2 class="layui-colla-title">单元工程信息</h2><!--infoTitle-->
                     <div class="layui-colla-content layui-show">
                         <table class="layui-table" lay-skin="line" lay-size="sm">
                             <tbody>
@@ -299,9 +296,20 @@
                         </table>
                     </div>
                 </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">自定义属性</h2>
+                    <div class="layui-colla-content custom-attr">
+                        <form action="" class="layui-form">
+                            <div class="layui-form-item">
+                                <div class="layui-form-item attr-group" id="attrGroup"></div>
+                                <a href="javascript:;" class="layui-form-mid layui-word-aux" id="addAttr"><i class="fa fa-plus">新增</i></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <div title="工序信息" style="overflow:auto;padding:10px;display:none;">
+        <div title="验收资料" style="overflow:auto;padding:10px;display:none;">
             <div class="layui-collapse">
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title infoTitle"></h2>
@@ -312,7 +320,7 @@
                 </div>
             </div>
         </div>
-        <div title="质量表格" style="padding:10px;display:none;">
+        <!--<div title="质量表格" style="padding:10px;display:none;">
             <div class="layui-collapse">
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title infoTitle"></h2>
@@ -329,9 +337,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
-    <div class="quality-distribute" id="qualityDistribute">
+<!--    <div class="quality-distribute" id="qualityDistribute">
         <h2 class="layui-info-title">质量分布</h2>
         <table class="layui-table">
             <thead>
@@ -359,61 +367,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <!-- 计划任务信息 -->
-    <div class="planned-task-info" id="plannedTaskInfo">
-        <h2 class="layui-info-title">计划任务信息</h2>
-        <table class="layui-table" lay-skin="line" lay-size="sm">
-            <!--<thead>
-                <tr>
-                    <th>任务名称</th>
-                    <th>五层主体施工</th>
-                </tr>
-            </thead>-->
-            <tbody>
-                <tr>
-                    <td>任务名称</td>
-                    <td>五层主体施工</td>
-                </tr>
-                <tr>
-                    <td>责任人</td>
-                    <td>许闲心</td>
-                </tr>
-                <tr>
-                    <td>WBS编号</td>
-                    <td>1.1</td>
-                </tr>
-                <tr>
-                    <td>计划开工时间</td>
-                    <td>2016-11-01</td>
-                </tr>
-                <tr>
-                    <td>计划完工时间</td>
-                    <td>2016-11-15</td>
-                </tr>
-                <tr>
-                    <td>计划工期</td>
-                    <td>15</td>
-                </tr>
-                <tr>
-                    <td>实际开工时间</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>实际完工时间</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>实际工期</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>完成进度</td>
-                    <td>0</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    </div>-->
 </div>
 
 {include file="../app/public/common_footer.html"}

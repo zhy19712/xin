@@ -130,6 +130,7 @@ body #copyrights a{
 /* 模板视图切换按钮 */
 .layui-model{
 	right:310px;
+	color: #333;
 }
 .layui-model .layui-nav-item a{
 	width: 33px;

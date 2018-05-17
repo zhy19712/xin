@@ -387,6 +387,7 @@
             success: function(layero, index){
                 var body = layer.getChildFrame('body', index);
                 body.find("#denId").val(procedureId);
+                body.find("#use").val(1);
             },
             end:function () {
                 tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="+selfid).load();
@@ -403,6 +404,10 @@
             shadeClose: true,
             area: ['780px', '550px'],
             content: '{:url("addcontrollpoint")}?id='+id,
+            success: function(layero, index){
+                var body = layer.getChildFrame('body', index);
+                body.find("#use").val(1);
+          },
             end:function () {
                 tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="+selfid).load();
             }

@@ -115,6 +115,161 @@
 <div id="form_container" style="display: none;"></div>
 {include file="../app/public/common_footer.html"}
 <script src="__WEBSITE__/standard/norm/index.js"></script>
-<script></script>
+<script>
+  var  arr =   [{
+    "code": "SL 1-2014",
+    "name": "水利技术标准编写规定",
+    "time": "2014/10/3",
+    "replace": "SL 1-2002",
+    "remark": ""
+  },
+    {
+      "code": "SL 2-2014",
+      "name": "水利水电量和单位",
+      "time": "2015/1/30",
+      "replace": "SL 2.1～2.3-98",
+      "remark": ""
+    },
+    {
+      "code": "SL 4-2013",
+      "name": "农田排水工程技术规范",
+      "time": "2013/4/22",
+      "replace": "SL/T 4-1999",
+      "remark": ""
+    },
+    {
+      "code": "SL 06-2006",
+      "name": "水文测验铅鱼",
+      "time": "2006/7/1",
+      "replace": "SL 06-1989",
+      "remark": ""
+    },
+    {
+      "code": "SL 07-2006",
+      "name": "悬移质泥沙采样器",
+      "time": "2006/7/1",
+      "replace": "SL 07-1989，SL 08-1989",
+      "remark": ""
+    },
+    {
+      "code": "NB/T 35001-2011",
+      "name": "梯级水电站水调自动化系统设计规范",
+      "time": "2011/11/1",
+      "replace": "",
+      "remark": ""
+    },
+    {
+      "code": "SL 15-2011",
+      "name": "水利水电专用混凝土泵技术条件",
+      "time": "2011/5/17",
+      "replace": "SL 15-91",
+      "remark": ""
+    },
+    {
+      "code": "SL 16-2010",
+      "name": "小水电建设项目经济评价规程",
+      "time": "2011/1/22",
+      "replace": "SL 16-1995",
+      "remark": ""
+    },
+    {
+      "code": "SL 17-2014",
+      "name": "疏浚与吹填工程技术规范",
+      "time": "2014/8/9",
+      "replace": "SL 17-90",
+      "remark": ""
+    },
+    {
+      "code": "SL 18-2004",
+      "name": "渠道防渗工程技术规范",
+      "time": "2005/2/1",
+      "replace": "SL 18-1991",
+      "remark": ""
+    },
+    {
+      "code": "SL 19-2014",
+      "name": "水利基本建设项目竣工财务决算编制规程",
+      "time": "2014/6/28",
+      "replace": "SL 19-2008",
+      "remark": ""
+    },
+    {
+      "code": "SL 21-2015",
+      "name": "降水量观测规范",
+      "time": "2015/12/21",
+      "replace": "SL 21-2006",
+      "remark": ""
+    },
+    {
+      "code": "SL 25-2006",
+      "name": "砌石坝设计规范",
+      "time": "2006/6/1",
+      "replace": "SL 25-1991",
+      "remark": ""
+    },
+    {
+      "code": "SL 26-2012",
+      "name": "水利水电工程技术术语",
+      "time": "2012/4/20",
+      "replace": "SL 26-92",
+      "remark": ""
+    },
+    {
+      "code": "SL 27-2014",
+      "name": "水闸施工规范",
+      "time": "2015/2/21",
+      "replace": "SL 27-91",
+      "remark": ""
+    },
+    {
+      "code": "SL 30-2009",
+      "name": "水电新农村电气化标准",
+      "time": "2010/3/25",
+      "replace": "SL 30-2003",
+      "remark": ""
+    },
+    {
+      "code": "SL 31-2003",
+      "name": "水利水电工程钻孔压水试验规程",
+      "time": "2003/10/1",
+      "replace": "SL 25-1992",
+      "remark": ""
+    },
+    {
+      "code": "SL 32-2014",
+      "name": "水工建筑物滑动模板施工技术规范",
+      "time": "2015/1/27",
+      "replace": "SL 32-1992",
+      "remark": ""
+    }
+  ];
+  var iiii = 0;
+  function addDate() {
+    $.ajax({
+      url: "./editNode",
+      type: "post",
+      data: {
+        standard_number: arr[iiii].code,
+        standard_name: arr[iiii].name,
+        material_date: arr[iiii].time,
+        alternate_standard: arr[iiii].replace,
+        remark: arr[iiii].remark,
+        nodeId: 9
+      },
+      success: function (res) {
+        if (res.code === 1) {
+          iiii++;
+          if(iiii<arr.length){
+            console.log(iiii)
+            addDate()
+          }else{
+            console.log('ok')
+          }
+        }
+      }
+    });
+
+  }
+</script>
 </body>
 </html>
