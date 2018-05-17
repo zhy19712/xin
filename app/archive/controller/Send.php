@@ -6,7 +6,7 @@
  * Time: 9:44
  */
 
-namespace app\participants\controller;
+namespace app\archive\controller;
 
 use app\admin\controller\Permissions;
 
