@@ -23,13 +23,16 @@
             </ul>
             <ul class="layui-nav layui-layout-right kit-nav layui-model">
                 <li class="layui-nav-item">
-                    <a href="javascript:;" title="全景" class="panorama"></a>
+                    <a href="javascript:;" id="index" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="3D" class="three-dimension"></a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" title="3D" class="three-dimension"></a>
+                    <a href="javascript:;" id="panorama" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="全景" class="panorama"></a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" data-url="{:url('admin/main/manage')}" onclick="test()" data-title="管理3D" kit-target data-id='6' title="管理3D" class="manage-three-dimension"></a>
+                    <a href="javascript:;" id="3d" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="3D" class="three-dimension"></a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" data-url="{:url('admin/main/manage')}" data-title="管理3D" kit-target data-id='997' title="管理3D" class="manage-three-dimension"></a>
                 </li>
             </ul>
             <ul class="layui-nav layui-layout-right kit-nav">
@@ -40,8 +43,8 @@
                         <span class="layui-nav-more"></span>
                     </a>
                     <dl class="layui-nav-child layui-anim layui-anim-upbit">
-                        <dd><a href="javascript:;" data-url="{:url('admin/admin/personal')}" data-title="个人中心" kit-target data-id='7'><span><i class="fa fa-user" aria-hidden="true"></i> 个人中心</span></a></dd>
-                        <dd><a href="javascript:;" data-url="{:url('admin/admin/editpassword')}" data-title="修改密码" kit-target data-id='8'><span><i class="fa fa-unlock-alt" aria-hidden="true"></i> 修改密码</span></a></dd>
+                        <dd><a href="javascript:;" data-url="{:url('admin/admin/personal')}" data-title="个人中心" kit-target data-id='998'><span><i class="fa fa-user" aria-hidden="true"></i> 个人中心</span></a></dd>
+                        <dd><a href="javascript:;" data-url="{:url('admin/admin/editpassword')}" data-title="修改密码" kit-target data-id='999'><span><i class="fa fa-unlock-alt" aria-hidden="true"></i> 修改密码</span></a></dd>
                         <dd><a href="javascript:;" id="logout" style="color:#333;"><span><i class="fa fa-sign-out" aria-hidden="true"></i> 退了</span></a></dd>
                     </dl>
                 </li>

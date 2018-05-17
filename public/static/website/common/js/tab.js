@@ -20,7 +20,7 @@ layui.define(['jquery', 'element', 'nprogress', 'utils'], function(exports) {
     var Tab = function() {
         this.config = {
             elem: undefined,
-            mainUrl: "/admin/main/index",
+            mainUrl: "/modelmanagement/index/index",
             renderType: 'iframe',
             openWait: false
         };
@@ -113,7 +113,7 @@ layui.define(['jquery', 'element', 'nprogress', 'utils'], function(exports) {
                     _htm = _htm.replace('{{content}}', that.getBodyContent(_config.mainUrl + '?v=' + new Date().getTime()));
                     break;
                 case renderType.iframe:
-                    _htm = _htm.replace('{{content}}', '<iframe src="' + _config.mainUrl + '"></iframe>');
+                    _htm = _htm.replace('{{content}}', '<iframe id="-1" name="-1" src="' + _config.mainUrl + '"></iframe>');
                     break;
             }
             //渲染

@@ -4,10 +4,25 @@
     <script src="__PUBLIC__/jquery/jquery.min.js"></script>
     <script src="__PUBLIC__/ztree/js/jquery.ztree.all.min.js"></script>
     <script>
-
-        function test(){
-            alert(123)
-        }
+     function replaceTemplate(id){
+         $.ajax({
+             url: "{:url('./modelmanagement/index/index')}?id=" + id,
+             dataType:"json",
+             async:true,
+             type:"GET",
+             beforeSend:function(){
+             },
+             success:function(req){
+                 window.frames['-1'].window.document.open();
+                 window.frames['-1'].window.document.write(req);
+                 window.frames['-1'].window.document.close();
+             },
+             complete:function(){
+             },
+             error:function(){
+             }
+         });
+     }
 
         var message;
         layui.config({

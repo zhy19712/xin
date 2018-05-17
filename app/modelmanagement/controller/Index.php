@@ -8,19 +8,30 @@
 namespace app\modelmanagement\controller;
 
 use app\admin\controller\Permissions;
-use \think\Cache;
-use \think\Controller;
-use think\Loader;
-use think\Db;
-use \think\Cookie;
-use think\Model;
-use \think\Session;
+
 
 class Index extends Permissions
 {
-    function index()
+    function Index()
     {
-        $this->assign('content','{include file="../app/public/test.html"}');
+        if(request()->isAjax()) {
+            $id = $this->request->param('id');
+            switch ($id) {
+                case 'panorama':
+                    $path = '../app/modelmanagement/view/index/panorama3d.html';
+                    break;
+                case '3d':
+                    $path = '../app/modelmanagement/view/index/quality3d.html';
+                    break;
+                case 'index':
+                    $path = '../app/modelmanagement/view/index/index.html';
+                    break;
+                default :
+                    $path = '../app/modelmanagement/view/index/index.html';
+            }
+            $newContent = file_get_contents($path);
+            return $newContent;
+        }
         return $this->fetch();
     }
 
