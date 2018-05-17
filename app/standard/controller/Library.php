@@ -13,6 +13,7 @@ use app\standard\model\ControlPoint;
 use app\standard\model\MaterialTrackingDivision;
 use app\standard\model\TemplateModel;
 use think\Request;
+use \think\Db;
 
 /**
  * 标准库
@@ -119,9 +120,8 @@ class Library extends Permissions
                 foreach ($data as $v){
                     $sortArr[] = $v['sort_id'];
                 }
-
+                //按照排序sort_id进行排序
                 asort($sortArr);
-
                 foreach ($sortArr as $v){
                     foreach($data as $key=>$vo){
                         if($v == $vo['sort_id']){
@@ -129,6 +129,9 @@ class Library extends Permissions
                         }
                     }
                 }
+            }else
+            {
+                $data = [];
             }
             return $data;
     }
