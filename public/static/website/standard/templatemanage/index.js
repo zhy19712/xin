@@ -34,10 +34,12 @@ var tableItem = $('#tableItem').DataTable({
         },
         {
             targets: [1],
+          "orderable":false,
             width:'250px'
         },
         {
             "searchable": false,
+          "orderable":false,
             targets:[2],
             render: function (data, type, row) {
                 if (data == 1) {
@@ -49,6 +51,7 @@ var tableItem = $('#tableItem').DataTable({
         },
         {
             "searchable": false,
+          "orderable":false,
             targets: [3],
             render: function (data, type, row) {
                 if (data == 1) {
@@ -181,3 +184,30 @@ function delFile(id) {
         layer.close(index);
     });
 };
+
+// var datainfo = [
+// ];
+// var iiiii = 0;
+// //添加数据
+// function addData() {
+//  var code = datainfo[iiiii].substring(0,8),name = datainfo[iiiii].substring(8);
+//   $.ajax({
+//     type: "Post",
+//     url: "./add",
+//     data: {
+//         id:"",
+//         code:code,
+//         name: name,
+//         type: 1,
+//         use: 1
+//     },
+//     success: function (res) {
+//         console.log(code);
+//         iiiii++;
+//         if(iiiii<datainfo.length){
+//           addData();
+//         }
+//
+//     }
+//   })
+// }
