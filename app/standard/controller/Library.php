@@ -5,7 +5,11 @@
  * Date: 2018/4/8
  * Time: 11:22
  */
-
+/**
+ * 标准库管理，质量验评标准库
+ * Class Library
+ * @package app\standard\controller
+ */
 namespace app\standard\controller;
 
 use app\admin\controller\Permissions;
@@ -14,6 +18,7 @@ use app\standard\model\MaterialTrackingDivision;
 use app\standard\model\TemplateModel;
 use think\Request;
 use \think\Db;
+use think\exception\PDOException;
 
 /**
  * 标准库
@@ -89,18 +94,13 @@ class Library extends Permissions
     {
         //实例化模型类
         $model = new MaterialTrackingDivision();
-
         $mod = input('post.');
-
         if (empty($mod['id'])) {
-            $res = $model->insertMa($mod);
+            $flag = $model->insertMa($mod);
+            return json($flag);
         } else {
-            $res = $this->materialTrackingDivesionService->allowField(true)->save($mod, ['id' => $mod['id']]);
-        }
-        if ($res) {
-            return json(['code' => 1, 'data' => $res]);
-        } else {
-            return json(['code' => -1]);
+            $flag =  $model->editMa($mod);
+            return json($flag);
         }
     }
 
@@ -124,6 +124,7 @@ class Library extends Permissions
                     $sortArr[] = $v['sort_id'];
                 }
                 //按照排序sort_id进行排序
+
                 asort($sortArr);
 
                 foreach ($sortArr as $v){

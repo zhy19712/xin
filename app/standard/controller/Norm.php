@@ -5,7 +5,11 @@
  * Date: 2018/3/30
  * Time: 17:17
  */
-
+/**
+ * 工程标准及规范
+ * Class Norm
+ * @package app\standard\controller
+ */
 namespace app\standard\controller;
 
 use app\admin\controller\Permissions;
