@@ -21,12 +21,9 @@
                 </li>
             </ul>
             <ul class="layer-model-nav">
-                <li>
-                    <div class="layui-btn layui-btn-radius layui-btn-normal">
-                        <i class="fa fa-check-circle"></i>
-                        质量分布
-                    </div>
-                </li>
+                <li>优良：<a id="excellent_number"></a>个（<a id="excellent_rate"></a>）</li>
+                <li>合格：<a id="qualified_number"></a>个（<a id="qualified_rate"></a>）</li>
+                <li>不合格：<a id="unchecked_number"></a>个（<a id="unchecked_rate"></a>）</li>
             </ul>
         </div>
         <div data-options="region:'center'" class="layer-center">
@@ -331,7 +328,7 @@
             </div>
         </div>
     </div>
-    <div class="quality-distribute" id="qualityDistribute">
+<!--    <div class="quality-distribute" id="qualityDistribute">
         <h2 class="layui-info-title">质量分布</h2>
         <table class="layui-table">
             <thead>
@@ -359,61 +356,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <!-- 计划任务信息 -->
-    <div class="planned-task-info" id="plannedTaskInfo">
-        <h2 class="layui-info-title">计划任务信息</h2>
-        <table class="layui-table" lay-skin="line" lay-size="sm">
-            <!--<thead>
-                <tr>
-                    <th>任务名称</th>
-                    <th>五层主体施工</th>
-                </tr>
-            </thead>-->
-            <tbody>
-                <tr>
-                    <td>任务名称</td>
-                    <td>五层主体施工</td>
-                </tr>
-                <tr>
-                    <td>责任人</td>
-                    <td>许闲心</td>
-                </tr>
-                <tr>
-                    <td>WBS编号</td>
-                    <td>1.1</td>
-                </tr>
-                <tr>
-                    <td>计划开工时间</td>
-                    <td>2016-11-01</td>
-                </tr>
-                <tr>
-                    <td>计划完工时间</td>
-                    <td>2016-11-15</td>
-                </tr>
-                <tr>
-                    <td>计划工期</td>
-                    <td>15</td>
-                </tr>
-                <tr>
-                    <td>实际开工时间</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>实际完工时间</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>实际工期</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>完成进度</td>
-                    <td>0</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    </div>-->
 </div>
 
 {include file="../app/public/common_footer.html"}

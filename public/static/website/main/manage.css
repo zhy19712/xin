@@ -30,6 +30,7 @@
 }
 .layer-model-nav li{
     padding: 4px 10px;
+    display: inline-block;
 }
 .layer-model-nav i.fa:before{
     color: #FFF;
