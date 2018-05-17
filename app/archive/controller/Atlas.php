@@ -297,7 +297,6 @@ class Atlas extends Permissions
                     'picture_number' => $param['picture_number'],//图号
                     'picture_name' => $param['picture_name'],//图名
                     'picture_papaer_num' => 1,//图纸张数(输入数字),默认1
-                    'completion_date' => date("Y-m"),//完成日期
                     'paper_category' => $info['paper_category'],//图纸类别
                 ];
                 $flag = $model->insertCate($data);
