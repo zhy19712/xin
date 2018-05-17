@@ -2,32 +2,32 @@ $(function () {
     $("#tableIncome").DataTable({
         processing: true,
         ordering: false,
-        data:[
-            { "fileId": "1","fileName": "测试文件", "fileDate": "2018-02-14", "fromUnit": "监理单位", "fromPeople": "张三", "toPeople": "李四", "status": "未处理", "operation": "处理" },
-            { "fileId": "2","fileName": "测试文件", "fileDate": "2018-02-14", "fromUnit": "监理单位", "fromPeople": "张三", "toPeople": "李四", "status": "已拒收", "operation": "处理" },
-            { "fileId": "3","fileName": "测试文件", "fileDate": "2018-02-14", "fromUnit": "监理单位", "fromPeople": "张三", "toPeople": "李四", "status": "未处理", "operation": "处理" },
-            { "fileId": "4","fileName": "测试文件", "fileDate": "2018-02-14", "fromUnit": "监理单位", "fromPeople": "张三", "toPeople": "李四", "status": "已拒收", "operation": "处理" },
-            { "fileId": "5","fileName": "测试文件", "fileDate": "2018-02-14", "fromUnit": "监理单位", "fromPeople": "张三", "toPeople": "李四", "status": "未处理", "operation": "处理" },
-            { "fileId": "6","fileName": "测试文件", "fileDate": "2018-02-14", "fromUnit": "监理单位", "fromPeople": "张三", "toPeople": "李四", "status": "已拒收", "operation": "处理" }
-        ],
+        ajax: {
+            "url": "{:url('/archive/common/datatablesPre')}?tableName=archive_income_send&table_type=2"
+        },
         columns: [
-            { "data": "fileName" },
-            { "data": "fileDate" },
-            { "data": "fromUnit" },
-            { "data": "fromPeople"},
-            { "data": "toPeople" },
+            { "data": "file_name" },
+            { "data": "date" },
+            { "data": "unit_name" },
+            { "data": "name"},
+            { "data": "income_name" },
             { "data": "status" },
-            { "data": "status" },
+            { "data": "id" },
         ],
         columnDefs: [
             {
+                targets: [3],
+                render: function (data, type, row,meta) {
+                    return  'admin';
+                }
+            },
+            {
                 targets: [6],
                 render: function (data, type, row,meta) {
-                    console.log(row[5]);
                     if (data == '未处理'){
-                        return  '<a title="' + data + '" href="javascript:void(0);" data-fileId="'+row.fileName+'" onclick=\"incomeShow(this)\">处理</a>';
+                        return  '<a title="' + data + '" href="javascript:void(0);" data-fileId="'+row.id+'" onclick=\"incomeShow(this)\">处理</a>';
                     }else {
-                        return  '<a title="' + data + '" href="javascript:void(0);" data-fileId="'+row.fileName+'" onclick=\"incomeShow(this)\">查看</a>';
+                        return  '<a title="' + data + '" href="javascript:void(0);" data-fileId="'+row.id+'" onclick=\"incomeShow(this)\">查看</a>';
                     }
                 }
             }
