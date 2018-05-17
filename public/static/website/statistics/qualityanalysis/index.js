@@ -27,7 +27,7 @@ layui.use(['form', 'layedit', 'laydate','layer'], function(){
   });
   //监听提交
   // form.on('submit(demo1)', function(data){
-  //     tableItem.ajax.url("/standard/common/datatablesPre?tableName=nom_template&type="+data.field.type+"&use="+data.field.use).load();
+  //     tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&type="+data.field.type+"&use="+data.field.use).load();
   //     return false;
   // });
 });

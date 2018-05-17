@@ -14,7 +14,7 @@ use think\Model;
 
 class  TemplateModel extends  Model
 {
-    protected $name="nom_template";
+    protected $name="norm_template";
 
     /**
      * 首先查询所有的填报表单模板
