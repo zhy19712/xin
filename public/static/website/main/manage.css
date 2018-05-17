@@ -26,10 +26,10 @@
     background: #2aa515;
 }
 .layer-model-nav{
+    line-height: 39px;
     float: right;
 }
 .layer-model-nav li{
-    padding: 4px 10px;
     display: inline-block;
 }
 .layer-model-nav i.fa:before{
@@ -51,10 +51,8 @@
     text-align: left;
 }
 .layui-colla-title{
-    padding: 0 15px;
     color: #337ab7;
     font-weight: bold;
-    cursor:default;
 }
 .layui-colla-content{
     padding: 0;
@@ -117,4 +115,37 @@
     -moz-opacity:0.5;
     opacity:0.5;
     color: #FFF;
+}
+/*质量3D自定义属性*/
+.custom-attr .layui-form-mid{
+    float: right;
+    margin: 0;
+}
+.custom-attr .layui-input-block{
+    margin: 0;
+}
+.layui-colla-content .attr-group{
+    margin: 10px;
+    border: 0;
+}
+.attr-group,.attr-group .layui-input-inline{
+    width: 91%;
+}
+.attr-group .layui-input-inline{
+    margin-bottom: 10px;
+}
+.attr-group .layui-input{
+    width: 49%;
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.attr-group i.fa{
+    display: block;
+    margin: 3px 0;
+    font-size: 14px;
+}
+.attr-group .layui-form-mid{
+    padding: 0 !important;
+    width: 14px;
 }

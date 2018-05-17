@@ -236,11 +236,11 @@
     </div>
 </div>
 <div data-options="region:'east',title:'管理信息',split:true" style="width:350px;">
-    <div id="tabs" class="easyui-tabs" style="width:100%;display: none">
-        <div title="基本信息" style="padding:10px;display:none;">
+    <div id="tabs" class="easyui-tabs" style="width:100%;">
+        <div title="属性" style="padding:10px;">
             <div class="layui-collapse" id="layuiCollapse" lay-accordion>
                 <div class="layui-colla-item">
-                    <h2 class="layui-colla-title infoTitle"></h2>
+                    <h2 class="layui-colla-title">单元工程信息</h2><!--infoTitle-->
                     <div class="layui-colla-content layui-show">
                         <table class="layui-table" lay-skin="line" lay-size="sm">
                             <tbody>
@@ -296,9 +296,20 @@
                         </table>
                     </div>
                 </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">自定义属性</h2>
+                    <div class="layui-colla-content custom-attr">
+                        <form action="" class="layui-form">
+                            <div class="layui-form-item">
+                                <div class="layui-form-item attr-group" id="attrGroup"></div>
+                                <a href="javascript:;" class="layui-form-mid layui-word-aux" id="addAttr"><i class="fa fa-plus">新增</i></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <div title="工序信息" style="overflow:auto;padding:10px;display:none;">
+        <div title="验收资料" style="overflow:auto;padding:10px;display:none;">
             <div class="layui-collapse">
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title infoTitle"></h2>
@@ -309,7 +320,7 @@
                 </div>
             </div>
         </div>
-        <div title="质量表格" style="padding:10px;display:none;">
+        <!--<div title="质量表格" style="padding:10px;display:none;">
             <div class="layui-collapse">
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title infoTitle"></h2>
@@ -326,7 +337,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 <!--    <div class="quality-distribute" id="qualityDistribute">
         <h2 class="layui-info-title">质量分布</h2>
