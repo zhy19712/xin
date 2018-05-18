@@ -8,6 +8,7 @@
 
 namespace app\archive\controller;
 
+use app\admin\model\AdminGroup;
 use app\archive\model\DocumentTypeModel;
 use app\archive\model\AtlasCateTypeModel;
 use app\archive\model\AtlasCateModel;
@@ -298,20 +299,21 @@ class Common extends Controller
         }
     }
 
-
-    // 收文 或 发文 列表
+    // 收文 或 发文 列表 和 发文 选择关联文件列表
     function archive_income_send($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
-        //传过来的类别 table_type 1 收文 2 发文
+        //传过来的类别 table_type 1 收文 2 发文  3 关联文件列表
         $type = input('param.table_type');
         $uid = Session::has('admin') ? Session::get('admin') : 0;
         if($type == 1){
             $recordsTotal = Db::name($table)->where('income_id', $uid)->count();
-        }else{
+        }else if($type == 2){
             $recordsTotal = Db::name($table)->where('send_id', $uid)->count();
+        }else{
+            $recordsTotal = Db::name($table)->where(['send_id'=>$uid,'status'=>3])->count();
         }
 
 
@@ -328,15 +330,28 @@ class Common extends Controller
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
                         ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
-                        ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
-                }else{
+                        ->where($columnString, 'like', '%' . $search . '%')
+                        ->where(['s.income_id'=>$uid,'s.status'=>['neq',1]])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }else if($type == 2){
                     // 发文 查询 收件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
                         ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,s.attchment_id,u.nickname as income_name,s.status')
-                        ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
+                        ->where($columnString, 'like', '%' . $search . '%')
+                        ->where(['s.send_id'=>$uid])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }else{
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->join('admin_group_type t', 'g.type=t.id', 'left')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->where($columnString, 'like', '%' . $search . '%')
+                        ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
+                        ->order($order)->limit(intval($start), intval($length))->select();
                 }
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -350,14 +365,24 @@ class Common extends Controller
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
                         ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->where(['s.income_id'=>$uid,'s.status'=>['neq',1]])
                         ->order($order)->limit(intval($start), intval($length))->select();
-                }else{
+                }else if($type == 2){
                     // 发文 查询 收件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
                         ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as income_name,s.status')
+                        ->where(['s.send_id'=>$uid])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }else{
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->join('admin_group_type t', 'g.type=t.id', 'left')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
                 $recordsFiltered = $recordsTotal;
@@ -381,6 +406,5 @@ class Common extends Controller
         }
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
-
 
 }

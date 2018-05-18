@@ -99,6 +99,9 @@ class Send extends Permissions
     {
         if($this->request->isAjax()){
             // 前台需要传递的参数有:  主键编号 major_key
+            // 查看就PDF、Word、图片这三种，其他的都不显示查看
+            // 前台可以根据我返回的文件后缀来判断是否显示  查看功能
+
             $param = input('param.');
             // 验证规则
             $rule = [
