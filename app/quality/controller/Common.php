@@ -1014,6 +1014,7 @@ class Common extends Controller
         $par = array();
         $par['type'] = 1;
         $par['division_id'] = $this->request->param('division_id');
+
         if ($this->request->has('ma_division_id')) {
             $par['ma_division_id'] = $this->request->param('ma_division_id');
         }
@@ -1052,6 +1053,7 @@ class Common extends Controller
             $infos[] = $temp;
             $temp = [];
         }
+
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
@@ -1370,5 +1372,54 @@ class Common extends Controller
         }
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
+    public function norm_materialtrackingdivision ($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    {
+        //查询
+        //条件过滤后记录数 必要
+        $recordsFiltered = 0;
+        $recordsFilteredResult = array();
+        $par = array();
+        $par['type'] = 5;
+        $par['id'] = $this->request->param('en_type');
 
+
+
+        //表的总记录数 必要
+        $recordsTotal = Db::name($table)->where($par)->count();
+        if (strlen($search) > 0) {
+            //有搜索条件的情况
+            if ($limitFlag) {
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name($table)->alias('m')
+                    ->join('norm_controlpoint b', 'm.id=b.procedureid', 'left')
+                    ->where($par)
+                    ->field('b.id,b.code,b.name,b.qualitytemplateid')
+                    ->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFiltered = sizeof($recordsFilteredResult);
+            }
+        } else {
+            //没有搜索条件的情况
+            if ($limitFlag) {
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name($table)->alias('m')
+                    ->join('norm_controlpoint b', 'm.id=b.procedureid', 'left')
+                    ->where($par)
+                    ->field('b.id,b.code,b.name,b.qualitytemplateid')
+                    ->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFiltered = sizeof($recordsFilteredResult);
+            }
+        }
+        $temp = array();
+        $infos = array();
+        foreach ($recordsFilteredResult as $key => $value) {
+            $length = sizeof($columns);
+            for ($i = 0; $i < $length; $i++) {
+                array_push($temp, $value[$columns[$i]['name']]);
+            }
+            $infos[] = $temp;
+            $temp = [];
+        }
+
+        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+    }
 }
