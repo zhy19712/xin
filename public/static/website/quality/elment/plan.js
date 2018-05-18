@@ -464,14 +464,14 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(this).addClass("select-color").siblings().removeClass("select-color");
     selectData = tableItem.row(".select-color").data();//获取选中行数据
     console.log(selectData[7] +" ------选中的行id");
-    // console.log(selectData);
+    console.log(selectData);
     selectRow = selectData[7];
     eTypeId = selectData[8];
     if(eTypeId){
         selfidName(eTypeId);
     }
     if(selectRow != undefined || selectRow != null){
-        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
+        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+selectRow).load();
     }else{
         alert("获取不到selectRow id!")
     }
@@ -482,7 +482,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $.ajax({
         type: "post",
         url: "/quality/element/checkout",
-        data: {id: selectRow},
+        data: {id: 4},
         success: function (res) {
             console.log(res);
         }
@@ -495,7 +495,7 @@ function tpyeTable() {
         processing: true,
         serverSide: true,
         ajax: {
-            "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="
+            "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="
         },
         dom: 'tr',
         columns: [
