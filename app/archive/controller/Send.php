@@ -203,25 +203,25 @@ class Send extends Permissions
             // 前台可以根据我返回的文件后缀来判断是否显示  查看功能
 
             $file_id = input('file_id');
-            if(empty($file_id)){
+            if(empty($file_id) || $file_id == 'undefined'){
                 return json(['code' => '-1','msg' => '编号为空']);
             }
             $code = 1;
             $msg = '预览成功';
             $data = Db::name('attachment')->where('id',$file_id)->field('filename,filepath')->find();
-            $path = $data['filepath'];
-            if(!file_exists('.' .$path)){
+            $path = '.'.$data['filepath'];
+            if(!file_exists($path)){
                 return json(['code' => '-1','msg' => '文件不存在']);
             }
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             $ext_arr = ['pdf','pcx','emf','gif','bmp','tga','jpg','tif','jpeg','png','rle'];
             if(!file_exists($pdf_path)){
-                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                if($extension == 'doc' || $extension == 'docx' || $extension == 'txt'){
                     doc_to_pdf($path);
-                }else if($extension === 'xls' || $extension === 'xlsx'){
+                }else if($extension == 'xls' || $extension == 'xlsx'){
                     excel_to_pdf($path);
-                }else if($extension === 'ppt' || $extension === 'pptx'){
+                }else if($extension == 'ppt' || $extension == 'pptx'){
                     ppt_to_pdf($path);
                 }else if(in_array($extension,$ext_arr)){
                     $pdf_path = $path;
