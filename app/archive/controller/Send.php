@@ -75,8 +75,10 @@ class Send extends Permissions
 
             // 系统自动生成数据
             $param['send_id'] = Session::has('admin') ? Session::get('admin') : 0; // 发件人编号
-            $files = explode('',$param['file_ids']);
-            $param['attchment_id'] = empty($files) ? $param['file_ids'] : $files[0]; // 文件编号用来关联查询
+            if(isset($param['file_ids'])){
+                $files = explode('',$param['file_ids']);
+                $param['attchment_id'] = empty($files) ? $param['file_ids'] : $files[0]; // 文件编号用来关联查询
+            }
 
             $send = new SendModel();
             $major_key = isset($param['major_key']) ? $param['major_key'] : 0;
