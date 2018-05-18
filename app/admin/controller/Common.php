@@ -105,6 +105,8 @@ class Common extends Controller
 
     public function admin($id,$draw,$table,$search,$start,$length,$limitFlag,$order,$columns,$columnString)
     {
+        //传过来的类别 table_type 发文 选择收件人列表  不传递表示组织管理
+        $type = input('param.table_type');
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
@@ -117,41 +119,60 @@ class Common extends Controller
         if(strlen($search)>0){
             //有搜索条件的情况
             if($limitFlag){
-                $exArr = explode('|',$columnString);
-                $newColumnString = '';
-                foreach($exArr as $ex){
-                    switch ($ex){
-                        case 'g_order':
-                            $newColumnString = 'a.order' . '|' . $newColumnString;
-                            break;
-                        case 'g_name':
-                            $newColumnString = 'a.name' . '|' . $newColumnString;
-                            break;
-                        case 'name':
-                            $newColumnString = 'g.name' . '|' . $newColumnString;
-                            break;
-                        default :
-                            $newColumnString = 'a.' . $ex . '|' . $newColumnString;
+                if(empty($type)){
+                    $exArr = explode('|',$columnString);
+                    $newColumnString = '';
+                    foreach($exArr as $ex){
+                        switch ($ex){
+                            case 'g_order':
+                                $newColumnString = 'a.order' . '|' . $newColumnString;
+                                break;
+                            case 'g_name':
+                                $newColumnString = 'a.name' . '|' . $newColumnString;
+                                break;
+                            case 'name':
+                                $newColumnString = 'g.name' . '|' . $newColumnString;
+                                break;
+                            default :
+                                $newColumnString = 'a.' . $ex . '|' . $newColumnString;
+                        }
                     }
+                    $newColumnString = substr($newColumnString,0,strlen($newColumnString)-1);
+                    //*****多表查询join改这里******
+                    $recordsFilteredResult = Db::name($table)->alias('a')
+                        ->join('admin_group g','a.admin_group_id = g.id','left')
+                        ->field('a.id,a.order as g_order,a.name,a.nickname,g.name as g_name,a.mobile,a.position,a.status')
+                        ->whereIn('a.admin_group_id',$idArr)
+                        ->where($newColumnString, 'like', '%' . $search . '%')
+                        ->order($order)->limit(intval($start),intval($length))->select();
+                }else{
+                    $recordsFilteredResult = Db::name($table)->alias('a')
+                        ->join('admin_group g','a.admin_group_id = g.id','left')
+                        ->field('a.id,g.name,a.nickname,a.mobile,a.position')
+                        ->where($columnString, 'like', '%' . $search . '%')
+                        ->where(['a.status'=> '1','a.admin_group_id'=>['in',$idArr]])
+                        ->order($order)->limit(intval($start),intval($length))->select();
                 }
-                $newColumnString = substr($newColumnString,0,strlen($newColumnString)-1);
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('a')
-                    ->join('admin_group g','a.admin_group_id = g.id','left')
-                    ->field('a.id,a.order as g_order,a.name,a.nickname,g.name as g_name,a.mobile,a.position,a.status')
-                    ->whereIn('a.admin_group_id',$idArr)
-                    ->where($newColumnString, 'like', '%' . $search . '%')
-                    ->order($order)->limit(intval($start),intval($length))->select();
+
+
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         }else{
             //没有搜索条件的情况
             if($limitFlag){
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name('admin')->alias('a')
-                    ->join('admin_group g','a.admin_group_id = g.id','left')
-                    ->field('a.id,a.order as g_order,a.name,a.nickname,g.name as g_name,a.mobile,a.position,a.status')
-                    ->whereIn('a.admin_group_id',$idArr)->order($order)->limit(intval($start),intval($length))->select();
+                if(empty($type)){
+                    $recordsFilteredResult = Db::name('admin')->alias('a')
+                        ->join('admin_group g','a.admin_group_id = g.id','left')
+                        ->field('a.id,a.order as g_order,a.name,a.nickname,g.name as g_name,a.mobile,a.position,a.status')
+                        ->whereIn('a.admin_group_id',$idArr)->order($order)->limit(intval($start),intval($length))->select();
+                }else{
+                    $recordsFilteredResult = Db::name('admin')->alias('a')
+                        ->join('admin_group g','a.admin_group_id = g.id','left')
+                        ->field('a.id,g.name,a.nickname,a.mobile,a.position')
+                        ->where(['a.status'=> '1','a.admin_group_id'=>['in',$idArr]])->order($order)->limit(intval($start),intval($length))->select();
+                }
+
                 $recordsFiltered = $recordsTotal;
             }
         }
