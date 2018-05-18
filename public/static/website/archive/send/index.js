@@ -143,7 +143,7 @@ uploader.on( 'uploadSuccess', function( file,res ) {
     fileLists.push('<td>'+ file.name +'</td>');
     fileLists.push('<td>');
     fileLists.push('<a href="javascript:;" onclick="fileDownload(this)" uid='+ fileId +'>下载</a>');
-    fileLists.push('<a href="javascript:;" onclick="attachmentPreview(this)" uid='+ fileId +'>查看</a>');
+    fileLists.push('<a href="javascript:;" onclick="conPicshow(this)" uid='+ fileId +'>查看</a>');
     fileLists.push('<a href="javascript:;" onclick="attachmentDel(this)" uid='+ fileId +'>删除</a>');
     fileLists.push('</td>');
     fileLists.push('</tr>');
@@ -166,8 +166,52 @@ function fileDownload(that) {
 }
 
 //附件查看
-function attachmentPreview(that) {
+function attachmentPreview(uid,url) {
+    $.ajax({
+        url: url,
+        type: "post",
+        data: {
+            file_id:uid
+        },
+        success: function (res) {
+            console.log(res);
+            if(res.code === 1){
+                var path = res.path;
+                var houzhui = res.path.split(".");
+                if(houzhui[houzhui.length-1]=="pdf"){
+                    window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
+                }else{
+                    layer.photos({
+                        photos: {
+                            "title": "", //相册标题
+                            "id": uid, //相册id
+                            "start": 0, //初始显示的图片序号，默认0
+                            "data": [   //相册包含的图片，数组格式
+                                {
+                                    "alt": "图片名",
+                                    "pid": uid, //图片id
+                                    "src": "../../../"+res.path, //原图地址
+                                    "thumb": "" //缩略图地址
+                                }
+                            ]
+                        }
+                        ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                        ,success:function () {
+                            $('.layui-layer-shade').empty();
+                        }
+                    });
+                }
+
+            }else {
+                layer.msg(res.msg);
+            }
+        }
+    })
+}
+//预览
+function conPicshow(that){
     var uid = $(that).attr('uid');
+    attachmentPreview(uid,'./attachmentPreview')
 }
 
 //附件删除
