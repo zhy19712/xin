@@ -138,11 +138,6 @@ class AdminGroup extends Model
         return $this->field("id,name")->where("pid > 0")->select();
     }
 
-    public function incomeUsers()
-    {
-
-    }
-
     public function incomeGroupType($id)
     {
         $type_name = Db::name('admin')->alias('u')
