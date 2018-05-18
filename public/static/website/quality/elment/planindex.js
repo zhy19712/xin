@@ -69,7 +69,17 @@ function nodeClick(e, treeId, node) {
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
     $(".mybtn").css("display", "none");
 
-
+    $.ajax({
+        url: "../element/getProcedures",
+        type: "post",
+        data: {
+            id:selfid
+        },
+        dataType: "json",
+        success: function (res) {
+            console.log(res)
+        }
+    });
 }
 
 //全部展开
@@ -563,17 +573,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
         }
     })
 
-    $.ajax({
-        url: "../element/getProcedures",
-        type: "post",
-        data: {
-            id:selectRow
-        },
-        dataType: "json",
-        success: function (res) {
-            console.log(res)
-        }
-    });
+
 });
 
 
