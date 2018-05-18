@@ -1378,21 +1378,16 @@ class Common extends Controller
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         $recordsFilteredResult = array();
-        $par = array();
-        $par['type'] = 5;
-        $par['id'] = $this->request->param('en_type');
-
-
-
+        $id = $this->request->param('en_type');
         //表的总记录数 必要
-        $recordsTotal = Db::name($table)->where($par)->count();
+        $recordsTotal = Db::name($table)->where(['type'=>5,'id'=>$id])->count();
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)->alias('m')
                     ->join('norm_controlpoint b', 'm.id=b.procedureid', 'left')
-                    ->where($par)
+                    ->where(['m.cat'=>5,'m.id'=>$id])
                     ->field('b.id,b.code,b.name,b.qualitytemplateid')
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
@@ -1403,7 +1398,7 @@ class Common extends Controller
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)->alias('m')
                     ->join('norm_controlpoint b', 'm.id=b.procedureid', 'left')
-                    ->where($par)
+                    ->where(['m.cat'=>5,'m.id'=>$id])
                     ->field('b.id,b.code,b.name,b.qualitytemplateid')
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
