@@ -369,7 +369,12 @@ class Common extends Controller
             //计算列长度
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name'] == 'attchment_id'){
+                    $user_name = Session::has('current_nickname') ? Session::get('current_nickname') : '';
+                    array_push($temp, $user_name);
+                }else{
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
