@@ -61,7 +61,7 @@ layui.define(['layer', 'laytpl', 'element'], function(exports) {
                 _config = that.config;
             var defaults = {
                 target: undefined,
-                showTips: true
+                showTips: false,
             };
             $.extend(true, defaults, params);
             var _target = defaults.target === undefined ? _doc : $(defaults.target);

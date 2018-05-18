@@ -1,9 +1,11 @@
 //组织结构表格
 var tableItem = $('#tableItem').DataTable({
     pagingType: "full_numbers",
-    retrieve: true,
-    processing: true,
-    serverSide: true,
+  // "aLengthMenu" : [10, 20, 60,100], //更改显示记录数选项
+  "pageLength": 25,
+  retrieve: true,
+  processing: true,
+  serverSide: true,
     "scrollY": "200px",
     "scrollCollapse": "true",
     ajax: {
