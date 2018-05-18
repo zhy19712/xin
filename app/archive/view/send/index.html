@@ -27,7 +27,7 @@
             <tr>
                 <th>文件名称</th>
                 <th>文件日期</th>
-                <th>来文单位</th>
+                <th>收文单位</th>
                 <th>发件人</th>
                 <th>收件人</th>
                 <th>状态</th>
@@ -106,61 +106,6 @@
             </div>
         </div>
     </form>
-</div>
-
-
-<!--文件查看-->
-<div id="file_modal">
-    <div class="layui-form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">文件名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileName"  class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">文件日期</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">发件人</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">来文单位</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
-            </div>
-        </div>
-        <!--附件资料-->
-        <div class="layui-form-item">
-            <label class="layui-form-label">文件附件</label>
-            <div class="layui-input-block">
-                <table id="tableFiles" class="layui-table" cellspacing="0"  width="100%">
-                    <thead>
-                    <tr>
-                        <th class="layui-col-xs-9">文件名称</th>
-                        <th class="layui-col-xs-9">操作</th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="layui-row" id="fileOperation">
-        <button class="layui-btn layui-btn-normal">保存</button>
-        <button class="layui-btn layui-btn-primary">返回</button>
-    </div>
 </div>
 {include file="../../public/common_footer"}
 <script type="text/javascript" src="__WEBSITE__/archive/send/index.js"></script>
