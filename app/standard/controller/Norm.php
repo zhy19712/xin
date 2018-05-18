@@ -53,13 +53,13 @@ class Norm extends Permissions
             $param = input('param.');
             // 验证规则
             $validate = new \think\Validate([
-                ['nodeId', 'require|number', '请选择标准分类|标准分类必须是数字'],
-                ['standard_number', 'require|max:100|alphaDash', '标准编号不能为空|标准编号不能超过100个字符|标准编号只能是字母、数字、下划线 _ 和破折号 - 的组合'],
-                ['standard_name', 'require|max:100', '标准名称不能为空|标准名称不能超过100个字符'],
-                ['material_date', 'require|date', '实施日期不能为空|实施日期只能是日期格式'],
-                ['alternate_standard', 'max:100|alphaDash', '替代标准不能超过100个字符|替代标准只能是字母、数字、下划线 _和破折号 - 的组合'],
-                ['remark', 'max:100', '备注不能超过100个字符'],
-                ['file_id', 'number', '文件编号必须是数字']
+//                ['nodeId', 'require|number', '请选择标准分类|标准分类必须是数字'],
+//                ['standard_number', 'require|max:100|alphaDash', '标准编号不能为空|标准编号不能超过100个字符|标准编号只能是字母、数字、下划线 _ 和破折号 - 的组合'],
+//                ['standard_name', 'require|max:100', '标准名称不能为空|标准名称不能超过100个字符'],
+//                ['material_date', 'require|date', '实施日期不能为空|实施日期只能是日期格式'],
+//                ['alternate_standard', 'max:100|alphaDash', '替代标准不能超过100个字符|替代标准只能是字母、数字、下划线 _和破折号 - 的组合'],
+//                ['remark', 'max:100', '备注不能超过100个字符'],
+//                ['file_id', 'number', '文件编号必须是数字']
             ]);
             //验证部分数据合法性
             if (!$validate->check($param)) {
