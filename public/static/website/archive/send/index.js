@@ -4,8 +4,8 @@ var major_key = ''; //编辑表格当前行ID
 var income = {} //收件人信息
 
 
-
-$("#tableIncome").DataTable({
+//发文状态表格
+tableItem = $("#tableIncome").DataTable({
     processing: true,
     serverSide: true,
     ordering: false,
@@ -65,6 +65,8 @@ $("#tableIncome").DataTable({
     }
 });
 $('#addSend').html('新增');
+
+//新增弹层
 $("#table_content").on("click","#addSend",function () {
     layer.open({
         type: 1,
@@ -72,6 +74,7 @@ $("#table_content").on("click","#addSend",function () {
         area:["800px","620px"],
         content: $('#add_file_modal'),
         success:function () {
+            $.viewFilter(true);
             //重置上传按钮
             $('.webuploader-pick').next('div').css({
                 width:'86px',
@@ -80,6 +83,15 @@ $("#table_content").on("click","#addSend",function () {
         }
     });
 })
+
+//文件日期
+layui.use('laydate', function(){
+    var laydate = layui.laydate;
+    laydate.render({
+        elem: '#date'
+    });
+});
+
 //文件上传
 uploader = WebUploader.create({
     auto: true,// 选完文件后，是否自动上传。
@@ -220,8 +232,10 @@ function saveInter(data) {
         data: data.field,
         dataType: "json",
         success: function (res) {
+            layer.closeAll('page');
             layer.msg(res.msg);
             major_key = '';
+            tableItem.ajax.url("/archive/common/datatablesPre?tableName=archive_income_send&table_type=2").load();
         }
     });
 }
@@ -240,7 +254,10 @@ function edit_send(that) {
         type: 1,
         title:'查看',
         area:["800px","620px"],
-        content: $('#add_file_modal')
+        content: $('#add_file_modal'),
+        success:function () {
+            $.viewFilter(true);
+        }
     });
 }
 
@@ -252,7 +269,7 @@ function preview (that) {
         area:["800px","620px"],
         content: $('#add_file_modal'),
         success:function () {
-            $('#save').hide();
+            $.viewFilter(false);
         }
     });
 }
