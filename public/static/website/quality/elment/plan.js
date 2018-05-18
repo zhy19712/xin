@@ -511,7 +511,65 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
         selfidName(eTypeId);
     }
     if(selectRow != undefined || selectRow != null){
-        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
+
+        var tableItemControl = $('#tableItemControl').DataTable({
+            pagingType: "full_numbers",
+            retrieve: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                "url": "/quality/common/datatablesPre')}?tableName=quality_division_controlpoint_relation&division_id="
+            },
+            dom:'rpt',
+            columns: [
+                {
+                    name: "code"
+                },
+                {
+                    name: "name"
+                },
+                {
+                    name: "id"
+                }
+            ],
+            columnDefs: [
+                {
+                    "targets":[0]
+                },
+                {
+                    "targets": [1]
+                },
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [2],
+                    "render": function (data, type, row) {
+                        var html = "<span style='margin-left: 5px;' onclick='downConFile("+row[2]+")'><i title='下载' class='fa fa-download'></i></span>";
+                        return html;
+                    }
+                }
+            ],
+            language: {
+                "lengthMenu": "_MENU_",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索：",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "sFirst": "<<",
+                    "sPrevious": "<",
+                    "sNext": ">",
+                    "sLast": ">>"
+                }
+            },
+            // "fnInitComplete": function (oSettings, json) {
+            //     $('#tableItem_length').insertBefore(".mark");
+            //     $('#tableItem_info').insertBefore(".mark");
+            //     $('#tableItem_paginate').insertBefore(".mark");
+            // }
+        });
+        // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     }else{
         alert("获取不到selectRow id!")
     }
