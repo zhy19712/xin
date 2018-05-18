@@ -9,11 +9,6 @@
     #file_modal,#add_file_modal{
         display: none;
     }
-    #fileOperation,#addSubmit{
-        text-align: center;
-        position: relative;
-        top: 160px;
-    }
     #fileOperation button,#addSubmit button{
         width: 90px;
     }
@@ -42,41 +37,48 @@
         </table>
     </div>
 </div>
-<div id="add_file_modal">
-    <div class="layui-form">
+<div id="add_file_modal" style="padding-right: 20px">
+    <form action="" class="layui-form">
         <div class="layui-form-item">
             <label class="layui-form-label">文件名称</label>
             <div class="layui-input-block">
-                <input type="text" name="fileName"  class="layui-input">
+                <input type="text" name="file_name" id="file_name" required class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">文件日期</label>
             <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
+                <input type="text" name="date" id="date" required class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">发件人</label>
+            <label class="layui-form-label">收件人</label>
             <div class="layui-input-block">
-                <input type="text" name="fileFrom"  class="layui-input">
+                <input type="text" name="income_name" id="income_name" required class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">来文单位</label>
+            <label class="layui-form-label">收文单位</label>
             <div class="layui-input-block">
-                <input type="text" name="fileUnit"  class="layui-input">
+                <input type="text" name="unit_name" id="unit_name" required class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">备注：</label>
+            <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <input type="text" name="singUp"  class="layui-input">
+                <textarea name="remark" id="remark" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">发文附件：</label>
+            <label class="layui-form-label">关联收文</label>
             <div class="layui-input-block">
+                <input type="text" name="relevance_id" id="relevance_id"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">发文附件</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="file_ids" id="file_ids">
                 <div id="file_per" style="display: inline-block;vertical-align: middle;"></div>
                 <div id="file_upload" style="display: inline-block;vertical-align: middle;"></div>
                 <div id="file_list" style="display: inline-block;vertical-align: middle;"></div>
@@ -88,19 +90,22 @@
             <div class="layui-input-block">
                 <table id="add_table_files" class="layui-table" cellspacing="0"  width="100%">
                     <thead>
-                    <tr>
-                        <th class="layui-col-xs-9">文件名称</th>
-                        <th class="layui-col-xs-9">操作</th>
-                    </tr>
+                        <tr>
+                            <th class="layui-col-xs-9">文件名称</th>
+                            <th class="layui-col-xs-9">操作</th>
+                        </tr>
                     </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
-    </div>
-    <div class="layui-row" id="addSubmit">
-        <button class="layui-btn layui-btn-normal" id="btn_upload">保存</button>
-        <button class="layui-btn layui-btn-primary">返回</button>
-    </div>
+        <div class="layui-form-item" id="addSubmit">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="save" id="save">保存</button>
+                <button class="layui-btn layui-btn-primary">返回</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 
@@ -158,170 +163,6 @@
     </div>
 </div>
 {include file="../../public/common_footer"}
+<script type="text/javascript" src="__WEBSITE__/archive/send/index.js"></script>
 </body>
-<script type="text/javascript">
-    var uploader;
-    $("#tableIncome").DataTable({
-        processing: true,
-        serverSide: true,
-        ordering: false,
-        ajax: {
-            "url": "{:url('/archive/common/datatablesPre')}?tableName=archive_income_send&table_type=2",
-        },
-        columns: [
-            { name: "file_name" },
-            { name: "date" },
-            { name: "unit_name" },
-            { name: "attchment_id"},
-            { name: "income_name" },
-            { name: "status" },
-            { name: "status" },
-            { name: "id" }
-        ],
-        columnDefs: [
-            {
-                targets: [3],
-                render: function (data, type, row,meta) {
-                    return  'admin';
-                }
-            },
-            {
-                targets: [5],
-                render: function (data, type, row,meta) {
-                    if (data == '1'){
-                        return  '未发送';
-                    }else if(data == '2'){
-                        return  '已发送';
-                    }else if(data == '3'){
-                        return  '已签收';
-                    }else{
-                        return  '已拒收';
-                    }
-                }
-            },
-            {
-                targets: [6],
-                render: function (data, type, row,meta) {
-                    if (data == '1'){
-                        return  '<a title="' + data + '" class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:void(0);" data-fileId="'+row[7]+'" onclick=\"incomeShow('+row[6]+')\">编辑</a><a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" data-fileId="'+row.id+'" onclick=\"incomeShow(this)\">删除</a>';
-                    }else {
-                        return  '<a title="' + data + '"  href="javascript:void(0);" data-fileId="'+row[7]+'" onclick=\"incomeShow(this)\">查看</a>';
-                    }
-                }
-            },
-            {
-                targets: [7],
-                "visible": false,
-                "searchable": false
-            }
-        ],
-        dom: 'fr<"mybtn layui-btn layui-btn-normal layui-btn-md">tp',
-        language: {
-            "lengthMenu": "_MENU_",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "search": "搜索：",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-            "paginate": {
-                "sFirst": "<<",
-                "sPrevious": "<",
-                "sNext": ">",
-                "sLast": ">>"
-            }
-        }
-    });
-    $(".mybtn").html("<div id='addSend'>新增</div>");
-    $("#table_content").on("click","#addSend",function () {
-        layer.open({
-            type: 1,
-            title:null,
-            closeBtn: true,
-            shade:0.5,
-            shadeClose: true,
-            area:["800px","600px"],
-            content: $('#add_file_modal')
-        });
-    })
-    //文件上传
-    uploader = WebUploader.create({
-        auto: true,// 选完文件后，是否自动上传。
-        swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-        server: "{:url('Project/importExcel')}",// 文件接收服务端。
-        chunked: false,
-        fileSizeLimit: 1000 *1024 *1024,
-        duplicate :true,// 重复上传图片，true为可重复false为不可重复
-        pick: {
-            multiple: false,
-            id: "#file_upload",
-            innerHTML: "文件上传"
-        },
-        accept: {
-
-        }
-    });
-    uploader.on("uploadStart",function () {
-        //获取表单数据
-        var file_name = $('input[name="fileName"]').val();
-        uploader.options.formData.file_name = file_name;
-    });
-
-    uploader.on( 'fileQueued', function( file ) {
-        $("#file_per").append('<div id="' + file.id + '" class="item">' +
-            '</div>');
-    });
-    // 文件上传过程中创建进度条实时显示。
-    uploader.on('uploadProgress', function (file, percentage) {
-        var $li = $('#' + file.id),
-            $percent = $li.find('.progress .progress-bar');
-        // 避免重复创建
-        if (!$percent.length) {
-            $percent = $('<div class="progress progress-striped active">' +
-                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                '</div>' +
-                '</div>').appendTo($li).find('.progress-bar');
-        }
-        $li.find('p.state').text('上传中');
-        $percent.css('width', percentage * 100 + '%');
-    });
-    // 文件上传成功
-    uploader.on( 'uploadSuccess', function( file,data ) {
-        uploader = null;
-        $("#file_upload").empty();
-        $("#surveyData").modal('hide');
-        $("#file_per").empty();
-
-    });
-
-    // 文件上传失败，显示上传出错。
-    uploader.on( 'uploadError', function( file ,data) {
-        var msg = file.name + data.info;
-        layer.confirm(msg, function(index){
-            layer.close(index);
-        });
-        $("#file_per").empty();
-    });
-    $("#btn_upload").click(function () {
-        uploader.upload();
-    })
-    function incomeShow(that) {
-        layer.open({
-            type: 1,
-            title:null,
-            closeBtn: true,
-            shade:0.5,
-            shadeClose: true,
-            area:["800px","600px"],
-            content: $('#file_modal')
-        });
-        if (that == "1"){
-            $("#fileOperation").css("display","block");
-            $("#file_modal input").attr("readonly",false);
-        }else{
-            $("#fileOperation").css("display","none");
-            $("#file_modal input").attr("readonly",true);
-        }
-    }
-
-</script>
 </html>
