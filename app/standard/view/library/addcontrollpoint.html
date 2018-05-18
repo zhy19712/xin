@@ -117,18 +117,18 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">控制点编号</label>
                         <div class="layui-input-block" class="inpLength">
-                            <input type="text" name="code" id="temCode" lay-verify="title"   autocomplete="off" placeholder="请输入控制点编号" class="layui-input">
+                            <input type="text" name="code" id="temCode" lay-verify="required"   autocomplete="off" placeholder="请输入控制点编号" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">控制点名称</label>
                         <div class="layui-input-block" class="inpLength">
-                            <input type="text" name="name" id="temName" lay-verify="title"   autocomplete="off" placeholder="请输入控制点名称" class="layui-input">
+                            <input type="text" name="name" id="temName" lay-verify="required"   autocomplete="off" placeholder="请输入控制点名称" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">是否重要控制点</label>
-                        <select name="isimportant" id="itImportant">
+                        <select name="isimportant" id="itImportant" lay-verify="required">
                             <option value="">请选择</option>
                             <option value="1">是</option>
                             <option value="0">否</option>
@@ -136,7 +136,7 @@
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">是否需要模版</label>
-                        <select name="isneedtemplate" id="itNeed" lay-filter="aihao">
+                        <select name="isneedtemplate" id="itNeed" lay-filter="aihao"  lay-verify="required">
                             <option value="">请选择</option>
                             <option value="1">是</option>
                             <option value="0">否</option>
@@ -256,6 +256,9 @@
                             // refreshSub();
                             parent.layer.msg('保存成功！');
                             closWin();
+                        }else{
+                          parent.layer.msg('保存失败！');
+                          closWin();
                         }
                     },
                     error: function (data) {
@@ -275,6 +278,9 @@
                             parent.layer.msg('编辑成功！');
                             closWin();
                             form.render('select');
+                        }else{
+                          parent.layer.msg('编辑失败！');
+                          closWin();
                         }
                     },
                     error: function (data) {
