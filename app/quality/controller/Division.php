@@ -71,7 +71,7 @@ class Division extends Permissions{
                 $new_num = $num;
             }
             $codeing = $data['d_code'] . '-' . $new_num;
-            return json(['code' => 1,'codeing' => $codeing,'msg' => '系统编码']);
+            return json(['code' => 1,'codeing' => $codeing,'en_type'=>$data['en_type'],'msg' => '系统编码']);
         }else{
             return json(['code' => -1,'msg' => '编号有误']);
         }
