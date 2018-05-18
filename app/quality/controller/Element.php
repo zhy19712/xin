@@ -113,11 +113,11 @@ class Element extends Permissions
         return json(MaterialTrackingDivision::all(['pid' => $id, 'type' => 3]));
 
     }
-    public function getUnitProcedures($division_id,$control_id)
+    public function getUnitProcedures($division_id)
     {
         //获取控制点关联id
-       $res=Db::name('quality_division_controlpoint_relation')
-           ->where(['division_id'=>$division_id,'control_id'=>$control_id])
+       $res=Db::name('quality_unit')
+           ->where(['division_id'=>$division_id])
            ->select();
        return json(['msg'=>'success','data'=>$res]);
 
