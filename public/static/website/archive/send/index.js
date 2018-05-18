@@ -3,7 +3,7 @@ $(function () {
         processing: true,
         ordering: false,
         ajax: {
-            "url": "{:url('/archive/common/datatablesPre')}?tableName=archive_income_send&table_type=2"
+            "url": "/archive/common/datatablesPre"
         },
         columns: [
             { "data": "file_name" },

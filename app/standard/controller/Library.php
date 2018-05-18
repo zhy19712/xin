@@ -189,6 +189,9 @@ class Library extends Permissions
      */
     public function chosetemplate()
     {
+        $param = input('get.');
+        $this->assign("type",$param["type"]);
+        $this->assign("use",$param["use"]);
         return $this->fetch();
     }
 
