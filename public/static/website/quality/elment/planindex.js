@@ -67,7 +67,6 @@ function nodeClick(e, treeId, node) {
     $(".imgList").css("display","none");
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_unit&id="+selfid).load();
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
-    $(".mybtn").css("display", "none");
 
     $.ajax({
         url: "../element/getProcedures",
