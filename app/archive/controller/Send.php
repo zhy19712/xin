@@ -215,6 +215,7 @@ class Send extends Permissions
             }
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            $ext_arr = ['pdf','pcx','emf','gif','bmp','tga','jpg','tif','jpeg','png','rle'];
             if(!file_exists($pdf_path)){
                 if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
                     doc_to_pdf($path);
@@ -222,7 +223,7 @@ class Send extends Permissions
                     excel_to_pdf($path);
                 }else if($extension === 'ppt' || $extension === 'pptx'){
                     ppt_to_pdf($path);
-                }else if($extension === 'pdf'){
+                }else if(in_array($extension,$ext_arr)){
                     $pdf_path = $path;
                 }else{
                     $code = 0;
