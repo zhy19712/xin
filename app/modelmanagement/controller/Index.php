@@ -8,19 +8,41 @@
 namespace app\modelmanagement\controller;
 
 use app\admin\controller\Permissions;
-use \think\Cache;
-use \think\Controller;
-use think\Loader;
-use think\Db;
-use \think\Cookie;
-use think\Model;
-use \think\Session;
+
 
 class Index extends Permissions
 {
-    function index()
+    function Index()
     {
-        $this->assign('content','{include file="../app/public/test.html"}');
+        //将所有模型页面按需装载到同一个iframe中，防止用户打开过多模型页面崩溃
+        //全景3d、质量3d、进度3d、安全3d、全景模型、倾斜模型
+        if(request()->isAjax()) {
+            $id = $this->request->param('id');
+            switch ($id) {
+                case 'panorama':
+                    $path = '../app/modelmanagement/view/index/panorama.html';
+                    break;
+                case 'quality':
+                    $path = '../app/modelmanagement/view/index/quality.html';
+                    break;
+                case 'progress':
+                    $path = '../app/modelmanagement/view/index/progress.html';
+                    break;
+                case 'safety':
+                    $path = '../app/modelmanagement/view/index/safety.html';
+                    break;
+                case 'oblique':
+                    $path = '../app/modelmanagement/view/index/oblique.html';
+                    break;
+                case 'index':
+                    $path = '../app/modelmanagement/view/index/index.html';
+                    break;
+                default :
+                    $path = '../app/modelmanagement/view/index/index.html';
+            }
+            $newContent = file_get_contents($path);
+            return $newContent;
+        }
         return $this->fetch();
     }
 

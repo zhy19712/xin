@@ -28,21 +28,6 @@ class Send extends Permissions
     }
 
     /**
-     * 收件人
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function incomeUsers()
-    {
-        if($this->request->isAjax()){
-            $user = new AdminGroup();
-            $user_data = $user->incomeUsers();
-            $user_data = Db::name('admin')->column('id,nickname');
-            return json([''=>1,'user_data'=>$user_data,'msg'=>'收件人']);
-        }
-    }
-
-    /**
      * 收文单位
      * @return \think\response\Json
      * @author hutao
