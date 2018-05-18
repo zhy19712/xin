@@ -1,52 +1,6 @@
 var uploader;
-/*$.datatable({
-    tableId:'tableIncome',
-    ajax: {
-        "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
-    },
-    columns: [
-        { name: "file_name" },
-        { name: "date" },
-        { name: "unit_name" },
-        { name: "attchment_id"},
-        { name: "income_name" },
-        { name: "status" },
-        { name: "id" }
-    ],
-    columnDefs: [
-        {
-            targets: [3],
-            render: function (data, type, row,meta) {
-                return  'admin';
-            }
-        },
-        {
-            targets: [5],
-            render: function (data, type, row,meta) {
-                if (data == '1'){
-                    return  '未发送';
-                }else if(data == '2'){
-                    return  '已发送';
-                }else if(data == '3'){
-                    return  '已签收';
-                }else{
-                    return  '已拒收';
-                }
-            }
-        },
-        {
-            targets: [6],
-            render: function (data, type, row,meta) {
-                if (data == '1'){
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-normal layui-btn-sm" href="javascript:void(0);" data-fileId="'+row[7]+'" onclick=\"incomeShow('+row[6]+')\">编辑</a><a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" data-fileId="'+row.id+'" onclick=\"incomeShow(this)\">删除</a>';
-                }else {
-                    return  '<a title="' + data + '"  href="javascript:void(0);" data-fileId="'+row[7]+'" onclick=\"incomeShow(this)\">查看</a>';
-                }
-            }
-        }
-    ],
-    dom: 'fr<"#addSend layui-btn layui-btn-normal layui-btn-md">tp',
-});*/
+var fileIds = [];   //新增弹层已上传文件ID
+var major_key = ''; //编辑表格当前行ID
 
 $("#tableIncome").DataTable({
     processing: true,
@@ -83,9 +37,9 @@ $("#tableIncome").DataTable({
             targets: [6],
             render: function (data, type, row,meta) {
                 if (data == '1'){
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" data-fileId="'+row[7]+'" onclick="incomeShow('+row[6]+')">编辑</a><a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" data-fileId="'+row.id+'" onclick=\"incomeShow(this)\">删除</a>';
+                    return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="edit_send(this)">编辑</a><a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="del(this)">删除</a>';
                 }else {
-                    return  '<a title="' + data + '"  href="javascript:void(0);" data-fileId="'+row[7]+'" onclick="incomeShow(this)">查看</a>';
+                    return  '<a title="' + data + '"  href="javascript:void(0);" major_key="'+row[6]+'" onclick="preview(this)">查看</a>';
                 }
             }
         }
@@ -128,17 +82,16 @@ uploader = WebUploader.create({
     auto: true,// 选完文件后，是否自动上传。
     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
     server: "/archive/common/upload?module=archive&use=send",// 文件接收服务端。
-    chunked: false,
+    chunked: true,
     duplicate :true,// 重复上传图片，true为可重复false为不可重复
     pick: {
-        multiple: false,
+        multiple: true,
         id: "#file_upload",
         innerHTML: "文件上传"
     }
 });
 
 // 文件上传成功
-var fileIds = [];   //新增弹层已上传文件ID
 uploader.on( 'uploadSuccess', function( file,res ) {
     uploader = null;
     $("#file_per").empty();
@@ -244,6 +197,7 @@ layui.use('form', function(){
     form.on('submit(save)', function(data){
         //layer.msg(JSON.stringify(data.field));
         data.field.file_ids = fileIds;
+        data.field.major_key = major_key;
         $.ajax({
             url: "./send",
             type: "post",
@@ -251,6 +205,7 @@ layui.use('form', function(){
             dataType: "json",
             success: function (res) {
                 layer.msg(res.msg);
+                major_key = '';
             }
         });
         return false;
@@ -261,23 +216,29 @@ layui.use('form', function(){
 $('#back').click(function () {
     layer.closeAll();
     $('#add_table_files tbody').empty();
+    major_key = '';
 });
 
-function incomeShow(that) {
+//编辑
+function edit_send(that) {
+    major_key = $(that).attr('major_key');
     layer.open({
         type: 1,
-        title:null,
-        closeBtn: true,
-        shade:0.5,
-        shadeClose: true,
-        area:["800px","600px"],
-        content: $('#file_modal')
+        title:'查看',
+        area:["800px","620px"],
+        content: $('#add_file_modal')
     });
-    if (that == "1"){
-        $("#fileOperation").css("display","block");
-        $("#file_modal input").attr("readonly",false);
-    }else{
-        $("#fileOperation").css("display","none");
-        $("#file_modal input").attr("readonly",true);
-    }
+}
+
+//查看
+function preview (that) {
+    layer.open({
+        type: 1,
+        title:'查看',
+        area:["800px","620px"],
+        content: $('#add_file_modal'),
+        success:function () {
+            $('#save').hide();
+        }
+    });
 }
