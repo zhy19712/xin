@@ -323,6 +323,46 @@ class Common extends Controller
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
+                $exArr = explode('|',$columnString);
+                $newColumnString = '';
+                foreach($exArr as $ex){
+                    switch ($ex){
+                        case 'id':
+                            $newColumnString = 's.id' . '|' . $newColumnString;
+                            break;
+                        case 'file_name':
+                            $newColumnString = 's.file_name' . '|' . $newColumnString;
+                            break;
+                        case 'date':
+                            $newColumnString = 's.date' . '|' . $newColumnString;
+                            break;
+                        case 'unit_name':
+                            $newColumnString = 't.name' . '|' . $newColumnString;
+                            break;
+                        case 'attchment_id':
+                            $newColumnString = 's.attchment_id' . '|' . $newColumnString;
+                            break;
+                        case 'send_name':
+                            $newColumnString = 'u.nickname' . '|' . $newColumnString;
+                            break;
+                        case 'status':
+                            $newColumnString = 's.status' . '|' . $newColumnString;
+                            break;
+                        default :
+                    }
+                }
+                $newColumnString = substr($newColumnString,0,strlen($newColumnString)-1);
+
+                if(in_array($search,['未','未发','未发送'])){
+                    $search = 1;$newColumnString = 's.status';
+                }if(in_array($search,['已发','已发送'])){
+                    $search = 2;$newColumnString = 's.status';
+                }if(in_array($search,['签','签收','已签收'])){
+                    $search = 3;$newColumnString = 's.status';
+                }if(in_array($search,['拒','拒收','已拒收'])){
+                    $search = 4;$newColumnString = 's.status';
+                }
+
                 if($type == 1){
                     // 收文 查询 发件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
@@ -330,7 +370,7 @@ class Common extends Controller
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
                         ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
-                        ->where($columnString, 'like', '%' . $search . '%')
+                        ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.income_id'=>$uid,'s.status'=>['neq',1]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else if($type == 2){
@@ -340,7 +380,7 @@ class Common extends Controller
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
                         ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,s.attchment_id,u.nickname as income_name,s.status')
-                        ->where($columnString, 'like', '%' . $search . '%')
+                        ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.send_id'=>$uid])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
@@ -349,7 +389,7 @@ class Common extends Controller
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
                         ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
-                        ->where($columnString, 'like', '%' . $search . '%')
+                        ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
