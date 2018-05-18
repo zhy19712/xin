@@ -549,8 +549,8 @@ function selfidName(id) {
                 controlPointName = res[i].name;
                 optionStrAfter +=
                     "<a href=\"javascript:;\"  class=\"imgListStyle\" onclick=\"clickConName("+ res[i].id +")\">" +
-                    "<img class='imgNone' id='img"+i+"' src=\"../../public/static/website/elementimg/right.png\" alt=\"箭头\">" +
-                    "<img src=\"/elementimg/work.png\" alt=\"工作\">&nbsp;"+res[i].name+"<span style='display: none;'>"+res[i].id+"</span>" +
+                    "<img class='imgNone' id='img"+i+"' src=\"/static/website/elementimg/right.png\" alt=\"箭头\">" +
+                    "<img src=\"/static/website/elementimg/work.png\" alt=\"工作\">&nbsp;"+res[i].name+"<span style='display: none;'>"+res[i].id+"</span>" +
                     "</a>\n";
             };
             $("#imgListRight").append(optionStrAfter);
