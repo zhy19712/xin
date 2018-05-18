@@ -455,47 +455,7 @@ var selectData ;//选中的数据流
 var eTypeId ;//有字段了再注释
 var selectRow ;//单元格选中的id
 
-
-// //组织结构表格
-// function tablecon(){
-//     $.datatable({
-//         tableId:'tableItemControl',
-//         ajax:{
-//             'url':'/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id='
-//         },
-//         columns: [
-//             {
-//                 name: "code"
-//             },
-//             {
-//                 name: "name"
-//             },
-//             {
-//                 name: "id"
-//             }
-//         ],
-//         columnDefs: [
-//             {
-//                 "targets":[0]
-//             },
-//             {
-//                 "targets": [1]
-//             },
-//             {
-//                 "searchable": false,
-//                 "orderable": false,
-//                 "targets": [2],
-//                 "render": function (data, type, row) {
-//                     var html = "<span style='margin-left: 5px;' onclick='downConFile("+row[2]+")'><i title='下载' class='fa fa-download'></i></span>";
-//                     return html;
-//                 }
-//             }
-//         ],
-//     });
-// }
-// tablecon()
-
-
+var tableItemControl;
 //点击行获取Id
 $("#tableItem").delegate("tbody tr","click",function (e) {
     if($(e.target).hasClass("dataTables_empty")){
@@ -511,65 +471,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
         selfidName(eTypeId);
     }
     if(selectRow != undefined || selectRow != null){
-
-        var tableItemControl = $('#tableItemControl').DataTable({
-            pagingType: "full_numbers",
-            retrieve: true,
-            processing: true,
-            serverSide: true,
-            ajax: {
-                "url": "/quality/common/datatablesPre')}?tableName=quality_division_controlpoint_relation&division_id="
-            },
-            dom:'rpt',
-            columns: [
-                {
-                    name: "code"
-                },
-                {
-                    name: "name"
-                },
-                {
-                    name: "id"
-                }
-            ],
-            columnDefs: [
-                {
-                    "targets":[0]
-                },
-                {
-                    "targets": [1]
-                },
-                {
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": [2],
-                    "render": function (data, type, row) {
-                        var html = "<span style='margin-left: 5px;' onclick='downConFile("+row[2]+")'><i title='下载' class='fa fa-download'></i></span>";
-                        return html;
-                    }
-                }
-            ],
-            language: {
-                "lengthMenu": "_MENU_",
-                "zeroRecords": "没有找到记录",
-                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-                "infoEmpty": "无记录",
-                "search": "搜索：",
-                "infoFiltered": "(从 _MAX_ 条记录过滤)",
-                "paginate": {
-                    "sFirst": "<<",
-                    "sPrevious": "<",
-                    "sNext": ">",
-                    "sLast": ">>"
-                }
-            },
-            // "fnInitComplete": function (oSettings, json) {
-            //     $('#tableItem_length').insertBefore(".mark");
-            //     $('#tableItem_info').insertBefore(".mark");
-            //     $('#tableItem_paginate').insertBefore(".mark");
-            // }
-        });
-        // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
+        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     }else{
         alert("获取不到selectRow id!")
     }
@@ -587,6 +489,50 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     })
 });
 
+function tpyeTable() {
+    tableItemControl = $('#tableItemControl').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        ajax: {
+            "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="
+        },
+        dom: 'tr',
+        columns: [
+            {
+                name: "code"
+            },
+            {
+                name: "name"
+            },
+            {
+                name: "id"
+            }
+        ],
+        columnDefs: [
+            {
+                "targets": [0]
+            },
+            {
+                "targets": [1]
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [2],
+                "render": function (data, type, row) {
+                    var html = "<span style='margin-left: 5px;' onclick='downConFile(" + row[2] + ")'><i title='下载' class='fa fa-download'></i></span>";
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "zeroRecords": "没有找到记录",
+        }
+    });
+
+}
+tpyeTable();
 
 //获取控制点name
 function selfidName(id) {
@@ -603,8 +549,8 @@ function selfidName(id) {
                 controlPointName = res[i].name;
                 optionStrAfter +=
                     "<a href=\"javascript:;\"  class=\"imgListStyle\" onclick=\"clickConName("+ res[i].id +")\">" +
-                    "<img class='imgNone' id='img"+i+"' src=\"../../public/static/website/elementimg/right.png\" alt=\"箭头\">" +
-                    "<img src=\"/elementimg/work.png\" alt=\"工作\">&nbsp;"+res[i].name+"<span style='display: none;'>"+res[i].id+"</span>" +
+                    "<img class='imgNone' id='img"+i+"' src=\"/static/website/elementimg/right.png\" alt=\"箭头\">" +
+                    "<img src=\"/static/website/elementimg/work.png\" alt=\"工作\">&nbsp;"+res[i].name+"<span style='display: none;'>"+res[i].id+"</span>" +
                     "</a>\n";
             };
             $("#imgListRight").append(optionStrAfter);
@@ -629,7 +575,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(".mybtn").css("display","none");
     $(".alldel").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
-    tableItem.ajax.url("{:url('/quality/common/datatablesPre')}?tableName=quality_division_controlpoint_relation&division_id="+selfidUnit).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
 });
 
 //点击工序控制点名字
@@ -639,7 +585,7 @@ function clickConName(id) {
     $(".mybtn").css("display","block");
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
-    tableItem.ajax.url("{:url('/quality/common/datatablesPre')}?tableName=quality_division_controlpoint_relation&division_id="+selfidUnit+"&ma_division_id="+conThisId).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     console.log(id);
 }
 
@@ -673,5 +619,5 @@ function download(id,url) {
 
 //点击下载控制点模板
 function downConFile(id) {
-    download(id,"{:url('quality/element/download')}")
+    download(id,"quality/element/download")
 }
