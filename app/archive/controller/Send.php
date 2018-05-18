@@ -63,8 +63,8 @@ class Send extends Permissions
                 ['file_name', 'require', '请填写文件名称'],
                 ['date', 'require', '请选择文件日期'],
                 ['income_id', 'require|number', '请选择收件人|收件人编号只能是数字'],
-                ['relevance_id', 'require|number', '请选择关联收文|关联收文编号只能是数字'],
-                ['file_ids', 'require|alphaDash', '请上传附件|附件编码只能是字母、数字、下划线 _和破折号 - 的组合'],
+                ['relevance_id', 'number', '请选择关联收文|关联收文编号只能是数字'],
+                ['file_ids', 'alphaDash', '请上传附件|附件编码只能是字母、数字、下划线 _和破折号 - 的组合'],
                 ['status', 'require|between:1,4', '请传递文件状态|文件状态不能大于4']
             ];
             $validate = new \think\Validate($rule);
