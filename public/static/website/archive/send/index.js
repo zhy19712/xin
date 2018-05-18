@@ -112,8 +112,15 @@ $("#table_content").on("click","#addSend",function () {
     layer.open({
         type: 1,
         title:'新增',
-        area:["800px","600px"],
-        content: $('#add_file_modal')
+        area:["800px","620px"],
+        content: $('#add_file_modal'),
+        success:function () {
+            //重置上传按钮
+            $('.webuploader-pick').next('div').css({
+                width:'86px',
+                height:'36px'
+            });
+        }
     });
 })
 //文件上传
@@ -142,12 +149,12 @@ uploader.on( 'uploadSuccess', function( file,res ) {
     fileLists.push('<tr>');
     fileLists.push('<td>'+ file.name +'</td>');
     fileLists.push('<td>');
-    fileLists.push('<a href="javascript:;" onclick="fileDownload(this)" uid='+ fileId +'>下载</a>');
-    fileLists.push('<a href="javascript:;" onclick="conPicshow(this)" uid='+ fileId +'>查看</a>');
-    fileLists.push('<a href="javascript:;" onclick="attachmentDel(this)" uid='+ fileId +'>删除</a>');
+    fileLists.push('<a href="javascript:;" onclick="fileDownload(this)" uid='+ fileId +' name='+ file.name +'>下载</a>');
+    fileLists.push('<a href="javascript:;" onclick="attachmentPreview(this)" uid='+ fileId +' name='+ file.name +'>查看</a>');
+    fileLists.push('<a href="javascript:;" onclick="attachmentDel(this)" uid='+ fileId +' name='+ file.name +'>删除</a>');
     fileLists.push('</td>');
     fileLists.push('</tr>');
-    $('#add_table_files tbody').append(fileLists.join(''));
+    $('#add_table_files tbody').prepend(fileLists.join(''));
     console.log(fileIds);
 });
 
@@ -166,9 +173,11 @@ function fileDownload(that) {
 }
 
 //附件查看
-function attachmentPreview(uid,url) {
+function attachmentPreview(that) {
+    var uid = $(that).attr('uid');
+    var name = $(that).attr('name');
     $.ajax({
-        url: url,
+        url: './attachmentPreview',
         type: "post",
         data: {
             file_id:uid
@@ -188,7 +197,7 @@ function attachmentPreview(uid,url) {
                             "start": 0, //初始显示的图片序号，默认0
                             "data": [   //相册包含的图片，数组格式
                                 {
-                                    "alt": "图片名",
+                                    "alt": name,
                                     "pid": uid, //图片id
                                     "src": "../../../"+res.path, //原图地址
                                     "thumb": "" //缩略图地址
@@ -207,11 +216,6 @@ function attachmentPreview(uid,url) {
             }
         }
     })
-}
-//预览
-function conPicshow(that){
-    var uid = $(that).attr('uid');
-    attachmentPreview(uid,'./attachmentPreview')
 }
 
 //附件删除
@@ -246,11 +250,17 @@ layui.use('form', function(){
             data: data.field,
             dataType: "json",
             success: function (res) {
-                console.log(res);
+                layer.msg(res.msg);
             }
-        })
+        });
         return false;
     });
+});
+
+//返回
+$('#back').click(function () {
+    layer.closeAll();
+    $('#add_table_files tbody').empty();
 });
 
 function incomeShow(that) {
