@@ -55,6 +55,7 @@
             <label class="layui-form-label">收件人</label>
             <div class="layui-input-block">
                 <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input">
+                <input type="hidden" name="income_id" id="income_id">
             </div>
         </div>
         <div class="layui-form-item">
@@ -102,10 +103,31 @@
         <div class="layui-form-item" id="addSubmit">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="save" id="save">保存</button>
+                <button class="layui-btn" lay-submit lay-filter="saveAndSend" id="saveAndSend">保存并发送</button>
                 <button type="reset" class="layui-btn layui-btn-primary" id="back">返回</button>
             </div>
         </div>
     </form>
+</div>
+<div id="incomeNameLayer">
+    <div id="cc" class="easyui-layout" style="width:100%;height:400px;">
+        <div data-options="region:'west',title:'组织结构',split:true" style="width:260px;">
+            <ul id="ztree" class="ztree"></ul>
+        </div>
+        <div data-options="region:'center',title:'收件人'" style="width:764px;padding:5px;">
+            <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                <thead>
+                <tr>
+                    <th>选择</th>
+                    <th>所属部门</th>
+                    <th>姓名</th>
+                    <th>手机号码</th>
+                    <th>所属岗位</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </div>
 {include file="../../public/common_footer"}
 <script type="text/javascript" src="__WEBSITE__/archive/send/index.js"></script>

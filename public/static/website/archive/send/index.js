@@ -1,6 +1,9 @@
 var uploader;
 var fileIds = [];   //新增弹层已上传文件ID
 var major_key = ''; //编辑表格当前行ID
+var income = {} //收件人信息
+
+
 
 $("#tableIncome").DataTable({
     processing: true,
@@ -193,24 +196,35 @@ function attachmentDel(that) {
 //保存发文
 layui.use('form', function(){
     var form = layui.form;
-    //监听提交
+    //保存
     form.on('submit(save)', function(data){
-        //layer.msg(JSON.stringify(data.field));
-        data.field.file_ids = fileIds;
-        data.field.major_key = major_key;
-        $.ajax({
-            url: "./send",
-            type: "post",
-            data: data.field,
-            dataType: "json",
-            success: function (res) {
-                layer.msg(res.msg);
-                major_key = '';
-            }
-        });
+        data.field.status = 1;
+        saveInter(data);
+        return false;
+    });
+    //保存并发送
+    form.on('submit(saveAndSend)', function(data){
+        data.field.status = 2;
+        saveInter(data);
         return false;
     });
 });
+
+//保存接口
+function saveInter(data) {
+    data.field.file_ids = fileIds;
+    data.field.major_key = major_key;
+    $.ajax({
+        url: "./send",
+        type: "post",
+        data: data.field,
+        dataType: "json",
+        success: function (res) {
+            layer.msg(res.msg);
+            major_key = '';
+        }
+    });
+}
 
 //返回
 $('#back').click(function () {
@@ -241,4 +255,85 @@ function preview (that) {
             $('#save').hide();
         }
     });
+}
+
+//收件人弹层
+$('#income_name').focus(function () {
+   layer.open({
+           title:'收件人',
+           id:'1',
+           type:'1',
+           area:['1024px','600px'],
+           content:$('#incomeNameLayer'),
+           btn:['保存'],
+           success:function () {
+               incomeZtree();
+           },
+           yes:function () {
+               save();
+               layer.close(layer.index);
+           },
+           cancel: function(index, layero){
+               layer.close(layer.index);
+           }
+       });
+});
+
+//收件人树
+function incomeZtree() {
+    $.ztree({
+        ajaxUrl:'/admin/admin/index',
+        zTreeOnClick:function (event, treeId, treeNode) {
+            incomeInfo();
+            tableItem.ajax.url("/admin/common/datatablesPre?tableName=admin&id="+ treeNode.id).load();
+        }
+    });
+}
+
+//收件人信息
+function incomeInfo() {
+    $.datatable({
+        ajax: {
+            "url":"/admin/common/datatablesPre?tableName=admin"
+        },
+        columns:[
+            {
+                name: "id",
+                "render": function(data, type, full, meta) {
+                    console.log(full);
+                    var ipt = "<input type='radio' name='checkList' idv="+ data +" unit="+ full[1] +" nickname="+ full[2] +" onclick='getSelectId(this)'>";
+                    return ipt;
+                },
+            },
+            {
+                name: "name"
+            },
+            {
+                name: "nickname"
+            },
+            {
+                name: "mobile"
+            },
+            {
+                name: "position"
+            }
+        ]
+    });
+}
+
+//选择收件人
+function getSelectId(that) {
+    var idv = $(that).attr('idv');
+    var unit = $(that).attr('unit');
+    var nickname = $(that).attr('nickname');
+    income.id = idv
+    income.unit = unit;
+    income.nickname = nickname;
+}
+
+//保存已选收件人
+function save() {
+    $('#income_id').val(income.id);
+    $('#income_name').val(income.nickname);
+    $('#unit_name').val(income.unit);
 }
