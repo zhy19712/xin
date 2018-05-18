@@ -1,7 +1,7 @@
 //初始化layui组件
 var initUi = layui.use('form','laydate');
 var form = layui.form;
-var selfid;
+var eTypeId ;//工程类型id
 //工程标准及规范树
 $.ztree({
     //点击节点
@@ -14,21 +14,8 @@ $.ztree({
             tablePath:'/quality/common/datatablesPre?tableName=quality_unit',
             isLoadPath:false
         });
-        selfid = zTreeObj.getSelectedNodes()[0].id;//当前id
-        $.ajax({
-            url: "../element/getUnitProcedures",
-            type: "post",
-            data: {
-                division_id:selfid
-            },
-            dataType: "json",
-            success: function (res) {
-                console.log(res)
-            }
-        });
     }
 });
-
 
 //工程类型树
 var typeTreeNode;
@@ -186,6 +173,9 @@ function tableInfo() {
             },
             {
                 name: "id"
+            },
+            {
+                name: "en_type"
             }
         ],
         columnDefs:[
@@ -198,7 +188,13 @@ function tableInfo() {
                     html += "<i class='fa fa-trash' uid="+ data +" title='删除' onclick='del(this)'></i>" ;
                     return html;
                 }
-            }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [8],
+                "visible": false
+            },
         ],
     });
 }
@@ -447,3 +443,177 @@ function del(that) {
     });
 }
 
+
+//全部展开
+$('#openNode').click(function(){
+    $.toggle({
+        treeId:'ztree',
+        state:true
+    });
+});
+var selectData ;//选中的数据流
+var eTypeId ;//有字段了再注释
+var selectRow ;//单元格选中的id
+
+
+// //组织结构表格
+// function tablecon(){
+//     $.datatable({
+//         tableId:'tableItemControl',
+//         ajax:{
+//             'url':'/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id='
+//         },
+//         columns: [
+//             {
+//                 name: "code"
+//             },
+//             {
+//                 name: "name"
+//             },
+//             {
+//                 name: "id"
+//             }
+//         ],
+//         columnDefs: [
+//             {
+//                 "targets":[0]
+//             },
+//             {
+//                 "targets": [1]
+//             },
+//             {
+//                 "searchable": false,
+//                 "orderable": false,
+//                 "targets": [2],
+//                 "render": function (data, type, row) {
+//                     var html = "<span style='margin-left: 5px;' onclick='downConFile("+row[2]+")'><i title='下载' class='fa fa-download'></i></span>";
+//                     return html;
+//                 }
+//             }
+//         ],
+//     });
+// }
+// tablecon()
+
+
+//点击行获取Id
+$("#tableItem").delegate("tbody tr","click",function (e) {
+    if($(e.target).hasClass("dataTables_empty")){
+        return;
+    }
+    $(this).addClass("select-color").siblings().removeClass("select-color");
+    selectData = tableItem.row(".select-color").data();//获取选中行数据
+    console.log(selectData[7] +" ------选中的行id");
+    // console.log(selectData);
+    selectRow = selectData[7];
+    eTypeId = selectData[8];
+    if(eTypeId){
+        selfidName(eTypeId);
+    }
+    if(selectRow != undefined || selectRow != null){
+        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
+    }else{
+        alert("获取不到selectRow id!")
+    }
+    $(".bitCodes").css("display","block");
+    $(".listName").css("display","block");
+    $("#tableContent .imgList").css('display','block');
+    $("#homeWork").css("color","#2213e9");
+    $.ajax({
+        type: "post",
+        url: "/quality/element/checkout",
+        data: {id: selectRow},
+        success: function (res) {
+            console.log(res);
+        }
+    })
+});
+
+
+//获取控制点name
+function selfidName(id) {
+    $.ajax({
+        type: "post",
+        url: "/quality/element/getProcedures",
+        data: {id: id},
+        success: function (res) {
+            console.log(res);
+            var optionStrAfter = '';
+            for(var i = 0;i<res.length;i++) {
+                $("#imgListRight").html('');
+                controlPointId = res[i].id;
+                controlPointName = res[i].name;
+                optionStrAfter +=
+                    "<a href=\"javascript:;\"  class=\"imgListStyle\" onclick=\"clickConName("+ res[i].id +")\">" +
+                    "<img class='imgNone' id='img"+i+"' src=\"../../public/static/website/elementimg/right.png\" alt=\"箭头\">" +
+                    "<img src=\"/elementimg/work.png\" alt=\"工作\">&nbsp;"+res[i].name+"<span style='display: none;'>"+res[i].id+"</span>" +
+                    "</a>\n";
+            };
+            $("#imgListRight").append(optionStrAfter);
+            if($(".imgNone").attr("id") == 'img0'){
+                $("#img0").css("display","none");
+            }
+        }
+    })
+}
+
+/**==========结束初始化 单元工树 =============*/
+
+//点击置灰
+$(".imgList").on("click","a",function () {
+    $(this).css("color","#2213e9").siblings("a").css("color","#CDCDCD");
+    $("#homeWork").css("color","#CDCDCD");
+});
+
+//点击作业
+$(".imgList").on("click","#homeWork",function () {
+    $(".bitCodes").css("display","block");
+    $(".mybtn").css("display","none");
+    $(".alldel").css("display","none");
+    $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
+    tableItem.ajax.url("{:url('/quality/common/datatablesPre')}?tableName=quality_division_controlpoint_relation&division_id="+selfidUnit).load();
+});
+
+//点击工序控制点名字
+function clickConName(id) {
+    conThisId = id;
+    $(".bitCodes").css("display","none");
+    $(".mybtn").css("display","block");
+    $(".alldel").css("display","block");
+    $("#tableContent .imgList").css('display','block');
+    tableItem.ajax.url("{:url('/quality/common/datatablesPre')}?tableName=quality_division_controlpoint_relation&division_id="+selfidUnit+"&ma_division_id="+conThisId).load();
+    console.log(id);
+}
+
+//下载封装的方法
+function download(id,url) {
+    $.ajax({
+        url: url,
+        type:"post",
+        dataType: "json",
+        data:{cpr_id:id},
+        success: function (res) {
+            if(res.code != 1){
+                layer.msg(res.msg);
+            }else {
+                $("#form_container").empty();
+                var str = "";
+                str += ""
+                    + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                    + "<form name=download"+id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
+                    + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                    + "<input class='file_url' style='display: none;' name='cpr_id' value="+ id +">"
+                    + "<button type='submit' class=btn" + id +"></button>"
+                    + "</form>"
+                $("#form_container").append(str);
+                $("#form_container").find(".btn" + id).click();
+            }
+
+        }
+    })
+}
+
+//点击下载控制点模板
+function downConFile(id) {
+    download(id,"{:url('quality/element/download')}")
+}

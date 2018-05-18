@@ -113,6 +113,7 @@
                     <th>开工日期</th>
                     <th>完工日期</th>
                     <th>操作</th>
+                    <th style="display: none">操作</th>
                 </tr>
                 </thead>
             </table>
@@ -135,9 +136,9 @@
                 </tr>
                 </thead>
             </table>
-            <!--<div class="tbcontainer">-->
-            <!--<div class="mark"></div>-->
-            <!--</div>-->
+            <div class="tbcontainer">
+                <div class="mark"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -290,6 +291,67 @@
 </div>
 
 {include file="../app/public/common_footer.html"}
-<script src="__WEBSITE__/quality/elment/planindex.js"></script>
+<script src="__WEBSITE__/quality/elment/plan.js"></script>
+<script>
+    var urlPlan;
+    urlPlan = "{:url('/quality/common/datatablesPre')}?tableName=quality_division_controlpoint_relation&division_id=";
+    var tableItemControl = $('#tableItemControl').DataTable({
+        pagingType: "full_numbers",
+        retrieve: true,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            "url": urlPlan
+        },
+        dom:'rpt',
+        columns: [
+            {
+                name: "code"
+            },
+            {
+                name: "name"
+            },
+            {
+                name: "id"
+            }
+        ],
+        columnDefs: [
+            {
+                "targets":[0]
+            },
+            {
+                "targets": [1]
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [2],
+                "render": function (data, type, row) {
+                    var html = "<span style='margin-left: 5px;' onclick='downConFile("+row[2]+")'><i title='下载' class='fa fa-download'></i></span>";
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        // "fnInitComplete": function (oSettings, json) {
+        //     $('#tableItem_length').insertBefore(".mark");
+        //     $('#tableItem_info').insertBefore(".mark");
+        //     $('#tableItem_paginate').insertBefore(".mark");
+        // }
+    });
+</script>
 </body>
 </html>
