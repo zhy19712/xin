@@ -88,6 +88,10 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
     var form = layui.form
         ,layer = layui.layer
         ,laydate = layui.laydate;
+    //日期
+    laydate.render({
+        elem: '#date'
+    });
 });
 
 
@@ -912,6 +916,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     else if (row[3] === 2) {
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
                         html += "<a title='下载' onclick='downOnLine("+row[4]+")'><i class='fa fa fa-download'></i></a>";
+                        html += "<a title='作废' onclick='toVoid("+row[4]+")'><i class='fa fa fa-download'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
                         html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";

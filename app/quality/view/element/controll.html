@@ -201,6 +201,17 @@
     #onlineFillParent table.dataTable thead .sorting_asc {
         background-image: none !important;
     }
+    #tableContent .result{
+        margin-left: 150px;
+        margin-top: 13px;
+        position: relative;
+    }
+    #tableContent .result .layui-select-title,#tableContent #date{
+        width: 360px;
+    }
+    #tableContent .result .layui-form-label{
+        font-weight: bolder;
+    }
 </style>
 <body  class="easyui-layout">
 <!--右边的工程划分-->
@@ -215,12 +226,33 @@
 <!--左边的单元工-->
 <div id="unitWork" data-options="region:'center'" style="background:#fff;">
     <div class="easyui-layout" data-options="fit:true">
-        <div id="unitWorkOut" data-options="region:'west',title:'单元工',split:true" style="width:210px;">
+        <div id="unitWorkOut" data-options="region:'west',title:'单元工程划分段号',split:true" style="width:210px;">
             <ul class="ztree" id="ztreeUnit"></ul>
         </div>
         <div id="unitWorkRight" data-options="region:'center'" style="background:#fff;">
             <div class="easyui-layout" data-options="fit:true">
                 <div id="tableContent" data-options="region:'north',split:true" style="width:100%;height: 70%; position: relative;">
+                    <div class="result">
+                        <form class="layui-form" action="">
+                            <div class="layui-inline" style="margin-left: -3%">
+                                <label class="layui-form-label">验评结果</label>
+                                <div class="layui-input-inline">
+                                    <select name="type" lay-filter="type">
+                                        <option value="">-请选择-</option>
+                                        <option value="0">未验评</option>
+                                        <option value="1">优良</option>
+                                        <option value="2">合格</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline" style="margin-left: 5%">
+                                <label class="layui-form-label">验评日期</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="date" id="date" lay-verify="date"  placeholder="请选择" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="listName" id="nameCon"><h3>控制点</h3></div>
                     <div class="imgList">
                         <span id="imgListLeft">
