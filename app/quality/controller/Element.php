@@ -475,4 +475,53 @@ class Element extends Permissions
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
+    //检测管控中的控件能否使用
+    public function checkform(){
+
+        $search_name='单元工程质量等级评定表';
+        if ($this->request->isAjax()) {
+            $post = input('post.');
+            $cpr_id=$post['cpr_id'];
+            $division_id=$post['division_id'];
+            $res = Db::name('quality_form_info')
+                ->where(['ControlPointId' => $cpr_id, 'ApproveStatus' => 2, 'DivisionId' => $division_id])
+                ->where('form_name', 'like', '%' . $search_name)
+                ->find();
+            //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
+            if ($res) {
+                return json(['msg' => 'fail']);
+            } //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
+            else {
+                //仅用控制点id做限制可行吗 是否需要在该表中加入单元批id
+                $copy = Db::name('quality_upload')
+                    ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
+                    ->where('form_name', 'like', '%' . $search_name . '%')
+                    ->find();
+                if ($copy) {
+                    return json(['msg' => 'success']);
+                }
+                else {
+                    return json(['msg' => 'fail']);
+                }
+            }
+        }
+    }
+
+    //检查扫描件回传情况
+    public function copycheck()
+    {
+        if ($this->request->isAjax()) {
+            $res = Db::name('quality_upload')
+                ->where(['$contr_relation_id' => $cpr_id, 'type' => 1])
+                ->find();
+            //如果有结果
+            if ($res) {
+                return json(['msg' => 'fail', 'remark' => '已上传对应扫描件，如想重新上传请先删除之前的扫描件']);
+            } else {
+                return json(['msg' => 'success']);
+
+            }
+        }
+    }
+
 }
