@@ -381,17 +381,15 @@ class Element extends Permissions
         $produceid=Db::name('norm_materialtrackingdivision')
                   ->where(['pid'=>$en_type])
                   ->column('id');
-
-        //限制只插一次
         $limit=Db::name('quality_division_controlpoint_relation')
-            ->where(['divsion_id'=>$param['division_id']])
-            ->where(['ma_divsion_id','in',$produceid])
+            ->where(['division_id'=>$param['division_id']])
+            ->where('ma_division_id','in', $produceid)
             ->find();
         if($limit)
         {
-           exit();//如果有结果直接退出不执行
+            exit();
         }
-
+        //限制只插一次
         //取出该工序下对应的所有控制点id
         $id_arr=Db::name('norm_controlpoint')
         ->where('procedureid','in',$produceid)
@@ -403,8 +401,9 @@ class Element extends Permissions
                 'update_time'=>time(),'checked'=>0];
             $res[]=$data;
         }
-        Db::name('quality_division_controlpoint_relation')
+        $resdata=Db::name('quality_division_controlpoint_relation')
             ->insertAll($res);
+        dump($resdata);
     }
 
     //勾选时访问的接口，将该条数据的状态更新

@@ -1,0 +1,656 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/main/index.css">
+<div data-options="region:'east',title:'管理信息',split:true" style="width:345px;">
+    <!-- 默认业务层 -->
+    <div id="defaultAttr" class="easyui-tabs" style="width:100%;height:100%;border: 0;">
+        <div title="属性" style="padding:20px;display:none;">
+            <div class="attrWrap">
+                <ul class="toggle-attr" id="toogleAttr">
+                    <li uid="baseAttr" class="active">基本属性</li>
+                    <li uid="manageAttr">管理属性</li>
+                </ul>
+                <div class="baseAttrWrap" id="baseAttr">
+                    <div class="layui-collapse" id="baseAttrCon" style="display: none">
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">常规属性</h2>
+                            <div class="layui-colla-content layui-show" id="attrCon"></div>
+                        </div>
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">其他</h2>
+                            <div class="layui-colla-content" id="otherAttrCon"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="customAttrWrap" id="manageAttr" style="display: none">
+                    <div class="custom-attr customAttr">
+                        <form action="" class="layui-form">
+                            <div class="layui-form-item">
+                                <span class="layui-form-label">自定义属性</span>
+                                <a href="javascript:;" class="layui-form-mid layui-word-aux" id="addAttr"><i class="fa fa-plus"></i></a>
+                            </div>
+                            <div class="layui-form-item attr-group" id="attrGroup"></div>
+                            <div class="layui-form-item">
+                                <span class="layui-form-label">备注信息</span>
+                                <a href="javascript:;" class="layui-form-mid layui-word-aux" id="addRemark"><i class="fa fa-check"></i></a>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <textarea name="remark" placeholder="请输入内容" required  lay-verify="required" class="layui-textarea" id="remark"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div title="讨论" style="overflow:auto;padding:20px;">
+            <form class="layui-form" id="comment" style="display: none">
+                <div class="layui-form-item layui-form-text">
+                    <div class="layui-input-inline">
+                        <textarea name="msg" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item operate">
+                    <div class="layui-input-inline fa-wrap">
+                        <i class="fa fa-paperclip" id="upload"></i>
+                        <i class="fa fa-at" id="at"></i>
+                    </div>
+                    <div class="layui-input-inline btn-wrap">
+                        <button class="layui-btn layui-btn-xs" lay-submit lay-filter="save">发送</button>
+                        <button class="layui-btn layui-btn-xs layui-btn-primary">取消</button>
+                    </div>
+                </div>
+                <div id="selectedUser"></div>
+            </form>
+        </div>
+        <div title="附件" style="overflow:auto;padding:20px;display:none;">
+              tab3
+        </div>
+        <div title="二维码" style="overflow:auto;padding:20px;display:none;">
+              tab4
+        </div>-->
+    </div>
+    <!-- 锚点业务层 -->
+    <div id="anchorLayerTab" class="easyui-tabs" style="width:100%;height:100%;border: 0;display: none;">
+        <div title="属性" style="padding:20px;display:none;">
+            <h2 class="anchor-title"><i class="fa fa-anchor"></i>构件锚点信息</h2>
+            <form action="" class="layui-form" id="">
+                <input type="hidden" id="fObjSelX">
+                <input type="hidden" id="fObjSelY">
+                <input type="hidden" id="fObjSelZ">
+                <div class="layui-form-item">
+                    <div class="anchor-list">
+                        <label class="layui-form-label">锚点名称</label>
+                        <div class="layui-form-mid layui-word-aux" id="anchorName"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="anchor-list">
+                        <label class="layui-form-label">关联构件名称</label>
+                        <div class="layui-form-mid layui-word-aux" id="componentName"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="anchor-list">
+                        <label class="layui-form-label">创建人</label>
+                        <div class="layui-form-mid layui-word-aux createName" uid="createName"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="anchor-list">
+                        <label class="layui-form-label">创建日期</label>
+                        <div class="layui-form-mid layui-word-aux createDate" uid="createDate"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="margin: 0">
+                        <textarea name="anchorRemark" placeholder="锚点基本信息" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item round">
+                    <i class="fa fa-check" id="saveAnchor"></i>
+                    <i class="fa fa-reply fa-danger" id="backAnchor"></i>
+                    <i class="fa fa-close fa-danger" id="delAnchor"></i>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 标注业务层 -->
+    <div id="addTag" class="easyui-tabs" style="width:100%;height:100%;border: 0;display: none">
+        <div title="属性" style="padding:20px;">
+            <div class="add-tag addTag">
+                <h2>基本属性</h2>
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">创建人</label>
+                        <div class="layui-form-mid layui-word-aux createName" uid="createNameTag"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">创建日期</label>
+                        <div class="layui-form-mid layui-word-aux createDate" uid="createDateTag"></div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">标注信息</label>
+                        <div class="layui-input-block">
+                            <textarea name="remarkTag" placeholder="请输入内容" class="layui-textarea" id="remarkTag"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item round">
+                        <i class="fa fa-check" id="save"></i>
+                        <i class="fa fa-reply fa-danger" id="back"></i>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--<div title="评论" style="overflow:auto;padding:20px;display:none;">
+            tab2
+        </div>
+        <div title="附件" style="padding:20px;display:none;">
+            tab3
+        </div>-->
+    </div>
+</div>
+<!--<div data-options="region:'west',title:'管理视图',split:true" style="width:200px;"></div>-->
+<div data-options="region:'center',title:''" class="centent">
+    <div class="easyui-layout" id="centent" data-options="fit:true">
+        <div data-options="region:'center',title:''" style="padding:5px;">
+            <!-- 点击模型事件 -->
+            <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
+                $('#comment').show();//展示基本属性信息
+                easyUiPanelToggle();
+                uObjSubIdSingle = uObjSubID;
+                //添加锚点
+                var rnd = Math.floor(Math.random()*100000); //随机数
+                var times = new Date().getTime();   //时间戳
+                var anchorName = 'Anchor['+ rnd +']['+ times +']';  //锚点名称
+                if(operateType == 'AddComponentAnchor'){
+                    RealBimOcx.DelAllAnchors();
+                    RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                    RealBimOcx.AddAnchor(anchorName,fObjSelX,fObjSelY,fObjSelZ,0);
+
+                    RealBimOcx.AddAnchorEnd();
+                    RealBimOcx.BatchAddSubClrInfoBegin();
+                    RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);    //第二个参数为透明度
+                    RealBimOcx.BatchAddSubClrInfoEnd();
+                    labelAttr(3,uObjSubID);
+                    $('#anchorName').html(anchorName);      //锚点名称
+                    $('#fObjSelX').val(fObjSelX);       //锚点坐标
+                    $('#fObjSelY').val(fObjSelY);
+                    $('#fObjSelZ').val(fObjSelZ);
+
+                }else{
+                    //单选/多选模型
+                    getAttr();
+                    getRemark();
+                    if(!isCtrlDown){
+                        uObjSubIDArr = [];
+                        hiddenArr = [];
+                        RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                        RealBimOcx.BatchAddSubClrInfoBegin();
+                        RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);    //第二个参数为透明度
+                        uObjSubIDArr.push(uObjSubID);
+                        hiddenArr.push(uObjSubID);
+                        RealBimOcx.BatchAddSubClrInfoEnd();
+                        $('#baseAttrCon').show();//展示基本属性信息
+                    }else{
+                        RealBimOcx.BatchAddSubClrInfoBegin();
+                        RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);   //第二个参数为透明度
+                        uObjSubIDArr.push(uObjSubID);
+                        hiddenArr.push(uObjSubID);
+                        RealBimOcx.BatchAddSubClrInfoEnd();
+                    }
+                }
+            </script>
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
+            <!-- 初始化 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+                // RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.58:8008/default.aspx?dir=url_res02&path=","res_fengning_kw_03");
+
+                //设置服务url
+                //RealBimOcx.SwitchBIMSceneSimple("F:\\","res_fengning_kw_03");
+                RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+                RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+
+                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+            </script>
+            <!-- 初始化完成 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                    RealBimOcx.SetSceHugeObjVisible(true);
+                }
+                RealBimOcx.SetSuitableCam();
+            </script>
+            <!-- 点击锚点 -->
+            <script for="RealBimOcx" event="OnAnchorSelected(SelAnchorName)" language='javascript'>
+                //点击锚点
+                //SelAnchorName
+                easyUiPanelToggle();
+                $('#defaultAttr').hide();
+                $('#anchorLayerTab').show();
+                addAttachment();
+                getAnchorPoint(SelAnchorName);
+            </script>
+            <!-- 点击模型操作按钮 -->
+            <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
+                function clearOperate() {
+                    RealBimOcx.AddAnchorEnd();
+                    RealBimOcx.CreateMarkerEnd("", 0, 0, "", true);
+                };
+                //右侧对应属性显隐
+                function addTagInfo() {
+                    $('#defaultAttr,#anchorLayerTab').hide();
+                    $('#addTag').show();
+                };
+                //锚点回显的显示隐藏
+                function anchorView() {
+                    $.ajax({
+                        type: "post",
+                        url: "./allAnchorPoint",
+                        success: function (data) {
+                            if (uButtonMode == 1) {
+                                RealBimOcx.AddAnchorBegin(0);
+                                $.each(data, function (i, item) {
+                                    RealBimOcx.AddAnchor(item.anchor_name, item.coordinate_x, item.coordinate_y, item.coordinate_z, 0);
+                                });
+                                RealBimOcx.AddAnchorEnd();
+                            }
+                            else {
+                                $('#anchorLayerTab').hide();
+                                $('#defaultAttr').show();
+                                RealBimOcx.DelAnchorBegin();
+                                $.each(data, function (i, item) {
+                                    RealBimOcx.DeleteAnchor(item.anchor_name);
+                                });
+                                RealBimOcx.DelAnchorEnd();
+                            }
+                        }
+                    });
+                };
+
+                //创建人 和 创建日期
+                window.labelAttr = function (type,picture_id) {
+                    $.ajax({
+                        url: "./labelAttr",
+                        type: "post",
+                        data: {
+                            type:type,
+                            picture_id:picture_id
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            $('.createName').html(res.data.user_name);
+                            $('.createDate').html(res.data.create_time);
+                            $('#componentName').html(res.data.componentName);
+                        }
+                    })
+                }
+                labelAttr();
+
+                $('textarea[name="remarkTag"]').on('input propertychange',function () {
+                    var val = $(this).text();
+                    RealBimOcx.SubmitMarkerText(val);
+                });
+
+                switch (eType) {
+                    case "ADD_ANCHOR":
+                        clearOperate();
+                        operateType = "AddComponentAnchor"; //判断是否进入锚点状态
+                        RealBimOcx.AddAnchorBegin(0);//构件锚点开始
+                        $('#defaultAttr,#backAnchor,#addTag').hide();
+                        $('#anchorLayerTab').show();
+                        easyUiPanelToggle();
+                        $('#anchorLayerTab').tabs('close','附件');
+                        break; //添加锚点
+                    case "DISP_ANCHOR":
+                        anchorView();
+                        break; //显示锚点
+                    case "MARKER":
+                        clearOperate();
+                        RealBimOcx.CreateMarkerBegin();
+                        addTagInfo();
+                        easyUiPanelToggle();
+                        easyUiPanelToggleSouth();
+                        $('#tt').tabs('select','标注');
+                        break;//添加标注
+
+                    case "CAPTURE":  //快照
+                        clearOperate();
+                        easyUiPanelToggleSouth();
+                        $('#tt').tabs('select','快照');
+                        RealBimOcx.CreateSnapShootInMem(true, 0, 0, true, true);
+                        break;
+                    case "DISP_ISOLATE":    //显示隔离
+                        RealBimOcx.SetIsolateSubElemIDBegin();
+                        if (uButtonMode === 1)                    //显示隔离
+                        {
+                            isOlate = true; //是否为隔离状态
+                            hiddenArr = [];
+                            $.each(uObjSubIDArr, function (i, item) {
+                                RealBimOcx.SetIsolateSubElemID(item)
+                            });
+                            RealBimOcx.SetIsolateSubElemIDEnd();
+                        }
+                        else                                      //隐藏隔离
+                        {
+                            isOlate = false;    //是否为隔离状态
+                            RealBimOcx.SetIsolateSubElemIDEnd();
+                            /* RealBimOcx.SetAllHugeObjSubValidState(1);*/
+                            RealBimOcx.SetHugeObjSubValidStateBegin();
+                            $.each(uObjSubIDArr, function (i, item) {  //取消隔离
+                                RealBimOcx.SetHugeObjSubValidStateInfo(item, 1);
+                            });
+                            RealBimOcx.SetHugeObjSubValidStateEnd();
+                            uObjSubIDArr = [];
+                        }
+                        break;
+                    case "DISP_HIDE":
+                        if (uButtonMode === 1) {                    //隐藏选择的模型
+                            uObjSubIDArr = [];
+                            RealBimOcx.SetHugeObjSubValidStateBegin();
+                            $.each(hiddenArr, function (i, item) {
+                                RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
+                            });
+                            RealBimOcx.SetHugeObjSubValidStateEnd();
+                        } else {
+                            if(isOlate){    //为隔离状态
+                                RealBimOcx.SetHugeObjSubValidStateBegin();
+                                $.each(hiddenArr, function (i, item) {  //取消隐藏
+                                    RealBimOcx.SetHugeObjSubValidStateInfo(item, 1);
+                                });
+                                RealBimOcx.SetHugeObjSubValidStateEnd();
+                            }else {
+                                RealBimOcx.SetAllHugeObjSubValidState(1);
+                            }
+                            RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                            hiddenArr = [];
+                        }
+                        break;
+                }
+
+            </script>
+            <!-- 保存快照 -->
+            <script language="javascript" for="RealBimOcx" EVENT="SnapShootData(strPicData,picWidth,picHeight,strRenData)" type="text/javascript">
+                base64PicData = strPicData;
+                base64RenData = strRenData;
+                // TODO 需要重构
+                var snapshotImgPathArr = [];
+                $.ajax({
+                    url: "./labelSnapshot",
+                    type: "post",
+                    data: {
+                        picture_id:uObjSubIdSingle,
+                        type:2,
+                        label_snapshot:base64RenData,
+                        compress_base64:base64PicData
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        var imgPathSplit = res.base64_val_url.split('.');
+                        addSnapshotImgPath = imgPathSplit[1]+ '.'+imgPathSplit[2];
+                        snapshotImgPathArr.push('<div class="swiper-slide swiperSlide">');
+                        snapshotImgPathArr.push('<img src='+ addSnapshotImgPath +' alt="">');
+                        snapshotImgPathArr.push('<div class="mask">');
+                        snapshotImgPathArr.push('<div class="right">');
+                        snapshotImgPathArr.push('<a href="javascript:;" onclick="imageSaveAs(addSnapshotImgPath)" title="快照另存为">');
+                        snapshotImgPathArr.push('<i class="fa fa-save"></i>');
+                        snapshotImgPathArr.push('</a>');
+                        snapshotImgPathArr.push('<a href="javascript:;" title="删除快照">');
+                        snapshotImgPathArr.push('<i class="fa fa-close" uid='+ res.flag.label_snapshot_id +' onclick="del(this)"></i>');
+                        snapshotImgPathArr.push('</a>');
+                        snapshotImgPathArr.push('</div>');
+                        snapshotImgPathArr.push('<div class="scenter">');
+                        snapshotImgPathArr.push('<a href="javascript:;" title="查看快照" uid='+ base64RenData +' onclick="view(this)">');
+                        snapshotImgPathArr.push('<i class="fa fa-search"></i>');
+                        snapshotImgPathArr.push('</a>');
+                        snapshotImgPathArr.push('</div>');
+                        snapshotImgPathArr.push('<div class="center">2018-04-20</div>');
+                        snapshotImgPathArr.push('</div>');
+                        snapshotImgPathArr.push('</div>');
+                        snapshotSwiper.prependSlide(snapshotImgPathArr.join(' '));
+                        snapshotSwiper.updateSlidesSize();
+                        layer.msg('快照成功');
+                    }
+                });
+            </script>
+            <!-- 保存标注 -->
+            <script language="javascript" for="RealBimOcx" EVENT="MarkerData(strPicData,picWidth,picHeight,strRenData)" type="text/javascript">
+                base64PicData = strPicData;
+                base64RenData = strRenData;
+                // TODO 需要重构
+                var user_name = $('div[uid="createNameTag"]').html()
+                var create_time = $('div[uid="createDateTag"]').html()
+                var remark = $('#remarkTag').text();
+                var tagImgPathArr = [];
+                $.ajax({
+                    url: "./labelSnapshot",
+                    type: "post",
+                    data: {
+                        picture_id:uObjSubIdSingle,
+                        type:1,
+                        label_snapshot:base64RenData,
+                        compress_base64:base64PicData,
+                        user_name:user_name,
+                        create_time:create_time,
+                        remark:remark
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        var imgPathSplit = res.base64_val_url.split('.');
+                        addImgPath = imgPathSplit[1]+ '.'+imgPathSplit[2];
+                        tagImgPathArr.push('<div class="swiper-slide swiperSlide">');
+                        tagImgPathArr.push('<img src='+ addImgPath +' alt="">');
+                        tagImgPathArr.push('<div class="mask">');
+                        tagImgPathArr.push('<div class="right">');
+                        tagImgPathArr.push('<a href="javascript:;" onclick="imageSaveAs(addImgPath)" title="标注另存为">');
+                        tagImgPathArr.push('<i class="fa fa-save"></i>');
+                        tagImgPathArr.push('</a>');
+                        tagImgPathArr.push('<a href="javascript:;" title="删除标注">');
+                        tagImgPathArr.push('<i class="fa fa-close" uid='+ res.flag.label_snapshot_id +' onclick="del(this)"></i>');
+                        tagImgPathArr.push('</a>');
+                        tagImgPathArr.push('</div>');
+                        tagImgPathArr.push('<div class="scenter">');
+                        tagImgPathArr.push('<a href="javascript:;" title="查看标注"  uid='+ base64RenData +' onclick="view(this)">');
+                        tagImgPathArr.push('<i class="fa fa-search"></i>');
+                        tagImgPathArr.push('</a>');
+                        tagImgPathArr.push('</div>');
+                        tagImgPathArr.push('<div class="center">2018-04-20</div>');
+                        tagImgPathArr.push('</div>');
+                        tagImgPathArr.push('</div>');
+                        tagSwiper.prependSlide(tagImgPathArr.join(' '));
+                        tagSwiper.updateSlidesSize();
+                        layer.msg('标注成功');
+                    }
+                });
+            </script>
+        </div>
+        <div data-options="region:'south',title:'协同信息',split:true,collapsed:true" style="height:250px;">
+            <div id="tt" class="easyui-tabs" style="width:100%;height:220px;border: 0">
+                <div title="标注" style="display:none;">
+                    <input type="hidden" id="base64RenData">
+                    <div class="swiper-container" id="tag">
+                        <div class="swiper-wrapper">
+                        </div>
+                        <!-- 如果需要导航按钮 -->
+                        <div class="swiper-button-prev tag-button-prev"></div>
+                        <div class="swiper-button-next tag-button-next"></div>
+                    </div>
+                </div>
+                <div title="快照" style="overflow:auto;display:none;">
+                    <div class="swiper-container" id="snapshot">
+                        <div class="swiper-wrapper">
+                        </div>
+                        <!-- 如果需要导航按钮 -->
+                        <div class="swiper-button-prev snapshot-button-prev"></div>
+                        <div class="swiper-button-next snapshot-button-next"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="form_container"></div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/main/index.js"></script>
+<!-- 自定义函数 -->
+<script>
+    //锚点的操作类型
+    operateType = "";
+    //删除锚点
+    function delAnchor(anchorName,anchor_point_id) {
+        var anchorName = $('#anchorName').html();
+        //锚点的名称：anchorName
+        $.ajax({
+            url: "./delAnchorPoint",
+            type: "post",
+            data: {
+                anchor_point_id:anchor_point_id
+            },
+            dataType: "json",
+            success: function (res) {
+                RealBimOcx.DelAnchorBegin();
+                RealBimOcx.DeleteAnchor(anchorName);
+                RealBimOcx.DelAnchorEnd();
+                RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                $('#defaultAttr').show();
+                $('#anchorLayerTab').hide();
+            }
+        });
+
+    };
+    //保存标注
+    $('#save').click(function () {
+        var remarkTag = $('#remarkTag').text();
+        if(remarkTag=='请输入内容'||remarkTag==''){
+            $('#remarkTag').focus();
+            return false;
+        }
+        RealBimOcx.CreateMarkerEndInMem(true, 0, 0, true, true);  //保存标注
+    });
+    //回显标注
+    // TODO 需要重构
+    function getLabelTag() {
+        $.ajax({
+            url: "./getLabelSnapshot",
+            type: "post",
+            data: {
+                picture_id:uObjSubIdSingle,
+                type:1
+            },
+            dataType: "json",
+            success: function (res) {
+                var imgPathArr = [];
+                for(var i = 0;i<res.data.length;i++){
+                    var base64PicData = res.data[i].compress_base64;
+                    var base64RenData = res.data[i].label_snapshot;
+                    var imgPathSplit = res.data[i].base64_val_url.split('.');
+                    imgPath = imgPathSplit[1]+ '.'+imgPathSplit[2];
+                    imgPathArr.push('<div class="swiper-slide swiperSlide">');
+                    imgPathArr.push('<img src='+ imgPath +' alt="">');
+                    imgPathArr.push('<div class="mask">');
+                    imgPathArr.push('<div class="right">');
+                    imgPathArr.push('<a href="javascript:;" onclick="imageSaveAs(imgPath)" title="标注另存为">');
+                    imgPathArr.push('<i class="fa fa-save"></i>');
+                    imgPathArr.push('</a>');
+                    imgPathArr.push('<a href="javascript:;" title="删除标注">');
+                    imgPathArr.push('<i class="fa fa-close" uid='+ res.data[i].label_snapshot_id +' onclick="del(this)"></i>');
+                    imgPathArr.push('</a>');
+                    imgPathArr.push('</div>');
+                    imgPathArr.push('<div class="scenter">');
+                    imgPathArr.push('<a href="javascript:;" uid='+ res.data[i].label_snapshot +' title="查看标注" onclick="view(this)">');
+                    imgPathArr.push('<i class="fa fa-search"></i>');
+                    imgPathArr.push('</a>');
+                    imgPathArr.push('</div>');
+                    imgPathArr.push('<div class="center">'+ res.data[i].create_time +'</div>');
+                    imgPathArr.push('</div>');
+                    imgPathArr.push('</div>');
+                }
+                tagSwiper.prependSlide(imgPathArr.join(' '));
+            }
+        })
+    }
+    getLabelTag();
+
+    //回显快照
+    // TODO 需要重构
+    function getLabelSnapshot() {
+        $.ajax({
+            url: "./getLabelSnapshot",
+            type: "post",
+            data: {
+                picture_id:uObjSubIdSingle,
+                type:2
+            },
+            dataType: "json",
+            success: function (res) {
+                var snapshotImgPathArr = [];
+                for(var i = 0;i<res.data.length;i++){
+                    var base64PicData = res.data[i].compress_base64;
+                    var base64RenData = res.data[i].label_snapshot;
+                    var imgPathSplit = res.data[i].base64_val_url.split('.');
+                    snapshotImgPath = imgPathSplit[1]+ '.'+imgPathSplit[2];
+                    snapshotImgPathArr.push('<div class="swiper-slide swiperSlide">');
+                    snapshotImgPathArr.push('<img src='+ snapshotImgPath +' alt="">');
+                    snapshotImgPathArr.push('<div class="mask">');
+                    snapshotImgPathArr.push('<div class="right">');
+                    snapshotImgPathArr.push('<a href="javascript:;" onclick="imageSaveAs(snapshotImgPath)" title="快照另存为">');
+                    snapshotImgPathArr.push('<i class="fa fa-save"></i>');
+                    snapshotImgPathArr.push('</a>');
+                    snapshotImgPathArr.push('<a href="javascript:;" title="删除快照">');
+                    snapshotImgPathArr.push('<i class="fa fa-close" uid='+ res.data[i].label_snapshot_id +' onclick="del(this)"></i>');
+                    snapshotImgPathArr.push('</a>');
+                    snapshotImgPathArr.push('</div>');
+                    snapshotImgPathArr.push('<div class="scenter">');
+                    snapshotImgPathArr.push('<a href="javascript:;" uid='+ res.data[i].label_snapshot +' title="查看快照" onclick="view(this)">');
+                    snapshotImgPathArr.push('<i class="fa fa-search"></i>');
+                    snapshotImgPathArr.push('</a>');
+                    snapshotImgPathArr.push('</div>');
+                    snapshotImgPathArr.push('<div class="center">'+ res.data[i].create_time +'</div>');
+                    snapshotImgPathArr.push('</div>');
+                    snapshotImgPathArr.push('</div>');
+                }
+                snapshotSwiper.prependSlide(snapshotImgPathArr.join(' '));
+            }
+        })
+    }
+    getLabelSnapshot();
+
+    //查看标注快照
+    function view(that) {
+        var base64RenData = $(that).attr('uid');
+        RealBimOcx.ShowSnapshotOrMarkerInMem(base64RenData);
+    }
+
+    //删除标注/快照
+    function del(that) {
+        var label_snapshot_id = $(that).attr('uid');
+        $.ajax({
+            url: "./delLabelSnapshot",
+            type: "post",
+            data: {
+                label_snapshot_id:label_snapshot_id
+            },
+            dataType: "json",
+            success: function (res) {
+                $(that).parents('.swiperSlide').remove();
+                tagSwiper.update();
+                snapshotSwiper.update();
+                layer.msg(res.msg);
+            }
+        });
+    }
+
+    //键盘事件
+    $(document).keyup(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        if ( KeyCode == 27 ){
+            RealBimOcx.AddAnchorEnd();
+            RealBimOcx.CreateMarkerEnd("", 0, 0, "", true);
+            RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+            uObjSubIDArr.length=0;
+        }
+    });
+</script>
+</body>
+</html>
