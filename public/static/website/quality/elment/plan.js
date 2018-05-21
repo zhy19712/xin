@@ -635,19 +635,18 @@ $(".imgList").on("click","#homeWork",function () {
     $(".alldel").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+selectRow).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId).load();
 });
 
 //点击工序控制点名字
 function clickConName(id) {
-    conThisId = Number(id);
-
+    conThisId = id;
     $(".bitCodes").css("display","none");
     $(".mybtn").css("display","block");
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+selectRow+"&nm_id="+conThisId).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&nm_id="+conThisId).load();
     console.log(id);
 }
 
