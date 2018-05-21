@@ -9,9 +9,6 @@
     #file_modal,#add_file_modal{
         display: none;
     }
-    #fileOperation button,#addSubmit button{
-        width: 90px;
-    }
     .mybtn{
         float: right;
         margin-top: 10px;
@@ -102,8 +99,8 @@
         </div>
         <div class="layui-form-item" id="addSubmit">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="save" id="save">保存</button>
-                <button class="layui-btn" lay-submit lay-filter="saveAndSend" id="saveAndSend">保存并发送</button>
+                <button class="layui-btn" lay-submit lay-filter="save" view-filter id="save">保存</button>
+                <button class="layui-btn" lay-submit lay-filter="saveAndSend" view-filter id="saveAndSend">保存并发送</button>
                 <button type="reset" class="layui-btn layui-btn-primary" id="back">返回</button>
             </div>
         </div>
