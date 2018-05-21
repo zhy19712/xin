@@ -37,56 +37,76 @@
 </div>
 <!--文件查看以及处理-->
 <div id="file_modal">
-    <div class="layui-form">
+    <form action="" class="layui-form">
         <div class="layui-form-item">
             <label class="layui-form-label">文件名称</label>
             <div class="layui-input-block">
-                <input type="text" name="fileName"  class="layui-input" readonly>
+                <input type="text" name="file_name" id="file_name" required lay-verify="required" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">文件日期</label>
             <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input" readonly>
+                <input type="text" name="date" id="date" required lay-verify="required" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">发件人</label>
+            <label class="layui-form-label">收件人</label>
             <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input" readonly>
+                <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input">
+                <input type="hidden" name="income_id" id="income_id">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">来文单位</label>
+            <label class="layui-form-label">收文单位</label>
             <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input" readonly>
+                <input type="text" name="unit_name" id="unit_name" required lay-verify="required" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input" readonly>
+                <textarea name="remark" id="remark" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">关联收文</label>
+            <div class="layui-input-block">
+                <input type="text" name="relevance_id" id="relevance_id"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">发文附件</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="file_ids" id="file_ids">
+                <div id="file_per" style="display: inline-block;vertical-align: middle;"></div>
+                <div id="file_upload" style="display: inline-block;vertical-align: middle;"></div>
+                <div id="file_list" style="display: inline-block;vertical-align: middle;"></div>
+                <div id="file_view"></div>
             </div>
         </div>
         <!--附件资料-->
         <div class="layui-form-item">
-            <label class="layui-form-label">文件附件</label>
             <div class="layui-input-block">
-                <table id="tableFiles" class="layui-table" cellspacing="0"  width="100%">
+                <table id="add_table_files" class="layui-table" cellspacing="0"  width="100%">
                     <thead>
                     <tr>
                         <th class="layui-col-xs-9">文件名称</th>
                         <th class="layui-col-xs-9">操作</th>
                     </tr>
                     </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
-    </div>
-    <div class="layui-row" id="fileOperation">
-        <button class="layui-btn layui-btn-normal">签收</button>
-        <button class="layui-btn layui-btn-primary">拒收</button>
-    </div>
+        <div class="layui-form-item" id="addSubmit">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="save" view-filter id="save">签收</button>
+                <button class="layui-btn layui-btn-primary" lay-submit lay-filter="cancel" view-filter id="cancel">拒收</button>
+            </div>
+        </div>
+    </form>
+
 </div>
 {include file="../../public/common_footer"}
 <script src="__WEBSITE__/archive/income/index.js"></script>
