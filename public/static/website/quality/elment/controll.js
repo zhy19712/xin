@@ -274,7 +274,7 @@ function nodeClickUnit(e, treeId, node) {
     $("#homeWork").css("color","#2213e9");
 }
 
-//获取控制点name
+//点击单元工创建工序name
 function selfidName(id) {
     $.ajax({
         type: "post",
@@ -287,7 +287,7 @@ function selfidName(id) {
             for(var i = 0;i<res.length;i++) {
                 $("#imgListRight").html('');
                 optionStrAfter +=
-                    '<a href="javascript:;"  class="imgListStyle" onclick="clickConName("+ res[i].id +")">' +
+                    '<a href="javascript:;"  class="imgListStyle" onclick="clickConName('+ res[i].id +')">' +
                     '<img class="imgNone" id="img'+i+'" src="/static/website/elementimg/right.png" alt="箭头">' +
                     '<img src="/static/website/elementimg/work.png" alt="工作">&nbsp;'+res[i].name+'<span style="display: none;">'+res[i].id+'</span>' +
                     '</a>';
@@ -327,11 +327,10 @@ $(".imgList").on("click","#homeWork",function () {
     flag = true;
 });
 
-//点击工序控制点名字
+//点击工序名字刷新列表
 function clickConName(id) {
     controlRowId ='';
     procedureId ='';
-    console.log(procedureId);
     procedureId = id;
     console.log(procedureId);
     if(nodeUnitId != undefined || nodeUnitId != null && procedureId != undefined || procedureId != null){
@@ -359,7 +358,7 @@ function clickConName(id) {
                 '</thead>' +
             '</table>');
     }
-}
+};
 
 //下载封装的方法
 function download(id,url) {
@@ -614,8 +613,8 @@ function outerHeight() {
 }
 
 
-/*============控制点情况开始==============*/
-//控制点情况结构表格
+/*============回传件上传开始==============*/
+//回传件上传结构表格
 implementation = $('#implementation').DataTable({
     retrieve: true,
     processing: true,
@@ -747,7 +746,7 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
     });
 });
 
-/*============控制点情况结束==============*/
+/*============回传件上传结束==============*/
 
 
 
@@ -911,7 +910,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                         return "审批中"
                     }
                     if (data === 2) {
-                        return "已审批"
+                        return "已完成"
                     }
                     if (data === -1) {
                         return "被退回"
@@ -934,7 +933,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     if (row[3] === 0) {
                         html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")'><i class='fa fa-pencil'></i></a>";
                         html += "<a title='删除' onclick='delOnLine("+row[4]+")'><i class='fa fa fa-trash'></i></a>";
-                        html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
+                        // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
                     }
                     else if (row[3] === 1 && row[5] == $("#userId").val()) {
                         var str = JSON.stringify(row[2]);
@@ -948,7 +947,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                         html += "<a title='作废' onclick='toVoid("+row[4]+")'><i class='fa fa fa-download'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
-                        html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
+                        // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
                         html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-pencil'></i></a>";
                         html += "<a title='删除' onclick='delOnLine("+row[4]+")'><i class='fa fa fa-trash'></i></a>";
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
