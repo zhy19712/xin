@@ -545,9 +545,11 @@ class Branch extends Permissions
                 }
                 $flag = $model->editNoAll($data);
                 return json($flag);
+            }else
+            {
+                $flag = $model->editRelation($param);
+                return json($flag);
             }
-            $flag = $model->editRelation($param);
-            return json($flag);
         }
     }
 
