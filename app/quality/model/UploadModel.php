@@ -65,7 +65,7 @@ class UploadModel extends Model
      */
     public function judge($list_id)
     {
-        $data = $this->where(["contr_relation_id"=>$list_id])->find();
+        $data = $this->where(["contr_relation_id"=>$list_id,"type"=>3])->find();
         return $data;
     }
 }
