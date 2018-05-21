@@ -2,6 +2,7 @@
 var initUi = layui.use('form','laydate');
 var form = layui.form;
 var eTypeId ;//工程类型id
+var procedure ;//工序id
 //工程标准及规范树
 $.ztree({
     //点击节点
@@ -457,6 +458,10 @@ function tpyeTable() {
         processing: true,
         serverSide: true,
         retrieve: true,
+        iDisplayLength:1000,
+        "scrollY": "200px",
+        "scrollCollapse": "true",
+        "paging": "false",
         ajax: {
             "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="
         },
@@ -641,13 +646,13 @@ $(".imgList").on("click","#homeWork",function () {
 
 //点击工序控制点名字
 function clickConName(id) {
-    conThisId = id;
+    procedureId = id;
     $(".bitCodes").css("display","none");
     $(".mybtn").css("display","block");
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&nm_id="+conThisId).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&nm_id="+procedureId).load();
     console.log(id);
 }
 

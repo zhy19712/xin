@@ -374,14 +374,19 @@ class Element extends Permissions
     //单元策划
     public function insertalldata(){
         $param=input('param.');
-        $ma_division_id=$param['ma_division_id'];//找工序下的所有控制点，把所有的数据都传到relation表里,这里的工序按controlpoint里的procedureid算
+        $en_type=$param['en_type'];
+        //找单元工程划分段号下面的所有工序
+        $produceid=Db::name('norm_materialtrackingdivision')
+                  ->where(['pid'=>$en_type])
+                  ->column('id');
         //取出该工序下对应的所有控制点id
         $id_arr=Db::name('norm_controlpoint')
-        ->where(['procedureid'=>$ma_division_id])
-        ->column('id');
+        ->where('procedureid','in',$produceid)
+        ->field('id,procedureid')
+        ->select();
         foreach($id_arr as $v)
         {
-            $data=['type'=>1,'control_id'=>$v,'division_id'=>$param['division_id'],'ma_division_id'=>$ma_division_id,
+            $data=['type'=>1,'control_id'=>$v['id'],'division_id'=>$param['division_id'],'ma_division_id'=>$v['procedureid'],
                 'update_time'=>time(),'checked'=>0];
             Db::name('quality_division_controlpoint_relation')
                 ->insert($data);
@@ -393,12 +398,12 @@ class Element extends Permissions
     {
         //获得控制点和单元工关联的数据id
         $param = input('param.');
-        $unit_id=$param['unit_id'];
+        $division_id=$param['division_id'];
         $control_id=$param['control_id'];
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
        $res=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$unit_id,'control_id'=>$control_id])
+            ->where(['division_id'=>$division_id,'control_id'=>$control_id])
             ->update(['checked'=>$checked]);
     }
 
@@ -497,20 +502,21 @@ class Element extends Permissions
         $search_name='单元工程质量等级评定表';
         if ($this->request->isAjax()) {
             $param = input('param.');
-            $cpr_id=$param['cpr_id'];
+            $cp_id=$param['cp_id'];
             $division_id=$param['division_id'];
             $res = Db::name('quality_form_info')
-                ->where(['ControlPointId' => $cpr_id, 'ApproveStatus' => 2, 'DivisionId' => $division_id])
+                ->where(['ControlPointId' => $cp_id, 'ApproveStatus' => 2, 'DivisionId' => $division_id])
                 ->where('form_name', 'like', '%' . $search_name)
                 ->find();
             //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
             if ($res) {
-                return json(['msg' => 'fail']);
+                return json(['msg' => 'fail1','remark'=>'线上流程']);
+
             } //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
             else {
-                //仅用控制点id做限制可行吗 是否需要在该表中加入单元批id
+                //仅用控制点id做限制不行 需要在该表中加入division_id
                 $copy = Db::name('quality_upload')
-                    ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
+                    ->where(['division_id','control_id' => $cp_id, 'type' => 1])
                     ->where('data_name', 'like', '%' . $search_name . '%')
                     ->find();
                 if ($copy) {

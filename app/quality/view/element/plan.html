@@ -96,6 +96,22 @@
     #tableItemControl th{
         text-align: center;
     }
+
+    #tableContent .dataTables_scroll{
+        height: 100%;
+    }
+    #tableContent .dataTables_scrollBody{
+        max-height: none!important;
+        width: 100%;
+        height: calc(100% - 137px)!important;
+        border-bottom: none!important;
+    }
+    #tableItemControl_wrapper{
+        height: 100% !important;
+    }
+    table.dataTable.no-footer {
+        margin-top: 0px;
+    }
 </style>
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
