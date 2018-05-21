@@ -20,6 +20,7 @@ use app\quality\model\DivisionModel;//工程划分
 use app\standard\model\ControlPoint;//控制点
 use app\quality\model\QualityFormInfoModel;
 use app\quality\model\DivisionControlPointModel;//工程划分、工序、控制点关系表
+use app\quality\model\UploadModel;//分部管控、单位管控中的控制点文件上传
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use think\exception\PDOException;
@@ -507,51 +508,35 @@ class Branch extends Permissions
     }
 
     /**
-     * 控制点执行情况文件 或者 图像资料文件上传
+     * 控制点执行情况文件
      * @return \think\response\Json
      */
     public function addFile()
     {
         if(request()->isAjax()){
             //实例化模型类
-            $model = new BranchfileModel();
-            $branch = new BranchModel();
-            $group = new AdminGroup();
-            $admin = new Admin();
+            $model = new UploadModel();
+            $Division = new DivisionControlPointModel();
             $param = input('post.');
 
-            $admin_id = Session::get('current_id');
-            $admininfo = $admin->getadmininfo($admin_id);
-            $group = $group->getOne($admininfo["admin_group_id"]);
-
             $data = [
-
-                "list_id" => $param["list_id"],//分部策划列表id
-                "filename" => $param["filename"],//上传的源文件名
-                "attachment_id" => $param["attachment_id"],//对应的是attachment文件上传表中的id
-                "owner" => Session::get('current_nickname'),//上传人
-                "company" => $group["name"],//单位
-                "admin_group_id" => $admininfo["admin_group_id"],//组织机构表中的id
-                "date" => date("Y-m-d"),//上传时间，拍摄时间
-                "type" => $param["type"]//1表示执行点执行情况，2表示图像资料
-
+                "contr_relation_id" => $param["list_id"],//分部策划列表id
+                "attachment_id" => $param["attachment_id"]//对应的是attachment文件上传表中的id
             ];
-            $flag = $model->insertFile($data);
+            $flag = $model->insertTb($data);
 
             //文件上传完毕后修改控制点的状态，只有上传控制点执行情况文件时才修改状态
-            //先查询当前的状态
-            if($param["type"] == 1)//1表示执行点执行情况
-            {
-                $info = $branch->getOne($param["list_id"]);
+
+                $info = $Division->getOne($param["list_id"]);
+
                 if($info["status"] == 0)//0表示未执行
                 {
                     $change = [
                         "id" => $param["list_id"],
                         "status" => "1"
                     ];
-                    $branch->editSu($change);
+                    $Division->editRelation($change);
                 }
-            }
             return json($flag);
         }
     }
@@ -563,8 +548,8 @@ class Branch extends Permissions
     {
         if(request()->isAjax()){
             //实例化model类型
-            $model = new BranchfileModel();
-            $branch = new BranchModel();
+            $model = new UploadModel();
+            $Division = new DivisionControlPointModel();
             $param = input('post.');
                 $data = $model->getOne($param['id']);
                 if($data["attachment_id"])
@@ -589,27 +574,26 @@ class Branch extends Permissions
                     //删除attachment表中对应的记录
                     Db::name('attachment')->where("id",$data["attachment_id"])->delete();
                 }
-                $flag = $model->delFile($param['id']);
+                $flag = $model->delTb($param['id']);
+
                 //只有执行点执行情况文件删除时进行以下的操作
                 //如果控制点执行情况的文件全部删除，修改分部策划表中的状态到未执行，也就是0
                 //首先查询控制点文件、图像上传表中是否还存在当前的分部策划表的上传文件记录
-                if($param["type"] == 1)//1表示执行点执行情况
-                {
                     $result = $model->judge($param["list_id"]);
                     if(empty($result))//为空为真表示已经没有文件,修改status的值
                     {
-                        $info = $branch->getOne($param["list_id"]);
+                        $info = $Division->getOne($param["list_id"]);
                         if($info["status"] == 1)//0表示已执行
                         {
                             $change = [
                                 "id" => $param["list_id"],
                                 "status" => "0"
                             ];
-                            $branch->editSu($change);
+                            $Division->editRelation($change);
                         }
                     }
-                }
-                return $flag;
+
+                return json($flag);
         }
     }
 
