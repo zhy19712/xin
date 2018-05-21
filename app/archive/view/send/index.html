@@ -9,9 +9,6 @@
     #file_modal,#add_file_modal{
         display: none;
     }
-    #fileOperation button,#addSubmit button{
-        width: 90px;
-    }
     .mybtn{
         float: right;
         margin-top: 10px;
@@ -27,7 +24,7 @@
             <tr>
                 <th>文件名称</th>
                 <th>文件日期</th>
-                <th>来文单位</th>
+                <th>收文单位</th>
                 <th>发件人</th>
                 <th>收件人</th>
                 <th>状态</th>
@@ -42,25 +39,26 @@
         <div class="layui-form-item">
             <label class="layui-form-label">文件名称</label>
             <div class="layui-input-block">
-                <input type="text" name="file_name" id="file_name" required class="layui-input">
+                <input type="text" name="file_name" id="file_name" required lay-verify="required" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">文件日期</label>
             <div class="layui-input-block">
-                <input type="text" name="date" id="date" required class="layui-input">
+                <input type="text" name="date" id="date" required lay-verify="required" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收件人</label>
             <div class="layui-input-block">
-                <input type="text" name="income_name" id="income_name" required class="layui-input">
+                <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input">
+                <input type="hidden" name="income_id" id="income_id">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收文单位</label>
             <div class="layui-input-block">
-                <input type="text" name="unit_name" id="unit_name" required class="layui-input">
+                <input type="text" name="unit_name" id="unit_name" required lay-verify="required" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -101,65 +99,31 @@
         </div>
         <div class="layui-form-item" id="addSubmit">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="save" id="save">保存</button>
-                <button class="layui-btn layui-btn-primary">返回</button>
+                <button class="layui-btn" lay-submit lay-filter="save" view-filter id="save">保存</button>
+                <button class="layui-btn" lay-submit lay-filter="saveAndSend" view-filter id="saveAndSend">保存并发送</button>
+                <button type="reset" class="layui-btn layui-btn-primary" id="back">返回</button>
             </div>
         </div>
     </form>
 </div>
-
-
-<!--文件查看-->
-<div id="file_modal">
-    <div class="layui-form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">文件名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileName"  class="layui-input">
-            </div>
+<div id="incomeNameLayer">
+    <div id="cc" class="easyui-layout" style="width:100%;height:400px;">
+        <div data-options="region:'west',title:'组织结构',split:true" style="width:260px;">
+            <ul id="ztree" class="ztree"></ul>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">文件日期</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
-            </div>
+        <div data-options="region:'center',title:'收件人'" style="width:764px;padding:5px;">
+            <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                <thead>
+                <tr>
+                    <th>选择</th>
+                    <th>所属部门</th>
+                    <th>姓名</th>
+                    <th>手机号码</th>
+                    <th>所属岗位</th>
+                </tr>
+                </thead>
+            </table>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">发件人</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">来文单位</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-block">
-                <input type="text" name="fileDate"  class="layui-input">
-            </div>
-        </div>
-        <!--附件资料-->
-        <div class="layui-form-item">
-            <label class="layui-form-label">文件附件</label>
-            <div class="layui-input-block">
-                <table id="tableFiles" class="layui-table" cellspacing="0"  width="100%">
-                    <thead>
-                    <tr>
-                        <th class="layui-col-xs-9">文件名称</th>
-                        <th class="layui-col-xs-9">操作</th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="layui-row" id="fileOperation">
-        <button class="layui-btn layui-btn-normal">保存</button>
-        <button class="layui-btn layui-btn-primary">返回</button>
     </div>
 </div>
 {include file="../../public/common_footer"}
