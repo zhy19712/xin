@@ -1407,7 +1407,7 @@ class Common extends Controller
         //如果传的有工序id
         if($this->request->has('nm_id'))
         {
-            $wherestr['procedureid']=$post['nm_id'];
+            $wherestr['id']=$post['nm_id'];
         }
         else
          {
@@ -1416,6 +1416,7 @@ class Common extends Controller
         //norm_materialtrackingdivision的id数组
         $nm_arr=Db::name('norm_materialtrackingdivision')
                 ->where(['pid'=>$en_type,'type'=>3,'cat'=>5])
+                ->where($wherestr)
                 ->column('id');
         //controlpoint里的id数组
         $id_arr=Db::name('norm_controlpoint')
