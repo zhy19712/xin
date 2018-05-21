@@ -1122,6 +1122,17 @@ class Common extends Controller
         $procedureid = input('procedureid') ? input('procedureid') : "";//工序号
         //是否勾选
         $checked = input('checked') ? input('checked') : "";//是否勾选
+
+        if(empty($checked))
+        {
+            $checked = [
+            ];
+        }else
+        {
+            $checked = [
+                "checked"=>0
+            ];
+        }
         //表的总记录数 必要
         if ($selfid && $procedureid) {
             $search_data = [
@@ -1141,7 +1152,7 @@ class Common extends Controller
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where("type = 0")->where("checked",$checked)->where($search_data)->count(0);
+        $recordsTotal = Db::name($table)->where("type = 0")->where($checked)->where($search_data)->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
@@ -1152,7 +1163,7 @@ class Common extends Controller
                     ->join('norm_controlpoint c', 's.control_id = c.id', 'left')
                     ->field("c.code,c.name,s.checked,s.status,s.id")
                     //判断在分部管控中是否显示不显示没有勾选的
-                    ->where("checked",$checked)
+                    ->where($checked)
                     //typedivision_id 类型:0单位,分部工程编号 1检验批
                     ->where("type = 0")
                     ->where($search_data)->where($columnString, 'like', '%' . $search . '%')
@@ -1169,7 +1180,7 @@ class Common extends Controller
                     ->join('norm_controlpoint c', 's.control_id = c.id', 'left')
                     ->field("c.code,c.name,s.checked,s.status,s.id")
                     //判断在分部管控中是否显示不显示没有勾选的
-                    ->where("checked",$checked)
+                    ->where($checked)
                     //typedivision_id 类型:0单位,分部工程编号 1检验批
                     ->where("type = 0")
                     ->where($search_data)
