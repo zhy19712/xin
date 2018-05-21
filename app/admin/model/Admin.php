@@ -301,4 +301,12 @@ class Admin extends Model
         return $data;
     }
 
+    /**
+     * 获取一条信息
+     */
+    public function getOne($id)
+    {
+        $data = $this->where('id', $id)->find();
+        return $data;
+    }
 }

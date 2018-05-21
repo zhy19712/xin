@@ -14,9 +14,12 @@
              beforeSend:function(){
              },
              success:function(req){
-                 window.frames['-1'].window.document.open();
-                 window.frames['-1'].window.document.write(req);
-                 window.frames['-1'].window.document.close();
+                 var iframe=document.getElementById("-1");
+                 var iframew=iframe.contentWindow;
+                 //iframew.document.location.replace(req);
+                 iframew.document.open();
+                 iframew.document.write(req);
+                 iframew.document.close();
              },
              complete:function(){
              },

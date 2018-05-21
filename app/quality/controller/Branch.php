@@ -16,6 +16,7 @@ use app\quality\model\BranchModel;//分部质量管理
 use app\quality\model\BranchfileModel;//分部质量管理文件上传
 use app\admin\model\AdminGroup;//组织机构
 use app\admin\model\Admin;//用户表
+use app\admin\model\AdminCate;//角色分类表
 use app\quality\model\DivisionModel;//工程划分
 use app\standard\model\ControlPoint;//控制点
 use app\quality\model\QualityFormInfoModel;
@@ -656,9 +657,25 @@ class Branch extends Permissions
      */
     public function evaluation()
     {
-        if(request()->isAjax()){
+//        if(request()->isAjax()){
+            //实例化模型类
+            $admin = new Admin();
+            $admincate = new AdminCate();
             //首先判断当前的登录人是否有验评权限，管理员和监理可以编辑
+            $admin_id= Session::has('admin') ? Session::get('admin') : 0;
 
-        }
+            $admin_info = $admin->getOne($admin_id);
+
+            $admin_cate_id = $admin_info["admin_cate_id"];
+
+            if(!empty($admin_cate_id))
+            {
+                $admin_cate_id_array = explode(",",$admin_cate_id);
+                //查询角色角色分类表中超级管理员和监理单位中是否有当前登录的用户
+                $data = $admincate->getAlladminSupervisor();
+
+            }
+
+//        }
     }
 }

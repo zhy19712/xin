@@ -103,4 +103,12 @@ class AdminCate extends Model
         return $data;
     }
 
+    /**
+     * 查询管理员和监理单位分组
+     */
+    public function getAlladminSupervisor()
+    {
+        $data = $this->field("id")->where("role_name like '%管理员%' OR role_name like '%监理%'")->select();
+        return $data;
+    }
 }
