@@ -1,6 +1,11 @@
 {include file="../app/public/common_header.html"}
 <link rel="stylesheet" href="__WEBSITE__/quality/branch/common.css">
 <link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
+<style>
+    .table.dataTable thead .sorting_asc{
+        background: none;
+    }
+</style>
 <div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
     <ul id="ztree" class="ztree"></ul>
 </div>
@@ -18,8 +23,7 @@
         <thead>
         <tr>
             <th>
-                <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;"></label>
-                <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
+                <input type='checkbox' name='all_checked' id="all_checked" checked>
             </th>
             <th>控制点编号</th>
             <th>控制点名称</th>

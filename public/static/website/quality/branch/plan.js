@@ -33,7 +33,6 @@ var setting = {
 zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 //点击获取路径
 function onClick(e, treeId, node) {
-    selectData = "";
     sNodes = zTreeObj.getSelectedNodes();//选中节点
     selfid = zTreeObj.getSelectedNodes()[0].id;
     var path = sNodes[0].name; //选中节点的名字
@@ -84,28 +83,27 @@ var tableItem = $('#tableItem').DataTable( {
     ajax: {
         "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_list.shtml"
     },
-    dom: 'f<"alldel layui-btn layui-btn-sm"><"mybtn layui-btn layui-btn-sm"><"bitCodes layui-btn layui-btn-sm">rtlip',
+    // dom: 'f<"alldel layui-btn layui-btn-sm"><"mybtn layui-btn layui-btn-sm"><"bitCodes layui-btn layui-btn-sm">rti',
+    dom:'frti',
     columns:[
+        {
+            name: "id"
+        },
         {
             name: "controller_point_number"
         },
         {
             name: "controller_point_name"
-        },
-        {
-            name: "id"
         }
+
     ],
     columnDefs: [
         {
             "searchable": false,
             "orderable": false,
-            "targets": [2],
+            "targets": [0],
             "render" :  function(data,type,row) {
-                var a = data;
-                var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='conDown("+data+")'><i class='fa fa-download'></i></a>" ;
-                // html += "<a type='button' class='' style='margin-left: 5px;' onclick='conPrint("+data+")'><i class='fa fa-print'></i></a>" ;
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDel("+data+")'><i class='fa fa-trash'></i></a>" ;
+                var html = "<input type='checkbox' class='checkList' id='"+data+"'>";
                 return html;
             }
         }
@@ -128,13 +126,13 @@ var tableItem = $('#tableItem').DataTable( {
         $('#tableItem_length').insertBefore(".mark");
         $('#tableItem_info').insertBefore(".mark");
         $('#tableItem_paginate').insertBefore(".mark");
-        // $('.dataTables_wrapper,.tbcontainer').css("display","block");
+        $('.dataTables_wrapper,.tbcontainer').css("display","block");
     }
 });
 //
-$(".bitCodes").html("<div id='bitCodes'><i class='fa fa-download' style='padding-right: 3px;'></i>导出二维码</div>");
-$(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>新增控制点</div>");
-$(".alldel").html("<div id='delAll'><i class='fa fa-close'></i>全部删除</div>");
+// $(".bitCodes").html("<div id='bitCodes'><i class='fa fa-download' style='padding-right: 3px;'></i>导出二维码</div>");
+// $(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>新增控制点</div>");
+// $(".alldel").html("<div id='delAll'><i class='fa fa-close'></i>全部删除</div>");
 
 //点击新增控制节点
 $("#tableContent").on("click",".mybtn #test3",function () {
@@ -270,3 +268,38 @@ function showPdf(id,url,type_model) {
 function conPrint(id){
     showPdf(id,'./printDocument',"BranchfileModel");
 }
+
+
+//全选 全不选
+$("#all_checked").on('click',function () {
+    if($(this).is(':checked')){
+        $(".checkList").prop("checked",true);
+    }else{
+        $(".checkList").prop("checked",false);
+    }
+});
+
+// 选中或取消 checkBox
+$("#tableItem").on('click','.checkList',function () {
+  if($(this).is(':checked')){
+    alert($(this).attr('id') + true);
+  }else{
+    alert($(this).attr('id') + false);
+  }
+  $.ajax({
+    url:'./',
+    data:{
+      selfid : selfid,
+      conThisId : conThisId
+    },
+    type:"POST",
+    dataType:"JSON",
+    success:function (res) {
+      if(res.code == 1){
+
+      }else{
+          layer.msg();
+      }
+    }
+  })
+});

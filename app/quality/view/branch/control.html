@@ -3,15 +3,19 @@
 <link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
 <style>
     #tableContent .imgList {
-         border-top: none;
+        margin-top: 10px;
+         border-top: 1px dotted #000;
          margin-bottom: .5%;
     }
-     .uploadBox i.fa:before{
+     .uploadBox i.fa:before,.relationBox i.fa:before{
         background: none;
         color: #ffffff;
     }
-    .uploadBox {
-        display: none;
+    .selectShow {
+        /*display: none;*/
+    }
+    .relationBox{
+        right: 60px;
     }
     #tableContent{
         border: none;
@@ -28,11 +32,25 @@
     #tableContent2 .dataTables_scrollBody{
         max-height: none!important;
         width: 100%;
-        height: calc(100% - 39px)!important;
+        height: calc(100% - 89px)!important;
         border-bottom: none!important;
     }
     #tableContent2 .dataTables_scrollHeadInner,#tableContent2 table {
         width: 100%!important;
+    }
+    .result{
+        margin-left: 150px;
+        margin-top: 13px;
+        position: relative;
+    }
+    .result .layui-select-title,#date{
+        width: 360px;
+    }
+    .result .layui-form-label{
+        font-weight: bolder;
+    }
+    .layui-input[readonly]{
+        background-color: #fff!important;
     }
 </style>
 <div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
@@ -42,6 +60,27 @@
     <div class="easyui-layout" data-options="fit:true">
         <div id="tableContent2" data-options="region:'north',title:'<i class=\'fa fa-dot-circle-o\'></i>控制点</h3>',split:true" style="width:100%;height: 70%; position: relative;">
             <!--<div class="listName" style="padding-left: 0.5%"><h3><i class='fa fa-dot-circle-o'></i>控制点</h3></div>-->
+            <div class="result">
+                <form class="layui-form" action="">
+                    <div class="layui-inline" style="margin-left: -3%">
+                        <label class="layui-form-label">验评结果</label>
+                        <div class="layui-input-inline">
+                            <select name="type" lay-filter="type">
+                                <option value="">-请选择-</option>
+                                <option value="0">未验评</option>
+                                <option value="1">优良</option>
+                                <option value="2">合格</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline" style="margin-left: 5%">
+                        <label class="layui-form-label">验评日期</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="date" id="date" lay-verify="date"  placeholder="请选择" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div class="imgList" style="width: 100%;">
                 <span id="imgListLeft">
                     <a id="homeWork" class="imgListStyle" onclick="clickConName(0)" href="javascript:;"><img src="__WEBSITE__/quality/branch/work.png" alt="工作">&nbsp;作业</a>
@@ -56,7 +95,7 @@
                     <th>控制点编号</th>
                     <th>控制点名称</th>
                     <th>状态</th>
-                    <th>操作</th>
+                    <th style="display: none;">操作</th>
                 </tr>
                 </thead>
             </table>
@@ -82,24 +121,25 @@
                         <div class="markSituation"></div>
                     </div>
                 </div>
-                <div title="图像资料" style="padding:20px;">
-                    <table id="tableImage" class="table table-striped table-bordered" cellspacing="0"  width="100%">
-                        <thead>
-                        <tr>
-                            <th>图片名称</th>
-                            <th>上传人</th>
-                            <th>单位</th>
-                            <th>上传时间</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                    </table>
-                    <div class="tbcontainer">
-                        <div class="markImage"></div>
-                    </div>
-                </div>
+                <!--<div title="图像资料" style="padding:20px;">-->
+                    <!--<table id="tableImage" class="table table-striped table-bordered" cellspacing="0"  width="100%">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<th>图片名称</th>-->
+                            <!--<th>上传人</th>-->
+                            <!--<th>单位</th>-->
+                            <!--<th>上传时间</th>-->
+                            <!--<th>操作</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                    <!--</table>-->
+                    <!--<div class="tbcontainer">-->
+                        <!--<div class="markImage"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
-            <div class="uploadBox"><i class="fa fa-upload"></i>上传</div>
+            <div class="relationBox selectShow"><i class="fa fa-upload"></i>关联</div>
+            <div class="uploadBox selectShow"><i class="fa fa-upload"></i>上传</div>
         </div>
     </div>
     <div id="form_container" style="display: none;"></div>

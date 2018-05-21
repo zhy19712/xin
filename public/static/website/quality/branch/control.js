@@ -3,6 +3,7 @@ var attachment_id = "",file_name='',type=1;//文件id，文件名,控制点或�
 layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(){
     var form = layui.form
         ,upload = layui.upload
+        ,laydate = layui.laydate
         ,layer = layui.layer;
 
     upload.render({
@@ -47,6 +48,10 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(
            })
         }
     });
+
+  laydate.render({
+    elem: '#date' //指定元素
+  });
 
 });
 
@@ -109,7 +114,7 @@ $(".imgList").on("click","a",function () {
 $(".imgList").on("click","#homeWork",function () {
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-    $(".uploadBox").hide();
+    $(".selectShow").hide();
 });
 //点击工序控制点名字
 function clickConName(id) {
@@ -328,7 +333,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
         return;
     }
     if(conThisId!=0){
-        $(".uploadBox").show();
+        $(".selectShow").show();
     }
     $(this).addClass("select-color").siblings().removeClass("select-color");
     selectData = tableItem.row(".select-color").data();//获取选中行数据
@@ -421,3 +426,12 @@ function conPicshow(id){
 function conPrint(id) {
     showPdf(id,'./printDocument',"BranchfileModel");
 }
+
+//关联收文记录
+$(".relationBox").on('click',function () {
+  layer.open({
+    type:2,
+    area:['800px','600px'],
+    content:'./relationadd'
+  })
+});
