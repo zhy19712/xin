@@ -1232,7 +1232,7 @@ class Common extends Controller
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where($search_data)->count(0);
+        $recordsTotal = Db::name($table)->where($search_data)->where("type = 3")->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
@@ -1244,7 +1244,10 @@ class Common extends Controller
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
                     ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
+                    //搜索条件
                     ->where($search_data)
+                    //type = 3表示分部工程
+                    ->where("type = 3")
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
@@ -1259,7 +1262,10 @@ class Common extends Controller
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
                     ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
+                    //搜索条件
                     ->where($search_data)
+                    //type = 3表示分部工程
+                    ->where("type = 3")
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
