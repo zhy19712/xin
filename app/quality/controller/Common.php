@@ -156,6 +156,10 @@ class Common extends Controller
             $res['msg'] = '没有上传文件';
             return json($res);
         }
+
+        //接收前台传过来的文件
+        $accept_file = $_FILES["file"];
+
         $module = $this->request->has('module') ? $this->request->param('module') : $module;//模块
         $web_config = Db::name('admin_webconfig')->where('web', 'web')->find();
         $info = $file->validate(['size' => $web_config['file_size'] * 1024, 'ext' => $web_config['file_type']])->rule('date')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . $module . DS . $use);
@@ -163,6 +167,7 @@ class Common extends Controller
             //写入到附件表
             $data = [];
             $data['module'] = $module;
+            $data['name'] = $accept_file["name"];//上传原文件名
             $data['filename'] = $info->getFilename();//文件名
             $data['filepath'] = DS . 'uploads' . DS . $module . DS . $use . DS . $info->getSaveName();//文件路径
             $data['fileext'] = $info->getExtension();//文件后缀
@@ -1206,31 +1211,50 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    // 分部质量管理 控制点执行情况，图像资料
+    // 分部质量管理 控制点执行情况
     public function quality_subdivision_planning_file($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
+        //自定义表名，分部管控、单位管控中的控制点文件上传
+        $table = "quality_upload";
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //获取筛选条件
         $list_id = input('list_id') ? input('list_id') : "";//分部策划列表id
-        $type = input('type') ? input('type') : "";//1表示执行点执行情况，2表示图像资料
+//        $type = input('type') ? input('type') : "";//1表示执行点执行情况，2表示图像资料
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where(["list_id" => $list_id, "type" => $type])->where("admin_group_id > 0")->count(0);
+        $recordsTotal = Db::name($table)->where(["list_id" => $list_id])->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->where(["list_id" => $list_id, "type" => $type])->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('attachment m', 'm.id = s.attachment_id', 'left')
+                    ->join('admin n', 'n.id = m.user_id', 'left')
+                    ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
+                    ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
+                    ->where(["s.contr_relation_id" => $list_id])
+                    ->where($columnString, 'like', '%' . $search . '%')
+                    ->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {
-                $recordsFilteredResult = Db::name($table)->where(["list_id" => $list_id, "type" => $type])->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('attachment m', 'm.id = s.attachment_id', 'left')
+                    ->join('admin n', 'n.id = m.user_id', 'left')
+                    ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
+                    ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
+                    ->where(["s.contr_relation_id" => $list_id])
+                    ->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = $recordsTotal;
             }
         }

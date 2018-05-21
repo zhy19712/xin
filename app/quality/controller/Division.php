@@ -828,9 +828,9 @@ class Division extends Permissions{
     // 对应关系不存在的 新增一条
     public function addProjectRelation()
     {
-        // TODO 查询所有的工程划分节点
         $division = new DivisionModel();
-
+        $flag = $division->allRelation();
+        return $flag;
     }
 
     /**
