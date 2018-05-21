@@ -104,15 +104,15 @@ class  DivisionControlPointModel extends Model
      * @param $param
      * @return array
      */
-    public function editAll($param)
+    public function editAll($search,$data)
     {
         try {
-            if($param["ma_division_id"] != 0)
+            if($search["ma_division_id"] != 0)
             {
-                $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
+                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id'],"ma_division_id"=>$search["ma_division_id"]]);
             }else
             {
-                $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id']]);
+                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id']]);
             }
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
@@ -129,15 +129,15 @@ class  DivisionControlPointModel extends Model
      * @param $param
      * @return array
      */
-    public function editNoAll($param)
+    public function editNoAll($search,$data)
     {
         try {
-            if($param["ma_division_id"] != 0)
+            if($search["ma_division_id"] != 0)
             {
-                $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
+                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id'],"ma_division_id"=>$search["ma_division_id"]]);
             }else
             {
-                $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id']]);
+                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id']]);
             }
 
             if (false === $result) {

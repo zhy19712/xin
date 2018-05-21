@@ -375,6 +375,7 @@ class Element extends Permissions
     public function insertalldata(){
         $param=input('param.');
         $en_type=$param['en_type'];
+        $unit_id=$param['unit_id'];
         //找单元工程划分段号下面的所有工序
 
 
@@ -382,7 +383,7 @@ class Element extends Permissions
                   ->where(['pid'=>$en_type])
                   ->column('id');
         $limit=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$param['division_id']])
+            ->where(['division_id'=>$param['division_id'],'unit_id'=>$param['unit_id']])
             ->where('ma_division_id','in', $produceid)
             ->find();
         if($limit)
@@ -473,12 +474,11 @@ class Element extends Permissions
         $par = array();
         $par['type'] = 1;
         $par['checked'] = 0;//0为被选中
-        $unit_id = $this->request->param('division_id');
-        $res=Db::name('quality_unit')
-            ->where(['id'=>$unit_id])
-            ->field('division_id')
-            ->find();
-        $par['division_id']=$res['division_id'];
+
+        $division_id = $this->request->param('division_id');
+        $unit_id = $this->request->param('unit_id');
+        $par['division_id']=$division_id;
+        $par['unit_id']=$unit_id;
         if ($this->request->has('ma_division_id')) {
             $par['ma_division_id'] = $this->request->param('ma_division_id');
         }
