@@ -1112,44 +1112,65 @@ class Common extends Controller
     // 分部质量管理 分部策划，分部管控 控制点列表
     public function quality_subdivision_planning_list($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
+        //自定义表名，工程划分、工序、控制点关系表
+        $table = "quality_division_controlpoint_relation";
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //获取筛选条件
         $selfid = input('selfid') ? input('selfid') : "";//左边的树节点的id
         $procedureid = input('procedureid') ? input('procedureid') : "";//工序号
+        //是否勾选
+        $checked = input('checked') ? input('checked') : "";//是否勾选
         //表的总记录数 必要
         if ($selfid && $procedureid) {
             $search_data = [
-                "selfid" => $selfid,
-                "procedureid" => $procedureid
+                "division_id" => $selfid,
+                "ma_division_id" => $procedureid
             ];
         } else if ($selfid && !$procedureid) {
             $search_data = [
-                "selfid" => $selfid
+                "division_id" => $selfid
             ];
         } else if (!$selfid && !$procedureid) {
             $search_data = [
-                "selfid" => $selfid,
-                "procedureid" => $procedureid
+                "division_id" => $selfid,
+                "ma_division_id" => $procedureid
             ];
         }
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where($search_data)->count(0);
+        $recordsTotal = Db::name($table)->where("checked",$checked)->where($search_data)->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->where($search_data)->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('norm_controlpoint c', 's.control_id = c.id', 'left')
+                    ->field("c.code,c.name,s.checked,s.status,s.id")
+                    //判断在分部管控中是否显示不显示没有勾选的
+                    ->where("checked",$checked)
+                    ->where($search_data)->where($columnString, 'like', '%' . $search . '%')
+                    ->order($order)->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {
-                $recordsFilteredResult = Db::name($table)->where($search_data)->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name($table)
+                    ->alias("s")
+                    ->join('norm_controlpoint c', 's.control_id = c.id', 'left')
+                    ->field("c.code,c.name,s.checked,s.status,s.id")
+                    //判断在分部管控中是否显示不显示没有勾选的
+                    ->where("checked",$checked)
+                    ->where($search_data)
+                    ->order($order)
+                    ->limit(intval($start), intval($length))
+                    ->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
@@ -1166,8 +1187,6 @@ class Common extends Controller
             $temp = [];
 
         }
-
-
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 

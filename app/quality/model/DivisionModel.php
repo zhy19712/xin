@@ -141,4 +141,48 @@ class DivisionModel extends Model
         return "[" . substr($str, 0, -1) . "]";
     }
 
+
+
+    // 给 每一个 单位或分部或检验批 批量添加  控制点 对应关系
+    public function addRelation($ma_division_id,$cid,$genre)
+    {
+        //类型 1单位2子单位工程 3分部4子分部工程 5分项工程6单元工程
+        $arr_1 = [1,2];
+        $arr_2 = [3,4];
+        $arr_3 = [5,6];
+
+        //type division_id 类型:0单位,分部工程编号 1检验批
+        $type = 0;
+        $data = $insert_data = [];
+
+        // 单位工程
+        if($genre == 1){
+            $data = $this->where(['type'=>['in',$arr_1]])->column('id');
+        }
+
+        // 分部工程
+        if($genre == 2){
+            $data = $this->where(['type'=>['in',$arr_2]])->column('id');
+        }
+
+        // 检验批
+        if($genre == 3){
+            $type = 1;
+            $arr_4 = $this->where(['type'=>['in',$arr_3]])->column('id');
+            $data = Db::name('quality_unit')->where(['division_id'=>['in',$arr_4]])->column('id');
+        }
+
+        foreach ($data as $k=>$v) {
+            $insert_data[$k]['type'] = $type;
+            $insert_data[$k]['division_id'] = $v;
+            $insert_data[$k]['ma_division_id'] = $ma_division_id;
+            $insert_data[$k]['control_id'] = $cid;
+            $insert_data[$k]['checked'] = 0;
+        }
+
+        $rel = new DivisionControlPointModel();
+        $res = $rel->insertTb($insert_data);
+        return $res;
+    }
+
 }
