@@ -13,6 +13,7 @@
 namespace app\standard\controller;
 
 use app\admin\controller\Permissions;
+use app\quality\model\DivisionModel;
 use app\standard\model\ControlPoint;
 use app\standard\model\MaterialTrackingDivision;
 use app\standard\model\TemplateModel;
@@ -74,9 +75,11 @@ class Library extends Permissions
     public function addcontrollpoint($id = null)
     {
         if ($this->request->isAjax()) {
+            //实例化模型类
+            $model = new ControlPoint();
             $mod = input('post.');
             if (empty($mod['id'])) {
-                $res = $this->controlPointService->allowField(true)->save($mod);
+                $res = $model->insertTb($mod);
             } else {
                 $res = $this->controlPointService->allowField(true)->save($mod, ['id' => $mod['id']]);
             }
@@ -180,6 +183,10 @@ class Library extends Permissions
         if (count(ControlPoint::all(['procedureid' => $id]))) {
             return json(['code' => -1, 'msg' => '请先删除节点下控制点']);
         }
+
+        //先删除工程划分、工序、控制点关系表中的相关的数据
+        $flag = Db::name("quality_division_controlpoint_relation")->where("ma_division_id",$id)->delete();
+
         return MaterialTrackingDivision::destroy($id) ? json(['code' => 1]) : json(['code' => -1, 'msg' => '删除失败']);
     }
 
