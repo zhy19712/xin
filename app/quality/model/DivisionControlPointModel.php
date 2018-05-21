@@ -18,6 +18,21 @@ class  DivisionControlPointModel extends Model
 {
     protected $name='quality_division_controlpoint_relation';
 
+    public function insertTb($param)
+    {
+        try {
+            $result = $this->allowField(true)->insertAll($param);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'data' => [], 'msg' => '添加成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => -1, 'msg' => $e->getMessage()];
+        }
+    }
+
+
     /**
      * 关联控制点
      */
