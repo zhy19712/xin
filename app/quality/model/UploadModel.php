@@ -25,7 +25,7 @@ class UploadModel extends Model
     public function insertTb($param)
     {
         try {
-            $result = $this->allowField(true)->insertAll($param);
+            $result = $this->allowField(true)->save($param);
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
@@ -65,7 +65,7 @@ class UploadModel extends Model
      */
     public function judge($list_id)
     {
-        $data = $this->where(["contr_relation_id"=>$list_id])->find();
+        $data = $this->where(["contr_relation_id"=>$list_id,"type"=>3])->find();
         return $data;
     }
 }

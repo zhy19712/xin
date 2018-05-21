@@ -138,6 +138,30 @@ uploader.on( 'uploadError', function( file ,data) {
 //附件下载
 function fileDownload(that) {
     var uid = $(that).attr('uid');
+    // $.ajax({
+    //     url: url,
+    //     data:{id:uid},
+    //     type:"post",
+    //     success: function (res) {
+    //         if(res.code != 1){
+    //             console.log(res)
+    //             layer.msg(res.msg)
+    //         }else {
+    //             $("#form_container").empty();
+    //             var str = "";
+    //             str += ""
+    //                 + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+    //                 + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
+    //                 + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+    //                 + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+    //                 + "<button type='submit' class=btn" + id +"></button>"
+    //                 + "</form>"
+    //             $("#form_container").append(str);
+    //             $("#form_container").find(".btn" + id).click();
+    //         }
+    //     }
+    // })
+
 }
 
 //附件查看

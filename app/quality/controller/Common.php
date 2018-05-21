@@ -1221,6 +1221,8 @@ class Common extends Controller
         $recordsFiltered = 0;
         //获取筛选条件
         $list_id = input('list_id') ? input('list_id') : "";//分部策划列表id
+        $type = input('type') ? input('type') : "";//type = 3表示分部工程
+
         if(empty($list_id))
         {
             $search_data = [];
@@ -1232,7 +1234,7 @@ class Common extends Controller
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where(["list_id" => $list_id])->count(0);
+        $recordsTotal = Db::name($table)->where($search_data)->where("type",$type)->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
@@ -1244,7 +1246,10 @@ class Common extends Controller
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
                     ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
+                    //搜索条件
                     ->where($search_data)
+                    //type = 3表示分部工程
+                    ->where("s.type",$type)
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
@@ -1259,7 +1264,10 @@ class Common extends Controller
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
                     ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
+                    //搜索条件
                     ->where($search_data)
+                    //type = 3表示分部工程
+                    ->where("s.type",$type)
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
