@@ -456,6 +456,7 @@ function tpyeTable() {
         pagingType: "full_numbers",
         processing: true,
         serverSide: true,
+        retrieve: true,
         ajax: {
             "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="
         },
