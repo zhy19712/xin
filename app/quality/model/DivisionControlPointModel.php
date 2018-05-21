@@ -100,6 +100,44 @@ class  DivisionControlPointModel extends Model
     }
 
     /**
+     * 编辑工程划分、工序、控制点关系表全部编辑
+     * @param $param
+     * @return array
+     */
+    public function editAll($param)
+    {
+        try {
+            $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'msg' => '编辑成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => 0, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * 编辑工程划分、工序、控制点关系表全部编辑
+     * @param $param
+     * @return array
+     */
+    public function editNoAll($param)
+    {
+        try {
+            $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'msg' => '编辑成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => 0, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
      * 获取一条信息
      */
     public function getOne($id)

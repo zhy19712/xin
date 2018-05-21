@@ -1,6 +1,29 @@
 {include file="../app/public/common_header.html"}
 <link rel="stylesheet" href="__WEBSITE__/quality/branch/common.css">
 <link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
+<style>
+    .table.dataTable thead .sorting_asc{
+        background: none;
+    }
+    #tableContent .dataTables_scroll{
+        height: 100%;
+    }
+    .dataTables_wrapper.no-footer .dataTables_scrollBody{
+        border-bottom: none!important;
+    }
+    #tableContent .dataTables_scroll{
+        height: 100%;
+    }
+    #tableContent .dataTables_scrollBody{
+        max-height: none!important;
+        width: 100%;
+        height: calc(100% - 100px)!important;
+        border-bottom: none!important;
+    }
+    #tableContent .dataTables_scrollHeadInner,#tableContent table {
+        width: 100%!important;
+    }
+</style>
 <div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
     <ul id="ztree" class="ztree"></ul>
 </div>
@@ -18,11 +41,11 @@
         <thead>
         <tr>
             <th>
-                <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;"></label>
-                <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
+                <input type='checkbox' name='all_checked' id="all_checked" checked>
             </th>
             <th>控制点编号</th>
             <th>控制点名称</th>
+            <th>操作</th>
         </tr>
         </thead>
     </table>
@@ -61,6 +84,7 @@
                         '</a>\n';
                 };
                 $("#imgListRight").append(optionStrAfter);
+              $("#tableItem_wrapper").height("calc(100% - 50px - "+$('.imgList').outerHeight(true)+"px)");
             }
         })
     }
