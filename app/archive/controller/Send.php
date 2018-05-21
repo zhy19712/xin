@@ -116,7 +116,7 @@ class Send extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
             $send = new SendModel();
-            $flag = $send->getOne($param['major_key'],$param['type']);
+            $flag = $send->getOne($param['major_key'],$param['see_type']);
             return json($flag);
         }
     }
