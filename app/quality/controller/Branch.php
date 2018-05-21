@@ -533,14 +533,14 @@ class Branch extends Permissions
                     $data = [
                         "division_id"=>$param["division_id"],
                         "ma_division_id"=>$param["ma_division_id"],
-                        "checked"=>0
+                        "checked"=>1
                     ];
                 }else
                 {
                     $data = [
                         "division_id"=>$param["division_id"],
 //                        "ma_division_id"=>$param["ma_division_id"],
-                        "checked"=>0
+                        "checked"=>1
                     ];
                 }
                 $flag = $model->editNoAll($data);
