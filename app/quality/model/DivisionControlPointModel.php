@@ -107,8 +107,7 @@ class  DivisionControlPointModel extends Model
     public function editAll($param)
     {
         try {
-            $arr = array("checked"=>0);
-            $result = $this->allowField(true)->where($param)->save($arr);
+            $result = $this->allowField(true)->where($param)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
@@ -127,8 +126,7 @@ class  DivisionControlPointModel extends Model
     public function editNoAll($param)
     {
         try {
-            $arr = array("checked"=>1);
-            $result = $this->allowField(true)->where($param)->save($arr);
+            $result = $this->allowField(true)->where($param)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
