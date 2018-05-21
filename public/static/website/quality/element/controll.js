@@ -19,7 +19,7 @@ tableItem = $('#tableItem').DataTable({
     "paging": "false",
     ajax: {
         // "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=" //老的
-        "url": "/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="
+        "url": "/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=&unit_id="
     },
     dom: 'rt',
     columns: [
@@ -156,7 +156,7 @@ function nodeClick(e, treeId, node) {
 
     $(".imgList").css("display","none");
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
-    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
+    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=&unit_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id=").load();
     console.log(controlRowId)
@@ -270,7 +270,7 @@ function nodeClickUnit(e, treeId, node) {
     }
     if(nodeUnitId != undefined || nodeUnitId != null){
         // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
-        tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
+        tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
@@ -326,7 +326,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(".mybtnAdd").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
-    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
+    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
     flag = true;
 });
 
@@ -338,7 +338,7 @@ function clickConName(id) {
     console.log(procedureId);
     if(nodeUnitId != undefined || nodeUnitId != null && procedureId != undefined || procedureId != null){
         // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
-        tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+        tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
     }
     $("#tableContent .imgList").css('display','block');
     console.log(id + " 控制点工序 procedureId");

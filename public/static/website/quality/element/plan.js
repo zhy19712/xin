@@ -632,7 +632,7 @@ function insetData(eTypeId) {
     $.ajax({
         type: "post",
         url: "/quality/element/insertalldata",
-        data: {en_type: eTypeId,division_id:division_id},
+        data: {en_type: eTypeId,division_id:division_id,unit_id:selectRow},
         success: function (res) {
             console.log(res);
         }
