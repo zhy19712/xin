@@ -107,7 +107,13 @@ class  DivisionControlPointModel extends Model
     public function editAll($param)
     {
         try {
-            $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
+            if($param["ma_division_id"])
+            {
+                $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
+            }else
+            {
+                $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id']]);
+            }
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
@@ -126,7 +132,14 @@ class  DivisionControlPointModel extends Model
     public function editNoAll($param)
     {
         try {
-            $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
+            if($param["ma_division_id"])
+            {
+                $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
+            }else
+            {
+                $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id']]);
+            }
+
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {

@@ -508,20 +508,41 @@ class Branch extends Permissions
             //全选
             if($param["checked"] == "All")
             {
-                $data = [
-                    "division_id"=>$param["division_id"],
-                    "ma_division_id"=>$param["ma_division_id"],
-                    "checked"=>0
-                ];
+                if($param["ma_division_id"] != 0)
+                {
+                    $data = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>$param["ma_division_id"],
+                        "checked"=>0
+                    ];
+                }else
+                {
+                    $data = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>0,
+                        "checked"=>0
+                    ];
+                }
+
                 $flag = $model->editAll($data);
                 return json($flag);
             }else if($param["checked"] == "noAll")
             {
-                $data = [
-                    "division_id"=>$param["division_id"],
-                    "ma_division_id"=>$param["ma_division_id"],
-                    "checked"=>1
-                ];
+                if($param["ma_division_id"] != 0)
+                {
+                    $data = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>$param["ma_division_id"],
+                        "checked"=>1
+                    ];
+                }else
+                {
+                    $data = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>0,
+                        "checked"=>1
+                    ];
+                }
                 $flag = $model->editNoAll($data);
                 return json($flag);
             }
