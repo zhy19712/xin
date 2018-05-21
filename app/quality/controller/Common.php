@@ -1249,7 +1249,7 @@ class Common extends Controller
                     //搜索条件
                     ->where($search_data)
                     //type = 3表示分部工程
-                    ->where("type",$type)
+                    ->where("s.type",$type)
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
@@ -1267,7 +1267,7 @@ class Common extends Controller
                     //搜索条件
                     ->where($search_data)
                     //type = 3表示分部工程
-                    ->where("type",$type)
+                    ->where("s.type",$type)
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
