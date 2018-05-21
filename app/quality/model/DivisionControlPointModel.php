@@ -107,7 +107,7 @@ class  DivisionControlPointModel extends Model
     public function editAll($param)
     {
         try {
-            if($param["ma_division_id"])
+            if($param["ma_division_id"] != 0)
             {
                 $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
             }else
@@ -132,7 +132,7 @@ class  DivisionControlPointModel extends Model
     public function editNoAll($param)
     {
         try {
-            if($param["ma_division_id"])
+            if($param["ma_division_id"] != 0)
             {
                 $result = $this->allowField(true)->save($param, ['division_id' => $param['division_id'],"ma_division_id"=>$param["ma_division_id"]]);
             }else
