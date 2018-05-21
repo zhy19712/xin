@@ -21,6 +21,7 @@ use app\standard\model\ControlPoint;//控制点
 use app\quality\model\QualityFormInfoModel;
 use app\quality\model\DivisionControlPointModel;//工程划分、工序、控制点关系表
 use app\quality\model\UploadModel;//分部管控、单位管控中的控制点文件上传
+use app\quality\model\SendModel;//收发文
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use think\exception\PDOException;
@@ -604,5 +605,37 @@ class Branch extends Permissions
     public function relationadd()
     {
         return $this->fetch();
+    }
+
+    /**
+     * 添加关联收发文附件到分部管控、单位管控中的控制点文件上传文件表中
+     */
+    public function addRelationFile()
+    {
+        if(request()->isAjax()){
+            //实例化模型类
+            $model = new UploadModel();
+            $send = new SendModel();
+            $param = input('post.');
+            $send_info = $send->getOne($param["id"],1);
+            //遍历数组循环插入分部管控、单位管控中的控制点文件上传文件表中
+            //如果当前的数组不为空
+            if(!empty($send_info["attachment"]))
+            {
+                foreach($send_info["attachment"] as $key=>$val)
+                {
+                   $data = [
+                       "contr_relation_id"=>$param["list_id"],
+                       "attachment_id" =>$val["id"],
+                       "type" => 3//2表示单位工程，3表示分部工程，5表示单元工程
+                   ];
+                    $model->insertTb($data);
+                }
+                return json(['code' => 1,'msg' => '添加成功！']);
+            }else
+            {
+                return json(['code' => -1,'msg' => '添加失败！']);
+            }
+        }
     }
 }
