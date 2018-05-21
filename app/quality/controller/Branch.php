@@ -616,6 +616,7 @@ class Branch extends Permissions
             //实例化模型类
             $model = new UploadModel();
             $send = new SendModel();
+            $Division = new DivisionControlPointModel();
             $param = input('post.');
             $send_info = $send->getOne($param["id"],1);
             //遍历数组循环插入分部管控、单位管控中的控制点文件上传文件表中
@@ -631,11 +632,33 @@ class Branch extends Permissions
                    ];
                     $model->insertTb($data);
                 }
+                //文件上传完毕后修改控制点的状态，只有上传控制点执行情况文件时才修改状态
+
+                $info = $Division->getOne($param["list_id"]);
+
+                if($info["status"] == 0)//0表示未执行
+                {
+                    $change = [
+                        "id" => $param["list_id"],
+                        "status" => "1"
+                    ];
+                    $Division->editRelation($change);
+                }
                 return json(['code' => 1,'msg' => '添加成功！']);
             }else
             {
                 return json(['code' => -1,'msg' => '添加失败！']);
             }
+        }
+    }
+    /**
+     * 分部管控中的验评
+     */
+    public function evaluation()
+    {
+        if(request()->isAjax()){
+            //首先判断当前的登录人是否有验评权限，管理员和监理可以编辑
+
         }
     }
 }
