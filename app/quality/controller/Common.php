@@ -1403,12 +1403,10 @@ class Common extends Controller
         $recordsFiltered = 0;
         $recordsFilteredResult = array();
         $post=input('post.');
-        //$en_type=$post['en_type'];
         $en_type=$post['en_type'];
         //如果传的有工序id
         if($this->request->has('nm_id'))
         {
-
             $wherestr['procedureid']=$post['nm_id'];
         }
         else
@@ -1419,6 +1417,7 @@ class Common extends Controller
         $nm_arr=Db::name('norm_materialtrackingdivision')
                 ->where(['pid'=>$en_type,'type'=>3,'cat'=>5])
                 ->column('id');
+        //controlpoint里的id数组
         $id_arr=Db::name('norm_controlpoint')
             ->where('procedureid','in',$nm_arr)
             ->column('id');
@@ -1456,7 +1455,6 @@ class Common extends Controller
             $infos[] = $temp;
             $temp = [];
         }
-
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 }
