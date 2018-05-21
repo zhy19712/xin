@@ -25,7 +25,7 @@ class UploadModel extends Model
     public function insertTb($param)
     {
         try {
-            $result = $this->allowField(true)->insertAll($param);
+            $result = $this->allowField(true)->save($param);
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
