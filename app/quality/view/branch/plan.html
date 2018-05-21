@@ -5,6 +5,24 @@
     .table.dataTable thead .sorting_asc{
         background: none;
     }
+    #tableContent .dataTables_scroll{
+        height: 100%;
+    }
+    .dataTables_wrapper.no-footer .dataTables_scrollBody{
+        border-bottom: none!important;
+    }
+    #tableContent .dataTables_scroll{
+        height: 100%;
+    }
+    #tableContent .dataTables_scrollBody{
+        max-height: none!important;
+        width: 100%;
+        height: calc(100% - 100px)!important;
+        border-bottom: none!important;
+    }
+    #tableContent .dataTables_scrollHeadInner,#tableContent table {
+        width: 100%!important;
+    }
 </style>
 <div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
     <ul id="ztree" class="ztree"></ul>
@@ -27,6 +45,7 @@
             </th>
             <th>控制点编号</th>
             <th>控制点名称</th>
+            <th>操作</th>
         </tr>
         </thead>
     </table>
@@ -65,6 +84,7 @@
                         '</a>\n';
                 };
                 $("#imgListRight").append(optionStrAfter);
+              $("#tableItem_wrapper").height("calc(100% - 50px - "+$('.imgList').outerHeight(true)+"px)");
             }
         })
     }

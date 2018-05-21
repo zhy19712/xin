@@ -51,8 +51,7 @@
     <div class="tbcontainer">
         <div class="mark"></div>
     </div>
-    <input type="hidden" name="inputId" id="hiddenValId" value="">
-    <input type="hidden" name="inputName" id="hiddenValName" value="">
+    <input type="hidden" name="list_id" id="listId" >
 </div>
 
 {include file="../app/public/common_footer.html"}
@@ -167,10 +166,24 @@
     $("#test3").click(function () {
       // console.log($("#tableItemChose tbody td:nth-of-type(1) a"));
       if(flag){
-        alert(checkId);
-        setTimeout(function () {
-          closWin();
-        },800)
+       $.ajax({
+         url:"./addRelationFile",
+         type:"POST",
+         data:{
+           list_id:$("#listId").val(),
+           id:checkId
+         },
+         dataType:"JSON",
+         success:function (res) {
+           if(res.code == 1){
+             parent.refreshTable()
+             layer.msg("添加成功");
+           }else{
+             layer.msg(res.msg);
+           }
+           closWin()
+         }
+       });
       }
     });
   });

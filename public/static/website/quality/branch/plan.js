@@ -2,7 +2,7 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
     var form = layui.form
         ,layer = layui.layer;
 });
-var selfid = "",conThisId = "" ;//树节点id, 工序id
+var selfid = "",conThisId = "0" ;//树节点id, 工序id
 //组织结构树
 var setting = {
     view: {
@@ -33,23 +33,27 @@ var setting = {
 zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 //点击获取路径
 function onClick(e, treeId, node) {
+  conThisId = "0";
     sNodes = zTreeObj.getSelectedNodes();//选中节点
     selfid = zTreeObj.getSelectedNodes()[0].id;
     var path = sNodes[0].name; //选中节点的名字
     node = sNodes[0].getParentNode();//获取父节点
     //判断是否还有子节点
-    if (!sNodes[0].children) {
+    if (sNodes[0].type == '3') {
         //判断是否还有父节点
         selfidName()
         $("#tableContent .imgList").css('display','block');
+      var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+".shtml";
+      tableItem.ajax.url(url).load();
+    }else{
+      $("#tableContent .imgList").hide()
+      var url = "/quality/common/datatablesPre/tableName/quality_subdivision_planning_list.shtml";
+      tableItem.ajax.url(url).load();
     }
-    groupid = sNodes[0].pId //父节点的id
-    var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+".shtml";
-    tableItem.ajax.url(url).load();
     $(".mybtn").css("display","none");//新增
     $(".alldel").css("display","none");//全部删除
 
-    $("#homeWork").css("color","#2213e9");
+    $("#homeWork").css("color","#2213e9").siblings().css("color","#CDCDCD");
 }
 //点击置灰
 $(".imgList").on("click","a",function () {
@@ -79,6 +83,9 @@ var tableItem = $('#tableItem').DataTable( {
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
+    iDisplayLength:1000,
+    "scrollY": "450px",
+    "order": [[ 1, "asc" ]],
     // scrollY: 600,
     ajax: {
         "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_list.shtml"
@@ -87,14 +94,17 @@ var tableItem = $('#tableItem').DataTable( {
     dom:'frti',
     columns:[
         {
-            name: "id"
+            name: "checked"
         },
         {
-            name: "controller_point_number"
+            name: "code"
         },
         {
-            name: "controller_point_name"
-        }
+            name: "name"
+        },
+      {
+              name:"id"
+      }
 
     ],
     columnDefs: [
@@ -103,15 +113,23 @@ var tableItem = $('#tableItem').DataTable( {
             "orderable": false,
             "targets": [0],
             "render" :  function(data,type,row) {
-                var html = "<input type='checkbox' class='checkList' id='"+data+"'>";
+                if(data == 0){
+                  var html = "<input type='checkbox' class='checkList' checked id='"+row[3]+"'>";
+                }else{
+                  var html = "<input type='checkbox' class='checkList' id='"+row[3]+"'>";
+                }
                 return html;
             }
-        }
+        },
+      {
+        targets:[3],
+        "visible": false
+      }
     ],
     language: {
         "lengthMenu": "_MENU_",
         "zeroRecords": "没有找到记录",
-        "info": "第 _PAGE_ 页 ( 共 _PAGES_ 页, _TOTAL_ 项 )",
+        "info": "( 共_TOTAL_ 项 )",
         "infoEmpty": "无记录",
         "search": "搜索：",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
@@ -127,7 +145,21 @@ var tableItem = $('#tableItem').DataTable( {
         $('#tableItem_info').insertBefore(".mark");
         $('#tableItem_paginate').insertBefore(".mark");
         $('.dataTables_wrapper,.tbcontainer').css("display","block");
+    },
+  "fnDrawCallback":function () {
+    var lock = 1;
+    $(".checkList").each(function (i,item) {
+      if(!$(item).is(":checked")){
+        lock = 0;
+        return;
+      }
+    });
+    if( lock == 0){
+      $('#all_checked').prop("checked",false);
+    }else{
+      $('#all_checked').prop("checked",true);
     }
+  }
 });
 //
 // $(".bitCodes").html("<div id='bitCodes'><i class='fa fa-download' style='padding-right: 3px;'></i>导出二维码</div>");
@@ -136,7 +168,6 @@ var tableItem = $('#tableItem').DataTable( {
 
 //点击新增控制节点
 $("#tableContent").on("click",".mybtn #test3",function () {
-    console.log(conThisId);
     layer.open({
         type: 2,
         title: '控制点选择',
@@ -272,34 +303,77 @@ function conPrint(id){
 
 //全选 全不选
 $("#all_checked").on('click',function () {
+  var checked;
     if($(this).is(':checked')){
         $(".checkList").prop("checked",true);
+        checked = "noAll";
     }else{
         $(".checkList").prop("checked",false);
+       checked = "All";
     }
+    $.ajax({
+      url: './checkBox',
+      data: {
+        division_id: selfid,
+        ma_division_id: conThisId,
+        checked: checked
+      },
+      type: "POST",
+      dataType: "JSON",
+      success: function (res) {
+        if(res.code == 1){
+
+        }else{
+          layer.msg(res.msg);
+          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+        }
+      }
+    })
 });
 
 // 选中或取消 checkBox
 $("#tableItem").on('click','.checkList',function () {
+    var id = $(this).attr('id');
+    var checked;
   if($(this).is(':checked')){
-    alert($(this).attr('id') + true);
+    checked = 0;
   }else{
-    alert($(this).attr('id') + false);
+    checked = 1;
   }
   $.ajax({
-    url:'./',
+    url:'./checkBox',
     data:{
-      selfid : selfid,
-      conThisId : conThisId
+      division_id : selfid,
+      ma_division_id : conThisId,
+      id:id,
+      checked:checked
     },
     type:"POST",
     dataType:"JSON",
     success:function (res) {
       if(res.code == 1){
-
+        if(checked == 1 ){
+            $('#all_checked').prop("checked",false);
+        }else{
+            var lock = 1;
+            $(".checkList").each(function (i,item) {
+                if(!$(item).is(":checked")){
+                 lock = 0;
+                  return;
+                }
+              });
+          if( lock == 0){
+            $('#all_checked').prop("checked",false);
+          }else{
+            $('#all_checked').prop("checked",true);
+          }
+        }
       }else{
-          layer.msg();
+          layer.msg(res.msg);
+        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
       }
     }
   })
 });
+
+//
