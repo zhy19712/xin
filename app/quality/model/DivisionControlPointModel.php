@@ -75,4 +75,13 @@ class  DivisionControlPointModel extends Model
             return ['code' => 0, 'msg' => $e->getMessage()];
         }
     }
+
+    /**
+     * 获取一条信息
+     */
+    public function getOne($id)
+    {
+        $data = $this->where('id', $id)->find();
+        return $data;
+    }
 }

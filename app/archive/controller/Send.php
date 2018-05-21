@@ -100,14 +100,15 @@ class Send extends Permissions
     public function preview()
     {
         if($this->request->isAjax()){
-            // 前台需要传递的参数有:  主键编号 major_key
+            // 前台需要传递的参数有:  主键编号 major_key 文件类型 see_type 1 收文 2 发文
             // 查看就PDF、Word、图片这三种，其他的都不显示查看
             // 前台可以根据我返回的文件后缀来判断是否显示  查看功能
 
             $param = input('param.');
             // 验证规则
             $rule = [
-                ['major_key', 'require', '请选择文件']
+                ['major_key', 'require', '请选择文件'],
+                ['see_type', 'require', '请选择文件类型']
             ];
             $validate = new \think\Validate($rule);
             //验证部分数据合法性
@@ -115,7 +116,7 @@ class Send extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
             $send = new SendModel();
-            $flag = $send->getOne($param['major_key'],2);
+            $flag = $send->getOne($param['major_key'],$param['type']);
             return json($flag);
         }
     }

@@ -93,6 +93,33 @@ class DivisionModel extends Model
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
+
+                /**
+                 * 批量新增单位，分部的关联控制点 对应关系
+                 */
+                if(in_array($param['type'],[1,2,3,4])){
+                    $ma = $con = $insert_data = [];
+                    if(in_array($param['type'],[1,2])){
+                        $ma = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
+                    }else if(in_array($param['type'],[3,4])){
+                        $ma = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
+                    }
+                    foreach ($ma as $k=>$v){
+                        $con = Db::name('norm_controlpoint')->where(['procedureid'=>['eq',$v]])->column('id');
+                        if(sizeof($con)){
+                            foreach ($con as $k1=>$v1){
+                                $insert_data[$k]['type'] = 0;
+                                $insert_data[$k]['division_id'] = $id;
+                                $insert_data[$k]['ma_division_id'] = $v;
+                                $insert_data[$k]['control_id'] = $v1;
+                                $insert_data[$k]['checked'] = 0;
+                            }
+                        }
+                    }
+                    $rel = new DivisionControlPointModel();
+                    $res = $rel->insertTb($insert_data);
+                }
+
                 return ['code' => 1, 'data' => $data, 'msg' => '添加成功'];
             }
         } catch (PDOException $e) {
@@ -156,17 +183,17 @@ class DivisionModel extends Model
         $data = $insert_data = [];
 
         // 单位工程
-        if($genre == 1){
+        if($genre == 2){
             $data = $this->where(['type'=>['in',$arr_1]])->column('id');
         }
 
         // 分部工程
-        if($genre == 2){
+        if($genre == 3){
             $data = $this->where(['type'=>['in',$arr_2]])->column('id');
         }
 
         // 检验批
-        if($genre == 3){
+        if($genre == 5){
             $type = 1;
             $arr_4 = $this->where(['type'=>['in',$arr_3]])->column('id');
             $data = Db::name('quality_unit')->where(['division_id'=>['in',$arr_4]])->column('id');
@@ -183,6 +210,58 @@ class DivisionModel extends Model
         $rel = new DivisionControlPointModel();
         $res = $rel->insertTb($insert_data);
         return $res;
+    }
+
+
+    // 新增单位，分部 和 检验批 的关联控制点 对应关系
+    public function allRelation()
+    {
+        // 单位
+        $arr_1 = $this->where(['type'=>['in',[1,2]]])->column('id');
+        // 单位下的工序
+        $ma_1 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
+        $res = $this->insertAllCon('0',$arr_1,$ma_1);
+        if($res['code'] == -1){
+            return $res;
+        }
+        // 分部
+        $arr_2 = $this->where(['type'=>['in',[3,4]]])->column('id');
+        // 分部下的工序
+        $ma_2 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
+        $res = $this->insertAllCon('0',$arr_2,$ma_2);
+        if($res['code'] == -1){
+            return $res;
+        }
+        // 检验批
+        $arr_3 = $this->where(['type'=>['in',[5,6]]])->column('id');
+        $arr_4 = Db::name('quality_unit')->where(['division_id'=>['in',$arr_3]])->column('id');
+        $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>5])->column('id');
+        $res = $this->insertAllCon('1',$arr_4,$ma_3);
+        return $res;
+    }
+
+    public function insertAllCon($type,$arr_1,$ma_1)
+    {
+        $insert_data = [];
+        $rel = new DivisionControlPointModel();
+
+        foreach ($arr_1 as $k=>$v){
+            foreach ($ma_1 as $k1=>$v1){
+                // 工序下的控制点
+                $con_1 = Db::name('norm_controlpoint')->where(['procedureid'=>['eq',$v1]])->column('id');
+                foreach ($con_1 as $k2=>$v2){
+                    $insert_data[$k2]['type'] = $type;
+                    $insert_data[$k2]['division_id'] = $v;
+                    $insert_data[$k2]['ma_division_id'] = $v1;
+                    $insert_data[$k2]['control_id'] = $v2;
+                    $insert_data[$k2]['checked'] = 0;
+                }
+            }
+            $res = $rel->insertTb($insert_data);
+            if($res['code'] == -1){
+                return $res;
+            }
+        }
     }
 
 }
