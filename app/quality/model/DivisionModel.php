@@ -56,12 +56,12 @@ class DivisionModel extends Model
                         $str .= '},';
                     } else {
                         if ($type == 2) {
-                            if ($vo['type'] == $type) {
-                                $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
-                                $str .= '},';
-                            }
+//                            if ($vo['type'] == $type) {
+//                                $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
+//                                $str .= '},';
+//                            }
                         } else if ($type == 4) {
-                            if ($vo['type'] <= 4) {
+                            if ($vo['type'] < 4 && $vo['type'] != 2) {
                                 $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
                                 $str .= '},';
                             }
@@ -235,7 +235,7 @@ class DivisionModel extends Model
         // 检验批
         $arr_3 = $this->where(['type'=>['in',[5,6]]])->column('id');
         $arr_4 = Db::name('quality_unit')->where(['division_id'=>['in',$arr_3]])->column('id');
-        $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>5])->column('id');
+        $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>3,'cat'=>5])->column('id');
         $res = $this->insertAllCon('1',$arr_4,$ma_3);
         if($res['code'] == -1){
             return $res;
@@ -264,12 +264,12 @@ class DivisionModel extends Model
                         $insert_data[$k2] = [];
                     }
                 }
-            }
-            $insert_data = array_filter($insert_data);
-            if(!empty($insert_data)){
-                $res = $rel->insertTbAll($insert_data);
-                if($res['code'] == -1){
-                    return $res;
+                $insert_data = array_filter($insert_data);
+                if(!empty($insert_data)){
+                    $res = $rel->insertTbAll($insert_data);
+                    if($res['code'] == -1){
+                        return $res;
+                    }
                 }
             }
         }
