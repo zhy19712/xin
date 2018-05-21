@@ -1397,32 +1397,50 @@ class Common extends Controller
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         $recordsFilteredResult = array();
-        $id = $this->request->param('en_type');
-        //表的总记录数 必要
-        $recordsTotal = Db::name($table)->where(['type'=>5,'id'=>$id])->count();
+        $post=input('post.');
+        //$en_type=$post['en_type'];
+        $en_type=$post['en_type'];
+        //如果传的有工序id
+        if($this->request->has('nm_id'))
+        {
+
+            $wherestr['procedureid']=$post['nm_id'];
+        }
+        else
+         {
+            $wherestr='';
+         }
+        //norm_materialtrackingdivision的id数组
+        $nm_arr=Db::name('norm_materialtrackingdivision')
+                ->where(['pid'=>$en_type,'type'=>3,'cat'=>5])
+                ->column('id');
+        $id_arr=Db::name('norm_controlpoint')
+            ->where('procedureid','in',$nm_arr)
+            ->column('id');
+
+
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('m')
-                    ->join('norm_controlpoint b', 'm.id=b.procedureid', 'left')
-                    ->where(['m.cat'=>5,'m.id'=>$id])
-                    ->field('b.id,b.code,b.name,b.qualitytemplateid')
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name('norm_controlpoint')
+                    ->where('id','in',$id_arr)
+                    ->order('code')->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('m')
-                    ->join('norm_controlpoint b', 'm.id=b.procedureid', 'left')
-                    ->where(['m.cat'=>5,'m.id'=>$id])
-                    ->field('b.id,b.code,b.name,b.qualitytemplateid')
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFilteredResult = Db::name('norm_controlpoint')
+                    ->where('id','in',$id_arr)
+                    ->order('code')
+                    ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         }
+        //表的总记录数 必要
+        $recordsTotal =count($recordsFiltered);
         $temp = array();
         $infos = array();
         foreach ($recordsFilteredResult as $key => $value) {
