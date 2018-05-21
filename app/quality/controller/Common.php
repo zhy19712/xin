@@ -1141,7 +1141,7 @@ class Common extends Controller
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where("checked",$checked)->where($search_data)->count(0);
+        $recordsTotal = Db::name($table)->where("type = 0")->where("checked",$checked)->where($search_data)->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
@@ -1153,8 +1153,11 @@ class Common extends Controller
                     ->field("c.code,c.name,s.checked,s.status,s.id")
                     //判断在分部管控中是否显示不显示没有勾选的
                     ->where("checked",$checked)
+                    //typedivision_id 类型:0单位,分部工程编号 1检验批
+                    ->where("type = 0")
                     ->where($search_data)->where($columnString, 'like', '%' . $search . '%')
-                    ->order($order)->limit(intval($start), intval($length))
+                    ->order($order)
+//                    ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -1167,9 +1170,11 @@ class Common extends Controller
                     ->field("c.code,c.name,s.checked,s.status,s.id")
                     //判断在分部管控中是否显示不显示没有勾选的
                     ->where("checked",$checked)
+                    //typedivision_id 类型:0单位,分部工程编号 1检验批
+                    ->where("type = 0")
                     ->where($search_data)
                     ->order($order)
-                    ->limit(intval($start), intval($length))
+//                    ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
             }
