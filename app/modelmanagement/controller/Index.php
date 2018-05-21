@@ -22,6 +22,9 @@ class Index extends Permissions
                 case 'panorama':
                     $path = '../app/modelmanagement/view/index/panorama.html';
                     break;
+                case 'manage':
+                    $path = '../app/modelmanagement/view/index/manage.html';
+                    break;
                 case 'quality':
                     $path = '../app/modelmanagement/view/index/quality.html';
                     break;

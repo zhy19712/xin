@@ -376,9 +376,20 @@ class Element extends Permissions
         $param=input('param.');
         $en_type=$param['en_type'];
         //找单元工程划分段号下面的所有工序
+
+
         $produceid=Db::name('norm_materialtrackingdivision')
                   ->where(['pid'=>$en_type])
                   ->column('id');
+        $limit=Db::name('quality_division_controlpoint_relation')
+            ->where(['division_id'=>$param['division_id']])
+            ->where('ma_division_id','in', $produceid)
+            ->find();
+        if($limit)
+        {
+            exit();
+        }
+        //限制只插一次
         //取出该工序下对应的所有控制点id
         $id_arr=Db::name('norm_controlpoint')
         ->where('procedureid','in',$produceid)
@@ -388,9 +399,11 @@ class Element extends Permissions
         {
             $data=['type'=>1,'control_id'=>$v['id'],'division_id'=>$param['division_id'],'ma_division_id'=>$v['procedureid'],
                 'update_time'=>time(),'checked'=>0];
-            Db::name('quality_division_controlpoint_relation')
-                ->insert($data);
+            $res[]=$data;
         }
+        $resdata=Db::name('quality_division_controlpoint_relation')
+            ->insertAll($res);
+        dump($resdata);
     }
 
     //勾选时访问的接口，将该条数据的状态更新
@@ -405,6 +418,11 @@ class Element extends Permissions
        $res=Db::name('quality_division_controlpoint_relation')
             ->where(['division_id'=>$division_id,'control_id'=>$control_id])
             ->update(['checked'=>$checked]);
+       if($res)
+       {
+
+           return json(['msg'=>'success']);
+       }
     }
 
     //单元管控
@@ -533,9 +551,10 @@ class Element extends Permissions
     public function copycheck()
     {
         if ($this->request->isAjax()) {
-            $cpr_id=input('param.')['cpr_id'];
+            $cp_id=input('param.')['cp_id'];
+            $division_id=input('param.')['division_id'];
             $res = Db::name('quality_upload')
-                ->where(['$contr_relation_id' => $cpr_id, 'type' => 1])
+                ->where(['division_id'=>$division_id,'$control_id' => $cp_id, 'type' => 1])
                 ->find();
             //如果有结果
             if ($res) {

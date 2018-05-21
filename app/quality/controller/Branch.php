@@ -16,6 +16,7 @@ use app\quality\model\BranchModel;//分部质量管理
 use app\quality\model\BranchfileModel;//分部质量管理文件上传
 use app\admin\model\AdminGroup;//组织机构
 use app\admin\model\Admin;//用户表
+use app\admin\model\AdminCate;//角色分类表
 use app\quality\model\DivisionModel;//工程划分
 use app\standard\model\ControlPoint;//控制点
 use app\quality\model\QualityFormInfoModel;
@@ -616,6 +617,7 @@ class Branch extends Permissions
             //实例化模型类
             $model = new UploadModel();
             $send = new SendModel();
+            $Division = new DivisionControlPointModel();
             $param = input('post.');
             $send_info = $send->getOne($param["id"],1);
             //遍历数组循环插入分部管控、单位管控中的控制点文件上传文件表中
@@ -631,11 +633,49 @@ class Branch extends Permissions
                    ];
                     $model->insertTb($data);
                 }
+                //文件上传完毕后修改控制点的状态，只有上传控制点执行情况文件时才修改状态
+
+                $info = $Division->getOne($param["list_id"]);
+
+                if($info["status"] == 0)//0表示未执行
+                {
+                    $change = [
+                        "id" => $param["list_id"],
+                        "status" => "1"
+                    ];
+                    $Division->editRelation($change);
+                }
                 return json(['code' => 1,'msg' => '添加成功！']);
             }else
             {
                 return json(['code' => -1,'msg' => '添加失败！']);
             }
         }
+    }
+    /**
+     * 分部管控中的验评
+     */
+    public function evaluation()
+    {
+//        if(request()->isAjax()){
+            //实例化模型类
+            $admin = new Admin();
+            $admincate = new AdminCate();
+            //首先判断当前的登录人是否有验评权限，管理员和监理可以编辑
+            $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+
+            $admin_info = $admin->getOne($admin_id);
+
+            $admin_cate_id = $admin_info["admin_cate_id"];
+
+            if(!empty($admin_cate_id))
+            {
+                $admin_cate_id_array = explode(",",$admin_cate_id);
+                //查询角色角色分类表中超级管理员和监理单位中是否有当前登录的用户
+                $data = $admincate->getAlladminSupervisor();
+
+            }
+
+//        }
     }
 }

@@ -1142,7 +1142,8 @@ class Common extends Controller
         if ($selfid && $procedureid) {
             $search_data = [
                 "division_id" => $selfid,
-                "ma_division_id" => $procedureid
+                "ma_division_id" => $procedureid,
+                "checked"=>0
             ];
         } else if ($selfid && !$procedureid) {
             $search_data = [
@@ -1226,7 +1227,7 @@ class Common extends Controller
         if(empty($list_id))
         {
             $search_data = [
-                "contr_relation_id"=>""
+                "contr_relation_id"=>-1
             ];
         }else
         {
