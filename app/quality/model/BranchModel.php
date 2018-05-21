@@ -17,7 +17,7 @@ use think\Db;
 
 class BranchModel extends Model
 {
-    protected $name = 'quality_subdivision_planning_list';
+    protected $name = 'quality_division_controlpoint_relation';
 
     /**
      * 获取一条信息
@@ -135,7 +135,7 @@ class BranchModel extends Model
      */
     public function getid($selfid,$procedureid,$id)
     {
-        $data = $this->where(["selfid"=>$selfid,"procedureid"=>$procedureid,"controller_point_id"=>$id])->find();
+        $data = $this->where(["division_id"=>$selfid,"ma_division_id"=>$procedureid,"control_id"=>$id])->find();
         return $data;
     }
 }

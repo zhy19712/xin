@@ -372,18 +372,58 @@ class Element extends Permissions
      */
 
     //单元策划
-    //勾选时访问的接口，将该条数据的状态更新为未选中
+    public function insertalldata(){
+        $param=input('param.');
+        $en_type=$param['en_type'];
+        //找单元工程划分段号下面的所有工序
+
+
+        $produceid=Db::name('norm_materialtrackingdivision')
+                  ->where(['pid'=>$en_type])
+                  ->column('id');
+
+        //限制只插一次
+        $limit=Db::name('quality_division_controlpoint_relation')
+            ->where(['divsion_id'=>$param['division_id']])
+            ->where(['ma_divsion_id','in',$produceid])
+            ->find();
+        if($limit)
+        {
+           exit();//如果有结果直接退出不执行
+        }
+
+        //取出该工序下对应的所有控制点id
+        $id_arr=Db::name('norm_controlpoint')
+        ->where('procedureid','in',$produceid)
+        ->field('id,procedureid')
+        ->select();
+        foreach($id_arr as $v)
+        {
+            $data=['type'=>1,'control_id'=>$v['id'],'division_id'=>$param['division_id'],'ma_division_id'=>$v['procedureid'],
+                'update_time'=>time(),'checked'=>0];
+            $res[]=$data;
+        }
+        Db::name('quality_division_controlpoint_relation')
+            ->insertAll($res);
+    }
+
+    //勾选时访问的接口，将该条数据的状态更新
     public function checkout()
     {
         //获得控制点和单元工关联的数据id
-        $post = input('post.');
-        $id=$post['id'];
+        $param = input('param.');
+        $division_id=$param['division_id'];
+        $control_id=$param['control_id'];
+        //点击的时候将checked值更新,0为选中，1为不选
+        $checked=$param['checked'];
+       $res=Db::name('quality_division_controlpoint_relation')
+            ->where(['division_id'=>$division_id,'control_id'=>$control_id])
+            ->update(['checked'=>$checked]);
+       if($res)
+       {
 
-        //将该条数据的checked更新为1,1为未勾选状态
-        Db::name('quality_division_controlpoint_relation')
-            ->where(['id'=>$id])
-            ->update(['checked'=>1]);
-
+           return json(['msg'=>'success']);
+       }
     }
 
     //单元管控
@@ -480,22 +520,23 @@ class Element extends Permissions
 
         $search_name='单元工程质量等级评定表';
         if ($this->request->isAjax()) {
-            $post = input('post.');
-            $cpr_id=$post['cpr_id'];
-            $division_id=$post['division_id'];
+            $param = input('param.');
+            $cp_id=$param['cp_id'];
+            $division_id=$param['division_id'];
             $res = Db::name('quality_form_info')
-                ->where(['ControlPointId' => $cpr_id, 'ApproveStatus' => 2, 'DivisionId' => $division_id])
+                ->where(['ControlPointId' => $cp_id, 'ApproveStatus' => 2, 'DivisionId' => $division_id])
                 ->where('form_name', 'like', '%' . $search_name)
                 ->find();
             //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
             if ($res) {
-                return json(['msg' => 'fail']);
+                return json(['msg' => 'fail1','remark'=>'线上流程']);
+
             } //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
             else {
-                //仅用控制点id做限制可行吗 是否需要在该表中加入单元批id
+                //仅用控制点id做限制不行 需要在该表中加入division_id
                 $copy = Db::name('quality_upload')
-                    ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
-                    ->where('form_name', 'like', '%' . $search_name . '%')
+                    ->where(['division_id','control_id' => $cp_id, 'type' => 1])
+                    ->where('data_name', 'like', '%' . $search_name . '%')
                     ->find();
                 if ($copy) {
                     return json(['msg' => 'success']);
@@ -511,8 +552,10 @@ class Element extends Permissions
     public function copycheck()
     {
         if ($this->request->isAjax()) {
+            $cp_id=input('param.')['cp_id'];
+            $division_id=input('param.')['division_id'];
             $res = Db::name('quality_upload')
-                ->where(['$contr_relation_id' => $cpr_id, 'type' => 1])
+                ->where(['division_id'=>$division_id,'$control_id' => $cp_id, 'type' => 1])
                 ->find();
             //如果有结果
             if ($res) {

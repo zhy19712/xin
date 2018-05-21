@@ -6,6 +6,7 @@
  * Time: 14:00
  */
 namespace app\quality\model;
+use think\exception\PDOException;
 use think\Model;
 
 /**
@@ -16,6 +17,44 @@ use think\Model;
 class  DivisionControlPointModel extends Model
 {
     protected $name='quality_division_controlpoint_relation';
+
+    public function insertTb($param)
+    {
+        try {
+            $result = $this->allowField(true)->save($param);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'data' => [], 'msg' => '添加成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => -1, 'msg' => $e->getMessage()];
+        }
+    }
+
+    public function insertTbAll($param)
+    {
+        try {
+            $result = $this->allowField(true)->insertAll($param);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'data' => [], 'msg' => '添加成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => -1, 'msg' => $e->getMessage()];
+        }
+    }
+
+    public function delRelation($id,$type)
+    {
+        try {
+            $this->where(['type'=>$type,'division_id'=>$id])->delete();
+            return ['code' => 1, 'msg' => '删除成功'];
+        } catch (PDOException $e) {
+            return ['code' => -1, 'msg' => $e->getMessage()];
+        }
+    }
 
     /**
      * 关联控制点
@@ -39,5 +78,33 @@ class  DivisionControlPointModel extends Model
     public function Procedure()
     {
        return $this->hasOne('app\standard\model\MaterialTrackingDivision','id','ma_division_id');
+    }
+
+    /**
+     * 编辑工程划分、工序、控制点关系表
+     * @param $param
+     * @return array
+     */
+    public function editRelation($param)
+    {
+        try {
+            $result = $this->allowField(true)->save($param, ['id' => $param['id']]);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'msg' => '编辑成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => 0, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * 获取一条信息
+     */
+    public function getOne($id)
+    {
+        $data = $this->where('id', $id)->find();
+        return $data;
     }
 }

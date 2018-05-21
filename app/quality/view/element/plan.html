@@ -93,6 +93,31 @@
     .select-color {
         background-color: #FDD5B5 !important;
     }
+    #tableItemControl th{
+        text-align: center;
+    }
+
+    #tableContent .dataTables_scroll{
+        height: 100%;
+    }
+    #tableContent .dataTables_scrollBody{
+        max-height: none!important;
+        width: 100%;
+        height: calc(100% - 137px)!important;
+        border-bottom: none!important;
+    }
+    #tableItemControl_wrapper{
+        height: 100% !important;
+    }
+    table.dataTable.no-footer {
+        margin-top: 0px;
+    }
+    #tableContent table.dataTable thead .sorting_asc {
+        background-image: none !important;
+    }
+    .dataTables_scrollHeadInner,#tableItem_wrapper table,#imageData_wrapper table, #implementation_wrapper table, #onlineFill_wrapper table{
+        width: 100% !important;
+    }
 </style>
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
@@ -101,7 +126,7 @@
 </div>
 <div id="unitWorkParent" data-options="region:'center'" style="background:#fff;">
     <div class="easyui-layout" data-options="fit:true">
-        <div id="unitWork" data-options="region:'north',title:'单元工程段号(单元划分)',split:true" style="height: 45%;background:#fff;">
+        <div id="unitWork" data-options="region:'north',title:'单元工程段号(单元划分)',split:true" style="height: 55%;background:#fff;">
             <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
                 <thead>
                 <tr>
@@ -130,6 +155,10 @@
             <table id="tableItemControl" class="table table-striped table-bordered" cellspacing="0"  width="100%">
                 <thead>
                 <tr>
+                    <th>
+                        <label for="all_checked_plan" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                        <input type='checkbox' name='all_checked_plan' id="all_checked_plan" class='icheckbox_minimal' value=''>
+                    </th>
                     <th>控制点编号</th>
                     <th>控制点名称</th>
                     <th>操作</th>

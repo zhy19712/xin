@@ -56,12 +56,12 @@ class DivisionModel extends Model
                         $str .= '},';
                     } else {
                         if ($type == 2) {
-                            if ($vo['type'] == $type) {
-                                $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
-                                $str .= '},';
-                            }
+//                            if ($vo['type'] == $type) {
+//                                $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
+//                                $str .= '},';
+//                            }
                         } else if ($type == 4) {
-                            if ($vo['type'] <= 4) {
+                            if ($vo['type'] < 4 && $vo['type'] != 2) {
                                 $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
                                 $str .= '},';
                             }
@@ -93,6 +93,33 @@ class DivisionModel extends Model
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
+
+                /**
+                 * 批量新增单位，分部的关联控制点 对应关系
+                 */
+                if(in_array($param['type'],[1,2,3,4])){
+                    $ma = $con = $insert_data = [];
+                    if(in_array($param['type'],[1,2])){
+                        $ma = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
+                    }else if(in_array($param['type'],[3,4])){
+                        $ma = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
+                    }
+                    foreach ($ma as $k=>$v){
+                        $con = Db::name('norm_controlpoint')->where(['procedureid'=>['eq',$v]])->column('id');
+                        if(sizeof($con)){
+                            foreach ($con as $k1=>$v1){
+                                $insert_data[$k]['type'] = 0;
+                                $insert_data[$k]['division_id'] = $id;
+                                $insert_data[$k]['ma_division_id'] = $v;
+                                $insert_data[$k]['control_id'] = $v1;
+                                $insert_data[$k]['checked'] = 0;
+                            }
+                        }
+                    }
+                    $rel = new DivisionControlPointModel();
+                    $res = $rel->insertTb($insert_data);
+                }
+
                 return ['code' => 1, 'data' => $data, 'msg' => '添加成功'];
             }
         } catch (PDOException $e) {
@@ -139,6 +166,113 @@ class DivisionModel extends Model
             $str .= '},';
         }
         return "[" . substr($str, 0, -1) . "]";
+    }
+
+
+
+    // 给 每一个 单位或分部或检验批 批量添加  控制点 对应关系
+    public function addRelation($ma_division_id,$cid,$genre)
+    {
+        //类型 1单位2子单位工程 3分部4子分部工程 5分项工程6单元工程
+        $arr_1 = [1,2];
+        $arr_2 = [3,4];
+        $arr_3 = [5,6];
+
+        //type division_id 类型:0单位,分部工程编号 1检验批
+        $type = 0;
+        $data = $insert_data = [];
+
+        // 单位工程
+        if($genre == 2){
+            $data = $this->where(['type'=>['in',$arr_1]])->column('id');
+        }
+
+        // 分部工程
+        if($genre == 3){
+            $data = $this->where(['type'=>['in',$arr_2]])->column('id');
+        }
+
+        // 检验批
+        if($genre == 5){
+            $type = 1;
+            $arr_4 = $this->where(['type'=>['in',$arr_3]])->column('id');
+            $data = Db::name('quality_unit')->where(['division_id'=>['in',$arr_4]])->column('id');
+        }
+
+        foreach ($data as $k=>$v) {
+            $insert_data[$k]['type'] = $type;
+            $insert_data[$k]['division_id'] = $v;
+            $insert_data[$k]['ma_division_id'] = $ma_division_id;
+            $insert_data[$k]['control_id'] = $cid;
+            $insert_data[$k]['checked'] = 0;
+        }
+
+        $rel = new DivisionControlPointModel();
+        $res = $rel->insertTb($insert_data);
+        return $res;
+    }
+
+
+    // 新增单位，分部 和 检验批 的关联控制点 对应关系
+    public function allRelation()
+    {
+        // 单位
+        $arr_1 = $this->where(['type'=>['in',[1,2]]])->column('id');
+        // 单位下的工序
+        $ma_1 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
+        $res = $this->insertAllCon('0',$arr_1,$ma_1);
+        if($res['code'] == -1){
+            return $res;
+        }
+        // 分部
+        $arr_2 = $this->where(['type'=>['in',[3,4]]])->column('id');
+        // 分部下的工序
+        $ma_2 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
+        $res = $this->insertAllCon('0',$arr_2,$ma_2);
+        if($res['code'] == -1){
+            return $res;
+        }
+        // 检验批
+        $arr_3 = $this->where(['type'=>['in',[5,6]]])->column('id');
+        $arr_4 = Db::name('quality_unit')->where(['division_id'=>['in',$arr_3]])->column('id');
+        $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>3,'cat'=>5])->column('id');
+        $res = $this->insertAllCon('1',$arr_4,$ma_3);
+        if($res['code'] == -1){
+            return $res;
+        }
+        return ['code' => 1, 'msg' => '添加成功'];
+    }
+
+    public function insertAllCon($type,$arr_1,$ma_1)
+    {
+        $insert_data = [];
+        $rel = new DivisionControlPointModel();
+
+        foreach ($arr_1 as $k=>$v){
+            foreach ($ma_1 as $k1=>$v1){
+                // 工序下的控制点
+                $con_1 = Db::name('norm_controlpoint')->where(['procedureid'=>['eq',$v1]])->column('id');
+                foreach ($con_1 as $k2=>$v2){
+                    $is_exist = Db::name('quality_division_controlpoint_relation')->where(['type'=>$type,'division_id'=>$v,'ma_division_id'=>$v1,'control_id'=>$v2])->value('id');
+                    if(empty($is_exist)){
+                        $insert_data[$k2]['type'] = $type;
+                        $insert_data[$k2]['division_id'] = $v;
+                        $insert_data[$k2]['ma_division_id'] = $v1;
+                        $insert_data[$k2]['control_id'] = $v2;
+                        $insert_data[$k2]['checked'] = 0;
+                    }else{
+                        $insert_data[$k2] = [];
+                    }
+                }
+                $insert_data = array_filter($insert_data);
+                if(!empty($insert_data)){
+                    $res = $rel->insertTbAll($insert_data);
+                    if($res['code'] == -1){
+                        return $res;
+                    }
+                }
+            }
+        }
     }
 
 }

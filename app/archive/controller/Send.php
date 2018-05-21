@@ -64,7 +64,6 @@ class Send extends Permissions
                 ['date', 'require', '请选择文件日期'],
                 ['income_id', 'require|number', '请选择收件人|收件人编号只能是数字'],
                 ['relevance_id', 'number', '请选择关联收文|关联收文编号只能是数字'],
-                ['file_ids', 'alphaDash', '请上传附件|附件编码只能是字母、数字、下划线 _和破折号 - 的组合'],
                 ['status', 'require|between:1,4', '请传递文件状态|文件状态不能大于4']
             ];
             $validate = new \think\Validate($rule);
@@ -75,13 +74,14 @@ class Send extends Permissions
 
             // 系统自动生成数据
             $param['send_id'] = Session::has('admin') ? Session::get('admin') : 0; // 发件人编号
-            if(isset($param['file_ids'])){
-                $files = explode('',$param['file_ids']);
-                $param['attchment_id'] = empty($files) ? $param['file_ids'] : $files[0]; // 文件编号用来关联查询
+            $file_ids = input('file_ids/a');
+            if(!empty($file_ids)){
+                $param['attchment_id'] = $param['file_ids'][0];
             }
 
             $send = new SendModel();
             $major_key = isset($param['major_key']) ? $param['major_key'] : 0;
+            $param['file_ids'] = $file_ids;
             if(empty($major_key)){
                 $flag = $send->insertTb($param);
             }else{
@@ -100,14 +100,15 @@ class Send extends Permissions
     public function preview()
     {
         if($this->request->isAjax()){
-            // 前台需要传递的参数有:  主键编号 major_key
+            // 前台需要传递的参数有:  主键编号 major_key 文件类型 see_type 1 收文 2 发文
             // 查看就PDF、Word、图片这三种，其他的都不显示查看
             // 前台可以根据我返回的文件后缀来判断是否显示  查看功能
 
             $param = input('param.');
             // 验证规则
             $rule = [
-                ['major_key', 'require', '请选择文件']
+                ['major_key', 'require', '请选择文件'],
+                ['see_type', 'require', '请选择文件类型']
             ];
             $validate = new \think\Validate($rule);
             //验证部分数据合法性
@@ -115,7 +116,7 @@ class Send extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
             $send = new SendModel();
-            $flag = $send->getOne($param['major_key'],2);
+            $flag = $send->getOne($param['major_key'],$param['see_type']);
             return json($flag);
         }
     }

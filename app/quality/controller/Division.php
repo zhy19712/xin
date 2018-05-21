@@ -9,10 +9,12 @@
 namespace app\quality\controller;
 
 use app\admin\controller\Permissions;
+use app\quality\model\DivisionControlPointModel;
 use app\quality\model\DivisionModel;
 use app\quality\model\DivisionUnitModel;
 use app\quality\model\PictureModel;
 use app\quality\model\PictureRelationModel;
+use app\standard\model\ControlPoint;
 use think\Db;
 use think\Loader;
 /**
@@ -62,7 +64,13 @@ class Division extends Permissions{
         if($add_id){
             $node = new DivisionModel();
             $data = $node->getOne($add_id);
-            $num = Db::name('quality_unit')->where('division_id',$add_id)->count() + 1;
+            $coding = Db::name('quality_unit')->where('division_id',$add_id)->order('id desc')->value('coding');
+            if(empty($coding)){
+                $num = 1;
+            }else{
+                $arr = explode('-',$coding);
+                $num = end($arr)+1;
+            }
             if($num >= 10 && $num < 100){
                 $new_num = '0'.$num;
             }else if($num < 10){
@@ -218,6 +226,10 @@ class Division extends Permissions{
             if(!empty($exist)){
                 return json(['code' => -1,'msg' => '包含子节点,不能删除']);
             }
+
+            // 关联删除 此 工程划分的节点 与 控制点的关联记录
+            $con = new DivisionControlPointModel();
+            $con->delRelation($id,'0');
 
             // 批量删除 包含的 单元工程段号(单元划分) 与 模型图的关联记录
             $idArr = Db::name('quality_unit')->where('division_id',$id)->column('id');
@@ -490,6 +502,14 @@ class Division extends Permissions{
                 }
             }
 
+
+            // 导入成功后，关联对应的 控制点
+            $division = new DivisionModel();
+            $flag = $division->allRelation();
+            if($flag['code'] == -1){
+                return json($flag);
+            }
+
             return  json(['code' => 1,'data' => '','msg' => '导入成功']);
         }
 
@@ -641,6 +661,10 @@ class Division extends Permissions{
         // 前台只需要给我传递 要删除的 单元工程段号(单元划分) 的 id 编号
         $id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
         if($id != 0){
+            // 关联删除 此 单元工程段号 与 控制点的关联记录
+            $con = new DivisionControlPointModel();
+            $con->delRelation($id,'1');
+
             // 关联删除 此 单元工程段号 与 模型图的关联记录
             $picture = new PictureRelationModel();
             $picture->deleteRelation([$id]);
@@ -809,6 +833,15 @@ class Division extends Permissions{
         fclose($files);
     }
 
+
+    // 此方法只是临时 用来关联 所有的 工程划分节点 与 控制点表的 对应关系
+    // 对应关系不存在的 新增一条
+    public function addProjectRelation()
+    {
+        $division = new DivisionModel();
+        $flag = $division->allRelation();
+        return json($flag);
+    }
 
     /**
      * 搜索模型

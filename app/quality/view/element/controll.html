@@ -171,7 +171,7 @@
     #tableContent .result .layui-form-label{
         font-weight: bolder;
     }
-    .layui-input[disabled], .layui-textarea[disabled], .layui-disabled, .layui-input[readonly], .layui-textarea[readonly], .layui-readonly {
+    .dis{
         background: #FFFFFF !important;
     }
     .imgList,.mybtn,.mybtn1,.bitCodes{
@@ -237,18 +237,18 @@
                             <div class="layui-inline" style="margin-left: -3%">
                                 <label class="layui-form-label">验评结果</label>
                                 <div class="layui-input-inline">
-                                    <select name="type" lay-filter="type">
-                                        <option value="">-请选择-</option>
-                                        <option value="0">未验评</option>
-                                        <option value="1">优良</option>
-                                        <option value="2">合格</option>
+                                    <select id="seleResult" name="type" lay-filter="type">
+                                        <option value=""  disabled ='disabled'>-请选择-</option>
+                                        <option value="0"  disabled ='disabled'>未验评</option>
+                                        <option value="1"  disabled ='disabled'>优良</option>
+                                        <option value="2"  disabled ='disabled'>合格</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="layui-inline" style="margin-left: 5%">
                                 <label class="layui-form-label">验评日期</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="date" id="date" lay-verify="date"  placeholder="请选择" autocomplete="off" class="layui-input">
+                                    <input type="text" name="date" id="date" lay-verify="date" disabled="disabled"  placeholder="请选择" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </form>

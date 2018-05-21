@@ -2,6 +2,8 @@
 var initUi = layui.use('form','laydate');
 var form = layui.form;
 var eTypeId ;//工程类型id
+var procedure ;//工序id
+var division_id;//工程树点击节点id
 //工程标准及规范树
 $.ztree({
     //点击节点
@@ -14,6 +16,7 @@ $.ztree({
             tablePath:'/quality/common/datatablesPre?tableName=quality_unit',
             isLoadPath:false
         });
+        division_id = treeNode.id;
     }
 });
 
@@ -443,7 +446,6 @@ function del(that) {
     });
 }
 
-
 //全部展开
 $('#openNode').click(function(){
     $.toggle({
@@ -451,6 +453,119 @@ $('#openNode').click(function(){
         state:true
     });
 });
+
+/**==========结束初始化 单元工程段号 =============*/
+
+
+
+function tpyeTable() {
+    tableItemControl = $('#tableItemControl').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        retrieve: true,
+        iDisplayLength:1000,
+        "scrollY": "200px",
+        "scrollCollapse": "true",
+        "paging": "false",
+        ajax: {
+            "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="
+        },
+        dom: 'tr',
+        columns: [
+            {
+                name: "id"
+            },
+            {
+                name: "code"
+            },
+            {
+                name: "name"
+            },
+            {
+                name: "id"
+            }
+        ],
+        columnDefs: [
+            {
+                "targets":[0],
+                "searchable": false,
+                "orderable": false,
+                "render": function(data, type, full, meta) {
+                    var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+row[0]+")'>";
+                    return html;
+                },
+            },
+            {
+                "targets": [1]
+            },
+            {
+                "targets": [2]
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [3],
+                "render": function (data, type, row) {
+                    var html = "<span style='margin-left: 5px;' onclick='downConFile(" + row[3] + ")'><i title='下载' class='fa fa-download'></i></span>";
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "zeroRecords": "没有找到记录",
+        }
+    });
+
+}
+
+//获取选中行ID
+var idArrPlan = [];
+function getIdPlan(that) {
+    var isChecked = $(that).prop('checked');
+    var id = $(that).attr('idv');
+    var checkedLen = $('input[type="checkbox"][name="checkList_plan"]:checked').length;
+    var checkboxLen = $('input[type="checkbox"][name="checkList_plan"]').length;
+    if(checkedLen===checkboxLen){
+        $('#all_checked_plan').prop('checked',true);
+    }else{
+        $('#all_checked_plan').prop('checked',false);
+    }
+    if(isChecked){
+        idArrPlan.push(id);
+        idArrPlan.removalArray();
+    }else{
+        idArrPlan.remove(id);
+        idArrPlan.removalArray();
+        $('#all_checked_plan').prop('checked',false);
+    }
+}
+
+//单选
+function getSelectIdPlan(that) {
+    getId(that);
+    console.log(idArrPlan);
+}
+
+//checkbox全选
+$("#all_checked_plan").on("click", function () {
+    var that = $(this);
+    if (that.prop("checked") === true) {
+        $("input[name='checkList_plan']").prop("checked", that.prop("checked"));
+        // $('#tableItem tbody tr').addClass('selected');
+        $('input[name="checkList_plan"]').each(function(){
+            getIdPlan(this);
+        });
+    } else {
+        $("input[name='checkList_plan']").prop("checked", false);
+        // $('#tableItem tbody tr').removeClass('selected');
+        $('input[name="checkList_plan"]').each(function(){
+            getIdPlan(this);
+        });
+    }
+    console.log(idArrPlan);
+});
+
 var selectData ;//选中的数据流
 var eTypeId ;//有字段了再注释
 var selectRow ;//单元格选中的id
@@ -465,13 +580,16 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     selectData = tableItem.row(".select-color").data();//获取选中行数据
     console.log(selectData[7] +" ------选中的行id");
     console.log(selectData);
-    selectRow = selectData[7];
+    selectRow =selectData[7];
     eTypeId = selectData[8];
     if(eTypeId){
         selfidName(eTypeId);
     }
+    //向后台插数据
+    insetData(eTypeId);
     if(selectRow != undefined || selectRow != null){
-        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+selectRow).load();
+        tpyeTable();
+        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId).load();
     }else{
         alert("获取不到selectRow id!")
     }
@@ -479,60 +597,8 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".listName").css("display","block");
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-    $.ajax({
-        type: "post",
-        url: "/quality/element/checkout",
-        data: {id: 4},
-        success: function (res) {
-            console.log(res);
-        }
-    })
+
 });
-
-function tpyeTable() {
-    tableItemControl = $('#tableItemControl').DataTable({
-        pagingType: "full_numbers",
-        processing: true,
-        serverSide: true,
-        ajax: {
-            "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="
-        },
-        dom: 'tr',
-        columns: [
-            {
-                name: "code"
-            },
-            {
-                name: "name"
-            },
-            {
-                name: "id"
-            }
-        ],
-        columnDefs: [
-            {
-                "targets": [0]
-            },
-            {
-                "targets": [1]
-            },
-            {
-                "searchable": false,
-                "orderable": false,
-                "targets": [2],
-                "render": function (data, type, row) {
-                    var html = "<span style='margin-left: 5px;' onclick='downConFile(" + row[2] + ")'><i title='下载' class='fa fa-download'></i></span>";
-                    return html;
-                }
-            }
-        ],
-        language: {
-            "zeroRecords": "没有找到记录",
-        }
-    });
-
-}
-tpyeTable();
 
 //获取控制点name
 function selfidName(id) {
@@ -561,7 +627,17 @@ function selfidName(id) {
     })
 }
 
-/**==========结束初始化 单元工树 =============*/
+//向后台插入数据
+function insetData(eTypeId) {
+    $.ajax({
+        type: "post",
+        url: "/quality/element/insertalldata",
+        data: {en_type: eTypeId,division_id:division_id},
+        success: function (res) {
+            console.log(res);
+        }
+    })
+}
 
 //点击置灰
 $(".imgList").on("click","a",function () {
@@ -575,18 +651,33 @@ $(".imgList").on("click","#homeWork",function () {
     $(".mybtn").css("display","none");
     $(".alldel").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
+    // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId).load();
 });
 
 //点击工序控制点名字
 function clickConName(id) {
-    conThisId = id;
+    procedureId = id;
     $(".bitCodes").css("display","none");
     $(".mybtn").css("display","block");
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
+    // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&nm_id="+procedureId).load();
     console.log(id);
+}
+
+//点击去掉所选
+function getSelectIdPlanCheck(that){
+    console.log(that)
+    $.ajax({
+        type: "post",
+        url: "/quality/element/checkout",
+        data: {division_id: division_id,control_id:that},
+        success: function (res) {
+            console.log(res);
+        }
+    })
 }
 
 //下载封装的方法
@@ -619,5 +710,5 @@ function download(id,url) {
 
 //点击下载控制点模板
 function downConFile(id) {
-    download(id,"quality/element/download")
+    download(id,"/quality/element/download")
 }
