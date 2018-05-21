@@ -1402,12 +1402,12 @@ class Common extends Controller
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         $recordsFilteredResult = array();
-        $post=input('post.');
-        $en_type=$post['en_type'];
+        $param = input('param.');
+        $en_type=$param['en_type'];
         //如果传的有工序id
         if($this->request->has('nm_id'))
         {
-            $wherestr['id']=$post['nm_id'];
+            $wherestr['id']=$param['nm_id'];
         }
         else
          {
