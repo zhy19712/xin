@@ -830,7 +830,7 @@ class Division extends Permissions{
     {
         $division = new DivisionModel();
         $flag = $division->allRelation();
-        return $flag;
+        return json($flag);
     }
 
     /**
