@@ -144,4 +144,68 @@ class Approve extends Permissions
         $userlist = $this->approveService->FrequentlyUsedApprover(new $dataType);
         return json($userlist);
     }
+    /**
+     * 在线填报中获取该用户应该审批的信息
+     */
+    public function approveMessage()
+    {
+        if ($this->request->isAjax()) {
+            //取缓存中的用户信息
+            $user_id = $_SESSION['think']['current_id'];
+            //去quality_form_info表中查,待审批
+            $approving =
+                Db::name('quality_form_info')
+                    ->where(['CurrentApproverId' => $user_id])
+                    ->where(['ApproveStatus' => 1])
+                    ->select();
+            $approvingnum = count($approving);
+
+            //去quality_form_info表中查,已退回
+            //如果当前用户在审批人串里就返回
+            $refund =
+                Db::name('quality_form_info')
+                    ->where(['ApproveStatus' => -1])
+                    ->where('find_in_set(:userid,ApproveIds)', ['userid' => $user_id])
+                    ->select();
+            $refund_num = count($refund);
+
+            //创建人返回
+            $creatinfo =
+                Db::name('quality_form_info')
+                    ->where(['ApproveStatus' => -1])
+                    ->where(['user_id' => $user_id])
+                    ->select();
+            $ci_num = count($refund);
+        }
+    }
+    //获取控制点的流程
+    public function approveProcedure()
+    {
+        if ($this->request->isAjax()) {
+            $post = input("post.");
+            $cpr_id = $post['cpr_id'];
+            $fi_id = $post['fi_id'];//form_info表中的主键，控制点不唯一
+            //去quality_form_info表中查已审批完的表单,取出审批串和创建人
+            $procedure =
+                Db::name('quality_form_info')
+                    ->where(['ControlPointId' => $cpr_id, 'ApproveStatus' => 2, 'id' => $fi_id])
+                    ->field('ApproveIds,user_id')
+                    ->find();
+            //去admin表中找出对应人信息
+            $creater = Db::name('admin')
+                ->where(['id' => $procedure['user_id']])
+                ->field('nickname,name,thumb,step_id,mobile')
+                ->find();
+            $approverarr = explode(',', $procedure['ApproveIds']);
+            foreach ($approverarr as $v) {
+                $approver[] = Db::name('admin')
+                    ->where(['id' => $v])
+                    ->field('id,nickname,name,thumb,step_id,mobile')
+                    ->select();
+            }
+            return json(['msg' => 'success', 'creater' => $creater, 'approver' => $approver]);
+
+        }
+    }
+
 }
