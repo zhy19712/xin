@@ -612,4 +612,12 @@ class Branch extends Permissions
                 return $flag;
         }
     }
+
+    /**
+     * 关联收发文
+     */
+    public function relationadd()
+    {
+        return $this->fetch();
+    }
 }
