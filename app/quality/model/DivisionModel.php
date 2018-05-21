@@ -93,6 +93,31 @@ class DivisionModel extends Model
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
+
+                if(in_array($param['type'],[1,2,3,4])){
+                    // 新增单位，分部的关联控制点 对应关系
+                    // 获取已经存在的单位或者分部工序和每一个工序下的控制点
+                    $ma = $con = $insert_data = [];
+                    if(in_array($param['type'],[1,2])){
+                        $ma = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
+                        $con = Db::name('norm_controlpoint')->where(['procedureid'=>['in',$ma]])->column('id');
+                    }else if(in_array($param['type'],[3,4])){
+                        $ma = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
+                        $con = Db::name('norm_controlpoint')->where(['procedureid'=>['in',$ma]])->column('id');
+                    }
+                    foreach ($ma as $k=>$v){
+                        foreach ($con as $k1=>$v1){
+                            $insert_data[$k]['type'] = 0;
+                            $insert_data[$k]['division_id'] = $id;
+                            $insert_data[$k]['ma_division_id'] = $v;
+                            $insert_data[$k]['control_id'] = $v1;
+                            $insert_data[$k]['checked'] = 0;
+                        }
+                    }
+                    $rel = new DivisionControlPointModel();
+                    $res = $rel->insertTb($insert_data);
+                }
+
                 return ['code' => 1, 'data' => $data, 'msg' => '添加成功'];
             }
         } catch (PDOException $e) {
@@ -156,17 +181,17 @@ class DivisionModel extends Model
         $data = $insert_data = [];
 
         // 单位工程
-        if($genre == 1){
+        if($genre == 2){
             $data = $this->where(['type'=>['in',$arr_1]])->column('id');
         }
 
         // 分部工程
-        if($genre == 2){
+        if($genre == 3){
             $data = $this->where(['type'=>['in',$arr_2]])->column('id');
         }
 
         // 检验批
-        if($genre == 3){
+        if($genre == 5){
             $type = 1;
             $arr_4 = $this->where(['type'=>['in',$arr_3]])->column('id');
             $data = Db::name('quality_unit')->where(['division_id'=>['in',$arr_4]])->column('id');
