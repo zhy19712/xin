@@ -504,6 +504,25 @@ class Branch extends Permissions
             //实例化模型类
             $model = new DivisionControlPointModel();
             $param = input('post.');
+
+            //全选
+            if($param["checked"] == "All")
+            {
+                $data = [
+                    "division_id"=>$param["division_id"],
+                    "ma_division_id"=>$param["ma_division_id"]
+                ];
+                $flag = $model->editAll($data);
+                return json($flag);
+            }else if($param["checked"] == "noAll")
+            {
+                $data = [
+                    "division_id"=>$param["division_id"],
+                    "ma_division_id"=>$param["ma_division_id"]
+                ];
+                $flag = $model->editNoAll($data);
+                return json($flag);
+            }
             $flag = $model->editRelation($param);
             return json($flag);
         }
