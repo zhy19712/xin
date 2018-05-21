@@ -1237,7 +1237,7 @@ class Common extends Controller
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
                     ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
-                    ->where(["contr_relation_id" => $list_id])
+                    ->where(["s.contr_relation_id" => $list_id])
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
@@ -1252,7 +1252,7 @@ class Common extends Controller
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
                     ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
-                    ->where(["contr_relation_id" => $list_id])
+                    ->where(["s.contr_relation_id" => $list_id])
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
