@@ -46,6 +46,16 @@ class  DivisionControlPointModel extends Model
         }
     }
 
+    public function delRelation($id,$type)
+    {
+        try {
+            $this->where(['type'=>$type,'division_id'=>$id])->delete();
+            return ['code' => 1, 'msg' => '删除成功'];
+        } catch (PDOException $e) {
+            return ['code' => -1, 'msg' => $e->getMessage()];
+        }
+    }
+
     /**
      * 关联控制点
      */
