@@ -235,7 +235,7 @@ class DivisionModel extends Model
         // 检验批
         $arr_3 = $this->where(['type'=>['in',[5,6]]])->column('id');
         $arr_4 = Db::name('quality_unit')->where(['division_id'=>['in',$arr_3]])->column('id');
-        $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>5])->column('id');
+        $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>3,'cat'=>5])->column('id');
         $res = $this->insertAllCon('1',$arr_4,$ma_3);
         if($res['code'] == -1){
             return $res;
