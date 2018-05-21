@@ -62,7 +62,13 @@ class Division extends Permissions{
         if($add_id){
             $node = new DivisionModel();
             $data = $node->getOne($add_id);
-            $num = Db::name('quality_unit')->where('division_id',$add_id)->count() + 1;
+            $coding = Db::name('quality_unit')->where('division_id',$add_id)->order('id desc')->value('coding');
+            if(empty($coding)){
+                $num = 1;
+            }else{
+                $arr = explode('-',$coding);
+                $num = end($arr)+1;
+            }
             if($num >= 10 && $num < 100){
                 $new_num = '0'.$num;
             }else if($num < 10){
