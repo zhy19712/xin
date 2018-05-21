@@ -1156,7 +1156,8 @@ class Common extends Controller
                     //typedivision_id 类型:0单位,分部工程编号 1检验批
                     ->where("type = 0")
                     ->where($search_data)->where($columnString, 'like', '%' . $search . '%')
-                    ->order($order)->limit(intval($start), intval($length))
+                    ->order($order)
+//                    ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -1173,7 +1174,7 @@ class Common extends Controller
                     ->where("type = 0")
                     ->where($search_data)
                     ->order($order)
-                    ->limit(intval($start), intval($length))
+//                    ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
             }
