@@ -674,7 +674,10 @@ function getSelectIdPlanCheck(rowId,that){
     // console.log($(that).is(':checked'));
     if($(that).is(':checked') == false){
         chceck = 1;
+    }else if($(that).is(':checked') == true){
+        chceck = 0;
     }
+    console.log(chceck);
     $.ajax({
         type: "post",
         url: "/quality/element/checkout",
