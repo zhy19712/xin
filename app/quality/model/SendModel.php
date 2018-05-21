@@ -74,7 +74,7 @@ class SendModel extends Model
                 ->join('admin u', 's.send_id=u.id', 'left')
                 ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                 ->join('admin_group_type t', 'g.type=t.id', 'left')
-                ->field('s.id,s.file_name,s.date,t.name as unit_name,u.nickname as income_name,s.status')
+                ->field('s.id,s.file_name,s.date,u.nickname as income_name,t.name as unit_name,s.remark,s.relevance_id')
                 ->where(['id'=>$id])->find();
         }
         $id_arr = explode(',',$data['file_ids']);
