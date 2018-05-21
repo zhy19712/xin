@@ -155,8 +155,7 @@ class Approve extends Permissions
             //去quality_form_info表中查,待审批
             $approving =
                 Db::name('quality_form_info')
-                    ->where(['CurrentApproverId' => $user_id])
-                    ->where(['ApproveStatus' => 1])
+                    ->where(['CurrentApproverId' => $user_id,'ApproveStatus' => 1])
                     ->select();
             $approvingnum = count($approving);
 
@@ -172,8 +171,7 @@ class Approve extends Permissions
             //创建人返回
             $creatinfo =
                 Db::name('quality_form_info')
-                    ->where(['ApproveStatus' => -1])
-                    ->where(['user_id' => $user_id])
+                    ->where(['ApproveStatus' => -1,'user_id' => $user_id])
                     ->select();
             $ci_num = count($refund);
         }
@@ -183,12 +181,12 @@ class Approve extends Permissions
     {
         if ($this->request->isAjax()) {
             $post = input("post.");
-            $cpr_id = $post['cpr_id'];
+            $cp_id = $post['cp_id'];
             $fi_id = $post['fi_id'];//form_info表中的主键，控制点不唯一
             //去quality_form_info表中查已审批完的表单,取出审批串和创建人
             $procedure =
                 Db::name('quality_form_info')
-                    ->where(['ControlPointId' => $cpr_id, 'ApproveStatus' => 2, 'id' => $fi_id])
+                    ->where(['ControlPointId' => $cp_id, 'ApproveStatus' => 2, 'id' => $fi_id])
                     ->field('ApproveIds,user_id')
                     ->find();
             //去admin表中找出对应人信息
