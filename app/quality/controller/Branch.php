@@ -519,7 +519,7 @@ class Branch extends Permissions
                 {
                     $data = [
                         "division_id"=>$param["division_id"],
-//                        "ma_division_id"=>$param["ma_division_id"],
+                        "ma_division_id"=>0,
                         "checked"=>0
                     ];
                 }
@@ -539,7 +539,7 @@ class Branch extends Permissions
                 {
                     $data = [
                         "division_id"=>$param["division_id"],
-//                        "ma_division_id"=>$param["ma_division_id"],
+                        "ma_division_id"=>0,
                         "checked"=>1
                     ];
                 }

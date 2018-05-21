@@ -415,7 +415,7 @@ class Element extends Permissions
         $control_id=$param['control_id'];
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
-       $res=Db::name('quality_division_controlpoint_relation')
+        $res=Db::name('quality_division_controlpoint_relation')
             ->where(['division_id'=>$division_id,'control_id'=>$control_id])
             ->update(['checked'=>$checked]);
        if($res)
@@ -423,6 +423,7 @@ class Element extends Permissions
 
            return json(['msg'=>'success']);
        }
+
     }
 
     //单元管控
@@ -472,7 +473,12 @@ class Element extends Permissions
         $par = array();
         $par['type'] = 1;
         $par['checked'] = 0;//0为被选中
-        $par['division_id'] = $this->request->param('division_id');
+        $unit_id = $this->request->param('division_id');
+        $res=Db::name('quality_unit')
+            ->where(['id'=>$unit_id])
+            ->field('division_id')
+            ->find();
+        $par['division_id']=$res['division_id'];
         if ($this->request->has('ma_division_id')) {
             $par['ma_division_id'] = $this->request->param('ma_division_id');
         }
