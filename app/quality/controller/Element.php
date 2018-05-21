@@ -372,18 +372,34 @@ class Element extends Permissions
      */
 
     //单元策划
-    //勾选时访问的接口，将该条数据的状态更新为未选中
+    public function insertalldata(){
+        $param=input('param.');
+        $ma_division_id=$param['ma_division_id'];//找工序下的所有控制点，把所有的数据都传到relation表里,这里的工序按controlpoint里的procedureid算
+        //取出该工序下对应的所有控制点id
+        $id_arr=Db::name('norm_controlpoint')
+        ->where(['procedureid'=>$ma_division_id])
+        ->column('id');
+        foreach($id_arr as $v)
+        {
+            $data=['type'=>1,'control_id'=>$v,'division_id'=>$param['division_id'],'ma_division_id'=>$ma_division_id,
+                'update_time'=>time(),'checked'=>0];
+            Db::name('quality_division_controlpoint_relation')
+                ->insert($data);
+        }
+    }
+
+    //勾选时访问的接口，将该条数据的状态更新
     public function checkout()
     {
         //获得控制点和单元工关联的数据id
-        $post = input('post.');
-        $id=$post['id'];
-
-        //将该条数据的checked更新为1,1为未勾选状态
-        Db::name('quality_division_controlpoint_relation')
-            ->where(['id'=>$id])
-            ->update(['checked'=>1]);
-
+        $param = input('param.');
+        $unit_id=$param['unit_id'];
+        $control_id=$param['control_id'];
+        //点击的时候将checked值更新,0为选中，1为不选
+        $checked=$param['checked'];
+       $res=Db::name('quality_division_controlpoint_relation')
+            ->where(['division_id'=>$unit_id,'control_id'=>$control_id])
+            ->update(['checked'=>$checked]);
     }
 
     //单元管控
@@ -480,9 +496,9 @@ class Element extends Permissions
 
         $search_name='单元工程质量等级评定表';
         if ($this->request->isAjax()) {
-            $post = input('post.');
-            $cpr_id=$post['cpr_id'];
-            $division_id=$post['division_id'];
+            $param = input('param.');
+            $cpr_id=$param['cpr_id'];
+            $division_id=$param['division_id'];
             $res = Db::name('quality_form_info')
                 ->where(['ControlPointId' => $cpr_id, 'ApproveStatus' => 2, 'DivisionId' => $division_id])
                 ->where('form_name', 'like', '%' . $search_name)
@@ -511,6 +527,7 @@ class Element extends Permissions
     public function copycheck()
     {
         if ($this->request->isAjax()) {
+            $cpr_id=input('param.')['cpr_id'];
             $res = Db::name('quality_upload')
                 ->where(['$contr_relation_id' => $cpr_id, 'type' => 1])
                 ->find();
