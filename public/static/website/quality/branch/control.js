@@ -81,7 +81,7 @@ var setting = {
 zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 //点击获取路径
 function onClick(e, treeId, node) {
-
+  $(".selectShow").hide();
   $(".result").hide();
     conThisId = 0;
     list_id= "";
@@ -123,6 +123,7 @@ $(".imgList").on("click","#homeWork",function () {
 function clickConName(id) {
     conThisId = id;
   list_id= "";
+  $(".selectShow").show();
   $("#tableContent .imgList").css('display','block');
   tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
   tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
@@ -403,10 +404,10 @@ function resultInfo() {
     dataType:"JSON",
     success:function (res) {
       $(".result form select").val(1);
-      $(".result form select").addClass('.disabledColor')
       $(".result form #date").val(res.evaluation_time);
-      layui.form.render('select');
       $(".result form select").prop("disabled",true);
+      layui.form.render('select');
+      $(".result .layui-input[readonly]").addClass('disabledColor');
       $("#date").prop("disabled",true)
       if(!res.flag){
 

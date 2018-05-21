@@ -157,7 +157,11 @@ var tableItem = $('#tableItem').DataTable( {
     if( lock == 0){
       $('#all_checked').prop("checked",false);
     }else{
-      $('#all_checked').prop("checked",true);
+      if($(".checkList").length == 0){
+        $('#all_checked').prop("checked",false);
+      }else{
+        $('#all_checked').prop("checked",true);
+      }
     }
   }
 });
@@ -306,10 +310,10 @@ $("#all_checked").on('click',function () {
   var checked;
     if($(this).is(':checked')){
         $(".checkList").prop("checked",true);
-        checked = "noAll";
+        checked = "All";
     }else{
         $(".checkList").prop("checked",false);
-       checked = "All";
+       checked = "noAll";
     }
     $.ajax({
       url: './checkBox',
@@ -322,7 +326,9 @@ $("#all_checked").on('click',function () {
       dataType: "JSON",
       success: function (res) {
         if(res.code == 1){
-
+          if(conThisId != 0){
+            tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+          }
         }else{
           layer.msg(res.msg);
           tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
@@ -343,8 +349,6 @@ $("#tableItem").on('click','.checkList',function () {
   $.ajax({
     url:'./checkBox',
     data:{
-      division_id : selfid,
-      ma_division_id : conThisId,
       id:id,
       checked:checked
     },
@@ -367,6 +371,10 @@ $("#tableItem").on('click','.checkList',function () {
           }else{
             $('#all_checked').prop("checked",true);
           }
+        }
+
+        if(conThisId != 0){
+          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
         }
       }else{
           layer.msg(res.msg);

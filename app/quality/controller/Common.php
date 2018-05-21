@@ -1143,7 +1143,7 @@ class Common extends Controller
             $search_data = [
                 "division_id" => $selfid,
                 "ma_division_id" => $procedureid,
-                "checked"=>0
+//                "checked"=>0
             ];
         } else if ($selfid && !$procedureid) {
             $search_data = [
