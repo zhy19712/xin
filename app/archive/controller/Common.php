@@ -273,7 +273,7 @@ class Common extends Controller
             //写入到附件表
             $data = [];
             $data['module'] = $module;
-            $data['name'] = $accept_file["name"];
+            $data['name'] = $accept_file["name"];//上传原文件名
             $data['filename'] = $info->getFilename();//文件名
             $data['filepath'] = DS . 'uploads' . DS . $module . DS . $use . DS . $info->getSaveName();//文件路径
             $data['fileext'] = $info->getExtension();//文件后缀

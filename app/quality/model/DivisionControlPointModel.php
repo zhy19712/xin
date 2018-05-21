@@ -21,7 +21,7 @@ class  DivisionControlPointModel extends Model
     public function insertTb($param)
     {
         try {
-            $result = $this->allowField(true)->insertAll($param);
+            $result = $this->allowField(true)->save($param);
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
@@ -74,5 +74,14 @@ class  DivisionControlPointModel extends Model
         } catch (PDOException $e) {
             return ['code' => 0, 'msg' => $e->getMessage()];
         }
+    }
+
+    /**
+     * 获取一条信息
+     */
+    public function getOne($id)
+    {
+        $data = $this->where('id', $id)->find();
+        return $data;
     }
 }
