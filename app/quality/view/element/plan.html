@@ -112,6 +112,12 @@
     table.dataTable.no-footer {
         margin-top: 0px;
     }
+    #tableContent table.dataTable thead .sorting_asc {
+        background-image: none !important;
+    }
+    .dataTables_scrollHeadInner,#tableItem_wrapper table,#imageData_wrapper table, #implementation_wrapper table, #onlineFill_wrapper table{
+        width: 100% !important;
+    }
 </style>
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
@@ -120,7 +126,7 @@
 </div>
 <div id="unitWorkParent" data-options="region:'center'" style="background:#fff;">
     <div class="easyui-layout" data-options="fit:true">
-        <div id="unitWork" data-options="region:'north',title:'单元工程段号(单元划分)',split:true" style="height: 45%;background:#fff;">
+        <div id="unitWork" data-options="region:'north',title:'单元工程段号(单元划分)',split:true" style="height: 55%;background:#fff;">
             <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
                 <thead>
                 <tr>

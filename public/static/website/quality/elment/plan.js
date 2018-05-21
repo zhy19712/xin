@@ -3,6 +3,7 @@ var initUi = layui.use('form','laydate');
 var form = layui.form;
 var eTypeId ;//工程类型id
 var procedure ;//工序id
+var division_id;//工程树点击节点id
 //工程标准及规范树
 $.ztree({
     //点击节点
@@ -15,6 +16,7 @@ $.ztree({
             tablePath:'/quality/common/datatablesPre?tableName=quality_unit',
             isLoadPath:false
         });
+        division_id = treeNode.id;
     }
 });
 
@@ -452,6 +454,10 @@ $('#openNode').click(function(){
     });
 });
 
+/**==========结束初始化 单元工程段号 =============*/
+
+
+
 function tpyeTable() {
     tableItemControl = $('#tableItemControl').DataTable({
         pagingType: "full_numbers",
@@ -486,7 +492,7 @@ function tpyeTable() {
                 "searchable": false,
                 "orderable": false,
                 "render": function(data, type, full, meta) {
-                    var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlan(this)'>";
+                    var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+row[0]+")'>";
                     return html;
                 },
             },
@@ -579,6 +585,8 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     if(eTypeId){
         selfidName(eTypeId);
     }
+    //向后台插数据
+    insetData(eTypeId);
     if(selectRow != undefined || selectRow != null){
         tpyeTable();
         tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId).load();
@@ -589,14 +597,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".listName").css("display","block");
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-    $.ajax({
-        type: "post",
-        url: "/quality/element/checkout",
-        data: {id: selectRow},
-        success: function (res) {
-            console.log(res);
-        }
-    })
+
 });
 
 //获取控制点name
@@ -626,7 +627,17 @@ function selfidName(id) {
     })
 }
 
-/**==========结束初始化 单元工树 =============*/
+//向后台插入数据
+function insetData(eTypeId) {
+    $.ajax({
+        type: "post",
+        url: "/quality/element/insertalldata",
+        data: {en_type: eTypeId,division_id:division_id},
+        success: function (res) {
+            console.log(res);
+        }
+    })
+}
 
 //点击置灰
 $(".imgList").on("click","a",function () {
@@ -654,6 +665,19 @@ function clickConName(id) {
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&nm_id="+procedureId).load();
     console.log(id);
+}
+
+//点击去掉所选
+function getSelectIdPlanCheck(that){
+    console.log(that)
+    $.ajax({
+        type: "post",
+        url: "/quality/element/checkout",
+        data: {division_id: division_id,control_id:that},
+        success: function (res) {
+            console.log(res);
+        }
+    })
 }
 
 //下载封装的方法
