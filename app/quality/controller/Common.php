@@ -1141,7 +1141,7 @@ class Common extends Controller
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where($search_data)->count(0);
+        $recordsTotal = Db::name($table)->where("checked",$checked)->where($search_data)->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
@@ -1150,7 +1150,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)
                     ->alias("s")
                     ->join('norm_controlpoint c', 's.control_id = c.id', 'left')
-                    ->field("c.code,c.name")
+                    ->field("c.code,c.name,s.checked,s.status,s.id")
                     //判断在分部管控中是否显示不显示没有勾选的
                     ->where("checked",$checked)
                     ->where($search_data)->where($columnString, 'like', '%' . $search . '%')
@@ -1164,7 +1164,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)
                     ->alias("s")
                     ->join('norm_controlpoint c', 's.control_id = c.id', 'left')
-                    ->field("c.code,c.name")
+                    ->field("c.code,c.name,s.checked,s.status,s.id")
                     //判断在分部管控中是否显示不显示没有勾选的
                     ->where("checked",$checked)
                     ->where($search_data)

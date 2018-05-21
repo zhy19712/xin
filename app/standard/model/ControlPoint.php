@@ -22,7 +22,7 @@ class ControlPoint extends Model
                 // 批量添加工程划分--单位工程或者分部工程的对应 控制点   $type 1单位 2分部 3单元
                 $division = new DivisionModel();
 
-                $flag = $division->addRelation($this->getLastInsID(),$param['type']);
+                $flag = $division->addRelation($this->getLastInsID(),$param['type'],$param["ma_division_id"]);
 
                 return ['code' => 1,'msg' => '添加成功'];
             }else{
