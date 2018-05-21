@@ -551,11 +551,13 @@ function testing(division_id,cpr_id) {
         },
         success: function (res) {
             console.log(res);
-            if(res.msg == "fail"){
-                //TODO 需要改
-                $("#seleResult>option").addClass(".dis");
-                // $(".layui-input[readonly]").css("background","#FFFFFF !important;");
-                $("#seleResult>option").attr({"disabled":false})
+            if(res.msg != "fail"){
+                $("option").removeAttr('disabled');
+                layui.use(['form'], function(){
+                    var form = layui.form;
+                    form.render("select");
+                    $(".layui-input[readonly]").attr('style', 'background: #FFFFFF !important');
+                });
                 $("#date").attr({"disabled":false});
             }
         },

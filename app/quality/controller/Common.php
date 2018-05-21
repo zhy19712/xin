@@ -1225,7 +1225,9 @@ class Common extends Controller
 
         if(empty($list_id))
         {
-            $search_data = [];
+            $search_data = [
+                "contr_relation_id"=>""
+            ];
         }else
         {
             $search_data = ["contr_relation_id"=>$list_id];

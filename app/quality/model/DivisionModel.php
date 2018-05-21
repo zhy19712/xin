@@ -235,9 +235,12 @@ class DivisionModel extends Model
         // 检验批
         $arr_3 = $this->where(['type'=>['in',[5,6]]])->column('id');
         $arr_4 = Db::name('quality_unit')->where(['division_id'=>['in',$arr_3]])->column('id');
-        $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>5])->column('id');
+        $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>3,'cat'=>5])->column('id');
         $res = $this->insertAllCon('1',$arr_4,$ma_3);
-        return $res;
+        if($res['code'] == -1){
+            return $res;
+        }
+        return ['code' => 1, 'msg' => '添加成功'];
     }
 
     public function insertAllCon($type,$arr_1,$ma_1)
@@ -250,16 +253,24 @@ class DivisionModel extends Model
                 // 工序下的控制点
                 $con_1 = Db::name('norm_controlpoint')->where(['procedureid'=>['eq',$v1]])->column('id');
                 foreach ($con_1 as $k2=>$v2){
-                    $insert_data[$k2]['type'] = $type;
-                    $insert_data[$k2]['division_id'] = $v;
-                    $insert_data[$k2]['ma_division_id'] = $v1;
-                    $insert_data[$k2]['control_id'] = $v2;
-                    $insert_data[$k2]['checked'] = 0;
+                    $is_exist = Db::name('quality_division_controlpoint_relation')->where(['type'=>$type,'division_id'=>$v,'ma_division_id'=>$v1,'control_id'=>$v2])->value('id');
+                    if(empty($is_exist)){
+                        $insert_data[$k2]['type'] = $type;
+                        $insert_data[$k2]['division_id'] = $v;
+                        $insert_data[$k2]['ma_division_id'] = $v1;
+                        $insert_data[$k2]['control_id'] = $v2;
+                        $insert_data[$k2]['checked'] = 0;
+                    }else{
+                        $insert_data[$k2] = [];
+                    }
                 }
             }
-            $res = $rel->insertTb($insert_data);
-            if($res['code'] == -1){
-                return $res;
+            $insert_data = array_filter($insert_data);
+            if(!empty($insert_data)){
+                $res = $rel->insertTbAll($insert_data);
+                if($res['code'] == -1){
+                    return $res;
+                }
             }
         }
     }
