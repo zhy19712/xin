@@ -495,7 +495,7 @@ class Element extends Permissions
                 //仅用控制点id做限制可行吗 是否需要在该表中加入单元批id
                 $copy = Db::name('quality_upload')
                     ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
-                    ->where('form_name', 'like', '%' . $search_name . '%')
+                    ->where('data_name', 'like', '%' . $search_name . '%')
                     ->find();
                 if ($copy) {
                     return json(['msg' => 'success']);

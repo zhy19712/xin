@@ -18,7 +18,8 @@ tableItem = $('#tableItem').DataTable({
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {
-        "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="
+        // "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=" //老的
+        "url": "/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="
     },
     dom: 'rt',
     columns: [
@@ -536,7 +537,33 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     }
     //向提交页面之前放置值
     $("#resVal").val(resources);
+    testing(nodeUnitId,controlRowId);
 });
+
+//Testing管控中的控件能否使用
+function testing(division_id,cpr_id) {
+    $.ajax({
+        url: "/quality/element/checkform",
+        type: "post",
+        data: {
+            division_id:division_id,
+            cpr_id:cpr_id,
+        },
+        success: function (res) {
+            console.log(res);
+            if(res.msg == "fail"){
+                //TODO 需要改
+                $(".layui-input[readonly]").css("background","#FFFFFF !important;");
+                $("#seleResult>option").attr({"disabled":false});
+                $("#date").attr({"disabled":false});
+            }
+
+        },
+        error:function () {
+            alert("管控中的控件能否使用")
+        }
+    });
+}
 
 //easyui点击显示选择
 $('#unitTab').tabs({
