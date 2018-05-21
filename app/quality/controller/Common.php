@@ -1125,17 +1125,17 @@ class Common extends Controller
         //表的总记录数 必要
         if ($selfid && $procedureid) {
             $search_data = [
-                "s.division_id" => $selfid,
-                "s.ma_division_id" => $procedureid
+                "division_id" => $selfid,
+                "ma_division_id" => $procedureid
             ];
         } else if ($selfid && !$procedureid) {
             $search_data = [
-                "s.division_id" => $selfid
+                "division_id" => $selfid
             ];
         } else if (!$selfid && !$procedureid) {
             $search_data = [
-                "s.division_id" => $selfid,
-                "s.ma_division_id" => $procedureid
+                "division_id" => $selfid,
+                "ma_division_id" => $procedureid
             ];
         }
 
