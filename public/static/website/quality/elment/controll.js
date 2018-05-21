@@ -5,7 +5,7 @@ var tableItem,      //控制点的table
     implementation, //扫描件回传table
     imageData,      //附件资料的table
     onlineFill,     //在线填报的table
-    type=1,         //区分附件资料与扫描件回传的表格
+    type = 1,       //区分附件资料与扫描件回传的表格
     autoHeight,     //自动获取页面高度
     resources;      //向提交页面之前放置值
 
@@ -718,7 +718,7 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                 uploadId = res.id;
 
                 $.ajax({
-                    url:"/element/addExecution",
+                    url:"/quality/element/addExecution",
                     data:{
                         att_id:uploadId,
                         filename: uploadName, //名称
