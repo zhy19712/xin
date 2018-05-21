@@ -1221,6 +1221,13 @@ class Common extends Controller
         $recordsFiltered = 0;
         //获取筛选条件
         $list_id = input('list_id') ? input('list_id') : "";//分部策划列表id
+        if(empty($list_id))
+        {
+            $search_data = [];
+        }else
+        {
+            $search_data = ["contr_relation_id"=>$list_id];
+        }
 //        $type = input('type') ? input('type') : "";//1表示执行点执行情况，2表示图像资料
 
         //表的总记录数 必要
@@ -1237,7 +1244,7 @@ class Common extends Controller
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
                     ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
-                    ->where(["s.contr_relation_id" => $list_id])
+                    ->where($search_data)
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
@@ -1252,7 +1259,7 @@ class Common extends Controller
                     ->join('admin n', 'n.id = m.user_id', 'left')
                     ->join('admin_group g', 'g.id = n.admin_group_id', 'left')
                     ->field("m.name as filename,m.create_time,n.nickname as owner,g.name as company,s.id")
-                    ->where(["s.contr_relation_id" => $list_id])
+                    ->where($search_data)
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
