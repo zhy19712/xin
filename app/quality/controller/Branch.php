@@ -657,10 +657,12 @@ class Branch extends Permissions
      */
     public function evaluation()
     {
-//        if(request()->isAjax()){
+        if(request()->isAjax()){
             //实例化模型类
             $admin = new Admin();
             $admincate = new AdminCate();
+
+            $division_id = input("post.division_id");
             //首先判断当前的登录人是否有验评权限，管理员和监理可以编辑
             $admin_id= Session::has('admin') ? Session::get('admin') : 0;
 
@@ -673,9 +675,28 @@ class Branch extends Permissions
                 $admin_cate_id_array = explode(",",$admin_cate_id);
                 //查询角色角色分类表中超级管理员和监理单位中是否有当前登录的用户
                 $data = $admincate->getAlladminSupervisor();
+                //$flag = 1表示有权限
+                $flag = 1;
+                foreach ($admin_cate_id_array as $va) {
+                    if (in_array($va, $data)) {
+                        continue;
+                    }else {
+                        $flag = 0;
+                        break;
+                    }
+                }
 
+                //查询当前的工程划分的节点的验评状态
+                $Division = new DivisionModel();
+
+                $division_info = $Division->getOne($division_id);
+
+                $evaluation_results = $division_info["evaluation_results"];//验评
+
+                $evaluation_time = date("Y-m-d",$division_info["evaluation_time"])?date("Y-m-d",$division_info["evaluation_time"]):"";//验评日期
+
+                return json(["flag"=>$flag,"evaluation_results"=>$evaluation_results,"evaluation_time"=>$evaluation_time]);
             }
-
-//        }
+        }
     }
 }

@@ -108,7 +108,7 @@ class AdminCate extends Model
      */
     public function getAlladminSupervisor()
     {
-        $data = $this->field("id")->where("role_name like '%管理员%' OR role_name like '%监理%'")->select();
+        $data = $this->where("role_name like '%管理员%' OR role_name like '%监理%'")->column('id');
         return $data;
     }
 }
