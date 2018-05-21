@@ -503,6 +503,9 @@ function tpyeTable() {
                 name: "code"
             },
             {
+                name: "code"
+            },
+            {
                 name: "name"
             },
             {
