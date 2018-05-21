@@ -553,11 +553,11 @@ function testing(division_id,cpr_id) {
             console.log(res);
             if(res.msg == "fail"){
                 //TODO 需要改
-                $(".layui-input[readonly]").css("background","#FFFFFF !important;");
-                $("#seleResult>option").attr({"disabled":false});
+                $("#seleResult>option").addClass(".dis");
+                // $(".layui-input[readonly]").css("background","#FFFFFF !important;");
+                $("#seleResult>option").attr({"disabled":false})
                 $("#date").attr({"disabled":false});
             }
-
         },
         error:function () {
             alert("管控中的控件能否使用")
