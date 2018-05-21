@@ -1439,24 +1439,27 @@ class Common extends Controller
         $recordsFilteredResult = array();
         $param = input('param.');
         $en_type=$param['en_type'];
+
+        //norm_materialtrackingdivision的id数组
+        $nm_arr=Db::name('norm_materialtrackingdivision')
+            ->where(['pid'=>$en_type,'type'=>3,'cat'=>5])
+            ->column('id');
+
         //如果传的有工序id
         if($this->request->has('nm_id'))
         {
             $wherestr['procedureid']=$param['nm_id'];
+            $id_arr=Db::name('norm_controlpoint')
+                ->where($wherestr)
+                ->column('id');
         }
         else
          {
-            $wherestr='';
+             //controlpoint里的id数组
+             $id_arr=Db::name('norm_controlpoint')
+                 ->where('procedureid','in',$nm_arr)
+                 ->column('id');
          }
-        //norm_materialtrackingdivision的id数组
-        $nm_arr=Db::name('norm_materialtrackingdivision')
-                ->where(['pid'=>$en_type,'type'=>3,'cat'=>5])
-                ->column('id');
-        //controlpoint里的id数组
-        $id_arr=Db::name('norm_controlpoint')
-            ->where('procedureid','in',$nm_arr)
-            ->where($wherestr)
-            ->column('id');
 
 
         if (strlen($search) > 0) {
