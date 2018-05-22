@@ -33,13 +33,6 @@ use think\Session;
 
 class Branch extends Permissions
 {
-    protected $qualityFormInfoService;
-
-    public function __construct(Request $request = null)
-    {
-        $this->qualityFormInfoService = new QualityFormInfoModel();
-        parent::__construct($request);
-    }
     /****************************分部策划************************/
     /**
      * 分部策划模板首页
@@ -114,7 +107,7 @@ class Branch extends Permissions
     public function getControlPoint()
     {
         $data = Db::name('norm_materialtrackingdivision')->group("id,name")->field("id,name")->where(['type'=>2,'cat'=>3])->select();
-        if($data)
+        if(!empty($data))
         {
             return json(['code'=>1,'data'=>$data]);
         }else
@@ -707,6 +700,7 @@ class Branch extends Permissions
             }
         }
     }
+
     /**
      * 分部管控中的验评
      */
@@ -752,6 +746,29 @@ class Branch extends Permissions
 
                 return json(["flag"=>$flag,"evaluation_results"=>$evaluation_results,"evaluation_time"=>$evaluation_time]);
             }
+        }
+    }
+
+    /**
+     * 分部管控中的验评
+     */
+    public function editEvaluation()
+    {
+        if(request()->isAjax()){
+            //实例化模型类
+            $Division = new DivisionModel();
+            $division_id = input("post.division_id");//工程策划id
+            $evaluation_results = input("post.evaluation_results");//验评结果
+            $evaluation_time = input("post.evaluation_time");//验评时间
+
+            $data = [
+                "id"=>$division_id,
+                "evaluation_results"=>$evaluation_results,
+                "evaluation_time"=>strtotime($evaluation_time)
+            ];
+            $flag = $Division->editTb($data);
+
+            return json($flag);
         }
     }
 }
