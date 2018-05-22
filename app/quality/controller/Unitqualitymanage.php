@@ -5,11 +5,20 @@
  * Date: 2018/4/11
  * Time: 14:17
  */
-
+/**
+ * 质量管理-单位质量管理
+ * Class Branch
+ * @package app\quality\controller
+ */
 namespace app\quality\controller;
 
 use app\admin\controller\Permissions;
-use app\quality\model\DivisionModel;
+use app\admin\model\Admin;//用户表
+use app\admin\model\AdminCate;//角色分类表
+use app\quality\model\DivisionModel;//工程划分
+use app\quality\model\DivisionControlPointModel;//工程划分、工序、控制点关系表
+use app\quality\model\UploadModel;//分部管控、单位管控中的控制点文件上传
+use app\quality\model\SendModel;//收发文
 use app\quality\model\UnitqualitymanageModel;
 use think\Db;
 use app\quality\model\QualityFormInfoModel;
@@ -360,6 +369,75 @@ class Unitqualitymanage extends Permissions
 //            return json($nodeStr);
 //        }
 //    }
+
+    /**
+     * 点击取消勾选后管控处不显示该控制点
+     */
+    public function checkBox()
+    {
+        if(request()->isAjax()) {
+            //实例化模型类
+            $model = new DivisionControlPointModel();
+            $param = input('post.');
+
+            //全选
+            if($param["checked"] == "All")
+            {
+                if($param["ma_division_id"] != 0)
+                {
+                    $search = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>$param["ma_division_id"],
+                    ];
+                    $data = [
+                        "checked"=>0
+                    ];
+
+                }else
+                {
+                    $search = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>0,
+
+                    ];
+                    $data = [
+                        "checked"=>0
+                    ];
+                }
+
+                $flag = $model->editAll($search,$data);
+                return json($flag);
+            }else if($param["checked"] == "noAll")
+            {
+                if($param["ma_division_id"] != 0)
+                {
+                    $search = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>$param["ma_division_id"],
+
+                    ];
+                    $data = [
+                        "checked"=>1
+                    ];
+                }else
+                {
+                    $search = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>0,
+                    ];
+                    $data = [
+                        "checked"=>1
+                    ];
+                }
+                $flag = $model->editNoAll($search,$data);
+                return json($flag);
+            }else
+            {
+                $flag = $model->editRelation($param);
+                return json($flag);
+            }
+        }
+    }
 
     /**
      * 单位管控 控制点执行情况文件 或者 图像资料文件 上传保存
