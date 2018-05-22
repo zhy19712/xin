@@ -107,4 +107,11 @@ class QualitymassModel extends Model
         return $data;
     }
 
+    public function removeRelevance($id_arr)
+    {
+        // 解除所有的关联关系
+        $this->where(['id'=>['in',$id_arr]])->update(['unit_id'=>0]);
+        return ['code'=>1,'msg'=>'解除成功'];
+    }
+
 }

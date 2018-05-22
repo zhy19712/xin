@@ -1,11 +1,10 @@
 <?php
 
-namespace app\quality\controller;
+namespace app\modelmanagement\controller;
 
 
 use think\Controller;
 use think\Db;
-use think\Session;
 
 class Common extends Controller
 {
