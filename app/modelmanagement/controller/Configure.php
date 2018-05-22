@@ -34,7 +34,11 @@ class Configure extends Permissions
         return $this->fetch();
     }
 
-    // 新增 或 编辑
+    /**
+     * 新增 或 编辑
+     * @return \think\response\Json
+     * @author hutao
+     */
     public function edit()
     {
         if($this->request->isAjax()){

@@ -39,6 +39,7 @@ class Income extends Permissions
             }
 
             $send = new SendModel();
+            $param['id'] = $param['major_key'];
             $flag = $send->editTb($param);
             return json($flag);
         }
