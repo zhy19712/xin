@@ -2,10 +2,9 @@ var uploader;
 var fileIds = [];   //新增弹层已上传文件ID
 var major_key = ''; //编辑表格当前行ID
 var income = {} //收件人信息
-
-
+var fileInfo = {};//关联文件信息
 //发文状态表格
-tableItem = $("#tableIncome").DataTable({
+tableIncome = $("#tableIncome").DataTable({
     processing: true,
     serverSide: true,
     ordering: false,
@@ -81,6 +80,7 @@ $("#table_content").on("click","#addSend",function () {
                 height:'36px'
             });
             $("#add_file_modal input").val('');
+            $("#add_table_files tbody").empty();
         }
     });
 })
@@ -259,7 +259,7 @@ function saveInter(data) {
             layer.closeAll('page');
             layer.msg(res.msg);
             major_key = '';
-            tableItem.ajax.url("/archive/common/datatablesPre?tableName=archive_income_send&table_type=2").load();
+            tableIncome.ajax.url("/archive/common/datatablesPre?tableName=archive_income_send&table_type=2").load();
         }
     });
 }
@@ -280,7 +280,7 @@ function edit_send(that) {
         area:["800px","620px"],
         content: $('#add_file_modal'),
         success:function () {
-            $.viewFilter(false);
+            $.viewFilter(true);
             $('#add_file_modal input').attr("readonly",false);
             $('#file_ids').val(major_key);
             $.ajax({
@@ -299,7 +299,7 @@ function edit_send(that) {
                     $("#income_name").val(res.send_name);
                     $("#unit_name").val(res.unit_name);
                     $("#remark").val(res.remark);
-                    $("#relevance_id").val(res.remark);
+                    $("#relevance_id").val(res.attchment_id);
                     var rowData = '';
                     for (var i=0;i<attachment.length;i++){
                         rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3">';
@@ -372,7 +372,7 @@ function del(that) {
             parents.remove();
             layer.msg(res.msg);
             major_key = '';
-            tableItem.ajax.url("/archive/common/datatablesPre?tableName=archive_income_send&table_type=2").load();
+            tableIncome.ajax.url("/archive/common/datatablesPre?tableName=archive_income_send&table_type=2").load();
         }
     });
 
@@ -395,7 +395,7 @@ $('#income_name').focus(function () {
                layer.close(layer.index);
            },
            cancel: function(index, layero){
-               $("#incomeNameLayer").css("visibility","visible");
+               $("#incomeNameLayer").css("visibility","hidden");
                layer.close(layer.index);
            }
        });
@@ -452,11 +452,95 @@ function getSelectId(that) {
     income.unit = unit;
     income.nickname = nickname;
 }
-
 //保存已选收件人
 function save() {
     $("#incomeNameLayer").css("visibility","hidden");
     $('#income_id').val(income.id);
     $('#income_name').val(income.nickname);
     $('#unit_name').val(income.unit);
+}
+//关联文件弹层
+$('#relevance_name').focus(function () {
+    layer.open({
+        title:'关联文件',
+        id:'1',
+        type:'1',
+        area:['1024px','600px'],
+        content:$('#incomeFileList'),
+        btn:['保存'],
+        success:function (index) {
+            $("#incomeFileList").css("visibility","visible");
+            incomeFile();
+            tableFile.ajax.url("/archive/common/datatablesPre?tableName=archive_income_send&table_type=3").load();
+        },
+        yes:function (index) {
+            saveFile();
+            layer.close(layer.index);
+        },
+        cancel: function(index, layero){
+            $("#incomeFileList").css("visibility","hidden");
+            layer.close(layer.index);
+        }
+    });
+});
+//关联文件信息
+function incomeFile() {
+    tableFile = $("#tableFileList").DataTable({
+        serverSide: true,
+        ordering: false,
+        ajax: {
+            "url":"/archive/common/datatablesPre?tableName=archive_income_send&table_type=3"
+        },
+        columns:[
+            {
+                name: "id",
+                "render": function(data, type, full, meta) {
+                    console.log(full);
+                    var ipt = "<input type='radio' name='checkList' fileId="+full[0]+" fileName="+ full[1] +" onclick='getSelectFile(this)'>";
+                    return ipt;
+                }
+            },
+            { name: "file_name" },
+            { name: "date" },
+            { name: "unit_name" },
+            { name: "attchment_id"},
+            { name: "send_name" },
+            {
+                name: "status",
+                "render":function(data, type, full, meta) {
+                    return "已接收";
+                }
+            },
+        ],
+        "destroy": true,
+        dom: 'frtp',
+        language: {
+            "sProcessing":"数据加载中...",
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        }
+    });
+}
+//选择关联文件
+function getSelectFile(that) {
+    var fileName = $(that).attr('fileName');
+    var fileId = $(that).attr('fileId');
+    fileInfo.fileName = fileName;
+    fileInfo.fileId = fileId;
+}
+//保存关联文件
+function saveFile() {
+    $("#incomeFileList").css("visibility","hidden");
+    $('#relevance_name').val(fileInfo.fileName);
+    $('#relevance_id').val(fileInfo.fileId);
 }

@@ -3,18 +3,50 @@
 <script type="text/javascript" src="__PUBLIC__/colorpicker/js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/colorpicker/js/colorpicker.js"></script>
 <style>
-.colorStyle{
-    float:left;
-}
+
+    .colorStyle >div{
+        float:left;
+    }
+    .colorStyle,.you,.zuo{
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+    .you{
+        margin-left: 0px;
+    }
+    .qualityBottom{
+        clear: both;
+    }
+    #big >div>div{
+        margin: 12px;
+    }
+    .homeTop{
+        width: 100%;
+        height: 200px;
+    }
 </style>
-<div>
+<div id="big">
     <div class="homeTop">
         <div>首页3D</div>
-        <div>
-            选择：透明度 <input type="text" id="tou">  <span>颜色：</span>
+        <div class="colorStyle" style="margin-right: 50px;">
+            <div class="zuo" style="margin-right: 50px;">
+                <label for="home3dId" onselectstart="return false;">选择:透明度</label>
+                <input type='text' name='all_checked_plan' id="home3dId" value=''>
+            </div>
+            <div class="you">
+                <span>颜色：</span>
+                <div id="colorpickerHome1"></div>
+            </div>
         </div>
-        <div>
-            透明效果：透明度 <input type="text" id="guo">
+        <div class="colorStyle">
+            <div class="zuo" style="margin-right: 50px;">
+                <label for="transparency3dId" onselectstart="return false;">透明效果:透明度</label>
+                <input type='text' name='all_checked_plan' id="transparency3dId" value=''>
+            </div>
+            <div class="you">
+                <span>颜色：</span>
+                <div id="colorpickerHome2"></div>
+            </div>
         </div>
     </div>
     <div class="qualityBottom">
@@ -22,7 +54,7 @@
         <div class="colorStyle">
             <div class="zuo">
                 <label for="quality3dId" onselectstart="return false;">选择:透明度</label>
-                <input type='text' name='all_checked_plan' id="quality3dId" class='icheckbox_minimal' value=''>
+                <input type='text' name='all_checked_plan' id="quality3dId" value=''>
             </div>
             <div class="you">
                 <span>颜色：</span>
@@ -31,8 +63,8 @@
         </div>
         <div class="colorStyle">
             <div class="zuo">
-                <label for="qualifiedId" onselectstart="return false;">优良/合格</label>
-                <input type='text' name='all_checked_plan' id="qualifiedId" class='icheckbox_minimal' value=''>
+                <label for="qualifiedId" onselectstart="return false;">优良/合格:颜色</label>
+                <input type='text' name='all_checked_plan' id="qualifiedId" value=''>
             </div>
             <div class="you">
                 <span>颜色：</span>
@@ -91,5 +123,5 @@
 
 
 </script>
-</html>
 <!--{include file="../app/public/common_footer.html"}-->
+</html>
