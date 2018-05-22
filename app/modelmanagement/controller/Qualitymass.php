@@ -97,8 +97,6 @@ class Qualitymass extends Permissions
 
     /**
      * 选中的节点 -- 解除关联
-     * 选中的构件 -- 解除关联
-     * 共用方法
      * @return \think\response\Json
      * @author hutao
      */
@@ -144,6 +142,21 @@ class Qualitymass extends Permissions
     public function relevance()
     {
 
+    }
+
+    // 选中的构件 --  解除关联
+    public function removeRelevance()
+    {
+        if(request()->isAjax()){
+            // 传递 选中的构件 编号数组 id_arr
+            $id_arr = input('id_arr/a');
+            if(sizeof($id_arr)){
+                return json(['code'=>-1,'msg'=>'缺少构件的编号']);
+            }
+            $node = new QualitymassModel();
+            $flag = $node->removeRelevance($id_arr);
+            return json($flag);
+        }
     }
 
 
