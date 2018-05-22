@@ -528,6 +528,7 @@ class Element extends Permissions
         $search_name='单元工程质量等级评定表';
 
             $param = input('param.');
+            $cpr_id=$param['cpr_id'];
             $cp_id=$param['cp_id'];
             $division_id=$param['division_id'];
             $res = Db::name('quality_form_info')
@@ -556,8 +557,21 @@ class Element extends Permissions
                 $data['evaluation_date']=$evaluation_date;
                 $data['$evaluation']=$evaluation;
                 return json(['msg' => 'fail1','remark'=>'线上流程','data'=>$data]);
-
-            } //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
+            }
+            //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
+            else {
+                //仅用控制点id做限制可行吗 是否需要在该表中加入单元批id
+                $copy = Db::name('quality_upload')
+                    ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
+                    ->where('form_name', 'like', '%' . $search_name . '%')
+                    ->find();
+                if ($copy) {
+                    return json(['msg' => 'success']);
+                }
+                else {
+                    return json(['msg' => 'fail']);
+                }
+            }
 
 
     }
