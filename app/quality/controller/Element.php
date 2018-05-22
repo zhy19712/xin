@@ -399,7 +399,7 @@ class Element extends Permissions
         foreach($id_arr as $v)
         {
             $data=['type'=>1,'control_id'=>$v['id'],'division_id'=>$param['division_id'],'ma_division_id'=>$v['procedureid'],
-                'update_time'=>time(),'checked'=>0];
+                'unit_id'=>$unit_id,'update_time'=>time(),'checked'=>0];
             $res[]=$data;
         }
         $resdata=Db::name('quality_division_controlpoint_relation')
