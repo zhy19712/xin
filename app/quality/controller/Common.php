@@ -1458,6 +1458,8 @@ class Common extends Controller
         $recordsFilteredResult = array();
         $param = input('param.');
         $en_type=$param['en_type'];
+        $unit_id=$param['unit_id'];
+        $division_id=$param['division_id'];
 
         //norm_materialtrackingdivision的id数组
         $nm_arr=Db::name('norm_materialtrackingdivision')
@@ -1480,16 +1482,29 @@ class Common extends Controller
                  ->column('id');
          }
 
-
-        if (strlen($search) > 0) {
-            //有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name('norm_controlpoint')
-                    ->where('id','in',$id_arr)
-                    ->order('code')->limit(intval($start), intval($length))->select();
-                $recordsFiltered = sizeof($recordsFilteredResult);
+        $search=Db::name('quality_division_controlpoint_relation')
+            ->where(['unit_id'=>$unit_id,'division_id'=>$division_id])
+            ->select();
+        //如果之前触发了insertalldata函数
+        if (count($search) > 0) {
+            //有传入工序
+            if($this->request->has('nm_id'))
+            {
+                $wherenm['r.ma_division_id']=$nm_id;
             }
+            else{
+                $wherenm='';
+            }
+
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
+                    ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+                    ->order('code')
+                    ->where(['r.unit_id'=>$unit_id,'r.division_id'=>$division_id])
+                    ->where($wherenm)
+                    ->limit(intval($start), intval($length))
+                    ->select();
+                $recordsFiltered = sizeof($recordsFilteredResult);
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {

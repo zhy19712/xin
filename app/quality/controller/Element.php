@@ -376,19 +376,19 @@ class Element extends Permissions
         $param=input('param.');
         $en_type=$param['en_type'];
         $unit_id=$param['unit_id'];
+        $division_id=$param['division_id'];
         //找单元工程划分段号下面的所有工序
-
-
         $produceid=Db::name('norm_materialtrackingdivision')
                   ->where(['pid'=>$en_type])
                   ->column('id');
         $limit=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$param['division_id'],'unit_id'=>$param['unit_id']])
+            ->where(['division_id'=>$division_id,'unit_id'=>$unit_id])
             ->where('ma_division_id','in', $produceid)
             ->find();
+        //如果有数据，不插入
         if($limit)
         {
-            exit();
+              exit();
         }
         //限制只插一次
         //取出该工序下对应的所有控制点id
@@ -404,7 +404,7 @@ class Element extends Permissions
         }
         $resdata=Db::name('quality_division_controlpoint_relation')
             ->insertAll($res);
-        dump($resdata);
+
     }
 
     //勾选时访问的接口，将该条数据的状态更新
@@ -414,10 +414,11 @@ class Element extends Permissions
         $param = input('param.');
         $division_id=$param['division_id'];
         $control_id=$param['control_id'];
+        $unit_id=$param['unit_id'];
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
         $res=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$division_id,'control_id'=>$control_id])
+            ->where(['division_id'=>$division_id,'control_id'=>$control_id,'unit_id'=>$unit_id])
             ->update(['checked'=>$checked]);
        if($res)
        {
