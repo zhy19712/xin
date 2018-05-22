@@ -492,7 +492,7 @@ function delData(id,url) {
                 if(res.code ==1){
                     layer.msg("删除成功！");
                     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
-                    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+                    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
                     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
                 }else if(res.code !=1){
@@ -739,7 +739,7 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                             implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                             imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
                             // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
-                            tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+                            tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
                         } else {
                             layer.msg('获取数据失败！');
                         }
@@ -1136,7 +1136,7 @@ function historyOnLine(id,curStep) {
         content: '/approve/approve/ApproveHistory?dataId='+ id + '&dataType=app\\quality\\model\\QualityFormInfoModel',
         // end:function () {
         //     tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
-        //     tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+        //     tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
         // }
     });
 }

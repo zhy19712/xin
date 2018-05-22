@@ -37,6 +37,25 @@ class UploadModel extends Model
     }
 
     /**
+     * 批量添加上传文件
+     * @param $param
+     * @return array
+     */
+    public function insertTbAll($param)
+    {
+        try {
+            $result = $this->allowField(true)->insertAll($param);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'data' => [], 'msg' => '添加成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => -1, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
      * 删除上传文件
      * @param $id
      * @return array

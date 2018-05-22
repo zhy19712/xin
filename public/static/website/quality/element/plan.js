@@ -93,11 +93,6 @@ $('#editNode').click(function () {
     });
 });
 
-//关闭弹层
-$.close({
-    formId:'nodeForm'
-});
-
 //开关
 layui.use(['layer', 'form'], function(){
     var form = layui.form;
@@ -469,12 +464,12 @@ function tpyeTable() {
         "scrollCollapse": "true",
         "paging": "false",
         ajax: {
-            "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="
+            "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type=&unit_id=&division_id="
         },
         dom: 'tr',
         columns: [
             {
-                name: "id"
+                name: "checked"
             },
             {
                 name: "code"
@@ -484,6 +479,12 @@ function tpyeTable() {
             },
             {
                 name: "id"
+            },
+            {
+                name: "unit_id"
+            },
+            {
+                name: "division_id"
             }
         ],
         columnDefs: [
@@ -492,7 +493,12 @@ function tpyeTable() {
                 "searchable": false,
                 "orderable": false,
                 "render": function(data, type, full, meta) {
-                    var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[0]+",this)'>";
+                    if(full[0] == 0){
+                        var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                    }else{
+                        var html = "<input type='checkbox' name='checkList_plan'  onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                    }
+                    // var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     return html;
                 },
             },
@@ -510,6 +516,18 @@ function tpyeTable() {
                     var html = "<span style='margin-left: 5px;' onclick='downConFile(" + row[3] + ")'><i title='下载' class='fa fa-download'></i></span>";
                     return html;
                 }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [4],
+                "visible": false
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [5],
+                "visible": false
             }
         ],
         language: {
@@ -589,7 +607,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     insetData(eTypeId);
     if(selectRow != undefined || selectRow != null){
         tpyeTable();
-        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId).load();
+        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
     }else{
         alert("获取不到selectRow id!")
     }
@@ -634,6 +652,7 @@ function insetData(eTypeId) {
         url: "/quality/element/insertalldata",
         data: {en_type: eTypeId,division_id:division_id,unit_id:selectRow},
         success: function (res) {
+            //什么都不返回说明是正确的
             console.log(res);
         }
     })
@@ -652,7 +671,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(".alldel").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
 });
 
 //点击工序控制点名字
@@ -663,7 +682,7 @@ function clickConName(id) {
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&nm_id="+procedureId).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
     console.log(id);
 }
 
@@ -677,12 +696,12 @@ function getSelectIdPlanCheck(rowId,that){
     }else if($(that).is(':checked') == true){
         chceck = 0;
     }
-    console.log(chceck);
     $.ajax({
         type: "post",
         url: "/quality/element/checkout",
-        data: {division_id: division_id,control_id:rowId,checked:chceck},
+        data: {division_id: division_id,id:rowId,checked:chceck,unit_id:selectRow},
         success: function (res) {
+            //什么都不返回说明是正确的
             console.log(res);
         }
     })

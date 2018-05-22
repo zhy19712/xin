@@ -692,7 +692,7 @@ class Branch extends Permissions
                     $data[$key]["type"] = 3;
 
                 }
-                Db::name("quality_upload")->insertAll($data);
+                $flag = $model->insertTbAll($data);
 
                 //文件上传完毕后修改控制点的状态，只有上传控制点执行情况文件时才修改状态
 
@@ -706,7 +706,7 @@ class Branch extends Permissions
                     ];
                     $Division->editRelation($change);
                 }
-                return json(['code' => 1,'msg' => '添加成功！']);
+                return json($flag);
             }else
             {
                 return json(['code' => -1,'msg' => '添加失败！']);

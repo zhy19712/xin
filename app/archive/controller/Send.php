@@ -51,6 +51,7 @@ class Send extends Permissions
     public function send()
     {
         if($this->request->isAjax()){
+
             // 前台需要传递的参数有:
             // file_name 文件名称 date 文件日期 income_id 收件人编号
             // relevance_id 关联收文 file_ids 上传的所有附件编号集合
@@ -76,15 +77,25 @@ class Send extends Permissions
             $param['send_id'] = Session::has('admin') ? Session::get('admin') : 0; // 发件人编号
             $file_ids = input('file_ids/a');
             if(!empty($file_ids)){
-                $param['attchment_id'] = $param['file_ids'][0];
+                $new_file_ids = '';
+                foreach($file_ids as $v){
+                    if(empty($new_file_ids)){
+                        $param['attchment_id'] = $v;
+                        $new_file_ids = $v;
+                    }else{
+                        $new_file_ids = $new_file_ids . ',' . $v;
+                    }
+                }
+                $param['file_ids'] = $new_file_ids;
             }
 
             $send = new SendModel();
             $major_key = isset($param['major_key']) ? $param['major_key'] : 0;
-            $param['file_ids'] = $file_ids;
+
             if(empty($major_key)){
                 $flag = $send->insertTb($param);
             }else{
+                $param['id'] = $major_key;
                 $flag = $send->editTb($param);
             }
             return json($flag);
@@ -93,7 +104,7 @@ class Send extends Permissions
 
 
     /**
-     * 发文 -- 查看
+     * 发文或收文 -- 查看
      * @return \think\response\Json
      * @author hutao
      */
