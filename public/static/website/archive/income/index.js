@@ -1,8 +1,4 @@
-var uploader;
-var fileIds = [];   //新增弹层已上传文件ID
-var major_key = ''; //编辑表格当前行ID
-var income = {} //收件人信息
-//发文状态表格
+//收文状态表格
 tableItem = $("#tableIncome").DataTable({
     processing: true,
     serverSide: true,
@@ -62,7 +58,7 @@ tableItem = $("#tableIncome").DataTable({
 });
 //收文处理
 function handle(that) {
-    major_key = $(that).attr('major_key');
+    var major_key = $(that).attr('major_key');
     layer.open({
         type: 1,
         title:'收文处理',
@@ -70,20 +66,8 @@ function handle(that) {
         content: $('#file_modal'),
         success:function () {
             $.viewFilter(true);
-
-        }
-    });
-}
-//收文查看
-function preview(that) {
-    major_key = $(that).attr('major_key');
-    layer.open({
-        type: 1,
-        title:'收文查看',
-        area:["800px","620px"],
-        content: $('#file_modal'),
-        success:function () {
-            $.viewFilter(false);
+            $('#file_modal input').attr("readonly",true);
+            $('#file_ids').val(major_key);
             $.ajax({
                 url:"/archive/send/preview",
                 data:{
@@ -94,8 +78,155 @@ function preview(that) {
                 dataType:'json',
                 success:function (res) {
                     console.log(res);
+                    var attachment = res.attachment;
+
+                    $("#file_name").val(res.file_name);
+                    $("#date").val(res.date);
+                    $("#income_name").val(res.send_name);
+                    $("#unit_name").val(res.unit_name);
+                    $("#remark").val(res.remark);
+                    $("#relevance_id").val(res.remark);
+                    var rowData = '';
+                    for (var i=0;i<attachment.length;i++){
+                        rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3"><a href="javascript:;" style="margin-right: 10px" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a><a href="javascript:;" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>'
+                    }
+                    $("#add_table_files tbody").empty().append(rowData);
                 }
             })
         }
     });
 }
+//收文查看
+function preview(that) {
+    var major_key = $(that).attr('major_key');
+    layer.open({
+        type: 1,
+        title:'收文查看',
+        area:["800px","620px"],
+        content: $('#file_modal'),
+        success:function () {
+            $.viewFilter(false);
+            $('#file_modal input').attr("readonly",true);
+            $('#file_ids').val(major_key);
+            $.ajax({
+                url:"/archive/send/preview",
+                data:{
+                    major_key:major_key,
+                    see_type:1
+                },
+                type:'post',
+                dataType:'json',
+                success:function (res) {
+                    console.log(res);
+                    var attachment = res.attachment;
+
+                    $("#file_name").val(res.file_name);
+                    $("#date").val(res.date);
+                    $("#income_name").val(res.send_name);
+                    $("#unit_name").val(res.unit_name);
+                    $("#remark").val(res.remark);
+                    $("#relevance_id").val(res.remark);
+                    var rowData = '';
+                    for (var i=0;i<attachment.length;i++){
+                        rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3"><a href="javascript:;" style="margin-right: 10px" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a><a href="javascript:;" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>'
+                    }
+                    $("#add_table_files tbody").empty().append(rowData);
+                }
+            })
+        }
+    });
+}
+//附件下载
+function fileDownload(that) {
+    var uid = $(that).attr('uid');
+    $.ajax({
+        url: '/archive/send/fileDownload',
+        data:{id:uid},
+        type:"post",
+        success: function (res) {
+            if(res.code != 1){
+                layer.msg(res.msg)
+            }else {
+                $("#form_container").empty();
+
+                var form=$("<form>");
+
+                form.attr("style","display:none");
+
+                form.attr("method","post");
+
+                form.attr("action","/archive/send/fileDownload");
+
+                $("#form_container").append(form);
+                form.submit();
+            }
+        }
+    })
+
+}
+//附件查看
+function attachmentPreview(that) {
+    var uid = $(that).attr('uid');
+    var name = $(that).attr('name');
+    $.ajax({
+        url: '/archive/send/attachmentPreview',
+        type: "post",
+        data: {
+            file_id:uid
+        },
+        success: function (res) {
+            console.log(res);
+            if(res.code === 1){
+                var path = res.path;
+                var houzhui = res.path.split(".");
+                if(houzhui[houzhui.length-1]=="pdf"){
+                    window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
+                }else{
+                    layer.photos({
+                        photos: {
+                            "title": "", //相册标题
+                            "id": uid, //相册id
+                            "start": 0, //初始显示的图片序号，默认0
+                            "data": [   //相册包含的图片，数组格式
+                                {
+                                    "alt": name,
+                                    "pid": uid, //图片id
+                                    "src": "../../../"+res.path, //原图地址
+                                    "thumb": "" //缩略图地址
+                                }
+                            ]
+                        }
+                        ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                        ,success:function () {
+                            $('.layui-layer-shade').empty();
+                        }
+                    });
+                }
+
+            }else {
+                layer.msg(res.msg);
+            }
+        }
+    })
+}
+//签收
+// function signIn() {
+//     var file_ids = $('#file_ids').val();
+//     $.ajax({
+//         type:'post',
+//         url:,
+//         data:{},
+//         success:function (res) {
+//             if (res.code=='1'){
+//                 console.log(res);
+//                 layer.msg(res.msg);
+//                 layer.closeAll('page');
+//                 tableItem.ajax.url("/archive/common/datatablesPre?tableName=archive_income_send&table_type=1").load();
+//             }
+//         }
+//     })
+// }
+//拒签
+// function refuse() {
+//
+// }
