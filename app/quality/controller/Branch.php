@@ -47,15 +47,15 @@ class Branch extends Permissions
      * 分部策划添加控制点
      * @return mixed
      */
-    public function addPlan()
-    {
-        $param = input('param.');
-        $selfid = $param["selfid"];//左侧节点树id
-        $procedureid = $param["procedureid"];//工序号
-        $this->assign('selfid', $selfid);
-        $this->assign('procedureid', $procedureid);
-        return $this->fetch();
-    }
+//    public function addPlan()
+//    {
+//        $param = input('param.');
+//        $selfid = $param["selfid"];//左侧节点树id
+//        $procedureid = $param["procedureid"];//工序号
+//        $this->assign('selfid', $selfid);
+//        $this->assign('procedureid', $procedureid);
+//        return $this->fetch();
+//    }
 
     /****************************分部管控************************/
     /**
@@ -71,15 +71,15 @@ class Branch extends Permissions
      * 分部管控添加控制点
      * @return mixed
      */
-    public function addControl()
-    {
-        $param = input('param.');
-        $selfid = $param["selfid"];//左侧节点树id
-        $procedureid = $param["procedureid"];//工序号
-        $this->assign('selfid', $selfid);
-        $this->assign('procedureid', $procedureid);
-        return $this->fetch();
-    }
+//    public function addControl()
+//    {
+//        $param = input('param.');
+//        $selfid = $param["selfid"];//左侧节点树id
+//        $procedureid = $param["procedureid"];//工序号
+//        $this->assign('selfid', $selfid);
+//        $this->assign('procedureid', $procedureid);
+//        return $this->fetch();
+//    }
 
     /**
      * 分部策划 或者 分部管控 初始化左侧树节点
@@ -490,6 +490,7 @@ class Branch extends Permissions
 //    }
     /**
      * 点击取消勾选后管控处不显示该控制点
+     * @return \think\response\Json
      */
     public function checkBox()
     {
@@ -594,6 +595,12 @@ class Branch extends Permissions
 
     /**
      * 删除一条控制点执行情况或者是图像上传信息
+     * @return \think\response\Json
+     * @throws PDOException
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function delete()
     {
@@ -643,13 +650,13 @@ class Branch extends Permissions
                             $Division->editRelation($change);
                         }
                     }
-
                 return json($flag);
         }
     }
 
     /**
      * 关联收发文
+     * @return mixed
      */
     public function relationadd()
     {
@@ -658,6 +665,7 @@ class Branch extends Permissions
 
     /**
      * 添加关联收发文附件到分部管控、单位管控中的控制点文件上传文件表中
+     * @return \think\response\Json
      */
     public function addRelationFile()
     {
@@ -703,6 +711,7 @@ class Branch extends Permissions
 
     /**
      * 分部管控中的验评
+     * @return \think\response\Json
      */
     public function evaluation()
     {
@@ -751,6 +760,7 @@ class Branch extends Permissions
 
     /**
      * 分部管控中的验评
+     * @return \think\response\Json
      */
     public function editEvaluation()
     {

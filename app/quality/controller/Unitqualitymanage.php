@@ -60,6 +60,15 @@ class Unitqualitymanage extends Permissions
     }
 
     /**
+     * 单位管控模板首页
+     * @return mixed
+     */
+    public function control()
+    {
+        return $this->fetch();
+    }
+
+    /**
      * 获取节点工序
      * @return \think\response\Json
      * @author hutao
@@ -372,6 +381,7 @@ class Unitqualitymanage extends Permissions
 
     /**
      * 点击取消勾选后管控处不显示该控制点
+     * @return \think\response\Json
      */
     public function checkBox()
     {
@@ -447,62 +457,62 @@ class Unitqualitymanage extends Permissions
      * @throws \think\exception\DbException
      * @author hutao
      */
-    public function editRelation()
-    {
-        // 前台需要 传递 控制点编号 id 上传类型 type 1执行情况 2图像资料 上传的文件 file
-        if($this->request->file('file')){
-            $file = $this->request->file('file');
-        }else{
-            return json(['code'=>0,'msg'=>'没有上传文件']);
-        }
-        $web_config = Db::name('admin_webconfig')->where('web','web')->find();
-        $info = $file->validate(['size'=>$web_config['file_size']*1024,'ext'=>$web_config['file_type']])->rule('date')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . 'quality' . DS . 'Unitqualitymanage');
-        if($info) {
-            //写入到附件表
-            $data = [];
-            $data['module'] = 'quality';
-            $data['name'] = $info->getInfo('name');//文件名
-            $data['filename'] = $info->getFilename();//文件名
-            $data['filepath'] = DS . 'uploads' . DS . 'quality' . DS . 'Unitqualitymanage' . DS . $info->getSaveName();//文件路径
-            $data['fileext'] = $info->getExtension();//文件后缀
-            $data['filesize'] = $info->getSize();//文件大小
-            $data['create_time'] = time();//时间
-            $data['uploadip'] = $this->request->ip();//IP
-            $data['user_id'] = Session::has('admin') ? Session::get('admin') : 0;
-            if($data['module'] == 'admin') {
-                //通过后台上传的文件直接审核通过
-                $data['status'] = 1;
-                $data['admin_id'] = $data['user_id'];
-                $data['audit_time'] = time();
-            }
-            $data['use'] = $this->request->has('use') ? $this->request->param('use') : 'Unitqualitymanage';//用处
-            $res['id'] = Db::name('attachment')->insertGetId($data);
-            $res['src'] = DS . 'uploads' . DS . 'quality' . DS . 'Unitqualitymanage' . DS . $info->getSaveName();
-            $res['code'] = 2;
-
-
-            // 执行上传文件 获取文件编号  attachment_id
-            $param = input('param.');
-            $param['attachment_id'] = $res['id'];
-            // 保存上传文件记录
-            $id = isset($param['contr_relation_id']) ? $param['contr_relation_id'] : 0;
-            $type = isset($param['file_type']) ? $param['file_type'] : 0; // 1执行情况 2图像资料
-            $attachment_id = isset($param['attachment_id']) ? $param['attachment_id'] : 0; // 文件编号
-            if(($id == 0) || ($type == 0) || ($attachment_id == 0)){
-                return json(['code' => '-1','msg' => '参数有误']);
-            }
-            $new_data['contr_relation_id'] = $id;
-            $new_data['attachment_id'] = $attachment_id;
-            $new_data['type'] = $type;
-            $unit = new UnitqualitymanageModel();
-            $nodeStr = $unit->saveTb($new_data);
-            return json($nodeStr);
-        }else {
-            // 上传失败获取错误信息
-            $msg = '上传失败：'.$file->getError();
-            return json(['code'=>'-1','msg'=>$msg]);
-        }
-    }
+//    public function editRelation()
+//    {
+//        // 前台需要 传递 控制点编号 id 上传类型 type 1执行情况 2图像资料 上传的文件 file
+//        if($this->request->file('file')){
+//            $file = $this->request->file('file');
+//        }else{
+//            return json(['code'=>0,'msg'=>'没有上传文件']);
+//        }
+//        $web_config = Db::name('admin_webconfig')->where('web','web')->find();
+//        $info = $file->validate(['size'=>$web_config['file_size']*1024,'ext'=>$web_config['file_type']])->rule('date')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . 'quality' . DS . 'Unitqualitymanage');
+//        if($info) {
+//            //写入到附件表
+//            $data = [];
+//            $data['module'] = 'quality';
+//            $data['name'] = $info->getInfo('name');//文件名
+//            $data['filename'] = $info->getFilename();//文件名
+//            $data['filepath'] = DS . 'uploads' . DS . 'quality' . DS . 'Unitqualitymanage' . DS . $info->getSaveName();//文件路径
+//            $data['fileext'] = $info->getExtension();//文件后缀
+//            $data['filesize'] = $info->getSize();//文件大小
+//            $data['create_time'] = time();//时间
+//            $data['uploadip'] = $this->request->ip();//IP
+//            $data['user_id'] = Session::has('admin') ? Session::get('admin') : 0;
+//            if($data['module'] == 'admin') {
+//                //通过后台上传的文件直接审核通过
+//                $data['status'] = 1;
+//                $data['admin_id'] = $data['user_id'];
+//                $data['audit_time'] = time();
+//            }
+//            $data['use'] = $this->request->has('use') ? $this->request->param('use') : 'Unitqualitymanage';//用处
+//            $res['id'] = Db::name('attachment')->insertGetId($data);
+//            $res['src'] = DS . 'uploads' . DS . 'quality' . DS . 'Unitqualitymanage' . DS . $info->getSaveName();
+//            $res['code'] = 2;
+//
+//
+//            // 执行上传文件 获取文件编号  attachment_id
+//            $param = input('param.');
+//            $param['attachment_id'] = $res['id'];
+//            // 保存上传文件记录
+//            $id = isset($param['contr_relation_id']) ? $param['contr_relation_id'] : 0;
+//            $type = isset($param['file_type']) ? $param['file_type'] : 0; // 1执行情况 2图像资料
+//            $attachment_id = isset($param['attachment_id']) ? $param['attachment_id'] : 0; // 文件编号
+//            if(($id == 0) || ($type == 0) || ($attachment_id == 0)){
+//                return json(['code' => '-1','msg' => '参数有误']);
+//            }
+//            $new_data['contr_relation_id'] = $id;
+//            $new_data['attachment_id'] = $attachment_id;
+//            $new_data['type'] = $type;
+//            $unit = new UnitqualitymanageModel();
+//            $nodeStr = $unit->saveTb($new_data);
+//            return json($nodeStr);
+//        }else {
+//            // 上传失败获取错误信息
+//            $msg = '上传失败：'.$file->getError();
+//            return json(['code'=>'-1','msg'=>$msg]);
+//        }
+//    }
 
     /**
      * 控制点执行情况文件 或者 图像资料文件 预览
@@ -512,47 +522,47 @@ class Unitqualitymanage extends Permissions
      * @throws \think\exception\DbException
      * @author hutao
      */
-    public function relationPreview()
-    {
-        // 前台 传递 id 编号
-        $param = input('post.');
-        $id = isset($param['id']) ? $param['id'] : 0;
-        if($id  == 0){
-            return json(['code' => 1,  'path' => '', 'msg' => '编号有误']);
-        }
-        if(request()->isAjax()) {
-            $code = 1;
-            $msg = '预览成功';
-            $data = Db::name('quality_upload')->alias('q')
-                ->join('attachment a','a.id=q.attachment_id','left')
-                ->where('q.id',$id)->field('a.filepath')->find();
-            if(!$data['filepath'] || !file_exists("." .$data['filepath'])){
-                return json(['code' => '-1','msg' => '文件不存在']);
-            }
-            $path = $data['filepath'];
-            $extension = strtolower(get_extension(substr($path,1)));
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(!file_exists($pdf_path)){
-                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
-                    doc_to_pdf($path);
-                }else if($extension === 'xls' || $extension === 'xlsx'){
-                    excel_to_pdf($path);
-                }else if($extension === 'ppt' || $extension === 'pptx'){
-                    ppt_to_pdf($path);
-                }else if($extension === 'pdf'){
-                    $pdf_path = $path;
-                }else if($extension === "jpg" || $extension === "png" || $extension === "jpeg"){
-                    $pdf_path = $path;
-                }else {
-                    $code = 0;
-                    $msg = '不支持的文件格式';
-                }
-                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
-            }else{
-                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
-            }
-        }
-    }
+//    public function relationPreview()
+//    {
+//        // 前台 传递 id 编号
+//        $param = input('post.');
+//        $id = isset($param['id']) ? $param['id'] : 0;
+//        if($id  == 0){
+//            return json(['code' => 1,  'path' => '', 'msg' => '编号有误']);
+//        }
+//        if(request()->isAjax()) {
+//            $code = 1;
+//            $msg = '预览成功';
+//            $data = Db::name('quality_upload')->alias('q')
+//                ->join('attachment a','a.id=q.attachment_id','left')
+//                ->where('q.id',$id)->field('a.filepath')->find();
+//            if(!$data['filepath'] || !file_exists("." .$data['filepath'])){
+//                return json(['code' => '-1','msg' => '文件不存在']);
+//            }
+//            $path = $data['filepath'];
+//            $extension = strtolower(get_extension(substr($path,1)));
+//            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+//            if(!file_exists($pdf_path)){
+//                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+//                    doc_to_pdf($path);
+//                }else if($extension === 'xls' || $extension === 'xlsx'){
+//                    excel_to_pdf($path);
+//                }else if($extension === 'ppt' || $extension === 'pptx'){
+//                    ppt_to_pdf($path);
+//                }else if($extension === 'pdf'){
+//                    $pdf_path = $path;
+//                }else if($extension === "jpg" || $extension === "png" || $extension === "jpeg"){
+//                    $pdf_path = $path;
+//                }else {
+//                    $code = 0;
+//                    $msg = '不支持的文件格式';
+//                }
+//                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+//            }else{
+//                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+//            }
+//        }
+//    }
 
     /**
      * 控制点执行情况文件 或者 图像资料文件 下载
@@ -562,40 +572,40 @@ class Unitqualitymanage extends Permissions
      * @throws \think\exception\DbException
      * @author hutao
      */
-    public function relationDownload()
-    {
-        // 前台需要 传递 id 编号
-        $param = input('param.');
-        $id = isset($param['id']) ? $param['id'] : 0;
-        if($id == 0){
-            return json(['code' => '-1','msg' => '编号有误']);
-        }
-        $file_obj = Db::name('quality_upload')->alias('q')
-            ->join('attachment a','a.id=q.attachment_id','left')
-            ->where('q.id',$id)->field('a.filename,a.filepath')->find();
-        $filePath = '';
-        if(!empty($file_obj['filepath'])){
-            $filePath = '.' . $file_obj['filepath'];
-        }
-        if(!file_exists($filePath)){
-            return json(['code' => '-1','msg' => '文件不存在']);
-        }else if(request()->isAjax()){
-            return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
-        }else{
-            $fileName = $file_obj['filename'];
-            $file = fopen($filePath, "r"); //   打开文件
-            //输入文件标签
-            $fileName = iconv("utf-8","gb2312",$fileName);
-            Header("Content-type:application/octet-stream ");
-            Header("Accept-Ranges:bytes ");
-            Header("Accept-Length:   " . filesize($filePath));
-            Header("Content-Disposition:   attachment;   filename= " . $fileName);
-            //   输出文件内容
-            echo fread($file, filesize($filePath));
-            fclose($file);
-            exit;
-        }
-    }
+//    public function relationDownload()
+//    {
+//        // 前台需要 传递 id 编号
+//        $param = input('param.');
+//        $id = isset($param['id']) ? $param['id'] : 0;
+//        if($id == 0){
+//            return json(['code' => '-1','msg' => '编号有误']);
+//        }
+//        $file_obj = Db::name('quality_upload')->alias('q')
+//            ->join('attachment a','a.id=q.attachment_id','left')
+//            ->where('q.id',$id)->field('a.filename,a.filepath')->find();
+//        $filePath = '';
+//        if(!empty($file_obj['filepath'])){
+//            $filePath = '.' . $file_obj['filepath'];
+//        }
+//        if(!file_exists($filePath)){
+//            return json(['code' => '-1','msg' => '文件不存在']);
+//        }else if(request()->isAjax()){
+//            return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
+//        }else{
+//            $fileName = $file_obj['filename'];
+//            $file = fopen($filePath, "r"); //   打开文件
+//            //输入文件标签
+//            $fileName = iconv("utf-8","gb2312",$fileName);
+//            Header("Content-type:application/octet-stream ");
+//            Header("Accept-Ranges:bytes ");
+//            Header("Accept-Length:   " . filesize($filePath));
+//            Header("Content-Disposition:   attachment;   filename= " . $fileName);
+//            //   输出文件内容
+//            echo fread($file, filesize($filePath));
+//            fclose($file);
+//            exit;
+//        }
+//    }
 
     /**
      * 控制点执行情况文件 或者 图像资料文件 删除
@@ -606,19 +616,242 @@ class Unitqualitymanage extends Permissions
      * @throws \think\Exception
      * @author hutao
      */
-    public function relationDel()
+//    public function relationDel()
+//    {
+//        // 前台需要 传递 id 编号
+//        $param = input('param.');
+//        $id = isset($param['id']) ? $param['id'] : 0;
+//        if($id == 0){
+//            return json(['code' => '-1','msg' => '编号有误']);
+//        }
+//        if(request()->isAjax()) {
+//            $sd = new UnitqualitymanageModel();
+//            $flag = $sd->deleteTb($id);
+//            return json($flag);
+//        }
+//    }
+
+    /**
+     * 控制点执行情况文件
+     * @return \think\response\Json
+     */
+    public function addFile()
     {
-        // 前台需要 传递 id 编号
-        $param = input('param.');
-        $id = isset($param['id']) ? $param['id'] : 0;
-        if($id == 0){
-            return json(['code' => '-1','msg' => '编号有误']);
-        }
-        if(request()->isAjax()) {
-            $sd = new UnitqualitymanageModel();
-            $flag = $sd->deleteTb($id);
+        if(request()->isAjax()){
+            //实例化模型类
+            $model = new UploadModel();
+            $Division = new DivisionControlPointModel();
+            $param = input('post.');
+
+            $data = [
+                "contr_relation_id" => $param["list_id"],//分部策划列表id
+                "attachment_id" => $param["attachment_id"],//对应的是attachment文件上传表中的id
+                "type" => 2//2表示单位工程，3表示分部工程，5表示单元工程
+            ];
+            $flag = $model->insertTb($data);
+
+            //文件上传完毕后修改控制点的状态，只有上传控制点执行情况文件时才修改状态
+
+            $info = $Division->getOne($param["list_id"]);
+
+            if($info["status"] == 0)//0表示未执行
+            {
+                $change = [
+                    "id" => $param["list_id"],
+                    "status" => "1"
+                ];
+                $Division->editRelation($change);
+            }
             return json($flag);
         }
     }
 
+    /**
+     * 删除一条控制点执行情况或者是图像上传信息
+     * @return \think\response\Json
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    public function delete()
+    {
+        if(request()->isAjax()){
+            //实例化model类型
+            $model = new UploadModel();
+            $Division = new DivisionControlPointModel();
+            $param = input('post.');
+            $data = $model->getOne($param['id']);
+            if($data["attachment_id"])
+            {
+                //先删除图片
+                //查询attachment表中的文件上传路径
+                $attachment = Db::name("attachment")->where("id",$data["attachment_id"])->find();
+                if($attachment["filepath"])
+                {
+                    $path = "." .$attachment['filepath'];
+                    $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+
+                    if(file_exists($path)){
+                        unlink($path); //删除文件图片
+                    }
+
+                    if(file_exists($pdf_path)){
+                        unlink($pdf_path); //删除生成的预览pdf
+                    }
+                }
+
+                //删除attachment表中对应的记录
+                Db::name('attachment')->where("id",$data["attachment_id"])->delete();
+            }
+            $flag = $model->delTb($param['id']);
+
+            //只有执行点执行情况文件删除时进行以下的操作
+            //如果控制点执行情况的文件全部删除，修改分部策划表中的状态到未执行，也就是0
+            //首先查询控制点文件、图像上传表中是否还存在当前的分部策划表的上传文件记录
+            $result = $model->judge($param["list_id"]);
+            if(empty($result))//为空为真表示已经没有文件,修改status的值
+            {
+                $info = $Division->getOne($param["list_id"]);
+                if($info["status"] == 1)//0表示已执行
+                {
+                    $change = [
+                        "id" => $param["list_id"],
+                        "status" => "0"
+                    ];
+                    $Division->editRelation($change);
+                }
+            }
+            return json($flag);
+        }
+    }
+
+    /**
+     * 关联收发文
+     * @return mixed
+     */
+    public function relationadd()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 添加关联收发文附件到分部管控、单位管控中的控制点文件上传文件表中
+     * @return \think\response\Json
+     */
+    public function addRelationFile()
+    {
+        if(request()->isAjax()){
+            //实例化模型类
+            $model = new UploadModel();
+            $send = new SendModel();
+            $Division = new DivisionControlPointModel();
+            $param = input('post.');
+            $send_info = $send->getOne($param["id"],1);
+            //遍历数组循环插入分部管控、单位管控中的控制点文件上传文件表中
+            //如果当前的数组不为空
+            if(!empty($send_info["attachment"]))
+            {
+                foreach($send_info["attachment"] as $key=>$val)
+                {
+                    $data = [
+                        "contr_relation_id"=>$param["list_id"],
+                        "attachment_id" =>$val["id"],
+                        "type" => 3//2表示单位工程，3表示分部工程，5表示单元工程
+                    ];
+                    $model->insertTb($data);
+                }
+                //文件上传完毕后修改控制点的状态，只有上传控制点执行情况文件时才修改状态
+
+                $info = $Division->getOne($param["list_id"]);
+
+                if($info["status"] == 0)//0表示未执行
+                {
+                    $change = [
+                        "id" => $param["list_id"],
+                        "status" => "1"
+                    ];
+                    $Division->editRelation($change);
+                }
+                return json(['code' => 1,'msg' => '添加成功！']);
+            }else
+            {
+                return json(['code' => -1,'msg' => '添加失败！']);
+            }
+        }
+    }
+
+    /**
+     * 分部管控中的验评
+     * @return \think\response\Json
+     */
+    public function evaluation()
+    {
+        if(request()->isAjax()){
+            //实例化模型类
+            $admin = new Admin();
+            $admincate = new AdminCate();
+
+            $division_id = input("post.division_id");
+            //首先判断当前的登录人是否有验评权限，管理员和监理可以编辑
+            $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+
+            $admin_info = $admin->getOne($admin_id);
+
+            $admin_cate_id = $admin_info["admin_cate_id"];
+
+            if(!empty($admin_cate_id))
+            {
+                $admin_cate_id_array = explode(",",$admin_cate_id);
+                //查询角色角色分类表中超级管理员和监理单位中是否有当前登录的用户
+                $data = $admincate->getAlladminSupervisor();
+                //$flag = 1表示有权限
+                $flag = 1;
+                foreach ($admin_cate_id_array as $va) {
+                    if (in_array($va, $data)) {
+                        continue;
+                    }else {
+                        $flag = 0;
+                        break;
+                    }
+                }
+
+                //查询当前的工程划分的节点的验评状态
+                $Division = new DivisionModel();
+
+                $division_info = $Division->getOne($division_id);
+
+                $evaluation_results = $division_info["evaluation_results"];//验评
+
+                $evaluation_time = date("Y-m-d",$division_info["evaluation_time"])?date("Y-m-d",$division_info["evaluation_time"]):"";//验评日期
+
+                return json(["flag"=>$flag,"evaluation_results"=>$evaluation_results,"evaluation_time"=>$evaluation_time]);
+            }
+        }
+    }
+
+    /**
+     * 分部管控中的验评
+     * @return \think\response\Json
+     */
+    public function editEvaluation()
+    {
+        if(request()->isAjax()){
+            //实例化模型类
+            $Division = new DivisionModel();
+            $division_id = input("post.division_id");//工程策划id
+            $evaluation_results = input("post.evaluation_results");//验评结果
+            $evaluation_time = input("post.evaluation_time");//验评时间
+
+            $data = [
+                "id"=>$division_id,
+                "evaluation_results"=>$evaluation_results,
+                "evaluation_time"=>strtotime($evaluation_time)
+            ];
+            $flag = $Division->editTb($data);
+
+            return json($flag);
+        }
+    }
 }

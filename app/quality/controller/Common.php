@@ -1114,7 +1114,7 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    // 分部质量管理 分部策划，分部管控 控制点列表
+    // 分部质量管理 分部策划，分部管控 控制点列表、单位质量管理 单位策划，单位管控 控制点列表
     public function quality_subdivision_planning_list($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //自定义表名，工程划分、工序、控制点关系表
