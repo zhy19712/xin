@@ -413,12 +413,14 @@ class Element extends Permissions
         //获得控制点和单元工关联的数据id
         $param = input('param.');
         $division_id=$param['division_id'];
-        $control_id=$param['control_id'];
+        $id=$param['id'];//relation_id主键
         $unit_id=$param['unit_id'];
+//        dump($param);
+//        die();
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
         $res=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$division_id,'control_id'=>$control_id,'unit_id'=>$unit_id])
+            ->where(['division_id'=>$division_id,'id'=>$id,'unit_id'=>$unit_id])
             ->update(['checked'=>$checked]);
        if($res)
        {
