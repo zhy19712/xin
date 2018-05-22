@@ -209,5 +209,51 @@
            }
        })
    </script>
+   <script>
+       // setTimeout(function () {
+       //   getMsg(0);
+       // },10000);
+       //长轮询
+       function getMsg(count) {
+         console.log("*********************发请求啦***********************")
+         $.ajax({
+           url:'../Dashboard/lunxun',
+           type:'post',
+           dataType:'json',
+           data:{"count":count},
+           timeout:30000,
+           success:function(data, textStatus){
+             // console.log(data,textStatus);
+             if(data && data.count){
+               //请求成功，刷新数据
+               console.log(data.count);
+               if($(".msgNum").length){
+                 $(".msgNum").text(data.count);
+               }else{
+                 $("#message").append('<span class="msgNum">'+data.count+'</span>');
+               }
+             }else{
+               $('.msgNum').remove("");
+             }
+             if(textStatus == "success"){
+               //成功之后，再发送请求，递归调用
+               getMsg(data.count);
+             }
+           },
+           error:function(XMLHttpRequest, textStatus, errorThrown){
+             // console.log(XMLHttpRequest,textStatus,errorThrown);
+             if(textStatus == "timeout"){
+               //有效时间内没有响应，请求超时，重新发请求
+               console.log("超时，再发");
+               getMsg(count);
+             }else{
+               console.log("其他错误");
+               // 其他的错误，如网络错误等
+               getMsg(count);
+             }
+           }
+         });
+       }
+   </script>
 </body>
 </html>

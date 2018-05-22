@@ -1487,7 +1487,7 @@ class Common extends Controller
             ->select();
         //如果之前触发了insertalldata函数
         if (count($search) > 0) {
-            //有传入工序
+            //是否有传入工序
             if($this->request->has('nm_id'))
             {
                 $wherenm['r.ma_division_id']=$param['nm_id'];
@@ -1495,19 +1495,26 @@ class Common extends Controller
             else{
                 $wherenm='';
             }
-
-                //*****多表查询join改这里******
+            //是否有传入check判断（区分单元测评/单元管控）
+            if($this->request->has('nm_id'))
+            {
+                $wherech['r.checked']=$param['checked'];
+            }
+            else{
+                $wherech='';
+            }
+            //*****多表查询join改这里******
             $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
                         ->where(['r.unit_id'=>$unit_id,'r.division_id'=>$division_id])
                         ->where($wherenm)
+                        ->where($wherech)
                         ->order('code')
                         ->limit(intval($start), intval($length))
                     ->select();
 
                 $recordsFiltered = sizeof($recordsFilteredResult);
         } else {
-            //没有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name('norm_controlpoint')

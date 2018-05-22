@@ -19,7 +19,7 @@ tableItem = $('#tableItem').DataTable({
     "paging": "false",
     ajax: {
         // "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=" //老的
-        "url": "/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=&unit_id="
+        "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id="
     },
     dom: 'rt',
     columns: [
@@ -36,8 +36,11 @@ tableItem = $('#tableItem').DataTable({
             name: "id"
         },
         {
-            name: "remark"
-        }
+            name: "control_id"
+        },
+        // {
+        //     name: "remark"
+        // }
     ],
     columnDefs: [
         {
@@ -156,7 +159,7 @@ function nodeClick(e, treeId, node) {
 
     $(".imgList").css("display","none");
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
-    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=&unit_id=").load();
+    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id=").load();
     console.log(controlRowId)
@@ -211,7 +214,8 @@ var nodeUnitId ,        //单元工程段号 id
     eTypeId ,           //工程划分里面的工程类型里面的 单元id (这个id 下面包含着所以的工序id以及下面的控制点id)
     procedureId = '',   //点击工序id
     selectData ,        //点击控制点的行，获取选中该行数据
-    controlRowId = '';  //点击控制点表的行id
+    controlRowId = '';  //点击控制点表的行id  关联表ID
+var controlId;          //控制点id
 
 //名字拼接过滤方法
 function ajaxDataFilter(treeId, parentNode, responseData) {
@@ -270,7 +274,8 @@ function nodeClickUnit(e, treeId, node) {
     }
     if(nodeUnitId != undefined || nodeUnitId != null){
         // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
-        tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
+        // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
+        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
@@ -309,8 +314,6 @@ function selfidName(id) {
 }
 /**==========结束初始化 单元工树 =============*/
 
-
-
 //点击置灰
 $(".imgList").on("click","a",function () {
     $(this).css("color","#2213e9").siblings("a").css("color","#CDCDCD");
@@ -326,7 +329,8 @@ $(".imgList").on("click","#homeWork",function () {
     $(".mybtnAdd").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
-    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
+    // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
+    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
     flag = true;
 });
 
@@ -337,8 +341,9 @@ function clickConName(id) {
     procedureId = id;
     console.log(procedureId);
     if(nodeUnitId != undefined || nodeUnitId != null && procedureId != undefined || procedureId != null){
-        // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
-        tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+        // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
+        // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&nm_id="+procedureId).load();
+        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
     }
     $("#tableContent .imgList").css('display','block');
     console.log(id + " 控制点工序 procedureId");
@@ -491,8 +496,8 @@ function delData(id,url) {
                 console.log(res);
                 if(res.code ==1){
                     layer.msg("删除成功！");
-                    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
-                    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+                    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
+                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
                 }else if(res.code !=1){
@@ -518,8 +523,10 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(this).addClass("select-color").siblings().removeClass("select-color");
     selectData = tableItem.row(".select-color").data();//获取选中行数据
     console.log(selectData[3] +" ------控制点 controlRowId");
+    console.log(selectData);
     controlRowId = selectData[3];
-    resources = selectData[4];
+    // resources = selectData[4];
+    controlId = selectData[4];
 
     if(controlRowId != undefined && controlRowId != null){
         implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
@@ -542,17 +549,29 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     //向提交页面之前放置值
     $("#resVal").val(resources);
 
-    testing(nodeUnitId,controlRowId);
+    testing(nodeUnitId,controlRowId,controlId);
+    console.log(type)
+    if(type == 1){
+        $.ajax({
+            url:"/quality/element/copycheck",
+            data:{cpr_id:controlRowId},
+            type:'post',
+            success:function(res) {
+                console.log(res)
+            }
+        })
+    }
 });
 
 //Testing管控中的控件能否使用
-function testing(division_id,cpr_id) {
+function testing(nodeUnitId,cpr_id,control_id) {
     $.ajax({
         url: "/quality/element/checkform",
         type: "post",
         data: {
-            division_id:division_id,
-            cpr_id:cpr_id,
+            division_id:nodeUnitId,
+            cpr_id:controlRowId,
+            cp_id:controlId,
         },
         success: function (res) {
             console.log(res);
@@ -566,9 +585,9 @@ function testing(division_id,cpr_id) {
                 $("#date").attr({"disabled":false});
             }
         },
-        error:function () {
-            alert("管控中的控件能否使用")
-        }
+        // error:function () {
+        //     alert("返回管控中的控件数据错误")
+        // }
     });
 }
 
@@ -721,9 +740,9 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                 type=2;
             }
             console.log(res)
+
             if(res.code == 2){
                 uploadId = res.id;
-
                 $.ajax({
                     url:"/quality/element/addExecution",
                     data:{
@@ -738,8 +757,8 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                         if(res.code == 1) {
                             implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                             imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
-                            // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
-                            tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+                            // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
+                            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                         } else {
                             layer.msg('获取数据失败！');
                         }
@@ -1135,8 +1154,8 @@ function historyOnLine(id,curStep) {
         area: ['980px', '90%'],
         content: '/approve/approve/ApproveHistory?dataId='+ id + '&dataType=app\\quality\\model\\QualityFormInfoModel',
         // end:function () {
-        //     tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
-        //     tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+        //     tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
+        //     tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&nm_id="+procedureId).load();
         // }
     });
 }
