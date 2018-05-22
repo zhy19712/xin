@@ -38,12 +38,12 @@ function onClick(e, treeId, node) {
   selfid = zTreeObj.getSelectedNodes()[0].id;
   var path = sNodes[0].name; //选中节点的名字
   node = sNodes[0].getParentNode();//获取父节点
-  //判断是否还有子节点
+  //判断是否是分部
   if (sNodes[0].type == '1') {
-    //判断是否还有父节点
+    //
     selfidName()
     $("#tableContent .imgList").css('display','block');
-    var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+".shtml";
+    var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+".shtml";
     tableItem.ajax.url(url).load();
   }else{
     $("#tableContent .imgList").hide()
@@ -67,7 +67,7 @@ $(".imgList").on("click","#homeWork",function () {
   $(".mybtn").css("display","none");
   $(".alldel").css("display","none");
   $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
-  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
 });
 //点击工序控制点名字
 function clickConName(id) {
@@ -76,7 +76,7 @@ function clickConName(id) {
   $(".mybtn").css("display","block");
   $(".alldel").css("display","block");
   $("#tableContent .imgList").css('display','block');
-  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
 }
 //初始化表格
 var tableItem = $('#tableItem').DataTable( {
@@ -86,11 +86,9 @@ var tableItem = $('#tableItem').DataTable( {
   iDisplayLength:1000,
   "scrollY": "450px",
   "order": [[ 1, "asc" ]],
-  // scrollY: 600,
   ajax: {
     "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_list.shtml"
   },
-  // dom: 'f<"alldel layui-btn layui-btn-sm"><"mybtn layui-btn layui-btn-sm"><"bitCodes layui-btn layui-btn-sm">rti',
   dom:'frti',
   columns:[
     {
@@ -141,9 +139,7 @@ var tableItem = $('#tableItem').DataTable( {
     }
   },
   "fnInitComplete": function (oSettings, json) {
-    $('#tableItem_length').insertBefore(".mark");
     $('#tableItem_info').insertBefore(".mark");
-    $('#tableItem_paginate').insertBefore(".mark");
     $('.dataTables_wrapper,.tbcontainer').css("display","block");
   },
   "fnDrawCallback":function () {
@@ -165,144 +161,6 @@ var tableItem = $('#tableItem').DataTable( {
     }
   }
 });
-//
-// $(".bitCodes").html("<div id='bitCodes'><i class='fa fa-download' style='padding-right: 3px;'></i>导出二维码</div>");
-// $(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>新增控制点</div>");
-// $(".alldel").html("<div id='delAll'><i class='fa fa-close'></i>全部删除</div>");
-
-//点击新增控制节点
-$("#tableContent").on("click",".mybtn #test3",function () {
-  layer.open({
-    type: 2,
-    title: '控制点选择',
-    shadeClose: true,
-    area: ['980px', '673px'],
-    content: './addplan?selfid='+ selfid + '&procedureid='+ conThisId,
-    end:function () {
-      tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-    }
-  });
-});
-//点删除全部节点
-$("#tableContent").on("click","#delAll",function () {
-  conDelAll();
-});
-
-//删除控制点
-function conDel(id) {
-  console.log(id);
-  $.ajax({
-    type: "post",
-    url: "./controlDel",
-    data: {id:id},
-    success: function (res) {
-      console.log(res);
-      if(res.code ==1){
-        layer.msg("删除成功！")
-        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-      }else{
-        layer.msg(res.msg);
-      }
-    }
-  })
-}
-//删除全部
-function  conDelAll() {
-  $.ajax({
-    type: "post",
-    url: "./controlAllDel",
-    data: {selfid:selfid,procedureid:conThisId},
-    success: function (res) {
-      console.log(res);
-      if(res.code ==1){
-        layer.msg("删除成功！")
-        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-      }else{
-        layer.msg(res.msg);
-      }
-    }
-  });
-};
-//下载
-function download(id,url,type_model) {
-  var url1 = url;
-  $.ajax({
-    url: url,
-    type:"post",
-    dataType: "json",
-    data:{id:id,type_model : type_model},
-    success: function (res) {
-      if(res.code != 1){
-        layer.msg(res.msg);
-      }else {
-        $("#form_container").empty();
-        var str = "";
-        str += ""
-          + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-          + "<form name=download"+id +" action="+ url1 +" method='get' target=downloadFrame"+ id + ">"
-          + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-          + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
-          + "<input class='file_type' style='display: none;' name='type_model' value="+ type_model +">"
-          + "<button type='submit' class=btn" + id +"></button>"
-          + "</form>"
-        $("#form_container").append(str);
-        $("#form_container").find(".btn" + id).click();
-      }
-
-    }
-  })
-}
-//点击导出二维码
-$("#tableContent").on("click",".bitCodes",function () {
-  download(selfid,"./exportCode");
-});
-//下载模板
-function conDown(id) {
-  download(id,"./fileDownload","BranchfileModel");
-};
-//预览
-function showPdf(id,url,type_model) {
-  $.ajax({
-    url: url,
-    type: "post",
-    data: {id:id,type_model : type_model},
-    success: function (res) {
-      if(res.code === 1){
-        var path = res.path;
-        var houzhui = res.path.split(".");
-        if(houzhui[houzhui.length-1]=="pdf"){
-          window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
-        }else if(res.path.split(".")[1]==="png"||res.path.split(".")[1]==="jpg"||res.path.split(".")[1]==="jpeg"){
-          layer.photos({
-            photos: {
-              "title": "", //相册标题
-              "id": id, //相册id
-              "start": 0, //初始显示的图片序号，默认0
-              "data": [   //相册包含的图片，数组格式
-                {
-                  "alt": "图片名",
-                  "pid": id, //图片id
-                  "src": "../../../"+res.path, //原图地址
-                  "thumb": "" //缩略图地址
-                }
-              ]
-            }
-            ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
-          });
-        }else{
-          layer.msg("不支持的文件格式");
-        }
-
-      }else {
-        layer.msg(res.msg);
-      }
-    }
-  })
-}
-//预览打印
-function conPrint(id){
-  showPdf(id,'./printDocument',"BranchfileModel");
-}
 
 
 //全选 全不选
@@ -327,11 +185,11 @@ $("#all_checked").on('click',function () {
     success: function (res) {
       if(res.code == 1){
         if(conThisId != 0){
-          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
         }
       }else{
         layer.msg(res.msg);
-        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
       }
     }
   })
@@ -374,14 +232,12 @@ $("#tableItem").on('click','.checkList',function () {
         }
 
         if(conThisId != 0){
-          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
         }
       }else{
         layer.msg(res.msg);
-        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
       }
     }
   })
 });
-
-//

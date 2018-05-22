@@ -164,24 +164,24 @@
     //点击保存
     $("#test3").click(function () {
       if(flag){
-       $.ajax({
-         url:"./addRelationFile",
-         type:"POST",
-         data:{
-           list_id:$("#listId").val(),
-           id:checkId
-         },
-         dataType:"JSON",
-         success:function (res) {
-           if(res.code == 1){
-             parent.refreshTable()
-             parent.layer.msg("添加成功");
-           }else{
-             parent.layer.msg(res.msg);
-           }
-           closWin()
-         }
-       });
+        $.ajax({
+          url:"./addRelationFile",
+          type:"POST",
+          data:{
+            list_id:$("#listId").val(),
+            id:checkId
+          },
+          dataType:"JSON",
+          success:function (res) {
+            if(res.code == 1){
+              parent.refreshTable()
+              parent.layer.msg("添加成功");
+            }else{
+              parent.layer.msg(res.msg);
+            }
+            closWin()
+          }
+        });
       }else{
         parent.layer.msg("请先选择");
       }

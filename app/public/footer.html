@@ -6,26 +6,30 @@
     <script>
         //将所有模型页面按需装载到同一个iframe中，防止用户打开过多模型页面崩溃
      function replaceTemplate(id){
-         $.ajax({
-             url: "{:url('./modelmanagement/index/index')}?id=" + id,
-             dataType:"json",
-             async:true,
-             type:"GET",
-             beforeSend:function(){
-             },
-             success:function(req){
-                 var iframe=document.getElementById("-1");
-                 var iframew=iframe.contentWindow;
-                 //iframew.document.location.replace(req);
-                 iframew.document.open();
-                 iframew.document.write(req);
-                 iframew.document.close();
-             },
-             complete:function(){
-             },
-             error:function(){
-             }
-         });
+         var iframe=document.getElementById("-1");
+         var iframew=iframe.contentWindow;
+         iframew.document.location.replace("{:url('./modelmanagement/index/index')}?id=" + id);
+
+         // $.ajax({
+         //     url: "{:url('./modelmanagement/index/index')}?id=" + id,
+         //     dataType:"json",
+         //     async:true,
+         //     type:"GET",
+         //     beforeSend:function(){
+         //     },
+         //     success:function(req){
+         //         var iframe=document.getElementById("-1");
+         //         var iframew=iframe.contentWindow;
+         //         iframew.document.location.replace("{:url('./modelmanagement/index/change')}");
+         //         // iframew.document.open();
+         //         // iframew.document.write(req);
+         //         // iframew.document.close();
+         //     },
+         //     complete:function(){
+         //     },
+         //     error:function(){
+         //     }
+         // });
      }
 
         var message;
