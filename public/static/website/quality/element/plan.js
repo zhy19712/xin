@@ -503,6 +503,7 @@ function tpyeTable() {
                     }else{
                         var html = "<input type='checkbox' class='checkList'  onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     }
+
                     // var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     return html;
                 },
