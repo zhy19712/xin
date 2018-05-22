@@ -1501,6 +1501,7 @@ class Common extends Controller
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
                     ->where(['r.unit_id'=>$unit_id,'r.division_id'=>$division_id])
                     ->where($wherenm)
+                    ->order('code')
                     ->limit(intval($start), intval($length))
                     ->select();
 
