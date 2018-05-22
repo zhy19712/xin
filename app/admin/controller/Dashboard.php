@@ -100,11 +100,12 @@ class Dashboard extends Permissions
 
                     if ($count_data != $count) {
 
-                        return json($count_data);
+                        return json(["count"=>$count_data]);
 
                         exit;
                     }
                 } else {
+
                     exit;
                 }
 
