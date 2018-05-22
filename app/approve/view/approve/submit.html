@@ -210,14 +210,14 @@
             $("#btnSave").removeAttr("disabled");
             return;
         }
-        if ($("#referFlow").val()) {
-            var $referDom = $("#referDiv").find(".addpeople");
-            if ($dom.length !== $referDom.length - 1) {
-                layer.alert("请按照参考流程选择人员。");
-                $("#btnSave").removeAttr("disabled");
-                return;
-            }
-        }
+        // if ($("#referFlow").val()) {
+        //     var $referDom = $("#referDiv").find(".addpeople");
+        //     if ($dom.length !== $referDom.length - 1) {
+        //         layer.alert("请按照参考流程选择人员。");
+        //         $("#btnSave").removeAttr("disabled");
+        //         return;
+        //     }
+        // }
         $.ajax({
             type: "post",
             url: "{:url('/approve/Approve/Submit')}",
@@ -254,7 +254,7 @@
             });
             $("#referDiv").html(html);
             // $("#referContentDiv").show();
-            $("#referContentDiv").show();
+            $("#referContentDiv").hide();
         // };
     };
 

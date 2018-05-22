@@ -20,18 +20,41 @@
     #big >div>div{
         margin: 12px;
     }
-    .homeTop{
-        width: 100%;
-        height: 200px;
+    .homeTop,.qualityBottom{
+        width: 99.4%;
+        height: 240px;
+        margin-left: 5px;
+        margin-top: 5px;
+        border: 1px solid ;
+    }
+    .config{
+        width: 99.4%;
+        float: left;
+        height: 30px;
+    }
+    .config .edit,.config .app{
+        float: right;
+        background-color: #00c0ef;
+    }
+    .config .edit,.config .app{
+        margin-right: 0.5%;
+        margin-bottom: 5px;
+        margin-top: 5px;
+
     }
 </style>
 <div id="big">
+    <div class="config">
+        <span class="edit layui-btn layui-btn-sm">编辑</span>
+        <span class="app layui-btn layui-btn-sm">应用</span>
+    </div>
     <div class="homeTop">
-        <div>首页3D</div>
+        <div><h3>首页3D</h3></div>
         <div class="colorStyle" style="margin-right: 50px;">
             <div class="zuo" style="margin-right: 50px;">
-                <label for="home3dId" onselectstart="return false;">选择:透明度</label>
-                <input type='text' name='all_checked_plan' id="home3dId" value=''>
+                <span></span>
+                <label for="home3dId" onselectstart="return false;">透明度</label>
+                <input type='text' name='all_checked_plan' id="home3dId" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
             </div>
             <div class="you">
                 <span>颜色：</span>
@@ -41,7 +64,7 @@
         <div class="colorStyle">
             <div class="zuo" style="margin-right: 50px;">
                 <label for="transparency3dId" onselectstart="return false;">透明效果:透明度</label>
-                <input type='text' name='all_checked_plan' id="transparency3dId" value=''>
+                <input type='text' name='all_checked_plan' id="transparency3dId" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
             </div>
             <div class="you">
                 <span>颜色：</span>
@@ -49,12 +72,12 @@
             </div>
         </div>
     </div>
-    <div class="qualityBottom">
-        <div>质量3D</div>
+    <div class="qualityBottom" style="margin-top: 10px">
+        <div><h3>质量3D</h3></div>
         <div class="colorStyle">
             <div class="zuo">
-                <label for="quality3dId" onselectstart="return false;">选择:透明度</label>
-                <input type='text' name='all_checked_plan' id="quality3dId" value=''>
+                <label for="quality3dId" onselectstart="return false;">透明度</label>
+                <input type='text' name='all_checked_plan' id="quality3dId" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
             </div>
             <div class="you">
                 <span>颜色：</span>
@@ -63,8 +86,8 @@
         </div>
         <div class="colorStyle">
             <div class="zuo">
-                <label for="qualifiedId" onselectstart="return false;">优良/合格:颜色</label>
-                <input type='text' name='all_checked_plan' id="qualifiedId" value=''>
+                <label for="qualifiedId" onselectstart="return false;">优良/合格:透明度</label>
+                <input type='text' name='all_checked_plan' id="qualifiedId" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
             </div>
             <div class="you">
                 <span>颜色：</span>
@@ -77,48 +100,70 @@
 <script>
 
     $(function(){
-        $('#colorpickerHolder').ColorPicker({flat: true});
+        // $('#colorpickerHolder').ColorPicker({flat: true});
 
+        $('#colorpickerHome1').ColorPicker({
+            flat: true,
+            color: '#00ff00',
+            onSubmit: function(hsb, hex, rgb) {
+                console.log(rgb);
+            }
+        });
+        $('#colorpickerHome2').ColorPicker({
+            flat: true,
+            color: '#00ff00',
+            onSubmit: function(hsb, hex, rgb) {
+                console.log(rgb);
+            }
+        });
         $('#colorpickerHolder2').ColorPicker({
             flat: true,
             color: '#00ff00',
             onSubmit: function(hsb, hex, rgb) {
-                $('#colorSelector2 div').css('backgroundColor', '#' + hex);
+                console.log(rgb);
             }
         });
-        $('#colorpickerHolder2>div').css('position', 'absolute');
-        var widt = false;
-        $('#colorSelector2').bind('click', function() {
-            $('#colorpickerHolder2').stop().animate({height: widt ? 0 : 173}, 500);
-            widt = !widt;
+        $('#colorpickerHolder1').ColorPicker({
+            flat: true,
+            color: '#00ff00',
+            onSubmit: function(hsb, hex, rgb) {
+                console.log(rgb);
+            }
         });
 
-        $('#colorpickerField1, #colorpickerField2, #colorpickerField3').ColorPicker({
-            onSubmit: function(hsb, hex, rgb, el) {
-                $(el).val(hex);
-                $(el).ColorPickerHide();
-            },
-            onBeforeShow: function () {
-                $(this).ColorPickerSetColor(this.value);
-            }
-        })
-            .bind('keyup', function(){
-                $(this).ColorPickerSetColor(this.value);
-            });
-        $('#colorSelector').ColorPicker({
-            color: '#0000ff',
-            onShow: function (colpkr) {
-                $(colpkr).fadeIn(500);
-                return false;
-            },
-            onHide: function (colpkr) {
-                $(colpkr).fadeOut(500);
-                return false;
-            },
-            onChange: function (hsb, hex, rgb) {
-                $('#colorSelector div').css('backgroundColor', '#' + hex);
-            }
-        });
+        // $('#colorpickerHolder2>div').css('position', 'absolute');
+        // var widt = false;
+        // $('#colorSelector2').bind('click', function() {
+        //     $('#colorpickerHolder2').stop().animate({height: widt ? 0 : 173}, 500);
+        //     widt = !widt;
+        // });
+
+        // $('#colorpickerField1, #colorpickerField2, #colorpickerField3').ColorPicker({
+        //     onSubmit: function(hsb, hex, rgb, el) {
+        //         $(el).val(hex);
+        //         $(el).ColorPickerHide();
+        //     },
+        //     onBeforeShow: function () {
+        //         $(this).ColorPickerSetColor(this.value);
+        //     }
+        // })
+        //     .bind('keyup', function(){
+        //         $(this).ColorPickerSetColor(this.value);
+        //     });
+        // $('#colorSelector').ColorPicker({
+        //     color: '#0000ff',
+        //     onShow: function (colpkr) {
+        //         $(colpkr).fadeIn(500);
+        //         return false;
+        //     },
+        //     onHide: function (colpkr) {
+        //         $(colpkr).fadeOut(500);
+        //         return false;
+        //     },
+        //     onChange: function (hsb, hex, rgb) {
+        //         $('#colorSelector div').css('backgroundColor', '#' + hex);
+        //     }
+        // });
     });
 
 

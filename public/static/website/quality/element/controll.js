@@ -966,11 +966,13 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                         html += "<a title='编辑' onclick='editOnLine ("+row[4]+","+row[6]+")'><i class='fa fa fa-pencil'></i></a>";
                         html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")'><i class='fa fa fa-pencil-square-o'></i></a>";
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
+                        html += "<a title='作废' onclick='toVoidOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-minus'></i></a>";
+                        html += "<a title='退回' onclick='returnOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-exchange'></i></a>";
                     }
                     else if (row[3] === 2) {
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
                         html += "<a title='下载' onclick='downOnLine("+row[4]+")'><i class='fa fa fa-download'></i></a>";
-                        html += "<a title='作废' onclick='toVoid("+row[4]+")'><i class='fa fa fa-download'></i></a>";
+                        html += "<a title='作废' onclick='toVoidOnLine("+row[4]+")'><i class='fa fa fa-minus'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
                         // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
@@ -1158,6 +1160,20 @@ function historyOnLine(id,curStep) {
         //     tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&nm_id="+procedureId).load();
         // }
     });
+}
+
+//在线填报-点击退回
+function returnOnLine(id,curStep) {
+    console.log(curStep);
+    console.log(controlRowId);
+    layer.msg("退回");
+}
+
+//在线填报-点击作废
+function toVoidOnLine(id,curStep) {
+    console.log(curStep);
+    console.log(controlRowId);
+    layer.msg("作废");
 }
 
 //下载封装的方法
