@@ -35,7 +35,7 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(
                dataType:"JSON",
                success :function (res) {
                    if(res.code===1){
-                       tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/0/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+                       tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
                        tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
                    }else{
                      layer.msg(res.msg);
@@ -96,11 +96,11 @@ function onClick(e, treeId, node) {
       resultInfo();
         $(".result").show();
         $("#tableContent .imgList").css('display','block');
-        var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/0/selfid/"+selfid+".shtml";
+        var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+".shtml";
         tableItem.ajax.url(url).load();
     }else{
       $("#tableContent .imgList").hide();
-      var url = "/quality/common/datatablesPre/tableName/quality_subdivision_planning_list/checked/0";
+      var url = "/quality/common/datatablesPre/tableName/quality_subdivision_planning_list/checked/1";
       tableItem.ajax.url(url).load();
     }
 
@@ -116,7 +116,7 @@ $(".imgList").on("click","a",function () {
 //点击作业
 $(".imgList").on("click","#homeWork",function () {
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
-    tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/0/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+    tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
     $(".selectShow").hide();
 });
 //点击工序控制点名字
@@ -126,7 +126,7 @@ function clickConName(id) {
   $(".selectShow").show();
   $("#tableContent .imgList").css('display','block');
   tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
-  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
 }
 //初始化表格
 var tableItem = $('#tableItem').DataTable( {
@@ -137,7 +137,7 @@ var tableItem = $('#tableItem').DataTable( {
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {
-        "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_list/checked/0"
+        "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_list/checked/1"
     },
     dom: 'rt',
     columns:[
@@ -388,7 +388,7 @@ $(".relationBox").on('click',function () {
 });
 //刷新table
 function refreshTable() {
-  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
 
   tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
 }
@@ -403,16 +403,30 @@ function resultInfo() {
     type:"POST",
     dataType:"JSON",
     success:function (res) {
-      $(".result form select").val(1);
+      $(".result form select").val(res.evaluation_results);
       $(".result form #date").val(res.evaluation_time);
-      $(".result form select").prop("disabled",true);
-      layui.form.render('select');
-      $(".result .layui-input[readonly]").addClass('disabledColor');
-      $("#date").prop("disabled",true)
       if(!res.flag){
-
+        $(".result form select").prop("disabled",true);
+        $(".result .layui-input[readonly]").addClass('disabledColor');
+        $("#date").prop("disabled",true);
       }
+      layui.form.render('select');
     }
   })
 
+}
+
+//修改结果
+function resultChange() {
+  $.ajax({
+    url:'./',
+    data:{
+      division_id:selfid
+    },
+    type:'POST',
+    dataType:"JSON",
+    success:function (res) {
+      
+    }
+  })
 }

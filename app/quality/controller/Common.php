@@ -1128,7 +1128,12 @@ class Common extends Controller
         //是否勾选
         $checked = input('checked') ? input('checked') : "";//是否勾选
 
-        if($checked == 0)
+        if($checked == "")
+        {
+            $search_checked = [
+
+            ];
+        }else
         {
             $search_checked = [
                 "checked"=>0

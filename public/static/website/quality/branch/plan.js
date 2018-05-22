@@ -43,7 +43,7 @@ function onClick(e, treeId, node) {
         //
         selfidName()
         $("#tableContent .imgList").css('display','block');
-      var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+".shtml";
+      var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+".shtml";
       tableItem.ajax.url(url).load();
     }else{
       $("#tableContent .imgList").hide()
@@ -67,7 +67,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(".mybtn").css("display","none");
     $(".alldel").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
-    tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+    tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
 });
 //点击工序控制点名字
 function clickConName(id) {
@@ -76,7 +76,7 @@ function clickConName(id) {
     $(".mybtn").css("display","block");
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
-    tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+    tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
 }
 //初始化表格
 var tableItem = $('#tableItem').DataTable( {
@@ -179,7 +179,7 @@ $("#tableContent").on("click",".mybtn #test3",function () {
         area: ['980px', '673px'],
         content: './addplan?selfid='+ selfid + '&procedureid='+ conThisId,
         end:function () {
-            tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+            tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
         }
     });
 });
@@ -327,11 +327,11 @@ $("#all_checked").on('click',function () {
       success: function (res) {
         if(res.code == 1){
           if(conThisId != 0){
-            tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+            tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
           }
         }else{
           layer.msg(res.msg);
-          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
         }
       }
     })
@@ -374,11 +374,11 @@ $("#tableItem").on('click','.checkList',function () {
         }
 
         if(conThisId != 0){
-          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+          tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
         }
       }else{
           layer.msg(res.msg);
-        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+        tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
       }
     }
   })
