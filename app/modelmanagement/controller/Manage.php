@@ -11,7 +11,7 @@ namespace app\modelmanagement\controller;
 
 use app\admin\controller\Permissions;
 
-class manage extends Permissions
+class Manage extends Permissions
 {
     function index()
     {

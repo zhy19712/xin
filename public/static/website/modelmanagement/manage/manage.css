@@ -39,14 +39,14 @@
     display: inline-block;
     vertical-align: middle;
 }
- .layer-model-nav .layui-btn{
+.layer-model-nav .layui-btn{
     padding: 6px 12px;
     height: auto;
     line-height: 1.02857;
 }
- .layer-center{
-     padding-top: 3px;
- }
+.layer-center{
+    padding-top: 3px;
+}
 .layui-form-label{
     text-align: left;
 }

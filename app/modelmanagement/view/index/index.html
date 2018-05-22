@@ -1,3 +1,160 @@
 {include file="../app/public/common_header.html"}
-起始页面
+<div data-options="region:'center',title:''" style="border: 0">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'" class="layer-center">
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
+            <!-- 初始化 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+                var modelName = "res_fengning_jc";
+                var modelPath = "http://192.168.1.2:8008/default.aspx?dir=url_res02&path=";
+                RealBimOcx.SwitchBIMSceneSimple(modelPath,modelName);
+                //RealBimOcx.SwitchBIMSceneSimple("F:\\","res_fengning_kw_03");
+                RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+            </script>
+            <!-- 初始化完成 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                    RealBimOcx.SetSceHugeObjVisible(true);
+                }
+                RealBimOcx.SetSuitableCam();
+            </script>
+            <!-- 点击模型事件 -->
+            <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
+                uObjSubIdSingle = uObjSubID;
+                //显示模型属性
+                var test = "\1cf[4286644223] 水轮机状态: \1cf[4294934592]正常"     + " \n\n " +
+                    "\1cf[4286644223]水轮机转速: \1cf[4294934592]压力式静力水准仪" + " \n\n " +
+                    "\1cf[4286644223]调速和控制装置运行情况: \1cf[4294934592]正常" + " \n\n " +
+                    "\1cf[4286644223]励磁系统运行情况: \1cf[4294934592]正常"       + " \n\n " +
+                    "\1cf[4286644223]水轮机转速: \1cf[4294934592]10000 r/min"      + " \n\n " +
+                    "\1cf[4286644223]转子转动惯量: \1cf[4294934592]48000 t"        + " \n\n " +
+                    "\1cf[4286644223]转子转动惯量: \1cf[4294934592]48000 t"        + " \n\n " +
+                    "\1cf[4286644223]转子转动惯量: \1cf[4294934592]48000 t"        + " \n\n " +
+                    "\1cf[4286644223]发电机额定功率因数: \1cf[4294934592]0.9";
+                    RealBimOcx.SetInfoBox(test,-260,100,-22,-140,-270,184,-12,-184);
+
+                //单选/多选模型
+                if(!isCtrlDown){
+                    uObjSubIDArr = [];
+                    hiddenArr = [];
+                    RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                    RealBimOcx.BatchAddSubClrInfoBegin();
+                    RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);    //第二个参数为透明度
+                    uObjSubIDArr.push(uObjSubID);
+                    hiddenArr.push(uObjSubID);
+                    RealBimOcx.BatchAddSubClrInfoEnd();
+                    $('#baseAttrCon').show();//展示基本属性信息
+                }else{
+                    RealBimOcx.BatchAddSubClrInfoBegin();
+                    RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);   //第二个参数为透明度
+                    uObjSubIDArr.push(uObjSubID);
+                    hiddenArr.push(uObjSubID);
+                    RealBimOcx.BatchAddSubClrInfoEnd();
+                }
+            </script>
+            <!-- 点击模型操作按钮 -->
+            <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
+                switch (eType) {
+                    case "DISP_ISOLATE":    //显示隔离
+                        RealBimOcx.SetIsolateSubElemIDBegin();
+                        if (uButtonMode === 1)                    //显示隔离
+                        {
+                            isOlate = true; //是否为隔离状态
+                            hiddenArr = [];
+                            $.each(uObjSubIDArr, function (i, item) {
+                                RealBimOcx.SetIsolateSubElemID(item)
+                            });
+                            RealBimOcx.SetIsolateSubElemIDEnd();
+                        }
+                        else                                      //隐藏隔离
+                        {
+                            isOlate = false;    //是否为隔离状态
+                            RealBimOcx.SetIsolateSubElemIDEnd();
+                            /* RealBimOcx.SetAllHugeObjSubValidState(1);*/
+                            RealBimOcx.SetHugeObjSubValidStateBegin();
+                            $.each(uObjSubIDArr, function (i, item) {  //取消隔离
+                                RealBimOcx.SetHugeObjSubValidStateInfo(item, 1);
+                            });
+                            RealBimOcx.SetHugeObjSubValidStateEnd();
+                            uObjSubIDArr = [];
+                        }
+                        break;
+                    case "DISP_HIDE":
+                        if (uButtonMode === 1) {                    //隐藏选择的模型
+                            uObjSubIDArr = [];
+                            RealBimOcx.SetHugeObjSubValidStateBegin();
+                            $.each(hiddenArr, function (i, item) {
+                                RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
+                            });
+                            RealBimOcx.SetHugeObjSubValidStateEnd();
+                        } else {
+                            if(isOlate){    //为隔离状态
+                                RealBimOcx.SetHugeObjSubValidStateBegin();
+                                $.each(hiddenArr, function (i, item) {  //取消隐藏
+                                    RealBimOcx.SetHugeObjSubValidStateInfo(item, 1);
+                                });
+                                RealBimOcx.SetHugeObjSubValidStateEnd();
+                            }else {
+                                RealBimOcx.SetAllHugeObjSubValidState(1);
+                            }
+                            RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                            hiddenArr = [];
+                        }
+                        break;
+
+                    case "DISP_TAG":        //透明
+                        if(uButtonMode === 1){
+                            //透明
+                            uObjSubIDArr = [];
+                            RealBimOcx.BatchAddSubClrInfoBegin();
+                            $.each(hiddenArr, function (i, item) {
+                                RealBimOcx.AddSubClrPercent(item,0,0xff);
+                            });
+                            RealBimOcx.BatchAddSubClrInfoEnd();
+                        }else{
+                            //取消透明
+                            RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                        }
+                }
+
+            </script>
+        </div>
+    </div>
+</div>
 {include file="../app/public/common_footer.html"}
+<!-- 自定义 -->
+<script type="text/javascript">
+    uObjSubIdSingle = new Number();      //已选非隐藏单个模型ID
+    uObjSubIDArr = [];      //已选非隐藏模型ID数组
+    hiddenArr = [];         //已选隐藏模型ID
+    isCtrlDown = false;
+    //键盘事件
+    $(document).keydown(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        if(KeyCode==17){
+            isCtrlDown = true;
+        }
+    });
+    $(document).keyup(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        if(KeyCode==17){
+            isCtrlDown = false;
+        }
+    });
+    //ESC事件
+    $(document).keyup(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        if ( KeyCode == 27 ){
+            RealBimOcx.AddAnchorEnd();
+            RealBimOcx.CreateMarkerEnd("", 0, 0, "", true);
+            RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+            uObjSubIDArr.length=0;
+        }
+    });
+
+</script>
+</body>
+</html>

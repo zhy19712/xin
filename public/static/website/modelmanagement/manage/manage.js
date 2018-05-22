@@ -5,7 +5,37 @@ function easyUiPanelToggle() {
     }
 }
 
-function seeOnLine(that) {
+//工程划分
+var nodes = [
+    {name: "父节点1", children: [
+        {name: "子节点1"},
+        {name: "子节点2"}
+    ]}
+];
+
+var setting = {
+    view: {
+        showLine: true, //设置 zTree 是否显示节点之间的连线。
+        selectedMulti: false //设置是否允许同时选中多个节点。
+    },
+    check:{
+        enable: true
+    },
+    data: {
+        simpleData: {
+            enable: true,
+            idkey: "id",
+            pIdKey: "pid",
+            rootPId: null
+        }
+    },
+    callback: {
+        onClick: this.nodeClick
+    }
+};
+zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);
+
+/*function seeOnLine(that) {
     var id = $(that).attr('formId');
     var cprId = $(that).attr('cprId');
     layer.open({
@@ -15,7 +45,7 @@ function seeOnLine(that) {
         area: ['980px', '90%'],
         content: '../../../quality/Qualityform/edit?cpr_id='+ cprId + '&id='+ id +'&currentStep=0&isView=True'
     });
-}
+}*/
 
 //初始化手风琴
 layui.use('element', function(){
