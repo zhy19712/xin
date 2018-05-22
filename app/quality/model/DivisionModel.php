@@ -295,4 +295,92 @@ class DivisionModel extends Model
         }
     }
 
+
+
+    /**
+     * 质量模型 获取 工程划分树 包含 检验批
+     * @return string
+     * @author hutao
+     */
+    public function getQualityNodeInfo()
+    {
+        $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
+        $division = $this->order('id asc')->column('id,pid,d_name,section_id,type,en_type,d_code'); // 工程列表
+        $unit = Db::name('quality_unit')->order('id asc')->column('id,division_id,site'); // 检验批列表
+        $num = $this->count() + Db::name('section')->count() + 10000;
+
+        $str = "";
+        $open = 'true';
+        $str .= '{ "id": "' . -1 . '", "pId":"' . 0 . '", "name":"' . '丰宁抽水蓄能电站' . '"' . ',"open":"' . $open . '"';
+        $str .= '},';
+        foreach ($section as $v) {
+            $id = $v['id'] + $num;
+            $str .= '{ "id": "' . $id . '", "pId":"' . -1 . '", "name":"' . $v['name'] . '"' . ',"code":"' . $v['code'] . '"' . ',"section_id":"' . $v['id'] . '"' . ',"add_id":"' . $v['id'] . '"';
+            $str .= '},';
+            // 单位工程 type = 1 子单位工程 type = 2 分部工程  type = 3 子分部工程 type = 4 分项工程   type = 5 单元工程   type = 6
+            foreach ($division as $vo) {
+                if ($v['id'] == $vo['section_id']) {
+                    if ($vo['type'] == 1) {
+                        $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $id . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
+                        $str .= '},';
+                    } else {
+                        $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
+                        $str .= '},';
+                    }
+                    foreach ($unit as $u) {
+                        if ($vo['id'] == $u['division_id']) {
+                            $str .= '{ "id": "' . $u['id'] . '", "pId":"' . $vo['id'] . '", "name":"' . $u['site'] . '"' . ',"add_id":"' . $u['id'] . '"' ;
+                            $str .= '},';
+                        }
+                    }
+                }
+            }
+        }
+        return "[" . substr($str, 0, -1) . "]";
+    }
+
+    public function getEl($id)
+    {
+        $data = $this->getOne($id);
+        $new_data['el_val'] = 'EL.' . $data['el_start'] . '-EL.' . $data['el_cease'];
+        $new_data['pile_number'] = $data['pile_number'];
+        return $new_data;
+    }
+
+    //递归获取当前节点的所有子节点
+    public function cateTree($id){
+        $res=$this->select();
+        if($res){
+            $result=$this->sort($res, $id);
+            return $result;
+        }
+    }
+    public function sort($data,$id,$level=0){
+        static $arr=array();
+        foreach ($data as $key=>$value){
+            if($value['pid'] == $id){
+                $value["level"]=$level;
+                $arr[]=$value;
+                $this->sort($data,$value['id'],$level+1);
+            }
+        }
+        return $arr;
+    }
+
+    public function removeRelevanceNode($id)
+    {
+        // 获取此节点下包含的所有子节点编号
+        $child_node_id = [];
+        $child_node_obj = $this->cateTree($id);
+        foreach ($child_node_obj as $v){
+            $child_node_id[] = $v['id'];
+        }
+        $child_node_id[] = $id;
+        // 获取此节点下包含的所有单元工程检验批
+        $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$child_node_id]])->column('id');
+        // 解除所有的关联关系
+        Db::name('model_quality')->where(['unit_id'=>['in',$unit_id]])->update(['unit_id'=>0]);
+        return ['code'=>1,'msg'=>'解除成功'];
+    }
+
 }

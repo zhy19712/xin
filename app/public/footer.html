@@ -46,7 +46,7 @@
             app.set({
                 type: 'iframe'
             }).init();
-            
+
             $('dl.skin > dd').on('click', function() {
                 var $that = $(this);
                 var skin = $that.children('a').data('skin');
@@ -70,7 +70,7 @@
                     var skin = getSkinName();
                     switchSkin(skin === undefined ? 'blue' : skin);
                 }();
-                
+
                 $('#color').click(function(){
                 layer.open({
                     type:1,
@@ -115,7 +115,6 @@
            })
        });
    </script>
-   <script src="__PUBLIC__/jquery/jquery.min.js"></script>
    <script type="text/javascript">
 
        layui.use('jquery', function() {
@@ -211,9 +210,9 @@
        })
    </script>
    <script>
-       setTimeout(function () {
-         getMsg(0);
-       },10000);
+       // setTimeout(function () {
+       //   getMsg(0);
+       // },10000);
        //长轮询
        function getMsg(count) {
          console.log("*********************发请求啦***********************")
@@ -234,7 +233,7 @@
                  $("#message").append('<span class="msgNum">'+data.count+'</span>');
                }
              }else{
-               $('#message').remove(".msgNum");
+               $('.msgNum').remove("");
              }
              if(textStatus == "success"){
                //成功之后，再发送请求，递归调用

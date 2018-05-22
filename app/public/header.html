@@ -17,58 +17,73 @@
         <div class="layui-header">
             <div class="layui-logo" id="logo"><span>丰宁BIM协同管理平台</span></div>
             <ul class="layui-nav layui-layout-left kit-nav kit-tab-tool-body">
-                <li class="layui-nav-item"><a id="kit-side-fold" title="左侧菜单" style="color:#333;"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></li>
-                <li class="layui-nav-item"><a id="clear" title="清空缓存" style="color:#333;"><i class="fa fa-university" aria-hidden="true"></i></a></li>
-                <li class="layui-nav-item"><a class="kit-item" data-target="refresh" title="刷新当前页" style="color:#333;" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i></a></li>
+                <li class="layui-nav-item"><a id="kit-side-fold" title="左侧菜单" style="color:#FFF;"><i class="fa fa-arrow-left" aria-hidden="true"></i></a></li>
+                <li class="layui-nav-item"><a id="clear" title="清空缓存" style="color:#FFF;"><i class="fa fa-university" aria-hidden="true"></i></a></li>
+                <li class="layui-nav-item"><a class="kit-item" data-target="refresh" title="刷新当前页" style="color:#FFF;" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i></a></li>
             </ul>
-            <ul class="layui-nav layui-layout-right kit-nav layui-model">
+            <ul class="layui-nav layui-layout-right kit-nav kit-tab-tool-body layui-model">
                 <li class="layui-nav-item">
-                    <a href="javascript:;" id="index" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="全景3D" class="three-dimension"></a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;" id="manage" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="质量3D" class="panorama"></a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;" id="progress" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="进度3D" class="panorama"></a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;" id="safety" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="安全3D" class="panorama"></a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;" id="panorama" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="全景模型" class="panorama"></a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;" id="oblique" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="倾斜模型" class="panorama"></a>
-                </li>
-
-                <li class="layui-nav-item">
-                    <span id="date"></span>
-                    <span id="weather"></span>
-                </li>
-
-            </ul>
-            <ul class="layui-nav layui-layout-right kit-nav">
-                <li class="layui-nav-item">
-                    <a id="message" kit-target data-id='278' data-title="控制面板"  data-url="{:url('admin/dashboard/index')}"  title="待审流程" >
-                        <i class="fa fa-bell" style="margin-right: 0;color: #0C0C0C;"></i>
-                        <!--<span class="msgNum"></span>-->
+                    <a href="javascript:;" id="index" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="全景3D">
+                        <span class="panorama"></span>
+                        <em>全景3D</em>
                     </a>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;" id="tag" style="color:#333;"><i class="fa fa-tag" aria-hidden="true"></i></a></li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" style="color:#333;" id="current_user">
-                        <img src="{$cookie.thumb|geturl}" class="layui-nav-img">欢迎, {empty name="$cookie.nickname"}{$cookie.name}{else /}{$cookie.nickname}{/empty}
+                    <a href="javascript:;" id="manage" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="质量3D">
+                        <span class="quality"></span>
+                        <em>质量3D</em>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="progress" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="进度3D">
+                        <span class="progress"></span>
+                        <em>进度3D</em>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="safety" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="安全3D">
+                        <span class="security"></span>
+                        <em>安全3D</em>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="panorama" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="全景模型">
+                        <span class="panorama-model"></span>
+                        <em>全景模型</em>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="oblique" onclick="replaceTemplate(this.id)" kit-target data-id='-1' title="倾斜模型">
+                        <span class="tilt"></span>
+                        <em>倾斜模型</em>
+                    </a>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right kit-nav layui-userinfo">
+                <li class="layui-nav-item">
+                    日期：<span id="date"></span>
+                    天气：<span id="weather"></span>
+                </li>
+                <!--<li class="layui-nav-item"><a href="javascript:;" id="tag" style="color:#333;"><i class="fa fa-tag" aria-hidden="true"></i></a></li>-->
+                <li class="layui-nav-item">
+                    <a href="javascript:;" style="color:#FFF;" id="current_user" class="current_user">
+                        <img src="{$cookie.thumb|geturl}" class="layui-nav-img">{empty name="$cookie.nickname"}{$cookie.name}{else /}{$cookie.nickname}{/empty}
                         <span class="layui-nav-more"></span>
                     </a>
                     <dl class="layui-nav-child layui-anim layui-anim-upbit">
                         <dd><a href="javascript:;" data-url="{:url('admin/admin/personal')}" data-title="个人中心" kit-target data-id='998'><span><i class="fa fa-user" aria-hidden="true"></i> 个人中心</span></a></dd>
                         <dd><a href="javascript:;" data-url="{:url('admin/admin/editpassword')}" data-title="修改密码" kit-target data-id='999'><span><i class="fa fa-unlock-alt" aria-hidden="true"></i> 修改密码</span></a></dd>
-                        <dd><a href="javascript:;" id="logout" style="color:#333;"><span><i class="fa fa-sign-out" aria-hidden="true"></i> 退了</span></a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item" style="background-color: transparent !important;">
-                    <a href="javascript:;" id="color" style="color:#333;" class="refresh">皮肤<span class="layui-badge-dot"></span></a>
+                <li class="layui-nav-item" style="position: absolute;right: 10px;bottom: 8px;">
+                    <div class="message-wrap">
+                        <a href="javascript:;" class="message" style="color:#FFF;"></a>
+                        <a class="layui-badge">99+</a>
+                    </div>
+                    <a href="javascript:;" class="quit" id="logout" style="color:#FFF;"></a>
                 </li>
-
+                <!--<li class="layui-nav-item" style="background-color: transparent !important;">
+                    <a href="javascript:;" id="color" style="color:#333;" class="refresh">皮肤<span class="layui-badge-dot"></span></a>
+                </li>-->
             </ul>
         </div>
