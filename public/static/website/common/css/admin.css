@@ -129,7 +129,7 @@ body #copyrights a{
 
 /* 模板视图切换按钮 */
 .layui-model{
-	right:310px;
+	right:360px;
 	color: #333;
 }
 .layui-model .layui-nav-item a{
@@ -154,4 +154,19 @@ body #copyrights a{
 }
 .manage-three-dimension:hover{
 	background: url("../images/zhiliang3D1.png") center center no-repeat;
+}
+
+.msgNum{
+	display: inline-block;
+	height: 15px;
+	width: 15px;
+	position: absolute;
+	top: 37%;
+	margin: -8px 5px 0;
+	padding: 0;
+	border-radius: 4px;
+	text-align: center;
+	background-color: #FF5722;
+	color: #fff;
+	line-height: 15px;
 }
