@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: waterforest
  * Date: 2018/5/22
- * Time: 11:08
+ * Time: 16:41
  */
 
 namespace app\modelmanagement\controller;
@@ -11,8 +11,9 @@ namespace app\modelmanagement\controller;
 
 use app\admin\controller\Permissions;
 
-class manage extends Permissions
+class Progress extends Permissions
 {
+
     function index()
     {
         return $this->fetch();

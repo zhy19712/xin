@@ -150,6 +150,7 @@ class Qualityform extends Permissions
             $mod['DivisionId'] = $dto['DivisionId'];
             $mod['ProcedureId'] = $dto['ProcedureId'];
             $mod['ControlPointId'] = $dto['ControlPointId'];
+            $mod['unit_id']=$dto['unit_id'];
             $mod['IsInspect'] = $dto['IsInspect'];
             $mod['TemplateId'] = $dto['TemplateId'];
             $mod['form_name'] = $dto['FormName'];

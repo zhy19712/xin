@@ -95,6 +95,7 @@ class Send extends Permissions
             if(empty($major_key)){
                 $flag = $send->insertTb($param);
             }else{
+                $param['id'] = $major_key;
                 $flag = $send->editTb($param);
             }
             return json($flag);

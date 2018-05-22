@@ -181,3 +181,39 @@ table.dataTable.no-footer{
     min-height: 30px;
     text-align: right;
 }
+
+/**
+ * ztree自定义checkbox图标
+ */
+
+/* 父节点checkbox图标 */
+.eye li span.button.chk{
+    width: 22px;
+    height: 18px;
+    cursor: pointer;
+}
+.eye li span.button.chk.checkbox_false_part{
+    background: url("../images/open_eye.png") no-repeat 0 0;
+}
+.eye li span.button.chk.checkbox_false_part_focus{
+    background: url("../images/open_eye.png") no-repeat 0 0;
+}
+/* 子节点checkbox图标 */
+.eye li span.button.chk.checkbox_true_part{
+    background: url("../images/open_eye.png") no-repeat 0 0;
+}
+.eye li span.button.chk.checkbox_true_part_focus{
+    background: url("../images/open_eye.png") no-repeat 0 0;
+}
+.eye li span.button.chk.checkbox_false_full{
+    background: url("../images/open_eye.png") no-repeat 0 0;
+}
+.eye li span.button.chk.checkbox_false_full_focus{
+    background: url("../images/open_eye.png") no-repeat 0 0;
+}
+.eye li span.button.chk.checkbox_true_full{
+    background: url("../images/close_eye.png") no-repeat 0 0;
+}
+.eye li span.button.chk.checkbox_true_full_focus{
+    background: url("../images/close_eye.png") no-repeat 0 0;
+}

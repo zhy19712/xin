@@ -543,6 +543,17 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $("#resVal").val(resources);
 
     testing(nodeUnitId,controlRowId);
+    console.log(type)
+    if(type == 1){
+        $.ajax({
+            url:"/quality/element/copycheck",
+            data:{cpr_id:controlRowId},
+            type:'post',
+            success:function(res) {
+                console.log(res)
+            }
+        })
+    }
 });
 
 //Testing管控中的控件能否使用
@@ -552,7 +563,7 @@ function testing(division_id,cpr_id) {
         type: "post",
         data: {
             division_id:division_id,
-            cpr_id:cpr_id,
+            cp_id:cpr_id,
         },
         success: function (res) {
             console.log(res);
@@ -567,7 +578,7 @@ function testing(division_id,cpr_id) {
             }
         },
         error:function () {
-            alert("管控中的控件能否使用")
+            alert("返回管控中的控件数据错误")
         }
     });
 }
@@ -721,6 +732,7 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                 type=2;
             }
             console.log(res)
+
             if(res.code == 2){
                 uploadId = res.id;
 

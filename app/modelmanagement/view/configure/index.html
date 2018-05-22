@@ -1,5 +1,95 @@
 {include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__PUBLIC__/colorpicker/css/colorpicker.css">
+<script type="text/javascript" src="__PUBLIC__/colorpicker/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/colorpicker/js/colorpicker.js"></script>
+<style>
+.colorStyle{
+    float:left;
+}
+</style>
 <div>
-    7777
+    <div class="homeTop">
+        <div>首页3D</div>
+        <div>
+            选择：透明度 <input type="text" id="tou">  <span>颜色：</span>
+        </div>
+        <div>
+            透明效果：透明度 <input type="text" id="guo">
+        </div>
+    </div>
+    <div class="qualityBottom">
+        <div>质量3D</div>
+        <div class="colorStyle">
+            <div class="zuo">
+                <label for="quality3dId" onselectstart="return false;">选择:透明度</label>
+                <input type='text' name='all_checked_plan' id="quality3dId" class='icheckbox_minimal' value=''>
+            </div>
+            <div class="you">
+                <span>颜色：</span>
+                <div id="colorpickerHolder1"></div>
+            </div>
+        </div>
+        <div class="colorStyle">
+            <div class="zuo">
+                <label for="qualifiedId" onselectstart="return false;">优良/合格</label>
+                <input type='text' name='all_checked_plan' id="qualifiedId" class='icheckbox_minimal' value=''>
+            </div>
+            <div class="you">
+                <span>颜色：</span>
+                <div id="colorpickerHolder2"></div>
+            </div>
+        </div>
+    </div>
 </div>
-{include file="../app/public/common_footer.html"}
+<!--</body>-->
+<script>
+
+    $(function(){
+        $('#colorpickerHolder').ColorPicker({flat: true});
+
+        $('#colorpickerHolder2').ColorPicker({
+            flat: true,
+            color: '#00ff00',
+            onSubmit: function(hsb, hex, rgb) {
+                $('#colorSelector2 div').css('backgroundColor', '#' + hex);
+            }
+        });
+        $('#colorpickerHolder2>div').css('position', 'absolute');
+        var widt = false;
+        $('#colorSelector2').bind('click', function() {
+            $('#colorpickerHolder2').stop().animate({height: widt ? 0 : 173}, 500);
+            widt = !widt;
+        });
+
+        $('#colorpickerField1, #colorpickerField2, #colorpickerField3').ColorPicker({
+            onSubmit: function(hsb, hex, rgb, el) {
+                $(el).val(hex);
+                $(el).ColorPickerHide();
+            },
+            onBeforeShow: function () {
+                $(this).ColorPickerSetColor(this.value);
+            }
+        })
+            .bind('keyup', function(){
+                $(this).ColorPickerSetColor(this.value);
+            });
+        $('#colorSelector').ColorPicker({
+            color: '#0000ff',
+            onShow: function (colpkr) {
+                $(colpkr).fadeIn(500);
+                return false;
+            },
+            onHide: function (colpkr) {
+                $(colpkr).fadeOut(500);
+                return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+                $('#colorSelector div').css('backgroundColor', '#' + hex);
+            }
+        });
+    });
+
+
+</script>
+</html>
+<!--{include file="../app/public/common_footer.html"}-->
