@@ -93,11 +93,6 @@ $('#editNode').click(function () {
     });
 });
 
-//关闭弹层
-$.close({
-    formId:'nodeForm'
-});
-
 //开关
 layui.use(['layer', 'form'], function(){
     var form = layui.form;
@@ -498,13 +493,11 @@ function tpyeTable() {
                 "searchable": false,
                 "orderable": false,
                 "render": function(data, type, full, meta) {
-                    console.log(full[3])
                     if(full[0] == 0){
                         var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     }else{
-                        var html = "<input type='checkbox' class='checkList'  onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                        var html = "<input type='checkbox' name='checkList_plan'  onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     }
-
                     // var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     return html;
                 },
@@ -659,6 +652,7 @@ function insetData(eTypeId) {
         url: "/quality/element/insertalldata",
         data: {en_type: eTypeId,division_id:division_id,unit_id:selectRow},
         success: function (res) {
+            //什么都不返回说明是正确的
             console.log(res);
         }
     })
@@ -707,6 +701,7 @@ function getSelectIdPlanCheck(rowId,that){
         url: "/quality/element/checkout",
         data: {division_id: division_id,id:rowId,checked:chceck,unit_id:selectRow},
         success: function (res) {
+            //什么都不返回说明是正确的
             console.log(res);
         }
     })
