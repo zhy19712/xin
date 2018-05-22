@@ -1499,9 +1499,10 @@ class Common extends Controller
                 //*****多表查询join改这里******
             $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
-                    ->where(['r.unit_id'=>$unit_id,'r.division_id'=>$division_id])
-                    ->where($wherenm)
-                    ->limit(intval($start), intval($length))
+                        ->where(['r.unit_id'=>$unit_id,'r.division_id'=>$division_id])
+                        ->where($wherenm)
+                        ->order('code')
+                        ->limit(intval($start), intval($length))
                     ->select();
 
                 $recordsFiltered = sizeof($recordsFilteredResult);

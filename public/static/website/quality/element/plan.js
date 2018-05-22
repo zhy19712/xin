@@ -498,6 +498,7 @@ function tpyeTable() {
                 "searchable": false,
                 "orderable": false,
                 "render": function(data, type, full, meta) {
+                    console.log(full[3])
                     if(full[0] == 0){
                         var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     }else{
@@ -701,11 +702,10 @@ function getSelectIdPlanCheck(rowId,that){
     }else if($(that).is(':checked') == true){
         chceck = 0;
     }
-    console.log(chceck);
     $.ajax({
         type: "post",
         url: "/quality/element/checkout",
-        data: {division_id: division_id,control_id:rowId,checked:chceck,unit_id:selectRow},
+        data: {division_id: division_id,id:rowId,checked:chceck,unit_id:selectRow},
         success: function (res) {
             console.log(res);
         }
