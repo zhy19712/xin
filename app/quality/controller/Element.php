@@ -477,7 +477,6 @@ class Element extends Permissions
         $par = array();
         $par['type'] = 1;
         $par['checked'] = 0;//0为被选中
-
         $division_id = $this->request->param('division_id');
         $unit_id = $this->request->param('unit_id');
         $par['division_id']=$division_id;
@@ -527,46 +526,52 @@ class Element extends Permissions
     public function checkform(){
 
         $search_name='单元工程质量等级评定表';
-        if ($this->request->isAjax()) {
+
             $param = input('param.');
             $cp_id=$param['cp_id'];
             $division_id=$param['division_id'];
             $res = Db::name('quality_form_info')
-                ->where(['ControlPointId' => $cp_id, 'ApproveStatus' => 2, 'DivisionId' => $division_id])
+                ->where(['ControlPointId' =>$cp_id,'DivisionId' =>$division_id,'ApproveStatus'=>2])
                 ->where('form_name', 'like', '%' . $search_name)
                 ->find();
             //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
-            if ($res) {
-                return json(['msg' => 'fail1','remark'=>'线上流程']);
+            if (count($res)>0) {
+                $form_data=unserialize($res['form_data']);//反序列化
+                foreach($form_data as $v)
+                {
+                  if($v['Name']=='input_date_1')
+                  {
+                      $evaluation_date=$v;//验评日期
+                  }
+                  break;
+                }
+                foreach($form_data as $v)
+                {
+                    if($v['Name']=='input_hgl_result')
+                    {
+                        $evaluation=$v;//验评结果
+                    }
+                    break;
+                }
+                $data['evaluation_date']=$evaluation_date;
+                $data['$evaluation']=$evaluation;
+                return json(['msg' => 'fail1','remark'=>'线上流程','data'=>$data]);
 
             } //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
-            else {
-                //仅用控制点id做限制不行 需要在该表中加入division_id
-                $copy = Db::name('quality_upload')
-                    ->where(['division_id','control_id' => $cp_id, 'type' => 1])
-                    ->where('data_name', 'like', '%' . $search_name . '%')
-                    ->find();
-                if ($copy) {
-                    return json(['msg' => 'success']);
-                }
-                else {
-                    return json(['msg' => 'fail']);
-                }
-            }
-        }
+
+
     }
 
     //检查扫描件回传情况
     public function copycheck()
     {
         if ($this->request->isAjax()) {
-            $cp_id=input('param.')['cp_id'];
-            $division_id=input('param.')['division_id'];
+            $cpr_id=input('param.')['cpr_id'];
             $res = Db::name('quality_upload')
-                ->where(['division_id'=>$division_id,'$control_id' => $cp_id, 'type' => 1])
+                ->where(['contr_relation_id'=>$cpr_id,'type'=>1])
                 ->find();
             //如果有结果
-            if ($res) {
+            if (count($res)>0) {
                 return json(['msg' => 'fail', 'remark' => '已上传对应扫描件，如想重新上传请先删除之前的扫描件']);
             } else {
                 return json(['msg' => 'success']);
