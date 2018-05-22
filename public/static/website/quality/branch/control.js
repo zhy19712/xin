@@ -35,8 +35,7 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(
                dataType:"JSON",
                success :function (res) {
                    if(res.code===1){
-                       tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-                       tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
+                     refreshTable();
                    }else{
                      layer.msg(res.msg);
                    }
@@ -47,6 +46,14 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(
 
   laydate.render({
     elem: '#date' //指定元素
+    ,done:function (value, date, endDate) {
+      //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+      resultChange();
+    }
+  });
+
+  form.on('select(type)',function (data) {
+    resultChange();
   });
 
 });
@@ -122,8 +129,8 @@ $(".imgList").on("click","#homeWork",function () {
 //点击工序控制点名字
 function clickConName(id) {
     conThisId = id;
-  list_id= "";
-  $(".selectShow").show();
+    list_id= "";
+  $(".selectShow").hide();
   $("#tableContent .imgList").css('display','block');
   tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
   tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
@@ -177,14 +184,26 @@ var tableItem = $('#tableItem').DataTable( {
     ],
     language: {
         "zeroRecords": "没有找到记录"
+    },
+    "fnDrawCallback":function () {
+    if(list_id === ""){
+      return ;
     }
+      var that = this.api();                                          // 获取datatables
+      $("#tableItem tbody tr").each(function (idx,item) {
+        var data =  that.row($(item)).data();                  //获取数据
+        if(data[3] == list_id){
+          $(item).addClass("select-color");
+        }
+      })
+  }
 });
 //初始化表格
 var tableSituation = $('#tableSituation').DataTable( {
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
-    iDisplayLength:1000,
+    // iDisplayLength:1000,
     "scrollY": "true",
     "scrollCollapse": "true",
     ajax: {
@@ -280,7 +299,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
         $(".selectShow").show();
     }
     $(this).addClass("select-color").siblings().removeClass("select-color");
-    selectData = tableItem.row(".select-color").data();//获取选中行数据
+   var selectData = tableItem.row(".select-color").data();//获取选中行数据
     list_id = selectData[3];
     tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
 });
@@ -389,7 +408,6 @@ $(".relationBox").on('click',function () {
 //刷新table
 function refreshTable() {
   tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-
   tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
 }
 
@@ -416,17 +434,23 @@ function resultInfo() {
 
 }
 
-//修改结果
+//修改验评结果result
 function resultChange() {
   $.ajax({
-    url:'./',
+    url:'./editEvaluation',
     data:{
-      division_id:selfid
+      division_id:selfid,
+      evaluation_results:$(".result form select").val(),
+      evaluation_time:$(".result form #date").val()
     },
     type:'POST',
     dataType:"JSON",
     success:function (res) {
-      
+      if(res.code == 1){
+        console.log("成功");
+      }else{
+        layer.msg(res.msg)
+      }
     }
   })
 }
