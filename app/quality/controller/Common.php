@@ -1128,21 +1128,23 @@ class Common extends Controller
         //是否勾选
         $checked = input('checked') ? input('checked') : "";//是否勾选
 
-        if(empty($checked))
-        {
-            $checked = [
-            ];
-        }else
+        if($checked == 0)
         {
             $checked = [
                 "checked"=>0
+            ];
+        }else
+        {
+            $checked =[
+
             ];
         }
         //表的总记录数 必要
         if ($selfid && $procedureid) {
             $search_data = [
                 "division_id" => $selfid,
-                "ma_division_id" => $procedureid
+                "ma_division_id" => $procedureid,
+//                "checked"=>0
             ];
         } else if ($selfid && !$procedureid) {
             $search_data = [
@@ -1225,7 +1227,9 @@ class Common extends Controller
 
         if(empty($list_id))
         {
-            $search_data = [];
+            $search_data = [
+                "contr_relation_id"=>-1
+            ];
         }else
         {
             $search_data = ["contr_relation_id"=>$list_id];

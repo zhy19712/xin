@@ -19,7 +19,7 @@ tableItem = $('#tableItem').DataTable({
     "paging": "false",
     ajax: {
         // "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=" //老的
-        "url": "/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="
+        "url": "/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=&unit_id="
     },
     dom: 'rt',
     columns: [
@@ -155,7 +155,8 @@ function nodeClick(e, treeId, node) {
     }
 
     $(".imgList").css("display","none");
-    tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
+    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
+    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=&unit_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id=").load();
     console.log(controlRowId)
@@ -268,13 +269,14 @@ function nodeClickUnit(e, treeId, node) {
         selfidName(eTypeId);
     }
     if(nodeUnitId != undefined || nodeUnitId != null){
-        tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
+        // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
+        tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
 }
 
-//获取控制点name
+//点击单元工创建工序name
 function selfidName(id) {
     $.ajax({
         type: "post",
@@ -287,7 +289,7 @@ function selfidName(id) {
             for(var i = 0;i<res.length;i++) {
                 $("#imgListRight").html('');
                 optionStrAfter +=
-                    '<a href="javascript:;"  class="imgListStyle" onclick="clickConName("+ res[i].id +")">' +
+                    '<a href="javascript:;"  class="imgListStyle" onclick="clickConName('+ res[i].id +')">' +
                     '<img class="imgNone" id="img'+i+'" src="/static/website/elementimg/right.png" alt="箭头">' +
                     '<img src="/static/website/elementimg/work.png" alt="工作">&nbsp;'+res[i].name+'<span style="display: none;">'+res[i].id+'</span>' +
                     '</a>';
@@ -323,19 +325,20 @@ $(".imgList").on("click","#homeWork",function () {
     $(".mybtn").css("display","none");
     $(".mybtnAdd").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
-    tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
+    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
+    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
     flag = true;
 });
 
-//点击工序控制点名字
+//点击工序名字刷新列表
 function clickConName(id) {
     controlRowId ='';
     procedureId ='';
-    console.log(procedureId);
     procedureId = id;
     console.log(procedureId);
     if(nodeUnitId != undefined || nodeUnitId != null && procedureId != undefined || procedureId != null){
-        tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+        // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+        tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
     }
     $("#tableContent .imgList").css('display','block');
     console.log(id + " 控制点工序 procedureId");
@@ -359,7 +362,7 @@ function clickConName(id) {
                 '</thead>' +
             '</table>');
     }
-}
+};
 
 //下载封装的方法
 function download(id,url) {
@@ -488,7 +491,8 @@ function delData(id,url) {
                 console.log(res);
                 if(res.code ==1){
                     layer.msg("删除成功！");
-                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+                    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+                    tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
                     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
                 }else if(res.code !=1){
@@ -537,6 +541,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     }
     //向提交页面之前放置值
     $("#resVal").val(resources);
+
     testing(nodeUnitId,controlRowId);
 });
 
@@ -614,8 +619,8 @@ function outerHeight() {
 }
 
 
-/*============控制点情况开始==============*/
-//控制点情况结构表格
+/*============回传件上传开始==============*/
+//回传件上传结构表格
 implementation = $('#implementation').DataTable({
     retrieve: true,
     processing: true,
@@ -733,7 +738,8 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                         if(res.code == 1) {
                             implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                             imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
-                            tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+                            // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+                            tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
                         } else {
                             layer.msg('获取数据失败！');
                         }
@@ -747,7 +753,7 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
     });
 });
 
-/*============控制点情况结束==============*/
+/*============回传件上传结束==============*/
 
 
 
@@ -911,7 +917,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                         return "审批中"
                     }
                     if (data === 2) {
-                        return "已审批"
+                        return "已完成"
                     }
                     if (data === -1) {
                         return "被退回"
@@ -934,7 +940,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     if (row[3] === 0) {
                         html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")'><i class='fa fa-pencil'></i></a>";
                         html += "<a title='删除' onclick='delOnLine("+row[4]+")'><i class='fa fa fa-trash'></i></a>";
-                        html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
+                        // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
                     }
                     else if (row[3] === 1 && row[5] == $("#userId").val()) {
                         var str = JSON.stringify(row[2]);
@@ -948,7 +954,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                         html += "<a title='作废' onclick='toVoid("+row[4]+")'><i class='fa fa fa-download'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
-                        html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
+                        // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
                         html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-pencil'></i></a>";
                         html += "<a title='删除' onclick='delOnLine("+row[4]+")'><i class='fa fa fa-trash'></i></a>";
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
@@ -1130,6 +1136,7 @@ function historyOnLine(id,curStep) {
         content: '/approve/approve/ApproveHistory?dataId='+ id + '&dataType=app\\quality\\model\\QualityFormInfoModel',
         // end:function () {
         //     tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
+        //     tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&ma_division_id="+procedureId).load();
         // }
     });
 }

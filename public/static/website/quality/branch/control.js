@@ -1,8 +1,9 @@
 var selfid = "",conThisId = "" ,list_id = '' ;//树节点id, 工序id，选中的id
-var attachment_id = "",file_name='',type=1;//文件id，文件名,控制点或者图像
+var attachment_id = "",file_name='',type=3;//文件id，文件名,分部工程
 layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(){
     var form = layui.form
         ,upload = layui.upload
+        ,laydate = layui.laydate
         ,layer = layui.layer;
 
     upload.render({
@@ -22,9 +23,6 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(
             return ;
           }
             attachment_id = res.id;
-            if($(".tabs-selected a span:first-child").html()==="图像资料"){
-                type = 2;
-            }
            $.ajax({
                url:"./addFile",
                type:"POST",
@@ -37,9 +35,8 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(
                dataType:"JSON",
                success :function (res) {
                    if(res.code===1){
-                       tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-                       tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/1/list_id/"+list_id+".shtml").load();
-                       tableImage.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/2/list_id/"+list_id+".shtml").load();
+                       tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/0/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+                       tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
                    }else{
                      layer.msg(res.msg);
                    }
@@ -47,6 +44,10 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(
            })
         }
     });
+
+  laydate.render({
+    elem: '#date' //指定元素
+  });
 
 });
 
@@ -80,6 +81,8 @@ var setting = {
 zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 //点击获取路径
 function onClick(e, treeId, node) {
+  $(".selectShow").hide();
+  $(".result").hide();
     conThisId = 0;
     list_id= "";
     sNodes = zTreeObj.getSelectedNodes();//选中节点
@@ -87,17 +90,22 @@ function onClick(e, treeId, node) {
     var path = sNodes[0].name; //选中节点的名字
     node = sNodes[0].getParentNode();//获取父节点
     //判断是否还有子节点
-    if (!sNodes[0].children) {
+    if (sNodes[0].type == 3) {
         //判断是否还有父节点
-        selfidName()
+        selfidName();
+      resultInfo();
+        $(".result").show();
         $("#tableContent .imgList").css('display','block');
+        var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/0/selfid/"+selfid+".shtml";
+        tableItem.ajax.url(url).load();
+    }else{
+      $("#tableContent .imgList").hide();
+      var url = "/quality/common/datatablesPre/tableName/quality_subdivision_planning_list/checked/0";
+      tableItem.ajax.url(url).load();
     }
-    groupid = sNodes[0].pId //父节点的id
-    var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+".shtml";
-    tableItem.ajax.url(url).load();
-  tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/1/list_id/"+list_id+".shtml").load();
-  tableImage.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/2/list_id/"+list_id+".shtml").load();
-    $("#homeWork").css("color","#2213e9");
+
+  tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/.shtml").load();
+    $("#homeWork").css("color","#2213e9").siblings().css("color","#CDCDCD");
 }
 //点击置灰
 $(".imgList").on("click","a",function () {
@@ -108,16 +116,16 @@ $(".imgList").on("click","a",function () {
 //点击作业
 $(".imgList").on("click","#homeWork",function () {
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
-    tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-    $(".uploadBox").hide();
+    tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/0/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+    $(".selectShow").hide();
 });
 //点击工序控制点名字
 function clickConName(id) {
     conThisId = id;
   list_id= "";
+  $(".selectShow").show();
   $("#tableContent .imgList").css('display','block');
-  tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/1/list_id/"+list_id+".shtml").load();
-  tableImage.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/2/list_id/"+list_id+".shtml").load();
+  tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
   tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
 }
 //初始化表格
@@ -129,22 +137,22 @@ var tableItem = $('#tableItem').DataTable( {
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {
-        "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_list"
+        "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_list/checked/0"
     },
     dom: 'rt',
     columns:[
-        {
-            name: "controller_point_number"
-        },
-        {
-            name: "controller_point_name"
-        },
-        {
-            name:"status",
-        },
-        {
-            name: "id"
-        }
+      {
+        name: "code"
+      },
+      {
+        name: "name"
+      },
+      {
+          name:"status"
+      },
+      {
+        name:"id"
+      }
     ],
     columnDefs: [
         {
@@ -164,12 +172,7 @@ var tableItem = $('#tableItem').DataTable( {
             "searchable": false,
             "orderable": false,
             "targets": [3],
-            "render" :  function(data,type,row) {
-                var a = data;
-                var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='conDown("+data+")'><i class='fa fa-download'></i></a>" ;
-                // html += "<a type='button' class='' style='margin-left: 5px;' onclick='conPrint("+data+")'><i class='fa fa-print'></i></a>" ;
-                return html;
-            }
+            "visible": false
         }
     ],
     language: {
@@ -181,9 +184,11 @@ var tableSituation = $('#tableSituation').DataTable( {
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
-    // scrollY: 600,
+    iDisplayLength:1000,
+    "scrollY": "true",
+    "scrollCollapse": "true",
     ajax: {
-        "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type//list_id/.shtml"
+        "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/.shtml"
     },
     dom: 'rtlip',
     columns:[
@@ -197,7 +202,7 @@ var tableSituation = $('#tableSituation').DataTable( {
             name:"company",
         },
         {
-            name:"date",
+            name:"create_time",
         },
         {
             name: "id"
@@ -215,7 +220,17 @@ var tableSituation = $('#tableSituation').DataTable( {
                 html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDel("+data+")'><i class='fa fa-trash'></i></a>" ;
                 return html;
             }
+        },
+      {
+        "targets": [3],
+        "render" :  function(data,type,row) {
+          var date = new Date(data*1000);
+          var Y = date.getFullYear() + '-';
+          var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+          var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+          return Y + M + D;
         }
+      }
     ],
     language: {
         "lengthMenu": "_MENU_",
@@ -238,73 +253,8 @@ var tableSituation = $('#tableSituation').DataTable( {
         $('.dataTables_wrapper,.tbcontainer').css("display","block");
     }
 });//初始化表格
-//初始化表格
-var tableImage = $('#tableImage').DataTable( {
-    pagingType: "full_numbers",
-    processing: true,
-    serverSide: true,
-    // scrollY: 600,
-    ajax: {
-        "url":"/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type//list_id/.shtml"
-    },
-    dom: 'rtlip',
-    columns:[
-        {
-            name: "filename"
-        },
-        {
-            name: "owner"
-        },
-        {
-            name:"company",
-        },
-        {
-            name:"date",
-        },
-        {
-            name: "id"
-        }
-    ],
-    columnDefs: [
-        {
-            "searchable": false,
-            "orderable": false,
-            "targets": [4],
-            "render" :  function(data,type,row) {
-                var a = data;
-                var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='conPicshow("+data+")'><i class='fa fa-search'></i></a>" ;
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDown2("+data+")'><i class='fa fa-download'></i></a>" ;
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDel("+data+")'><i class='fa fa-trash'></i></a>" ;
-                return html;
-            }
-        }
-    ],
-    language: {
-        "lengthMenu": "_MENU_",
-        "zeroRecords": "没有找到记录",
-        "info": "第 _PAGE_ 页 ( 共 _PAGES_ 页, _TOTAL_ 项 )",
-        "infoEmpty": "无记录",
-        "search": "搜索：",
-        "infoFiltered": "(从 _MAX_ 条记录过滤)",
-        "paginate": {
-            "sFirst": "<<",
-            "sPrevious": "<",
-            "sNext": ">",
-            "sLast": ">>"
-        }
-    },
-    "fnInitComplete": function (oSettings, json) {
-        $('#tableImage_length').insertBefore(".markImage");
-        $('#tableImage_info').insertBefore(".markImage");
-        $('#tableImage_paginate').insertBefore(".markImage");
-        $('.dataTables_wrapper,.tbcontainer').css("display","block");
-    }
-});
 //删除控制点
 function conDel(id) {
-    if($(".tabs-selected a span:first-child").html()==="图像资料"){
-        type=2;
-    }
     $.ajax({
         type: "post",
         url: "./delete",
@@ -314,8 +264,7 @@ function conDel(id) {
             if(res.code ==1){
                 layer.msg("删除成功！");
                 tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-                tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/1/list_id/"+list_id+".shtml").load();
-                tableImage.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/2/list_id/"+list_id+".shtml").load();
+                tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
             }else{
                 layer.msg(res.msg);
             }
@@ -328,13 +277,12 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
         return;
     }
     if(conThisId!=0){
-        $(".uploadBox").show();
+        $(".selectShow").show();
     }
     $(this).addClass("select-color").siblings().removeClass("select-color");
     selectData = tableItem.row(".select-color").data();//获取选中行数据
     list_id = selectData[3];
-    tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/1/list_id/"+list_id+".shtml").load();
-    tableImage.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/2/list_id/"+list_id+".shtml").load();
+    tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
 });
 
 function download(id,url,type_model) {
@@ -368,11 +316,11 @@ function download(id,url,type_model) {
 //下载控制点情况 或图像
 function conDown2(id) {
 
-    download(id,"../Common/download","BranchfileModel")
+    download(id,"../Common/download","UploadModel")
 }
 //下载 控制点模板
 function conDown(id) {
-    download(id,"./fileDownload","BranchfileModel")
+    download(id,"./fileDownload","UploadModel")
 }
 //预览
 function showPdf(id,url,type_model) {
@@ -402,6 +350,9 @@ function showPdf(id,url,type_model) {
                             ]
                         }
                         ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                        ,success:function () {
+                        $(".layui-layer-shade").empty();
+                      }
                     });
                 }else{
                     layer.msg("不支持的文件格式");
@@ -415,9 +366,53 @@ function showPdf(id,url,type_model) {
 }
 //预览
 function conPicshow(id){
-    showPdf(id,'../Common/preview',"BranchfileModel");
+    showPdf(id,'../Common/preview',"UploadModel");
 }
 //打印
 function conPrint(id) {
-    showPdf(id,'./printDocument',"BranchfileModel");
+    showPdf(id,'./printDocument',"UploadModel");
+}
+
+//关联收文记录
+$(".relationBox").on('click',function () {
+  layer.open({
+    type:2,
+    area:['800px','500px'],
+    content:'./relationadd',
+    success:function (layero,index) {
+      var body = layer.getChildFrame('body', index);
+
+      body.find('#listId').val(list_id);
+    }
+  })
+});
+//刷新table
+function refreshTable() {
+  tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+
+  tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/3/list_id/"+list_id+".shtml").load();
+}
+
+//验评结果
+function resultInfo() {
+  $.ajax({
+    url:"./evaluation",
+    data:{
+      division_id:selfid
+    },
+    type:"POST",
+    dataType:"JSON",
+    success:function (res) {
+      $(".result form select").val(1);
+      $(".result form #date").val(res.evaluation_time);
+      $(".result form select").prop("disabled",true);
+      layui.form.render('select');
+      $(".result .layui-input[readonly]").addClass('disabledColor');
+      $("#date").prop("disabled",true)
+      if(!res.flag){
+
+      }
+    }
+  })
+
 }
