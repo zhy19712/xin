@@ -19,7 +19,7 @@ $.ztree({
         division_id = treeNode.id;
         $(".imgList").css("display","none");
         tpyeTable();
-        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type=&unit_id=&division_id=").load();
+        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id=").load();
     }
 });
 
@@ -467,7 +467,7 @@ function tpyeTable() {
         "scrollCollapse": "true",
         "paging": "false",
         ajax: {
-            "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type=&unit_id=&division_id="
+            "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id="
         },
         dom: 'tr',
         columns: [
@@ -610,7 +610,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     insetData(eTypeId);
     if(selectRow != undefined || selectRow != null){
         tpyeTable();
-        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
     }else{
         alert("获取不到selectRow id!")
     }
@@ -674,7 +674,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(".alldel").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
 });
 
 //点击工序控制点名字
@@ -685,7 +685,7 @@ function clickConName(id) {
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
-    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
+    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
     console.log(id);
 }
 
