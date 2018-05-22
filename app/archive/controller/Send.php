@@ -93,7 +93,7 @@ class Send extends Permissions
 
 
     /**
-     * 发文 -- 查看
+     * 发文或收文 -- 查看
      * @return \think\response\Json
      * @author hutao
      */
