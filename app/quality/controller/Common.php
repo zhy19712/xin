@@ -1128,14 +1128,15 @@ class Common extends Controller
         //是否勾选
         $checked = input('checked') ? input('checked') : "";//是否勾选
 
-        if(empty($checked))
-        {
-            $checked = [
-            ];
-        }else
+        if($checked == 0)
         {
             $checked = [
                 "checked"=>0
+            ];
+        }else
+        {
+            $checked =[
+
             ];
         }
         //表的总记录数 必要
