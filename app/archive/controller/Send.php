@@ -52,7 +52,6 @@ class Send extends Permissions
     {
         if($this->request->isAjax()){
 
-            dump(input());
             // 前台需要传递的参数有:
             // file_name 文件名称 date 文件日期 income_id 收件人编号
             // relevance_id 关联收文 file_ids 上传的所有附件编号集合

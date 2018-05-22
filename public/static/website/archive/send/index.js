@@ -80,6 +80,7 @@ $("#table_content").on("click","#addSend",function () {
                 width:'86px',
                 height:'36px'
             });
+            $("#add_file_modal input").val('');
         }
     });
 })
@@ -115,8 +116,8 @@ uploader.on( 'uploadSuccess', function( file,res ) {
     var fileLists = [];
     fileIds.push(fileId);
     fileLists.push('<tr>');
-    fileLists.push('<td>'+ file.name +'</td>');
-    fileLists.push('<td>');
+    fileLists.push('<td class="layui-col-xs9">'+ file.name +'</td>');
+    fileLists.push('<td class="layui-col-xs3">');
     fileLists.push('<a href="javascript:;" onclick="fileDownload(this)" uid='+ fileId +' name='+ file.name +'>下载</a>');
     fileLists.push('<a href="javascript:;" onclick="attachmentPreview(this)" uid='+ fileId +' name='+ file.name +'>查看</a>');
     fileLists.push('<a href="javascript:;" onclick="attachmentDel(this)" uid='+ fileId +' name='+ file.name +'>删除</a>');
@@ -137,30 +138,30 @@ uploader.on( 'uploadError', function( file ,data) {
 
 //附件下载
 function fileDownload(that) {
-    var uid = $(that).attr('uid');
-    // $.ajax({
-    //     url: url,
-    //     data:{id:uid},
-    //     type:"post",
-    //     success: function (res) {
-    //         if(res.code != 1){
-    //             console.log(res)
-    //             layer.msg(res.msg)
-    //         }else {
-    //             $("#form_container").empty();
-    //             var str = "";
-    //             str += ""
-    //                 + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-    //                 + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
-    //                 + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-    //                 + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
-    //                 + "<button type='submit' class=btn" + id +"></button>"
-    //                 + "</form>"
-    //             $("#form_container").append(str);
-    //             $("#form_container").find(".btn" + id).click();
-    //         }
-    //     }
-    // })
+    var id = $(that).attr('uid');
+    var url = '/archive/send/fileDownload';
+    $.ajax({
+        url: url,
+        data:{file_id:id},
+        type:"post",
+        success: function (res) {
+            if(res.code != 1){
+                layer.msg(res.msg)
+            }else {
+                $("#form_container").empty();
+                var str = "";
+                str += ""
+                    + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                    + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
+                    + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                    + "<input class='file_url' style='display: none;' name='file_id' value="+ id +">"
+                    + "<button type='submit' class=btn" + id +"></button>"
+                    + "</form>"
+                $("#form_container").append(str);
+                $("#form_container").find(".btn" + id).click();
+            }
+        }
+    })
 
 }
 
@@ -249,7 +250,6 @@ layui.use('form', function(){
 //保存接口
 function saveInter(data) {
     data.field.file_ids = fileIds;
-    data.field.major_key = major_key;
     $.ajax({
         url: "./send",
         type: "post",
@@ -276,17 +276,48 @@ function edit_send(that) {
     major_key = $(that).attr('major_key');
     layer.open({
         type: 1,
-        title:'查看',
+        title:'编辑',
         area:["800px","620px"],
         content: $('#add_file_modal'),
         success:function () {
-            $.viewFilter(true);
+            $.viewFilter(false);
+            $('#add_file_modal input').attr("readonly",false);
+            $('#file_ids').val(major_key);
+            $.ajax({
+                url:"/archive/send/preview",
+                data:{
+                    major_key:major_key,
+                    see_type:1
+                },
+                type:'post',
+                dataType:'json',
+                success:function (res) {
+                    console.log(res);
+                    var attachment = res.attachment;
+                    $("#file_name").val(res.file_name);
+                    $("#date").val(res.date);
+                    $("#income_name").val(res.send_name);
+                    $("#unit_name").val(res.unit_name);
+                    $("#remark").val(res.remark);
+                    $("#relevance_id").val(res.remark);
+                    var rowData = '';
+                    for (var i=0;i<attachment.length;i++){
+                        rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3">';
+                        rowData += '<a href="javascript:;" style="margin-right: 10px" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
+                        rowData += '<a href="javascript:;" onclick="attachmentPreview(this)" style="margin-right: 10px" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a>';
+                        rowData += '<a href="javascript:;" onclick="attachmentDel(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>删除</a></td></tr>';
+                    }
+                    $("#add_table_files tbody").empty().append(rowData);
+                    major_key = '';
+                }
+            })
         }
     });
 }
 
 //查看
 function preview (that) {
+    major_key = $(that).attr('major_key');
     layer.open({
         type: 1,
         title:'查看',
@@ -294,10 +325,58 @@ function preview (that) {
         content: $('#add_file_modal'),
         success:function () {
             $.viewFilter(false);
+            $('#add_file_modal input').attr("readonly",true);
+            $('#file_ids').val(major_key);
+            $.ajax({
+                url:"/archive/send/preview",
+                data:{
+                    major_key:major_key,
+                    see_type:1
+                },
+                type:'post',
+                dataType:'json',
+                success:function (res) {
+                    console.log(res);
+                    var attachment = res.attachment;
+
+                    $("#file_name").val(res.file_name);
+                    $("#date").val(res.date);
+                    $("#income_name").val(res.send_name);
+                    $("#unit_name").val(res.unit_name);
+                    $("#remark").val(res.remark);
+                    $("#relevance_id").val(res.remark);
+                    var rowData = '';
+                    for (var i=0;i<attachment.length;i++){
+                        rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3"><a href="javascript:;" style="margin-right: 10px" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a><a href="javascript:;" onclick="attachmentPreview(this)" style="margin-right: 10px" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>'
+                    }
+                    $("#add_table_files tbody").empty().append(rowData);
+                    major_key = '';
+                }
+            })
         }
     });
 }
+//删除发文
+function del(that) {
+    major_key = $(that).attr('major_key');
+    var parents = $(that).parents('tr');
+    $.ajax({
+        url: "./del",
+        type: "post",
+        data: {
+            major_key:major_key
+        },
+        dataType: "json",
+        success: function (res) {
+            console.log(res);
+            parents.remove();
+            layer.msg(res.msg);
+            major_key = '';
+            tableItem.ajax.url("/archive/common/datatablesPre?tableName=archive_income_send&table_type=2").load();
+        }
+    });
 
+}
 //收件人弹层
 $('#income_name').focus(function () {
    layer.open({
@@ -308,6 +387,7 @@ $('#income_name').focus(function () {
            content:$('#incomeNameLayer'),
            btn:['保存'],
            success:function () {
+               $("#incomeNameLayer").css("visibility","visible");
                incomeZtree();
            },
            yes:function () {
@@ -315,6 +395,7 @@ $('#income_name').focus(function () {
                layer.close(layer.index);
            },
            cancel: function(index, layero){
+               $("#incomeNameLayer").css("visibility","visible");
                layer.close(layer.index);
            }
        });
@@ -374,6 +455,7 @@ function getSelectId(that) {
 
 //保存已选收件人
 function save() {
+    $("#incomeNameLayer").css("visibility","hidden");
     $('#income_id').val(income.id);
     $('#income_name').val(income.nickname);
     $('#unit_name').val(income.unit);
