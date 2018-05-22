@@ -43,22 +43,36 @@ class Versions extends Permissions
      */
     public function upload()
     {
-        $module = '';$use = '';
+        // model_type 1 竣工模型 2 施工模型
+        $model_type = input('model_type');
+        if(empty($model_type)){
+            return json(['code'=>1,'msg'=>'缺少类型']);
+        }
         if($this->request->file('file')){
             $file = $this->request->file('file');
         }else{
             return json(['code'=>1,'msg'=>'没有上传文件']);
         }
-        $module = $this->request->has('module') ? $this->request->param('module') : $module;//模块
         $web_config = Db::name('admin_webconfig')->where('web','web')->find();
-        $info = $file->validate(['size'=>$web_config['file_size']*1024,'ext'=>$web_config['file_type']])->rule('date')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . $module . DS . $use);
+
+        //TODO 先测试E盘能否上传成功，成功后 修改为 G盘
+
+        $path = 'E:\WebServer\Resources\jungong'; //文件路径
+        if($model_type == 2){
+            $path = 'E:\WebServer\Resources\shigong';
+        }
+        if(!is_dir($path)){
+            mkdir($path, 0777, true);
+        }
+        $info = $file->validate(['size'=>$web_config['file_size']*1024,'ext'=>$web_config['file_type']])->rule('date')->move($path);
         if($info) {
             //写入到附件表
             $data = [];
-            $data['module'] = $module;
+            $data['module'] = 'modelmanagement';
+            $data['use'] = 'versions';
             $data['name'] = $info->getInfo('name');//原文件名
             $data['filename'] = $info->getFilename();//文件名
-            $data['filepath'] = DS . 'uploads' . DS . $module . DS . $use . DS . $info->getSaveName();//文件路径
+            $data['filepath'] = $path . DS . $info->getSaveName();//文件路径
             $data['fileext'] = $info->getExtension();//文件后缀
             $data['filesize'] = $info->getSize();//文件大小
             $data['create_time'] = time();//时间
@@ -70,14 +84,14 @@ class Versions extends Permissions
                 $data['admin_id'] = $data['user_id'];
                 $data['audit_time'] = time();
             }
-            $data['use'] = $this->request->has('use') ? $this->request->param('use') : $use;//用处
             $res['id'] = Db::name('attachment')->insertGetId($data);
-            $res['src'] = DS . 'uploads' . DS . $module . DS . $use . DS . $info->getSaveName();
+            $res['src'] = $path . DS . $info->getSaveName();
             $res['code'] = 2;
             return json($res);
         } else {
             // 上传失败获取错误信息
-            return $this->error('上传失败：'.$file->getError());
+            $msg = '上传失败：'.$file->getError();
+            return json(['code'=>'-1','msg'=>$msg]);
         }
     }
 
