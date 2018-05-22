@@ -16,6 +16,11 @@
     #tableIncome_filter{
         margin-top: 10px;
     }
+    #tableIncome_paginate{
+        width: 100%;
+        text-align: center;
+        padding-top: 20px;
+    }
 </style>
 <div class="layui-fluid">
     <div class="layui-row" id="table_content">
@@ -71,7 +76,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">关联收文</label>
             <div class="layui-input-block">
-                <input type="text" name="relevance_id" id="relevance_id"  class="layui-input">
+                <input type="text" name="relevance_name" id="relevance_name"  class="layui-input">
+                <input type="hidden" name="relevance_id" id="relevance_id"  class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -127,6 +133,26 @@
         </div>
     </div>
 </div>
+<div id="incomeFileList" style="visibility: hidden">
+    <div class="easyui-layout" style="height:400px;">
+        <div style="padding:5px;">
+            <table id="tableFileList" class="layui-table" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>选择</th>
+                        <th>文件名称</th>
+                        <th>文件日期</th>
+                        <th>收文单位</th>
+                        <th>发件人</th>
+                        <th>收件人</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
 {include file="../../public/common_footer"}
 <script type="text/javascript" src="__WEBSITE__/archive/send/index.js"></script>
 </body>
