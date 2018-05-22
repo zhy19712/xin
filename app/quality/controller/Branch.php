@@ -676,15 +676,17 @@ class Branch extends Permissions
             $Division = new DivisionControlPointModel();
             $param = input('post.');
             $send_info = $send->getOne($param["id"],1);
+
             //遍历数组循环插入分部管控、单位管控中的控制点文件上传文件表中
             //如果当前的数组不为空
-            if(!empty($send_info["attachment"]))
+            if(!empty($send_info["file_ids"]))
             {
-                foreach($send_info["attachment"] as $key=>$val)
+                $file_ids_array = explode(",",$send_info["file_ids"]);
+                foreach($file_ids_array as $val)
                 {
                    $data = [
                        "contr_relation_id"=>$param["list_id"],
-                       "attachment_id" =>$val["id"],
+                       "attachment_id" =>$val,
                        "type" => 3//2表示单位工程，3表示分部工程，5表示单元工程
                    ];
                     $model->insertTb($data);
