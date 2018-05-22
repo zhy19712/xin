@@ -17,6 +17,9 @@ $.ztree({
             isLoadPath:false
         });
         division_id = treeNode.id;
+        $(".imgList").css("display","none");
+        tpyeTable();
+        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&en_type=&unit_id=&division_id=").load();
     }
 });
 

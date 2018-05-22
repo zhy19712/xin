@@ -19,10 +19,8 @@ class Index extends Permissions
         $id = $this->request->param('id');
             switch ($id) {
                 case 'panorama':
-                    return $this->redirect('modelmanagement/quality/index');
+                    return $this->redirect('modelmanagement/panorama/index');
                 case 'manage':
-                    return $this->redirect('modelmanagement/manage/index');
-                case 'quality':
                     return $this->redirect('modelmanagement/manage/index');
                 case 'progress':
                     return $this->redirect('modelmanagement/progress/index');
@@ -35,8 +33,6 @@ class Index extends Permissions
                 default :
                     return $this->fetch();
             }
-
-        return $this->fetch();
     }
 
 }
