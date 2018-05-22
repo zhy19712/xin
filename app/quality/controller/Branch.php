@@ -33,13 +33,6 @@ use think\Session;
 
 class Branch extends Permissions
 {
-    protected $qualityFormInfoService;
-
-    public function __construct(Request $request = null)
-    {
-        $this->qualityFormInfoService = new QualityFormInfoModel();
-        parent::__construct($request);
-    }
     /****************************分部策划************************/
     /**
      * 分部策划模板首页
@@ -114,7 +107,7 @@ class Branch extends Permissions
     public function getControlPoint()
     {
         $data = Db::name('norm_materialtrackingdivision')->group("id,name")->field("id,name")->where(['type'=>2,'cat'=>3])->select();
-        if($data)
+        if(!empty($data))
         {
             return json(['code'=>1,'data'=>$data]);
         }else
