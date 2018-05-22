@@ -39,7 +39,7 @@ tableItem = $("#tableIncome").DataTable({
         {
             targets: [6],
             render: function (data, type, row,meta) {
-                if (data == '1'){
+                if (row[5] == '1'){
                     return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="edit_send(this)">编辑</a><a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="del(this)">删除</a>';
                 }else {
                     return  '<a title="' + data + '"  href="javascript:void(0);" major_key="'+row[6]+'" onclick="preview(this)">查看</a>';

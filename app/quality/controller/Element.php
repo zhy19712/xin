@@ -375,23 +375,22 @@ class Element extends Permissions
     public function insertalldata(){
         $param=input('param.');
         $en_type=$param['en_type'];
+        $unit_id=$param['unit_id'];
+        $division_id=$param['division_id'];
         //找单元工程划分段号下面的所有工序
-
-
         $produceid=Db::name('norm_materialtrackingdivision')
                   ->where(['pid'=>$en_type])
                   ->column('id');
-
-        //限制只插一次
         $limit=Db::name('quality_division_controlpoint_relation')
-            ->where(['divsion_id'=>$param['division_id']])
-            ->where(['ma_divsion_id','in',$produceid])
+            ->where(['division_id'=>$division_id,'unit_id'=>$unit_id])
+            ->where('ma_division_id','in', $produceid)
             ->find();
+        //如果有数据，不插入
         if($limit)
         {
-           exit();//如果有结果直接退出不执行
+              exit();
         }
-
+        //限制只插一次
         //取出该工序下对应的所有控制点id
         $id_arr=Db::name('norm_controlpoint')
         ->where('procedureid','in',$produceid)
@@ -400,11 +399,12 @@ class Element extends Permissions
         foreach($id_arr as $v)
         {
             $data=['type'=>1,'control_id'=>$v['id'],'division_id'=>$param['division_id'],'ma_division_id'=>$v['procedureid'],
-                'update_time'=>time(),'checked'=>0];
+                'unit_id'=>$unit_id,'update_time'=>time(),'checked'=>0];
             $res[]=$data;
         }
-        Db::name('quality_division_controlpoint_relation')
+        $resdata=Db::name('quality_division_controlpoint_relation')
             ->insertAll($res);
+
     }
 
     //勾选时访问的接口，将该条数据的状态更新
@@ -414,16 +414,18 @@ class Element extends Permissions
         $param = input('param.');
         $division_id=$param['division_id'];
         $control_id=$param['control_id'];
+        $unit_id=$param['unit_id'];
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
-       $res=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$division_id,'control_id'=>$control_id])
+        $res=Db::name('quality_division_controlpoint_relation')
+            ->where(['division_id'=>$division_id,'control_id'=>$control_id,'unit_id'=>$unit_id])
             ->update(['checked'=>$checked]);
        if($res)
        {
 
            return json(['msg'=>'success']);
        }
+
     }
 
     //单元管控
@@ -473,7 +475,11 @@ class Element extends Permissions
         $par = array();
         $par['type'] = 1;
         $par['checked'] = 0;//0为被选中
-        $par['division_id'] = $this->request->param('division_id');
+
+        $division_id = $this->request->param('division_id');
+        $unit_id = $this->request->param('unit_id');
+        $par['division_id']=$division_id;
+        $par['unit_id']=$unit_id;
         if ($this->request->has('ma_division_id')) {
             $par['ma_division_id'] = $this->request->param('ma_division_id');
         }

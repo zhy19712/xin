@@ -217,27 +217,42 @@ class DivisionModel extends Model
     public function allRelation()
     {
         // 单位
-        $arr_1 = $this->where(['type'=>['in',[1,2]]])->column('id');
+        $arr_1 = $this->where(['type'=>['eq',1]])->column('id');
+        echo '单位 -- 节点';
+        dump($arr_1);
         // 单位下的工序
         $ma_1 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
-        $res = $this->insertAllCon('0',$arr_1,$ma_1);
+        echo '单位 -- 工序';
+        dump($ma_1);
+        $res = $this->insertAllCon(0,$arr_1,$ma_1);
         if($res['code'] == -1){
+            halt('单位错了');
             return $res;
         }
         // 分部
-        $arr_2 = $this->where(['type'=>['in',[3,4]]])->column('id');
+        $arr_2 = $this->where(['type'=>['eq',3]])->column('id');
+        echo '分部 -- 节点';
+        dump($arr_2);
         // 分部下的工序
         $ma_2 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
-        $res = $this->insertAllCon('0',$arr_2,$ma_2);
+        echo '分部 -- 工序';
+        dump($ma_2);
+        $res = $this->insertAllCon(0,$arr_2,$ma_2);
         if($res['code'] == -1){
+            halt('分部错了');
             return $res;
         }
         // 检验批
-        $arr_3 = $this->where(['type'=>['in',[5,6]]])->column('id');
+        $arr_3 = $this->where(['type'=>['in',[3,4,5,6]]])->column('id');
         $arr_4 = Db::name('quality_unit')->where(['division_id'=>['in',$arr_3]])->column('id');
+        echo '检验批 -- 节点';
+        dump($arr_4);
         $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>3,'cat'=>5])->column('id');
-        $res = $this->insertAllCon('1',$arr_4,$ma_3);
+        echo '检验批 -- 工序';
+        dump($ma_3);
+        $res = $this->insertAllCon(1,$arr_4,$ma_3);
         if($res['code'] == -1){
+            halt('检验批错了');
             return $res;
         }
         return ['code' => 1, 'msg' => '添加成功'];
@@ -253,19 +268,24 @@ class DivisionModel extends Model
                 // 工序下的控制点
                 $con_1 = Db::name('norm_controlpoint')->where(['procedureid'=>['eq',$v1]])->column('id');
                 foreach ($con_1 as $k2=>$v2){
-                    $is_exist = Db::name('quality_division_controlpoint_relation')->where(['type'=>$type,'division_id'=>$v,'ma_division_id'=>$v1,'control_id'=>$v2])->value('id');
-                    if(empty($is_exist)){
-                        $insert_data[$k2]['type'] = $type;
-                        $insert_data[$k2]['division_id'] = $v;
-                        $insert_data[$k2]['ma_division_id'] = $v1;
-                        $insert_data[$k2]['control_id'] = $v2;
-                        $insert_data[$k2]['checked'] = 0;
-                    }else{
-                        $insert_data[$k2] = [];
+                    $insert_data[$k2]['type'] = $type;
+                    $insert_data[$k2]['division_id'] = $v;
+                    $insert_data[$k2]['ma_division_id'] = $v1;
+                    $insert_data[$k2]['control_id'] = $v2;
+                    $insert_data[$k2]['checked'] = 0;
+                }
+
+                $is_exist = Db::name('quality_division_controlpoint_relation')->where(['type'=>$type,'division_id'=>$v])->field('ma_division_id,control_id')->select();
+                $insert_data = array_filter($insert_data);
+                foreach ($is_exist as $k88=>$v88){
+                    foreach ($insert_data as $k99=>$v99){
+                        if($v88['ma_division_id'] == $v99['ma_division_id'] && $v88['control_id'] == $v99['control_id']){
+                            unset($insert_data[$k99]);
+                        }
                     }
                 }
-                $insert_data = array_filter($insert_data);
-                if(!empty($insert_data)){
+
+                if(sizeof($insert_data)){
                     $res = $rel->insertTbAll($insert_data);
                     if($res['code'] == -1){
                         return $res;

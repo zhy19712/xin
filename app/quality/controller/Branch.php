@@ -16,6 +16,7 @@ use app\quality\model\BranchModel;//分部质量管理
 use app\quality\model\BranchfileModel;//分部质量管理文件上传
 use app\admin\model\AdminGroup;//组织机构
 use app\admin\model\Admin;//用户表
+use app\admin\model\AdminCate;//角色分类表
 use app\quality\model\DivisionModel;//工程划分
 use app\standard\model\ControlPoint;//控制点
 use app\quality\model\QualityFormInfoModel;
@@ -32,13 +33,6 @@ use think\Session;
 
 class Branch extends Permissions
 {
-    protected $qualityFormInfoService;
-
-    public function __construct(Request $request = null)
-    {
-        $this->qualityFormInfoService = new QualityFormInfoModel();
-        parent::__construct($request);
-    }
     /****************************分部策划************************/
     /**
      * 分部策划模板首页
@@ -53,15 +47,15 @@ class Branch extends Permissions
      * 分部策划添加控制点
      * @return mixed
      */
-    public function addPlan()
-    {
-        $param = input('param.');
-        $selfid = $param["selfid"];//左侧节点树id
-        $procedureid = $param["procedureid"];//工序号
-        $this->assign('selfid', $selfid);
-        $this->assign('procedureid', $procedureid);
-        return $this->fetch();
-    }
+//    public function addPlan()
+//    {
+//        $param = input('param.');
+//        $selfid = $param["selfid"];//左侧节点树id
+//        $procedureid = $param["procedureid"];//工序号
+//        $this->assign('selfid', $selfid);
+//        $this->assign('procedureid', $procedureid);
+//        return $this->fetch();
+//    }
 
     /****************************分部管控************************/
     /**
@@ -77,15 +71,15 @@ class Branch extends Permissions
      * 分部管控添加控制点
      * @return mixed
      */
-    public function addControl()
-    {
-        $param = input('param.');
-        $selfid = $param["selfid"];//左侧节点树id
-        $procedureid = $param["procedureid"];//工序号
-        $this->assign('selfid', $selfid);
-        $this->assign('procedureid', $procedureid);
-        return $this->fetch();
-    }
+//    public function addControl()
+//    {
+//        $param = input('param.');
+//        $selfid = $param["selfid"];//左侧节点树id
+//        $procedureid = $param["procedureid"];//工序号
+//        $this->assign('selfid', $selfid);
+//        $this->assign('procedureid', $procedureid);
+//        return $this->fetch();
+//    }
 
     /**
      * 分部策划 或者 分部管控 初始化左侧树节点
@@ -113,7 +107,7 @@ class Branch extends Permissions
     public function getControlPoint()
     {
         $data = Db::name('norm_materialtrackingdivision')->group("id,name")->field("id,name")->where(['type'=>2,'cat'=>3])->select();
-        if($data)
+        if(!empty($data))
         {
             return json(['code'=>1,'data'=>$data]);
         }else
@@ -496,6 +490,7 @@ class Branch extends Permissions
 //    }
     /**
      * 点击取消勾选后管控处不显示该控制点
+     * @return \think\response\Json
      */
     public function checkBox()
     {
@@ -503,8 +498,63 @@ class Branch extends Permissions
             //实例化模型类
             $model = new DivisionControlPointModel();
             $param = input('post.');
-            $flag = $model->editRelation($param);
-            return json($flag);
+
+            //全选
+            if($param["checked"] == "All")
+            {
+                if($param["ma_division_id"] != 0)
+                {
+                    $search = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>$param["ma_division_id"],
+                    ];
+                    $data = [
+                        "checked"=>0
+                    ];
+
+                }else
+                {
+                    $search = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>0,
+
+                    ];
+                    $data = [
+                        "checked"=>0
+                    ];
+                }
+
+                $flag = $model->editAll($search,$data);
+                return json($flag);
+            }else if($param["checked"] == "noAll")
+            {
+                if($param["ma_division_id"] != 0)
+                {
+                    $search = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>$param["ma_division_id"],
+
+                    ];
+                    $data = [
+                        "checked"=>1
+                    ];
+                }else
+                {
+                    $search = [
+                        "division_id"=>$param["division_id"],
+                        "ma_division_id"=>0,
+                    ];
+                    $data = [
+                        "checked"=>1
+                    ];
+                }
+                $flag = $model->editNoAll($search,$data);
+                return json($flag);
+            }else
+            {
+                $flag = $model->editRelation($param);
+                return json($flag);
+            }
         }
     }
 
@@ -545,6 +595,12 @@ class Branch extends Permissions
 
     /**
      * 删除一条控制点执行情况或者是图像上传信息
+     * @return \think\response\Json
+     * @throws PDOException
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function delete()
     {
@@ -594,13 +650,13 @@ class Branch extends Permissions
                             $Division->editRelation($change);
                         }
                     }
-
                 return json($flag);
         }
     }
 
     /**
      * 关联收发文
+     * @return mixed
      */
     public function relationadd()
     {
@@ -609,6 +665,7 @@ class Branch extends Permissions
 
     /**
      * 添加关联收发文附件到分部管控、单位管控中的控制点文件上传文件表中
+     * @return \think\response\Json
      */
     public function addRelationFile()
     {
@@ -619,19 +676,24 @@ class Branch extends Permissions
             $Division = new DivisionControlPointModel();
             $param = input('post.');
             $send_info = $send->getOne($param["id"],1);
+
             //遍历数组循环插入分部管控、单位管控中的控制点文件上传文件表中
             //如果当前的数组不为空
-            if(!empty($send_info["attachment"]))
+            //定义一个空的数组
+            $data = array();
+            if(!empty($send_info["file_ids"]))
             {
-                foreach($send_info["attachment"] as $key=>$val)
+                $file_ids_array = explode(",",$send_info["file_ids"]);
+
+                foreach($file_ids_array as $key=>$val)
                 {
-                   $data = [
-                       "contr_relation_id"=>$param["list_id"],
-                       "attachment_id" =>$val["id"],
-                       "type" => 3//2表示单位工程，3表示分部工程，5表示单元工程
-                   ];
-                    $model->insertTb($data);
+                    $data[$key]["contr_relation_id"] = $param["list_id"];
+                    $data[$key]["attachment_id"] = $val;
+                    $data[$key]["type"] = 3;
+
                 }
+                Db::name("quality_upload")->insertAll($data);
+
                 //文件上传完毕后修改控制点的状态，只有上传控制点执行情况文件时才修改状态
 
                 $info = $Division->getOne($param["list_id"]);
@@ -651,14 +713,77 @@ class Branch extends Permissions
             }
         }
     }
+
     /**
      * 分部管控中的验评
+     * @return \think\response\Json
      */
     public function evaluation()
     {
         if(request()->isAjax()){
-            //首先判断当前的登录人是否有验评权限，管理员和监理可以编辑
+            //实例化模型类
+            $admin = new Admin();
+            $admincate = new AdminCate();
 
+            $division_id = input("post.division_id");
+            //首先判断当前的登录人是否有验评权限，管理员和监理可以编辑
+            $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+
+            $admin_info = $admin->getOne($admin_id);
+
+            $admin_cate_id = $admin_info["admin_cate_id"];
+
+            if(!empty($admin_cate_id))
+            {
+                $admin_cate_id_array = explode(",",$admin_cate_id);
+                //查询角色角色分类表中超级管理员和监理单位中是否有当前登录的用户
+                $data = $admincate->getAlladminSupervisor();
+                //$flag = 1表示有权限
+                $flag = 1;
+                foreach ($admin_cate_id_array as $va) {
+                    if (in_array($va, $data)) {
+                        continue;
+                    }else {
+                        $flag = 0;
+                        break;
+                    }
+                }
+
+                //查询当前的工程划分的节点的验评状态
+                $Division = new DivisionModel();
+
+                $division_info = $Division->getOne($division_id);
+
+                $evaluation_results = $division_info["evaluation_results"];//验评
+
+                $evaluation_time = date("Y-m-d",$division_info["evaluation_time"])?date("Y-m-d",$division_info["evaluation_time"]):"";//验评日期
+
+                return json(["flag"=>$flag,"evaluation_results"=>$evaluation_results,"evaluation_time"=>$evaluation_time]);
+            }
+        }
+    }
+
+    /**
+     * 分部管控中的验评
+     * @return \think\response\Json
+     */
+    public function editEvaluation()
+    {
+        if(request()->isAjax()){
+            //实例化模型类
+            $Division = new DivisionModel();
+            $division_id = input("post.division_id");//工程策划id
+            $evaluation_results = input("post.evaluation_results");//验评结果
+            $evaluation_time = input("post.evaluation_time");//验评时间
+
+            $data = [
+                "id"=>$division_id,
+                "evaluation_results"=>$evaluation_results,
+                "evaluation_time"=>strtotime($evaluation_time)
+            ];
+            $flag = $Division->editTb($data);
+
+            return json($flag);
         }
     }
 }

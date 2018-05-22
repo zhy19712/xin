@@ -457,7 +457,7 @@ $('#openNode').click(function(){
 /**==========结束初始化 单元工程段号 =============*/
 
 
-
+var checkedData = true;
 function tpyeTable() {
     tableItemControl = $('#tableItemControl').DataTable({
         pagingType: "full_numbers",
@@ -492,7 +492,7 @@ function tpyeTable() {
                 "searchable": false,
                 "orderable": false,
                 "render": function(data, type, full, meta) {
-                    var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+row[0]+")'>";
+                    var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[0]+",this)'>";
                     return html;
                 },
             },
@@ -632,7 +632,7 @@ function insetData(eTypeId) {
     $.ajax({
         type: "post",
         url: "/quality/element/insertalldata",
-        data: {en_type: eTypeId,division_id:division_id},
+        data: {en_type: eTypeId,division_id:division_id,unit_id:selectRow},
         success: function (res) {
             console.log(res);
         }
@@ -667,13 +667,21 @@ function clickConName(id) {
     console.log(id);
 }
 
+var chceck = 0;     //默认是0 为选中  ，1为未选中
 //点击去掉所选
-function getSelectIdPlanCheck(that){
-    console.log(that)
+function getSelectIdPlanCheck(rowId,that){
+    // console.log(that);
+    // console.log($(that).is(':checked'));
+    if($(that).is(':checked') == false){
+        chceck = 1;
+    }else if($(that).is(':checked') == true){
+        chceck = 0;
+    }
+    console.log(chceck);
     $.ajax({
         type: "post",
         url: "/quality/element/checkout",
-        data: {division_id: division_id,control_id:that},
+        data: {division_id: division_id,control_id:rowId,checked:chceck},
         success: function (res) {
             console.log(res);
         }

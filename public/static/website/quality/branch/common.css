@@ -80,7 +80,7 @@
 #tableItem tbody tr:hover{
     background-color: #FDD5B5;
 }
-.uploadBox{
+.uploadBox,.relationBox{
     position: absolute;
     right: 0;
     top: 0;

@@ -16,18 +16,15 @@ class Index extends Permissions
     {
         //将所有模型页面按需装载到同一个iframe中，防止用户打开过多模型页面崩溃
         //全景3d、质量3d、进度3d、安全3d、全景模型、倾斜模型
-        if(request()->isAjax()) {
-            $id = $this->request->param('id');
+        $id = $this->request->param('id');
             switch ($id) {
                 case 'panorama':
-                    $path = '../app/modelmanagement/view/index/panorama.html';
-                    break;
+                    return $this->redirect('modelmanagement/quality/index');
                 case 'manage':
                     $path = '../app/modelmanagement/view/index/manage.html';
                     break;
                 case 'quality':
-                    $path = '../app/modelmanagement/view/index/quality.html';
-                    break;
+                    return $this->redirect('modelmanagement/manage/index');
                 case 'progress':
                     $path = '../app/modelmanagement/view/index/progress.html';
                     break;
@@ -43,9 +40,7 @@ class Index extends Permissions
                 default :
                     $path = '../app/modelmanagement/view/index/index.html';
             }
-            $newContent = file_get_contents($path);
-            return $newContent;
-        }
+
         return $this->fetch();
     }
 

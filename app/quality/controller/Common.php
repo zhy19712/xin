@@ -1114,7 +1114,7 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    // 分部质量管理 分部策划，分部管控 控制点列表
+    // 分部质量管理 分部策划，分部管控 控制点列表、单位质量管理 单位策划，单位管控 控制点列表
     public function quality_subdivision_planning_list($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //自定义表名，工程划分、工序、控制点关系表
@@ -1128,13 +1128,14 @@ class Common extends Controller
         //是否勾选
         $checked = input('checked') ? input('checked') : "";//是否勾选
 
-        if(empty($checked))
+        if($checked == "")
         {
-            $checked = [
+            $search_checked = [
+
             ];
         }else
         {
-            $checked = [
+            $search_checked = [
                 "checked"=>0
             ];
         }
@@ -1142,7 +1143,8 @@ class Common extends Controller
         if ($selfid && $procedureid) {
             $search_data = [
                 "division_id" => $selfid,
-                "ma_division_id" => $procedureid
+                "ma_division_id" => $procedureid,
+//                "checked"=>0
             ];
         } else if ($selfid && !$procedureid) {
             $search_data = [
@@ -1157,7 +1159,7 @@ class Common extends Controller
 
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where("type = 0")->where($checked)->where($search_data)->count(0);
+        $recordsTotal = Db::name($table)->where("type = 0")->where($search_checked)->where($search_data)->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
@@ -1168,7 +1170,7 @@ class Common extends Controller
                     ->join('norm_controlpoint c', 's.control_id = c.id', 'left')
                     ->field("c.code,c.name,s.checked,s.status,s.id")
                     //判断在分部管控中是否显示不显示没有勾选的
-                    ->where($checked)
+                    ->where($search_checked)
                     //typedivision_id 类型:0单位,分部工程编号 1检验批
                     ->where("type = 0")
                     ->where($search_data)->where($columnString, 'like', '%' . $search . '%')
@@ -1185,7 +1187,7 @@ class Common extends Controller
                     ->join('norm_controlpoint c', 's.control_id = c.id', 'left')
                     ->field("c.code,c.name,s.checked,s.status,s.id")
                     //判断在分部管控中是否显示不显示没有勾选的
-                    ->where($checked)
+                    ->where($search_checked)
                     //typedivision_id 类型:0单位,分部工程编号 1检验批
                     ->where("type = 0")
                     ->where($search_data)
@@ -1456,6 +1458,8 @@ class Common extends Controller
         $recordsFilteredResult = array();
         $param = input('param.');
         $en_type=$param['en_type'];
+        $unit_id=$param['unit_id'];
+        $division_id=$param['division_id'];
 
         //norm_materialtrackingdivision的id数组
         $nm_arr=Db::name('norm_materialtrackingdivision')
@@ -1478,16 +1482,29 @@ class Common extends Controller
                  ->column('id');
          }
 
-
-        if (strlen($search) > 0) {
-            //有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name('norm_controlpoint')
-                    ->where('id','in',$id_arr)
-                    ->order('code')->limit(intval($start), intval($length))->select();
-                $recordsFiltered = sizeof($recordsFilteredResult);
+        $search=Db::name('quality_division_controlpoint_relation')
+            ->where(['unit_id'=>$unit_id,'division_id'=>$division_id])
+            ->select();
+        //如果之前触发了insertalldata函数
+        if (count($search) > 0) {
+            //有传入工序
+            if($this->request->has('nm_id'))
+            {
+                $wherenm['r.ma_division_id']=$nm_id;
             }
+            else{
+                $wherenm='';
+            }
+
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
+                    ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+                    ->order('code')
+                    ->where(['r.unit_id'=>$unit_id,'r.division_id'=>$division_id])
+                    ->where($wherenm)
+                    ->limit(intval($start), intval($length))
+                    ->select();
+                $recordsFiltered = sizeof($recordsFilteredResult);
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {
