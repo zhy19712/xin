@@ -118,6 +118,13 @@
     .dataTables_scrollHeadInner,#tableItem_wrapper table,#imageData_wrapper table, #implementation_wrapper table, #onlineFill_wrapper table{
         width: 100% !important;
     }
+    .dataTables_filter{
+        padding: 5px;
+    }
+    .add {
+        margin-top: 5px;
+        margin-right: 5px;
+    }
 </style>
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
@@ -156,7 +163,7 @@
                 <thead>
                 <tr>
                     <th>
-                        <label for="all_checked_plan" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                        <label for="all_checked_plan" onselectstart="return false;" style="-moz-user-select:none;"></label>
                         <input type='checkbox' name='all_checked_plan' id="all_checked_plan" class='icheckbox_minimal' value=''>
                     </th>
                     <th>控制点编号</th>
