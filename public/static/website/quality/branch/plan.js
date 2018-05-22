@@ -38,9 +38,9 @@ function onClick(e, treeId, node) {
     selfid = zTreeObj.getSelectedNodes()[0].id;
     var path = sNodes[0].name; //选中节点的名字
     node = sNodes[0].getParentNode();//获取父节点
-    //判断是否还有子节点
+    //判断是否是分部
     if (sNodes[0].type == '3') {
-        //判断是否还有父节点
+        //
         selfidName()
         $("#tableContent .imgList").css('display','block');
       var url = "/quality/common/datatablespre/tableName/quality_subdivision_planning_list/selfid/"+selfid+".shtml";
