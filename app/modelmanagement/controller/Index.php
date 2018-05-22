@@ -21,24 +21,19 @@ class Index extends Permissions
                 case 'panorama':
                     return $this->redirect('modelmanagement/quality/index');
                 case 'manage':
-                    $path = '../app/modelmanagement/view/index/manage.html';
-                    break;
+                    return $this->redirect('modelmanagement/manage/index');
                 case 'quality':
                     return $this->redirect('modelmanagement/manage/index');
                 case 'progress':
-                    $path = '../app/modelmanagement/view/index/progress.html';
-                    break;
+                    return $this->redirect('modelmanagement/progress/index');
                 case 'safety':
-                    $path = '../app/modelmanagement/view/index/safety.html';
-                    break;
+                    return $this->redirect('modelmanagement/safety/index');
                 case 'oblique':
-                    $path = '../app/modelmanagement/view/index/oblique.html';
-                    break;
+                    return $this->redirect('modelmanagement/oblique/index');
                 case 'index':
-                    $path = '../app/modelmanagement/view/index/index.html';
-                    break;
+                    return $this->redirect('modelmanagement/index/index');
                 default :
-                    $path = '../app/modelmanagement/view/index/index.html';
+                    return $this->fetch();
             }
 
         return $this->fetch();
