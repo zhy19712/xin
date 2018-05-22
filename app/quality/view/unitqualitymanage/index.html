@@ -1,59 +1,93 @@
 {include file="../app/public/common_header.html"}
 <link rel="stylesheet" href="__WEBSITE__/quality/unitqualitymanage/common/common.css">
 <link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
+<style>
+    .table.dataTable thead .sorting_asc{
+        background: none;
+    }
+    #tableContent .dataTables_scroll{
+        height: 100%;
+    }
+    .dataTables_wrapper.no-footer .dataTables_scrollBody{
+        border-bottom: none!important;
+    }
+    #tableContent .dataTables_scroll{
+        height: 100%;
+    }
+    #tableContent .dataTables_scrollBody{
+        max-height: none!important;
+        width: 100%;
+        height: calc(100% - 100px)!important;
+        border-bottom: none!important;
+    }
+    #tableContent .dataTables_scrollHeadInner,#tableContent table {
+        width: 100%!important;
+    }
+</style>
 <div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
     <ul id="ztree" class="ztree"></ul>
 </div>
-<div data-options="region:'center',title:''" style="padding:5px;">
-    <input type="hidden" name="wordId" id="workId">
-    <div class="current-path">
-        <h3><i class="fa fa-dot-circle-o"></i>控制点</h3>
+<div id="tableContent" data-options="region:'center',title:'<i class=\'fa fa-dot-circle-o\'></i>控制点'" style="padding:5px;">
+    <div class="imgList">
+        <span id="imgListLeft">
+            <a id="homeWork" class="imgListStyle" onclick="clickConName(0)" href="javascript:;"><img src="__WEBSITE__/quality/branch/work.png" alt="工作">&nbsp;作业</a>
+        </span>
+        <span class="imgListStyle" id="imgListRight">
+
+        </span>
     </div>
-    <div class="control-point" id="controlPoint">
-        <div class="control-point-item" id="controlPointItem"></div>
-    </div>
-    <div class="sub-list layui-clear" id="subList">
-        <h3><i class="fa fa-file-text"></i>单位策划列表</h3>
-        <div class="btn-wrap">
-            <button class="layui-btn layui-btn-normal layui-btn-sm subBtn" id="delBtn"><i class="fa fa-times"></i>全部删除</button>
-            <button class="layui-btn layui-btn-normal layui-btn-sm subBtn" id="addBtn"><i class="fa fa-plus"></i>添加控制点</button>
-            <button class="layui-btn layui-btn-normal layui-btn-sm frtBtn" id="exportQcodeBtn"><i class="fa fa-download"></i>导出二维码</button>
-        </div>
-    </div>
+    <div class="listName" style="padding-left: 1.5%"><h3> 分部策划列表</h3></div>
     <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
         <thead>
         <tr>
+            <th>
+                <input type='checkbox' name='all_checked' id="all_checked" checked>
+            </th>
             <th>控制点编号</th>
             <th>控制点名称</th>
             <th>操作</th>
         </tr>
         </thead>
     </table>
-</div>
-<div class="point-layer" id="pointLayer">
-    <input type="hidden" name="enginId" id="enginId">
-    <div id="easyuiLayout" class="easyui-layout" style="width:100%;height:450px;">
-        <div data-options="region:'west',title:'标准分类',split:true" style="width:180px;">
-            <ul id="controlZtree" class="ztree"></ul>
-        </div>
-        <div data-options="region:'center',title:'控制点标准'" style="padding:5px;">
-            <table id="controlItem" class="table table-striped table-bordered layui-clear" cellspacing="0" style="width: 100%">
-                <thead>
-                    <th>
-                        <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
-                        <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
-                    </th>
-                    <th>编号</th>
-                    <th>名称</th>
-                </tr>
-                </thead>
-            </table>
-        </div>
+    <div class="tbcontainer">
+        <div class="mark"></div>
     </div>
+    <div id="form_container" style="display: none;"></div>
 </div>
-<div id="form_container"></div>
+
 {include file="../app/public/common_footer.html"}
+<script>
+  //获取控制点name
+  function selfidName(id) {
+    $.ajax({
+      type: "GET",
+      url: "./productionProcesses",
+      // data: {id: id},
+      success: function (res) {
+        var res = res.data;
+        var optionStrAfter = '';
+        for(var i = 0;i<res.length;i++) {
+          $("#imgListRight").html('');
+          controlPointId = res[i].id;
+          controlPointName = res[i].name;
+          if(i==0){
+            optionStrAfter +=
+              '<a href="javascript:;"  class="imgListStyle" onclick="clickConName('+res[i].id+')">' +
+              '<img src="__WEBSITE__/quality/branch/work.png" alt="工作">&nbsp;'+res[i].name+'<span style="display: none;">'+res[i].id+'</span>' +
+              '</a>\n';
+            continue;
+          }
+          optionStrAfter +=
+            '<a href="javascript:;"  class="imgListStyle" onclick="clickConName('+res[i].id+')">' +
+            '<img class="imgNone" src="__WEBSITE__/quality/branch/right.png" alt="箭头">' +
+            '<img src="__WEBSITE__/quality/branch/work.png" alt="工作">&nbsp;'+res[i].name+'<span style="display: none;">'+res[i].id+'</span>' +
+            '</a>\n';
+        };
+        $("#imgListRight").append(optionStrAfter);
+        $("#tableItem_wrapper").height("calc(100% - 50px - "+$('.imgList').outerHeight(true)+"px)");
+      }
+    })
+  }
+</script>
 <script src="__WEBSITE__/quality/unitqualitymanage/index.js"></script>
-<script src="__WEBSITE__/quality/unitqualitymanage/common/common.js"></script>
 </body>
-</html>

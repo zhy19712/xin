@@ -156,7 +156,7 @@ function addNodetree() {
     $.ajax({
       url: "./adddivsiontree",
       type: "post",
-      data: {pid: pid, name: value, cat:2,type:type},
+      data: {pid: pid, name: value, cat:cat,type:type},
       success: function (res) {
         console.log(res);
         if (res.code === 1) {
@@ -253,6 +253,7 @@ $(".mybtn #test3").click(function () {
     success: function(layero, index){
       var body = layer.getChildFrame('body', index);
       body.find("#denId").val(procedureId);
+      body.find("#type").val(cat);
       body.find("#use").val(cat == 2 ? 3 : 2);
     },
     end:function () {
