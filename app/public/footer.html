@@ -46,7 +46,7 @@
             app.set({
                 type: 'iframe'
             }).init();
-            
+
             $('dl.skin > dd').on('click', function() {
                 var $that = $(this);
                 var skin = $that.children('a').data('skin');
@@ -70,7 +70,7 @@
                     var skin = getSkinName();
                     switchSkin(skin === undefined ? 'blue' : skin);
                 }();
-                
+
                 $('#color').click(function(){
                 layer.open({
                     type:1,
@@ -115,7 +115,6 @@
            })
        });
    </script>
-   <script src="__PUBLIC__/jquery/jquery.min.js"></script>
    <script type="text/javascript">
 
        layui.use('jquery', function() {

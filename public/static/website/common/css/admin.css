@@ -1,6 +1,9 @@
 /**
  * @writing-time:  2017.11.15
  */
+em{
+	font-style: normal;
+}
 
 .operation-menu a {
 	margin:0 10px;
@@ -126,32 +129,94 @@ body #copyrights a{
 /*body .layui-table thead tr{
 	background:0;
 }*/
-
 /* 模板视图切换按钮 */
 .layui-model{
+	padding: 8px 0;
 	right:310px;
-	color: #333;
 }
-.layui-model .layui-nav-item a{
-	width: 33px;
-	height: 50px;
-	background-size: 33px;
+.layui-nav .layui-nav-item a{
+	padding: 0 25px;
+}
+.layui-model .layui-nav-item span{
+	display: block;
+	width: 100%;
+	height: 28px;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.layui-model .layui-nav-item em{
+	display: block;
+	margin-top: 2px;
+	line-height: 1;
+	font-size: 14px;
 }
 .panorama{
-	background: url("../images/panorama.png") center center no-repeat;
+	background: url("../images/panorama.png");
 }
-.panorama:hover{
-	background: url("../images/panorama1.png") center center no-repeat;
+.quality{
+	background: url("../images/quality.png");
 }
-.three-dimension{
-	background: url("../images/3D1.png") center center no-repeat;
+.progress{
+	background: url("../images/progress.png");
 }
-.three-dimension:hover{
-	background: url("../images/3D2.png") center center no-repeat;
+.security{
+	background: url("../images/security.png");
 }
-.manage-three-dimension{
-	background: url("../images/zhiliang3D.png") center center no-repeat;
+.panorama-model{
+	background: url("../images/panorama_model.png");
 }
-.manage-three-dimension:hover{
-	background: url("../images/zhiliang3D1.png") center center no-repeat;
+.tilt{
+	background: url("../images/tilt.png");
+}
+/* 用户信息操作 */
+.layui-userinfo *{
+	font-size: 14px;
+}
+.layui-userinfo{
+	padding: 4px 20px;
+}
+.layui-userinfo .layui-nav-item .message-wrap{
+	position: relative;
+	vertical-align: middle;
+	display: inline-block;
+}
+.layui-userinfo .layui-nav-item .message,.layui-userinfo .layui-nav-item .quit{
+	padding: 0 10px;
+	display: inline-block;
+	vertical-align: middle;
+	width: 22px;
+	height: 22px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+.layui-userinfo .layui-nav-item .layui-badge{
+	padding: 0 4px;
+	margin: -15px 22px 0;
+	height: 15px;
+	line-height: 15px;
+	font-size: 12px;
+	font-style: normal;
+	background-color: #fd764c;
+}
+.layui-userinfo .layui-nav-item:first-child{
+	margin-bottom: 3px;
+}
+.layui-userinfo .layui-nav-item{
+	display: block;
+	line-height: normal;
+}
+.layui-nav .layui-nav-item .current_user{
+	padding-left: 0;
+	display: inline-block;
+	vertical-align: middle;
+}
+#date{
+	margin-right: 18px;
+}
+.message{
+	background: url("../images/message.png");
+}
+.quit{
+	background: url("../images/quit.png");
 }
