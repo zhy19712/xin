@@ -41,6 +41,10 @@ class Income extends Permissions
             $send = new SendModel();
             $param['id'] = $param['major_key'];
             $flag = $send->editTb($param);
+            $flag['msg'] = '签收成功';
+            if($param['status'] == 4){
+                $flag['msg'] = '拒收成功';
+            }
             return json($flag);
         }
     }
