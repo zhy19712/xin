@@ -676,19 +676,24 @@ class Branch extends Permissions
             $Division = new DivisionControlPointModel();
             $param = input('post.');
             $send_info = $send->getOne($param["id"],1);
+
             //遍历数组循环插入分部管控、单位管控中的控制点文件上传文件表中
             //如果当前的数组不为空
-            if(!empty($send_info["attachment"]))
+            //定义一个空的数组
+            $data = array();
+            if(!empty($send_info["file_ids"]))
             {
-                foreach($send_info["attachment"] as $key=>$val)
+                $file_ids_array = explode(",",$send_info["file_ids"]);
+
+                foreach($file_ids_array as $key=>$val)
                 {
-                   $data = [
-                       "contr_relation_id"=>$param["list_id"],
-                       "attachment_id" =>$val["id"],
-                       "type" => 3//2表示单位工程，3表示分部工程，5表示单元工程
-                   ];
-                    $model->insertTb($data);
+                    $data[$key]["contr_relation_id"] = $param["list_id"];
+                    $data[$key]["attachment_id"] = $val;
+                    $data[$key]["type"] = 3;
+
                 }
+                Db::name("quality_upload")->insertAll($data);
+
                 //文件上传完毕后修改控制点的状态，只有上传控制点执行情况文件时才修改状态
 
                 $info = $Division->getOne($param["list_id"]);
