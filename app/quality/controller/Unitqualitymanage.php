@@ -758,7 +758,7 @@ class Unitqualitymanage extends Permissions
                     $data = [
                         "contr_relation_id"=>$param["list_id"],
                         "attachment_id" =>$val["id"],
-                        "type" => 3//2表示单位工程，3表示分部工程，5表示单元工程
+                        "type" => 2//2表示单位工程，3表示分部工程，5表示单元工程
                     ];
                     $model->insertTb($data);
                 }
