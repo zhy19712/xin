@@ -120,25 +120,26 @@ class Common extends Controller
         if(strlen($search)>0){
             //有搜索条件的情况
             if($limitFlag){
-                if(empty($type)){
-                    $exArr = explode('|',$columnString);
-                    $newColumnString = '';
-                    foreach($exArr as $ex){
-                        switch ($ex){
-                            case 'g_order':
-                                $newColumnString = 'a.order' . '|' . $newColumnString;
-                                break;
-                            case 'g_name':
-                                $newColumnString = 'a.name' . '|' . $newColumnString;
-                                break;
-                            case 'name':
-                                $newColumnString = 'g.name' . '|' . $newColumnString;
-                                break;
-                            default :
-                                $newColumnString = 'a.' . $ex . '|' . $newColumnString;
-                        }
+                $exArr = explode('|',$columnString);
+                $newColumnString = '';
+                foreach($exArr as $ex){
+                    switch ($ex){
+                        case 'g_order':
+                            $newColumnString = 'a.order' . '|' . $newColumnString;
+                            break;
+                        case 'g_name':
+                            $newColumnString = 'a.name' . '|' . $newColumnString;
+                            break;
+                        case 'name':
+                            $newColumnString = 'g.name' . '|' . $newColumnString;
+                            break;
+                        default :
+                            $newColumnString = 'a.' . $ex . '|' . $newColumnString;
                     }
-                    $newColumnString = substr($newColumnString,0,strlen($newColumnString)-1);
+                }
+                $newColumnString = substr($newColumnString,0,strlen($newColumnString)-1);
+
+                if(empty($type)){
                     //*****多表查询join改这里******
                     $recordsFilteredResult = Db::name($table)->alias('a')
                         ->join('admin_group g','a.admin_group_id = g.id','left')
@@ -150,11 +151,10 @@ class Common extends Controller
                     $recordsFilteredResult = Db::name($table)->alias('a')
                         ->join('admin_group g','a.admin_group_id = g.id','left')
                         ->field('a.id,g.name,a.nickname,a.mobile,a.position')
-                        ->where($columnString, 'like', '%' . $search . '%')
+                        ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['a.status'=> '1','a.admin_group_id'=>['in',$idArr]])
                         ->order($order)->limit(intval($start),intval($length))->select();
                 }
-
 
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -405,6 +405,7 @@ class Common extends Controller
         $temp = array();
         $infos = array();
         foreach ($recordsFilteredResult as $key => $value) {
+
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
                 array_push($temp, $value[$columns[$i]['name']]);
@@ -414,20 +415,24 @@ class Common extends Controller
             {
                 $form_info = $model->getOne($temp["6"]);
 
-//                $cpr_id = Db::name("quality_division_controlpoint_relation")
-//                    ->field("id")
-//                    ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
-//                    ->find();
-//                $form_data[$key]["cpr_id"] = $cpr_id["id"];
+                $cpr_id = Db::name("quality_division_controlpoint_relation")
+                    ->field("id")
+                    ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
+                    ->find();
+
+                $form_data["cpr_id"] = $cpr_id["id"];
 
                 $form_data["CurrentStep"] = $form_info["CurrentStep"];
 
-                $form_data["cpr_id"] = $form_info["cpr_id"];
+//                $form_data["cpr_id"] = $form_info["cpr_id"];
 
-                array_push($temp, $form_data);
+
+
             }
+            array_push($temp,$form_data);
 
 //            array_push($temp, $children_info);
+
 
             $infos[] = $temp;
             $temp = [];
