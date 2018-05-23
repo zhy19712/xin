@@ -114,6 +114,9 @@ body #copyrights a{
 .layui-layout-left{
 	left:220px;
 }
+.layui-layout-left i.fa{
+	font-size: 14px;
+}
 .menu_ul li ul {
 	padding-left: 20px;
 	display: none;

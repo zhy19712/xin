@@ -38,6 +38,7 @@ class Dashboard extends Permissions
         $admin_id= Session::has('admin') ? Session::get('admin') : 0;
         //查询单元工程审批人状态表
         $form_info = $qualityform->getAdminapproval($admin_id);
+        //定义两个空的数组用来存储值
         $data = array();
         $edit_data = array();
         if(!empty($form_info))
@@ -74,42 +75,61 @@ class Dashboard extends Permissions
 
     }
 
-    /**
-     * 轮询
-     * @return \think\response\Json
-     */
-    public function lunxun()
-    {
-        //实例化模型类
-        if ($this->request->isAjax()) {
-            $message = new MessageremindingModel();
+//    /**
+//     * 轮询
+//     * @return \think\response\Json
+//     */
+//    public function ajaxLunxun()
+//    {
+//        //实例化模型类
+//        if ($this->request->isAjax()) {
+//            //实例化模型类
+//            $message = new MessageremindingModel();
+//            //传过来检测值
+//            $count = input("post.count");
+//
+//            $time = 30;
+//
+//            set_time_limit(0);//无限请求超时时间
+//
+//            $i = 0;
+//            while (true) {
+//                usleep(500000);//0.5秒
+//                $i++;
+//                if ($i <= $time) {
+//
+//                    $this->buildMessage();
+//
+//                    $count_data = $message->getCount();
+//                    //如果表中的条数和检测值相等则停止循环
+//                    if ($count_data != $count) {
+//
+//                        return json(["count"=>$count_data]);
+//
+//                        exit;
+//                    }
+//                } else {
+//
+//                    exit;
+//                }
+//            }
+//        }
+//    }
+        /**
+         * 查询当前消息表中状态status=1的条数
+         * @return \think\response\Json
+         */
+        public function queryMessage()
+        {
+            if ($this->request->isAjax()) {
+                //实例化模型类
+                $message = new MessageremindingModel();
 
-            $count = input("post.count");
+                $flag = $this->buildMessage();
 
-            $time = 30;
-            set_time_limit(0);//无限请求超时时间
-            $i = 0;
-            while (true) {
-                usleep(500000);//0.5秒
-                $i++;
-                if ($i <= $time) {
+                $count_data = $message->getCount();
 
-                    $this->buildMessage();
-
-                    $count_data = $message->getCount();
-
-                    if ($count_data != $count) {
-
-                        return json(["count"=>$count_data]);
-
-                        exit;
-                    }
-                } else {
-
-                    exit;
-                }
-
+                return json(["count"=>$count_data]);
             }
         }
-    }
 }

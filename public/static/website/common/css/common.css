@@ -7,6 +7,10 @@ body{
 .panel-body{
     overflow: hidden;
 }
+/* 按钮 */
+.btn-right{
+    float: right;
+}
 /* 图标 */
 .layout-panel-west .layout-body{
     position: relative;
@@ -21,7 +25,11 @@ i.fa:before{
 i.fa:hover:before{
     color: #009dc3;
 }
-/* 路径 */
+/* 当前路径 */
+.current-path{
+    height: 30px;
+    line-height: 30px;
+}
 .current-path .add{
     float: right;
 }
@@ -30,6 +38,11 @@ i.fa:hover:before{
     color: #FFF;
     background: none;
     border-color: #FFF;
+}
+.current-path h3{
+    float: left;
+    color: #0E2D5F;
+    font-weight: bold;
 }
 /* 树 */
 .ztree-title{
@@ -58,16 +71,6 @@ i.fa:hover:before{
 }
 .layui-layer-content .ztree{
     margin-top: 0;
-}
-/* 当前路径 */
-.current-path{
-    height: 30px;
-    line-height: 30px;
-}
-.current-path h3{
-    float: left;
-    color: #0E2D5F;
-    font-weight: bold;
 }
 /* layui表单 */
 
@@ -168,6 +171,20 @@ table.dataTable.no-footer{
     margin-top: 5px;
     border-top: 1px solid #cecece;
 }
+/* 表格搜索 */
+.dataTables_wrapper .dataTables_filter{
+    line-height: 29px;
+}
+.dataTables_wrapper .dataTables_filter label{
+    padding: 5px 13px;
+    color: #FFF;
+    background: #009688;
+    cursor: pointer;
+}
+.dataTables_wrapper .dataTables_filter input{
+    float: left;
+    margin-right: 20px;
+}
 /* 弹层 */
 .layui-layer-content{
     padding-top: 15px;
@@ -216,4 +233,28 @@ table.dataTable.no-footer{
 }
 .eye li span.button.chk.checkbox_true_full_focus{
     background: url("../images/close_eye.png") no-repeat 0 0;
+}
+/* tab切换 */
+.tabs{
+    padding: 0;
+    border-color: #e6e6e6;
+}
+.tabs-header,.tabs-panels{
+    border: none;
+}
+.tabs-header{
+    padding: 0;
+    background-color: #fff;
+}
+.tabs li a.tabs-inner{
+    border-color: #fff;
+    border-bottom: 1px solid #e6e6e6;
+}
+.tabs li a.tabs-inner,.tabs li a.tabs-inner:hover{
+    background: none;
+}
+.tabs li.tabs-selected a.tabs-inner{
+    border: 1px solid #e6e6e6;
+    border-bottom: 1px solid #fff;
+    background: #fff;
 }
