@@ -14,6 +14,7 @@ use app\approve\model\ApproveModel;
 use app\quality\model\QualityFormInfoModel;
 use think\Request;
 use think\Session;
+use think\Db;
 
 /**
  * 流程审批
@@ -58,7 +59,7 @@ class Approve extends Permissions
     public function Approve()
     {
         $par = input("param.");
-        $next_approverid=$par['next_approverid'];//下一个审批人的id
+        $next_approverid=1;//下一个审批人的id
         if ($this->request->isAjax()) {
             if ($this->approveService->Approve($par['dataId'], new $par['dataType'], $par['res'], $par['mark'])) {
                 Db::name('approve')
