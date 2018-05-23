@@ -174,9 +174,9 @@ class DivisionModel extends Model
     public function addRelation($ma_division_id,$cid,$genre)
     {
         //类型 1单位2子单位工程 3分部4子分部工程 5分项工程6单元工程
-        $arr_1 = [1,2];
-        $arr_2 = [3,4];
-        $arr_3 = [5,6];
+        $arr_1 = [1];
+        $arr_2 = [3];
+        $arr_3 = [3,4,5,6];
 
         //type division_id 类型:0单位,分部工程编号 1检验批
         $type = 0;

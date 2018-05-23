@@ -16,7 +16,7 @@
     #tableIncome_filter{
         margin-top: 10px;
     }
-    #tableIncome_paginate,#tableFileList_paginate{
+    #tableIncome_paginate,#tableFileList_paginate,#tableItem_paginate{
         width: 100%;
         text-align: center;
         padding-top: 20px;
@@ -52,20 +52,20 @@
         <div class="layui-form-item">
             <label class="layui-form-label">文件日期</label>
             <div class="layui-input-block">
-                <input type="text" name="date" id="date" required lay-verify="required" class="layui-input">
+                <input type="text" name="date" id="date" required lay-verify="required" class="layui-input" readonly="readonly">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收件人</label>
             <div class="layui-input-block">
-                <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input">
+                <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input" readonly="readonly">
                 <input type="hidden" name="income_id" id="income_id">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收文单位</label>
             <div class="layui-input-block">
-                <input type="text" name="unit_name" id="unit_name" required lay-verify="required" class="layui-input">
+                <input type="text" name="unit_name" id="unit_name" required lay-verify="required" class="layui-input" readonly="readonly">
             </div>
         </div>
         <div class="layui-form-item">
@@ -77,7 +77,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">关联收文</label>
             <div class="layui-input-block">
-                <input type="text" name="relevance_name" id="relevance_name"  class="layui-input">
+                <input type="text" name="relevance_name" id="relevance_name"  class="layui-input" readonly="readonly">
                 <input type="hidden" name="relevance_id" id="relevance_id"  class="layui-input">
             </div>
         </div>
