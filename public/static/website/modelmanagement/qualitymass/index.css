@@ -16,3 +16,14 @@
 .dataTables_wrapper, .tbcontainer{
     display: block !important;
 }
+.table-btn{
+    margin-right: 10px;
+}
+.icheckbox_square-green, .iradio_square-green{}
+/*修改全选的样式*/
+  table.dataTable thead th.sorting:first-child:after{
+      content:''
+  }
+table.dataTable tbody tr.selected{
+    background: none;
+}
