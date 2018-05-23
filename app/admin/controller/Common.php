@@ -369,9 +369,8 @@ class Common extends Controller
             if($limitFlag){
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)->alias("m")
-                    ->join('quality_form_info f','m.uint_id = f.id','left')
                     ->join('admin a','m.sender = a.id','left')
-                    ->field("m.task_name,m.create_time,a.nickname,m.task_category,m.status")
+                    ->field("m.task_name,m.create_time,a.nickname,m.task_category,m.status,m.id")
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start),intval($length))
                     ->select();
@@ -381,9 +380,8 @@ class Common extends Controller
             //没有搜索条件的情况
             if($limitFlag){
                 $recordsFilteredResult = Db::name($table)->alias("m")
-                    ->join('quality_form_info f','m.uint_id = f.id','left')
                     ->join('admin a','m.sender = a.id','left')
-                    ->field("m.task_name,m.create_time,a.nickname,m.task_category,m.status")
+                    ->field("m.task_name,m.create_time,a.nickname,m.task_category,m.status,m.id")
                     ->order($order)->limit(intval($start),intval($length))
                     ->select();
                 //*****多表查询join改这里******
