@@ -91,10 +91,12 @@
     <input type="hidden" id="dataType" value="">
     <input type="hidden" id="valId" value='{$dataId}'>
     <input type="hidden" id="valType" value='{$dataType}'>
+    <input type="hidden" id="valTypestepName" value=''>
+    <input type="hidden" id="valTypestepId" value=''>
     <div class="borderColor">
         <div class="ibox-tools" style="float: left;margin-left:10px;">
             <i class="fa fa-file-text-o" style="margin-right: 0px;"></i>
-            <p2>审批信息</p2>
+            <p2>处理信息</p2>
         </div>
         <div class="move layui-btn layui-btn-sm"></div>
     </div>
@@ -104,13 +106,13 @@
             <input type="hidden" name="id" id="addId" style="display: none;">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">当前审批人</label>
+                    <label class="layui-form-label">当前处理人</label>
                     <div class="layui-input-inline">
                         <input type="text" name="contractCode" value="" id="conCode" readonly lay-verify="required" autocomplete="off" class="layui-input colorRed">
                     </div>
                 </div>
                 <div class="layui-inline" style="margin-left: 58px;">
-                    <label class="layui-form-label">审批日期</label>
+                    <label class="layui-form-label">处理日期</label>
                     <div class="layui-input-inline" style="margin-left: 36px;">
                         <input type="text" name="contractName" readonly lay-verify="required" autocomplete="off" class="layui-input colorRed">
                     </div>
@@ -118,12 +120,12 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">审批结果</label>
+                    <label class="layui-form-label">处理结果</label>
                     <div class="layui-input-inline" style="width: 92px;margin-right: 0px">
                         <input id="adopt" type="radio" name="sex" value="1" title="通过，" checked lay-filter="not">
                     </div>
                     <div class="layui-input-inline">
-                        <p><a href="javascript:;" id="nextStep">下一步执行人</a>：<span>审批完成</span></p>
+                        <p><a href="javascript:;" id="nextStep">请选择下一步执行人</a>：<span id="nextStepPeople"></span></p>
                     </div>
 
                 </div>
@@ -139,8 +141,8 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">审批意见</label>
-                <textarea name="remark" id="txtArea" placeholder="审批意见"></textarea>
+                <label class="layui-form-label">处理意见</label>
+                <textarea name="remark" id="txtArea" placeholder="处理意见"></textarea>
             </div>
         </form>
     </div>
@@ -148,17 +150,17 @@
     <div class="borderColor" style=" border-top: 1px dashed #e7eaec;margin-top: 5px;">
         <div class="ibox-tools" style="float: left;margin-left:10px;">
             <i class="fa fa-history" style="margin-right: 0px;margin-top: 5px;"></i>
-            <p2>审批历史</p2>
+            <p2>处理历史</p2>
         </div>
     </div>
     <input type="hidden" value="" id="hidVal">
     <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
         <thead>
         <tr>
-            <th>审批人</th>
-            <th>审批日期</th>
-            <th>审批结果</th>
-            <th>审批意见</th>
+            <th>处理人</th>
+            <th>处理日期</th>
+            <th>处理结果</th>
+            <th>处理意见</th>
         </tr>
         </thead>
     </table>
@@ -244,17 +246,18 @@
             $('#tableItem_paginate').insertBefore(".mark");
         }
     });
-
     //保存
     $(".move").html("<div id='test3'>保存</div>");
 
     $(document).ready(function () {
+        $("#conCode").val($(top.document).find("#current_user").text());
         getTime();
     });
     // 关闭窗体
     function close() {
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index)
+        parent.layer.closeAll()
     };
     var subtime;
     function getTime() {
@@ -266,7 +269,7 @@
     $("#nextStep").click(function () {
         layer.open({
             type: 2,
-            title: '选择审批人',
+            title: '选择处理人',
             shadeClose: true,
             area: ['450px', '550px'],
             content: '{:url("approve/approve/selectMumber")}?dataType=app\\quality\\model\\QualityFormInfoModel'
@@ -304,7 +307,7 @@
                     parent.layer.msg("保存成功!");
                     close();
                 }else  if(res.code != 1){
-                    parent.layer.msg("审批保存失败,请稍后再试!");
+                    parent.layer.msg("处理保存失败,请稍后再试!");
                 }
             }
         });
