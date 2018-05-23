@@ -220,6 +220,11 @@ var controlId;          //控制点id
 //名字拼接过滤方法
 function ajaxDataFilter(treeId, parentNode, responseData) {
     if (responseData) {
+        // responseData.forEach(function (item,index) {
+        //     item.name = item.el_start + item.el_cease + item.pile_number + item.site;
+        //     eTypeId = item.en_type;
+        // })
+        //     console.log(eTypeId);
         for(var i =0; i < responseData.length; i++) {
             responseData[i].name = responseData[i].el_start + responseData[i].el_cease + responseData[i].pile_number + responseData[i].site;
             eTypeId = responseData[i].en_type;
@@ -269,6 +274,7 @@ function nodeClickUnit(e, treeId, node) {
     console.log(nodeUnitId + '---nodeUnitId');
     console.log(nodeNameUnit + '---name');
     console.log(nodePidUnit + '---pid');
+    console.log(eTypeId+"---eTypeId")
     if(eTypeId){
         selfidName(eTypeId);
     }
@@ -497,7 +503,12 @@ function delData(id,url) {
                 if(res.code ==1){
                     layer.msg("删除成功！");
                     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
-                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                    if(procedureId !=''){
+                        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                    }else if(procedureId == ''){
+                        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
+                    }
                     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
                 }else if(res.code !=1){
@@ -592,6 +603,13 @@ function testing(nodeUnit_id,cpr_id,control_id) {
                     $(".layui-input[readonly]").attr('style', 'background: #FFFFFF !important');
                 });
                 $("#date").attr({"disabled":false});
+                $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                    '<thead>' +
+                    '<tr style="text-align: center">' +
+                    '<th>线下填报没有在线填报模板！请移步到扫描件回传上传相关资料！</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                '</table>');
             }
         },
         // error:function () {
@@ -988,7 +1006,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     else if (row[3] === 1 && row[5] == $("#userId").val()) {
                         var str = JSON.stringify(row[2]);
                         html += "<a title='编辑' onclick='editOnLine ("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil'></i></a>";
-                        html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil-square-o'></i></a>";
+                        // html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil-square-o'></i></a>";
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-file-text'></i></a>";
                     }
                     else if (row[3] === 2) {
@@ -1049,7 +1067,7 @@ function seeOnLine(id) {
         title: '在线填报',
         shadeClose: true,
         area: ['980px', '90%'],
-        content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&id='+ id +'&currentStep=0&isView=True'
+        content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&id='+ id +'&currentStep=null&isView=True'
     });
 }
 
