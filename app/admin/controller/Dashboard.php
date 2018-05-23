@@ -14,6 +14,7 @@
 namespace app\admin\controller;
 use app\admin\model\MessageremindingModel;//消息记录
 use app\quality\model\QualityFormInfoModel;//单元工程审批表
+use app\quality\model\SendModel;//收文
 use \think\Db;
 use \think\Session;
 use think\exception\PDOException;
@@ -93,13 +94,13 @@ class Dashboard extends Permissions
     public function buildSendMessage()
     {
         //实例化模型类
-        $qualityform = new QualityFormInfoModel();
+        $send = new SendModel();
         $message = new MessageremindingModel();
         //获取当前登录的用户id
 
         $admin_id= Session::has('admin') ? Session::get('admin') : 0;
-        //查询单元工程审批人状态表
-        $form_info = $qualityform->getAdminapproval($admin_id);
+        //查询收文
+        $form_info = $send->getIncomeid($admin_id);
 
         //定义两个空的数组用来存储值
         $data = array();
@@ -108,6 +109,7 @@ class Dashboard extends Permissions
         {
             foreach($form_info as $key=>$val)
             {
+                halt($val);
                 $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["CurrentApproverId"]]);
 
                 if(!empty($result))

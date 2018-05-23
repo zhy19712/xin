@@ -88,4 +88,16 @@ class SendModel extends Model
         return $data;
     }
 
+    public function getIncomeid($id)
+    {
+        try {
+            $where['status'] =array('in','2,3,4');
+            //查询2未处理，3已签收,4已拒收
+            $data = $this->field("id,file_name,send_id,income_id,status")->where(["income_id"=>$id])->where($where)->select();
+            return $data;
+        } catch (Exception $exception) {
+            return null;
+        }
+    }
+
 }
