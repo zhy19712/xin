@@ -187,38 +187,50 @@ class Element extends Permissions
     public function download($cpr_id)
     {
         $cp = $this->divisionControlPointService->with('ControlPoint')->where('id', $cpr_id)->find();
-        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . ".docx";
-        $formPath = iconv('UTF-8', 'GB2312', $formPath);
-               $flag = file_exists($formPath);
-        if ($this->request->isAjax()) {
-            if (!$flag) {
-                return json(['code' => -1, 'msg' => '文件不存在!']);
+        $norm_template=Db::name('norm_template')->alias('t')
+            ->join('norm_controlpoint c', 't.id = c.qualitytemplateid', 'left')
+            ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+            ->where(['r.id'=>$cpr_id])
+            ->find();
+        $qualitytemplateid = $norm_template['qualitytemplateid'];
+        if ($qualitytemplateid == 0) {
+            return "控制点未进行模板关联";
+        }
+        else
+         {
+            $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . ".docx";
+            $formPath = iconv('UTF-8', 'GB2312', $formPath);
+            $flag = file_exists($formPath);
+            if ($this->request->isAjax()) {
+                if (!$flag) {
+                    return json(['code' => -1, 'msg' => '文件不存在!']);
+                }
+                return json(['code' => 1]);
             }
-            return json(['code' => 1]);
-        }
-        if (!$flag) {
-            return "文件不存在";
-        }
-        //设置临时文件，避免C盘Temp不可写报错
-        Settings::setTempDir('temp');
-        $phpword = new PhpWord();
-        $phpword = $phpword->loadTemplate($formPath);
-        $infos = $this->qualityFormInfoService->getFormBaseInfo($cp['division_id']);
-        foreach ($infos as $key => $value) {
-            $phpword->setValue('{' . $key . '}', $value);
-        }
-        $docname = $phpword->save();
+            if (!$flag) {
+                return "文件不存在";
+            }
+            //设置临时文件，避免C盘Temp不可写报错
+            Settings::setTempDir('temp');
+            $phpword = new PhpWord();
+            $phpword = $phpword->loadTemplate($formPath);
+            $infos = $this->qualityFormInfoService->getFormBaseInfo($cp['division_id']);
+            foreach ($infos as $key => $value) {
+                $phpword->setValue('{' . $key . '}', $value);
+            }
+            $docname = $phpword->save();
 
 
-        header('Content-Disposition: attachment; filename="' . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . '.docx"');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-        header('Content-Transfer-Encoding: binary');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Expires: 0');
+            header('Content-Disposition: attachment; filename="' . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . '.docx"');
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            header('Content-Transfer-Encoding: binary');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Expires: 0');
 
-        $file = fopen($docname, 'r');
-        echo fread($file, filesize($docname));
-        fclose($file);
+            $file = fopen($docname, 'r');
+            echo fread($file, filesize($docname));
+            fclose($file);
+        }
     }
 
     /**
@@ -412,13 +424,12 @@ class Element extends Permissions
     {
         //获得控制点和单元工关联的数据id
         $param = input('param.');
-        $division_id=$param['division_id'];
         $id=$param['id'];//relation_id主键
         $unit_id=$param['unit_id'];
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
         $res=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$division_id,'id'=>$id,'unit_id'=>$unit_id])
+            ->where(['division_id'=>$unit_id,'id'=>$id,'type'=>1])
             ->update(['checked'=>$checked]);
        if($res)
        {
@@ -580,7 +591,7 @@ class Element extends Permissions
         if ($this->request->isAjax()) {
             $cpr_id=input('param.')['cpr_id'];
             $res = Db::name('quality_upload')
-                ->where(['contr_relation_id'=>$cpr_id,'type'=>1])
+                ->where(['contr_relation_id'=>$cpr_id,'type'=>5])
                 ->find();
             //如果有结果
             if (count($res)>0) {
