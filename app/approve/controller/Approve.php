@@ -183,7 +183,6 @@ class Approve extends Permissions
     {
         if ($this->request->isAjax()) {
             $post = input("post.");
-            $cp_id = $post['cp_id'];
             $fi_id = $post['fi_id'];//form_info表中的主键，控制点不唯一
             //去quality_form_info表中查已审批完的表单,取出审批串和创建人
             $procedure =
