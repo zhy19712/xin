@@ -182,8 +182,8 @@ class Approve extends Permissions
     public function approveProcedure()
     {
         if ($this->request->isAjax()) {
-            $post = input("post.");
-            $fi_id = $post['fi_id'];//form_info表中的主键，控制点不唯一
+            $param = input("param.");
+            $fi_id = $param['fi_id'];//form_info表中的主键，控制点不唯一
             //去quality_form_info表中查已审批完的表单,取出审批串和创建人
             $procedure =
                 Db::name('quality_form_info')
