@@ -227,7 +227,7 @@ class QualityFormInfoModel extends Model implements IApprove
     {
         try {
             //查询未审批
-            $data = $this->field("id,CurrentApproverId,ApproveIds,create_time,ApproveStatus,form_name,CurrentApproverId")->where("CurrentApproverId",$id)->select();
+            $data = $this->field("id,CurrentApproverId,ApproveIds,create_time,ApproveStatus,form_name,CurrentApproverId")->where(["CurrentApproverId"=>$id,"ApproveStatus"=>1,"ApproveStatus"=>2])->select();
             return $data;
         } catch (Exception $exception) {
             return null;

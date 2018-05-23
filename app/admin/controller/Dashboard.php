@@ -35,9 +35,11 @@ class Dashboard extends Permissions
         $qualityform = new QualityFormInfoModel();
         $message = new MessageremindingModel();
         //获取当前登录的用户id
+
         $admin_id= Session::has('admin') ? Session::get('admin') : 0;
         //查询单元工程审批人状态表
         $form_info = $qualityform->getAdminapproval($admin_id);
+
         //定义两个空的数组用来存储值
         $data = array();
         $edit_data = array();
@@ -50,6 +52,7 @@ class Dashboard extends Permissions
                 if(!empty($result))
                 {
                     $edit_data[$key]["id"] = $result["id"];
+
                     $edit_data[$key]["status"] = $val["ApproveStatus"];
 
                 }
@@ -64,9 +67,13 @@ class Dashboard extends Permissions
                     $data[$key]["current_approver_id"] = $val["CurrentApproverId"];
                 }
             }
+
+
             $flag = $message->insertTbAll($data);
 
             $flag = $message->editTbAll($edit_data);
+
+
 
             //查询信息表中的未处理的消息
 
