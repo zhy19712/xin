@@ -51,7 +51,7 @@ var tableItem = $('#tableItem').DataTable( {
           var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conedit("+type+","+row[6]+")'>处理</a>" ;
         }else if(data == 2){
           //单元
-          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conedit("+type+","+row[5]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>处理</a>" ;
+          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conedit("+type+","+row[6]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>处理</a>" ;
         }
         return html;
       }
@@ -144,7 +144,7 @@ var tableItemDone = $('#tableItemDone').DataTable( {
           var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conshow("+type+","+row[6]+")'>查看</a>" ;
         }else if(data == 2){
           //单元
-          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conshow("+type+","+row[5]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>查看</a>" ;
+          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conshow("+type+","+row[6]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>查看</a>" ;
         }
         return html;
       }
