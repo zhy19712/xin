@@ -40,7 +40,7 @@ var completedTable = $('#completedTable').DataTable({
                 var rowId = row[0];
                 var html = "<a type='button' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
                 html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='禁用' class='fa fa-eye-slash'></i></a>";
                 return html;
             }
         }
@@ -110,7 +110,7 @@ var constructionTable = $('#constructionTable').DataTable({
                 var rowId = row[0];
                 var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
                 html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='禁用' class='fa fa-eye-slash'></i></a>";
                 return html;
             }
         }
@@ -296,6 +296,7 @@ function enable(that,rowId) {
     }else{
         $('a[type="button"][status]').attr('status',0); //0为禁用版本
         $(that).attr('status',1);   //1为启用版本
+        status = $(that).attr('status');
     }
     $.ajax({
         url: "./enabledORDisable",
@@ -306,6 +307,9 @@ function enable(that,rowId) {
         },
         dataType: "json",
         success: function (res) {
+            if(res.code==1 && status==1){
+                $(that).find('i').removeClass('fa-eye-slash').addClass('fa-eye').attr('title','启用');
+            }
             layer.msg(res.msg);
         }
     })
