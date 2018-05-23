@@ -250,7 +250,9 @@
     $(".move").html("<div id='test3'>保存</div>");
 
     $(document).ready(function () {
-        $("#conCode").val($(top.document).find("#current_user").text());
+        setTimeout(function () {
+            $("#conCode").val($(top.document).find("#current_user").text().trim());
+        },300)
         getTime();
     });
     // 关闭窗体
