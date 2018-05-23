@@ -336,4 +336,69 @@ class Common extends Controller
             return $this->success('正在退出...','admin/common/login');
         }
     }
+
+    /**
+     * 消息提醒列表
+     * @param $id
+     * @param $draw
+     * @param $table
+     * @param $search
+     * @param $start
+     * @param $length
+     * @param $limitFlag
+     * @param $order
+     * @param $columns
+     * @param $columnString
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function admin_message_reminding($id,$draw,$table,$search,$start,$length,$limitFlag,$order,$columns,$columnString)
+    {
+
+        //查询
+        //条件过滤后记录数 必要
+        $recordsFiltered = 0;
+        //表的总记录数 必要
+        $recordsTotal = 0;
+        $recordsTotal = Db::name($table)->count(0);
+        $recordsFilteredResult = array();
+        if(strlen($search)>0){
+            //有搜索条件的情况
+            if($limitFlag){
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name($table)->alias("m")
+                    ->join('admin a','m.sender = a.id','left')
+                    ->field("m.task_name,m.create_time,a.nickname as current_approver_id,m.task_category,m.status,m.id")
+                    ->where($columnString, 'like', '%' . $search . '%')
+                    ->order($order)->limit(intval($start),intval($length))
+                    ->select();
+                $recordsFiltered = sizeof($recordsFilteredResult);
+            }
+        }else{
+            //没有搜索条件的情况
+            if($limitFlag){
+                $recordsFilteredResult = Db::name($table)->alias("m")
+                    ->join('admin a','m.sender = a.id','left')
+                    ->field("m.task_name,m.create_time,a.nickname as current_approver_id,m.task_category,m.status,m.id")
+                    ->order($order)->limit(intval($start),intval($length))
+                    ->select();
+                //*****多表查询join改这里******
+                //$recordsFilteredResult = Db::name('datatables_example')->alias('d')->join('datatables_example_join e','d.position = e.id')->field('d.id,d.name,e.name as position,d.office')->select();
+                $recordsFiltered = $recordsTotal;
+            }
+        }
+        $temp = array();
+        $infos = array();
+        foreach ($recordsFilteredResult as $key => $value) {
+            $length = sizeof($columns);
+            for ($i = 0; $i < $length; $i++) {
+                array_push($temp, $value[$columns[$i]['name']]);
+            }
+            $infos[] = $temp;
+            $temp = [];
+        }
+        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+    }
 }

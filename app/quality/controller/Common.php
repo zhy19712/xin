@@ -923,91 +923,93 @@ class Common extends Controller
     }
 
 
-    // ht 单位质量管理 单位策划，单位管控 控制点列表
-    public function unit_quality_control($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
-    {
-        // 前台 传递 左侧的 节点 add_id 和 当前 点击的 工序 编号 workId
-        $param = input('param.');
-        $division_id = isset($param['add_id']) ? $param['add_id'] : -1; // 这里存放 工程划分 单位工程编号
-        $id = isset($param['workId']) ? $param['workId'] : -1; // 工序编号
-        $type = isset($param['type']) ? $param['type'] : 0; // 不传递 说明 是 单位策划 传递 说明是 单位管控
-        if ($division_id == -1 || $id == -1) {
-            return json(['draw' => intval($draw), 'recordsTotal' => intval(0), 'recordsFiltered' => 0, 'data' => array()]);
-        }
-        $table = 'quality_division_controlpoint_relation'; // 控制点表
-        //查询
-        //条件过滤后记录数 必要
-        $recordsFiltered = 0;
-        $recordsFilteredResult = array();
-        /**
-         * 注意 ：这里的控制点是 ，存在于 quality_division_controlpoint_relation 单位质量管理 对应关系表里的 关联对应数据
-         * 所以即使和 其他 工序下 的控制点重复也是正常的
-         * type 类型:1 检验批 0 工程划分
-         */
-        if ($id == 0) { // 等于0 说明工序 是 作业 那就获取全部的 控制点
-            //表的总记录数 必要
-            $recordsTotal = Db::name('quality_division_controlpoint_relation')->where(['division_id' => $division_id, 'type' => 0,])->count();
-        } else {
-            //表的总记录数 必要
-            $recordsTotal = Db::name('quality_division_controlpoint_relation')->where(['division_id' => $division_id, 'type' => 0, 'ma_division_id' => $id])->count();
-        }
-        $field_val = 'c.code,c.name,r.status,r.id';
-        if ($type == 0) {
-            $field_val = 'c.code,c.name,r.id';
-        }
-        if (strlen($search) > 0) {
-            //有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                if ($id == 0) {
-                    $recordsFilteredResult = Db::name($table)->alias('r')
-                        ->field($field_val)
-                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
-                        ->where(['r.division_id' => $division_id, 'type' => 0])
-                        ->where($columnString, 'like', '%' . $search . '%')
-                        ->order($order)->limit(intval($start), intval($length))->select();
-                } else {
-                    $recordsFilteredResult = Db::name($table)->alias('r')
-                        ->field($field_val)
-                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
-                        ->where(['r.division_id' => $division_id, 'type' => 0, 'ma_division_id' => $id])
-                        ->where($columnString, 'like', '%' . $search . '%')
-                        ->order($order)->limit(intval($start), intval($length))->select();
-                }
-                $recordsFiltered = sizeof($recordsFilteredResult);
-            }
-        } else {
-            //没有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                if ($id == 0) {
-                    $recordsFilteredResult = Db::name($table)->alias('r')
-                        ->field($field_val)
-                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
-                        ->where(['r.division_id' => $division_id, 'type' => 0])
-                        ->order($order)->limit(intval($start), intval($length))->select();
-                } else {
-                    $recordsFilteredResult = Db::name($table)->alias('r')
-                        ->field($field_val)
-                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
-                        ->where(['r.division_id' => $division_id, 'type' => 0, 'ma_division_id' => $id])
-                        ->order($order)->limit(intval($start), intval($length))->select();
-                }
-                $recordsFiltered = $recordsTotal;
-            }
-        }
-        $temp = array();
-        $infos = array();
-        foreach ($recordsFilteredResult as $key => $value) {
-            $length = sizeof($columns);
-            for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
-            }
-            $infos[] = $temp;
-            $temp = [];
-        }
-        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
-    }
+    /**
+     * ht 单位质量管理 单位策划，单位管控 控制点列表
+     */
+//    public function unit_quality_control($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+//    {
+//        // 前台 传递 左侧的 节点 add_id 和 当前 点击的 工序 编号 workId
+//        $param = input('param.');
+//        $division_id = isset($param['add_id']) ? $param['add_id'] : -1; // 这里存放 工程划分 单位工程编号
+//        $id = isset($param['workId']) ? $param['workId'] : -1; // 工序编号
+//        $type = isset($param['type']) ? $param['type'] : 0; // 不传递 说明 是 单位策划 传递 说明是 单位管控
+//        if ($division_id == -1 || $id == -1) {
+//            return json(['draw' => intval($draw), 'recordsTotal' => intval(0), 'recordsFiltered' => 0, 'data' => array()]);
+//        }
+//        $table = 'quality_division_controlpoint_relation'; // 控制点表
+//        //查询
+//        //条件过滤后记录数 必要
+//        $recordsFiltered = 0;
+//        $recordsFilteredResult = array();
+//        /**
+//         * 注意 ：这里的控制点是 ，存在于 quality_division_controlpoint_relation 单位质量管理 对应关系表里的 关联对应数据
+//         * 所以即使和 其他 工序下 的控制点重复也是正常的
+//         * type 类型:1 检验批 0 工程划分
+//         */
+//        if ($id == 0) { // 等于0 说明工序 是 作业 那就获取全部的 控制点
+//            //表的总记录数 必要
+//            $recordsTotal = Db::name('quality_division_controlpoint_relation')->where(['division_id' => $division_id, 'type' => 0,])->count();
+//        } else {
+//            //表的总记录数 必要
+//            $recordsTotal = Db::name('quality_division_controlpoint_relation')->where(['division_id' => $division_id, 'type' => 0, 'ma_division_id' => $id])->count();
+//        }
+//        $field_val = 'c.code,c.name,r.status,r.id';
+//        if ($type == 0) {
+//            $field_val = 'c.code,c.name,r.id';
+//        }
+//        if (strlen($search) > 0) {
+//            //有搜索条件的情况
+//            if ($limitFlag) {
+//                //*****多表查询join改这里******
+//                if ($id == 0) {
+//                    $recordsFilteredResult = Db::name($table)->alias('r')
+//                        ->field($field_val)
+//                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
+//                        ->where(['r.division_id' => $division_id, 'type' => 0])
+//                        ->where($columnString, 'like', '%' . $search . '%')
+//                        ->order($order)->limit(intval($start), intval($length))->select();
+//                } else {
+//                    $recordsFilteredResult = Db::name($table)->alias('r')
+//                        ->field($field_val)
+//                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
+//                        ->where(['r.division_id' => $division_id, 'type' => 0, 'ma_division_id' => $id])
+//                        ->where($columnString, 'like', '%' . $search . '%')
+//                        ->order($order)->limit(intval($start), intval($length))->select();
+//                }
+//                $recordsFiltered = sizeof($recordsFilteredResult);
+//            }
+//        } else {
+//            //没有搜索条件的情况
+//            if ($limitFlag) {
+//                //*****多表查询join改这里******
+//                if ($id == 0) {
+//                    $recordsFilteredResult = Db::name($table)->alias('r')
+//                        ->field($field_val)
+//                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
+//                        ->where(['r.division_id' => $division_id, 'type' => 0])
+//                        ->order($order)->limit(intval($start), intval($length))->select();
+//                } else {
+//                    $recordsFilteredResult = Db::name($table)->alias('r')
+//                        ->field($field_val)
+//                        ->join('norm_controlpoint c', 'r.control_id = c.id', 'left')
+//                        ->where(['r.division_id' => $division_id, 'type' => 0, 'ma_division_id' => $id])
+//                        ->order($order)->limit(intval($start), intval($length))->select();
+//                }
+//                $recordsFiltered = $recordsTotal;
+//            }
+//        }
+//        $temp = array();
+//        $infos = array();
+//        foreach ($recordsFilteredResult as $key => $value) {
+//            $length = sizeof($columns);
+//            for ($i = 0; $i < $length; $i++) {
+//                array_push($temp, $value[$columns[$i]['name']]);
+//            }
+//            $infos[] = $temp;
+//            $temp = [];
+//        }
+//        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+//    }
 
     //单元策划：控制点列表
     public function quality_division_controlpoint_relation($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
@@ -1213,7 +1215,7 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    // 分部质量管理 控制点执行情况
+    // 分部质量管理 分部策划，分部管控 控制点列表、单位质量管理 单位策划，单位管控 控制点列表执行点执行情况
     public function quality_subdivision_planning_file($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //自定义表名，分部管控、单位管控中的控制点文件上传
@@ -1297,106 +1299,106 @@ class Common extends Controller
 
 
     // ht 单位质量管理 单位策划 新增 控制点 获取 单位工程下的每一个工序所对应的控制点
-    public function unit_quality_add_control($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
-    {
-        $table = 'norm_controlpoint'; // 控制点表
-        //查询
-        //条件过滤后记录数 必要
-        $recordsFiltered = 0;
-        $recordsFilteredResult = array();
-        //表的总记录数 必要
-        $recordsTotal = Db::name($table)->where('procedureid', $id)->count();
-        if (strlen($search) > 0) {
-            //有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)
-                    ->field('code,name,id')
-                    ->where('procedureid', $id)
-                    ->where($columnString, 'like', '%' . $search . '%')
-                    ->order($order)->limit(intval($start), intval($length))->select();
-                $recordsFiltered = sizeof($recordsFilteredResult);
-            }
-        } else {
-            //没有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)
-                    ->field('code,name,id')
-                    ->where('procedureid', $id)
-                    ->order($order)->limit(intval($start), intval($length))->select();
-                $recordsFiltered = $recordsTotal;
-            }
-        }
-        $temp = array();
-        $infos = array();
-        foreach ($recordsFilteredResult as $key => $value) {
-            $length = sizeof($columns);
-            for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
-            }
-            $infos[] = $temp;
-            $temp = [];
-        }
-        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
-    }
+//    public function unit_quality_add_control($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+//    {
+//        $table = 'norm_controlpoint'; // 控制点表
+//        //查询
+//        //条件过滤后记录数 必要
+//        $recordsFiltered = 0;
+//        $recordsFilteredResult = array();
+//        //表的总记录数 必要
+//        $recordsTotal = Db::name($table)->where('procedureid', $id)->count();
+//        if (strlen($search) > 0) {
+//            //有搜索条件的情况
+//            if ($limitFlag) {
+//                //*****多表查询join改这里******
+//                $recordsFilteredResult = Db::name($table)
+//                    ->field('code,name,id')
+//                    ->where('procedureid', $id)
+//                    ->where($columnString, 'like', '%' . $search . '%')
+//                    ->order($order)->limit(intval($start), intval($length))->select();
+//                $recordsFiltered = sizeof($recordsFilteredResult);
+//            }
+//        } else {
+//            //没有搜索条件的情况
+//            if ($limitFlag) {
+//                //*****多表查询join改这里******
+//                $recordsFilteredResult = Db::name($table)
+//                    ->field('code,name,id')
+//                    ->where('procedureid', $id)
+//                    ->order($order)->limit(intval($start), intval($length))->select();
+//                $recordsFiltered = $recordsTotal;
+//            }
+//        }
+//        $temp = array();
+//        $infos = array();
+//        foreach ($recordsFilteredResult as $key => $value) {
+//            $length = sizeof($columns);
+//            for ($i = 0; $i < $length; $i++) {
+//                array_push($temp, $value[$columns[$i]['name']]);
+//            }
+//            $infos[] = $temp;
+//            $temp = [];
+//        }
+//        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+//    }
 
     // ht 单位质量管理 单位管控 获取 控制点执行情况，图像资料 列表
-    public function unit_quality_manage_file($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
-    {
-        $param = input('param.');
-        $id = isset($param['controlId']) ? $param['controlId'] : -1; // 控制点编号
-        $type = isset($param['type']) ? $param['type'] : 1; // 1执行情况 2图像资料 (不传递是执行情况 传递 是 图像资料)
-        if ($id == -1) {
-            return json(['draw' => intval($draw), 'recordsTotal' => intval(0), 'recordsFiltered' => 0, 'data' => array()]);
-        }
-        $table = 'quality_upload'; // 文件表
-        //查询
-        //条件过滤后记录数 必要
-        $recordsFiltered = 0;
-        $recordsFilteredResult = array();
-        //表的总记录数 必要
-        $recordsTotal = Db::name('quality_upload')->where(['contr_relation_id' => $id, 'type' => $type])->count();
-        if (strlen($search) > 0) {
-            //有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('u')
-                    ->field('t.name as filename,a.nickname,c.role_name,t.create_time,u.id')
-                    ->join('attachment t', 'u.attachment_id = t.id', 'left')
-                    ->join('admin a', 't.user_id = a.id', 'left')
-                    ->join('admin_cate c', 'a.admin_cate_id = c.id', 'left')
-                    ->where(['u.contr_relation_id' => $id, 'u.type' => $type])
-                    ->where($columnString, 'like', '%' . $search . '%')
-                    ->order($order)->limit(intval($start), intval($length))->select();
-                $recordsFiltered = sizeof($recordsFilteredResult);
-            }
-        } else {
-            //没有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('u')
-                    ->field('t.name as filename,a.nickname,c.role_name,t.create_time,u.id')
-                    ->join('attachment t', 'u.attachment_id = t.id', 'left')
-                    ->join('admin a', 't.user_id = a.id', 'left')
-                    ->join('admin_cate c', 'a.admin_cate_id = c.id', 'left')
-                    ->where(['u.contr_relation_id' => $id, 'u.type' => $type])
-                    ->order($order)->limit(intval($start), intval($length))->select();
-                $recordsFiltered = $recordsTotal;
-            }
-        }
-        $temp = array();
-        $infos = array();
-        foreach ($recordsFilteredResult as $key => $value) {
-            $length = sizeof($columns);
-            for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
-            }
-            $infos[] = $temp;
-            $temp = [];
-        }
-        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
-    }
+//    public function unit_quality_manage_file($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+//    {
+//        $param = input('param.');
+//        $id = isset($param['controlId']) ? $param['controlId'] : -1; // 控制点编号
+//        $type = isset($param['type']) ? $param['type'] : 1; // 1执行情况 2图像资料 (不传递是执行情况 传递 是 图像资料)
+//        if ($id == -1) {
+//            return json(['draw' => intval($draw), 'recordsTotal' => intval(0), 'recordsFiltered' => 0, 'data' => array()]);
+//        }
+//        $table = 'quality_upload'; // 文件表
+//        //查询
+//        //条件过滤后记录数 必要
+//        $recordsFiltered = 0;
+//        $recordsFilteredResult = array();
+//        //表的总记录数 必要
+//        $recordsTotal = Db::name('quality_upload')->where(['contr_relation_id' => $id, 'type' => $type])->count();
+//        if (strlen($search) > 0) {
+//            //有搜索条件的情况
+//            if ($limitFlag) {
+//                //*****多表查询join改这里******
+//                $recordsFilteredResult = Db::name($table)->alias('u')
+//                    ->field('t.name as filename,a.nickname,c.role_name,t.create_time,u.id')
+//                    ->join('attachment t', 'u.attachment_id = t.id', 'left')
+//                    ->join('admin a', 't.user_id = a.id', 'left')
+//                    ->join('admin_cate c', 'a.admin_cate_id = c.id', 'left')
+//                    ->where(['u.contr_relation_id' => $id, 'u.type' => $type])
+//                    ->where($columnString, 'like', '%' . $search . '%')
+//                    ->order($order)->limit(intval($start), intval($length))->select();
+//                $recordsFiltered = sizeof($recordsFilteredResult);
+//            }
+//        } else {
+//            //没有搜索条件的情况
+//            if ($limitFlag) {
+//                //*****多表查询join改这里******
+//                $recordsFilteredResult = Db::name($table)->alias('u')
+//                    ->field('t.name as filename,a.nickname,c.role_name,t.create_time,u.id')
+//                    ->join('attachment t', 'u.attachment_id = t.id', 'left')
+//                    ->join('admin a', 't.user_id = a.id', 'left')
+//                    ->join('admin_cate c', 'a.admin_cate_id = c.id', 'left')
+//                    ->where(['u.contr_relation_id' => $id, 'u.type' => $type])
+//                    ->order($order)->limit(intval($start), intval($length))->select();
+//                $recordsFiltered = $recordsTotal;
+//            }
+//        }
+//        $temp = array();
+//        $infos = array();
+//        foreach ($recordsFilteredResult as $key => $value) {
+//            $length = sizeof($columns);
+//            for ($i = 0; $i < $length; $i++) {
+//                array_push($temp, $value[$columns[$i]['name']]);
+//            }
+//            $infos[] = $temp;
+//            $temp = [];
+//        }
+//        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+//    }
 
     //在线填报表单列表
     public function quality_form_info($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
@@ -1458,8 +1460,7 @@ class Common extends Controller
         $recordsFilteredResult = array();
         $param = input('param.');
         $en_type=$param['en_type'];
-        $unit_id=$param['unit_id'];
-        $division_id=$param['division_id'];
+        $unit_id=1;
 
         //norm_materialtrackingdivision的id数组
         $nm_arr=Db::name('norm_materialtrackingdivision')
@@ -1483,7 +1484,7 @@ class Common extends Controller
          }
 
         $search=Db::name('quality_division_controlpoint_relation')
-            ->where(['unit_id'=>$unit_id,'division_id'=>$division_id])
+            ->where(['type'=>1,'division_id'=>$unit_id])
             ->select();
         //如果之前触发了insertalldata函数
         if (count($search) > 0) {
@@ -1506,13 +1507,13 @@ class Common extends Controller
             //*****多表查询join改这里******
             $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
-                        ->where(['r.unit_id'=>$unit_id,'r.division_id'=>$division_id])
+                        ->where(['r.type'=>1,'r.division_id'=>1])
+                        ->where('r.control_id','in',$id_arr)//控制点必须对应在当前的工程类型下，防止切换单元类型
                         ->where($wherenm)
                         ->where($wherech)
                         ->order('code')
                         ->limit(intval($start), intval($length))
                     ->select();
-
                 $recordsFiltered = sizeof($recordsFilteredResult);
         } else {
             if ($limitFlag) {
@@ -1538,4 +1539,5 @@ class Common extends Controller
         }
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
+
 }

@@ -19,7 +19,7 @@ tableItem = $('#tableItem').DataTable({
     "paging": "false",
     ajax: {
         // "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=" //老的
-        "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id="
+        "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id="
     },
     dom: 'rt',
     columns: [
@@ -159,7 +159,7 @@ function nodeClick(e, treeId, node) {
 
     $(".imgList").css("display","none");
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
-    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id=").load();
+    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id=").load();
     console.log(controlRowId)
@@ -275,7 +275,7 @@ function nodeClickUnit(e, treeId, node) {
     if(nodeUnitId != undefined || nodeUnitId != null){
         // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
         // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
-        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
+        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
@@ -330,7 +330,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
     // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
-    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
+    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
     flag = true;
 });
 
@@ -343,7 +343,7 @@ function clickConName(id) {
     if(nodeUnitId != undefined || nodeUnitId != null && procedureId != undefined || procedureId != null){
         // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
         // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&nm_id="+procedureId).load();
-        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
     }
     $("#tableContent .imgList").css('display','block');
     console.log(id + " 控制点工序 procedureId");
@@ -497,7 +497,7 @@ function delData(id,url) {
                 if(res.code ==1){
                     layer.msg("删除成功！");
                     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
-                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
                 }else if(res.code !=1){
@@ -758,7 +758,7 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                             implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                             imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
                             // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
-                            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                         } else {
                             layer.msg('获取数据失败！');
                         }
@@ -966,8 +966,6 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                         html += "<a title='编辑' onclick='editOnLine ("+row[4]+","+row[6]+")'><i class='fa fa fa-pencil'></i></a>";
                         html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")'><i class='fa fa fa-pencil-square-o'></i></a>";
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
-                        html += "<a title='作废' onclick='toVoidOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-minus'></i></a>";
-                        html += "<a title='退回' onclick='returnOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-exchange'></i></a>";
                     }
                     else if (row[3] === 2) {
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
@@ -1012,7 +1010,7 @@ $("#unitWorkRightBottom").on("click",".mybtnAdd",function () {
         title: '在线填报',
         shadeClose: true,
         area: ['980px', '90%'],
-        content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&currentStep=0&isView=false',
+        content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&unit_id='+ nodeUnitId +'&currentStep=0&isView=false',
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
         }

@@ -25,13 +25,13 @@ class Versions extends Permissions
     public function index()
     {
        if($this->request->isAjax()){
-           // -- model_type 1 竣工模型 2 施工模型
-           $model_type = input('model_type');
-           if(empty($model_type)){
-               return json(['code'=>-1,'msg'=>'缺少类型参数']);
+           //  资源包主键
+           $major_key = input('major_key');
+           if(empty($major_key)){
+               return json(['code'=>-1,'msg'=>'缺少资源包主键']);
            }
            $configure = new VersionsModel();
-           $data = $configure->getVersions($model_type);
+           $data = $configure->getOne($major_key);
            return json(['code'=>1,'data'=>$data,'msg'=>'模型版本']);
        }
         return $this->fetch();

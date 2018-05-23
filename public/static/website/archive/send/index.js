@@ -5,9 +5,9 @@ var income = {} //收件人信息
 var fileInfo = {};//关联文件信息
 //发文状态表格
 tableIncome = $("#tableIncome").DataTable({
-    processing: true,
+    processing: false,
     serverSide: true,
-    ordering: false,
+    ordering: true,
     ajax: {
         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
     },
@@ -39,9 +39,12 @@ tableIncome = $("#tableIncome").DataTable({
             targets: [6],
             render: function (data, type, row,meta) {
                 if (row[5] == '1'){
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="edit_send(this)">编辑</a><a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="del(this)">删除</a>';
+                    var strs = '';
+                    strs +='<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="edit_send(this)">编辑</a>';
+                    strs +='<a title="' + data + '" class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="del(this)">删除</a>';
+                    return strs;
                 }else {
-                    return  '<a title="' + data + '"  href="javascript:void(0);" major_key="'+row[6]+'" onclick="preview(this)">查看</a>';
+                    return  '<a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="preview(this)">查看</a>';
                 }
             }
         }
@@ -79,7 +82,9 @@ $("#table_content").on("click","#addSend",function () {
                 width:'86px',
                 height:'36px'
             });
+            $("#add_file_modal input").attr("disabled",false);
             $("#add_file_modal input").val('');
+            $("#add_file_modal textarea").val('');
             $("#add_table_files tbody").empty();
         }
     });
@@ -118,9 +123,9 @@ uploader.on( 'uploadSuccess', function( file,res ) {
     fileLists.push('<tr>');
     fileLists.push('<td class="layui-col-xs9">'+ file.name +'</td>');
     fileLists.push('<td class="layui-col-xs3">');
-    fileLists.push('<a href="javascript:;" onclick="fileDownload(this)" uid='+ fileId +' name='+ file.name +'>下载</a>');
-    fileLists.push('<a href="javascript:;" onclick="attachmentPreview(this)" uid='+ fileId +' name='+ file.name +'>查看</a>');
-    fileLists.push('<a href="javascript:;" onclick="attachmentDel(this)" uid='+ fileId +' name='+ file.name +'>删除</a>');
+    fileLists.push('<a href="javascript:;" class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ fileId +' name='+ file.name +'>下载</a>');
+    fileLists.push('<a href="javascript:;"  class="layui-btn layui-btn-primary layui-btn-xs" onclick="attachmentPreview(this)" uid='+ fileId +' name='+ file.name +'>查看</a>');
+    fileLists.push('<a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs" onclick="attachmentDel(this)" uid='+ fileId +' name='+ file.name +'>删除</a>');
     fileLists.push('</td>');
     fileLists.push('</tr>');
     $('#add_table_files tbody').prepend(fileLists.join(''));
@@ -243,6 +248,7 @@ layui.use('form', function(){
     form.on('submit(saveAndSend)', function(data){
         data.field.status = 2;
         saveInter(data);
+        data.field.major_key = '';
         return false;
     });
 });
@@ -250,6 +256,9 @@ layui.use('form', function(){
 //保存接口
 function saveInter(data) {
     data.field.file_ids = fileIds;
+    if($("#major_key").val()){
+        data.field.major_key = $("#major_key").val();
+    }
     $.ajax({
         url: "./send",
         type: "post",
@@ -281,13 +290,13 @@ function edit_send(that) {
         content: $('#add_file_modal'),
         success:function () {
             $.viewFilter(true);
-            $('#add_file_modal input').attr("readonly",false);
-            $('#file_ids').val(major_key);
+            $('#add_file_modal input').attr("disabled",false);
+            $('#major_key').val(major_key);
             $.ajax({
                 url:"/archive/send/preview",
                 data:{
                     major_key:major_key,
-                    see_type:1
+                    see_type:2
                 },
                 type:'post',
                 dataType:'json',
@@ -296,16 +305,17 @@ function edit_send(that) {
                     var attachment = res.attachment;
                     $("#file_name").val(res.file_name);
                     $("#date").val(res.date);
-                    $("#income_name").val(res.send_name);
+                    $("#income_name").val(res.income_name);
                     $("#unit_name").val(res.unit_name);
                     $("#remark").val(res.remark);
                     $("#relevance_id").val(res.attchment_id);
+                    // $('#file_ids').val(major_key);//附件ID
                     var rowData = '';
                     for (var i=0;i<attachment.length;i++){
                         rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3">';
-                        rowData += '<a href="javascript:;" style="margin-right: 10px" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
-                        rowData += '<a href="javascript:;" onclick="attachmentPreview(this)" style="margin-right: 10px" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a>';
-                        rowData += '<a href="javascript:;" onclick="attachmentDel(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>删除</a></td></tr>';
+                        rowData += '<a href="javascript:;"  class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
+                        rowData += '<a href="javascript:;" onclick="attachmentPreview(this)"  class="layui-btn layui-btn-primary layui-btn-xs"  uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a>';
+                        rowData += '<a href="javascript:;" onclick="attachmentDel(this)" class="layui-btn layui-btn-danger layui-btn-xs" uid='+ attachment[i].id +' name='+ attachment[i].name +'>删除</a></td></tr>';
                     }
                     $("#add_table_files tbody").empty().append(rowData);
                     major_key = '';
@@ -325,13 +335,13 @@ function preview (that) {
         content: $('#add_file_modal'),
         success:function () {
             $.viewFilter(false);
-            $('#add_file_modal input').attr("readonly",true);
+            $('#add_file_modal input').attr("disabled",true);
             $('#file_ids').val(major_key);
             $.ajax({
                 url:"/archive/send/preview",
                 data:{
                     major_key:major_key,
-                    see_type:1
+                    see_type:2
                 },
                 type:'post',
                 dataType:'json',
@@ -341,13 +351,14 @@ function preview (that) {
 
                     $("#file_name").val(res.file_name);
                     $("#date").val(res.date);
-                    $("#income_name").val(res.send_name);
+                    $("#income_name").val(res.income_name);
                     $("#unit_name").val(res.unit_name);
                     $("#remark").val(res.remark);
-                    $("#relevance_id").val(res.remark);
+                    $("#relevance_id").val(res.attchment_id);
                     var rowData = '';
                     for (var i=0;i<attachment.length;i++){
-                        rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3"><a href="javascript:;" style="margin-right: 10px" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a><a href="javascript:;" onclick="attachmentPreview(this)" style="margin-right: 10px" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>'
+                        rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3"><a href="javascript:;" class="layui-btn layui-btn-xs"  onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
+                        rowData +='<a href="javascript:;" onclick="attachmentPreview(this)" class="layui-btn layui-btn-primary layui-btn-xs"  uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>'
                     }
                     $("#add_table_files tbody").empty().append(rowData);
                     major_key = '';
@@ -415,6 +426,7 @@ function incomeZtree() {
 //收件人信息
 function incomeInfo() {
     $.datatable({
+        ordering: true,
         ajax: {
             "url":"/admin/common/datatablesPre?tableName=admin"
         },
@@ -439,7 +451,8 @@ function incomeInfo() {
             {
                 name: "position"
             }
-        ]
+        ],
+        dom: 'frtp'
     });
 }
 
@@ -487,7 +500,7 @@ $('#relevance_name').focus(function () {
 function incomeFile() {
     tableFile = $("#tableFileList").DataTable({
         serverSide: true,
-        ordering: false,
+        ordering: true,
         ajax: {
             "url":"/archive/common/datatablesPre?tableName=archive_income_send&table_type=3"
         },

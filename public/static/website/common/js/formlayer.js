@@ -158,6 +158,7 @@
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         option.tableItem.ajax.url(option.tablePath).load();
+                        option.others();
                     }else{
                         layer.msg(res.msg,{time:1500,shade: 0.1});
                     }
