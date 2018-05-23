@@ -37,10 +37,12 @@ var completedTable = $('#completedTable').DataTable({
             "orderable": false,
             "targets": [6],
             "render": function (data, type, row) {
-                var rowId = row[0];
+                var rowId = row[0];     //序号（主键编号）
+                var status = row[6];    //启用状态  1为启用  0为禁用
+                var className = status==1?'fa-eye':'fa-eye-slash';
                 var html = "<a type='button' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
                 html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='禁用' class='fa fa-eye-slash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
                 return html;
             }
         }
@@ -107,10 +109,12 @@ var constructionTable = $('#constructionTable').DataTable({
             "orderable": false,
             "targets": [6],
             "render": function (data, type, row) {
-                var rowId = row[0];
+                var rowId = row[0];     //序号（主键编号）
+                var status = row[6];   //启用状态  1为启用  0为禁用
+                var className = status==1?'fa-eye':'fa-eye-slash';
                 var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
                 html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='禁用' class='fa fa-eye-slash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
                 return html;
             }
         }
@@ -289,26 +293,20 @@ function delFile(that,rowId) {
 
 }
 //启用版本
-function enable(that,rowId) {
-    var status = $(that).attr('status');
-    if(status==1){
-        return false;
-    }else{
-        $('a[type="button"][status]').attr('status',0); //0为禁用版本
-        $(that).attr('status',1);   //1为启用版本
-        status = $(that).attr('status');
-    }
+function enable(rowId) {
     $.ajax({
         url: "./enabledORDisable",
         type: "post",
         data: {
-            major_key:rowId,
-            status:status
+            major_key:rowId
         },
         dataType: "json",
         success: function (res) {
-            if(res.code==1 && status==1){
-                $(that).find('i').removeClass('fa-eye-slash').addClass('fa-eye').attr('title','启用');
+            if(model_type==1){
+                completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
+            }
+            if(model_type==2){
+                constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
             }
             layer.msg(res.msg);
         }
