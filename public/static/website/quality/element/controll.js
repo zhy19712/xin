@@ -600,13 +600,8 @@ function testing(nodeUnit_id,cpr_id,control_id) {
                     $(".layui-input[readonly]").attr('style', 'background: #FFFFFF !important');
                 });
                 $("#date").attr({"disabled":false});
-                $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                    '<thead>' +
-                    '<tr style="text-align: center">' +
-                    '<th>线下填报没有在线填报模板！请移步到扫描件回传上传相关资料！</th>' +
-                    '</tr>' +
-                    '</thead>' +
-                '</table>');
+                $(".mybtnAdd").css("display","none");
+                $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">线下填报没有在线填报模板！请移步到扫描件回传上传相关资料！</p>');
             }
         },
         // error:function () {

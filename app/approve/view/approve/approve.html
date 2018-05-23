@@ -84,6 +84,9 @@
     .colorRed{
         background: #eee;;
     }
+    #nextStep{
+        color: #337ab7;
+    }
 </style>
 
 <div id="tableContent" data-options="region:'center'" style="padding:5px;background:#ffffff;">
@@ -259,7 +262,6 @@
     function close() {
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index)
-        parent.layer.closeAll()
     };
     var subtime;
     function getTime() {
@@ -321,6 +323,7 @@
                 if(res.code == 1){
                     parent.layer.msg("保存成功!");
                     close();
+                    parent.layer.closeAll()
                 }else  if(res.code != 1){
                     parent.layer.msg("处理保存失败,请稍后再试!");
                 }
