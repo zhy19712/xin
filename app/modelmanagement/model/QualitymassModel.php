@@ -107,9 +107,9 @@ class QualitymassModel extends Model
         return $data;
     }
 
+    // 解除所有的关联关系
     public function removeRelevance($id_arr)
     {
-        // 解除所有的关联关系
         $this->where(['id'=>['in',$id_arr]])->update(['unit_id'=>0]);
         return ['code'=>1,'msg'=>'解除成功'];
     }
@@ -119,6 +119,11 @@ class QualitymassModel extends Model
         // 关联
         $this->where(['id'=>['in',$id_arr]])->update(['unit_id'=>$id]);
         return ['code'=>1,'msg'=>'关联成功'];
+    }
+
+    public function removeVersionsRelevance($id)
+    {
+
     }
 
 }

@@ -10,6 +10,7 @@ namespace app\modelmanagement\controller;
 
 
 use app\admin\controller\Permissions;
+use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
 use think\Db;
 use think\Session;
@@ -155,6 +156,19 @@ class Versions extends Permissions
             $param['version_date'] = date('Y-m-d H:i:s');
 
             if(empty($major_key)){
+
+                /**
+                 * 1 竣工模型 -- 全景3D模型 操作的表是
+                 *
+                 * 2 施工模型 -- 质量模型 操作的表是 model_quality
+                 *
+                 */
+                //TODO 当新增时，首先解压缩，读取txt文件 插入数据
+                //TODO 插入数据时 要判断是否已经存在过关联关系
+                //TODO 如果不存在就 把上一个版本的关联关系都复制一份，继承过来
+                //TODO 如果存在关联关系就   直接禁用上一个版本状态，启用当前版本
+
+
                 $flag = $send->insertTb($param);
             }else{
                 $param['id'] = $major_key;
@@ -185,10 +199,6 @@ class Versions extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
 
-            //TODO 当启用时，要判断是否已经存在过关联关系
-            //TODO 如果不存在就 把上一个版本的关联关系都复制一份，继承过来，然后禁用上一个版本状态，启用当前版本
-            //TODO 如果存在关联关系就   直接禁用上一个版本状态，启用当前版本
-
             $send = new VersionsModel();
             $param['id'] = $param['major_key'];
             $flag = $send->editTb($param);
@@ -208,18 +218,26 @@ class Versions extends Permissions
             // 前台需要传递的参数有:
             // 主键编号 major_key
             $param = input('param.');
-            if(!isset($param['major_key'])){
+            $id = isset($param['major_key']) ? $param['major_key'] : 0;
+            if(empty($id)){
                 return json(['code'=>-1,'msg'=>'缺少主键编号']);
             }
 
             $send = new VersionsModel();
             // 如果当前版本是唯一的,提示不能删除
-            $flag = $send->isOnly($param['major_key']);
+            $flag = $send->isOnly($id);
             if($flag['code'] == -1){
                 return json($flag);
             }
 
-            //TODO 如果存在关联关系就 把关联关系全部删除
+            //TODO  1 竣工模型 如果存在关联关系就 把关联关系全部删除
+
+            // 施工模型 如果存在关联关系就 把关联关系全部删除
+            $quality = new QualitymassModel();
+            $flag = $quality->removeVersionsRelevance($id);
+            if($flag['code'] == -1){
+                return json($flag);
+            }
 
             // 最后删除版本记录和资源包文件
             $flag = $send->deleteTb($param['major_key']);

@@ -12,6 +12,7 @@ namespace app\modelmanagement\controller;
 use app\admin\controller\Permissions;
 use app\modelmanagement\model\QualitymassModel;
 use app\quality\model\DivisionModel;
+use app\quality\model\DivisionUnitModel;
 
 /**
  * 质量模型
@@ -58,7 +59,7 @@ class Qualitymass extends Permissions
             if(empty($id)){
                 return json(['code'=>-1,'msg'=>'缺少单元工程的编号']);
             }
-            $node = new DivisionModel();
+            $node = new DivisionUnitModel();
             $data = $node->getEl($id);
             return json(['code'=>1,'el_val'=>$data['el_val'],'pile_number'=>$data['pile_number'],'msg'=>'起止高程和桩号的值']);
         }
