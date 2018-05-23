@@ -240,7 +240,7 @@ class QualityFormInfoModel extends Model implements IApprove
      */
     public function getOne($id)
     {
-        $data = $this->where($id)->find();
+        $data = $this->where('id', $id)->find();
         return $data;
     }
 

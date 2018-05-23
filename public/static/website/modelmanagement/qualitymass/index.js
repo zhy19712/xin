@@ -33,8 +33,10 @@ ztree(0);
 function zTreeOnClick(event, treeId, treeNode) {
     console.log(treeNode);
     nodeId = treeNode.add_id;
-    alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
-    elval();
+    if(treeNode.level==5){
+        alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
+        elval();
+    }
 }
 
 //绘制radio
@@ -299,6 +301,7 @@ $('.alreadyBtn').click(function(){
         },
         dataType: "json",
         success: function (res) {
+            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search').load();
             layer.msg(res.msg);
         }
     });
@@ -368,4 +371,17 @@ $('#relieveBtn').click(function(){
         });
         layer.close(index);
     });
-})
+});
+
+//筛选已关联构件
+$('#alreadyTab').on('ifChecked', function(event){
+    model_quality(1);
+});
+//筛选未关联构件
+$('#noteverTab').on('ifChecked', function(event){
+    model_quality(2);
+});
+//筛选方法
+function model_quality(model_type) {
+    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search&model_type='+model_type).load();
+}
