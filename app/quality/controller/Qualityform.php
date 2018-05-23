@@ -163,8 +163,16 @@ class Qualityform extends Permissions
             if (empty($dto['Id'])) {
                 $mod['user_id'] = Session::get('current_id');
                 $mod['create_time'] = time();
-                $res = $this->qualityFormInfoService->insertGetId($mod);
-                $dto['Id'] = $res;
+                $judge=Db::name('quality_form_info')
+                    ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId'],'ApproveStatus'>-1])
+                    ->find();
+                if($judge){
+                    return json(['result' => 'Refund']);
+                }
+                else {
+                    $res = $this->qualityFormInfoService->insertGetId($mod);
+                    $dto['Id'] = $res;
+                }
             } else {
                 $this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($mod, ['id' => $dto['Id']]);
             }
@@ -193,6 +201,12 @@ class Qualityform extends Permissions
         } catch (Exception $exception) {
             return json(['code' => -1]);
         }
+    }
+    //表单作废
+    public function cancel($id)
+    {
+        $data['ApproveStatus']=-2;
+        $this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($data, ['id' => $id]);
     }
 
     /**
