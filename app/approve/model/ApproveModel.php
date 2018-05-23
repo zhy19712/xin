@@ -123,7 +123,7 @@ class ApproveModel extends Model
         $mod->approveIds = $info['ApproveIds'];
         $approveIds = explode(',', $info['ApproveIds']);
         //流程结尾判断
-        if ($info['CurrentStep'] < sizeof($approveIds)) {
+        if ($info['CurrentStep'] < sizeof($approveIds)&&($info['CurrentStep']!=null)) {
             $mod->NextApproverId = $approveIds[$info['CurrentStep']];
             $mod->NextApproverName = Admin::get($mod->NextApproverId)['nickname'];
         }
