@@ -376,35 +376,35 @@ class Element extends Permissions
         $param=input('param.');
         $en_type=$param['en_type'];
         $unit_id=$param['unit_id'];
-        $division_id=$param['division_id'];
+        $type=1;//1为单元工程
         //找单元工程划分段号下面的所有工序
         $produceid=Db::name('norm_materialtrackingdivision')
-                  ->where(['pid'=>$en_type])
+                  ->where(['pid'=>$en_type,'cat'=>5])
                   ->column('id');
-        $limit=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$division_id,'unit_id'=>$unit_id])
-            ->where('ma_division_id','in', $produceid)
-            ->find();
-        //如果有数据，不插入
-        if($limit)
-        {
-              exit();
-        }
-        //限制只插一次
-        //取出该工序下对应的所有控制点id
+        //找出工序下的所有控制点
         $id_arr=Db::name('norm_controlpoint')
-        ->where('procedureid','in',$produceid)
-        ->field('id,procedureid')
-        ->select();
+            ->where('procedureid','in',$produceid)
+            ->field('id,procedureid')
+            ->select();
+        //遍历查找是否quality_implement_status中有控制点，没有的话添加上去
         foreach($id_arr as $v)
         {
-            $data=['type'=>1,'control_id'=>$v['id'],'division_id'=>$param['division_id'],'ma_division_id'=>$v['procedureid'],
-                'unit_id'=>$unit_id,'update_time'=>time(),'checked'=>0];
-            $res[]=$data;
+            $limit = Db::name('quality_division_controlpoint_relation')
+                ->where(['control_id' => $v['id'], 'division_id' => $unit_id,'type'=>1])
+                ->find();
+            //如果有数据，不插入
+            if ($limit)
+            {
+                continue;
+            }
+            else
+            {
+                //如果没有控制点信息，将其插入数据表中
+                $data=['type'=>1,'division_id'=>$unit_id,'ma_division_id'=>$v['procedureid'],'control_id'=>$v['id']];
+                Db::name('quality_division_controlpoint_relation')
+                    ->insert($data);
+            }
         }
-        $resdata=Db::name('quality_division_controlpoint_relation')
-            ->insertAll($res);
-
     }
 
     //勾选时访问的接口，将该条数据的状态更新
@@ -415,8 +415,6 @@ class Element extends Permissions
         $division_id=$param['division_id'];
         $id=$param['id'];//relation_id主键
         $unit_id=$param['unit_id'];
-//        dump($param);
-//        die();
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
         $res=Db::name('quality_division_controlpoint_relation')
@@ -530,9 +528,10 @@ class Element extends Permissions
             $param = input('param.');
             $cpr_id=$param['cpr_id'];
             $cp_id=$param['cp_id'];
-            $division_id=$param['division_id'];
+            $unit_id=$param['unit_id'];
+            $IsInspect=1;//是否是检验批
             $res = Db::name('quality_form_info')
-                ->where(['ControlPointId' =>$cp_id,'DivisionId' =>$division_id,'ApproveStatus'=>2])
+                ->where(['ControlPointId' =>$cp_id,'DivisionId' =>$unit_id,'ApproveStatus'=>2,'IsInspect'=>1])
                 ->where('form_name', 'like', '%' . $search_name)
                 ->find();
             //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
@@ -550,7 +549,6 @@ class Element extends Permissions
                 {
                     if($v['Name']=='input_hgl_result')
                     {
-
                         $evaluation=$v;//验评结果
                     }
                     break;
@@ -561,7 +559,6 @@ class Element extends Permissions
             }
             //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
             else {
-                //仅用控制点id做限制可行吗 是否需要在该表中加入单元批id
                 $copy = Db::name('quality_upload')
                     ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
                     ->where('data_name', 'like', '%' . $search_name . '%')
@@ -590,7 +587,6 @@ class Element extends Permissions
                 return json(['msg' => 'fail', 'remark' => '已上传对应扫描件，如想重新上传请先删除之前的扫描件']);
             } else {
                 return json(['msg' => 'success']);
-
             }
         }
     }
