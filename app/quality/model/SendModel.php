@@ -5,6 +5,7 @@ namespace app\quality\model;
 
 use think\Db;
 use think\exception\PDOException;
+use think\Exception;
 use think\Model;
 
 class SendModel extends Model

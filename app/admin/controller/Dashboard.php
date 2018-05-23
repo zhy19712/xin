@@ -70,17 +70,13 @@ class Dashboard extends Permissions
                     $data[$key]["task_category"] = "单元质量验评";
                     $data[$key]["status"] = $val["ApproveStatus"];
                     $data[$key]["current_approver_id"] = $val["CurrentApproverId"];
+                    $data[$key]["type"] = 2;//单元工程质量验评
                 }
             }
-
 
             $flag = $message->insertTbAll($data);
 
             $flag = $message->editTbAll($edit_data);
-
-
-
-            //查询信息表中的未处理的消息
 
             return json($flag);
         }
@@ -109,36 +105,44 @@ class Dashboard extends Permissions
         {
             foreach($form_info as $key=>$val)
             {
-                halt($val);
-                $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["CurrentApproverId"]]);
+                $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["income_id"]]);
 
                 if(!empty($result))
                 {
                     $edit_data[$key]["id"] = $result["id"];
-
-                    $edit_data[$key]["status"] = $val["ApproveStatus"];
+                    //如果收发文中的status状态为2表示未执行
+                    if($val["status"] == 2 )
+                    {
+                        $edit_data[$key]["status"] = 1;//未执行
+                    }else//3、4表示已执行
+                    {
+                        $edit_data[$key]["status"] = 2;//已执行
+                    }
 
                 }
                 else
                 {
                     $data[$key]["uint_id"] = $val["id"];
-                    $data[$key]["task_name"] = $val["form_name"];
+                    $data[$key]["task_name"] = $val["file_name"];
                     $data[$key]["create_time"] = time();
-                    $data[$key]["sender"] = substr($val["ApproveIds"], -1);
-                    $data[$key]["task_category"] = "单元质量验评";
-                    $data[$key]["status"] = $val["ApproveStatus"];
-                    $data[$key]["current_approver_id"] = $val["CurrentApproverId"];
+                    $data[$key]["sender"] = $val["send_id"];
+                    $data[$key]["task_category"] = "收文";
+                    //如果收发文中的status状态为2表示未执行
+                    if($val["status"] == 2 )
+                    {
+                        $data[$key]["status"] = 1;//未执行
+                    }else//3、4表示已执行
+                    {
+                        $data[$key]["status"] = 2;//已执行
+                    }
+                    $data[$key]["current_approver_id"] = $val["income_id"];
+                    $data[$key]["type"] = 1;//type=1表示收发文
                 }
             }
-
 
             $flag = $message->insertTbAll($data);
 
             $flag = $message->editTbAll($edit_data);
-
-
-
-            //查询信息表中的未处理的消息
 
             return json($flag);
         }
@@ -196,10 +200,14 @@ class Dashboard extends Permissions
             if ($this->request->isAjax()) {
                 //实例化模型类
                 $message = new MessageremindingModel();
+                //获取当前的登录人的id
+                $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+                //单元工程质量验评
+                $this->buildMessage();
+                //收发文
+                $this->buildSendMessage();
 
-                $flag = $this->buildMessage();
-
-                $count_data = $message->getCount();
+                $count_data = $message->getCount($admin_id);
 
                 return json(["count"=>$count_data]);
             }

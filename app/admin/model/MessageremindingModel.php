@@ -30,10 +30,10 @@ class MessageremindingModel extends Model
     /**
      * 查询消息表中未处理的数量
      */
-    public function getCount()
+    public function getCount($admin_id)
     {
         //查询状态
-        $data = $this->where('status = 1')->count();
+        $data = $this->where('status = 1')->where("current_approver_id",$admin_id)->count();
         return $data;
     }
 

@@ -147,7 +147,9 @@ class Versions extends Permissions
 
             // 系统自动生成参数
             //  resource_path 资源路径 version_number 版本 version_date 版本日期
-            $param['resource_path'] = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('filepath');
+            $resource_path = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('filepath');
+            $path_arr = explode('E:\WebServer',$resource_path);
+            $param['resource_path'] = $path_arr[1];
             $version_number = $send->versionNumber();
             $param['version_number'] = $version_number;
             $param['version_date'] = date('Y-m-d H:i:s');
@@ -209,7 +211,17 @@ class Versions extends Permissions
             if(!isset($param['major_key'])){
                 return json(['code'=>-1,'msg'=>'缺少主键编号']);
             }
+
             $send = new VersionsModel();
+            // 如果当前版本是唯一的,提示不能删除
+            $flag = $send->isOnly($param['major_key']);
+            if($flag['code'] == -1){
+                return json($flag);
+            }
+
+            //TODO 如果存在关联关系就 把关联关系全部删除
+
+            // 最后删除版本记录和资源包文件
             $flag = $send->deleteTb($param['major_key']);
             return json($flag);
         }

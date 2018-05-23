@@ -358,14 +358,14 @@ class Common extends Controller
     {
 
         //查询不同的状态1为未执行，2为已执行
-
         $status = input("param.status");
-
+        $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+        //查询过滤条件
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->count(0);
+        $recordsTotal = Db::name($table) ->where("status",$status)->where("current_approver_id",$admin_id)->count(0);
         $recordsFilteredResult = array();
         if(strlen($search)>0){
             //有搜索条件的情况
@@ -375,6 +375,7 @@ class Common extends Controller
                     ->join('admin a','m.sender = a.id','left')
                     ->field("m.task_name,m.create_time,a.nickname as sender,m.task_category,m.status,m.id,m.type,m.uint_id")
                     ->where("m.status",$status)
+                    ->where("m.current_approver_id",$admin_id)
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start),intval($length))
                     ->select();
@@ -387,6 +388,7 @@ class Common extends Controller
                     ->join('admin a','m.sender = a.id','left')
                     ->field("m.task_name,m.create_time,a.nickname as sender,m.task_category,m.status,m.id,m.type,m.uint_id")
                     ->where("m.status",$status)
+                    ->where("m.current_approver_id",$admin_id)
                     ->order($order)->limit(intval($start),intval($length))
                     ->select();
                 //*****多表查询join改这里******
