@@ -289,7 +289,7 @@ function delFile(id) {
     $.ajax({
       type: "post",
       url: "./delcontrolpoint",
-      data: {id: id},
+      data: {id: id,type:cat},
       success: function (res) {
         if(res.code == 1){
           console.log(res)

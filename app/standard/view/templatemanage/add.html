@@ -203,6 +203,8 @@
                             refreshSub();
                             parent.layer.msg('保存成功！');
                             closWin();
+                        }else{
+                          parent.layer.msg('保存失败！');
                         }
                     },
                     error: function (data) {
@@ -225,6 +227,8 @@
                             parent.layer.msg('编辑成功！');
                             closWin();
                             form.render('select');
+                        }else{
+                          parent.layer.msg('编辑失败！');
                         }
                     },
                     error: function (data) {
