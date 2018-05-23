@@ -357,7 +357,10 @@ class Common extends Controller
     public function admin_message_reminding($id,$draw,$table,$search,$start,$length,$limitFlag,$order,$columns,$columnString)
     {
 
-        //查询
+        //查询不同的状态1为未执行，2为已执行
+
+        $status = input("param.status");
+
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
@@ -370,7 +373,8 @@ class Common extends Controller
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)->alias("m")
                     ->join('admin a','m.sender = a.id','left')
-                    ->field("m.task_name,m.create_time,a.nickname as sender,m.task_category,m.status,m.id")
+                    ->field("m.task_name,m.create_time,a.nickname as sender,m.task_category,m.status,m.id,m.type,m.uint_id")
+                    ->where("status",$status)
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start),intval($length))
                     ->select();
@@ -381,11 +385,11 @@ class Common extends Controller
             if($limitFlag){
                 $recordsFilteredResult = Db::name($table)->alias("m")
                     ->join('admin a','m.sender = a.id','left')
-                    ->field("m.task_name,m.create_time,a.nickname as sender,m.task_category,m.status,m.id")
+                    ->field("m.task_name,m.create_time,a.nickname as sender,m.task_category,m.status,m.id,m.type,m.uint_id")
+                    ->where("status",$status)
                     ->order($order)->limit(intval($start),intval($length))
                     ->select();
                 //*****多表查询join改这里******
-                //$recordsFilteredResult = Db::name('datatables_example')->alias('d')->join('datatables_example_join e','d.position = e.id')->field('d.id,d.name,e.name as position,d.office')->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
