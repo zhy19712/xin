@@ -212,6 +212,20 @@ class DivisionModel extends Model
         return $res;
     }
 
+    // 给 每一个 单位或分部或检验批 批量删除  控制点 对应关系
+    public function delRelation($ma_division_id,$cid,$genre)
+    {
+        //type division_id 类型:0单位,分部工程编号 1检验批
+        $type = 0;
+        // 检验批
+        if($genre == 5){
+            $type = 1;
+        }
+        $rel = new DivisionControlPointModel();
+        $res = $rel->delRelationAll($ma_division_id,$cid,$type);
+        return $res;
+    }
+
 
     // 新增单位，分部 和 检验批 的关联控制点 对应关系
     public function allRelation()
