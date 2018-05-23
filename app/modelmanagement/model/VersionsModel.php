@@ -66,6 +66,6 @@ class VersionsModel extends Model
 
     public function versionNumber()
     {
-        $data = $this->order('id desc')->find();
+        $data = $this->order('id desc')->field('version_number')->find();
     }
 }

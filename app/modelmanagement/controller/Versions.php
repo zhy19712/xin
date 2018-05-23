@@ -38,6 +38,16 @@ class Versions extends Permissions
     }
 
     /**
+     * 查看模型
+     * @return mixed
+     * @author hutao
+     */
+    public function viewModel()
+    {
+        return $this->fetch('viewmodel');
+    }
+
+    /**
      * 压缩包上传
      * @author hutao
      */
@@ -127,7 +137,7 @@ class Versions extends Permissions
             //  resource_path 资源路径 version_number 版本 version_date 版本日期
             $param['resource_path'] = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('filepath');
             $version_number = $send->versionNumber();
-            $param['version_number'] = date('Y-m-d H:i:s');
+            $param['version_number'] = $version_number;
             $param['version_date'] = date('Y-m-d H:i:s');
 
             if(empty($major_key)){
