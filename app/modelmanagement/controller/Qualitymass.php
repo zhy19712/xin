@@ -29,8 +29,17 @@ class Qualitymass extends Permissions
     public function index()
     {
         if(request()->isAjax()){
+            // 传递 node_type 1 已关联节点 2 未关联节点 不传递默认0查询全部
+            $param = input('post.');
+            $node_type = isset($param['node_type']) ? $param['node_type'] : 0;
             $node = new DivisionModel();
-            $nodeStr = $node->getQualityNodeInfo();
+            if($node_type==1){
+                $nodeStr = $node->getQualityNodeInfo($node_type);
+            }else if($node_type==2){
+                $nodeStr = $node->getQualityNodeInfo($node_type);
+            }else{
+                $nodeStr = $node->getQualityNodeInfo();
+            }
             return json($nodeStr);
         }
        return $this->fetch();
@@ -114,37 +123,31 @@ class Qualitymass extends Permissions
         }
     }
 
-    // 已关联节点
-    public function relevanceNode()
-    {
-
-    }
-
-    // 未关联节点
-    public function unRelevanceNode()
-    {
-
-    }
-
-    // 已关联构件
-    public function relevanceComponent()
-    {
-
-    }
-
-    // 未关联构件
-    public function unRelevanceComponent()
-    {
-
-    }
-
-    // 关联
+    /**
+     * 关联构件
+     * @return \think\response\Json
+     * @author hutao
+     */
     public function relevance()
     {
-
+        if(request()->isAjax()){
+            // 传递 选中节点的 add_id 和 选中的构件 编号数组 id_arr
+            $id = input('add_id');
+            $id_arr = input('id_arr/a');
+            if(sizeof($id_arr)){
+                return json(['code'=>-1,'msg'=>'缺少构件的编号']);
+            }
+            $node = new QualitymassModel();
+            $flag = $node->relevance($id,$id_arr);
+            return json($flag);
+        }
     }
 
-    // 选中的构件 --  解除关联
+    /**
+     * 选中的构件 --  解除关联
+     * @return \think\response\Json
+     * @author hutao
+     */
     public function removeRelevance()
     {
         if(request()->isAjax()){

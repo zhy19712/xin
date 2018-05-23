@@ -63,4 +63,9 @@ class VersionsModel extends Model
         $data = $this->where(['model_type'=>$model_type])->find();
         return $data;
     }
+
+    public function versionNumber()
+    {
+        $data = $this->order('id desc')->field('version_number')->find();
+    }
 }

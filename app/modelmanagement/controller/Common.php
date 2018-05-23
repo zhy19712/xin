@@ -96,9 +96,19 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    // ht 质量模型表 模型图上的 只查询已经关联的构件
+    // ht 质量模型表 模型图上的 只查询选中节点已经关联的构件
+    // 模型构建列表下面的勾选 已关联构件 和 未关联构件 共用方法
     public function model_quality($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
+        $param = input('param.');
+        $model_type = isset($param['model_type']) ? $param['model_type'] : 0; // 0 默认是 只查询选中节点已经关联的构件 1 已关联构件 2 未关联构件
+        if($model_type == 0){
+            $search_data = ['q.unit_id'=>$id];
+        }else if($model_type == 1){
+            $search_data = ['q.unit_id'=>['neq',0]];
+        }else{
+            $search_data = ['q.unit_id'=>['eq',0]];
+        }
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
@@ -113,7 +123,7 @@ class Common extends Controller
                     ->join('quality_unit u', 'u.id = q.unit_id', 'left')
                     ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,u.site')
                     ->where($columnString, 'like', '%' . $search . '%')
-                    ->where('q.unit_id',$id)
+                    ->where($search_data)
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -124,7 +134,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)->alias('q')
                     ->join('quality_unit u', 'u.id = q.unit_id', 'left')
                     ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,u.site')
-                    ->where('q.unit_id',$id)
+                    ->where($search_data)
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
             }
@@ -170,9 +180,69 @@ class Common extends Controller
         $el_start = isset($param['el_start']) ? $param['el_start'] : '';
         $el_cease = isset($param['el_cease']) ? $param['el_cease'] : '';
 
-        $search_data = [
-            "contr_relation_id"=>-1
-        ];
+
+        /**
+         *  桩号1名桩号2名 里面控制着 CS (场上) 和 CX (场下)
+         * 当 只存在 一个值的 时候   桩号1值 是大于等于 桩号2值 是小于等于
+         * 当 两个值都存在 并且 选择的桩号名一致 的 时候  桩号1值 <= 结果<=桩号2值 取两个值的区间值
+         * 当 两个值都存在 并且 选择的桩号名不一致 的 时候  0<= 结果<=桩号1值      0<= 结果<=桩号2值
+         *
+         *  桩号3名桩号4名 里面控制着 CZ (场左) 和 CY (场右) 同上
+         */
+        $search_data = [];
+        if($section){
+            array_push($search_data,'"section" => '.$section);
+        }else if($unit){
+            array_push($search_data,'"unit" => '.$unit);
+        }else if($parcel){
+            array_push($search_data,'"parcel" => '.$parcel);
+        }else if($cell){
+            array_push($search_data,'"cell" => '.$cell);
+        }else if($pile_number_1 && $pile_val_1 && !$pile_val_2){
+            array_push($search_data,'"pile_number_1" => '.$pile_number_1);
+            array_push($search_data,'"pile_val_1" => '.'["egt",'.$pile_val_1.']');
+        }else if($pile_number_2 && $pile_val_2 && !$pile_val_1){
+            array_push($search_data,'"pile_number_2" => '.$pile_number_2);
+            array_push($search_data,'"pile_val_2" => '.'["elt",'.$pile_val_2.']');
+        }else if($pile_number_1 && $pile_val_1 && $pile_number_2 && $pile_val_2){
+            array_push($search_data,'"pile_number_1" => '.$pile_number_1);
+            array_push($search_data,'"pile_number_2" => '.$pile_number_2);
+            if($pile_number_1 == $pile_number_2){
+                array_push($search_data,'"pile_val_1" => '.'["egt",'.$pile_val_1.']');
+                array_push($search_data,'"pile_val_1" => '.'["elt",'.$pile_val_2.']');
+                array_push($search_data,'"pile_val_2" => '.'["egt",'.$pile_val_1.']');
+                array_push($search_data,'"pile_val_2" => '.'["elt",'.$pile_val_2.']');
+            }else{
+                array_push($search_data,'"pile_val_1" => '.'["egt",0]');
+                array_push($search_data,'"pile_val_1" => '.'["elt",'.$pile_val_1.']');
+                array_push($search_data,'"pile_val_2" => '.'["egt",0]');
+                array_push($search_data,'"pile_val_2" => '.'["elt",'.$pile_val_2.']');
+            }
+        }else if($pile_number_3 && $pile_val_3 && !$pile_val_4){
+            array_push($search_data,'"pile_number_3" => '.$pile_number_3);
+            array_push($search_data,'"pile_val_3" => '.'["egt",'.$pile_val_3.']');
+        }else if($pile_number_4 && $pile_val_4 && !$pile_val_3){
+            array_push($search_data,'"pile_number_4" => '.$pile_number_4);
+            array_push($search_data,'"pile_val_4" => '.'["elt",'.$pile_val_4.']');
+        }else if($pile_number_3 && $pile_val_3 && $pile_number_4 && $pile_val_4){
+            array_push($search_data,'"pile_number_3" => '.$pile_number_3);
+            array_push($search_data,'"pile_number_4" => '.$pile_number_4);
+            if($pile_number_3 == $pile_number_4){
+                array_push($search_data,'"pile_val_3" => '.'["egt",'.$pile_val_3.']');
+                array_push($search_data,'"pile_val_3" => '.'["elt",'.$pile_val_4.']');
+                array_push($search_data,'"pile_val_4" => '.'["egt",'.$pile_val_3.']');
+                array_push($search_data,'"pile_val_4" => '.'["elt",'.$pile_val_4.']');
+            }else{
+                array_push($search_data,'"pile_val_3" => '.'["egt",0]');
+                array_push($search_data,'"pile_val_3" => '.'["elt",'.$pile_val_3.']');
+                array_push($search_data,'"pile_val_4" => '.'["egt",0]');
+                array_push($search_data,'"pile_val_4" => '.'["elt",'.$pile_val_4.']');
+            }
+        }else if($el_start){
+            array_push($search_data,'"el_start" => '.'["egt",'.$el_start.']');
+        }else if($el_cease){
+            array_push($search_data,'"el_cease" => '.'["elt",'.$el_cease.']');
+        }
 
         //查询
         //条件过滤后记录数 必要
@@ -180,7 +250,7 @@ class Common extends Controller
         $recordsFilteredResult = array();
         //表的总记录数 必要
         $recordsTotal = Db::name($table)->count();
-        if (strlen($search) > 0) {
+        if (sizeof($search_data) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******

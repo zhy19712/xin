@@ -114,4 +114,11 @@ class QualitymassModel extends Model
         return ['code'=>1,'msg'=>'解除成功'];
     }
 
+    public function relevance($id,$id_arr)
+    {
+        // 关联
+        $this->where(['id'=>['in',$id_arr]])->update(['unit_id'=>$id]);
+        return ['code'=>1,'msg'=>'关联成功'];
+    }
+
 }
