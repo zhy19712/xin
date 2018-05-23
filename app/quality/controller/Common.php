@@ -1532,7 +1532,6 @@ class Common extends Controller
 
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
-            dump($value);
             for ($i = 0; $i < $length; $i++) {
                 array_push($temp, $value[$columns[$i]['name']]);
             }
