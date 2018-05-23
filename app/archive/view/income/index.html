@@ -17,6 +17,11 @@
     #fileOperation button{
         width: 90px;
     }
+    #tableIncome_paginate,#tableFileList_paginate{
+        width: 100%;
+        text-align: center;
+        padding-top: 20px;
+    }
 </style>
 <div class="layui-fluid">
     <div class="layui-row">
@@ -51,14 +56,14 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">收件人</label>
+            <label class="layui-form-label">发件人</label>
             <div class="layui-input-block">
                 <input type="text" name="income_name" id="income_name"  class="layui-input">
                 <input type="hidden" name="income_id" id="income_id">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">收文单位</label>
+            <label class="layui-form-label">来文单位</label>
             <div class="layui-input-block">
                 <input type="text" name="unit_name" id="unit_name"  class="layui-input">
             </div>
@@ -67,12 +72,6 @@
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
                 <textarea name="remark" id="remark" class="layui-textarea" readonly="readonly"></textarea>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">关联收文</label>
-            <div class="layui-input-block">
-                <input type="text" name="relevance_id" id="relevance_id"  class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">

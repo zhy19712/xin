@@ -308,6 +308,9 @@
                         } else {
                             zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":value,type:type});
                         }
+                      layer.msg("添加成功");
+                    }else{
+                      layer.msg("添加失败");
                     }
                 }
             });
@@ -356,6 +359,8 @@
                             layer.msg("删除节点成功", {time: 1500, shade: 0.1});
                             zTreeObj.removeNode(sNodes);
                             selfid = "";
+                        }else{
+                          layer.msg("删除节点失败", {time: 1500, shade: 0.1});
                         }
                     }
                 });
@@ -421,7 +426,7 @@
             $.ajax({
                 type: "post",
                 url: "{:url('library/delcontrolpoint')}",
-                data: {id: id},
+                data: {id: id,type:5},
                 success: function (res) {
                     if(res.code == 1){
                         console.log(res)
@@ -493,31 +498,31 @@
     }
 
 
-    var  arr = ["记录表","质量评定表","工程照片、强制性条文","验收申请表"];
-    var iiii = 0;
-    function addDate(pid) {
-        $.ajax({
-          url: "{:url('/standard/library/adddivsiontree')}",
-          type: "post",
-          data: {pid: pid, name: arr[iiii], cat:5},
-          success: function (res) {
-            if (res.code === 1) {
-              if (sNodes) {
-                zTreeObj.addNodes(sNodes, {"id":res.data,"pid":pid,"name":arr[iiii]});
-              } else {
-                zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":arr[iiii]});
-              }
-              iiii++;
-              if(iiii<arr.length){
-                addDate(pid)
-              }else{
-                iiii==0;
-              }
-            }
-          }
-        });
-
-    }
+    // var  arr = ["记录表","质量评定表","工程照片、强制性条文","验收申请表"];
+    // var iiii = 0;
+    // function addDate(pid) {
+    //     $.ajax({
+    //       url: "{:url('/standard/library/adddivsiontree')}",
+    //       type: "post",
+    //       data: {pid: pid, name: arr[iiii], cat:5},
+    //       success: function (res) {
+    //         if (res.code === 1) {
+    //           if (sNodes) {
+    //             zTreeObj.addNodes(sNodes, {"id":res.data,"pid":pid,"name":arr[iiii]});
+    //           } else {
+    //             zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":arr[iiii]});
+    //           }
+    //           iiii++;
+    //           if(iiii<arr.length){
+    //             addDate(pid)
+    //           }else{
+    //             iiii==0;
+    //           }
+    //         }
+    //       }
+    //     });
+    //
+    // }
 </script>
 </html>
 

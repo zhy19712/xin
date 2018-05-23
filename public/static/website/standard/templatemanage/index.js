@@ -175,7 +175,7 @@ function delFile(id) {
                     console.log(res)
                     layer.msg("删除成功！")
                     tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template").load();
-                }else if(res.code==0){
+                }else{
                     layer.msg(res.msg);
                 }
             },
