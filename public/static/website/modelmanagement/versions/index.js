@@ -203,6 +203,7 @@ function uploadModel() {
     uploader.on('uploadSuccess', function (file, response) {
         $('#resource_name').val(file.name);
         attachment_id = response.id;
+        layer.msg(response.msg);
     });
     //准备上传
     uploader.on("uploadStart",function () {

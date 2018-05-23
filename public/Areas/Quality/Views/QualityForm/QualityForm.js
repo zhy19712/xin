@@ -1,7 +1,8 @@
 var fileTargetHtmlElementId; // 定义附件上传后要更新的目标html元素Id
 var saveStyle = 0; // 保存类型：0保存；1保存并提交；2保存并审批
 $(function () {
-    if ($("#formData").val()) {
+    if ($("#formData").val() && $("#formData").val() != "false") {
+        console.log( $("#formData").val()!= "false")
         var str = $("#formData").val().replace(/(\r\n|\n|\r)/gm, '☆');
         str = str.replace(/\s+/g, "");
         var formData = JSON.parse(str); // 换行符处理

@@ -76,4 +76,12 @@ class DivisionUnitModel extends Model
         }
     }
 
+    public function getEl($id)
+    {
+        $data = $this->getOne($id);
+        $new_data['el_val'] = 'EL.' . $data['el_start'] . '-EL.' . $data['el_cease'];
+        $new_data['pile_number'] = $data['pile_number'];
+        return $new_data;
+    }
+
 }

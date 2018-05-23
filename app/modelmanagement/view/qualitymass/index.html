@@ -1,0 +1,108 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/modelmanagement/qualitymass/index.css">
+<div data-options="region:'west',title:'工程划分',split:true" style="width:260px;">
+    <div class="relieve">
+        <a href="javascript:;" class="layui-btn layui-btn-sm" id="relieveBtn">解除关联</a>
+    </div>
+    <div class="node-setting">
+        <input type="radio" name="nodeRelation" id="already">
+        <label for="already">已关联节点</label>
+        <input type="radio" name="nodeRelation" id="notever">
+        <label for="notever">未关联节点</label>
+    </div>
+    <ul id="ztree" class="ztree eye"></ul>
+</div>
+<div data-options="region:'center',title:''" style="border: 0">
+    <div id="cc" class="easyui-layout" style="width:100%;height:100%;">
+        <div data-options="region:'north',title:'',split:true" style="height:50%;">
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
+            <!-- 初始化 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+                var modelName = "res_fengning_kw";
+                var modelPath = "http://192.168.1.2:8008/default.aspx?dir=url_res02&path=";
+                RealBimOcx.SwitchBIMSceneSimple(modelPath,modelName);
+                //RealBimOcx.SwitchBIMSceneSimple("F:\\","res_fengning_kw_03");
+                RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+            </script>
+            <!-- 初始化完成 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                    RealBimOcx.SetSceHugeObjVisible(true);
+                }
+                RealBimOcx.SetSuitableCam();
+            </script>
+        </div>
+        <div data-options="region:'center'" style="height:50%;padding:10px;">
+            <div id="modelTable" class="easyui-tabs">
+                <div title="模型构件列表">
+                    <div class="node-setting">
+                        <input type="radio" name="nodeRelationTab" id="alreadyTab">
+                        <label for="alreadyTab">已关联节点</label>
+                        <input type="radio" name="nodeRelationTab" id="noteverTab">
+                        <label for="noteverTab">未关联节点</label>
+                    </div>
+                    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                        <thead>
+                        <tr>
+                            <th>
+                                <label for="">全选</label>
+                                <input type="checkbox" id="all_checked">
+                            </th>
+                            <th>标段</th>
+                            <th>单位</th>
+                            <th>分部</th>
+                            <th>单元</th>
+                            <th>桩号1</th>
+                            <th>桩号1</th>
+                            <th>桩号2</th>
+                            <th>桩号2</th>
+                            <th>桩号3</th>
+                            <th>桩号3</th>
+                            <th>桩号4</th>
+                            <th>桩号4</th>
+                            <th>高程起</th>
+                            <th>高程止</th>
+                            <th>已关联节点</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div title="已关联模型" style="overflow:auto;padding:20px;display:none;">
+                    <table id="alreadyRelationModelTable" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                        <thead>
+                        <tr>
+                            <th class="layui-hide">
+                                <label for="">全选</label>
+                                <input type="checkbox">
+                            </th>
+                            <th>标段</th>
+                            <th>单位</th>
+                            <th>分部</th>
+                            <th>单元</th>
+                            <th>桩号1</th>
+                            <th>桩号1</th>
+                            <th>桩号2</th>
+                            <th>桩号2</th>
+                            <th>桩号3</th>
+                            <th>桩号3</th>
+                            <th>桩号4</th>
+                            <th>桩号4</th>
+                            <th>高程起</th>
+                            <th>高程止</th>
+                            <th>已关联节点</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/modelmanagement/qualitymass/index.js"></script>
+</body>
+</html>

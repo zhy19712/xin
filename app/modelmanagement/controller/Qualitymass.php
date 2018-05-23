@@ -12,10 +12,11 @@ namespace app\modelmanagement\controller;
 use app\admin\controller\Permissions;
 use app\modelmanagement\model\QualitymassModel;
 use app\quality\model\DivisionModel;
+use app\quality\model\DivisionUnitModel;
 
 /**
  * 质量模型
- * Class Qualitymass
+ * Class qualitymass
  * @package app\modelmanagement\controller
  * @author hutao
  */
@@ -58,7 +59,7 @@ class Qualitymass extends Permissions
             if(empty($id)){
                 return json(['code'=>-1,'msg'=>'缺少单元工程的编号']);
             }
-            $node = new DivisionModel();
+            $node = new DivisionUnitModel();
             $data = $node->getEl($id);
             return json(['code'=>1,'el_val'=>$data['el_val'],'pile_number'=>$data['pile_number'],'msg'=>'起止高程和桩号的值']);
         }
@@ -134,7 +135,7 @@ class Qualitymass extends Permissions
             // 传递 选中节点的 add_id 和 选中的构件 编号数组 id_arr
             $id = input('add_id');
             $id_arr = input('id_arr/a');
-            if(sizeof($id_arr)){
+            if(!sizeof($id_arr)){
                 return json(['code'=>-1,'msg'=>'缺少构件的编号']);
             }
             $node = new QualitymassModel();

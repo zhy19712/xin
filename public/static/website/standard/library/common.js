@@ -46,7 +46,7 @@ var tableItem = $('#tableItem').DataTable({
       "targets": [3],
       "render": function (data, type, row) {
         var a = data;
-        var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='editFile("+row[3]+")'><i title='编辑' class='fa fa-pencil'></i></a>";
+        var html = "<a type='button'  class='' style='margin-left: 5px;' onclick='editFile("+row[3]+")'><i title='编辑' class='fa fa-pencil'></i></a>";
         html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile("+row[3]+")'><i title='删除' class='fa fa-trash'></i></a>";
         return html;
       }
