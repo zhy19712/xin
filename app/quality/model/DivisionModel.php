@@ -364,14 +364,6 @@ class DivisionModel extends Model
         return "[" . substr($str, 0, -1) . "]";
     }
 
-    public function getEl($id)
-    {
-        $data = $this->getOne($id);
-        $new_data['el_val'] = 'EL.' . $data['el_start'] . '-EL.' . $data['el_cease'];
-        $new_data['pile_number'] = $data['pile_number'];
-        return $new_data;
-    }
-
     //递归获取当前节点的所有子节点
     public function cateTree($id){
         $res=$this->select();
