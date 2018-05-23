@@ -31,11 +31,19 @@ class VersionsModel extends Model
     public function editTb($param)
     {
         try {
-            $result = $this->allowField(true)->save($param, ['id' => $param['id']]);
+            $data = $this->getOne($param['id']);
+            $count = $this->where(['model_type'=>$data['model_type']])->count();
+            if($count == 1 && $data['status'] == 1){
+                return ['code' => -1,'status'=>1, 'msg' => '不能禁用所有版本,至少保留一个版本为启用状态'];
+            }
+
+            $result = $this->where(['id' => ['neq',$param['id']]])->update(['status'=>0]);
+            $result = $this->where(['id' => $param['id']])->update(['status'=>1]);
+
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
-                return ['code' => 1, 'msg' => '编辑成功'];
+                return ['code' => 1,'status'=>1, 'msg' => '启用成功'];
             }
         } catch (PDOException $e) {
             return ['code' => 0, 'msg' => $e->getMessage()];

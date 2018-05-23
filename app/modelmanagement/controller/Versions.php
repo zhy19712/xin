@@ -159,12 +159,11 @@ class Versions extends Permissions
     {
         if($this->request->isAjax()){
             // 前台需要传递的参数有:
-            // 主键编号 major_key 和 状态 status 0禁用1启用
+            // 主键编号 major_key
             $param = input('param.');
             // 验证规则
             $rule = [
-                ['major_key', 'require', '缺少主键编号'],
-                ['status', 'require', '缺少资源状态']
+                ['major_key', 'require', '缺少主键编号']
             ];
             $validate = new \think\Validate($rule);
             //验证部分数据合法性
@@ -174,7 +173,7 @@ class Versions extends Permissions
 
             //TODO 当启用时，要判断是否已经存在过关联关系
             //TODO 如果不存在就 把上一个版本的关联关系都复制一份，继承过来，然后禁用上一个版本状态，启用当前版本
-            //TODO 如果存在就   直接禁用上一个版本状态，启用当前版本
+            //TODO 如果存在关联关系就   直接禁用上一个版本状态，启用当前版本
 
             $send = new VersionsModel();
             $param['id'] = $param['major_key'];
