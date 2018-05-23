@@ -15,7 +15,7 @@ use app\quality\model\DivisionModel;
 
 /**
  * 质量模型
- * Class Qualitymass
+ * Class qualitymass
  * @package app\modelmanagement\controller
  * @author hutao
  */

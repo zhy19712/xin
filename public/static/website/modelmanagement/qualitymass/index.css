@@ -1,0 +1,18 @@
+.relieve{
+    padding: 5px 10px;
+    border-bottom: 1px solid #cecece;
+}
+.node-setting{
+    padding: 10px 10px 5px;
+}
+.node-setting label{
+    padding-right: 10px;
+    vertical-align: middle;
+    font-size: 14px;
+}
+.ztree{
+    margin: 0;
+}
+.dataTables_wrapper, .tbcontainer{
+    display: block !important;
+}
