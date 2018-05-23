@@ -2,7 +2,7 @@
 tableItem = $("#tableIncome").DataTable({
     processing: true,
     serverSide: true,
-    ordering: false,
+    ordering: true,
     ajax: {
         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=1",
     },
