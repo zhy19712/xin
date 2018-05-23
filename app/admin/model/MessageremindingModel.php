@@ -32,7 +32,8 @@ class MessageremindingModel extends Model
      */
     public function getCount()
     {
-        $data = $this->where('status = 0')->count();
+        //查询状态
+        $data = $this->where('status = 1')->count();
         return $data;
     }
 
