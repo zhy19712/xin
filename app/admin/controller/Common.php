@@ -422,7 +422,7 @@ class Common extends Controller
 
                 $form_data["CurrentStep"] = $form_info["CurrentStep"];
 
-                $form_data["cpr_id"] = $form_info["ControlPointId"];
+                $form_data["cpr_id"] = $form_info["cpr_id"];
 
                 array_push($temp, $form_data);
             }
