@@ -136,6 +136,9 @@
         };
         $(window.parent.document).find("#hiddenValId").val($("#selectedUserId").val());
         $(window.parent.document).find("#hiddenValName").val($("#selectedUserName").text());
+        //处理人
+        $(window.parent.document).find("#nextStepPeople").text($("#selectedUserName").text());
+        $(window.parent.document).find("#valTypestepId").val($("#selectedUserId").val());
         close();
         var user = {
             "id": $("#selectedUserId").val(),
@@ -146,7 +149,10 @@
             "organizationName": $("#selectOrganizationName").val()
         };
         $(window.parent.document).find("#hiddenValUser").val(user);
-        parent.addPeople(user);
+        //调取提交审批人的页面
+        // parent.addPeople(user);
+
+
         //   if ($("#referFlow").val()) {
         //       var $referDom = $("#referDiv").find(".addpeople");
         //       if ($dom.length !== $referDom.length - 1) {
