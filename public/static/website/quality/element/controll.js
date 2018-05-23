@@ -217,17 +217,13 @@ var nodeUnitId ,        //单元工程段号 id
     controlRowId = '';  //点击控制点表的行id  关联表ID
 var controlId;          //控制点id
 
+var result = [];
 //名字拼接过滤方法
 function ajaxDataFilter(treeId, parentNode, responseData) {
     if (responseData) {
-        // responseData.forEach(function (item,index) {
-        //     item.name = item.el_start + item.el_cease + item.pile_number + item.site;
-        //     eTypeId = item.en_type;
-        // })
-        //     console.log(eTypeId);
         for(var i =0; i < responseData.length; i++) {
             responseData[i].name = responseData[i].el_start + responseData[i].el_cease + responseData[i].pile_number + responseData[i].site;
-            eTypeId = responseData[i].en_type;
+            // eTypeId = responseData[i].en_type;
         }
     }
     return responseData;
@@ -267,9 +263,10 @@ function initData(nodeId){
 function nodeClickUnit(e, treeId, node) {
     selectData = "";
     sNodesUnit = zTreeObjUnit.getSelectedNodes()[0];//选中节点
-    nodeUnitId = zTreeObjUnit.getSelectedNodes()[0].id;//当前id
-    nodeNameUnit = zTreeObjUnit.getSelectedNodes()[0].name;//当前name
-    nodePidUnit = zTreeObjUnit.getSelectedNodes()[0].pid;//当前pid
+    nodeUnitId = sNodesUnit.id;//当前id
+    nodeNameUnit = sNodesUnit.name;//当前name
+    nodePidUnit = sNodesUnit.pid;//当前pid
+    eTypeId = sNodesUnit.en_type;//当前en_type
     console.log(sNodesUnit);
     console.log(nodeUnitId + '---nodeUnitId');
     console.log(nodeNameUnit + '---name');
