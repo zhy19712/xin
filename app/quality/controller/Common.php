@@ -1460,7 +1460,7 @@ class Common extends Controller
         $recordsFilteredResult = array();
         $param = input('param.');
         $en_type=$param['en_type'];
-        $unit_id=1;
+        $unit_id=$param['unit_id'];
 
         //norm_materialtrackingdivision的id数组
         $nm_arr=Db::name('norm_materialtrackingdivision')
@@ -1507,7 +1507,7 @@ class Common extends Controller
             //*****多表查询join改这里******
             $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
-                        ->where(['r.type'=>1,'r.division_id'=>1])
+                        ->where(['r.type'=>1,'r.division_id'=>$unit_id])
                         ->where('r.control_id','in',$id_arr)//控制点必须对应在当前的工程类型下，防止切换单元类型
                         ->where($wherenm)
                         ->where($wherech)
@@ -1529,6 +1529,7 @@ class Common extends Controller
         $recordsTotal =count($recordsFiltered);
         $temp = array();
         $infos = array();
+
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
@@ -1537,6 +1538,7 @@ class Common extends Controller
             $infos[] = $temp;
             $temp = [];
         }
+
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
