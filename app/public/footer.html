@@ -210,53 +210,75 @@
        })
    </script>
    <script>
-       setTimeout(function () {
-         // getMsg(0);
-       },10000);
        // setTimeout(function () {
        //   getMsg(0);
        // },10000);
-       //长轮询
-       function getMsg(count) {
-         console.log("*********************发请求啦***********************")
+       //
+       // function getMsg(count) {
+       //   console.log("*********************发请求啦***********************")
+       //   $.ajax({
+       //     url:'../Dashboard/ajaxLunxun',
+       //     type:'post',
+       //     dataType:'json',
+       //     data:{"count":count},
+       //     timeout:1000,
+       //     success:function(data, textStatus){
+       //       // console.log(data,textStatus);
+       //       if(data && data.count){
+       //         //请求成功，刷新数据
+       //         console.log(data.count);
+       //         if($(".msgNum").length){
+       //           $(".msgNum").text(data.count);
+       //         }else{
+       //           $(".message-wrap").append('<a class="layui-badge msgNum">data.count</a>');
+       //         }
+       //       }else{
+       //         $('.msgNum').remove("");
+       //       }
+       //       if(textStatus == "success"){
+       //         //成功之后，再发送请求，递归调用
+       //         getMsg(data.count);
+       //       }
+       //     },
+       //     error:function(XMLHttpRequest, textStatus, errorThrown){
+       //       // console.log(XMLHttpRequest,textStatus,errorThrown);
+       //       if(textStatus == "timeout"){
+       //         //有效时间内没有响应，请求超时，重新发请求
+       //         console.log("超时，再发");
+       //         getMsg(count);
+       //       }else{
+       //         console.log("其他错误");
+       //         // 其他的错误，如网络错误等
+       //         getMsg(count);
+       //       }
+       //
+       //     }
+       //   });
+       // }
+       //拉信息
+       function queryMessage() {
          $.ajax({
-           url:'../Dashboard/lunxun',
-           type:'post',
+           url:'../Dashboard/queryMessage',
+           type:'GET',
            dataType:'json',
-           data:{"count":count},
-           timeout:30000,
+           timeOut:2000,
            success:function(data, textStatus){
-             // console.log(data,textStatus);
              if(data && data.count){
-               //请求成功，刷新数据
-               console.log(data.count);
+               var count = data.count > 99 ?"99+": data.count;
                if($(".msgNum").length){
-                 $(".msgNum").text(data.count);
+                 $(".msgNum").text(count);
                }else{
-                 $("#message").append('<span class="msgNum">'+data.count+'</span>');
+                 $(".message-wrap").append('<a data-url="{:url(\'admin/Dashboard/index\')}" data-title="控制面板" kit-target data-id=\'278\' class="layui-badge msgNum">'+count+'</a>');
                }
              }else{
                $('.msgNum').remove("");
              }
-             if(textStatus == "success"){
-               //成功之后，再发送请求，递归调用
-               getMsg(data.count);
-             }
-           },
-           error:function(XMLHttpRequest, textStatus, errorThrown){
-             // console.log(XMLHttpRequest,textStatus,errorThrown);
-             if(textStatus == "timeout"){
-               //有效时间内没有响应，请求超时，重新发请求
-               console.log("超时，再发");
-               getMsg(count);
-             }else{
-               console.log("其他错误");
-               // 其他的错误，如网络错误等
-               getMsg(count);
-             }
            }
          });
        }
+       queryMessage();
+       setInterval(queryMessage,10000);
+
    </script>
 </body>
 </html>
