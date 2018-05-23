@@ -1,4 +1,5 @@
 var nodeId; //被点击节点ID
+var level;  //节点等级
 var setting = {
     async: {
         enable: true,
@@ -29,7 +30,7 @@ zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
     console.log(treeNode);
-    nodeId = treeNode.id;
+    nodeId = treeNode.add_id;
     alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
     elval();
 }
@@ -304,10 +305,10 @@ $('.alreadyBtn').click(function(){
 //解除关联模型
 $('.noteverBtn').click(function(){
    $.ajax({
-       url: "./removeRelevanceNode",
+       url: "./removeRelevance",
        type: "post",
        data: {
-           add_id:nodeId
+           id_arr:idArr
        },
        dataType: "json",
        success: function (res) {
