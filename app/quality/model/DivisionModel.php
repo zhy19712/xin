@@ -97,29 +97,31 @@ class DivisionModel extends Model
                 /**
                  * 批量新增单位，分部的关联控制点 对应关系
                  */
-                if(in_array($param['type'],[1,2,3,4])){
+                if(in_array($param['type'],[1,3])){
                     $ma = $con = $insert_data = [];
-                    if(in_array($param['type'],[1,2])){
+                    if($param['type'] == 1){
                         $ma = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
-                    }else if(in_array($param['type'],[3,4])){
+                    }else if($param['type'] == 3){
                         $ma = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
                     }
                     foreach ($ma as $k=>$v){
                         $con = Db::name('norm_controlpoint')->where(['procedureid'=>['eq',$v]])->column('id');
                         if(sizeof($con)){
                             foreach ($con as $k1=>$v1){
-                                $insert_data[$k]['type'] = 0;
-                                $insert_data[$k]['division_id'] = $id;
-                                $insert_data[$k]['ma_division_id'] = $v;
-                                $insert_data[$k]['control_id'] = $v1;
-                                $insert_data[$k]['checked'] = 0;
+                                $insert_data[$k1]['type'] = 0;
+                                $insert_data[$k1]['division_id'] = $id;
+                                $insert_data[$k1]['ma_division_id'] = $v;
+                                $insert_data[$k1]['control_id'] = $v1;
+                                $insert_data[$k1]['checked'] = 0;
                             }
+                            if(sizeof($insert_data)){
+                                $rel = new DivisionControlPointModel();
+                                $rel->insertTbAll($insert_data);
+                            }
+                            $insert_data = [];
                         }
                     }
-                    $rel = new DivisionControlPointModel();
-                    $res = $rel->insertTb($insert_data);
                 }
-
                 return ['code' => 1, 'data' => $data, 'msg' => '添加成功'];
             }
         } catch (PDOException $e) {
