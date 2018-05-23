@@ -200,12 +200,14 @@ class Dashboard extends Permissions
             if ($this->request->isAjax()) {
                 //实例化模型类
                 $message = new MessageremindingModel();
+                //获取当前的登录人的id
+                $admin_id= Session::has('admin') ? Session::get('admin') : 0;
                 //单元工程质量验评
                 $this->buildMessage();
                 //收发文
                 $this->buildSendMessage();
 
-                $count_data = $message->getCount();
+                $count_data = $message->getCount($admin_id);
 
                 return json(["count"=>$count_data]);
             }
