@@ -154,7 +154,7 @@ class Qualitymass extends Permissions
         if(request()->isAjax()){
             // 传递 选中的构件 编号数组 id_arr
             $id_arr = input('id_arr/a');
-            if(sizeof($id_arr)){
+            if(!sizeof($id_arr)){
                 return json(['code'=>-1,'msg'=>'缺少构件的编号']);
             }
             $node = new QualitymassModel();
