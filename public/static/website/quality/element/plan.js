@@ -489,9 +489,6 @@ function tpyeTable() {
                 name: "id"
             },
             {
-                name: "unit_id"
-            },
-            {
                 name: "division_id"
             }
         ],
@@ -531,12 +528,6 @@ function tpyeTable() {
                 "targets": [4],
                 "visible": false
             },
-            {
-                "searchable": false,
-                "orderable": false,
-                "targets": [5],
-                "visible": false
-            }
         ],
         language: {
             "zeroRecords": "没有找到记录",
