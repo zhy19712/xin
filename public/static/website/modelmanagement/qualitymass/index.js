@@ -1,32 +1,34 @@
 var nodeId; //被点击节点ID
 var level;  //节点等级
-var setting = {
-    async: {
-        enable: true,
-        autoParam: ["pid","tid"],
-        type: "post",
-        url: "./index",
-        dataType: "json"
-    },
-    data: {
-        simpleData: {
+function ztree(node_type) {
+    var setting = {
+        async: {
             enable: true,
-            idKey: "id",
-            pIdKey: "pId"
-        }
-    },
-    check:{
-        enable: true
-    },
-    callback:{
-        onClick: zTreeOnClick
-    },
-    showLine:true,
-    showTitle:true,
-    showIcon:false
-};
-zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
-
+            autoParam: ["pid","tid"],
+            type: "get",
+            url: "./index?node_type="+node_type,
+            dataType: "json"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId"
+            }
+        },
+        check:{
+            enable: true
+        },
+        callback:{
+            onClick: zTreeOnClick
+        },
+        showLine:true,
+        showTitle:true,
+        showIcon:false
+    };
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
+}
+ztree(0);
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
     console.log(treeNode);
@@ -204,7 +206,7 @@ $("thead tr th:first-child").unbind();
 $('.alreadyBtn').html('关联');
 $('.noteverBtn').html('解除关联');
 
-
+//获取高程/桩号
 function elval() {
     $.ajax({
         url: "./elVal",
@@ -304,15 +306,66 @@ $('.alreadyBtn').click(function(){
 
 //解除关联模型
 $('.noteverBtn').click(function(){
-   $.ajax({
-       url: "./removeRelevance",
-       type: "post",
-       data: {
-           id_arr:idArr
-       },
-       dataType: "json",
-       success: function (res) {
-           layer.msg(res.msg);
-       }
-   })
+    layer.confirm('确定解除该关联模型?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: "./removeRelevance",
+            type: "post",
+            data: {
+                id_arr:idArr
+            },
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        });
+        layer.close(index);
+    });
+
+});
+
+//筛选已关联树节点
+$('#already').on('ifChecked', function(event){
+    screenNode(1);
+});
+
+//筛选未关联树节点
+$('#notever').on('ifChecked', function(event){
+    screenNode(2);
+});
+
+//筛选是否关联模型单元工程节点
+function screenNode(node_type) {
+    $.ajax({
+        url: "./index",
+        type: "get",
+        data: {
+            node_type:node_type
+        },
+        dataType: "json",
+        success: function (res) {
+            ztree(node_type);
+        }
+    });
+}
+
+//根据树节点解除关联模型
+$('#relieveBtn').click(function(){
+    if(!nodeId){
+        layer.msg('请选择单元工程');
+        return false;
+    }
+    layer.confirm('确定解除该单元工程的关联模型?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: "./removeRelevanceNode",
+            type: "post",
+            data: {
+                add_id:nodeId
+            },
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        });
+        layer.close(index);
+    });
 })
