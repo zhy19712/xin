@@ -235,4 +235,13 @@ class QualityFormInfoModel extends Model implements IApprove
         }
     }
 
+    /**
+     * 获取一条信息
+     */
+    public function getOne($id)
+    {
+        $data = $this->where($id)->find();
+        return $data;
+    }
+
 }
