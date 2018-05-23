@@ -296,17 +296,26 @@ class DivisionModel extends Model
     }
 
 
-
     /**
      * 质量模型 获取 工程划分树 包含 检验批
+     * @param int $node_type
      * @return string
      * @author hutao
      */
-    public function getQualityNodeInfo()
+    public function getQualityNodeInfo($node_type=0)
     {
         $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
         $division = $this->order('id asc')->column('id,pid,d_name,section_id,type,en_type,d_code'); // 工程列表
-        $unit = Db::name('quality_unit')->order('id asc')->column('id,division_id,site'); // 检验批列表
+
+        $id_arr = Db::name('model_quality')->group('unit_id')->column('unit_id'); // 获取所有 已经关联过的 单元工程id编号
+
+        if($node_type == 1){
+            $unit = Db::name('quality_unit')->where(['id'=>['in',$id_arr]])->order('id asc')->column('id,division_id,site'); // 已关联
+        }else if($node_type == 2){
+            $unit = Db::name('quality_unit')->where(['id'=>['not in',$id_arr]])->order('id asc')->column('id,division_id,site'); // 未关联
+        }else{
+            $unit = Db::name('quality_unit')->order('id asc')->column('id,division_id,site'); // 检验批列表
+        }
         $num = $this->count() + Db::name('section')->count() + 10000;
 
         $str = "";
