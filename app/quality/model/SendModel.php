@@ -5,6 +5,7 @@ namespace app\quality\model;
 
 use think\Db;
 use think\exception\PDOException;
+use think\Exception;
 use think\Model;
 
 class SendModel extends Model
@@ -86,6 +87,18 @@ class SendModel extends Model
             $data['attachment'] = Db::name('attachment')->where(['id'=>['in',$id_arr]])->field('id,name,fileext')->select();
         }
         return $data;
+    }
+
+    public function getIncomeid($id)
+    {
+        try {
+            $where['status'] =array('in','2,3,4');
+            //查询2未处理，3已签收,4已拒收
+            $data = $this->field("id,file_name,send_id,income_id,status")->where(["income_id"=>$id])->where($where)->select();
+            return $data;
+        } catch (Exception $exception) {
+            return null;
+        }
     }
 
 }

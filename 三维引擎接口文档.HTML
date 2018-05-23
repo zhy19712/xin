@@ -1,0 +1,292 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        #Text1
+        {width: 87px; height: 20px;}
+        #TextAnchorName
+        {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- 添加三维控件 -->
+    <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="90%">
+    </object>
+
+    <!-- 三维引擎通用接口方法汇总 -->
+    <script type="text/javascript">
+
+      //常用的接口方法汇总
+
+      //开始批量设定构件的颜色属性
+      void BatchAddSubClrInfoBegin(void);
+
+      //设定模型构建的颜色，此方法需要在BatchAddSubClrInfoBegin和BatchAddSubClrInfoEnd间调用，才可启用。
+      //ObjSubID 模型id
+      //perCent 模型透明度
+      //RGBInfo 16位颜色值，建议以0x64开头，以16位的RGB值拼接结尾
+      void AddSubClrPercent(ULONG ObjSubID,float perCent,ULONG RGBInfo);
+
+      //结束颜色属性的添加并提交
+      void BatchAddSubClrInfoEnd(void);
+
+      //设定所有构件的透明度和颜色。
+      //透明度 = NewAlpha/NewAlphaAmp 
+      //NewRGBBlendInfo为设置颜色。16位颜色值，建议以0x64开头，以16位的RGB值拼接结尾
+      VARIANT_BOOL SetAllSubClrInfos(BYTE NewAlpha, BYTE NewAlphaAmp, ULONG NewRGBBlendInfo);
+
+      //进入闪烁构件的设置状态
+      //FlickerSwitchTimes:闪烁次数
+      //FlickerInterval：闪烁时间间隔
+      //Alpha0，AlphaAmp0，RGBBlendInfo0，Alpha1，AlphaAmp1，RGBBlendInfo1：两种闪烁状态的透明度，透明度混合系数，以及颜色和颜色混合系数，与AddSubClrInfo()的后三个参数用法相同
+      void SetSubObjFlickerBegin(LONG FlickerSwitchTimes,LONG FlickerInterval, BYTE Alpha0, BYTE AlphaAmp0, ULONG RGBBlendInfo0, BYTE Alpha1, BYTE AlphaAmp1, ULONG RGBBlendInfo1);
+      
+      //加入需要进行闪烁的构件,该函数必须在SetSubObjFlickerBegin(),SetSubObjFlickerEnd()之间调用，但是可以被多次调用以完成多个构件的添加
+      //SubObjID：要进行闪烁的构件ID
+      void AddFlickerSubObjects(ULONG SubObjID);
+          
+      //结束闪烁构件的设置状态并提交数据，在此操作完成之后，加入的构件开始闪烁
+      VARIANT_BOOL SetSubObjFlickerEnd(void);
+          
+      //结束所有构件的闪烁,每个构件都回到闪烁前的状态
+      void ExitSubObjFlicker(void);
+
+
+      //请求创建一个屏幕快照，该屏幕快照的数据随后会以Base64字符串的形式通过SnapShootData事件参数返回给调用者
+      //参数意义：IsSavePic：是否保存截图
+      //uPicWidth，uPicHeight：保存截图的宽高
+      //IsSaveRenData：是否保存创建快照时的渲染状态数据
+      VARIANT_BOOL CreateSnapShootInMem(VARIANT_BOOL IsSavePic, ULONG uPicWidth, ULONG uPicHeight, VARIANT_BOOL IsSaveRenData,VARIANT_BOOL bDisableFuncUI);
+
+      //进入创建标注的状态
+      VARIANT_BOOL CreateMarkerBegin(void);
+
+
+      //进入创建标注的状态，以一个标注快照状态的内存数据（以Base64字符串形式提供）为初始数据来创建
+      VARIANT_BOOL CreateMarkerBeginWithData(BSTR MarkerDataBase64String);
+
+      //提交标注所显示的文字内容（必须位于CreateMarkerBegin/CreateMarkerEnd函数对内调用）
+      VARIANT_BOOL SubmitMarkerText(BSTR MarkerText);
+
+      
+      //创建标注结束，以Base64字符串的形式返回屏幕快照的图片文件数据和渲染状态数据
+      //IsSavePic：表示是否要保存的屏幕截图
+      //PicWidth,PicHeight：表示要保存的屏幕截图的尺寸(为0表示采用渲染窗口的尺寸)
+      //IsSaveRenderData：表示是否要保存的渲染状态数据的路径
+      //bDisableFuncUI：保存当前屏幕快照时是否禁用功能性UI
+      //该函数调用完成后，控件会触发SnapShootData事件
+      VARIANT_BOOL CreateMarkerEndInMem(VARIANT_BOOL IsSavePic, ULONG uPicWidth, ULONG uPicHeight, VARIANT_BOOL IsSaveRenderData, VARIANT_BOOL bDisableFuncUI);
+      
+      
+      //载入Base64形式的标注数据块并显示标注文件创建时的场景状态
+      VARIANT_BOOL ShowSnapshotOrMarkerInMem(BSTR RenderDataInBase64Codes);
+
+
+      //进入添加锚点的状态
+      //RequestInfoType:  需要给控件容器提供的信息的类型，当前传入0即可
+      VARIANT_BOOL AddAnchorBegin(ULONG RequestInfoType);
+
+      //添加一个锚点
+      //AnchorName：锚点的全局唯一名称
+      //PosX，PosY，PosZ:锚点在全局空间中的位置
+      //AnchorType： 锚点类型，当前只支持一种类型，填数字0，（对应引擎内的Common类型的锚点）
+      VARIANT_BOOL AddAnchor(BSTR AnchorName, FLOAT PosX, FLOAT PosY, FLOAT PosZ, ULONG AnchorType);
+
+
+      //锚点添加状态结束，提交锚点数据到3D引擎并绘制在AddAnchorBegin()到AddAnchorEnd() 之间通过AddAnchor()加入的锚点
+      VARIANT_BOOL AddAnchorEnd(void);
+
+      //进入删除锚点的状态
+      VARIANT_BOOL DelAnchorBegin(void);
+
+      //删除一个锚点（必须在DelAnchorBegin() 和 DelAnchorEnd() 函数对之间调用）
+      //AnchorName：锚点的全局唯一名称
+      VARIANT_BOOL DeleteAnchor(BSTR AnchorName);
+
+      //删除锚点的状态结束，在DelAnchorBegin() 和 DelAnchorEnd() 之间调用DeleteAnchor所请求删除的锚点，在此函数调用时会统一提交引擎处理
+      VARIANT_BOOL DelAnchorEnd(void);
+
+
+      //重置相机位置到初始方位
+      void ResetCamera(void);
+
+      //聚焦相机到指定构件上
+      //uObjSubID：表示要聚焦到的构件全局ID
+      //fBackwardAmp：表示相机在构件中心点处向后退的强度。
+      //        >=0.0 表示相机的后退距离相对于构件包围盒尺寸的比例
+      //        <0.0 表示相机的后退距离的绝对值的负
+      void FocusCameraToComponent(cn::u32 uGolElemID, float fBackwardAmp);
+      
+      //进入隔离显示的构件ID的添加状态
+      VARIANT_BOOL SetIsolateSubElemIDBegin(void);
+      //添加一个需要隔离显示的构件到ID缓存中(必须在SetIsolateSubElemIDBegin()和SetIsolateSubElemIDEnd()之间调用)
+      void SetIsolateSubElemID(ULONG uSubElemID);
+      //提交已加入缓存的所有构件ID执行隔离显示，
+      //如果在SetIsolateSubElemIDBegin()和此函数之间没有调用SetIsolateSubElemID()加入任何一个构件ID，则该函数的执行结果是取消隔离显示
+      VARIANT_BOOL SetIsolateSubElemIDEnd(void);
+
+      //用于设置隔离id的列表(均以","分割的id字符串来表示)
+      //IsolateElemIds:   需要隔离的构件的id列表
+      //返回值表示加入操作是否成功
+      VARIANT_BOOL SetIsolateElemInfoByIdStr(BSTR IsolateElemIds);
+
+
+  
+      //用于设置显示的构件的id列表和隐藏的构件的id列表(均以","分割的id字符串来表示)
+      //ValidElemIds:   显示的构件id列表
+      //InvalidElemIds: 隐藏的构件id列表
+      //返回值表示操作是否成功
+      VARIANT_BOOL SetHugeObjSubValidStateInfoByIdStr(BSTR ValidElemIds,BSTR InvalidElemIds);
+        
+
+      //统一设置所有构件的状态, ValidState==0时把所有构件设为隐藏  ValidState==1把所有构件设为显示
+      //返回值表示设置是否成功
+      VARIANT_BOOL SetAllHugeObjSubValidState(ULONG ValidState);
+
+
+      //添加属性蒙版，InfoText为显示的文字信息
+      //LocalTextRgn_Left LocalTextRgn_Top LocalTextRgn_Right LocalTextRgn_Bottom 为文字区域
+      //BackRgn_Left BackRgn_Top BackRgn_Right BackRgn_Bottom 为蒙版区域
+      VARIANT_BOOL SetInfoBox(BSTR InfoText,LONG LocalTextRgn_Left, LONG LocalTextRgn_Top, LONG LocalTextRgn_Right, LONG LocalTextRgn_Bottom, LONG BackRgn_Left,  LONG BackRgn_Top,LONG BackRgn_Right, LONG BackRgn_Bottom);
+
+      //隐藏当前属性蒙版
+      //MaskName为默认值，设定为"AttrMask"
+      VARIANT_BOOL DelAttrMask(BSTR MaskName);
+
+      //镜头飞入到指定的模型组，模型按编号设置，以逗号隔开，
+      //例如：RealBimOcx.SetGroupInLogCamPos("1,2,3,4,5,6,7,8,9");
+      //上述例子为将相机飞入到观察模型id为1-9的模型组的最佳位置
+      VARIANT_BOOL SetGroupInLogCamPos(BSTR ElemIds);
+
+
+
+    </script>
+
+
+    <!-- 兴卢项目接口方法汇总 -->
+    <script type="text/javascript">
+
+      //根据分组设置可见性
+      VARIANT_BOOL SetGroupVisible(UINT GroupID,VARIANT_BOOL visibility,VARIANT_BOOL IsFouceTo);
+      //根据分组设置透明度和颜色
+      VARIANT_BOOL SetGrouptransparent(UINT GroupID,FLOAT perCent,ULONG NewRGBBlendInfo);
+      //根据分组设置相机镜头方位
+      VARIANT_BOOL SetGroupCamPos(UINT GroupID);
+    </script>
+
+    <!-- 李家岩项目接口方法汇总 -->
+    <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
+            switch (eType) {
+
+                case "SURVEILLANCE":    //点击显示隐藏摄像头触发此判断
+                {}
+                break;
+               
+            }
+    </script>
+
+
+    <!-- 初始化三维控件后，首先执行此事件。需要将加载数据的方法写在此事件内。 -->
+    <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+
+      //加载数据的方法，第一个参数为数据的路径，第二个参数为数据文件夹的名称
+        RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+
+        //设定启用的数据，保持默认即可，不需要改变。
+        RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+
+    </script>
+
+
+    <!-- 模型数据加载完成后，执行此事件，主要用于设定初始化之后模型的显示隐藏、颜色透明度等状态。 -->
+    <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+
+        //CompleteEvent为LoadMainScene，并且 retError为0时，表示模型加载完成，在此之后，可以执行对模型的操作。
+        if(CompleteEvent == "LoadMainScene" && retError==0 ){
+
+          //设定所有模型的可见性，1为可见，0为不可见。由于在加载完模型后，默认所有模型处于不可见状态，需要在此处执行该方法，才能保证模型在初始化后可见。          
+          RealBimOcx.SetAllHugeObjSubValidState(1);       
+        }
+    </script>
+
+
+
+    <!--当鼠标选中模型时，执行此事件
+      可以通过此事件获取到的参数如下
+      uObjSubID 模型的全局唯一id
+      fSelPosX,Y,Z 拾取到的全局唯一空间中的位置，一般不使用
+      fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ 模型包围盒的坐标，一般不使用 -->
+    <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
+
+    </script>
+
+
+
+    <!--     选中锚点后，执行此事件
+    SelAnchorName 参数为锚点的名称 -->
+    <script for="RealBimOcx" event="OnAnchorSelected(SelAnchorName)" language='javascript'>
+
+     </script>
+
+
+     <!-- 左上角按钮点击后执行的事件。
+     eType为按钮的类型
+     uButtonMode为按钮的状态。 -->
+    <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
+
+
+        switch (eType) {
+
+            case "DISP_ISOLATE":    //点击隔离按钮触发此判断
+            {}
+            break;
+            case "DISP_HIDE":       //点击隐藏按钮触发此判断
+            {}
+            break;
+            case "ADD_ANCHOR":      //点击添加锚点按钮触发此判断
+            {}
+            break;
+            case "DISP_ANCHOR":     //点击显示锚点按钮触发此判断
+            {}
+            break;
+            case "DISP_TAG":        //点击透明模型按钮触发此判断
+            {}
+            break;
+            case "MARKER":          //点击添加标注按钮触发此判断
+            {}
+            break;
+            case "CAPTURE":         //点击屏幕快照按钮触发此判断
+            {}
+            break;
+            case "VIDEO":           //点击录屏按钮触发此判断
+            {}
+            break;
+
+
+        }
+    </script>
+
+
+
+    <!-- 快照按钮点击后，执行此事件
+    strPicData 保存图片 base64格式
+    strRenData 保存图片和渲染状态 base64格式（包括相机位置、模型状态等） -->
+    <script language="javascript" for="RealBimOcx" EVENT="SnapShootData(strPicData,picWidth,picHeight,strRenData)" type="text/javascript">
+
+    </script>
+
+
+    <!-- 标注保存后，执行此事件
+    strPicData 保存图片 base64格式
+    strRenData 保存截图和标注框和标注文字 base64格式 （包括相机位置、模型状态等） -->
+    <script language="javascript" for="RealBimOcx" EVENT="MarkerData(strPicData,picWidth,picHeight,strRenData)" type="text/javascript">
+
+    </script>
+
+
+</body>
+</html>

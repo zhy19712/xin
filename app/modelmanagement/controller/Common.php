@@ -103,7 +103,10 @@ class Common extends Controller
         $param = input('param.');
         $model_type = isset($param['model_type']) ? $param['model_type'] : 0; // 0 默认是 只查询选中节点已经关联的构件 1 已关联构件 2 未关联构件
         if($model_type == 0){
-            $search_data = ['q.unit_id'=>$id];
+            $search_data = ['q.unit_id'=>-1];
+            if($id){
+                $search_data = ['q.unit_id'=>$id];
+            }
         }else if($model_type == 1){
             $search_data = ['q.unit_id'=>['neq',0]];
         }else{

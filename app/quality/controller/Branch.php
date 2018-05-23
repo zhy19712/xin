@@ -506,7 +506,8 @@ class Branch extends Permissions
                 {
                     $search = [
                         "division_id"=>$param["division_id"],
-                        "ma_division_id"=>$param["ma_division_id"],
+                        "type"=>0,
+                        "ma_division_id"=>$param["ma_division_id"]
                     ];
                     $data = [
                         "checked"=>0
@@ -516,7 +517,8 @@ class Branch extends Permissions
                 {
                     $search = [
                         "division_id"=>$param["division_id"],
-                        "ma_division_id"=>0,
+                        "type"=>0,
+                        "ma_division_id"=>0
 
                     ];
                     $data = [
@@ -532,7 +534,8 @@ class Branch extends Permissions
                 {
                     $search = [
                         "division_id"=>$param["division_id"],
-                        "ma_division_id"=>$param["ma_division_id"],
+                        "type"=>0,
+                        "ma_division_id"=>$param["ma_division_id"]
 
                     ];
                     $data = [
@@ -542,7 +545,8 @@ class Branch extends Permissions
                 {
                     $search = [
                         "division_id"=>$param["division_id"],
-                        "ma_division_id"=>0,
+                        "type"=>0,
+                        "ma_division_id"=>0
                     ];
                     $data = [
                         "checked"=>1

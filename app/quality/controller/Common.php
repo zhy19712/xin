@@ -230,7 +230,7 @@ class Common extends Controller
         $path = $attachment["filepath"];
 
         $filePath = '.' . $path;
-        $fileName = $attachment['filename'];
+        $fileName = $attachment['name'];
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8", "gb2312", $fileName);

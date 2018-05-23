@@ -109,10 +109,10 @@ class  DivisionControlPointModel extends Model
         try {
             if($search["ma_division_id"] != 0)
             {
-                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id'],"ma_division_id"=>$search["ma_division_id"]]);
+                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id'],"ma_division_id"=>$search["ma_division_id"],"type"=>$search["type"]]);
             }else
             {
-                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id']]);
+                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id'],"type"=>$search["type"]]);
             }
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
@@ -134,10 +134,10 @@ class  DivisionControlPointModel extends Model
         try {
             if($search["ma_division_id"] != 0)
             {
-                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id'],"ma_division_id"=>$search["ma_division_id"]]);
+                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id'],"ma_division_id"=>$search["ma_division_id"],"type"=>$search["type"]]);
             }else
             {
-                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id']]);
+                $result = $this->allowField(true)->save($data, ['division_id' => $search['division_id'],"type"=>$search["type"]]);
             }
 
             if (false === $result) {

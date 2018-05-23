@@ -119,6 +119,8 @@ class Approve extends Permissions
      */
     public function CheckBeforeSubmitOrApprove($dataId, $dataType, $currentStep)
     {
+
+
         $res = $this->approveService->CheckBeforeSubmitOrApprove($dataId, new $dataType, $currentStep);
         return $res;
     }
@@ -180,13 +182,12 @@ class Approve extends Permissions
     public function approveProcedure()
     {
         if ($this->request->isAjax()) {
-            $post = input("post.");
-            $cp_id = $post['cp_id'];
-            $fi_id = $post['fi_id'];//form_info表中的主键，控制点不唯一
+            $param = input("param.");
+            $fi_id = $param['fi_id'];//form_info表中的主键，控制点不唯一
             //去quality_form_info表中查已审批完的表单,取出审批串和创建人
             $procedure =
                 Db::name('quality_form_info')
-                    ->where(['ControlPointId' => $cp_id, 'ApproveStatus' => 2, 'id' => $fi_id])
+                    ->where(['id' => $fi_id])
                     ->field('ApproveIds,user_id')
                     ->find();
             //去admin表中找出对应人信息

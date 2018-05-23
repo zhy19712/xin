@@ -226,8 +226,9 @@ class QualityFormInfoModel extends Model implements IApprove
     public function getAdminapproval($id)
     {
         try {
+            $where['ApproveStatus'] =array('in','1,2');
             //查询未审批
-            $data = $this->field("id,CurrentApproverId,ApproveIds,create_time,ApproveStatus,form_name,CurrentApproverId")->where(["CurrentApproverId"=>$id,"ApproveStatus"=>1,"ApproveStatus"=>2])->select();
+            $data = $this->field("id,CurrentApproverId,ApproveIds,create_time,ApproveStatus,form_name,CurrentApproverId")->where(["CurrentApproverId"=>$id])->where($where)->select();
             return $data;
         } catch (Exception $exception) {
             return null;
