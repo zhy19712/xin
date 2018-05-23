@@ -1,4 +1,5 @@
 var model_type; //模型类型： 1为竣工模型 2为施工模型
+var attachment_id; //保存文件编号
 //竣工模型表
 var completedTable = $('#completedTable').DataTable({
     pagingType: "full_numbers",
@@ -37,9 +38,9 @@ var completedTable = $('#completedTable').DataTable({
             "targets": [6],
             "render": function (data, type, row) {
                 var rowId = row[0];
-                var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view("+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile("+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
+                var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
                 return html;
             }
         }
@@ -106,9 +107,10 @@ var constructionTable = $('#constructionTable').DataTable({
             "orderable": false,
             "targets": [6],
             "render": function (data, type, row) {
-                var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view("+row[3]+")'><i title='查看' class='fa fa-pencil'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile("+row[3]+")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable("+row[3]+")'><i title='启用' class='fa fa-trash'></i></a>";
+                var rowId = row[0];
+                var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
                 return html;
             }
         }
@@ -195,8 +197,8 @@ function uploadModel() {
     });
     //模型上传成功
     uploader.on('uploadSuccess', function (file, response) {
-        console.log(response);
         $('#resource_name').val(file.name);
+        attachment_id = response.id;
     });
     //准备上传
     uploader.on("uploadStart",function () {
@@ -209,6 +211,7 @@ layui.use('form', function(){
     var form = layui.form;
     form.on('submit(save)', function(data){
         data.field.model_type = model_type;
+        data.field.attachment_id = attachment_id;
         $.ajax({
             url: "./add",
             type: "post",
@@ -232,9 +235,9 @@ function view(rowId) {
     layer.open({
         title:'新增模型',
         id:'1',
-        type:'1',
-        area:['600px','370px'],
-        content:$('#addModelLayer'),
+        type:'2',
+        area:['600px','500px'],
+        content:'./viewmodel.html',
         success:function () {
             uploadModel();
         },
@@ -244,7 +247,22 @@ function view(rowId) {
     });
 }
 //删除版本
-function delFile(rowId) {
+function delFile(that,rowId) {
+    layer.confirm('确认删除该模型版本?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: "./del",
+            type: "post",
+            data: {
+                major_key:rowId
+            },
+            dataType: "json",
+            success: function (res) {
+                $(that).parents('tr').remove();
+                layer.msg(res.msg);
+            }
+        });
+        layer.close(index);
+    });
 
 }
 //启用版本

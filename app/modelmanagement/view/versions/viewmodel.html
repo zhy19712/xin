@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="easyui-layout">
+    <div data-options="region:'center',title:''" style="padding:10px;">
+        <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
+        <!-- 初始化 -->
+        <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+            RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+            //RealBimOcx.SwitchBIMSceneSimple("F:\\","res_fengning_kw_03");
+            RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+            RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+            RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+        </script>
+        <!-- 初始化完成 -->
+        <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+            if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                RealBimOcx.SetAllHugeObjSubValidState(1);
+                RealBimOcx.SetSceHugeObjVisible(true);
+            }
+            RealBimOcx.SetSuitableCam();
+        </script>
+    </div>
+</body>
+</html>
