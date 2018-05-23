@@ -152,7 +152,7 @@
     // 选择审批人
     function selPeople() {
         if($("#approverDiv>div:nth-of-type(2)").html() != ""){
-            $("#selPeople").remove();
+            $("#selPeople").hide();
         }
         var index = layer.open({
             type: 2,
@@ -199,6 +199,7 @@
     function removeApprover(id) {
         $("#div" + id).remove();
         $("#img" + id).remove();
+        $("#selPeople").show();
     }
 
     // 关闭窗体

@@ -37,8 +37,8 @@ class VersionsModel extends Model
                 return ['code' => -1,'status'=>1, 'msg' => '不能禁用所有版本,至少保留一个版本为启用状态'];
             }
 
-            $result = $this->where(['id' => ['neq',$param['id']]])->update(['status'=>0]);
-            $result = $this->where(['id' => $param['id']])->update(['status'=>1]);
+            $result = $this->where(['id' => ['neq',$param['id']],'model_type'=>$data['model_type']])->update(['status'=>0]);
+            $result = $this->where(['id' => $param['id'],'model_type'=>$data['model_type']])->update(['status'=>1]);
 
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];

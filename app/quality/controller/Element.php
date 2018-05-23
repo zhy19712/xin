@@ -165,10 +165,14 @@ class Element extends Permissions
      */
     public function addExecution($cpr_id, $att_id, $filename, $type)
     {
-        $res = $this->uploadService->save(['contr_relation_id' => $cpr_id, 'attachment_id' => $att_id, 'data_name' => $filename, 'type' => $type]);
+        $data=['contr_relation_id' => $cpr_id, 'attachment_id' => $att_id, 'data_name' => $filename, 'type' => $type];
+        $res=Db::name('quality_upload')
+            ->insert($data);
         if ($res) {
             //更新控制点执行情况
-            $this->divisionControlPointService->save(['status' => 1], ['id' => $cpr_id]);
+           Db::name('quality_division_controlpoint_relation')
+               ->where(['id'=>$cpr_id])
+               ->update(['status'=>1]);
             return json(['code' => 1]);
         } else {
             return json(['code' => -1]);
@@ -194,7 +198,7 @@ class Element extends Permissions
             ->find();
         $qualitytemplateid = $norm_template['qualitytemplateid'];
         if ($qualitytemplateid == 0) {
-            return "控制点未进行模板关联";
+            return json(['code' => -1, 'msg' => '控制点未进行模板关联!']);
         }
         else
          {
@@ -476,59 +480,6 @@ class Element extends Permissions
         $limitFlag = isset($start) && $length != -1;
         //新建的方法名与数据库表名保持一致
         return $this->$table($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString);
-    }
-    public function quality_division_controlpoint_relation($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
-    {
-        //查询
-        //条件过滤后记录数 必要
-        $recordsFiltered = 0;
-        $recordsFilteredResult = array();
-        $par = array();
-        $par['type'] = 1;
-        $par['checked'] = 0;//0为被选中
-        $division_id = $this->request->param('division_id');
-        $unit_id = $this->request->param('unit_id');
-        $par['division_id']=$division_id;
-        $par['unit_id']=$unit_id;
-        if ($this->request->has('ma_division_id')) {
-            $par['ma_division_id'] = $this->request->param('ma_division_id');
-        }
-        //表的总记录数 必要
-        $recordsTotal = Db::name($table)->where($par)->count();
-        if (strlen($search) > 0) {
-            //有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('a')
-                    ->join('norm_controlpoint b', 'a.control_id=b.id', 'left')
-                    ->where($par)
-                    ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,a.checked,b.remark')
-                    ->order($order)->limit(intval($start), intval($length))->select();
-                $recordsFiltered = sizeof($recordsFilteredResult);
-            }
-        } else {
-            //没有搜索条件的情况
-            if ($limitFlag) {
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('a')
-                    ->join('norm_controlpoint b', 'a.control_id=b.id', 'left')
-                    ->where($par)
-                    ->field('a.id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id,a.checked,b.remark')
-                    ->order($order)->limit(intval($start), intval($length))->select();
-                $recordsFiltered = $recordsTotal;
-            }
-        }
-        $temp = array();
-        $infos = array();
-        foreach ($recordsFilteredResult as $key => $value) {
-            $length = sizeof($columns);
-            for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
-            }
-            $infos[] = $temp;
-            $temp = [];
-        }
-        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
     //检测管控中的控件能否使用
