@@ -114,8 +114,11 @@ class DivisionModel extends Model
                                 $insert_data[$k1]['control_id'] = $v1;
                                 $insert_data[$k1]['checked'] = 0;
                             }
-                            $rel = new DivisionControlPointModel();
-                            $rel->insertTbAll($insert_data);
+                            if(sizeof($insert_data)){
+                                $rel = new DivisionControlPointModel();
+                                $rel->insertTbAll($insert_data);
+                            }
+                            $insert_data = [];
                         }
                     }
                 }
