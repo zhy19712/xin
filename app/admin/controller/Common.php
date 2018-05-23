@@ -414,15 +414,16 @@ class Common extends Controller
             {
                 $form_info = $model->getOne($temp["6"]);
 
-//                $cpr_id = Db::name("quality_division_controlpoint_relation")
-//                    ->field("id")
-//                    ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
-//                    ->find();
-//                $form_data[$key]["cpr_id"] = $cpr_id["id"];
+                $cpr_id = Db::name("quality_division_controlpoint_relation")
+                    ->field("id")
+                    ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
+                    ->find();
+
+                $form_data["cpr_id"] = $cpr_id["id"];
 
                 $form_data["CurrentStep"] = $form_info["CurrentStep"];
 
-                $form_data["cpr_id"] = $form_info["ControlPointId"];
+//                $form_data["cpr_id"] = $form_info["cpr_id"];
 
                 array_push($temp, $form_data);
             }
