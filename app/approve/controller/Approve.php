@@ -59,12 +59,13 @@ class Approve extends Permissions
     public function Approve()
     {
         $par = input("param.");
-        $next_approverid=$par['next_approverid'];//下一个审批人的id
+
         if ($this->request->isAjax()) {
             if ($this->approveService->Approve($par['dataId'], new $par['dataType'], $par['res'], $par['mark'])) {
+                $next_approverid=$par['next_approverid'];//下一个审批人的id
                 Db::name('quality_form_info')
                     ->where(['id'=>$par['dataId']])
-                    ->update(['CurrentApproverId'=>$next_approverid]);
+                    ->update(['CurrentApproverId'=>$next_approverid,'ApproveStatus'=>1]);
                 return json(['code' => 1]);
             } else {
                 return json(['code' => -1]);
