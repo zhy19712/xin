@@ -16,7 +16,7 @@ use think\Session;
 
 /**
  * 模型版本管理
- * Class Configure
+ * Class Versions
  * @package app\modelmanagement\controller
  * @author hutao
  */
