@@ -212,13 +212,14 @@ function elval() {
         },
         dataType: "json",
         success: function (res) {
+            $('#tableItem_wrapper').find('div#modelInfo').remove();
             //起止高程/起止桩号模板
-            var Template =  '<div>' +
+            var Template =  '<div id="modelInfo">' +
                 '<p>起止高程：' +
-                '<span>'+ res +'</span>' +
+                '<span>'+ res.el_val +'</span>' +
                 '</p>' +
                 '<p>起止桩号：' +
-                '<span>'+ res +'</span>' +
+                '<span>'+ res.pile_number +'</span>' +
                 '</p>' +
                 '</div>';
             $('#tableItem_wrapper').prepend(Template);
