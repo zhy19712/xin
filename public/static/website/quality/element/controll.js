@@ -551,16 +551,16 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 
     testing(nodeUnitId,controlRowId,controlId);
     console.log(type)
-    if(type == 1){
-        $.ajax({
-            url:"/quality/element/copycheck",
-            data:{cpr_id:controlRowId},
-            type:'post',
-            success:function(res) {
-                console.log(res)
-            }
-        })
-    }
+    // if(type == 1){
+    //     $.ajax({
+    //         url:"/quality/element/copycheck",
+    //         data:{cpr_id:controlRowId},
+    //         type:'post',
+    //         success:function(res) {
+    //             console.log(res)
+    //         }
+    //     })
+    // }
 });
 
 //Testing管控中的控件能否使用
@@ -576,7 +576,15 @@ function testing(nodeUnit_id,cpr_id,control_id) {
         },
         success: function (res) {
             console.log(res);
-            if(res.msg != "fail"){
+            if(res.msg == "fail"){
+                $("option").attr('disabled',true);
+                layui.use(['form'], function(){
+                    var form = layui.form;
+                    form.render("select");
+                    $(".layui-input[readonly]").removeAttr('style', 'background: #FFFFFF !important');
+                    $("#date").attr({"disabled":true});
+                });
+            }else if(res.msg == "success"){
                 $("option").removeAttr('disabled');
                 layui.use(['form'], function(){
                     var form = layui.form;
@@ -724,26 +732,26 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
         , layer = layui.layer
         , layedit = layui.layedit
         , laydate = layui.laydate;
-    $("#test3").click(function () {
-        alert(3)
-    })
+    // $("#test3").click(function () {
+    //     alert(3)
+    // })
     upload.render({
         elem: '#test3',
         url: "/admin/common/upload?module=quality&use=element",
         accept:"file",
         // size:8192,
         before: function(obj){
-            $.ajax({
-                url:"/quality/element/copycheck",
-                data:{cpr_id:controlRowId},
-                type:'post',
-                success:function(res) {
-                    console.log(res)
-                    if(res.msg == "success"){
-                        alert("已上传对应扫描件，如想重新上传请先删除之前的扫描件!")
-                    }
-                }
-            })
+            // $.ajax({
+            //     url:"/quality/element/copycheck",
+            //     data:{cpr_id:controlRowId},
+            //     type:'post',
+            //     success:function(res) {
+            //         console.log(res)
+            //         if(res.msg == "success"){
+            //             alert("已上传对应扫描件，如想重新上传请先删除之前的扫描件!")
+            //         }
+            //     }
+            // })
             obj.preview(function(index, file, result){
                 uploadName = file.name;
                 console.log(file.name);//获取文件名，result就是base64
