@@ -51,7 +51,7 @@ var tableItem = $('#tableItem').DataTable( {
           var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conedit("+type+","+row[6]+")'>处理</a>" ;
         }else if(data == 2){
           //单元
-          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conedit("+type+","+row[5]+")'>处理</a>" ;
+          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conedit("+type+","+row[5]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>处理</a>" ;
         }
         return html;
       }
@@ -144,7 +144,7 @@ var tableItemDone = $('#tableItemDone').DataTable( {
           var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conshow("+type+","+row[6]+")'>查看</a>" ;
         }else if(data == 2){
           //单元
-          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conshow("+type+","+row[5]+")'>查看</a>" ;
+          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conshow("+type+","+row[5]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>查看</a>" ;
         }
         return html;
       }
@@ -202,7 +202,7 @@ console.log(arguments); //0 为type
       title: '在线填报',
       shadeClose: true,
       area: ['980px', '90%'],
-      content: '/quality/Qualityform/edit?cpr_id=42&unit_id='+arguments[0]+'&currentStep=0&isView=true',
+      content: '/quality/Qualityform/edit?cpr_id='+arguments[2]+'&id='+arguments[1]+'&currentStep='+arguments[3]+'&isView=true',
       success:function () {
         $('.layui-layer-shade').empty();
       }
@@ -231,8 +231,8 @@ console.log(arguments); //0 为type
         var rowData = '';
         for (var i=0;i<attachment.length;i++){
           rowData +='<tr><td>'+attachment[i].name+'</td><td >';
-          rowData +='<a href="javascript:;"  class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
-          rowData +='<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
+          rowData +='<a   class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
+          rowData +='<a  class="layui-btn layui-btn-primary layui-btn-xs" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
         }
         $("#add_table_files tbody").empty().append(rowData);
       }
@@ -253,14 +253,14 @@ console.log(arguments); //0 为type
 
 //点击查看
 function conshow(){
-
+  console.log(arguments); //0 为type
   if( arguments[0] == 2){
     layer.open({
       type: 2,
       title: '在线填报',
       shadeClose: true,
       area: ['980px', '90%'],
-      content: '/quality/Qualityform/edit?cpr_id=10&id=18&currentStep=1&isView=false',
+      content: '/quality/Qualityform/edit?cpr_id='+arguments[2]+'&id='+arguments[1]+'&currentStep='+arguments[3]+'&isView=True',
       success:function () {
         $('.layui-layer-shade').empty();
       }
@@ -287,8 +287,8 @@ function conshow(){
         var rowData = '';
         for (var i=0;i<attachment.length;i++){
           rowData +='<tr><td>'+attachment[i].name+'</td><td >';
-          rowData +='<a href="javascript:;"  class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
-          rowData +='<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
+          rowData +='<a   class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
+          rowData +='<a  class="layui-btn layui-btn-primary layui-btn-xs" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
         }
         $("#add_table_files tbody").empty().append(rowData);
       }
