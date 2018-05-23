@@ -724,7 +724,7 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
         , layer = layui.layer
         , layedit = layui.layedit
         , laydate = layui.laydate;
-    $("test3").click(function () {
+    $("#test3").click(function () {
         alert(3)
     })
     upload.render({

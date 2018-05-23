@@ -53,6 +53,13 @@ class VersionsModel extends Model
     public function deleteTb($id)
     {
         try {
+            $data = $this->getOne($id);
+            if($data['resource_path']){
+                $file_path = 'E:\WebServer'.$data['resource_path'];
+                if(file_exists($file_path)){
+                    unlink($file_path);
+                }
+            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'msg' => '删除成功'];
         } catch (PDOException $e) {
@@ -75,7 +82,7 @@ class VersionsModel extends Model
             $arr = explode('.',$data['version_number']);
             $num = $arr[1] + 1;
             if($num <= 9){
-                $version_number = $arr[0] . $num;
+                $version_number = $arr[0] . '.' . $num;
             }else{
                 $new_arr = explode('V',$arr[0]);
                 $version_number = 'V' . ($new_arr[0]+1) . '.0';
@@ -83,4 +90,14 @@ class VersionsModel extends Model
         }
         return $version_number;
     }
+
+    public function isOnly($id)
+    {
+        $data = $this->getOne($id);
+        $count = $this->where(['model_type'=>$data['model_type']])->count();
+        if($count == 1){
+            return ['code' => -1,'msg' => '当前版本是唯一的,不能删除'];
+        }
+    }
+
 }
