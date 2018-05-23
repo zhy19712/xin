@@ -158,7 +158,14 @@ class Versions extends Permissions
             if(empty($major_key)){
 
                 /**
-                 * 1 竣工模型 -- 全景3D模型 操作的表是
+                 * 1 竣工模型 -- 全景3D模型 操作的表是 model_complete
+                 * 当新增时，首先解压缩，存在2个txt文件
+                 * 读取txt1 文件 里面有3个值 [模型id 组名-id 版本号]
+                 *
+                 * 例如 0 大坝
+                 *
+                 *
+                 * 读取txt1 文件 里面有3个值 [模型id 组名-id 版本号]
                  *
                  * 2 施工模型 -- 质量模型 操作的表是 model_quality
                  *

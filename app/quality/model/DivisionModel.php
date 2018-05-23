@@ -354,7 +354,7 @@ class DivisionModel extends Model
                     }
                     foreach ($unit as $u) {
                         if ($vo['id'] == $u['division_id']) {
-                            $str .= '{ "id": "' . $u['id'] . '", "pId":"' . $vo['id'] . '", "name":"' . $u['site'] . '"' . ',"add_id":"' . $u['id'] . '"' ;
+                            $str .= '{ "tid": "' . $u['id'] . '", "pId":"' . $vo['id'] . '", "name":"' . $u['site'] . '"' . ',"add_id":"' . $u['id'] . '"' ;
                             $str .= '},';
                         }
                     }

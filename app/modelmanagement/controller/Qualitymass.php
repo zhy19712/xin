@@ -16,7 +16,7 @@ use app\quality\model\DivisionUnitModel;
 
 /**
  * 质量模型
- * Class Qualitymass
+ * Class qualitymass
  * @package app\modelmanagement\controller
  * @author hutao
  */
@@ -135,7 +135,7 @@ class Qualitymass extends Permissions
             // 传递 选中节点的 add_id 和 选中的构件 编号数组 id_arr
             $id = input('add_id');
             $id_arr = input('id_arr/a');
-            if(sizeof($id_arr)){
+            if(!sizeof($id_arr)){
                 return json(['code'=>-1,'msg'=>'缺少构件的编号']);
             }
             $node = new QualitymassModel();

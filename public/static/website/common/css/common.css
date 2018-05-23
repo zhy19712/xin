@@ -204,8 +204,8 @@ table.dataTable.no-footer{
 
 /* 父节点checkbox图标 */
 .eye li span.button.chk{
-    width: 22px;
-    height: 18px;
+    width: 18px;
+    height: 12px;
     cursor: pointer;
 }
 .eye li span.button.chk.checkbox_false_part{
@@ -257,4 +257,11 @@ table.dataTable.no-footer{
     border: 1px solid #e6e6e6;
     border-bottom: 1px solid #fff;
     background: #fff;
+}
+/* checkbox美化 */
+.checkbox{
+    width: 18px;
+    height: 18px;
+    border: 0;
+    background: url("../images/checkbox.png") no-repeat center center;
 }
