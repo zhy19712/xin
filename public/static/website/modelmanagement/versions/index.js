@@ -1,3 +1,4 @@
+var model_type; //模型类型： 1为竣工模型 2为施工模型
 //竣工模型表
 var completedTable = $('#completedTable').DataTable({
     pagingType: "full_numbers",
@@ -140,32 +141,33 @@ $('#addBtn').html('新增');
 //切换模型表
 $('#tt').tabs({
     onSelect: function(title,index){
+        //切换至竣工模型表
         if(index==0){
+            model_type = 1;
             completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
         }
+        //切换至施工模型表
         if(index==1){
+            model_type = 2;
             constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
         }
     }
 });
 
-//新增模型
+//打开新增模型弹层
 $('#addBtn').click(function () {
-    layer.open({
+    index = layer.open({
         title:'新增模型',
         id:'1',
         type:'1',
-        area:['600px','400px'],
+        anim:'4',
+        area:['600px','350px'],
         content:$('#addModelLayer'),
-        btn:['保存','关闭'],
         success:function () {
             uploadModel();
         },
-        yes:function () {
-            layer.close(layer.index);
-        },
-        cancel: function(index, layero){
-            layer.close(layer.index);
+        cancel: function(index){
+            layer.close(index);
         }
     });
 });
@@ -202,9 +204,44 @@ function uploadModel() {
     });
 }
 
+//保存模型
+layui.use('form', function(){
+    var form = layui.form;
+    form.on('submit(save)', function(data){
+        data.field.model_type = model_type;
+        $.ajax({
+            url: "./add",
+            type: "post",
+            data: data.field,
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        })
+        return false;
+    });
+});
+
+//关闭新增模型弹层
+$('#close').click(function(){
+    layer.close(index);
+});
+
 //查看版本
 function view(rowId) {
-
+    layer.open({
+        title:'新增模型',
+        id:'1',
+        type:'1',
+        area:['600px','370px'],
+        content:$('#addModelLayer'),
+        success:function () {
+            uploadModel();
+        },
+        cancel: function(index, layero){
+            layer.close(layer.index);
+        }
+    });
 }
 //删除版本
 function delFile(rowId) {

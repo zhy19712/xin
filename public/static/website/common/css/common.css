@@ -194,7 +194,6 @@ table.dataTable.no-footer{
     line-height: 30px;
 }
 .layui-layer-content .layui-form-item:last-child .layui-input-block{
-    margin-right: 30px;
     min-height: 30px;
     text-align: right;
 }
@@ -244,6 +243,7 @@ table.dataTable.no-footer{
 }
 .tabs-header{
     padding: 0;
+    background-color: #fff;
     background-color: #fff;
 }
 .tabs li a.tabs-inner{
