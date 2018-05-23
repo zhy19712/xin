@@ -196,7 +196,11 @@ function formSave() {
         success: function (data) {
             if (data.result === "Faild") {
                 alert("保存失败。");
-            } else {
+            }
+            else if(data.result === "Refund") {
+                alert("已经有对应文件。");
+            }
+            else {
                 $("#id").val(data.result);
                 if (saveStyle === 0)
                     parent.layer.closeAll();
