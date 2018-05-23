@@ -440,7 +440,12 @@ function del(that) {
         tableItem:tableItem,
         that:that,
         ajaxUrl:'../division/delUnit',
-        tablePath:'/quality/common/datatablesPre?tableName=quality_unit&edit_id='+ window.nodeId +''
+        tablePath:'/quality/common/datatablesPre?tableName=quality_unit&id='+ window.nodeId +'',
+        others:function () {
+            $(".imgList").css("display","none");
+            tpyeTable();
+            tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id=").load();
+        }
     });
 }
 
@@ -484,9 +489,6 @@ function tpyeTable() {
                 name: "id"
             },
             {
-                name: "unit_id"
-            },
-            {
                 name: "division_id"
             }
         ],
@@ -526,12 +528,6 @@ function tpyeTable() {
                 "targets": [4],
                 "visible": false
             },
-            {
-                "searchable": false,
-                "orderable": false,
-                "targets": [5],
-                "visible": false
-            }
         ],
         language: {
             "zeroRecords": "没有找到记录",
@@ -597,6 +593,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     if($(e.target).hasClass("dataTables_empty")){
         return;
     }
+    var tableItem = $('#tableItem').DataTable();
     $(this).addClass("select-color").siblings().removeClass("select-color");
     selectData = tableItem.row(".select-color").data();//获取选中行数据
     console.log(selectData[7] +" ------选中的行id");
@@ -618,7 +615,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".listName").css("display","block");
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-
+    $("#all_checked_plan").attr("checked",true);
 });
 
 //获取控制点name

@@ -1,3 +1,5 @@
+var model_type; //模型类型： 1为竣工模型 2为施工模型
+var attachment_id; //保存文件编号
 //竣工模型表
 var completedTable = $('#completedTable').DataTable({
     pagingType: "full_numbers",
@@ -6,7 +8,7 @@ var completedTable = $('#completedTable').DataTable({
     ajax: {
         "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management"
     },
-    dom: 'lf<"#addBtn.layui-btn layui-btn-sm layui-btn-normal btn-right">rtip',
+    dom: 'lf<".addBtn layui-btn layui-btn-sm layui-btn-normal btn-right">rtip',
     columns: [
         {
             name: "id"
@@ -36,9 +38,9 @@ var completedTable = $('#completedTable').DataTable({
             "targets": [6],
             "render": function (data, type, row) {
                 var rowId = row[0];
-                var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view("+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile("+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
+                var html = "<a type='button' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
                 return html;
             }
         }
@@ -66,7 +68,7 @@ var completedTable = $('#completedTable').DataTable({
     }*/
 });
 
-$('#addBtn').html('新增');
+$('.addBtn').html('新增');
 
 //施工模型表
 var constructionTable = $('#constructionTable').DataTable({
@@ -76,7 +78,7 @@ var constructionTable = $('#constructionTable').DataTable({
     ajax: {
         "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management"
     },
-    dom: 'lf<"#addBtn.layui-btn layui-btn-sm layui-btn-normal btn-right">rtip',
+    dom: 'lf<".addBtn layui-btn layui-btn-sm layui-btn-normal btn-right">rtip',
     columns: [
         {
             name: "id"
@@ -105,9 +107,10 @@ var constructionTable = $('#constructionTable').DataTable({
             "orderable": false,
             "targets": [6],
             "render": function (data, type, row) {
-                var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view("+row[3]+")'><i title='查看' class='fa fa-pencil'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile("+row[3]+")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable("+row[3]+")'><i title='启用' class='fa fa-trash'></i></a>";
+                var rowId = row[0];
+                var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
                 return html;
             }
         }
@@ -135,37 +138,38 @@ var constructionTable = $('#constructionTable').DataTable({
     }*/
 });
 
-$('#addBtn').html('新增');
+$('.addBtn').html('新增');
 
 //切换模型表
 $('#tt').tabs({
     onSelect: function(title,index){
+        //切换至竣工模型表
         if(index==0){
-            completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
+            model_type = 1;
+            completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type='+ model_type +'').load();
         }
+        //切换至施工模型表
         if(index==1){
-            constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
+            model_type = 2;
+            constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type='+ model_type +'').load();
         }
     }
 });
 
-//新增模型
-$('#addBtn').click(function () {
-    layer.open({
+//打开新增模型弹层
+$('.addBtn').click(function () {
+    index = layer.open({
         title:'新增模型',
         id:'1',
-        type:'1',
-        area:['600px','400px'],
+        type:1,
+        anim:'4',
+        area:['600px','350px'],
         content:$('#addModelLayer'),
-        btn:['保存','关闭'],
         success:function () {
             uploadModel();
         },
-        yes:function () {
-            layer.close(layer.index);
-        },
-        cancel: function(index, layero){
-            layer.close(layer.index);
+        cancel: function(index){
+            layer.close(index);
         }
     });
 });
@@ -193,24 +197,116 @@ function uploadModel() {
     });
     //模型上传成功
     uploader.on('uploadSuccess', function (file, response) {
-        console.log(response);
         $('#resource_name').val(file.name);
+        attachment_id = response.id;
     });
     //准备上传
     uploader.on("uploadStart",function () {
-        uploader.options.formData.model_type = 1;
+        uploader.options.formData.model_type = model_type;
     });
 }
 
+//保存模型
+layui.use('form', function(){
+    var form = layui.form;
+    form.on('submit(save)', function(data){
+        data.field.model_type = model_type;
+        data.field.attachment_id = attachment_id;
+        $.ajax({
+            url: "./add",
+            type: "post",
+            data: data.field,
+            dataType: "json",
+            success: function (res) {
+                if(model_type==1){
+                    completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
+                }
+                if(model_type==2){
+                    constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
+                }
+                layer.msg(res.msg);
+                layer.close(index);
+            }
+        })
+        return false;
+    });
+});
+
+//关闭新增模型弹层
+$('#close').click(function(){
+    layer.close(index);
+});
+
 //查看版本
 function view(rowId) {
+    layer.open({
+        title:'查看模型',
+        id:'2',
+        type:2,
+        area:['1024px','600px'],
+        content:['./viewmodel','no'],
+        success:function () {
+            var body = layer.getChildFrame('body', index);
+            console.log(body.html());
+            /*$.ajax({
+                url: "./viewModel",
+                type: "post",
+                data: {},
+                dataType: "json",
+                success: function (res) {
 
+                }
+            })*/
+        },
+        cancel: function(index, layero){
+            layer.close(layer.index);
+        }
+    });
 }
 //删除版本
-function delFile(rowId) {
+function delFile(that,rowId) {
+    layer.confirm('确认删除该模型版本?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: "./del",
+            type: "post",
+            data: {
+                major_key:rowId
+            },
+            dataType: "json",
+            success: function (res) {
+                $(that).parents('tr').remove();
+                layer.msg(res.msg);
+                if(model_type==1){
+                    completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
+                }
+                if(model_type==2){
+                    constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
+                }
+            }
+        });
+        layer.close(index);
+    });
 
 }
 //启用版本
-function enable(rowId) {
-    
+function enable(that,rowId) {
+    var status = $(that).attr('status');
+    if(status==1){
+        return false;
+    }else{
+        $('a[type="button"][status]').attr('status',0); //0为禁用版本
+        $(that).attr('status',1);   //1为启用版本
+    }
+    $.ajax({
+        url: "./enabledORDisable",
+        type: "post",
+        data: {
+            major_key:rowId,
+            status:status
+        },
+        dataType: "json",
+        success: function (res) {
+            layer.msg(res.msg);
+        }
+    })
 }
