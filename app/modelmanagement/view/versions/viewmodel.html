@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>丰宁BIM协同管理平台</title>
+    <link rel="stylesheet" href="__PUBLIC__/easyui/easyui.css">
+</head>
+<body  class="easyui-layout" id="easyuiLayout">
+<div data-options="region:'center'" class="layer-center">
+    <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="99.5%"></object>
+    <!-- 初始化 -->
+    <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+        RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+        RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+        RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+        RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+    </script>
+    <!-- 初始化完成 -->
+    <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+        if(CompleteEvent == "LoadMainScene" && retError==0 ){
+            RealBimOcx.SetAllHugeObjSubValidState(1);
+            RealBimOcx.SetSceHugeObjVisible(true);
+            RealBimOcx.SetSysUIRgnVisible("lt",0);
+        }
+        RealBimOcx.SetSuitableCam();
+    </script>
+</div>
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<script src="__PUBLIC__/easyui/jquery.easyui.min.js"></script>
+</body>
+</html>
