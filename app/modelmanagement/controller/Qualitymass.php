@@ -31,7 +31,7 @@ class Qualitymass extends Permissions
     {
         if(request()->isAjax()){
             // 传递 node_type 1 已关联节点 2 未关联节点 不传递默认0查询全部
-            $param = input('post.');
+            $param = input('get.');
             $node_type = isset($param['node_type']) ? $param['node_type'] : 0;
             $node = new DivisionModel();
             if($node_type==1){
@@ -154,7 +154,7 @@ class Qualitymass extends Permissions
         if(request()->isAjax()){
             // 传递 选中的构件 编号数组 id_arr
             $id_arr = input('id_arr/a');
-            if(sizeof($id_arr)){
+            if(!sizeof($id_arr)){
                 return json(['code'=>-1,'msg'=>'缺少构件的编号']);
             }
             $node = new QualitymassModel();
