@@ -80,8 +80,8 @@ class Qualityform extends Permissions
         $res= Db::name('quality_division_controlpoint_relation')
             ->where(['id'=>$cpr_id])
             ->find();
-        $unit_id=$res['unit_id'];
-        $htmlContent = $this->setFormInfo($cp['unit_id'], $htmlContent);
+        $unit_id=$res['division_id'];
+        $htmlContent = $this->setFormInfo($unit_id, $htmlContent);
 
         //获取表单基本信息
         $formdata = "";
