@@ -1496,9 +1496,9 @@ class Common extends Controller
                 $wherenm='';
             }
             //是否有传入check判断（区分单元测评/单元管控）
-            if($this->request->has('nm_id'))
+            if($this->request->has('checked_gk'))
             {
-                $wherech['r.checked']=$param['checked'];
+                $wherech['r.checked']=$param['checked_gk'];//检查是否是管控传来模块
             }
             else{
                 $wherech='';
