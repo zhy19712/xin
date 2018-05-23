@@ -161,6 +161,7 @@ class Qualityform extends Permissions
             $mod['TemplateId'] = $dto['TemplateId'];
             $mod['form_name'] = $dto['FormName'];
             $mod['form_data'] = serialize($dto['QualityFormDatas']);
+            $mod['CurrentStep']=0;//初始化状态0
             if (empty($dto['Id'])) {
                 $mod['user_id'] = Session::get('current_id');
                 $mod['create_time'] = time();
