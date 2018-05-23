@@ -3,6 +3,8 @@ tableItem = $("#tableIncome").DataTable({
     processing: true,
     serverSide: true,
     ordering: true,
+    scrollY: "486px",
+    scrollCollapse: true,
     ajax: {
         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=1",
     },
@@ -39,7 +41,7 @@ tableItem = $("#tableIncome").DataTable({
             }
         }
     ],
-    dom: 'frtp',
+    dom: 'frt<"#pagenations"lp>',
     language: {
         "sProcessing":"数据加载中...",
         "lengthMenu": "_MENU_",

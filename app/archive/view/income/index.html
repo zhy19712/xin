@@ -17,14 +17,27 @@
     #fileOperation button{
         width: 90px;
     }
-    #tableIncome_paginate,#tableFileList_paginate{
+    input:disabled{
+        cursor: pointer!important;
+    }
+    textarea{
+        cursor: pointer!important;
+    }
+    #tableIncome_wrapper{
+        height: 100%;
+    }
+    #pagenations{
+        position: absolute;
+        bottom: 0;
+    }
+    #tableFileList_paginate{
         width: 100%;
         text-align: center;
         padding-top: 20px;
     }
 </style>
-<div class="layui-fluid">
-    <div class="layui-row">
+<div class="layui-fluid" style="height: 100%">
+    <div class="layui-row" style="height: 100%">
         <table id="tableIncome" class="layui-table" cellspacing="0"  width="100%">
             <thead>
             <tr>

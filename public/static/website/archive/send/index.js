@@ -8,6 +8,8 @@ tableIncome = $("#tableIncome").DataTable({
     processing: false,
     serverSide: true,
     ordering: true,
+    scrollY: "486px",
+    scrollCollapse: true,
     ajax: {
         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
     },
@@ -49,7 +51,7 @@ tableIncome = $("#tableIncome").DataTable({
             }
         }
         ],
-    dom: 'fr<"#addSend.mybtn layui-btn layui-btn-md">tp',
+    dom: 'fr<"#addSend.mybtn layui-btn layui-btn-md">t<"#pagenations"lp>',
     language: {
         "sProcessing":"数据加载中...",
         "lengthMenu": "_MENU_",
@@ -427,6 +429,8 @@ function incomeZtree() {
 function incomeInfo() {
     $.datatable({
         ordering: true,
+        scrollY: "250px",
+        scrollCollapse: true,
         ajax: {
             "url":"/admin/common/datatablesPre?tableName=admin"
         },
@@ -501,6 +505,8 @@ function incomeFile() {
     tableFile = $("#tableFileList").DataTable({
         serverSide: true,
         ordering: true,
+        scrollY: "320px",
+        scrollCollapse: true,
         ajax: {
             "url":"/archive/common/datatablesPre?tableName=archive_income_send&table_type=3"
         },
@@ -526,7 +532,7 @@ function incomeFile() {
             },
         ],
         "destroy": true,
-        dom: 'frtp',
+
         language: {
             "sProcessing":"数据加载中...",
             "lengthMenu": "_MENU_",
@@ -541,7 +547,8 @@ function incomeFile() {
                 "sNext": ">",
                 "sLast": ">>"
             }
-        }
+        },
+        dom: 'frt<"#filePagnation"lp>',
     });
 }
 //选择关联文件
