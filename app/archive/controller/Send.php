@@ -175,7 +175,7 @@ class Send extends Permissions
         if(empty($file_id)){
             return json(['code' => '-1','msg' => '编号为空']);
         }
-        $file_obj = Db::name('attachment')->where('id',$file_id)->field('filename,filepath')->find();
+        $file_obj = Db::name('attachment')->where('id',$file_id)->field('name,filepath')->find();
         $filePath = '';
         if(!empty($file_obj['filepath'])){
             $filePath = '.' . $file_obj['filepath'];
@@ -185,7 +185,7 @@ class Send extends Permissions
         }else if(request()->isAjax()){
             return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
         }else{
-            $fileName = $file_obj['filename'];
+            $fileName = $file_obj['name'];
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
