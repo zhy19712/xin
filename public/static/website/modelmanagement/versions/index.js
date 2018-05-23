@@ -40,7 +40,7 @@ var completedTable = $('#completedTable').DataTable({
                 var rowId = row[0];
                 var html = "<a type='button' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
                 html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
                 return html;
             }
         }
@@ -110,7 +110,7 @@ var constructionTable = $('#constructionTable').DataTable({
                 var rowId = row[0];
                 var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
                 html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
+                html += "<a type='button' class='' style='margin-left: 5px;' status='0' onclick='enable(this,"+ rowId +")'><i title='启用' class='fa fa-trash'></i></a>";
                 return html;
             }
         }
@@ -276,6 +276,12 @@ function delFile(that,rowId) {
             success: function (res) {
                 $(that).parents('tr').remove();
                 layer.msg(res.msg);
+                if(model_type==1){
+                    completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
+                }
+                if(model_type==2){
+                    constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
+                }
             }
         });
         layer.close(index);
@@ -283,6 +289,24 @@ function delFile(that,rowId) {
 
 }
 //启用版本
-function enable(rowId) {
-    
+function enable(that,rowId) {
+    var status = $(that).attr('status');
+    if(status==1){
+        return false;
+    }else{
+        $('a[type="button"][status]').attr('status',0); //0为禁用版本
+        $(that).attr('status',1);   //1为启用版本
+    }
+    $.ajax({
+        url: "./enabledORDisable",
+        type: "post",
+        data: {
+            major_key:rowId,
+            status:status
+        },
+        dataType: "json",
+        success: function (res) {
+            layer.msg(res.msg);
+        }
+    })
 }
