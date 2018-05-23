@@ -218,12 +218,23 @@ class Library extends Permissions
      * @param $id
      * @return \think\response\Json
      */
-    public function delcontrolpoint($id)
+    public function delcontrolpoint()
     {
-        if (ControlPoint::destroy($id)) {
-            return json(['code' => 1]);
-        } else {
-            return json(['code' => -1]);
+        if(request()->isAjax()){
+            //实例化model类型
+            $model = new ControlPoint();
+
+            $param = input('post.');
+
+            //查询所属的工序
+
+            $procedureid = $model->getOne($param["id"]);
+
+            $param["ma_division_id"] = $procedureid["procedureid"];
+
+            $flag = $model->delTb($param);
+
+            return json($flag);
         }
     }
 

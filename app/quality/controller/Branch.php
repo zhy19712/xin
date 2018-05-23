@@ -106,7 +106,7 @@ class Branch extends Permissions
      */
     public function getControlPoint()
     {
-        $data = Db::name('norm_materialtrackingdivision')->group("id,name")->field("id,name")->where(['type'=>2,'cat'=>3])->select();
+        $data = Db::name('norm_materialtrackingdivision')->group("id,name")->order("sort_id asc")->field("id,name")->where(['type'=>2,'cat'=>3])->select();
         if(!empty($data))
         {
             return json(['code'=>1,'data'=>$data]);

@@ -20,6 +20,7 @@ use app\quality\model\QualityFormInfoModel;
 use think\Exception;
 use think\Request;
 use think\Session;
+use think\Db;
 
 /**
  * 在线填报
@@ -76,7 +77,11 @@ class Qualityform extends Permissions
 
         //输出模板内容
         //Todo 暂时使用replace替换，后期修改模板使用fetch自定义模板渲染
-        $htmlContent = $this->setFormInfo($cp['division_id'], $htmlContent);
+        $res= Db::name('quality_division_controlpoint_relation')
+            ->where(['id'=>$cpr_id])
+            ->find();
+        $unit_id=$res['unit_id'];
+        $htmlContent = $this->setFormInfo($cp['unit_id'], $htmlContent);
 
         //获取表单基本信息
         $formdata = "";
@@ -147,10 +152,10 @@ class Qualityform extends Permissions
     {
         try {
             $mod = array();
+
             $mod['DivisionId'] = $dto['DivisionId'];
             $mod['ProcedureId'] = $dto['ProcedureId'];
             $mod['ControlPointId'] = $dto['ControlPointId'];
-            $mod['unit_id']=$dto['unit_id'];
             $mod['IsInspect'] = $dto['IsInspect'];
             $mod['TemplateId'] = $dto['TemplateId'];
             $mod['form_name'] = $dto['FormName'];
@@ -167,6 +172,12 @@ class Qualityform extends Permissions
         } catch (Exception $exception) {
             return json(['result' => 'Faild']);
         }
+    }
+
+    public function QalityFormAttachment($cpr_id)
+    {
+        $this->assign('cpr_id', $cpr_id);
+        return $this->fetch();
     }
 
     /**

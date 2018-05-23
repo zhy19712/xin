@@ -16,7 +16,7 @@ use think\Session;
 
 /**
  * 模型版本管理
- * Class Configure
+ * Class Versions
  * @package app\modelmanagement\controller
  * @author hutao
  */
@@ -35,6 +35,16 @@ class Versions extends Permissions
            return json(['code'=>1,'data'=>$data,'msg'=>'模型版本']);
        }
         return $this->fetch();
+    }
+
+    /**
+     * 查看模型
+     * @return mixed
+     * @author hutao
+     */
+    public function viewModel()
+    {
+        return $this->fetch('viewmodel');
     }
 
     /**
@@ -104,16 +114,15 @@ class Versions extends Permissions
     {
         if($this->request->isAjax()){
             // 前台需要传递的参数有:
-            // model_type 1 竣工模型 2 施工模型  resource_name 资源包名称  resource_path 资源路径 version_number 版本 version_date 版本日期 remake 模型备注
+            // model_type 1 竣工模型 2 施工模型  resource_name 资源包名称 remake 模型备注 attachment_id 文件编号
+
             // 当编辑时,要多传递 主键编号 major_key
             $param = input('param.');
             // 验证规则
             $rule = [
                 ['model_type', 'require', '缺少类型参数'],
                 ['resource_name', 'require', '缺少资源包名称'],
-                ['resource_path', 'require', '缺少资源路径'],
-                ['version_number', 'require', '请填写版本'],
-                ['version_date', 'require', '请填写版本日期']
+                ['attachment_id', 'require', '缺少资源包编号']
             ];
             $validate = new \think\Validate($rule);
             //验证部分数据合法性
@@ -123,6 +132,13 @@ class Versions extends Permissions
 
             $send = new VersionsModel();
             $major_key = isset($param['major_key']) ? $param['major_key'] : 0;
+
+            // 系统自动生成参数
+            //  resource_path 资源路径 version_number 版本 version_date 版本日期
+            $param['resource_path'] = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('filepath');
+            $version_number = $send->versionNumber();
+            $param['version_number'] = $version_number;
+            $param['version_date'] = date('Y-m-d H:i:s');
 
             if(empty($major_key)){
                 $flag = $send->insertTb($param);

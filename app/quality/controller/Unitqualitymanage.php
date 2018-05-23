@@ -75,7 +75,7 @@ class Unitqualitymanage extends Permissions
      */
     public function productionProcesses()
     {
-        $data = Db::name('norm_materialtrackingdivision')->group("id,name")->field("id,name")->where(['type'=>2,'cat'=>2])->select();
+        $data = Db::name('norm_materialtrackingdivision')->group("id,name")->order("sort_id asc")->field("id,name")->where(['type'=>2,'cat'=>2])->select();
         if(!empty($data))
         {
             return json(['code'=>1,'data'=>$data]);
@@ -522,47 +522,47 @@ class Unitqualitymanage extends Permissions
      * @throws \think\exception\DbException
      * @author hutao
      */
-//    public function relationPreview()
-//    {
-//        // 前台 传递 id 编号
-//        $param = input('post.');
-//        $id = isset($param['id']) ? $param['id'] : 0;
-//        if($id  == 0){
-//            return json(['code' => 1,  'path' => '', 'msg' => '编号有误']);
-//        }
-//        if(request()->isAjax()) {
-//            $code = 1;
-//            $msg = '预览成功';
-//            $data = Db::name('quality_upload')->alias('q')
-//                ->join('attachment a','a.id=q.attachment_id','left')
-//                ->where('q.id',$id)->field('a.filepath')->find();
-//            if(!$data['filepath'] || !file_exists("." .$data['filepath'])){
-//                return json(['code' => '-1','msg' => '文件不存在']);
-//            }
-//            $path = $data['filepath'];
-//            $extension = strtolower(get_extension(substr($path,1)));
-//            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-//            if(!file_exists($pdf_path)){
-//                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
-//                    doc_to_pdf($path);
-//                }else if($extension === 'xls' || $extension === 'xlsx'){
-//                    excel_to_pdf($path);
-//                }else if($extension === 'ppt' || $extension === 'pptx'){
-//                    ppt_to_pdf($path);
-//                }else if($extension === 'pdf'){
-//                    $pdf_path = $path;
-//                }else if($extension === "jpg" || $extension === "png" || $extension === "jpeg"){
-//                    $pdf_path = $path;
-//                }else {
-//                    $code = 0;
-//                    $msg = '不支持的文件格式';
-//                }
-//                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
-//            }else{
-//                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
-//            }
-//        }
-//    }
+   public function relationPreview()
+   {
+      // 前台 传递 id 编号
+       $param = input('post.');
+       $id = isset($param['id']) ? $param['id'] : 0;
+       if($id  == 0){
+          return json(['code' => 1,  'path' => '', 'msg' => '编号有误']);
+       }
+        if(request()->isAjax()) {
+           $code = 1;
+           $msg = '预览成功';
+            $data = Db::name('quality_upload')->alias('q')
+                ->join('attachment a','a.id=q.attachment_id','left')
+                ->where('q.id',$id)->field('a.filepath')->find();
+            if(!$data['filepath'] || !file_exists("." .$data['filepath'])){
+               return json(['code' => '-1','msg' => '文件不存在']);
+            }
+            $path = $data['filepath'];
+           $extension = strtolower(get_extension(substr($path,1)));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(!file_exists($pdf_path)){
+                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                    doc_to_pdf($path);
+                }else if($extension === 'xls' || $extension === 'xlsx'){
+                   excel_to_pdf($path);
+               }else if($extension === 'ppt' || $extension === 'pptx'){
+                   ppt_to_pdf($path);
+                }else if($extension === 'pdf'){
+                   $pdf_path = $path;
+                }else if($extension === "jpg" || $extension === "png" || $extension === "jpeg"){
+                   $pdf_path = $path;
+                }else {
+                    $code = 0;
+                    $msg = '不支持的文件格式';
+                }
+                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }else{
+                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }
+        }
+    }
 
     /**
      * 控制点执行情况文件 或者 图像资料文件 下载
@@ -572,40 +572,40 @@ class Unitqualitymanage extends Permissions
      * @throws \think\exception\DbException
      * @author hutao
      */
-//    public function relationDownload()
-//    {
-//        // 前台需要 传递 id 编号
-//        $param = input('param.');
-//        $id = isset($param['id']) ? $param['id'] : 0;
-//        if($id == 0){
-//            return json(['code' => '-1','msg' => '编号有误']);
-//        }
-//        $file_obj = Db::name('quality_upload')->alias('q')
-//            ->join('attachment a','a.id=q.attachment_id','left')
-//            ->where('q.id',$id)->field('a.filename,a.filepath')->find();
-//        $filePath = '';
-//        if(!empty($file_obj['filepath'])){
-//            $filePath = '.' . $file_obj['filepath'];
-//        }
-//        if(!file_exists($filePath)){
-//            return json(['code' => '-1','msg' => '文件不存在']);
-//        }else if(request()->isAjax()){
-//            return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
-//        }else{
-//            $fileName = $file_obj['filename'];
-//            $file = fopen($filePath, "r"); //   打开文件
-//            //输入文件标签
-//            $fileName = iconv("utf-8","gb2312",$fileName);
-//            Header("Content-type:application/octet-stream ");
-//            Header("Accept-Ranges:bytes ");
-//            Header("Accept-Length:   " . filesize($filePath));
-//            Header("Content-Disposition:   attachment;   filename= " . $fileName);
-//            //   输出文件内容
-//            echo fread($file, filesize($filePath));
-//            fclose($file);
-//            exit;
-//        }
-//    }
+    public function relationDownload()
+   {
+       // 前台需要 传递 id 编号
+       $param = input('param.');
+       $id = isset($param['id']) ? $param['id'] : 0;
+       if($id == 0){
+            return json(['code' => '-1','msg' => '编号有误']);
+       }
+        $file_obj = Db::name('quality_upload')->alias('q')
+           ->join('attachment a','a.id=q.attachment_id','left')
+            ->where('q.id',$id)->field('a.filename,a.filepath')->find();
+       $filePath = '';
+        if(!empty($file_obj['filepath'])){
+            $filePath = '.' . $file_obj['filepath'];
+        }
+       if(!file_exists($filePath)){
+           return json(['code' => '-1','msg' => '文件不存在']);
+        }else if(request()->isAjax()){
+            return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
+        }else{
+            $fileName = $file_obj['filename'];
+            $file = fopen($filePath, "r"); //   打开文件
+            //输入文件标签
+            $fileName = iconv("utf-8","gb2312",$fileName);
+            Header("Content-type:application/octet-stream ");
+            Header("Accept-Ranges:bytes ");
+            Header("Accept-Length:   " . filesize($filePath));
+           Header("Content-Disposition:   attachment;   filename= " . $fileName);
+            //   输出文件内容
+            echo fread($file, filesize($filePath));
+            fclose($file);
+            exit;
+       }
+    }
 
     /**
      * 控制点执行情况文件 或者 图像资料文件 删除
@@ -616,20 +616,20 @@ class Unitqualitymanage extends Permissions
      * @throws \think\Exception
      * @author hutao
      */
-//    public function relationDel()
-//    {
-//        // 前台需要 传递 id 编号
-//        $param = input('param.');
-//        $id = isset($param['id']) ? $param['id'] : 0;
-//        if($id == 0){
-//            return json(['code' => '-1','msg' => '编号有误']);
-//        }
-//        if(request()->isAjax()) {
-//            $sd = new UnitqualitymanageModel();
-//            $flag = $sd->deleteTb($id);
-//            return json($flag);
-//        }
-//    }
+  public function relationDel()
+   {
+       // 前台需要 传递 id 编号
+      $param = input('param.');
+       $id = isset($param['id']) ? $param['id'] : 0;
+       if($id == 0){
+           return json(['code' => '-1','msg' => '编号有误']);
+       }
+      if(request()->isAjax()) {
+          $sd = new UnitqualitymanageModel();
+           $flag = $sd->deleteTb($id);
+           return json($flag);
+       }
+   }
 
     /**
      * 控制点执行情况文件

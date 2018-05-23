@@ -14,6 +14,7 @@ use app\approve\model\IApprove;
 use app\archive\model\AtlasCateModel;
 use app\contract\model\ContractModel;
 use think\Exception;
+use think\exception\PDOException;
 use think\Model;
 
 class QualityFormInfoModel extends Model implements IApprove
@@ -220,6 +221,17 @@ class QualityFormInfoModel extends Model implements IApprove
             'CurrentStep' => $currentStep,
             'ApproveStatus' => $approveStatus
         ], ['id' => $dataId]);
+    }
+
+    public function getAdminapproval($id)
+    {
+        try {
+            //查询未审批
+            $data = $this->field("id,CurrentApproverId,ApproveIds,create_time,ApproveStatus,form_name,CurrentApproverId")->where("CurrentApproverId",$id)->select();
+            return $data;
+        } catch (Exception $exception) {
+            return null;
+        }
     }
 
 }

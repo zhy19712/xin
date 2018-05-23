@@ -208,7 +208,21 @@ class DivisionModel extends Model
         }
 
         $rel = new DivisionControlPointModel();
-        $res = $rel->insertTb($insert_data);
+        $res = $rel->insertTbAll($insert_data);
+        return $res;
+    }
+
+    // 给 每一个 单位或分部或检验批 批量删除  控制点 对应关系
+    public function delRelation($ma_division_id,$cid,$genre)
+    {
+        //type division_id 类型:0单位,分部工程编号 1检验批
+        $type = 0;
+        // 检验批
+        if($genre == 5){
+            $type = 1;
+        }
+        $rel = new DivisionControlPointModel();
+        $res = $rel->delRelationAll($ma_division_id,$cid,$type);
         return $res;
     }
 
@@ -218,12 +232,12 @@ class DivisionModel extends Model
     {
         // 单位
         $arr_1 = $this->where(['type'=>['eq',1]])->column('id');
-        echo '单位 -- 节点';
-        dump($arr_1);
+//        echo '单位 -- 节点';
+//        dump($arr_1);
         // 单位下的工序
         $ma_1 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
-        echo '单位 -- 工序';
-        dump($ma_1);
+//        echo '单位 -- 工序';
+//        dump($ma_1);
         $res = $this->insertAllCon(0,$arr_1,$ma_1);
         if($res['code'] == -1){
             halt('单位错了');
@@ -231,12 +245,12 @@ class DivisionModel extends Model
         }
         // 分部
         $arr_2 = $this->where(['type'=>['eq',3]])->column('id');
-        echo '分部 -- 节点';
-        dump($arr_2);
+//        echo '分部 -- 节点';
+//        dump($arr_2);
         // 分部下的工序
         $ma_2 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
-        echo '分部 -- 工序';
-        dump($ma_2);
+//        echo '分部 -- 工序';
+//        dump($ma_2);
         $res = $this->insertAllCon(0,$arr_2,$ma_2);
         if($res['code'] == -1){
             halt('分部错了');
@@ -245,11 +259,11 @@ class DivisionModel extends Model
         // 检验批
         $arr_3 = $this->where(['type'=>['in',[3,4,5,6]]])->column('id');
         $arr_4 = Db::name('quality_unit')->where(['division_id'=>['in',$arr_3]])->column('id');
-        echo '检验批 -- 节点';
-        dump($arr_4);
+//        echo '检验批 -- 节点';
+//        dump($arr_4);
         $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>3,'cat'=>5])->column('id');
-        echo '检验批 -- 工序';
-        dump($ma_3);
+//        echo '检验批 -- 工序';
+//        dump($ma_3);
         $res = $this->insertAllCon(1,$arr_4,$ma_3);
         if($res['code'] == -1){
             halt('检验批错了');
@@ -293,6 +307,103 @@ class DivisionModel extends Model
                 }
             }
         }
+    }
+
+
+    /**
+     * 质量模型 获取 工程划分树 包含 检验批
+     * @param int $node_type
+     * @return string
+     * @author hutao
+     */
+    public function getQualityNodeInfo($node_type=0)
+    {
+        $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
+        $division = $this->order('id asc')->column('id,pid,d_name,section_id,type,en_type,d_code'); // 工程列表
+
+        $id_arr = Db::name('model_quality')->group('unit_id')->column('unit_id'); // 获取所有 已经关联过的 单元工程id编号
+
+        if($node_type == 1){
+            $unit = Db::name('quality_unit')->where(['id'=>['in',$id_arr]])->order('id asc')->column('id,division_id,site'); // 已关联
+        }else if($node_type == 2){
+            $unit = Db::name('quality_unit')->where(['id'=>['not in',$id_arr]])->order('id asc')->column('id,division_id,site'); // 未关联
+        }else{
+            $unit = Db::name('quality_unit')->order('id asc')->column('id,division_id,site'); // 检验批列表
+        }
+        $num = $this->count() + Db::name('section')->count() + 10000;
+
+        $str = "";
+        $open = 'true';
+        $str .= '{ "id": "' . -1 . '", "pId":"' . 0 . '", "name":"' . '丰宁抽水蓄能电站' . '"' . ',"open":"' . $open . '"';
+        $str .= '},';
+        foreach ($section as $v) {
+            $id = $v['id'] + $num;
+            $str .= '{ "id": "' . $id . '", "pId":"' . -1 . '", "name":"' . $v['name'] . '"' . ',"code":"' . $v['code'] . '"' . ',"section_id":"' . $v['id'] . '"' . ',"add_id":"' . $v['id'] . '"';
+            $str .= '},';
+            // 单位工程 type = 1 子单位工程 type = 2 分部工程  type = 3 子分部工程 type = 4 分项工程   type = 5 单元工程   type = 6
+            foreach ($division as $vo) {
+                if ($v['id'] == $vo['section_id']) {
+                    if ($vo['type'] == 1) {
+                        $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $id . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
+                        $str .= '},';
+                    } else {
+                        $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
+                        $str .= '},';
+                    }
+                    foreach ($unit as $u) {
+                        if ($vo['id'] == $u['division_id']) {
+                            $str .= '{ "id": "' . $u['id'] . '", "pId":"' . $vo['id'] . '", "name":"' . $u['site'] . '"' . ',"add_id":"' . $u['id'] . '"' ;
+                            $str .= '},';
+                        }
+                    }
+                }
+            }
+        }
+        return "[" . substr($str, 0, -1) . "]";
+    }
+
+    public function getEl($id)
+    {
+        $data = $this->getOne($id);
+        $new_data['el_val'] = 'EL.' . $data['el_start'] . '-EL.' . $data['el_cease'];
+        $new_data['pile_number'] = $data['pile_number'];
+        return $new_data;
+    }
+
+    //递归获取当前节点的所有子节点
+    public function cateTree($id){
+        $res=$this->select();
+        if($res){
+            $result=$this->sort($res, $id);
+            return $result;
+        }
+    }
+    public function sort($data,$id,$level=0){
+        static $arr=array();
+        foreach ($data as $key=>$value){
+            if($value['pid'] == $id){
+                $value["level"]=$level;
+                $arr[]=$value;
+                $this->sort($data,$value['id'],$level+1);
+            }
+        }
+        return $arr;
+    }
+
+    public function removeRelevanceNode($id)
+    {
+        // 获取此节点下包含的所有子节点编号
+        $child_node_id = [];
+        $child_node_obj = $this->cateTree($id);
+        foreach ($child_node_obj as $v){
+            $child_node_id[] = $v['id'];
+        }
+        $child_node_id[] = $id;
+        // 获取此节点下包含的所有单元工程检验批
+        $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$child_node_id]])->column('id');
+        // 解除所有的关联关系
+        Db::name('model_quality')->where(['unit_id'=>['in',$unit_id]])->update(['unit_id'=>0]);
+        return ['code'=>1,'msg'=>'解除成功'];
     }
 
 }
