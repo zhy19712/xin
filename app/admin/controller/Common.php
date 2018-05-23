@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\admin\model\AdminGroup;
 use app\admin\model\DatatablesExample;
+use app\quality\model\QualityFormInfoModel;
 use \think\Cache;
 use \think\Controller;
 use think\Loader;
@@ -356,12 +357,18 @@ class Common extends Controller
      */
     public function admin_message_reminding($id,$draw,$table,$search,$start,$length,$limitFlag,$order,$columns,$columnString)
     {
+        //实例化模型类
+        $model = new QualityFormInfoModel();
 
         //查询不同的状态1为未执行，2为已执行
         $status = input("param.status");
         $admin_id= Session::has('admin') ? Session::get('admin') : 0;
         //查询过滤条件
         //条件过滤后记录数 必要
+        //定义一个空的数组用来存放单元工程审批表中的信息
+
+        $form_data = array();
+
         $recordsFiltered = 0;
         //表的总记录数 必要
         $recordsTotal = 0;
@@ -402,6 +409,26 @@ class Common extends Controller
             for ($i = 0; $i < $length; $i++) {
                 array_push($temp, $value[$columns[$i]['name']]);
             }
+
+            if($temp["4"] == 2)
+            {
+                $form_info = $model->getOne($temp["6"]);
+
+//                $cpr_id = Db::name("quality_division_controlpoint_relation")
+//                    ->field("id")
+//                    ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
+//                    ->find();
+//                $form_data[$key]["cpr_id"] = $cpr_id["id"];
+
+                $form_data["CurrentStep"] = $form_info["CurrentStep"];
+
+                $form_data["cpr_id"] = $form_info["ControlPointId"];
+
+                array_push($temp, $form_data);
+            }
+
+//            array_push($temp, $children_info);
+
             $infos[] = $temp;
             $temp = [];
         }

@@ -125,7 +125,7 @@
                         <input id="adopt" type="radio" name="sex" value="1" title="通过，" checked lay-filter="not">
                     </div>
                     <div class="layui-input-inline">
-                        <p><a href="javascript:;" id="nextStep">下一步执行人</a>：<span id="nextStepPeople"></span></p>
+                        <p><a href="javascript:;" id="nextStep">请选择下一步执行人</a>：<span id="nextStepPeople"></span></p>
                     </div>
 
                 </div>
@@ -257,6 +257,7 @@
     function close() {
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index)
+        parent.layer.closeAll()
     };
     var subtime;
     function getTime() {
