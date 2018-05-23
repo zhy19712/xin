@@ -10,6 +10,8 @@ use think\Model;
 class SendModel extends Model
 {
     protected $name = 'archive_income_send';
+    //自动写入创建、更新时间 insertGetId和update方法中无效，只能用于save方法
+    protected $autoWriteTimestamp = true;
 
     public function insertTb($param)
     {
