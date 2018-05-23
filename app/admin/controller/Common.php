@@ -370,7 +370,7 @@ class Common extends Controller
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)->alias("m")
                     ->join('admin a','m.sender = a.id','left')
-                    ->field("m.task_name,m.create_time,a.nickname,m.task_category,m.status,m.id")
+                    ->field("m.task_name,m.create_time,a.nickname as current_approver_id,m.task_category,m.status,m.id")
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->limit(intval($start),intval($length))
                     ->select();
@@ -381,7 +381,7 @@ class Common extends Controller
             if($limitFlag){
                 $recordsFilteredResult = Db::name($table)->alias("m")
                     ->join('admin a','m.sender = a.id','left')
-                    ->field("m.task_name,m.create_time,a.nickname,m.task_category,m.status,m.id")
+                    ->field("m.task_name,m.create_time,a.nickname as current_approver_id,m.task_category,m.status,m.id")
                     ->order($order)->limit(intval($start),intval($length))
                     ->select();
                 //*****多表查询join改这里******
