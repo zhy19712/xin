@@ -420,7 +420,7 @@ function incomeZtree() {
         ajaxUrl:'/admin/admin/index',
         zTreeOnClick:function (event, treeId, treeNode) {
             incomeInfo();
-            tableItem.ajax.url("/admin/common/datatablesPre?tableName=admin&id="+ treeNode.id).load();
+            tableItem.ajax.url("/admin/common/datatablesPre?tableName=admin&table_type=3&id="+ treeNode.id).load();
         }
     });
 }
