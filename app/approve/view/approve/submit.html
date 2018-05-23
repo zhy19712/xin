@@ -138,17 +138,22 @@
         $("#btnSave").click(function () { $("#btnSave").attr("disabled", "disabled"); save(); });
         $("#btnClose").click(function () { close(); });
         $("#selPeople").click(function () { selPeople(); });
-        $("#currentUserName").text($(top.document).find(".layui-layout-right > li:nth-of-type(2) > a").text().substring(28));
-        var desr = $(top.document).find(".layui-layout-right > li:nth-of-type(2) > a").text()
-        console.log(desr.substring(28));
+        $("#currentUserName").text($(top.document).find("#current_user").text());
         $("#currentUserPhoto").attr("src", $(top.document).find(".layui-layout-right > li:nth-of-type(2) > a >img").attr("src"));
         initReferFlow();
+
+        // $("#currentUserName").text($(top.document).find(".layui-layout-right > li:nth-of-type(2) > a").text().substring(28));
+        var desr = $(top.document).find(".layui-layout-right > li:nth-of-type(2) > a").text()
+        // console.log($(top.document).find("#current_user").text());
         // initLastFlow();
     });
 
     var user =  $("#hiddenValUser").val();
     // 选择审批人
     function selPeople() {
+        if($("#approverDiv>div:nth-of-type(2)").html() != ""){
+            $("#selPeople").remove();
+        }
         var index = layer.open({
             type: 2,
             title: "选择审批人",
@@ -186,7 +191,7 @@
         html += "<img alt='image' class='img-circle' src='__WEBSITE__/elementimg/1.png' title='"+ title +"' style='width:50px;height:50px;'>";
         html += "<p>" + $("#hiddenValName").val() + "</p>";
         html += "</div>";
-        html += "<img id='img" + user.id + "' alt='image' class='arrow' src='__WEBSITE__/elementimg/right.png'/>";
+        // html += "<img id='img" + user.id + "' alt='image' class='arrow' src='__WEBSITE__/elementimg/right.png'/>";
         $("#approverDiv").append(html);
     }
 

@@ -5,9 +5,9 @@ var income = {} //收件人信息
 var fileInfo = {};//关联文件信息
 //发文状态表格
 tableIncome = $("#tableIncome").DataTable({
-    processing: true,
+    processing: false,
     serverSide: true,
-    ordering: false,
+    ordering: true,
     ajax: {
         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
     },
@@ -426,6 +426,7 @@ function incomeZtree() {
 //收件人信息
 function incomeInfo() {
     $.datatable({
+        ordering: true,
         ajax: {
             "url":"/admin/common/datatablesPre?tableName=admin"
         },
@@ -450,7 +451,8 @@ function incomeInfo() {
             {
                 name: "position"
             }
-        ]
+        ],
+        dom: 'frtp'
     });
 }
 
@@ -498,7 +500,7 @@ $('#relevance_name').focus(function () {
 function incomeFile() {
     tableFile = $("#tableFileList").DataTable({
         serverSide: true,
-        ordering: false,
+        ordering: true,
         ajax: {
             "url":"/archive/common/datatablesPre?tableName=archive_income_send&table_type=3"
         },

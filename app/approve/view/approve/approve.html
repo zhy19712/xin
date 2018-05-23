@@ -261,17 +261,17 @@
         subtime = new Date().toLocaleString();
         $("input[name='contractName']").val(subtime);
     }
-    //todo 逻辑不明确 暂缓
+
     //点击下一步执行人
-    // $("#nextStep").click(function () {
-    //     layer.open({
-    //         type: 2,
-    //         title: '选择审批人',
-    //         shadeClose: true,
-    //         area: ['450px', '550px'],
-    //         content: '{:url("approve/approve/selectMumber")}?dataType=app\\quality\\model\\QualityFormInfoModel\n'
-    //     });
-    // });
+    $("#nextStep").click(function () {
+        layer.open({
+            type: 2,
+            title: '选择审批人',
+            shadeClose: true,
+            area: ['450px', '550px'],
+            content: '{:url("approve/approve/selectMumber")}?dataType=app\\quality\\model\\QualityFormInfoModel'
+        });
+    });
 
     var layer = layui.layer;
     var typeId;

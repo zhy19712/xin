@@ -1460,8 +1460,7 @@ class Common extends Controller
         $recordsFilteredResult = array();
         $param = input('param.');
         $en_type=$param['en_type'];
-        $unit_id=$param['unit_id'];
-        $division_id=$param['division_id'];
+        $unit_id=1;
 
         //norm_materialtrackingdivision的id数组
         $nm_arr=Db::name('norm_materialtrackingdivision')
@@ -1485,7 +1484,7 @@ class Common extends Controller
          }
 
         $search=Db::name('quality_division_controlpoint_relation')
-            ->where(['unit_id'=>$unit_id,'division_id'=>$division_id])
+            ->where(['type'=>1,'division_id'=>$unit_id])
             ->select();
         //如果之前触发了insertalldata函数
         if (count($search) > 0) {
@@ -1508,14 +1507,15 @@ class Common extends Controller
             //*****多表查询join改这里******
             $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
-                        ->where(['r.unit_id'=>$unit_id,'r.division_id'=>$division_id])
+                        ->where(['r.type'=>1,'r.division_id'=>1])
+                        ->where('r.control_id','in',$id_arr)//控制点必须对应在当前的工程类型下，防止切换单元类型
                         ->where($wherenm)
                         ->where($wherech)
                         ->order('code')
                         ->limit(intval($start), intval($length))
                     ->select();
-
                 $recordsFiltered = sizeof($recordsFilteredResult);
+                dump($recordsFilteredResult);
         } else {
             if ($limitFlag) {
                 //*****多表查询join改这里******
@@ -1540,4 +1540,5 @@ class Common extends Controller
         }
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
+
 }
