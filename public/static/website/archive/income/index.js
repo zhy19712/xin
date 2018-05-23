@@ -10,8 +10,8 @@ tableItem = $("#tableIncome").DataTable({
         { name: "file_name" },
         { name: "date" },
         { name: "unit_name" },
-        { name: "attchment_id"},
         { name: "send_name" },
+        { name: "attchment_id"},
         { name: "status" },
         { name: "id" }
     ],
@@ -34,7 +34,7 @@ tableItem = $("#tableIncome").DataTable({
                 if (row[5] == '2'){
                     return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="handle(this)">处理</a>';
                 }else {
-                    return  '<a title="' + data + '"  href="javascript:void(0);" major_key="'+row[6]+'" onclick="preview(this)">查看</a>';
+                    return  '<a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm"  href="javascript:void(0);" major_key="'+row[6]+'" onclick="preview(this)">查看</a>';
                 }
             }
         }
@@ -66,7 +66,7 @@ function handle(that) {
         content: $('#file_modal'),
         success:function () {
             $.viewFilter(true);
-            $('#file_modal input').attr("readonly",true);
+            $('#file_modal input').attr("disabled",true);
             $('#file_ids').val(major_key);
             $.ajax({
                 url:"/archive/send/preview",
@@ -79,18 +79,17 @@ function handle(that) {
                 success:function (res) {
                     console.log(res);
                     var attachment = res.attachment;
-
                     $("#file_name").val(res.file_name);
                     $("#date").val(res.date);
                     $("#income_name").val(res.send_name);
                     $("#unit_name").val(res.unit_name);
                     $("#remark").val(res.remark);
-                    $("#relevance_id").val(res.remark);
+                    $("#relevance_id").val(res.attchment_id);
                     var rowData = '';
                     for (var i=0;i<attachment.length;i++){
                         rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3">';
-                        rowData +='<a href="javascript:;" style="margin-right: 10px" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
-                        rowData +='<a href="javascript:;" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
+                        rowData +='<a href="javascript:;"  class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
+                        rowData +='<a href="javascript:;" onclick="attachmentPreview(this)" class="layui-btn layui-btn-primary layui-btn-xs" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
                     }
                     $("#add_table_files tbody").empty().append(rowData);
                 }
@@ -108,7 +107,7 @@ function preview(that) {
         content: $('#file_modal'),
         success:function () {
             $.viewFilter(false);
-            $('#file_modal input').attr("readonly",true);
+            $('#file_modal input').attr("disabled",true);
             $('#file_ids').val(major_key);
             $.ajax({
                 url:"/archive/send/preview",
@@ -121,18 +120,17 @@ function preview(that) {
                 success:function (res) {
                     console.log(res);
                     var attachment = res.attachment;
-
                     $("#file_name").val(res.file_name);
                     $("#date").val(res.date);
                     $("#income_name").val(res.send_name);
                     $("#unit_name").val(res.unit_name);
                     $("#remark").val(res.remark);
-                    $("#relevance_id").val(res.remark);
+                    $("#relevance_id").val(res.attchment_id);
                     var rowData = '';
                     for (var i=0;i<attachment.length;i++){
                         rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3">';
-                        rowData +='<a href="javascript:;" style="margin-right: 10px" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
-                        rowData +='<a href="javascript:;" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
+                        rowData +='<a href="javascript:;"  class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
+                        rowData +='<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
                     }
                     $("#add_table_files tbody").empty().append(rowData);
                 }
