@@ -1153,7 +1153,7 @@ function approve(id,app,step) {
             if(res == ""){
                 layer.open({
                     type: 2,
-                    title: '流程审批',
+                    title: '流程处理',
                     shadeClose: true,
                     area: ['980px', '90%'],
                     content: '/approve/approve/Approve?dataId='+ id + '&dataType=app\\quality\\model\\QualityFormInfoModel',
@@ -1207,10 +1207,21 @@ function returnOnLine(id,curStep) {
 }
 
 //在线填报-点击作废
-function toVoidOnLine(id,curStep) {
+function toVoidOnLine(id) {
     console.log(curStep);
     console.log(controlRowId);
-    layer.msg("作废");
+    $.ajax({
+        url: "/quality/qualityform/cancel",
+        type: "post",
+        data: {id:id},
+        success: function (res) {
+            console.log(res);
+
+        },
+        error:function () {
+            alert("作废操作异常")
+        }
+    });
 }
 
 //下载封装的方法
