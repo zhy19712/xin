@@ -28,6 +28,7 @@ zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
+    console.log(treeNode);
     nodeId = treeNode.id;
     alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
     elval();
@@ -228,9 +229,6 @@ function elval() {
 }
 
 
-
-
-
 //已关联节点
 function getSelectId() {
     
@@ -298,8 +296,22 @@ $('.alreadyBtn').click(function(){
         },
         dataType: "json",
         success: function (res) {
-            console.log(res);
+            layer.msg(res.msg);
         }
-    })
+    });
+});
 
+//解除关联模型
+$('.noteverBtn').click(function(){
+   $.ajax({
+       url: "./removeRelevanceNode",
+       type: "post",
+       data: {
+           add_id:nodeId
+       },
+       dataType: "json",
+       success: function (res) {
+           layer.msg(res.msg);
+       }
+   })
 })
