@@ -78,10 +78,11 @@ class Dashboard extends Permissions
      * 轮询
      * @return \think\response\Json
      */
-    public function lunxun()
+    public function ajaxLunxun()
     {
         //实例化模型类
         if ($this->request->isAjax()) {
+
             $message = new MessageremindingModel();
 
             $count = input("post.count");
@@ -108,7 +109,6 @@ class Dashboard extends Permissions
 
                     exit;
                 }
-
             }
         }
     }
