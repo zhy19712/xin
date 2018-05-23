@@ -164,7 +164,8 @@ class Qualityform extends Permissions
                 $mod['user_id'] = Session::get('current_id');
                 $mod['create_time'] = time();
                 $judge=Db::name('quality_form_info')
-                    ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId'],'ApproveStatus'>-1])
+                    ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId']])
+                    ->where('ApproveStatus','>',-1)
                     ->find();
                 if($judge){
                     return json(['result' => 'Refund']);
