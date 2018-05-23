@@ -1513,7 +1513,6 @@ class Common extends Controller
                         ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
-                dump($recordsFilteredResult);
         } else {
             if ($limitFlag) {
                 //*****多表查询join改这里******
