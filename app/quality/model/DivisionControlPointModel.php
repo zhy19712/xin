@@ -158,4 +158,14 @@ class  DivisionControlPointModel extends Model
         $data = $this->where('id', $id)->find();
         return $data;
     }
+
+    public function delRelationAll($ma_division_id,$cid,$type)
+    {
+        try {
+            $this->where(['type'=>$type,'ma_division_id'=>$ma_division_id,'control_id'=>$cid])->delete();
+            return ['code' => 1, 'msg' => '删除成功'];
+        } catch (PDOException $e) {
+            return ['code' => 0, 'msg' => $e->getMessage()];
+        }
+    }
 }

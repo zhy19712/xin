@@ -7,6 +7,7 @@
  */
 namespace app\standard\model;
 use app\quality\model\DivisionModel;
+use think\exception\PDOException;
 use think\Model;
 
 class ControlPoint extends Model
@@ -19,7 +20,7 @@ class ControlPoint extends Model
             $result = $this->allowField(true)->save($param);
             if(1 == $result){
 
-                // 批量添加工程划分--单位工程或者分部工程的对应 控制点   $type 1单位 2分部 3单元
+                // 批量添加工程划分--单位工程或者分部工程的对应 控制点   $type 2单位 3分部 5单元
                 $division = new DivisionModel();
 
                 $flag = $division->addRelation($param["procedureid"],$this->getLastInsID(),$param['type']);
@@ -68,5 +69,26 @@ class ControlPoint extends Model
     {
         $data = $this->where('id', $id)->find();
         return $data;
+    }
+
+    /**
+     * 删除
+     * @param $id
+     * @return array
+     */
+    public function delTb($param)
+    {
+        try{
+            $this->where("id",$param["id"])->delete();
+
+            //删除quality_division_controlpoint_relation   $type 2单位 3分部 5单元
+            $division = new DivisionModel();
+
+            $flag = $division->delRelation($param["ma_division_id"],$param["id"],$param["type"]);
+
+            return ['code' => 1, 'msg' => '删除成功'];
+        }catch(PDOException $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
     }
 }
