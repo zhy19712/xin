@@ -54,6 +54,17 @@ class Versions extends Permissions
     public function upload()
     {
         // model_type 1 竣工模型 2 施工模型
+        $file_name = input('file_name');
+        if(empty($file_name)){
+            return json(['code'=>1,'msg'=>'缺少原文件名称']);
+        }
+
+        // 资源包名称不能重复
+        $is_exist = Db::name('attachment')->where('name',$file_name)->value('id');
+        if($is_exist){
+            return json(['code'=>'-1','msg'=>'资源包名称不能重复']);
+        }
+
         $model_type = input('model_type');
         if(empty($model_type)){
             return json(['code'=>1,'msg'=>'缺少类型']);
@@ -74,6 +85,7 @@ class Versions extends Permissions
         if(!is_dir($path)){
             mkdir($path, 0777, true);
         }
+
         $info = $file->validate(['size'=>$web_config['file_size']*1024,'ext'=>$web_config['file_type']])->rule('date')->move($path);
         if($info) {
             //写入到附件表
