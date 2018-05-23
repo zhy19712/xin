@@ -67,5 +67,18 @@ class VersionsModel extends Model
     public function versionNumber()
     {
         $data = $this->order('id desc')->field('version_number')->find();
+        if(empty($data)){
+            $version_number = 'V1.0';
+        }else{
+            $arr = explode('.',$data['version_number']);
+            $num = $arr[1] + 1;
+            if($num <= 9){
+                $version_number = $arr[0] . $num;
+            }else{
+                $new_arr = explode('V',$arr[0]);
+                $version_number = 'V' . ($new_arr[0]+1) . '.0';
+            }
+        }
+        return $version_number;
     }
 }
