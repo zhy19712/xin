@@ -131,7 +131,16 @@ class QualitymassModel extends Model
 
     public function nodeModelNumber($add_id,$node_type)
     {
+        $unit_id = [];
+        // 节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
+        // 当前启用的版本
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2);
+
         if($node_type == 1){
+            $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>['neq',0]])->column('model_id');
+            return $model_id;
+        }if($node_type == 3){
             // 获取选中节点下包含的所有子节点编号
             $division = new DivisionModel();
             $child_node_id = [];
@@ -142,7 +151,7 @@ class QualitymassModel extends Model
             $child_node_id[] = $add_id;
             // 获取此节点下包含的所有单元工程检验批
             $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$child_node_id]])->column('id');
-        }else{
+        }else if($node_type == 4){
             $unit_id[] = $add_id;
         }
         // 获取所有单元工程检验批 所关联的模型编号

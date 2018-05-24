@@ -101,4 +101,10 @@ class VersionsModel extends Model
         return ['code' => 1,'version_number'=>$data['version_number'],'msg' => '当前版本号'];
     }
 
+    public function statusOpen($model_type)
+    {
+        $data = $this->where(['model_type'=>$model_type,'status'=>1])->value('version_number');
+        return $data;
+    }
+
 }
