@@ -78,6 +78,14 @@ class Dashboard extends Permissions
 
             $flag = $message->editTbAll($edit_data);
 
+            //查询当前登录admin_id，type = 2,status = 1
+
+            $result_message = Db::name("admin_message_reminding")->where(["current_approver_id"=>$admin_id,"type"=>2,"status"=>1])->select();
+
+            if($result_message)
+
+            halt($result_message);
+
             return json($flag);
         }
 
@@ -210,6 +218,32 @@ class Dashboard extends Permissions
                 $count_data = $message->getCount($admin_id);
 
                 return json(["count"=>$count_data]);
+            }
+        }
+
+        /**
+         * 消息中的单元工程改变当前的状态
+         */
+        public function changeStatus()
+        {
+            if ($this->request->isAjax()) {
+                $uint_id = input("post.uint_id");
+                //获取当前的登录人的id
+                $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+                //实例化模型类
+                $message = new MessageremindingModel();
+
+                $message_info = $message->getOne(["uint_id"=>$uint_id,"current_approver_id"=>$admin_id]);
+
+                if($message_info["status"] == 1)
+                {
+                    $data = [
+                        "id" => $message_info["id"],
+                        "status" => 2
+                    ];
+
+                    $flag = $message->editTb($data);
+                }
             }
         }
 }
