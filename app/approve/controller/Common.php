@@ -103,7 +103,7 @@ class Common extends Controller
                     ->join('admin u','a.user_id=u.id','left')
                     ->where($par)
                     ->field('u.nickname,a.create_time,a.result,a.mark')
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                    ->order('a.update_time Desc')->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
@@ -113,7 +113,7 @@ class Common extends Controller
                     ->join('admin u','a.user_id=u.id','left')
                     ->where($par)
                     ->field('u.nickname,a.create_time,a.result,a.mark')
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                    ->order('a.update_time Desc')->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
