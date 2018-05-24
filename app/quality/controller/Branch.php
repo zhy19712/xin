@@ -760,7 +760,12 @@ class Branch extends Permissions
 
                 $evaluation_results = $division_info["evaluation_results"];//验评
 
-                $evaluation_time = date("Y-m-d",$division_info["evaluation_time"])?date("Y-m-d",$division_info["evaluation_time"]):"";//验评日期
+                $evaluation_time = $division_info["evaluation_time"]?$division_info["evaluation_time"]:"";//验评日期
+
+                if($evaluation_time)
+                {
+                    $evaluation_time = date("Y-m-d",$evaluation_time);
+                }
 
                 return json(["flag"=>$flag,"evaluation_results"=>$evaluation_results,"evaluation_time"=>$evaluation_time]);
             }

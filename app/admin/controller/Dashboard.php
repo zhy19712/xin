@@ -45,6 +45,7 @@ class Dashboard extends Permissions
         //查询单元工程审批人状态表
         $form_info = $qualityform->getAdminapproval($admin_id);
 
+
         //定义两个空的数组用来存储值
         $data = array();
         $edit_data = array();
@@ -61,18 +62,12 @@ class Dashboard extends Permissions
 
                     $edit_data[$key]["status"] = $val["ApproveStatus"];
 
-                    if($val["ApproveIds"])
-                    {
-                        $ids = explode(",",$val["ApproveIds"]);
-
-                        $edit_data[$key]["sender"] = $ids[count($ids)-1];
-                    }
-
                 }
                 else
                 {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["form_name"];
+
                     $data[$key]["create_time"] = $val["update_time"];
 
 
