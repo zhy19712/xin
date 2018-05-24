@@ -43,9 +43,9 @@ class Configure extends Permissions
 
             //  pellucidity 透明度  pigment 颜色 transparent_effect 透明效果的透明度
 
-            // choiceness_pellucidity 优良透明度 choiceness_pigment 优良颜色
-            // qualified_pellucidity  合格透明度  qualified_pigment 合格颜色
-            // un_evaluation_pellucidity  未验评透明度  un_evaluation_pigment 未验评颜色
+            // choiceness_pellucidity 优良透明度
+            // qualified_pellucidity  合格透明度
+            // un_evaluation_pellucidity  未验评透明度
 
             // 当编辑时,传递 主键编号 major_key
 
