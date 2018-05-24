@@ -242,7 +242,6 @@ class Qualityform extends Permissions
             $step[]=$v['Step'];
         }
         $maxstep=intval(max($step));
-        dump($res['CurrentStep']);
         //如果当前步骤不是最后一步
         if ($res['CurrentStep']<$maxstep)
         {
