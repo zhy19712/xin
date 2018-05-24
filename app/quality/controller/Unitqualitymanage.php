@@ -586,7 +586,7 @@ class Unitqualitymanage extends Permissions
        }
         $file_obj = Db::name('quality_upload')->alias('q')
            ->join('attachment a','a.id=q.attachment_id','left')
-            ->where('q.id',$id)->field('a.filename,a.filepath')->find();
+            ->where('q.id',$id)->field('a.filename,a.filepath,q.data_name')->find();
        $filePath = '';
         if(!empty($file_obj['filepath'])){
             $filePath = '.' . $file_obj['filepath'];
@@ -603,7 +603,8 @@ class Unitqualitymanage extends Permissions
             Header("Content-type:application/octet-stream ");
             Header("Accept-Ranges:bytes ");
             Header("Accept-Length:   " . filesize($filePath));
-           Header("Content-Disposition:   attachment;   filename= " . $fileName);
+            Header('Content-Disposition: attachment; filename='.$file_obj['data_name']);
+            Header('Content-Type: application/octet-stream; name='.$file_obj['data_name']);
             //   输出文件内容
             echo fread($file, filesize($filePath));
             fclose($file);
