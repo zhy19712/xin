@@ -103,7 +103,6 @@ class Dashboard extends Permissions
                 }
             }
 
-//            return json($flag);
         }
 
     }
@@ -165,11 +164,21 @@ class Dashboard extends Permissions
                 }
             }
 
-            $flag = $message->insertTbAll($data);
+            if(!empty($data))
+            {
+                foreach($data as $a=>$b)
+                {
+                    $message->insertTb($b);
+                }
 
-            $flag = $message->editTbAll($edit_data);
-
-            return json($flag);
+            }
+            if(!empty($edit_data))
+            {
+                foreach($edit_data as $c=>$d)
+                {
+                    $message->editTb($d);
+                }
+            }
         }
 
     }
