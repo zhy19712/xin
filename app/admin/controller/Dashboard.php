@@ -66,7 +66,15 @@ class Dashboard extends Permissions
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["form_name"];
                     $data[$key]["create_time"] = $val["update_time"];
-                    $data[$key]["sender"] = substr($val["ApproveIds"], -1);
+
+
+                    if($val["ApproveIds"])
+                    {
+                        $ids = explode(",",$val["ApproveIds"]);
+
+                        $data[$key]["sender"] = $ids[count($ids)-1];
+                    }
+
                     $data[$key]["task_category"] = "单元质量验评";
                     $data[$key]["status"] = $val["ApproveStatus"];
                     $data[$key]["current_approver_id"] = $val["CurrentApproverId"];
@@ -148,8 +156,6 @@ class Dashboard extends Permissions
         }
 
     }
-
-
 
 //    /**
 //     * 轮询
