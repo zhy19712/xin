@@ -178,7 +178,7 @@ class Qualitymass extends Permissions
             }
             $quality = new QualitymassModel();
             $data = $quality->nodeModelNumber($add_id);
-            return json([''=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
+            return json(['code'=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
         }
     }
 
