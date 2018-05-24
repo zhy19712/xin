@@ -39,17 +39,17 @@ function zTreeOnClick(event, treeId, treeNode) {
     if(treeNode.level==5){
         alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
         elval();
-        nodeModelNumber();
+        nodeModelNumber(treeNode);
     }
 }
 
 //显示隐藏模板事件
 function zTreeOnCheck(event, treeId, treeNode) {
-    nodeModelNumber();
+    nodeModelNumber(treeNode);
 }
 
 //显示隐藏模板函数
-function nodeModelNumber() {
+function nodeModelNumber(treeNode) {
     var add_id = treeNode.add_id;
     $.ajax({
         url: "./nodeModelNumber",
