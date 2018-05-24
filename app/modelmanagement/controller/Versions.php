@@ -154,7 +154,7 @@ class Versions extends Permissions
 
             $path_arr = explode('E:\WebServer',$resource_path);
             $param['resource_path'] = $path_arr[1];
-            $version_number = $send->versionNumber();
+            $version_number = $send->versionNumber($param['model_type']);
             $param['version_number'] = $version_number;
             $param['version_date'] = date('Y-m-d H:i:s');
 
@@ -306,7 +306,7 @@ class Versions extends Permissions
         }
 
         $send = new VersionsModel();
-        $version_number = $send->versionNumber();
+        $version_number = $send->versionNumber(1); // 1全景3D模型 2质量3D模型
 
         foreach ($new_contents as $k=>$val){
             $data[$k]['version_number'] = $version_number;
@@ -378,8 +378,8 @@ class Versions extends Permissions
             $i++;
         }
 
-        $send = new VersionsModel();
-        $version_number = $send->versionNumber();
+        $version = new VersionsModel();
+        $version_number = $version->versionNumber(2); // 1全景3D模型 2质量3D模型
 
         foreach ($new_contents as $k=>$val){
             $data[$k]['version_number'] = $version_number;
@@ -406,7 +406,19 @@ class Versions extends Permissions
             $data[$k]['model_id'] = trim(next($val));
         }
 
-        //TODO 复制上一个版本的关联关系
+        // 继承当前版本的上一个版本的关联关系
+        $previous_version_number = $version->prevVersionNumber($version_number); // 当前版本的上一个版本号
+        if(!empty($previous_version_number)){
+            $quality = new QualitymassModel();
+            $prev_data = $quality->prevRelevance($previous_version_number);
+            foreach ($prev_data as $prev_v){
+                foreach ($data as $e_k=>$every_v){
+                    if($every_v['model_name'] == $prev_v['model_name']){
+                        $data[$e_k]['unit_id'] = $prev_v['unit_id'];
+                    }
+                }
+            }
+        }
 
         $picture = new QualitymassModel();
         $picture->insertAll($data);
