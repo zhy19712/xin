@@ -1,5 +1,6 @@
 var nodeId; //被点击节点ID
 var level;  //节点等级
+var node_type;  //节点类型
 
 //左侧的树
 function ztree(node_type) {
@@ -36,35 +37,50 @@ ztree(0);
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
     nodeId = treeNode.add_id;
+    node_type = treeNode.node_type;
     console.log(treeNode);
     if(treeNode.level==5){
         alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
         elval();
-        nodeModelNumber(treeNode);
+        var data = nodeModelNumber();
+        //透明未关联构件
+        window.opacityModel();
+        //展示关联构件
+        window.operateModel(data);
     }
 }
 
 //显示隐藏模板事件
 function zTreeOnCheck(event, treeId, treeNode) {
-    nodeModelNumber(treeNode);
+    nodeId = treeNode.add_id;
+    node_type = treeNode.node_type;
+    var data = nodeModelNumber();
+    var checked = treeNode.checked;
+    if(checked){
+        //隐藏关联构件
+        window.hideModel(data);
+    }else {
+        window.showModel(data);
+    }
 }
 
 //显示隐藏模板函数
-function nodeModelNumber(treeNode) {
-    var add_id = treeNode.add_id;
-    var node_type = treeNode.node_type;
+function nodeModelNumber() {
+    var result;
     $.ajax({
         url: "./nodeModelNumber",
         type: "post",
+        async:false,
         data: {
-            add_id:add_id,
+            add_id:nodeId,
             node_type:node_type
         },
         dataType: "json",
         success: function (res) {
-            window.operateModel(res.data);
+            result = res.data;
         }
     });
+    return result;
 }
 
 //绘制radio

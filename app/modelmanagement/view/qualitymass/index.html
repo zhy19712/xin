@@ -105,14 +105,34 @@
 {include file="../app/public/common_footer.html"}
 <script src="__WEBSITE__/modelmanagement/qualitymass/index.js"></script>
 <script type="text/javascript">
+    //选中模型
     window.operateModel = function (data) {
-        console.log(data.join(','));
         RealBimOcx.SetGroupInLogCamPos(data.join(','));
         RealBimOcx.BatchAddSubClrInfoBegin();
         for(var i = 0;i<data.length;i++){
             RealBimOcx.AddSubClrPercent(data[i],1,0x6400ff00);
         }
         RealBimOcx.BatchAddSubClrInfoEnd();
+    }
+    //透明全部
+    window.opacityModel = function () {
+        RealBimOcx.SetAllSubClrInfos(20,255,0x64);
+    }
+    //隐藏模型
+    window.hideModel = function (data) {
+        console.log(data);
+        RealBimOcx.SetHugeObjSubValidStateBegin();
+        for(var i = 0;i<data.length;i++){
+            RealBimOcx.SetHugeObjSubValidStateInfo(data[i],0);
+        }
+        RealBimOcx.SetHugeObjSubValidStateEnd();
+    }
+    window.showModel = function (data) {
+        RealBimOcx.SetHugeObjSubValidStateBegin();
+        for(var i = 0;i<data.length;i++){
+            RealBimOcx.SetHugeObjSubValidStateInfo(data[i],1);
+        }
+        RealBimOcx.SetHugeObjSubValidStateEnd();
     }
 </script>
 </body>
