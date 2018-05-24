@@ -7,6 +7,8 @@
  */
 namespace app\modelmanagement\model;
 
+use app\quality\model\DivisionModel;
+use think\Db;
 use think\exception\PDOException;
 use think\Model;
 class QualitymassModel extends Model
@@ -124,6 +126,23 @@ class QualitymassModel extends Model
     public function removeVersionsRelevance($id)
     {
 
+    }
+
+    public function nodeModelNumber($add_id)
+    {
+        // 获取选中节点下包含的所有子节点编号
+        $division = new DivisionModel();
+        $child_node_id = [];
+        $child_node_obj = $division->cateTree($add_id);
+        foreach ($child_node_obj as $v){
+            $child_node_id[] = $v['id'];
+        }
+        $child_node_id[] = $add_id;
+        // 获取此节点下包含的所有单元工程检验批
+        $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$child_node_id]])->column('id');
+        // 获取所有单元工程检验批 所关联的模型编号
+        $model_id = $this->where(['unit_id'=>['in',$unit_id]])->column('model_id');
+        return $model_id;
     }
 
 }
