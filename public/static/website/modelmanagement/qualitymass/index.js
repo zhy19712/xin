@@ -486,4 +486,86 @@ function clickTree(that) {
     $('#'+tId+'_span').click();
 }
 
-//获取选中节点的所有关联模型编号
+//刷新已关联模型
+$('#modelTable').tabs({
+    onSelect: function(title,index){
+        if(index==1){
+            alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
+        }
+    }
+});
+
+
+
+
+//构建查询表格模板
+var firstTrTemp = [];
+firstTrTemp.push('<tr class="search-tr" id="searchTr">');
+firstTrTemp.push('<td></td>');
+for(var i = 0;i<15;i++){
+    firstTrTemp.push('<td id="searchTd'+i+'">');
+    firstTrTemp.push('</td>');
+}
+firstTrTemp.push('</tr>');
+console.log(firstTrTemp.join(''));
+$('#tableItem thead').append(firstTrTemp.join(''));
+
+//获取下拉列表的值
+function dropDown(type,eId) {
+    $.ajax({
+        url: "./dropDown",
+        type: "post",
+        data: {
+            type:type
+        },
+        dataType: "json",
+        success: function (res) {
+            var data = res.data;
+            //构建select
+            var selectTemp = [];
+            selectTemp.push('<select>');
+            for(var j = 0;j<data.length;j++){
+                selectTemp.push('<option>');
+                selectTemp.push(data[j][type]);
+                selectTemp.push('</option>');
+            }
+            selectTemp.push('</select>');
+            $('#searchTr td#'+eId).append(selectTemp.join(''));
+        }
+    });
+}
+
+//构建input
+function inputTemp() {
+    var ipt = '<input type="text">';
+    $('#searchTd5,#searchTd7,#searchTd9,#searchTd11').append(ipt);
+}
+inputTemp();
+
+//给下拉列表赋值
+$('#searchTr td').each(function () {
+    if($(this).attr('id')=='searchTd0'){
+        dropDown('section','searchTd0');
+    }
+    if($(this).attr('id')=='searchTd1'){
+        dropDown('unit','searchTd1');
+    }
+    if($(this).attr('id')=='searchTd2'){
+        dropDown('parcel','searchTd2');
+    }
+    if($(this).attr('id')=='searchTd3'){
+        dropDown('cell','searchTd3');
+    }
+    if($(this).attr('id')=='searchTd4'){
+        dropDown('pile_number_1','searchTd4');
+    }
+    if($(this).attr('id')=='searchTd6'){
+        dropDown('pile_number_2','searchTd6');
+    }
+    if($(this).attr('id')=='searchTd8'){
+        dropDown('pile_number_3','searchTd8');
+    }
+    if($(this).attr('id')=='searchTd10'){
+        dropDown('pile_number_4','searchTd10');
+    }
+});

@@ -79,7 +79,7 @@ class Qualitymass extends Permissions
         // pile_number_3 桩号3名 pile_number_4 桩号4名
         if(request()->isAjax()){
             $type = input('type');
-            if(empty($id)){
+            if(empty($type)){
                 return json(['code'=>-1,'msg'=>'缺少构件类型']);
             }
             $node = new QualitymassModel();
