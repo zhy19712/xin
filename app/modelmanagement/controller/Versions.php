@@ -14,6 +14,7 @@ use app\modelmanagement\model\CompleteGroupModel;
 use app\modelmanagement\model\CompleteModel;
 use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
+use PhpOffice\PhpWord\Shared\ZipArchive;
 use think\Db;
 use think\Session;
 
@@ -90,6 +91,7 @@ class Versions extends Permissions
         }
 
         $info = $file->validate(['size'=>$web_config['file_size']*1024,'ext'=>$web_config['file_type']])->rule('date')->move($path);
+
         if($info) {
             //写入到附件表
             $data = [];
@@ -112,6 +114,12 @@ class Versions extends Permissions
             $res['id'] = Db::name('attachment')->insertGetId($data);
             $res['src'] = $path . DS . $info->getSaveName();
             $res['code'] = 2;
+
+            // 记得打开php.ini里的com.allow_dcom = true
+            $obj = new \COM('Wscript.Shell');
+            //执行doc解压命令
+            $filepath = $res['src'];
+            $obj->run("winrar x $filepath  $path",1,true);
             return json($res);
         } else {
             // 上传失败获取错误信息
@@ -188,8 +196,13 @@ class Versions extends Permissions
                  * [没用数据] [标段-单位-分部-单元+桩号1+桩号1+桩号2+桩号2+桩号3+桩号3+桩号4+桩号4+高程起+高程止]      [模型编号]
                  * [1]      [C3-DXCF-ZCF-SFDW-CX+0009.100-CX+0011.100-CZ+0377.000-CZ+0378.000-EL+0995.500-EL+1004.161]    [0]
                  */
-                //TODO 当新增时，首先解压缩，读取txt文件 插入数据
-
+                // 当新增时 读取txt文件 插入数据
+                // 1 竣工模型 -- 全景3D模型 操作的表是 model_complete
+                $attachment = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('name');
+                $file_name = explode('.',$attachment);
+                $this->completeGolIdTable('E:\WebServer\Resources\jungong' . DS . $file_name[0] . 'GolIdTable.txt');
+                $this->completeGroupProperties('E:\WebServer\Resources\jungong' . DS . $file_name[0] . 'GroupProperties.txt');
+                $this->qualityInsertTxtContent('E:\WebServer\Resources\shigong' . DS . $file_name[0] . 'GolIdTable.txt');
 
                 $flag = $send->insertTb($param);
             }else{
@@ -334,51 +347,31 @@ class Versions extends Permissions
      */
     public function completeGroupProperties($filePath)
     {
-        //TODO 目前还么有正式的数据
-
-        $filePath = './static/division/GroupProperties.txt';
         if(!file_exists($filePath)){
             return json(['code' => '-1','msg' => '文件不存在']);
         }
         $files = fopen($filePath, "r") or die("Unable to open file!");
         $contents = $new_contents = $new_ids = $data = [];
         while(!feof($files)) {
-            $txt = iconv('gb2312','utf-8//IGNORE',fgets($files));
+            $txt = fgets($files);
             $txt = str_replace('[','',$txt);
             $txt = str_replace(']','',$txt);
             $txt = str_replace("\r\n",'',$txt);
             $txt_arr = explode(' ',$txt);
             $contents[] = $txt_arr;
         }
-        halt($contents);
-
-        $i=$j=0;
-        foreach ($contents as $item){
-            foreach ($item as $k=>$v){
-                if($k==1){
-                    $new_contents[$i] = explode('-',$v);
-                }else if ($k==2){
-                    array_push($new_contents[$i],$v);
-                }
-            }
-            $i++;
-        }
 
         $versions = new VersionsModel();
         $version_number = $versions->versionNumber(1); // 1全景3D模型 2质量3D模型
 
-        foreach ($new_contents as $k=>$val){
+        foreach ($contents as $k=>$item){
             $data[$k]['version_number'] = $version_number;
-            if($val[0] == 'N'){
-                $data[$k]['group_name'] = $val[0] . $j;
-                $j++;
-            }else{
-                $data[$k]['group_name'] = $val[0];
-            }
-            $data[$k]['model_id'] = trim(next($val));
-            $data[$k]['model_id'] = trim(next($val));
+            $data[$k]['group_name'] = trim($item[0]);
+            $data[$k]['attribute_name'] = trim(next($item));
+            $data[$k]['attribute_val'] = trim(next($item));
         }
 
+        array_pop($data);
         $comp = new CompleteGroupModel();
         $comp->insertAll($data);
 
