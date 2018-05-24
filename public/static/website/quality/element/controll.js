@@ -597,8 +597,23 @@ function testing(nodeUnit_id,cpr_id,control_id) {
             unit_id:nodeUnitId,
         },
         success: function (res) {
-            console.log(res);
+            // console.log(res);
             if(res.msg == "fail"){
+                onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
+                $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                    '<thead>' +
+                    '<tr style="text-align: center">' +
+                    '<th>填报人</th>' +
+                    '<th>填报日期</th>' +
+                    '<th>当前审批人</th>' +
+                    '<th>审批状态</th>' +
+                    '<th>操作</th>' +
+                    '<th style="display: none;">当前审批人Id</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '</table>');
+                funOnLine(nodeUnitId,procedureId,controlRowId);
+                onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
                 selectAddShow = false;
                 $("option").attr('disabled',true);
                 layui.use(['form'], function(){
