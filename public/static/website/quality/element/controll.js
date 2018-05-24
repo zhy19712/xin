@@ -453,7 +453,8 @@ function showPdf(id,url) {
             console.log(res);
             if(res.code === 1){
                 var path = res.path;
-                if(res.path.split(".")[1]==="pdf"){
+                var houzhui = res.path.split(".");
+                if(houzhui[houzhui.length-1]=="pdf"){
                     window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
                 }else if(res.path.split(".")[1]==="png"||res.path.split(".")[1]==="jpg"||res.path.split(".")[1]==="jpeg"){
                     layer.photos({
@@ -471,6 +472,9 @@ function showPdf(id,url) {
                             ]
                         }
                         ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                        ,success:function () {
+                            $(".layui-layer-shade").empty();
+                        }
                     });
                 }else{
                     layer.msg("不支持的文件格式");
@@ -571,6 +575,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     // }
 });
 
+var selectAddShow; //在二次点击在线填报时触发
 //Testing管控中的控件能否使用
 function testing(nodeUnit_id,cpr_id,control_id) {
     $.ajax({
@@ -585,6 +590,7 @@ function testing(nodeUnit_id,cpr_id,control_id) {
         success: function (res) {
             console.log(res);
             if(res.msg == "fail"){
+                selectAddShow = false;
                 $("option").attr('disabled',true);
                 layui.use(['form'], function(){
                     var form = layui.form;
@@ -593,6 +599,7 @@ function testing(nodeUnit_id,cpr_id,control_id) {
                     $("#date").attr({"disabled":true});
                 });
             }else if(res.msg == "success"){
+                selectAddShow = true;
                 $("option").removeAttr('disabled');
                 layui.use(['form'], function(){
                     var form = layui.form;
@@ -601,7 +608,7 @@ function testing(nodeUnit_id,cpr_id,control_id) {
                 });
                 $("#date").attr({"disabled":false});
                 $(".mybtnAdd").css("display","none");
-                $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">线下填报没有在线填报模板！请移步到扫描件回传上传相关资料！</p>');
+                $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
             }
         },
         // error:function () {
@@ -643,6 +650,11 @@ $('#unitTab').tabs({
                 layer.msg("请选择控制点!")
             }else if(controlRowId == '' || procedureId == ''){
                 $(".mybtnAdd").css("display","none");
+            }
+            if(selectAddShow == true){
+                $(".mybtnAdd").css("display","none");
+            }else if(selectAddShow == false){
+                $(".mybtnAdd").css("display","block");
             }
         }else if(title != "在线填报"){
             $(".mybtnAdd").css("display","none");
