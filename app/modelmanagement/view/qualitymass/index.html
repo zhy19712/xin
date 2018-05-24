@@ -106,9 +106,13 @@
 <script src="__WEBSITE__/modelmanagement/qualitymass/index.js"></script>
 <script type="text/javascript">
     window.operateModel = function (data) {
+        console.log(data.join(','));
+        RealBimOcx.SetGroupInLogCamPos(data.join(','));
+        RealBimOcx.BatchAddSubClrInfoBegin();
         for(var i = 0;i<data.length;i++){
-            RealBimOcx.SetGroupInLogCamPos(data[i]);
+            RealBimOcx.AddSubClrPercent(data[i],1,0x6400ff00);
         }
+        RealBimOcx.BatchAddSubClrInfoEnd();
     }
 </script>
 </body>

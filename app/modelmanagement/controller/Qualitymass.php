@@ -172,12 +172,14 @@ class Qualitymass extends Permissions
     public function nodeModelNumber()
     {
         if($this->request->isAjax()){
-            // 前台 传递 选中节点的 add_id  和 节点的类型 node_type 1 工程划分节点 2 单元工程段号(检验批编号)
+            // 前台 传递 选中节点的 add_id  和 节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
             $param = input('post.');
             $add_id = isset($param['add_id']) ? $param['add_id'] : 0;
             $node_type = isset($param['node_type']) ? $param['node_type'] : 0;
             if(empty($add_id) || empty($node_type)){
                 return json(['code'=>-1,'msg'=>'缺少参数']);
+            }if(!in_array($node_type,[1,2,3,4])){
+                return json(['code'=>-1,'msg'=>'无效的节点类型']);
             }
             $quality = new QualitymassModel();
             $data = $quality->nodeModelNumber($add_id,$node_type);
