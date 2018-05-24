@@ -35,11 +35,15 @@ table td:last-child{
 }
 .search-tr input,.search-tr select{
     padding: 6px 12px;
-    width: 50px;
+    width: 30px;
     border-radius: 4px;
     border: 1px solid #cecece;
 }
 .search-tr select{
     padding: 6px 0;
+    width: auto;
+}
+table.dataTable thead td{
+    padding: 6px 0px;
     width: auto;
 }
