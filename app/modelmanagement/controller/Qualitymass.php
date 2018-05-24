@@ -11,6 +11,7 @@ namespace app\modelmanagement\controller;
 
 use app\admin\controller\Permissions;
 use app\modelmanagement\model\QualitymassModel;
+use app\modelmanagement\model\VersionsModel;
 use app\quality\model\DivisionModel;
 use app\quality\model\DivisionUnitModel;
 
@@ -171,79 +172,17 @@ class Qualitymass extends Permissions
     public function nodeModelNumber()
     {
         if($this->request->isAjax()){
-            // 前台 传递 选中节点的 add_id
-            $add_id = input('add_id');
-            if(!sizeof($add_id)){
-                return json(['code'=>-1,'msg'=>'缺少构件的编号']);
+            // 前台 传递 选中节点的 add_id  和 节点的类型 node_type 1 工程划分节点 2 单元工程段号(检验批编号)
+            $param = input('post.');
+            $add_id = isset($param['add_id']) ? $param['add_id'] : 0;
+            $node_type = isset($param['node_type']) ? $param['node_type'] : 0;
+            if(empty($add_id) || empty($node_type)){
+                return json(['code'=>-1,'msg'=>'缺少参数']);
             }
             $quality = new QualitymassModel();
-            $data = $quality->nodeModelNumber($add_id);
-            return json([''=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
+            $data = $quality->nodeModelNumber($add_id,$node_type);
+            return json(['code'=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
         }
-    }
-
-
-
-    // 此方法只是临时 导入质量模型 txt文件时使用
-    // 不存在于 功能列表里面 后期可以删除掉
-    // 获取txt文件内容并插入到数据库中 insertTxtContent
-    public function insertTxtContent()
-    {
-        $filePath = './static/division/GolIdTable2.txt';
-        if(!file_exists($filePath)){
-            return json(['code' => '-1','msg' => '文件不存在']);
-        }
-        $files = fopen($filePath, "r") or die("Unable to open file!");
-        $contents = $new_contents = $new_ids = [];
-        while(!feof($files)) {
-            $txt = fgets($files);
-            $txt = str_replace('[','',$txt);
-            $txt = str_replace(']','',$txt);
-            $txt = str_replace("\r\n",'',$txt);
-            $txt_arr = explode(' ',$txt);
-            $contents[] = $txt_arr;
-        }
-
-        $i=0;
-        foreach ($contents as $item){
-            foreach ($item as $k=>$v){
-                if($k==1){
-                    $new_contents[$i] = explode('-',$v);
-                }else if ($k==2){
-                    array_push($new_contents[$i],$v);
-                }
-            }
-            $i++;
-        }
-
-        $data = [];
-        foreach ($new_contents as $k=>$val){
-            $data[$k]['section'] = $val[0];
-            $data[$k]['unit'] = trim(next($val));
-            $data[$k]['parcel'] = trim(next($val));
-            $data[$k]['cell'] = trim(next($val));
-            $arr_1 = explode('+',trim(next($val)));
-            $data[$k]['pile_number_1'] = $arr_1[0];
-            $data[$k]['pile_val_1'] = $arr_1[1];
-            $arr_2 = explode('+',trim(next($val)));
-            $data[$k]['pile_number_2'] = $arr_2[0];
-            $data[$k]['pile_val_2'] = $arr_2[1];
-            $arr_3 = explode('+',trim(next($val)));
-            $data[$k]['pile_number_3'] = $arr_3[0];
-            $data[$k]['pile_val_3'] = $arr_3[1];
-            $arr_4 = explode('+',trim(next($val)));
-            $data[$k]['pile_number_4'] = $arr_4[0];
-            $data[$k]['pile_val_4'] = $arr_4[1];
-            $arr_5 = explode('+',trim(next($val)));
-            $data[$k]['el_start'] = $arr_5[1];
-            $arr_6 = explode('+',trim(next($val)));
-            $data[$k]['el_cease'] = $arr_6[1];
-            $data[$k]['model_id'] = trim(next($val));
-        }
-
-        $picture = new QualitymassModel();
-        $picture->insertAll($data);
-        fclose($files);
     }
 
 }

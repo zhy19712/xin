@@ -190,6 +190,8 @@
                 setTimeout(function () {
                     closWin();
                 },800)
+            }else{
+              layer.msg('请选择模板');
             }
         });
     });
@@ -197,7 +199,7 @@
     //点击选中单选
     function checkFile(that) {
         console.log(that);
-        if(that.checked){
+        if($(that).is(":checked")){
             flag = true;
         }else{
             flag = false;
@@ -209,6 +211,8 @@
         if($(e.target).hasClass("dataTables_empty")){
             return;
         }
+        $(this).find("td:first-child input").prop("checked",true);
+        checkFile($(this).find("td:first-child input"));
         $(this).addClass("select-color").siblings().removeClass("select-color");
         var selectData = tableItemChose.row(".select-color").data();//获取选中行数据
         checkId = selectData[0];

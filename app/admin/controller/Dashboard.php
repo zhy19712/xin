@@ -42,6 +42,8 @@ class Dashboard extends Permissions
         //获取当前登录的用户id
 
         $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+
+
         //查询单元工程审批人状态表
         $form_info = $qualityform->getAdminapproval($admin_id);
 
@@ -52,6 +54,7 @@ class Dashboard extends Permissions
         {
             foreach($form_info as $key=>$val)
             {
+
                 $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["CurrentApproverId"]]);
 
                 if(!empty($result))
@@ -65,8 +68,17 @@ class Dashboard extends Permissions
                 {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["form_name"];
+
                     $data[$key]["create_time"] = $val["update_time"];
-                    $data[$key]["sender"] = substr($val["ApproveIds"], -1);
+
+
+                    if($val["ApproveIds"])
+                    {
+                        $ids = explode(",",$val["ApproveIds"]);
+
+                        $data[$key]["sender"] = $ids[count($ids)-1];
+                    }
+
                     $data[$key]["task_category"] = "单元质量验评";
                     $data[$key]["status"] = $val["ApproveStatus"];
                     $data[$key]["current_approver_id"] = $val["CurrentApproverId"];
@@ -148,8 +160,6 @@ class Dashboard extends Permissions
         }
 
     }
-
-
 
 //    /**
 //     * 轮询

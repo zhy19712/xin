@@ -1,5 +1,7 @@
 var nodeId; //被点击节点ID
 var level;  //节点等级
+
+//左侧的树
 function ztree(node_type) {
     var setting = {
         async: {
@@ -30,19 +32,36 @@ function ztree(node_type) {
     zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 }
 ztree(0);
+
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
-    console.log(treeNode);
     nodeId = treeNode.add_id;
     if(treeNode.level==5){
         alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
         elval();
+        nodeModelNumber(treeNode);
     }
 }
 
-//显示隐藏模板
-function zTreeOnCheck() {
-    
+//显示隐藏模板事件
+function zTreeOnCheck(event, treeId, treeNode) {
+    nodeModelNumber(treeNode);
+}
+
+//显示隐藏模板函数
+function nodeModelNumber(treeNode) {
+    var add_id = treeNode.add_id;
+    $.ajax({
+        url: "./nodeModelNumber",
+        type: "post",
+        data: {
+            add_id:add_id
+        },
+        dataType: "json",
+        success: function (res) {
+            window.operateModel(res.data);
+        }
+    });
 }
 
 //绘制radio
@@ -266,7 +285,7 @@ $("thead tr th:first-child").unbind();
 $('.alreadyBtn').html('关联');
 $('.noteverBtn').html('解除关联');
 
-//获取高程/桩号
+//起止高程和桩号的值
 function elval() {
     $.ajax({
         url: "./elVal",
@@ -338,7 +357,7 @@ $("#all_checked").on("click", function () {
     console.log(idArr);
 });
 
-//关联模型
+//关联构件
 $('.alreadyBtn').click(function(){
     if(!nodeId){
         layer.msg('请选择单元工程');
@@ -359,7 +378,7 @@ $('.alreadyBtn').click(function(){
     });
 });
 
-//解除关联模型
+//选中的构件 --  解除关联
 $('.noteverBtn').click(function(){
     layer.confirm('确定解除该关联模型?', {icon: 3, title:'提示'}, function(index){
         $.ajax({
@@ -403,7 +422,7 @@ function screenNode(node_type) {
     });
 }
 
-//根据树节点解除关联模型
+//选中的节点 -- 解除关联
 $('#relieveBtn').click(function(){
     if(!nodeId){
         layer.msg('请选择单元工程');
@@ -445,3 +464,5 @@ function clickTree(that) {
     var nodes = treeObj.getNodesByParam("add_id", uid, null);
     treeObj.selectNode(nodes[0]);
 }
+
+//获取选中节点的所有关联模型编号
