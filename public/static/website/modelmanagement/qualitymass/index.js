@@ -1,5 +1,7 @@
 var nodeId; //被点击节点ID
 var level;  //节点等级
+
+//左侧的树
 function ztree(node_type) {
     var setting = {
         async: {
@@ -20,7 +22,8 @@ function ztree(node_type) {
             enable: true
         },
         callback:{
-            onClick: zTreeOnClick
+            onClick: zTreeOnClick,
+            onCheck: zTreeOnCheck
         },
         showLine:true,
         showTitle:true,
@@ -36,8 +39,31 @@ function zTreeOnClick(event, treeId, treeNode) {
     if(treeNode.level==5){
         alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
         elval();
+        nodeModelNumber(treeNode);
     }
 }
+
+//显示隐藏模板事件
+function zTreeOnCheck(event, treeId, treeNode) {
+    nodeModelNumber(treeNode);
+}
+
+//显示隐藏模板函数
+function nodeModelNumber(treeNode) {
+    var add_id = treeNode.add_id;
+    $.ajax({
+        url: "./nodeModelNumber",
+        type: "post",
+        data: {
+            add_id:add_id
+        },
+        dataType: "json",
+        success: function (res) {
+            console.log(res);
+        }
+    });
+}
+
 
 //绘制radio
 $('input[name="nodeRelation"],input[name="nodeRelationTab"]').iCheck({
@@ -106,6 +132,32 @@ var tableItem = $('#tableItem').DataTable({
         },
         {
             name: "site"
+        },
+        {
+            name: "uid"
+        }
+    ],
+    columnDefs: [
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [15],
+            "render" :  function(data,type,row) {
+                var name = row[15];  //单元工程名称
+                var uid = row[16];  //单元工程编号
+                var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ name +"</span>";
+                return html;
+            }
+        },
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [16],
+            "render" :  function(data,type,row) {
+                var uid = row[16];  //单元工程编号
+                var html =  "<input id='uid' type='hidden' value="+ uid +">" ;
+                return html;
+            }
         }
     ],
     language: {
@@ -182,6 +234,32 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
         },
         {
             name: "site"
+        },
+        {
+            name: "uid"
+        }
+    ],
+    columnDefs: [
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [15],
+            "render" :  function(data,type,row) {
+                var name = row[15];  //单元工程名称
+                var uid = row[16];  //单元工程编号
+                var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ name +"</span>";
+                return html;
+            }
+        },
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [16],
+            "render" :  function(data,type,row) {
+                var uid = row[16];  //单元工程编号
+                var html =  "<input id='uid' type='hidden' value="+ uid +">" ;
+                return html;
+            }
         }
     ],
     language: {
@@ -208,7 +286,7 @@ $("thead tr th:first-child").unbind();
 $('.alreadyBtn').html('关联');
 $('.noteverBtn').html('解除关联');
 
-//获取高程/桩号
+//起止高程和桩号的值
 function elval() {
     $.ajax({
         url: "./elVal",
@@ -231,12 +309,6 @@ function elval() {
             $('#tableItem_wrapper').prepend(Template);
         }
     });
-}
-
-
-//已关联节点
-function getSelectId() {
-    
 }
 
 //获取选中行ID
@@ -286,7 +358,7 @@ $("#all_checked").on("click", function () {
     console.log(idArr);
 });
 
-//关联模型
+//关联构件
 $('.alreadyBtn').click(function(){
     if(!nodeId){
         layer.msg('请选择单元工程');
@@ -307,7 +379,7 @@ $('.alreadyBtn').click(function(){
     });
 });
 
-//解除关联模型
+//选中的构件 --  解除关联
 $('.noteverBtn').click(function(){
     layer.confirm('确定解除该关联模型?', {icon: 3, title:'提示'}, function(index){
         $.ajax({
@@ -351,7 +423,7 @@ function screenNode(node_type) {
     });
 }
 
-//根据树节点解除关联模型
+//选中的节点 -- 解除关联
 $('#relieveBtn').click(function(){
     if(!nodeId){
         layer.msg('请选择单元工程');
@@ -383,5 +455,15 @@ $('#noteverTab').on('ifChecked', function(event){
 });
 //筛选方法
 function model_quality(model_type) {
-    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search&model_type='+model_type).load();
+    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&model_type='+model_type).load();
 }
+
+//点击已关联节点选中树中对应的节点
+function clickTree(that) {
+    var uid = $(that).attr('uid');
+    var treeObj = $.fn.zTree.getZTreeObj("ztree");
+    var nodes = treeObj.getNodesByParam("add_id", uid, null);
+    treeObj.selectNode(nodes[0]);
+}
+
+//获取选中节点的所有关联模型编号

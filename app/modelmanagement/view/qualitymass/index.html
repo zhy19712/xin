@@ -14,11 +14,11 @@
 </div>
 <div data-options="region:'center',title:''" style="border: 0">
     <div id="cc" class="easyui-layout" style="width:100%;height:100%;">
-        <div data-options="region:'north',title:'',split:true" style="height:50%;">
+        <div data-options="region:'north',title:'',split:true" style="height:40%;">
             <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
             <!-- 初始化 -->
             <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
-                var modelName = "res_fengning_kw";
+                var modelName = "res_test";
                 var modelPath = "http://192.168.1.2:8008/default.aspx?dir=url_res02&path=";
                 RealBimOcx.SwitchBIMSceneSimple(modelPath,modelName);
                 //RealBimOcx.SwitchBIMSceneSimple("F:\\","res_fengning_kw_03");
@@ -31,11 +31,12 @@
                 if(CompleteEvent == "LoadMainScene" && retError==0 ){
                     RealBimOcx.SetAllHugeObjSubValidState(1);
                     RealBimOcx.SetSceHugeObjVisible(true);
+                    RealBimOcx.SetSysUIRgnVisible("lt",0);
                 }
                 RealBimOcx.SetSuitableCam();
             </script>
         </div>
-        <div data-options="region:'center'" style="height:50%;padding:10px;">
+        <div data-options="region:'center'" style="height:60%;padding:10px;">
             <div id="modelTable" class="easyui-tabs">
                 <div title="模型构件列表">
                     <div class="node-setting">
@@ -66,11 +67,12 @@
                             <th>高程起</th>
                             <th>高程止</th>
                             <th>已关联节点</th>
+                            <th class="layui-hide">单元工程编号</th>
                         </tr>
                         </thead>
                     </table>
                 </div>
-                <div title="已关联模型" style="overflow:auto;padding:20px;display:none;">
+                <div title="已关联模型" style="overflow:auto;display:none;">
                     <table id="alreadyRelationModelTable" class="table table-striped table-bordered" cellspacing="0"  width="100%">
                         <thead>
                         <tr>
@@ -90,6 +92,7 @@
                             <th>高程起</th>
                             <th>高程止</th>
                             <th>已关联节点</th>
+                            <th class="layui-hide">单元工程编号</th>
                         </tr>
                         </thead>
                     </table>

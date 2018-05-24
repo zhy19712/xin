@@ -65,8 +65,16 @@ class Dashboard extends Permissions
                 {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["form_name"];
-                    $data[$key]["create_time"] = time();
-                    $data[$key]["sender"] = substr($val["ApproveIds"], -1);
+                    $data[$key]["create_time"] = $val["update_time"];
+
+
+                    if($val["ApproveIds"])
+                    {
+                        $ids = explode(",",$val["ApproveIds"]);
+
+                        $data[$key]["sender"] = $ids[count($ids)-1];
+                    }
+
                     $data[$key]["task_category"] = "单元质量验评";
                     $data[$key]["status"] = $val["ApproveStatus"];
                     $data[$key]["current_approver_id"] = $val["CurrentApproverId"];
@@ -124,7 +132,7 @@ class Dashboard extends Permissions
                 {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["file_name"];
-                    $data[$key]["create_time"] = time();
+                    $data[$key]["create_time"] = $val["update_time"];
                     $data[$key]["sender"] = $val["send_id"];
                     $data[$key]["task_category"] = "收文";
                     //如果收发文中的status状态为2表示未执行
@@ -148,8 +156,6 @@ class Dashboard extends Permissions
         }
 
     }
-
-
 
 //    /**
 //     * 轮询
@@ -211,5 +217,36 @@ class Dashboard extends Permissions
 
                 return json(["count"=>$count_data]);
             }
+        }
+
+        /**
+         * 消息中的单元工程改变当前的状态
+         */
+        public function changeStatus()
+        {
+            if ($this->request->isAjax()) {
+                $uint_id = input("post.uint_id");
+                //获取当前的登录人的id
+                $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+                //实例化模型类
+                $message = new MessageremindingModel();
+
+                $message_info = $message->getOne(["uint_id"=>$uint_id,"current_approver_id"=>$admin_id]);
+
+                if($message_info["status"] == 1)
+                {
+                    $data = [
+                        "id" => $message_info["id"],
+                        "status" => 2
+                    ];
+
+                    $flag = $message->editTb($data);
+                }
+
+                return json(["code"=>1]);
+            }
+
+
+
         }
 }
