@@ -10,8 +10,8 @@
     #tableItem thead tr th:first-child, #tableItemDone thead tr th:first-child{
         border-left: 1px solid #ddd;
     }
-    #tableItem .even，#tableItemDone .even{
-        background-color: #f9f9f9;
+    #tableItem .even,#tableItemDone .even,thead tr{
+        background-color: #ececec;
     }
     #tableItem .odd,#tableItemDone .odd{
         background-color: #fff;
@@ -30,6 +30,18 @@
         border: 1px solid #cecece;
         border-top: none;
     }
+    .con_Style{
+        display: inline-block;
+        color: white;
+        background-color: #009688;
+        height: 24px;
+        width: 35px;
+        line-height: 24px;
+        border-radius: 5px;
+    }
+    a:hover{
+        color: #fff;
+    }
 </style>
 
 <div class="layui-tab layui-tab-card" style="height: 100%;" lay-filter="test1">
@@ -39,7 +51,7 @@
     </ul>
     <div class="layui-tab-content" style="height: 100%;">
         <div class="layui-tab-item layui-show">
-            <table id="tableItem" class="table table-striped table-bordered cell-border hover" cellspacing=0"  width="98%">
+            <table id="tableItem" class="table table-striped table-bordered cell-border" cellspacing=0"  width="100%">
                 <thead>
                     <tr>
                         <th>任务名称</th>
@@ -57,7 +69,7 @@
             </div>
         </div>
         <div class="layui-tab-item">
-            <table id="tableItemDone" class="table table-striped table-bordered cell-border hover" cellspacing=0"  width="98%">
+            <table id="tableItemDone" class="table table-striped table-bordered cell-border " cellspacing=0"  width="100%">
                 <thead>
                 <tr>
                     <th>任务名称</th>
@@ -78,7 +90,7 @@
 
     <!--收文文件查看以及处理-->
     <div id="file_modal" style="display: none;">
-        <form action="" class="layui-form">
+        <form action="#" class="layui-form" onsubmit="return false">
             <input type="hidden" value="" id="major_key">
             <div class="layui-form-item">
                 <div class="autograph">
