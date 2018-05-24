@@ -236,6 +236,8 @@ class Dashboard extends Permissions
 
                     $flag = $message->editTb($data);
                 }
+
+                return json(["code"=>1]);
             }
         }
 }
