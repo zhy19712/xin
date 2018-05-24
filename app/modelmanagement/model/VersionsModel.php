@@ -98,6 +98,7 @@ class VersionsModel extends Model
         if($count == 1){
             return ['code' => -1,'msg' => '当前版本是唯一的,不能删除'];
         }
+        return ['code' => 1,'version_number'=>$data['version_number'],'msg' => '当前版本号'];
     }
 
 }

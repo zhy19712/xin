@@ -123,9 +123,10 @@ class QualitymassModel extends Model
         return ['code'=>1,'msg'=>'关联成功'];
     }
 
-    public function removeVersionsRelevance($id)
+    public function removeVersionsRelevance($version_number)
     {
-
+        $this->where(['version_number'=>['eq',$version_number]])->delete();
+        return ['code'=>1,'msg'=>'删除成功'];
     }
 
     public function nodeModelNumber($add_id)
@@ -141,7 +142,10 @@ class QualitymassModel extends Model
         // 获取此节点下包含的所有单元工程检验批
         $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$child_node_id]])->column('id');
         // 获取所有单元工程检验批 所关联的模型编号
-        $model_id = $this->where(['unit_id'=>['in',$unit_id]])->column('model_id');
+        $model_id = [];
+        if(sizeof($unit_id)){
+            $model_id = $this->where(['unit_id'=>['in',$unit_id]])->column('model_id');
+        }
         return $model_id;
     }
 
