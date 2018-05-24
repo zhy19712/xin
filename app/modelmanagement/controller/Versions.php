@@ -239,9 +239,9 @@ class Versions extends Permissions
 
             //TODO  1 竣工模型 如果存在关联关系就 把关联关系全部删除
 
-            // 施工模型 如果存在关联关系就 把关联关系全部删除
+            // 施工模型 删除此版本号 下 所有的关联关系
             $quality = new QualitymassModel();
-            $flag = $quality->removeVersionsRelevance($id);
+            $flag = $quality->removeVersionsRelevance($flag['version_number']);
             if($flag['code'] == -1){
                 return json($flag);
             }
