@@ -149,6 +149,9 @@ class Versions extends Permissions
             // 系统自动生成参数
             //  resource_path 资源路径 version_number 版本 version_date 版本日期
             $resource_path = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('filepath');
+
+            //TODO 先测试E盘能否成功，成功后 修改为 G盘
+
             $path_arr = explode('E:\WebServer',$resource_path);
             $param['resource_path'] = $path_arr[1];
             $version_number = $send->versionNumber();
@@ -160,20 +163,30 @@ class Versions extends Permissions
                 /**
                  * 1 竣工模型 -- 全景3D模型 操作的表是 model_complete
                  * 当新增时，首先解压缩，存在2个txt文件
-                 * 读取txt1 文件 里面有3个值 [模型id 组名-id 版本号]
+                 * 读取txt1 文件 里面有3个值 [第一个参数没用]  [组名-id] [模型编号]
                  *
-                 * 例如 0 大坝
+                 * 例如:
+                 *     [Test] [N-1] [9]
+                 *     [Test] [组九-2] [10]
+                 *     存入数据的时候只读取 组九 作为组名 10 作为模型编号
                  *
+                 * 注意 -- 如果 组名是 N 那么代表他自己没有组,每一个N 都在 后台随机生成一个组 例如: N1 N2 N3...
                  *
-                 * 读取txt1 文件 里面有3个值 [模型id 组名-id 版本号]
+                 * 读取txt2 文件 里面也是有3个值 [组 组的属性名 组的属性值]
+                 *
+                 * 例如:
+                 *      组一 组一的属性名1 组一的属性值1
+                 *      组一 组一的属性名2 组一的属性值2
+                 *      组一 组一的属性名3 组一的属性值3
+                 * 存入数据的时候只读取 组九 作为组名 10 作为模型编号
                  *
                  * 2 施工模型 -- 质量模型 操作的表是 model_quality
+                 * 压缩包里面只有一个txt文件
                  *
+                 * [没用数据] [标段-单位-分部-单元+桩号1+桩号1+桩号2+桩号2+桩号3+桩号3+桩号4+桩号4+高程起+高程止]      [模型编号]
+                 * [1]      [C3-DXCF-ZCF-SFDW-CX+0009.100-CX+0011.100-CZ+0377.000-CZ+0378.000-EL+0995.500-EL+1004.161]    [0]
                  */
                 //TODO 当新增时，首先解压缩，读取txt文件 插入数据
-                //TODO 插入数据时 要判断是否已经存在过关联关系
-                //TODO 如果不存在就 把上一个版本的关联关系都复制一份，继承过来
-                //TODO 如果存在关联关系就   直接禁用上一个版本状态，启用当前版本
 
 
                 $flag = $send->insertTb($param);
@@ -247,18 +260,23 @@ class Versions extends Permissions
             }
 
             // 最后删除版本记录和资源包文件
+            //TODO 注意删除里的E盘 修改为 G盘
             $flag = $send->deleteTb($param['major_key']);
             return json($flag);
         }
     }
 
 
-    // 此方法只是临时 导入施工模型 质量模型 txt文件时使用
-    // 不存在于 功能列表里面 后期可以删除掉
-    // 获取txt文件内容并插入到数据库中 insertTxtContent
-    public function insertTxtContent()
+    /**
+     * 此方法只是 读取 竣工模型 -- 全景3D模型 txt文件时使用
+     * 获取txt文件内容并插入到数据库中
+     * @param $filePath
+     * @param $filePath2
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function completeInsertTxtContent($filePath,$filePath2)
     {
-        $filePath = './static/division/GolIdTable2.txt';
         if(!file_exists($filePath)){
             return json(['code' => '-1','msg' => '文件不存在']);
         }
@@ -315,7 +333,80 @@ class Versions extends Permissions
             $data[$k]['model_id'] = trim(next($val));
         }
 
-        // 复制上一个版本的关联关系
+        //TODO 复制上一个版本的关联关系
+
+        $picture = new QualitymassModel();
+        $picture->insertAll($data);
+        fclose($files);
+    }
+
+
+    /**
+     * 此方法只是 读取施工模型 质量模型 txt文件时使用
+     * 获取txt文件内容并插入到数据库中
+     * @param $filePath
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function qualityInsertTxtContent($filePath)
+    {
+        if(!file_exists($filePath)){
+            return json(['code' => '-1','msg' => '文件不存在']);
+        }
+        $files = fopen($filePath, "r") or die("Unable to open file!");
+        $contents = $new_contents = $new_ids = [];
+        while(!feof($files)) {
+            $txt = fgets($files);
+            $txt = str_replace('[','',$txt);
+            $txt = str_replace(']','',$txt);
+            $txt = str_replace("\r\n",'',$txt);
+            $txt_arr = explode(' ',$txt);
+            $contents[] = $txt_arr;
+        }
+
+        $data = [];
+        $i=0;
+        foreach ($contents as $item){
+            foreach ($item as $k=>$v){
+                if($k==1){
+                    $data[$i]['model_name'] = $v;
+                    $new_contents[$i] = explode('-',$v);
+                }else if ($k==2){
+                    array_push($new_contents[$i],$v);
+                }
+            }
+            $i++;
+        }
+
+        $send = new VersionsModel();
+        $version_number = $send->versionNumber();
+
+        foreach ($new_contents as $k=>$val){
+            $data[$k]['version_number'] = $version_number;
+            $data[$k]['section'] = $val[0];
+            $data[$k]['unit'] = trim(next($val));
+            $data[$k]['parcel'] = trim(next($val));
+            $data[$k]['cell'] = trim(next($val));
+            $arr_1 = explode('+',trim(next($val)));
+            $data[$k]['pile_number_1'] = $arr_1[0];
+            $data[$k]['pile_val_1'] = $arr_1[1];
+            $arr_2 = explode('+',trim(next($val)));
+            $data[$k]['pile_number_2'] = $arr_2[0];
+            $data[$k]['pile_val_2'] = $arr_2[1];
+            $arr_3 = explode('+',trim(next($val)));
+            $data[$k]['pile_number_3'] = $arr_3[0];
+            $data[$k]['pile_val_3'] = $arr_3[1];
+            $arr_4 = explode('+',trim(next($val)));
+            $data[$k]['pile_number_4'] = $arr_4[0];
+            $data[$k]['pile_val_4'] = $arr_4[1];
+            $arr_5 = explode('+',trim(next($val)));
+            $data[$k]['el_start'] = $arr_5[1];
+            $arr_6 = explode('+',trim(next($val)));
+            $data[$k]['el_cease'] = $arr_6[1];
+            $data[$k]['model_id'] = trim(next($val));
+        }
+
+        //TODO 复制上一个版本的关联关系
 
         $picture = new QualitymassModel();
         $picture->insertAll($data);

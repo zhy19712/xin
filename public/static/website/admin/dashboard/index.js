@@ -2,7 +2,6 @@ layui.use(['element','layer'],function () {
   var element = layui.element
     ,layer = layui.layer;
   element.on('tab(test1)', function(data){
-    data.index
   })
 });
 
@@ -48,10 +47,10 @@ var tableItem = $('#tableItem').DataTable( {
         var type = JSON.stringify(data); // 不转 汉字 报错  type
         if(data == 1){
           //收发文
-          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conedit("+type+","+row[6]+")'>处理</a>" ;
+          var html = "<a type='button'  class='con_Style' onclick='conedit("+type+","+row[6]+")'>处理</a>" ;
         }else if(data == 2){
           //单元
-          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conedit("+type+","+row[6]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>处理</a>" ;
+          var html = "<a type='button'  class='con_Style' onclick='conedit("+type+","+row[6]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>处理</a>" ;
         }
         return html;
       }
@@ -144,10 +143,10 @@ var tableItemDone = $('#tableItemDone').DataTable( {
         var type = JSON.stringify(data); // 不转 汉字 报错  type
         if(data == 1){
           //收发文
-          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conshow("+type+","+row[6]+")'>查看</a>" ;
+          var html = "<a type='button'  class='con_Style' onclick='conshow("+type+","+row[6]+")'>查看</a>" ;
         }else if(data == 2){
           //单元
-          var html = "<a type='button'  style=' margin-left: 5px;color: blue;' onclick='conshow("+type+","+row[6]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>查看</a>" ;
+          var html = "<a type='button'  class='con_Style' onclick='conshow("+type+","+row[6]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>查看</a>" ;
         }
         return html;
       }
@@ -434,7 +433,7 @@ function attachmentPreview(that) {
   })
 }
 
-//收文处理 签收 或拒收
+// 收文处理 签收 或拒收
 function saveInter(status) {
   var fileId = $('#file_ids').val();
   $.ajax({
@@ -446,18 +445,20 @@ function saveInter(status) {
     },
     dataType: "json",
     success: function (res) {
-        console.log(res);
-      layer.msg(res.msg);
-      $("#major_key").val("");
       //手动调 刷新
       $.ajax({
-        url:'./queryMessage',
-        type:'GET',
+        url:'./changeStatus',
+        type:'POST',
+        data:{
+          uint_id:$("#major_key").val(),
+          type:1
+        },
         dataType:'json',
         success:function(data, textStatus){
+            tableItem.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=1").load();
+            tableItemDone.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=2").load();
           layer.closeAll();
-          tableItem.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=1").load();
-          tableItemDone.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=2").load();
+          $("#major_key").val("");
         }
       });
 
