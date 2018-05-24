@@ -254,6 +254,7 @@ class Element extends Permissions
         $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . ".docx";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
         $flag = file_exists($formPath);
+
         if ($this->request->isAjax()) {
             if (!$flag) {
                 return json(['code' => -1, 'msg' => '文件不存在!']);
@@ -263,6 +264,7 @@ class Element extends Permissions
         if (!$flag) {
             return "文件不存在";
         }
+
         //设置临时文件，避免C盘Temp不可写报错
         Settings::setTempDir('temp');
         $phpword = new PhpWord();
@@ -274,7 +276,7 @@ class Element extends Permissions
         }
         $formInfo = unserialize($cp['form_data']);
         foreach ($formInfo as $item) {
-            $phpword->setValue('{' . $item['Name'] . '}', $item['Value']);
+            $phpword->setValue('{' . $item['Name'] . '}', '111');
         }
         $docname = $phpword->save();
 
@@ -443,46 +445,6 @@ class Element extends Permissions
        }
 
     }
-
-    //单元管控
-    //访问element中的quality_division_controlpoint_realtion表（单元策划访问common下的该方法）
-    public function datatablesPre()
-    {
-        //接收表名，列名数组 必要
-        $columns = $this->request->param('columns/a');
-        //获取查询条件
-        $id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
-        $table = $this->request->param('tableName');
-        //接收查询条件，可以为空
-        $columnNum = sizeof($columns);
-        $columnString = '';
-        for ($i = 0; $i < $columnNum; $i++) {
-            $columnString = $columns[$i]['name'] . '|' . $columnString;
-        }
-        $columnString = substr($columnString, 0, strlen($columnString) - 1);
-        //获取Datatables发送的参数 必要
-        $draw = $this->request->has('draw') ? $this->request->param('draw', 0, 'intval') : 0;
-        //排序列
-        $order_column = $this->request->param('order/a')['0']['column'];
-        //ase desc 升序或者降序
-        $order_dir = $this->request->param('order/a')['0']['dir'];
-
-        $order = "";
-        if (isset($order_column)) {
-            $i = intval($order_column);
-            $order = $columns[$i]['name'] . ' ' . $order_dir;
-        }
-        //搜索
-        //获取前台传过来的过滤条件
-        $search = $this->request->param('search/a')['value'];
-        //分页
-        $start = $this->request->has('start') ? $this->request->param('start', 0, 'intval') : 0;
-        $length = $this->request->has('length') ? $this->request->param('length', 0, 'intval') : 0;
-        $limitFlag = isset($start) && $length != -1;
-        //新建的方法名与数据库表名保持一致
-        return $this->$table($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString);
-    }
-
     //检测管控中的控件能否使用
     public function checkform(){
 
