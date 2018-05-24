@@ -482,7 +482,8 @@ function clickTree(that) {
     var uid = $(that).attr('uid');
     var treeObj = $.fn.zTree.getZTreeObj("ztree");
     var nodes = treeObj.getNodesByParam("add_id", uid, null);
-    treeObj.selectNode(nodes[0]);
+    var tId = nodes[0].tId;
+    $('#'+tId+'_span').click();
 }
 
 //获取选中节点的所有关联模型编号
