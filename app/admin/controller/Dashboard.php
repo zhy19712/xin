@@ -55,6 +55,7 @@ class Dashboard extends Permissions
             foreach($form_info as $key=>$val)
             {
 
+
                 $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["CurrentApproverId"]]);
 
                 if(!empty($result))
@@ -69,7 +70,7 @@ class Dashboard extends Permissions
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["form_name"];
 
-                    $data[$key]["create_time"] = $val["update_time"];
+                    $data[$key]["create_time"] = strtotime($val["update_time"]);
 
 
                     if($val["ApproveIds"])
@@ -86,11 +87,23 @@ class Dashboard extends Permissions
                 }
             }
 
-            $flag = $message->insertTbAll($data);
+            if(!empty($data))
+            {
+                foreach($data as $a=>$b)
+                {
+                    $message->insertTb($b);
+                }
 
-            $flag = $message->editTbAll($edit_data);
+            }
+            if(!empty($edit_data))
+            {
+                foreach($edit_data as $c=>$d)
+                {
+                    $message->editTb($d);
+                }
+            }
 
-            return json($flag);
+//            return json($flag);
         }
 
     }
@@ -136,7 +149,7 @@ class Dashboard extends Permissions
                 {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["file_name"];
-                    $data[$key]["create_time"] = $val["update_time"];
+                    $data[$key]["create_time"] = strtotime($val["update_time"]);
                     $data[$key]["sender"] = $val["send_id"];
                     $data[$key]["task_category"] = "收文";
                     //如果收发文中的status状态为2表示未执行
