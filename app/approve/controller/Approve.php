@@ -62,27 +62,38 @@ class Approve extends Permissions
         if ($this->request->isAjax()) {
             if ($this->approveService->Approve($par['dataId'], new $par['dataType'], $par['res'], $par['mark'])) {
                 $next_approverid=$par['next_approverid'];//下一个审批人的id
+                //去approve表里找审批历史 更新审批人id到审批人串里
+                $approveHistory=Db::name('quality_form_info')
+                    ->where(['id'=>$par['dataId']])
+                    ->find();
+                if($approveHistory['ApproveIds']==''){
+                    $ApproveIds=array();//为空的话重新定义一个数组
+                }else {
+                    $ApproveIds = explode(',', $approveHistory['ApproveIds']);
+                }
+                $ApproveIds[]=$next_approverid;
+                $newApproveIds=implode(',', $ApproveIds);
                 //审批结果
                 if($par['res']=='1')
                 {
-
                     if($next_approverid>0)
                     {
-                        $ApproveStatus = 1;//没有下一步审批人且通过审批，状态为2；
+                        $ApproveStatus = 1;
                     }
                     else
                     {
-                        $ApproveStatus = 2;
+                        $ApproveStatus = 2;//没有下一步审批人且通过审批，状态为2；
                     }
                 }
                 else
                  {
                     $ApproveStatus = -1;
+                    $newApproveIds=$approveHistory['ApproveIds'];//被退回审批人不变
                  }
-
+                $CurrentStep= count($ApproveIds);//按审批人数量算步骤，创建人的步骤为0
                 Db::name('quality_form_info')
                     ->where(['id'=>$par['dataId']])
-                    ->update(['CurrentApproverId'=>$next_approverid,'ApproveStatus'=>$ApproveStatus]);
+                    ->update(['CurrentApproverId'=>$next_approverid,'ApproveStatus'=>$ApproveStatus,'ApproveIds'=>$newApproveIds,'CurrentStep'=>$CurrentStep]);
                 return json(['code' => 1]);
             } else {
                 return json(['code' => -1]);
@@ -104,6 +115,7 @@ class Approve extends Permissions
         $_userlist = $this->adminService->whereIn('id', explode(',', $info->approveIds))->with('Thumb')->select();
 
         $userlist = array();
+
         foreach (explode(',', $info->approveIds) as $item) {
             $u = $this->adminService->where('id', $item)->with('Thumb')->find();
             $_u = array();
