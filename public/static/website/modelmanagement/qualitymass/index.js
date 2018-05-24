@@ -486,14 +486,18 @@ function clickTree(that) {
     $('#'+tId+'_span').click();
 }
 
-//刷新已关联模型
+/*//刷新已关联模型
 $('#modelTable').tabs({
     onSelect: function(title,index){
+        console.log(index);
+        if(index==0){
+            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search').load();
+        }
         if(index==1){
             alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
         }
     }
-});
+});*/
 
 
 
@@ -507,7 +511,6 @@ for(var i = 0;i<15;i++){
     firstTrTemp.push('</td>');
 }
 firstTrTemp.push('</tr>');
-console.log(firstTrTemp.join(''));
 $('#tableItem thead').append(firstTrTemp.join(''));
 
 //获取下拉列表的值
@@ -538,7 +541,7 @@ function dropDown(type,eId) {
 //构建input
 function inputTemp() {
     var ipt = '<input type="text">';
-    $('#searchTd5,#searchTd7,#searchTd9,#searchTd11').append(ipt);
+    $('#searchTd5,#searchTd7,#searchTd9,#searchTd11,#searchTd12,#searchTd13').append(ipt);
 }
 inputTemp();
 
