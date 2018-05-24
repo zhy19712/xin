@@ -351,6 +351,213 @@ class Division extends Permissions{
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
+            $section_index = $s_code_index =  $name_index = $code_index = $z_name_index = $z_code_index = $fname_index = $fcode_index = $z_fname_index = $z_fcode_index = $f_xname_index = $f_xcode_index = -1;
+            foreach ($excel_array[0] as $k=>$v){
+                $str = preg_replace('/[ ]/', '', $v);
+                switch ($str){
+                    case '标段名称':
+                        $section_index = $k;
+                        break;
+                    case '标段编码':
+                        $s_code_index = $k;
+                        break;
+                    case '单位工程名称':
+                        $name_index = $k;
+                        break;
+                    case '单位工程编码':
+                        $code_index = $k;
+                        break;
+                    case '子单位工程名称':
+                        $z_name_index = $k;
+                        break;
+                    case '子单位工程编码':
+                        $z_code_index = $k;
+                        break;
+                    case '分部工程名称':
+                        $fname_index = $k;
+                        break;
+                    case '分部工程编码':
+                        $fcode_index = $k;
+                        break;
+                    case '子分部工程名称':
+                        $z_fname_index = $k;
+                        break;
+                    case '子分部工程编码':
+                        $z_fcode_index = $k;
+                        break;
+                    case '单元工程名称':
+                        $f_xname_index = $k;
+                        break;
+                    case '单元工程编码':
+                        $f_xcode_index = $k;
+                        break;
+                    default :
+                }
+            }
+            if($section_index == -1 || $s_code_index == -1 || $name_index == -1 || $code_index == -1 || $z_name_index == -1 || $z_code_index == -1 || $fname_index == -1 || $fcode_index == -1 || $z_fname_index == -1 || $z_fcode_index == -1 || $f_xname_index == -1 || $f_xcode_index == -1){
+                return json(['code' => 0,'data' => '','msg' => '请检查标题名称']);
+            }
+
+            // 1、名称和编码必须同时存在；2、没有子单位（子分部）工程时，保持单位（子分部）工程名称和单位（子分部）工程编码为空即可；3、同一节点下编码不能重复；
+            $insert_unit_data = []; // 单位工程
+            $insert_subunit_data = []; // 子单位工程名称
+            $insert_parcel_data = []; // 分部工程名称
+            $insert_subdivision_data = []; // 子分部工程名称
+            $insert_subitem_data = []; // 单元工程名称
+            $new_excel_array = $this->delArrayNull($excel_array); // 删除空数据
+            $path = './uploads/quality/division/import/' . str_replace("\\","/",$exclePath);
+            $pid = $zpid = 0;
+
+            $section_code = Db::name('section')->where(['id'=>$section_id])->value('code'); // 标段编码
+
+            // 单位工程 type = 1 子单位工程 type = 2 分部工程  type = 3 子分部工程 type = 4 单元工程 type = 5
+            foreach($new_excel_array as $k=>$v){
+                if($k > 1 && $section_code == $v[$s_code_index]){ // 前两行都是标题和说明
+                    // 单位工程
+                    $insert_unit_data['d_name'] = $v[$name_index];
+                    $insert_unit_data['d_code'] = $v[$code_index];
+                    $insert_unit_data['section_id'] = $section_id; // 标段编号
+                    $insert_unit_data['filepath'] = $path;
+                    $insert_unit_data['pid'] = '0';
+                    $insert_unit_data['type'] = '1';
+                    // 已经插入了，就不需要重复插入了
+                    $flag = Db::name('quality_division')->where(['d_name'=>$v[$name_index],'d_code'=>$v[$code_index],'section_id'=>$section_id,'type'=>'1','pid'=>0])->find();
+                    if(empty($flag) && !empty($v[$name_index])){
+                        $node = new DivisionModel();
+                        $flag = $node->insertTb($insert_unit_data);
+                        if($flag['code'] == -1){
+                            return json(['code' => 0,'data' => '','msg' => '单位工程-导入失败']);
+                        }
+                        $pid = $flag['data']['id'];
+                    }else{
+                        $pid = $flag['id'];
+                    }
+
+                    // 子单位工程名称
+                    $insert_subunit_data['d_name'] = $v[$z_name_index];
+                    $insert_subunit_data['d_code'] = $v[$z_code_index];
+                    $insert_subunit_data['section_id'] = $section_id; // 标段编号
+                    $insert_subunit_data['filepath'] = $path;
+                    $insert_subunit_data['type'] = '2';
+                    // 已经插入了，就不需要重复插入了
+                    $flag = Db::name('quality_division')->where(['d_name'=>$v[$z_name_index],'d_code'=>$v[$z_code_index],'section_id'=>$section_id,'type'=>'2'])->find();
+                    if(empty($flag) && !empty($v[$z_name_index])){
+                        $insert_subunit_data['pid'] = $pid;
+                        $node = new DivisionModel();
+                        $flag = $node->insertTb($insert_subunit_data);
+                        if($flag['code'] == -1){
+                            return json(['code' => 0,'data' => '','msg' => '子单位工程-导入失败']);
+                        }
+                        $zpid = $flag['data']['id'];
+                    }else{
+                        $zpid = $flag['id'];
+                    }
+
+                    // 分部工程名称
+                    $insert_parcel_data['d_name'] = $v[$fname_index];
+                    $insert_parcel_data['d_code'] = $v[$fcode_index];
+                    $insert_parcel_data['section_id'] = $section_id; // 标段编号
+                    $insert_parcel_data['filepath'] = $path;
+                    $insert_parcel_data['type'] = '3';
+                    // 已经插入了，就不需要重复插入了
+                    $flag = Db::name('quality_division')->where(['d_name'=>$v[$fname_index],'d_code'=>$v[$fcode_index],'section_id'=>$section_id,'type'=>'3'])->find();
+                    if(empty($flag) && !empty($v[$fname_index])){
+                        $insert_parcel_data['pid'] = $pid;
+                        $node = new DivisionModel();
+                        $flag = $node->insertTb($insert_parcel_data);
+                        if($flag['code'] == -1){
+                            return json(['code' => 0,'data' => '','msg' => '分部工程-导入失败']);
+                        }
+                        $zpid = $flag['data']['id'];
+                    }else{
+                        $zpid = $flag['id'];
+                    }
+
+                    // 子分部工程名称
+                    $insert_subdivision_data['d_name'] = $v[$z_fname_index];
+                    $insert_subdivision_data['d_code'] = $v[$z_fcode_index];
+                    $insert_subdivision_data['section_id'] = $section_id; // 标段编号
+                    $insert_subdivision_data['filepath'] = $path;
+                    $insert_subdivision_data['type'] = '4';
+                    // 已经插入了，就不需要重复插入了
+                    $flag = Db::name('quality_division')->where(['d_name'=>$v[$z_fname_index],'d_code'=>$v[$z_fcode_index],'section_id'=>$section_id,'type'=>'4'])->find();
+                    if(empty($flag) && !empty($v[$z_fname_index])){
+                        $insert_subdivision_data['pid'] = $zpid;
+                        $node = new DivisionModel();
+                        $flag = $node->insertTb($insert_subdivision_data);
+                        if($flag['code'] == -1){
+                            return json(['code' => 0,'data' => '','msg' => '子分部工程-导入失败']);
+                        }
+                    }
+                    // 单元工程名称
+                    $insert_subitem_data['d_name'] = $v[$f_xname_index];
+                    $insert_subitem_data['d_code'] = $v[$f_xcode_index];
+                    $insert_subitem_data['section_id'] = $section_id; // 标段编号
+                    $insert_subitem_data['filepath'] = $path;
+                    $insert_subitem_data['type'] = '5';
+                    // 已经插入了，就不需要重复插入了
+                    $flag = Db::name('quality_division')->where(['d_name'=>$v[$f_xname_index],'d_code'=>$v[$f_xcode_index],'section_id'=>$section_id,'type'=>'5'])->find();
+                    if(empty($flag) && !empty($v[$f_xname_index])){
+                        $insert_subitem_data['pid'] = $zpid;
+                        $node = new DivisionModel();
+                        $flag = $node->insertTb($insert_subitem_data);
+                        if($flag['code'] == -1){
+                            return json(['code' => 0,'data' => '','msg' => '单元工程-导入失败']);
+                        }
+                    }
+                }
+            }
+
+
+            // 导入成功后，关联对应的 控制点
+            $division = new DivisionModel();
+            $flag = $division->allRelation();
+            if($flag['code'] == -1){
+                return json($flag);
+            }
+
+            return  json(['code' => 1,'data' => '','msg' => '导入成功']);
+        }
+
+    }
+
+    // 之前金寨的导入方法备份 确定不需要后可以删除
+    public function importExcel_Back(){
+        $section_id = input('param.add_id');// 标段编号
+        if(empty($section_id)){
+            return  json(['code' => 0,'data' => '','msg' => '请选择标段']);
+        }
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/quality/division/import');
+        if($info){
+            // 调用插件PHPExcel把excel文件导入数据库
+            Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+            $exclePath = $info->getSaveName();  //获取文件名
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/quality/division/import' . DS . $exclePath;   //上传文件的地址
+            // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
+            $extension = substr(strrchr($file_name, '.'), 1);
+            if ($extension =='xlsx') {
+                $objReader = new \PHPExcel_Reader_Excel2007();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension =='xls') {
+                $objReader = new \PHPExcel_Reader_Excel5();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension=='csv') {
+                $PHPReader = new \PHPExcel_Reader_CSV();
+                //默认输入字符集
+                $PHPReader->setInputEncoding('GBK');
+                //默认的分隔符
+                $PHPReader->setDelimiter(',');
+                //载入文件
+                $obj_PHPExcel = $PHPReader->load($file_name);
+            }else{
+                return  json(['code' => 0,'data' => '','msg' => '请选择正确的模板文件']);
+            }
+            if(!is_object($obj_PHPExcel)){
+                return  json(['code' => 0,'data' => '','msg' => '请选择正确的模板文件']);
+            }
+            $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
+            // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
             $name_index = $code_index = -1;
             $z_name_index = $z_code_index = -1;
             $fname_index = $fcode_index = -1;
