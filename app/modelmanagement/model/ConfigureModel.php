@@ -58,9 +58,10 @@ class ConfigureModel extends Model
         return $data;
     }
 
-    public function getConfigure($model_type)
+    public function getConfigure()
     {
-        $data = $this->where(['model_type'=>$model_type])->find();
+        $data['panorama'] = $this->where(['model_type'=>1])->find(); // 全景3D模型
+        $data['quality'] = $this->where(['model_type'=>2])->find(); // 质量3D模型
         return $data;
     }
 }

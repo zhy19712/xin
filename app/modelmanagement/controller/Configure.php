@@ -23,12 +23,8 @@ class Configure extends Permissions
     public function index()
     {
        if($this->request->isAjax()){
-           $model_type = input('model_type');
-           if(empty($model_type)){
-               return json(['code'=>-1,'msg'=>'缺少类型参数']);
-           }
            $configure = new ConfigureModel();
-           $data = $configure->getConfigure($model_type);
+           $data = $configure->getConfigure();
            return json(['code'=>1,'data'=>$data,'msg'=>'模型效果配置']);
        }
         return $this->fetch();
