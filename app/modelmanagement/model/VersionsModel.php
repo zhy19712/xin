@@ -75,9 +75,9 @@ class VersionsModel extends Model
         return $data;
     }
 
-    public function versionNumber()
+    public function versionNumber($model_type)
     {
-        $data = $this->order('id desc')->field('version_number')->find();
+        $data = $this->where(['model_type'=>$model_type])->order('id desc')->field('version_number')->find();
         if(empty($data)){
             $version_number = 'V1.0';
         }else{
@@ -107,6 +107,17 @@ class VersionsModel extends Model
     {
         $data = $this->where(['model_type'=>$model_type,'status'=>1])->value('version_number');
         return $data;
+    }
+
+    public function prevVersionNumber($current_version_number)
+    {
+        $arr = explode('V',$current_version_number);
+        $version_number = 'V' . ($arr[1] - 0.1);
+        if(!strpos($version_number,'.')){
+            $version_number = $version_number . '.0';
+        }
+        $prev_version_number = $this->where(['version_number'=>$version_number])->value('version_number');
+        return $prev_version_number;
     }
 
 }

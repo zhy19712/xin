@@ -167,4 +167,10 @@ class QualitymassModel extends Model
         return $model_id;
     }
 
+    public function prevRelevance($version_number)
+    {
+        $data = $this->where(['version_number'=>$version_number])->field('model_name,unit_id')->select();
+        return $data;
+    }
+
 }
