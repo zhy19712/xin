@@ -8,12 +8,13 @@ tableIncome = $("#tableIncome").DataTable({
     processing: false,
     serverSide: true,
     ordering: true,
-    scrollY: "486px",
+    scrollY: "495px",
     scrollCollapse: true,
     ajax: {
         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
     },
     columns: [
+        { name: "create_time" },
         { name: "file_name" },
         { name: "date" },
         { name: "unit_name" },
@@ -24,7 +25,7 @@ tableIncome = $("#tableIncome").DataTable({
     ],
     columnDefs: [
         {
-            targets: [5],
+            targets: [6],
             render: function (data, type, row,meta) {
                 if (data == '1'){
                     return  '未发送';
@@ -38,15 +39,15 @@ tableIncome = $("#tableIncome").DataTable({
             }
         },
         {
-            targets: [6],
+            targets: [7],
             render: function (data, type, row,meta) {
-                if (row[5] == '1'){
+                if (row[6] == '1'){
                     var strs = '';
-                    strs +='<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="edit_send(this)">编辑</a>';
-                    strs +='<a title="' + data + '" class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="del(this)">删除</a>';
+                    strs +='<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="edit_send(this)">编辑</a>';
+                    strs +='<a title="' + data + '" class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="del(this)">删除</a>';
                     return strs;
                 }else {
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="preview(this)">查看</a>';
+                    return  '<a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)">查看</a>';
                 }
             }
         }
