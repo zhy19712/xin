@@ -217,12 +217,13 @@ var nodeUnitId ,        //单元工程段号 id
     controlRowId = '';  //点击控制点表的行id  关联表ID
 var controlId;          //控制点id
 
+var result = [];
 //名字拼接过滤方法
 function ajaxDataFilter(treeId, parentNode, responseData) {
     if (responseData) {
         for(var i =0; i < responseData.length; i++) {
             responseData[i].name = responseData[i].el_start + responseData[i].el_cease + responseData[i].pile_number + responseData[i].site;
-            eTypeId = responseData[i].en_type;
+            // eTypeId = responseData[i].en_type;
         }
     }
     return responseData;
@@ -262,13 +263,15 @@ function initData(nodeId){
 function nodeClickUnit(e, treeId, node) {
     selectData = "";
     sNodesUnit = zTreeObjUnit.getSelectedNodes()[0];//选中节点
-    nodeUnitId = zTreeObjUnit.getSelectedNodes()[0].id;//当前id
-    nodeNameUnit = zTreeObjUnit.getSelectedNodes()[0].name;//当前name
-    nodePidUnit = zTreeObjUnit.getSelectedNodes()[0].pid;//当前pid
+    nodeUnitId = sNodesUnit.id;//当前id
+    nodeNameUnit = sNodesUnit.name;//当前name
+    nodePidUnit = sNodesUnit.pid;//当前pid
+    eTypeId = sNodesUnit.en_type;//当前en_type
     console.log(sNodesUnit);
     console.log(nodeUnitId + '---nodeUnitId');
     console.log(nodeNameUnit + '---name');
     console.log(nodePidUnit + '---pid');
+    console.log(eTypeId+"---eTypeId")
     if(eTypeId){
         selfidName(eTypeId);
     }
@@ -497,7 +500,12 @@ function delData(id,url) {
                 if(res.code ==1){
                     layer.msg("删除成功！");
                     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
-                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                    if(procedureId !=''){
+                        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                    }else if(procedureId == ''){
+                        tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
+                    }
                     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
                 }else if(res.code !=1){
@@ -592,6 +600,8 @@ function testing(nodeUnit_id,cpr_id,control_id) {
                     $(".layui-input[readonly]").attr('style', 'background: #FFFFFF !important');
                 });
                 $("#date").attr({"disabled":false});
+                $(".mybtnAdd").css("display","none");
+                $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">线下填报没有在线填报模板！请移步到扫描件回传上传相关资料！</p>');
             }
         },
         // error:function () {
@@ -988,7 +998,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     else if (row[3] === 1 && row[5] == $("#userId").val()) {
                         var str = JSON.stringify(row[2]);
                         html += "<a title='编辑' onclick='editOnLine ("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil'></i></a>";
-                        html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil-square-o'></i></a>";
+                        // html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil-square-o'></i></a>";
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-file-text'></i></a>";
                     }
                     else if (row[3] === 2) {
@@ -1049,7 +1059,7 @@ function seeOnLine(id) {
         title: '在线填报',
         shadeClose: true,
         area: ['980px', '90%'],
-        content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&id='+ id +'&currentStep=0&isView=True'
+        content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&id='+ id +'&currentStep=null&isView=True'
     });
 }
 
@@ -1138,7 +1148,7 @@ function approve(id,app,step) {
             if(res == ""){
                 layer.open({
                     type: 2,
-                    title: '流程审批',
+                    title: '流程处理',
                     shadeClose: true,
                     area: ['980px', '90%'],
                     content: '/approve/approve/Approve?dataId='+ id + '&dataType=app\\quality\\model\\QualityFormInfoModel',
@@ -1192,10 +1202,21 @@ function returnOnLine(id,curStep) {
 }
 
 //在线填报-点击作废
-function toVoidOnLine(id,curStep) {
+function toVoidOnLine(id) {
     console.log(curStep);
     console.log(controlRowId);
-    layer.msg("作废");
+    $.ajax({
+        url: "/quality/qualityform/cancel",
+        type: "post",
+        data: {id:id},
+        success: function (res) {
+            console.log(res);
+
+        },
+        error:function () {
+            alert("作废操作异常")
+        }
+    });
 }
 
 //下载封装的方法

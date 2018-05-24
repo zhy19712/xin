@@ -316,6 +316,40 @@ class Common extends Controller
             $recordsTotal = Db::name($table)->where(['send_id'=>$uid,'status'=>3])->count();
         }
 
+        $id_order = ' ,s.id desc';
+        switch ($order){
+            case 'file_name asc':
+                $order = 's.file_name asc' .$id_order;
+                break;
+            case 'file_name desc':
+                $order = 's.file_name desc' . $id_order;
+                break;
+            case 'date asc':
+                $order = 's.date asc' . $id_order;
+                break;
+            case 'date desc':
+                $order = 's.date desc' . $id_order;
+                break;
+            case 'unit_name asc':
+                $order = 't.name asc' . $id_order;
+                break;
+            case 'unit_name desc':
+                $order = 't.name desc' . $id_order;
+                break;
+            case 'attchment_id asc':
+                $order = 'u.nickname asc' . $id_order;
+                break;
+            case 'attchment_id desc':
+                $order = 'u.nickname desc' . $id_order;
+                break;
+            case 'income_name asc':
+                $order = 'u.nickname asc' . $id_order;
+                break;
+            case 'income_name desc':
+                $order = 'u.nickname desc' . $id_order;
+                break;
+            default :
+        }
 
         $recordsFilteredResult = array();
 
