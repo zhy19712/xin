@@ -78,14 +78,6 @@ class Dashboard extends Permissions
 
             $flag = $message->editTbAll($edit_data);
 
-            //查询当前登录admin_id，type = 2,status = 1
-
-            $result_message = Db::name("admin_message_reminding")->where(["current_approver_id"=>$admin_id,"type"=>2,"status"=>1])->select();
-
-            if($result_message)
-
-            halt($result_message);
-
             return json($flag);
         }
 
