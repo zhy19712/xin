@@ -426,7 +426,7 @@ function resultInfo() {
       $(".result form #date").val(res.evaluation_time);
       if(!res.flag){
         $(".result form select").prop("disabled",true);
-        $(".result .layui-input[readonly]").addClass('disabledColor');
+        $(".result input[readonly]").addClass('disabledColor');
         $("#date").prop("disabled",true);
       }
       layui.form.render('select');

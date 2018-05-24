@@ -276,7 +276,7 @@ class Element extends Permissions
         }
         $formInfo = unserialize($cp['form_data']);
         foreach ($formInfo as $item) {
-            $phpword->setValue('{' . $item['Name'] . '}', '111');
+            $phpword->setValue('{'.$item['Name'].'}', $item['Value']);
         }
         $docname = $phpword->save();
 
@@ -445,6 +445,7 @@ class Element extends Permissions
        }
 
     }
+
     //检测管控中的控件能否使用
     public function checkform(){
 
@@ -466,7 +467,7 @@ class Element extends Permissions
                 {
                   if($v['Name']=='input_date_1')
                   {
-                      $evaluation_date=$v;//验评日期
+                      $evaluation_date=$v['Value'];//验评日期
                   }
                   break;
                 }
@@ -474,7 +475,7 @@ class Element extends Permissions
                 {
                     if($v['Name']=='input_hgl_result')
                     {
-                        $evaluation=$v;//验评结果
+                        $evaluation=$v['Value'];//验评结果
                     }
                     break;
                 }
