@@ -33,3 +33,13 @@ table td:last-child{
 .node-name{
     cursor: pointer;
 }
+.search-tr input,.search-tr select{
+    padding: 6px 12px;
+    width: 50px;
+    border-radius: 4px;
+    border: 1px solid #cecece;
+}
+.search-tr select{
+    padding: 6px 0;
+    width: auto;
+}
