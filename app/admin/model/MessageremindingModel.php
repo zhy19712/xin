@@ -74,7 +74,7 @@ class MessageremindingModel extends Model
     }
 
     /**
-     * 编辑一条记录
+     * 编辑全部信息
      */
     public function editTbAll($param)
     {
@@ -86,6 +86,23 @@ class MessageremindingModel extends Model
                 return ['code' => 1, 'msg' => '编辑成功'];
             }
         }catch(PDOException $e){
+            return ['code' => 0, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * 编辑一条信息
+     */
+    public function editTb($param)
+    {
+        try {
+            $result = $this->allowField(true)->save($param, ['id' => $param['id']]);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'msg' => '编辑成功'];
+            }
+        } catch (PDOException $e) {
             return ['code' => 0, 'msg' => $e->getMessage()];
         }
     }
