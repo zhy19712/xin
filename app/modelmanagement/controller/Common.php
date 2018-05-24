@@ -117,7 +117,7 @@ class Common extends Controller
         $recordsFiltered = 0;
         $recordsFilteredResult = array();
         //表的总记录数 必要
-        $recordsTotal = Db::name($table)->count();
+        $recordsTotal = Db::name($table)->alias('q')->where($search_data)->count();
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
