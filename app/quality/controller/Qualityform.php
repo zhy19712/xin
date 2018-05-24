@@ -211,6 +211,30 @@ class Qualityform extends Permissions
         $data['ApproveStatus']=-2;
         $this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($data, ['id' => $id]);
     }
+    //获取表单总步骤和当前步骤,传入form_info主键
+    public function getStep($form_id)
+    {
+        //表单信息
+        $res=Db::name('quality_form_info')
+            ->where(['id'=>$form_id])
+            ->find();
+        $form_data=$res['form_data'];
+        $form_data=unserialize($form_data);
+        foreach($form_data as $v)
+        {
+            $step[]=$v['Step'];
+        }
+        $maxstep=intval(max($step));
+        //如果当前步骤不是最后一步
+        if ($res['CurrentStep']<$maxstep)
+        {
+            return json(['msg'=>'success','creater'=>$res['user_id']]);
+        }
+        else
+        {
+            return json(['msg'=>'fail','creater'=>$res['user_id']]);
+        }
+    }
 
     /**
      * 获取当前审批人的点子签名，如果没有则获取当前用户的
