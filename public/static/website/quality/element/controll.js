@@ -339,6 +339,7 @@ $(".imgList").on("click","#homeWork",function () {
 
 //点击工序名字刷新列表
 function clickConName(id) {
+    flag = false;
     controlRowId ='';
     procedureId ='';
     procedureId = id;
@@ -549,20 +550,28 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".bitCodes").css("display","none");
     $(".mybtn").css("display","none");
     $(".mybtnAdd").css("display","none");
-    if($(".tabs-selected a span:first-child").html() === "扫描件回传"){
-        $(".mybtn").css("display","block");
-    }else if($(".tabs-selected a span:first-child").html() === "附件资料"){
-        $(".bitCodes").css("display","block");
-        $(".mybtn").css("display","block");
-    }else if($(".tabs-selected a span:first-child").html() === "在线填报"){
-        $(".mybtnAdd").css("display", "block");
+    console.log(flag)
+    if(flag != true){
+        if($(".tabs-selected a span:first-child").html() === "扫描件回传"){
+            $(".mybtn").css("display","block");
+        }else if($(".tabs-selected a span:first-child").html() === "附件资料"){
+            $(".bitCodes").css("display","block");
+            $(".mybtn").css("display","block");
+        }else if($(".tabs-selected a span:first-child").html() === "在线填报"){
+            $(".mybtnAdd").css("display", "block");
+            $(".mybtn").css("display", "none");
+        }
+    }else if(flag == true){
         $(".mybtn").css("display", "none");
+        $(".bitCodes").css("display","none");
+        $(".mybtnAdd").css("display","none");
     }
+
     //向提交页面之前放置值
     $("#resVal").val(resources);
 
     testing(nodeUnitId,controlRowId,controlId);
-    console.log(type)
+    // console.log(type)
     // if(type == 1){
     //     $.ajax({
     //         url:"/quality/element/copycheck",
@@ -622,9 +631,12 @@ $('#unitTab').tabs({
     border:false,
     onSelect:function(title,index){
         if(title === "扫描件回传"){
-            if(controlRowId && procedureId || flag == true && controlRowId){
+            if(flag == true){
+                $(".mybtn").css("display","none");
+            }
+            if(controlRowId && procedureId){
                 $(".mybtn").css("display","block");
-            }else if(controlRowId ==''|| procedureId == '') {
+            }else if(controlRowId ==''|| procedureId == '' || flag == true) {
                 $(".mybtn").css("display","none");
             }
         }else if(title != "扫描件回传"){
@@ -632,10 +644,13 @@ $('#unitTab').tabs({
         }
 
         if(title === "附件资料"){
-            if(controlRowId && procedureId || flag == true && controlRowId){
+            if(flag == true){
+                $(".bitCodes").css("display","none");
+            }
+            if(controlRowId && procedureId){
                 $(".bitCodes").css("display","block");
                 $(".mybtn").css("display","block");
-            }else if(controlRowId ==''|| procedureId == '') {
+            }else if(controlRowId ==''|| procedureId == '' || flag == true) {
                 $(".bitCodes").css("display","none");
             }
         }else if(title != "附件资料"){
@@ -643,18 +658,19 @@ $('#unitTab').tabs({
         }
 
         if(title === "在线填报"){
-            if(controlRowId && procedureId || flag == true && controlRowId){
+            if(flag == true){
+                $(".mybtnAdd").css("display","none");
+            }
+            if(controlRowId && procedureId){
                 $(".mybtnAdd").css("display", "block");
                 $(".mybtn").css("display", "none");
             }else if(controlRowId == undefined || controlRowId == null){
                 layer.msg("请选择控制点!")
-            }else if(controlRowId == '' || procedureId == ''){
+            }else if(controlRowId == '' || procedureId == '' || flag == true){
                 $(".mybtnAdd").css("display","none");
             }
             if(selectAddShow == true){
                 $(".mybtnAdd").css("display","none");
-            }else if(selectAddShow == false){
-                $(".mybtnAdd").css("display","block");
             }
         }else if(title != "在线填报"){
             $(".mybtnAdd").css("display","none");

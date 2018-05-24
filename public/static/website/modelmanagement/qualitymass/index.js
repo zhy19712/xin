@@ -32,9 +32,9 @@ function ztree(node_type) {
     zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 }
 ztree(0);
+
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
-    console.log(treeNode);
     nodeId = treeNode.add_id;
     if(treeNode.level==5){
         alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
@@ -59,11 +59,10 @@ function nodeModelNumber(treeNode) {
         },
         dataType: "json",
         success: function (res) {
-            console.log(res);
+            window.operateModel(res.data);
         }
     });
 }
-
 
 //绘制radio
 $('input[name="nodeRelation"],input[name="nodeRelationTab"]').iCheck({

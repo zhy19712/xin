@@ -11,12 +11,12 @@ var tableItem = $('#tableItem').DataTable( {
   pagingType: "full_numbers",
   processing: true,
   serverSide: true,
-  "order": [[ 1, "asc" ]],
+  "order": [[ 1, "desc" ]],
   // scrollY: 600,
   ajax: {
     "url":"/admin/common/datatablesPre?tableName=admin_message_reminding&status=1"
   },
-  dom: 'rti',
+  dom: 'rtlip',
   columns:[
     {
       name : "task_name"
@@ -63,7 +63,10 @@ var tableItem = $('#tableItem').DataTable( {
         var Y = date.getFullYear() + '-';
         var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
         var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-        return Y + M + D;
+        var h = (date.getHours() < 10 ? '0' + (date.getHours()):date.getHours())+ ':' ;
+        var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()):date.getMinutes())+ ':' ;
+        var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()):date.getSeconds());
+        return Y + M + D + h + m + s;
       }
     },
     {
@@ -104,7 +107,7 @@ var tableItemDone = $('#tableItemDone').DataTable( {
   pagingType: "full_numbers",
   processing: true,
   serverSide: true,
-  "order": [[ 1, "asc" ]],
+  "order": [[ 1, "desc" ]],
   // scrollY: 600,
   ajax: {
     "url":"/admin/common/datatablesPre?tableName=admin_message_reminding&status=2"
@@ -156,7 +159,10 @@ var tableItemDone = $('#tableItemDone').DataTable( {
         var Y = date.getFullYear() + '-';
         var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
         var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-        return Y + M + D;
+        var h = (date.getHours() < 10 ? '0' + (date.getHours()):date.getHours())+ ':' ;
+        var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()):date.getMinutes())+ ':' ;
+        var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()):date.getSeconds());
+        return Y + M + D + h + m + s;
       }
     },
     {
@@ -338,6 +344,8 @@ function approve(id,app,step) {
             body.find("#dataType").val('app\\quality\\model\\QualityFormInfoModel');
           },
           end:function () {
+            tableItem.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=1").load();
+            tableItemDone.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=2").load();
             layer.closeAll();
           }
         });
@@ -346,7 +354,7 @@ function approve(id,app,step) {
       }
     },
     error:function () {
-      alert("获取数据完整性检测异常")
+      alert("获取数据完整性检测异常");
     }
   });
   console.log(id);
@@ -447,8 +455,9 @@ function saveInter(status) {
         type:'GET',
         dataType:'json',
         success:function(data, textStatus){
-          layer.closeAll('page');
+          layer.closeAll();
           tableItem.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=1").load();
+          tableItemDone.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=2").load();
         }
       });
 
