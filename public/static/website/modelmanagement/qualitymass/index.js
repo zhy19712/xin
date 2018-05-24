@@ -20,7 +20,8 @@ function ztree(node_type) {
             enable: true
         },
         callback:{
-            onClick: zTreeOnClick
+            onClick: zTreeOnClick,
+            onCheck: zTreeOnCheck
         },
         showLine:true,
         showTitle:true,
@@ -37,6 +38,11 @@ function zTreeOnClick(event, treeId, treeNode) {
         alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
         elval();
     }
+}
+
+//显示隐藏模板
+function zTreeOnCheck() {
+    
 }
 
 //绘制radio
@@ -106,6 +112,32 @@ var tableItem = $('#tableItem').DataTable({
         },
         {
             name: "site"
+        },
+        {
+            name: "uid"
+        }
+    ],
+    columnDefs: [
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [15],
+            "render" :  function(data,type,row) {
+                var name = row[15];  //单元工程名称
+                var uid = row[16];  //单元工程编号
+                var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ name +"</span>";
+                return html;
+            }
+        },
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [16],
+            "render" :  function(data,type,row) {
+                var uid = row[16];  //单元工程编号
+                var html =  "<input id='uid' type='hidden' value="+ uid +">" ;
+                return html;
+            }
         }
     ],
     language: {
@@ -182,6 +214,32 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
         },
         {
             name: "site"
+        },
+        {
+            name: "uid"
+        }
+    ],
+    columnDefs: [
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [15],
+            "render" :  function(data,type,row) {
+                var name = row[15];  //单元工程名称
+                var uid = row[16];  //单元工程编号
+                var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ name +"</span>";
+                return html;
+            }
+        },
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [16],
+            "render" :  function(data,type,row) {
+                var uid = row[16];  //单元工程编号
+                var html =  "<input id='uid' type='hidden' value="+ uid +">" ;
+                return html;
+            }
         }
     ],
     language: {
@@ -231,12 +289,6 @@ function elval() {
             $('#tableItem_wrapper').prepend(Template);
         }
     });
-}
-
-
-//已关联节点
-function getSelectId() {
-    
 }
 
 //获取选中行ID
@@ -383,5 +435,13 @@ $('#noteverTab').on('ifChecked', function(event){
 });
 //筛选方法
 function model_quality(model_type) {
-    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search&model_type='+model_type).load();
+    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&model_type='+model_type).load();
+}
+
+//点击已关联节点选中树中对应的节点
+function clickTree(that) {
+    var uid = $(that).attr('uid');
+    var treeObj = $.fn.zTree.getZTreeObj("ztree");
+    var nodes = treeObj.getNodesByParam("add_id", uid, null);
+    treeObj.selectNode(nodes[0]);
 }

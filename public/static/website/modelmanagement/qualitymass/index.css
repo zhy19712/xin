@@ -28,5 +28,8 @@ table.dataTable tbody tr.selected{
     background: none;
 }
 table td:last-child{
+    display: none;
+}
+.node-name{
     cursor: pointer;
 }
