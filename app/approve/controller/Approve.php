@@ -71,24 +71,24 @@ class Approve extends Permissions
                 }else {
                     $ApproveIds = explode(',', $approveHistory['ApproveIds']);
                 }
-                $ApproveIds[]=$next_approverid;
-                $newApproveIds=implode(',', $ApproveIds);
                 //审批结果
                 if($par['res']=='1')
                 {
                     if($next_approverid>0)
                     {
                         $ApproveStatus = 1;
+                        $ApproveIds[]=$next_approverid;
                     }
                     else
                     {
                         $ApproveStatus = 2;//没有下一步审批人且通过审批，状态为2；
-                    }
+                     }
+                     $newApproveIds=implode(',', $ApproveIds);
                 }
                 else
                  {
                     $ApproveStatus = -1;
-                    $newApproveIds=$approveHistory['ApproveIds'];//被退回审批人不变
+                    $newApproveIds=$approveHistory['ApproveIds'];//被退回审批人不变,因为涉及到审批历史
                  }
                 $CurrentStep= count($ApproveIds);//按审批人数量算步骤，创建人的步骤为0
                 Db::name('quality_form_info')
@@ -113,10 +113,17 @@ class Approve extends Permissions
     {
         $info = $this->approveService->getApproveInfo($dataId, new $dataType);
         $_userlist = $this->adminService->whereIn('id', explode(',', $info->approveIds))->with('Thumb')->select();
-
+        $res=Db::name('quality_form_info')
+            ->where(['id'=>$dataId])
+            ->find();
+        //如果状态大于0，将起草人也加入进去
+        $approverArr=explode(',', $res['ApproveIds']);
+        if($res['CurrentStep']>0)
+        {
+            array_unshift($approverArr,$res['user_id']);
+        }
         $userlist = array();
-
-        foreach (explode(',', $info->approveIds) as $item) {
+        foreach ($approverArr as $item) {
             $u = $this->adminService->where('id', $item)->with('Thumb')->find();
             $_u = array();
             $_u = [
