@@ -177,6 +177,15 @@ class Qualityform extends Permissions
                     $dto['Id'] = $res;
                 }
             } else {
+                $judge=Db::name('quality_form_info')
+                    ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId']])
+                    ->where('ApproveStatus','in',[1,0])
+                    ->find();
+                if(count($judge))
+                {
+                    $mod['CurrentStep']=$judge['CurrentStep'];
+                }
+
                 $this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($mod, ['id' => $dto['Id']]);
             }
             return json(['result' => $dto['Id']]);
