@@ -316,37 +316,42 @@ class Common extends Controller
             $recordsTotal = Db::name($table)->where(['send_id'=>$uid,'status'=>3])->count();
         }
 
-        $id_order = ' ,s.id desc';
         switch ($order){
+            case 'create_time asc':
+                $order = 's.create_time desc';
+                break;
+            case 'create_time desc':
+                $order = 's.create_time asc';
+                break;
             case 'file_name asc':
-                $order = 's.file_name asc' .$id_order;
+                $order = 's.file_name asc';
                 break;
             case 'file_name desc':
-                $order = 's.file_name desc' . $id_order;
+                $order = 's.file_name desc';
                 break;
             case 'date asc':
-                $order = 's.date asc' . $id_order;
+                $order = 's.date asc';
                 break;
             case 'date desc':
-                $order = 's.date desc' . $id_order;
+                $order = 's.date desc';
                 break;
             case 'unit_name asc':
-                $order = 't.name asc' . $id_order;
+                $order = 't.name asc';
                 break;
             case 'unit_name desc':
-                $order = 't.name desc' . $id_order;
+                $order = 't.name desc';
                 break;
             case 'attchment_id asc':
-                $order = 'u.nickname asc' . $id_order;
+                $order = 'u.nickname asc';
                 break;
             case 'attchment_id desc':
-                $order = 'u.nickname desc' . $id_order;
+                $order = 'u.nickname desc';
                 break;
             case 'income_name asc':
-                $order = 'u.nickname asc' . $id_order;
+                $order = 'u.nickname asc';
                 break;
             case 'income_name desc':
-                $order = 'u.nickname desc' . $id_order;
+                $order = 'u.nickname desc';
                 break;
             default :
         }
@@ -403,7 +408,7 @@ class Common extends Controller
                         ->join('admin u', 's.send_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.income_id'=>$uid,'s.status'=>['neq',1]])
                         ->order($order)->limit(intval($start), intval($length))->select();
@@ -413,7 +418,7 @@ class Common extends Controller
                         ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,s.attchment_id,u.nickname as income_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,s.attchment_id,u.nickname as income_name,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.send_id'=>$uid])
                         ->order($order)->limit(intval($start), intval($length))->select();
@@ -422,7 +427,7 @@ class Common extends Controller
                         ->join('admin u', 's.send_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
                         ->order($order)->limit(intval($start), intval($length))->select();
@@ -438,7 +443,7 @@ class Common extends Controller
                         ->join('admin u', 's.send_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['s.income_id'=>$uid,'s.status'=>['neq',1]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else if($type == 2){
@@ -447,7 +452,7 @@ class Common extends Controller
                         ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as income_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['s.send_id'=>$uid])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
@@ -455,7 +460,7 @@ class Common extends Controller
                         ->join('admin u', 's.send_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,s.attchment_id,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
