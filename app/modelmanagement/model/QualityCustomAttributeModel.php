@@ -9,9 +9,9 @@ namespace app\modelmanagement\model;
 
 use think\exception\PDOException;
 use think\Model;
-class CompleteModel extends Model
+class QualityCustomAttributeModel extends Model
 {
-    protected $name = 'model_complete';
+    protected $name = 'quality_custom_attribute';
 
 
     public function insertTb($param)
@@ -58,36 +58,13 @@ class CompleteModel extends Model
         return $data;
     }
 
-    public function attributeArr($model_number_arr)
+    public function getAttrTb($picture_id)
     {
-        /**
-         * 需求说明 ---
-         * 当数组里 只有 一个值的时候
-         *          返回 属于该分组的所有模型编号 并且返回该组的所有属性
-         *
-         * 当数组里 存在多个值的时候
-         *          只返回所有分组的模型编号
-         */
-        $data['model_id'] = $data['attribute'] = [];
         // 获取当前启用的模型
         $version = new VersionsModel();
-        $version_number = $version->statusOpen(1);
-
-        if(sizeof($model_number_arr) == 1){
-            // 获取当前模型的分组
-            $group_name = $this->where(['version_number'=>$version_number,'model_id'=>$model_number_arr[0]])->value('group_name');
-            // 属于该分组的所有模型编号
-            $data['model_id'] = $this->where(['version_number'=>$version_number,'group_name'=>$group_name])->column('model_id');
-            // 该组的所有属性
-            $attribute = new CompleteGroupModel();
-            $data['attribute'] = $attribute->attributeArr($group_name);
-        }else{
-            // 获取当前模型的所有分组
-            $group_name_arr = $this->where(['version_number'=>$version_number,'model_id'=>['in',$model_number_arr]])->column('group_name');
-            // 属于该分组的所有模型编号
-            $data['model_id'] = $this->where(['version_number'=>$version_number,'group_name'=>['in',$group_name_arr]])->column('model_id');
-        }
-        return $data;
+        $version_number = $version->statusOpen(2);
+        $attr = $this->where(['version_number'=>$version_number,'model_number'=>$picture_id])->field('id as attrId,attr_name as attrKey,attr_value as attrVal')->select();
+        return ['code'=>1,'attr'=>$attr,'msg'=>'模型图自定义属性'];
     }
 
 }

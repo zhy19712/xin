@@ -11,6 +11,7 @@ namespace app\modelmanagement\controller;
 
 use app\admin\controller\Permissions;
 use app\modelmanagement\model\CompleteModel;
+use app\modelmanagement\model\QualityCustomAttributeModel;
 use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
 use app\quality\model\DivisionModel;
@@ -189,7 +190,9 @@ class Qualitymass extends Permissions
     }
 
 
-    // 全景模型 点击模型 获取模型属性 着急先把方法放到这里 后期有时间再转移
+    // ============================   着急先把方法放到这里 后期有时间再转移
+
+    // 顶部 --  全景模型 点击模型 获取模型属性
     public function attributeArr()
     {
         if($this->request->isAjax()){
@@ -210,7 +213,89 @@ class Qualitymass extends Permissions
 
             $comp= new CompleteModel();
             $data = $comp->attributeArr($model_number_arr);
-            return json(['code'=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
+            return json(['code'=>1,'data'=>$data,'msg'=>'成功']);
+        }
+    }
+
+    // 顶部 -- 质量模型 -- 管理信息 -- 自定义属性
+    // 每个版本 每个模型下 都有 不固定的 自定义属性
+    public function addAttr()
+    {
+        // 新增 前台需要传递 的是  模型图编号 picture_id 属性名 attrKey  属性值 attrVal
+        // 编辑 前台需要传递 的是  模型图编号 picture_id 属性名 attrKey  属性值 attrVal   和 这条属性的主键 attrId
+        if($this->request->isAjax()){
+            $param = input('param.');
+            // 验证规则
+            $rule = [
+                ['picture_id', 'require|number|gt:-1', '请选择模型图|模型图编号只能是数字|模型图编号不能为负数'],
+                ['attrKey', 'require', '属性名不能为空'],
+                ['attrVal', 'require', '属性值不能为空']
+            ];
+            $validate = new \think\Validate($rule);
+            //验证部分数据合法性
+            if (!$validate->check($param)) {
+                return json(['code' => -1,'msg' => $validate->getError()]);
+            }
+            $data = [];
+            // 获取当前启用的模型
+            $version = new VersionsModel();
+            $version_number = $version->statusOpen(2);
+            $data['version_number'] = $version_number;
+            $data['model_number'] = $param['picture_id'];
+            $data['attr_name'] = $param['attrKey'];
+            $data['attr_value'] = $param['attrVal'];
+            $custom = new QualityCustomAttributeModel();
+            $id = isset($param['attrId']) ? $param['attrId'] : 0;
+            if(empty($id)){
+                $flag = $custom->insertTb($data);
+            }else{
+                if(!is_int($id)){
+                    return json(['code' => -1, 'msg' => '属性的主键编号只能是数字']);
+                }
+                $data['id'] = $id;
+                $flag = $custom->editTb($data);
+            }
+            return json($flag);
+        }
+    }
+
+    // 删除属性
+    public function delAttr()
+    {
+        // 前台只需要给我传递 要删除的 属性的主键 attrId
+        $param = input('param.');
+        // 验证规则
+        $rule = [
+            ['attrId', 'require|number|gt:-1', '请选择要删除的属性|属性编号只能是数字|属性编号不能为负数']
+        ];
+        $validate = new \think\Validate($rule);
+        //验证部分数据合法性
+        if (!$validate->check($param)) {
+            return json(['code' => -1,'msg' => $validate->getError()]);
+        }
+        $node = new QualityCustomAttributeModel();
+        $flag = $node->deleteTb($param['attrId']);
+        return json($flag);
+    }
+
+    // 回显自定义属性
+    public function getAttr()
+    {
+        // 前台需要传递 的是  模型图编号 picture_id
+        if($this->request->isAjax()){
+            $param = input('param.');
+            // 验证规则
+            $rule = [
+                ['picture_id', 'require|number|gt:-1', '请选择模型图|模型图编号只能是数字|模型图编号不能为负数']
+            ];
+            $validate = new \think\Validate($rule);
+            //验证部分数据合法性
+            if (!$validate->check($param)) {
+                return json(['code' => -1,'msg' => $validate->getError()]);
+            }
+            $custom = new QualityCustomAttributeModel();
+            $flag = $custom->getAttrTb($param['picture_id']);
+            return json($flag);
         }
     }
 
