@@ -104,5 +104,12 @@
 
 {include file="../app/public/common_footer.html"}
 <script src="__WEBSITE__/modelmanagement/qualitymass/index.js"></script>
+<script type="text/javascript">
+    window.operateModel = function (data) {
+        for(var i = 0;i<data.length;i++){
+            RealBimOcx.SetGroupInLogCamPos(data[i]);
+        }
+    }
+</script>
 </body>
 </html>
