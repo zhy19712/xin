@@ -52,6 +52,7 @@ class Dashboard extends Permissions
         {
             foreach($form_info as $key=>$val)
             {
+
                 $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["CurrentApproverId"]]);
 
                 if(!empty($result))
@@ -59,6 +60,13 @@ class Dashboard extends Permissions
                     $edit_data[$key]["id"] = $result["id"];
 
                     $edit_data[$key]["status"] = $val["ApproveStatus"];
+
+                    if($val["ApproveIds"])
+                    {
+                        $ids = explode(",",$val["ApproveIds"]);
+
+                        $edit_data[$key]["sender"] = $ids[count($ids)-1];
+                    }
 
                 }
                 else
