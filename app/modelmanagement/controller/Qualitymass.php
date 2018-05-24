@@ -163,6 +163,26 @@ class Qualitymass extends Permissions
         }
     }
 
+    /**
+     * 获取选中节点的所有关联模型编号
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function nodeModelNumber()
+    {
+        if($this->request->isAjax()){
+            // 前台 传递 选中节点的 add_id
+            $add_id = input('add_id');
+            if(!sizeof($add_id)){
+                return json(['code'=>-1,'msg'=>'缺少构件的编号']);
+            }
+            $quality = new QualitymassModel();
+            $data = $quality->nodeModelNumber($add_id);
+            return json([''=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
+        }
+    }
+
+
 
     // 此方法只是临时 导入质量模型 txt文件时使用
     // 不存在于 功能列表里面 后期可以删除掉
