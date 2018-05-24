@@ -351,7 +351,7 @@ function showPdf(id,url,type_model) {
             if(res.code === 1){
                 var path = res.path;
               var houzhui = res.path.split(".");
-              if(houzhui[houzhui.length-1]=="pdf"){
+              if(houzhui[houzhui.length-1] == "pdf" ){
                     window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
                 }else if(res.path.split(".")[1]==="png"||res.path.split(".")[1]==="jpg"||res.path.split(".")[1]==="jpeg"){
                     layer.photos({
