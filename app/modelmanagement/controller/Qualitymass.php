@@ -11,6 +11,7 @@ namespace app\modelmanagement\controller;
 
 use app\admin\controller\Permissions;
 use app\modelmanagement\model\CompleteModel;
+use app\modelmanagement\model\ConfigureModel;
 use app\modelmanagement\model\QualityCustomAttributeModel;
 use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
@@ -192,6 +193,26 @@ class Qualitymass extends Permissions
 
     // ============================   着急先把方法放到这里 后期有时间再转移
 
+    // 全景3D模型 --  资源包名称
+    public function resourcePagName()
+    {
+        if($this->request->isAjax()){
+            $version = new VersionsModel();
+            $pag_name = $version->getPagName();
+            return json(['code'=>1,'pag_name'=>$pag_name,'msg'=>'资源包名称']);
+        }
+    }
+
+    // 模型效果配置信息
+    public function configureInfo()
+    {
+        if($this->request->isAjax()){
+            $version = new ConfigureModel();
+            $configureInfo = $version->getConfigure();
+            return json(['code'=>1,'configureInfo'=>$configureInfo,'msg'=>'模型效果配置信息']);
+        }
+    }
+
     // 顶部 --  全景模型 点击模型 获取模型属性
     public function attributeArr()
     {
@@ -298,5 +319,15 @@ class Qualitymass extends Permissions
             return json($flag);
         }
     }
+
+    // 顶部 -- 质量模型 -- 管理信息 -- 验收资料
+    public function test()
+    {
+        // 前台需要传递 的是
+        if($this->request->isAjax()){
+            return json(['code'=>1]);
+        }
+    }
+
 
 }

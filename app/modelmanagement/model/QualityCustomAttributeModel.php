@@ -58,12 +58,12 @@ class QualityCustomAttributeModel extends Model
         return $data;
     }
 
-    public function getAttrTb($picture_id)
+    public function getAttrTb($model_number)
     {
         // 获取当前启用的模型
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2);
-        $attr = $this->where(['version_number'=>$version_number,'model_number'=>$picture_id])->field('id as attrId,attr_name as attrKey,attr_value as attrVal')->select();
+        $attr = $this->where(['version_number'=>$version_number,'model_number'=>$model_number])->field('id as attrId,attr_name as attrKey,attr_value as attrVal')->select();
         return ['code'=>1,'attr'=>$attr,'msg'=>'模型图自定义属性'];
     }
 
