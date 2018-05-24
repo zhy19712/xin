@@ -42,9 +42,10 @@ class Dashboard extends Permissions
         //获取当前登录的用户id
 
         $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+
+
         //查询单元工程审批人状态表
         $form_info = $qualityform->getAdminapproval($admin_id);
-
 
         //定义两个空的数组用来存储值
         $data = array();
