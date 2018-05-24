@@ -60,9 +60,11 @@ class CompleteGroupModel extends Model
 
     public function attributeArr($group_name)
     {
-        //Todo 获取当前启用的模型
+        // 获取当前启用的模型
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(1);
         // 获取该分组的所有属性
-        $data = $this->where(['group_name'=>$group_name])->field('group_name,attribute_name,attribute_val')->select();
+        $data = $this->where(['version_number'=>$version_number,'group_name'=>$group_name])->field('group_name,attribute_name,attribute_val')->select();
         return $data;
     }
 

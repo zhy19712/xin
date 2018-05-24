@@ -210,7 +210,7 @@ class Qualitymass extends Permissions
 
             $comp= new CompleteModel();
             $data = $comp->attributeArr($model_number_arr);
-            return json(['code'=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
+            return json(['code'=>1,'data'=>$data,'msg'=>'成功']);
         }
     }
 
