@@ -65,7 +65,7 @@ class Dashboard extends Permissions
                 {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["form_name"];
-                    $data[$key]["create_time"] = time();
+                    $data[$key]["create_time"] = $val["update_time"];
                     $data[$key]["sender"] = substr($val["ApproveIds"], -1);
                     $data[$key]["task_category"] = "单元质量验评";
                     $data[$key]["status"] = $val["ApproveStatus"];
@@ -124,7 +124,7 @@ class Dashboard extends Permissions
                 {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["file_name"];
-                    $data[$key]["create_time"] = time();
+                    $data[$key]["create_time"] = $val["update_time"];
                     $data[$key]["sender"] = $val["send_id"];
                     $data[$key]["task_category"] = "收文";
                     //如果收发文中的status状态为2表示未执行
@@ -239,5 +239,8 @@ class Dashboard extends Permissions
 
                 return json(["code"=>1]);
             }
+
+
+
         }
 }
