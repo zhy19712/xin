@@ -209,7 +209,15 @@ class Qualityform extends Permissions
     public function cancel($id)
     {
         $data['ApproveStatus']=-2;
-        $this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($data, ['id' => $id]);
+        $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($data, ['id' => $id]);
+        if($res)
+        {
+            return json(['msg'=>'success']);
+        }
+        else
+        {
+            return json(['msg'=>'fail']);
+        }
     }
     //获取表单总步骤和当前步骤,传入form_info主键
     public function getStep($form_id)
