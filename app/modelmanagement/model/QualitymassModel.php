@@ -133,14 +133,19 @@ class QualitymassModel extends Model
     {
         $unit_id = [];
         // 节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
-        // 当前启用的版本
+
         $version = new VersionsModel();
-        $version_number = $version->statusOpen(2);
+        $version_number = $version->statusOpen(2); // 当前启用的版本号
 
         if($node_type == 1){
             $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>['neq',0]])->column('model_id');
             return $model_id;
-        }if($node_type == 3){
+        }else if($node_type == 2){
+            // 获取选中标段下包含的所有节点编号
+            $division_id = Db::name('quality_division')->where(['section_id'=>$add_id])->column('id');
+            // 获取节点下包含的所有单元工程检验批
+            $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$division_id]])->column('id');
+        }else if($node_type == 3){
             // 获取选中节点下包含的所有子节点编号
             $division = new DivisionModel();
             $child_node_id = [];
@@ -157,7 +162,7 @@ class QualitymassModel extends Model
         // 获取所有单元工程检验批 所关联的模型编号
         $model_id = [];
         if(sizeof($unit_id)){
-            $model_id = $this->where(['unit_id'=>['in',$unit_id]])->column('model_id');
+            $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$unit_id]])->column('model_id');
         }
         return $model_id;
     }

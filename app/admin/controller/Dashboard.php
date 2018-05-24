@@ -103,7 +103,6 @@ class Dashboard extends Permissions
                 }
             }
 
-//            return json($flag);
         }
 
     }
@@ -165,55 +164,25 @@ class Dashboard extends Permissions
                 }
             }
 
-            $flag = $message->insertTbAll($data);
+            if(!empty($data))
+            {
+                foreach($data as $a=>$b)
+                {
+                    $message->insertTb($b);
+                }
 
-            $flag = $message->editTbAll($edit_data);
-
-            return json($flag);
+            }
+            if(!empty($edit_data))
+            {
+                foreach($edit_data as $c=>$d)
+                {
+                    $message->editTb($d);
+                }
+            }
         }
 
     }
 
-//    /**
-//     * 轮询
-//     * @return \think\response\Json
-//     */
-//    public function ajaxLunxun()
-//    {
-//        //实例化模型类
-//        if ($this->request->isAjax()) {
-//            //实例化模型类
-//            $message = new MessageremindingModel();
-//            //传过来检测值
-//            $count = input("post.count");
-//
-//            $time = 30;
-//
-//            set_time_limit(0);//无限请求超时时间
-//
-//            $i = 0;
-//            while (true) {
-//                usleep(500000);//0.5秒
-//                $i++;
-//                if ($i <= $time) {
-//
-//                    $this->buildMessage();
-//
-//                    $count_data = $message->getCount();
-//                    //如果表中的条数和检测值相等则停止循环
-//                    if ($count_data != $count) {
-//
-//                        return json(["count"=>$count_data]);
-//
-//                        exit;
-//                    }
-//                } else {
-//
-//                    exit;
-//                }
-//            }
-//        }
-//    }
         /**
          * 查询当前消息表中状态status=1的条数
          * @return \think\response\Json
@@ -262,8 +231,5 @@ class Dashboard extends Permissions
 
                 return json(["code"=>1]);
             }
-
-
-
         }
 }

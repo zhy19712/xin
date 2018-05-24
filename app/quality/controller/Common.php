@@ -1225,7 +1225,7 @@ class Common extends Controller
         $recordsFiltered = 0;
         //获取筛选条件
         $list_id = input('list_id') ? input('list_id') : "";//分部策划列表id
-        $type = input('type') ? input('type') : "";//type = 3表示分部工程
+        $type = input('type') ? input('type') : "";//type = 2表示单位工程，type = 3表示分部工程
 
         if(empty($list_id))
         {
