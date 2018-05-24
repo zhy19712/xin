@@ -36,6 +36,7 @@ ztree(0);
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
     nodeId = treeNode.add_id;
+    console.log(treeNode);
     if(treeNode.level==5){
         alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
         elval();
@@ -51,11 +52,13 @@ function zTreeOnCheck(event, treeId, treeNode) {
 //显示隐藏模板函数
 function nodeModelNumber(treeNode) {
     var add_id = treeNode.add_id;
+    var node_type = treeNode.node_type;
     $.ajax({
         url: "./nodeModelNumber",
         type: "post",
         data: {
-            add_id:add_id
+            add_id:add_id,
+            node_type:node_type
         },
         dataType: "json",
         success: function (res) {
@@ -144,7 +147,8 @@ var tableItem = $('#tableItem').DataTable({
             "render" :  function(data,type,row) {
                 var name = row[15];  //单元工程名称
                 var uid = row[16];  //单元工程编号
-                var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ name +"</span>";
+                var newName = name==null?'无':name;
+                var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ newName +"</span>";
                 return html;
             }
         },
