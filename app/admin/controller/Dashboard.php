@@ -54,7 +54,6 @@ class Dashboard extends Permissions
         {
             foreach($form_info as $key=>$val)
             {
-
                 $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["CurrentApproverId"]]);
 
                 if(!empty($result))
@@ -69,7 +68,7 @@ class Dashboard extends Permissions
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["form_name"];
 
-                    $data[$key]["create_time"] = $val["update_time"];
+                    $data[$key]["create_time"] = strtotime($val["update_time"]);
 
 
                     if($val["ApproveIds"])
@@ -86,11 +85,22 @@ class Dashboard extends Permissions
                 }
             }
 
-            $flag = $message->insertTbAll($data);
+            if(!empty($data))
+            {
+                foreach($data as $a=>$b)
+                {
+                    $message->insertTb($b);
+                }
 
-            $flag = $message->editTbAll($edit_data);
+            }
+            if(!empty($edit_data))
+            {
+                foreach($edit_data as $c=>$d)
+                {
+                    $message->editTb($d);
+                }
+            }
 
-            return json($flag);
         }
 
     }
@@ -136,7 +146,7 @@ class Dashboard extends Permissions
                 {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["file_name"];
-                    $data[$key]["create_time"] = $val["update_time"];
+                    $data[$key]["create_time"] = strtotime($val["update_time"]);
                     $data[$key]["sender"] = $val["send_id"];
                     $data[$key]["task_category"] = "收文";
                     //如果收发文中的status状态为2表示未执行
@@ -152,55 +162,25 @@ class Dashboard extends Permissions
                 }
             }
 
-            $flag = $message->insertTbAll($data);
+            if(!empty($data))
+            {
+                foreach($data as $a=>$b)
+                {
+                    $message->insertTb($b);
+                }
 
-            $flag = $message->editTbAll($edit_data);
-
-            return json($flag);
+            }
+            if(!empty($edit_data))
+            {
+                foreach($edit_data as $c=>$d)
+                {
+                    $message->editTb($d);
+                }
+            }
         }
 
     }
 
-//    /**
-//     * 轮询
-//     * @return \think\response\Json
-//     */
-//    public function ajaxLunxun()
-//    {
-//        //实例化模型类
-//        if ($this->request->isAjax()) {
-//            //实例化模型类
-//            $message = new MessageremindingModel();
-//            //传过来检测值
-//            $count = input("post.count");
-//
-//            $time = 30;
-//
-//            set_time_limit(0);//无限请求超时时间
-//
-//            $i = 0;
-//            while (true) {
-//                usleep(500000);//0.5秒
-//                $i++;
-//                if ($i <= $time) {
-//
-//                    $this->buildMessage();
-//
-//                    $count_data = $message->getCount();
-//                    //如果表中的条数和检测值相等则停止循环
-//                    if ($count_data != $count) {
-//
-//                        return json(["count"=>$count_data]);
-//
-//                        exit;
-//                    }
-//                } else {
-//
-//                    exit;
-//                }
-//            }
-//        }
-//    }
         /**
          * 查询当前消息表中状态status=1的条数
          * @return \think\response\Json
@@ -249,8 +229,5 @@ class Dashboard extends Permissions
 
                 return json(["code"=>1]);
             }
-
-
-
         }
 }

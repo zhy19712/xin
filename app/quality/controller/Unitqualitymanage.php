@@ -586,7 +586,7 @@ class Unitqualitymanage extends Permissions
        }
         $file_obj = Db::name('quality_upload')->alias('q')
            ->join('attachment a','a.id=q.attachment_id','left')
-            ->where('q.id',$id)->field('a.filename,a.filepath')->find();
+            ->where('q.id',$id)->field('a.filename,a.filepath,q.data_name')->find();
        $filePath = '';
         if(!empty($file_obj['filepath'])){
             $filePath = '.' . $file_obj['filepath'];
@@ -603,7 +603,8 @@ class Unitqualitymanage extends Permissions
             Header("Content-type:application/octet-stream ");
             Header("Accept-Ranges:bytes ");
             Header("Accept-Length:   " . filesize($filePath));
-           Header("Content-Disposition:   attachment;   filename= " . $fileName);
+            Header('Content-Disposition: attachment; filename='.$file_obj['data_name']);
+            Header('Content-Type: application/octet-stream; name='.$file_obj['data_name']);
             //   输出文件内容
             echo fread($file, filesize($filePath));
             fclose($file);
@@ -650,7 +651,7 @@ class Unitqualitymanage extends Permissions
             $data = [
                 "contr_relation_id" => $param["list_id"],//分部策划列表id
                 "attachment_id" => $param["attachment_id"],//对应的是attachment文件上传表中的id
-                "type" => 2//2表示单位工程，3表示分部工程，5表示单元工程
+                "type" => 2//1，扫描件，2单位上传附件，3分部上传附件
             ];
             $flag = $model->insertTb($data);
 

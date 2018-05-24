@@ -577,7 +577,7 @@ class Branch extends Permissions
             $data = [
                 "contr_relation_id" => $param["list_id"],//分部策划列表id
                 "attachment_id" => $param["attachment_id"],//对应的是attachment文件上传表中的id
-                "type" => 3//2表示单位工程，3表示分部工程，5表示单元工程
+                "type" => 3//1，扫描件，2单位上传附件，3分部上传附件
             ];
             $flag = $model->insertTb($data);
 
