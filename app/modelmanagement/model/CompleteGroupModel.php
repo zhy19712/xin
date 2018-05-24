@@ -58,4 +58,12 @@ class CompleteGroupModel extends Model
         return $data;
     }
 
+    public function attributeArr($group_name)
+    {
+        //Todo 获取当前启用的模型
+        // 获取该分组的所有属性
+        $data = $this->where(['group_name'=>$group_name])->field('group_name,,attribute_name,attribute_val')->select();
+        return $data;
+    }
+
 }

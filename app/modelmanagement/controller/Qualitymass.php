@@ -10,6 +10,7 @@ namespace app\modelmanagement\controller;
 
 
 use app\admin\controller\Permissions;
+use app\modelmanagement\model\CompleteModel;
 use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
 use app\quality\model\DivisionModel;
@@ -183,6 +184,32 @@ class Qualitymass extends Permissions
             }
             $quality = new QualitymassModel();
             $data = $quality->nodeModelNumber($add_id,$node_type);
+            return json(['code'=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
+        }
+    }
+
+
+    // 全景模型 点击模型 获取模型属性 着急先把方法放到这里 后期有时间再转移
+    public function attributeArr()
+    {
+        if($this->request->isAjax()){
+            // 前台 传递 选中模型的 编号 uObjSubIDArr
+            $model_number_arr = input('uObjSubIDArr/a');
+            if(!sizeof($model_number_arr)){
+                return json(['code'=>-1,'msg'=>'缺少参数']);
+            }
+
+            /**
+             * 需求说明 ---
+             * 当数组里 只有 一个值的时候
+             *          返回 属于该分组的所有模型编号 并且返回该组的所有属性
+             *
+             * 当数组里 存在多个值的时候
+             *          只返回所有分组的模型编号
+             */
+
+            $comp= new CompleteModel();
+            $data = $comp->attributeArr($model_number_arr);
             return json(['code'=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
         }
     }
