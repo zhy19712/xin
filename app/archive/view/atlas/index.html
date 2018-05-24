@@ -360,7 +360,7 @@
                 "targets": [13],
                 "render" :  function(data,type,row) {
                     var a = data;
-                    var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='conEdit("+row[13]+")'><i class='fa fa-pencil'></i></a>" ;
+                    var html =  "<a type='button' class='' style='margin-left: 5px;' onclick='conEdit("+row[13]+")'><i class='fa fa-pencil'></i></a>" ;
                     html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDownAll("+row[13]+")'><i class='fa fa-download'></i></a>" ;
                     html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDel("+row[13]+")'><i class='fa fa-trash'></i></a>" ;
                     return html;
@@ -507,7 +507,7 @@
     };
     //添加折叠表格
     function loadDrawing(that,data) {
-        var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 2px;' onclick='conDown("+data[13]+")'><i class='fa fa-download'></i></a>" ;
+        var html =  "<a type='button'  class='' style='margin-left: 2px;' onclick='conDown("+data[13]+")'><i class='fa fa-download'></i></a>" ;
         html += "<a type='button' class=''  onclick='conDel("+data[13]+")'><i class='fa fa-trash'></i></a>" ;
         html += "<a type='button' class=''  onclick='conPicshow("+data[13]+")'><i class='fa fa-search'></i></a>" ;
         var trDom = '<tr role="row" data-sid="'+data[13]+'" class="c'+data[14]+' drawing">' +

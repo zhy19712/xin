@@ -799,6 +799,9 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
             if($(".tabs-selected a span:first-child").html() === "附件资料"){
                 type=2;
             }
+            if($(".tabs-selected a span:first-child").html() === "扫描件回传"){
+                type=1;
+            }
             if(res.code == 2){
                 uploadId = res.id;
                 $.ajax({
