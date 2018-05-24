@@ -112,7 +112,7 @@ layui.use(['form', 'layedit', 'laydate','layer'], function(){
 
     form.on('select(type)', function(data){
         typeId = data.value;
-        tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&type="+typeId).load();
+        tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&type="+typeId+"&use="+$("#use").val()).load();
     });
 
     form.on('select(purpose)', function(data){
@@ -125,7 +125,7 @@ layui.use(['form', 'layedit', 'laydate','layer'], function(){
         }else{
             tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&type="+typeId+"&use="+purposeId).load();
         }
-        tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&use="+purposeId).load();
+        tableItem.ajax.url("/standard/common/datatablesPre?tableName=norm_template&use="+purposeId+"&type="+$("#typeName").val()).load();
     });
 
     //监听提交

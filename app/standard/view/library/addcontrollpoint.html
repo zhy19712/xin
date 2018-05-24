@@ -143,7 +143,7 @@
                             <option value="0">否</option>
                         </select>
                     </div>
-                    <div class="layui-form-item" id="modelList">
+                    <div class="layui-form-item" id="modelList" style="display: none;">
                         <label class="layui-form-label">选择模板</label>
                         <div class="layui-input-block">
                             <input type="hidden" name="qualitytemplateid" id="getValId" value="">
@@ -210,6 +210,9 @@
                     $('#temName').val(res.name);
                     $('#itImportant').val(res.isimportant);
                     $('#itNeed').val(res.isneedtemplate);
+                    if(res.isneedtemplate == 1){
+                      $("#modelList").show();
+                    }
                     $('#getValId').val(res.qualitytemplateid);
                     $('#txtArea').val(res.remark);
                     $('#denId').val(res.procedureid);

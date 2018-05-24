@@ -169,10 +169,12 @@ class Element extends Permissions
         $res=Db::name('quality_upload')
             ->insert($data);
         if ($res) {
-            //更新控制点执行情况
-           Db::name('quality_division_controlpoint_relation')
-               ->where(['id'=>$cpr_id])
-               ->update(['status'=>1]);
+            if($type==1) {
+                //更新控制点执行情况
+                Db::name('quality_division_controlpoint_relation')
+                    ->where(['id' => $cpr_id])
+                    ->update(['status' => 1]);
+            }
             return json(['code' => 1]);
         } else {
             return json(['code' => -1]);
@@ -437,7 +439,6 @@ class Element extends Permissions
             ->update(['checked'=>$checked]);
        if($res)
        {
-
            return json(['msg'=>'success']);
        }
 
