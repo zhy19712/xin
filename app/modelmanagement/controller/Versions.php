@@ -10,6 +10,8 @@ namespace app\modelmanagement\controller;
 
 
 use app\admin\controller\Permissions;
+use app\modelmanagement\model\CompleteGroupModel;
+use app\modelmanagement\model\CompleteModel;
 use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
 use think\Db;
@@ -268,22 +270,21 @@ class Versions extends Permissions
 
 
     /**
-     * 此方法只是 读取 竣工模型 -- 全景3D模型 txt文件时使用
+     * 此方法只是 读取 竣工模型 -- 全景3D模型 模型txt文件时使用
      * 获取txt文件内容并插入到数据库中
      * @param $filePath
-     * @param $filePath2
      * @return \think\response\Json
      * @author hutao
      */
-    public function completeInsertTxtContent($filePath,$filePath2)
+    public function completeGolIdTable($filePath)
     {
         if(!file_exists($filePath)){
             return json(['code' => '-1','msg' => '文件不存在']);
         }
         $files = fopen($filePath, "r") or die("Unable to open file!");
-        $contents = $new_contents = $new_ids = [];
+        $contents = $new_contents = $new_ids = $data = [];
         while(!feof($files)) {
-            $txt = fgets($files);
+            $txt = iconv('gb2312','utf-8//IGNORE',fgets($files));
             $txt = str_replace('[','',$txt);
             $txt = str_replace(']','',$txt);
             $txt = str_replace("\r\n",'',$txt);
@@ -291,12 +292,10 @@ class Versions extends Permissions
             $contents[] = $txt_arr;
         }
 
-        $data = [];
-        $i=0;
+        $i=$j=0;
         foreach ($contents as $item){
             foreach ($item as $k=>$v){
                 if($k==1){
-                    $data[$i]['model_name'] = $v;
                     $new_contents[$i] = explode('-',$v);
                 }else if ($k==2){
                     array_push($new_contents[$i],$v);
@@ -305,38 +304,84 @@ class Versions extends Permissions
             $i++;
         }
 
-        $send = new VersionsModel();
-        $version_number = $send->versionNumber(1); // 1全景3D模型 2质量3D模型
+        $versions = new VersionsModel();
+        $version_number = $versions->versionNumber(1); // 1全景3D模型 2质量3D模型
 
         foreach ($new_contents as $k=>$val){
             $data[$k]['version_number'] = $version_number;
-            $data[$k]['section'] = $val[0];
-            $data[$k]['unit'] = trim(next($val));
-            $data[$k]['parcel'] = trim(next($val));
-            $data[$k]['cell'] = trim(next($val));
-            $arr_1 = explode('+',trim(next($val)));
-            $data[$k]['pile_number_1'] = $arr_1[0];
-            $data[$k]['pile_val_1'] = $arr_1[1];
-            $arr_2 = explode('+',trim(next($val)));
-            $data[$k]['pile_number_2'] = $arr_2[0];
-            $data[$k]['pile_val_2'] = $arr_2[1];
-            $arr_3 = explode('+',trim(next($val)));
-            $data[$k]['pile_number_3'] = $arr_3[0];
-            $data[$k]['pile_val_3'] = $arr_3[1];
-            $arr_4 = explode('+',trim(next($val)));
-            $data[$k]['pile_number_4'] = $arr_4[0];
-            $data[$k]['pile_val_4'] = $arr_4[1];
-            $arr_5 = explode('+',trim(next($val)));
-            $data[$k]['el_start'] = $arr_5[1];
-            $arr_6 = explode('+',trim(next($val)));
-            $data[$k]['el_cease'] = $arr_6[1];
+            if($val[0] == 'N'){
+                $data[$k]['group_name'] = $val[0] . $j;
+                $j++;
+            }else{
+                $data[$k]['group_name'] = $val[0];
+            }
+            $data[$k]['model_id'] = trim(next($val));
             $data[$k]['model_id'] = trim(next($val));
         }
 
-        //TODO 复制上一个版本的关联关系
+        $comp = new CompleteModel();
+        $comp->insertAll($data);
 
-        $picture = new QualitymassModel();
-        $picture->insertAll($data);
+        fclose($files);
+    }
+
+    /**
+     * 此方法只是 读取 竣工模型 -- 全景3D模型 分组的属性txt文件时使用
+     * 获取txt文件内容并插入到数据库中
+     * @param $filePath
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function completeGroupProperties($filePath)
+    {
+        //TODO 目前还么有正式的数据
+
+        $filePath = './static/division/GroupProperties.txt';
+        if(!file_exists($filePath)){
+            return json(['code' => '-1','msg' => '文件不存在']);
+        }
+        $files = fopen($filePath, "r") or die("Unable to open file!");
+        $contents = $new_contents = $new_ids = $data = [];
+        while(!feof($files)) {
+            $txt = iconv('gb2312','utf-8//IGNORE',fgets($files));
+            $txt = str_replace('[','',$txt);
+            $txt = str_replace(']','',$txt);
+            $txt = str_replace("\r\n",'',$txt);
+            $txt_arr = explode(' ',$txt);
+            $contents[] = $txt_arr;
+        }
+        halt($contents);
+
+        $i=$j=0;
+        foreach ($contents as $item){
+            foreach ($item as $k=>$v){
+                if($k==1){
+                    $new_contents[$i] = explode('-',$v);
+                }else if ($k==2){
+                    array_push($new_contents[$i],$v);
+                }
+            }
+            $i++;
+        }
+
+        $versions = new VersionsModel();
+        $version_number = $versions->versionNumber(1); // 1全景3D模型 2质量3D模型
+
+        foreach ($new_contents as $k=>$val){
+            $data[$k]['version_number'] = $version_number;
+            if($val[0] == 'N'){
+                $data[$k]['group_name'] = $val[0] . $j;
+                $j++;
+            }else{
+                $data[$k]['group_name'] = $val[0];
+            }
+            $data[$k]['model_id'] = trim(next($val));
+            $data[$k]['model_id'] = trim(next($val));
+        }
+
+        $comp = new CompleteGroupModel();
+        $comp->insertAll($data);
+
         fclose($files);
     }
 
@@ -354,7 +399,7 @@ class Versions extends Permissions
             return json(['code' => '-1','msg' => '文件不存在']);
         }
         $files = fopen($filePath, "r") or die("Unable to open file!");
-        $contents = $new_contents = $new_ids = [];
+        $contents = $new_contents = $new_ids = $data = [];
         while(!feof($files)) {
             $txt = fgets($files);
             $txt = str_replace('[','',$txt);
@@ -364,7 +409,6 @@ class Versions extends Permissions
             $contents[] = $txt_arr;
         }
 
-        $data = [];
         $i=0;
         foreach ($contents as $item){
             foreach ($item as $k=>$v){
