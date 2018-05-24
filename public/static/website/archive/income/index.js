@@ -3,12 +3,13 @@ tableItem = $("#tableIncome").DataTable({
     processing: true,
     serverSide: true,
     ordering: true,
-    scrollY: "486px",
+    scrollY: "495px",
     scrollCollapse: true,
     ajax: {
         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=1",
     },
     columns: [
+        { name: "create_time" },
         { name: "file_name" },
         { name: "date" },
         { name: "unit_name" },
@@ -19,7 +20,11 @@ tableItem = $("#tableIncome").DataTable({
     ],
     columnDefs: [
         {
-            targets: [5],
+            "targets": [ 0 ],
+            "visible": false
+        },
+        {
+            targets: [6],
             render: function (data, type, row,meta) {
                 if (data == '2'){
                     return  '未处理';
@@ -31,12 +36,12 @@ tableItem = $("#tableIncome").DataTable({
             }
         },
         {
-            targets: [6],
+            targets: [7],
             render: function (data, type, row,meta) {
-                if (row[5] == '2'){
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[6]+'" onclick="handle(this)">处理</a>';
+                if (row[6] == '2'){
+                    return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="handle(this)">处理</a>';
                 }else {
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm"  href="javascript:void(0);" major_key="'+row[6]+'" onclick="preview(this)">查看</a>';
+                    return  '<a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm"  href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)">查看</a>';
                 }
             }
         }
