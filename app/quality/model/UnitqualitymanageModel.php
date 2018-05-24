@@ -150,8 +150,10 @@ class UnitqualitymanageModel extends Model
             }
             Db::name('attachment')->where('id',$q_obj['attachment_id'])->delete();
             Db::name('quality_upload')->where('id',$id)->delete();
-            // 如果文件都被删除了，就修改状态为 未执行
-            $num = Db::name('quality_upload')->where('contr_relation_id',$q_obj['contr_relation_id'])->count();
+            // 如果扫描件被删除了，就修改状态为 未执行
+            $num = Db::name('quality_upload')
+                ->where(['contr_relation_id'=>$q_obj['contr_relation_id'],'type'=>1])
+                ->count();
             if($num == 0){
                 $this->where('id',$q_obj['contr_relation_id'])->update(['status'=>0]);
             }
