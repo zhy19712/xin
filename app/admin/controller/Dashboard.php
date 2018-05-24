@@ -54,8 +54,6 @@ class Dashboard extends Permissions
         {
             foreach($form_info as $key=>$val)
             {
-
-
                 $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["CurrentApproverId"]]);
 
                 if(!empty($result))
