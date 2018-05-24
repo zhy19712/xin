@@ -1,316 +1,118 @@
-{include file="../app/public/common_header.html"}
-<link rel="stylesheet" href="__PUBLIC__/colorpicker/css/colorpicker.css">
-<script type="text/javascript" src="__PUBLIC__/colorpicker/js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/colorpicker/js/colorpicker.js"></script>
+{include file="../../public/common_header"}
+<link rel="stylesheet" href="__PUBLIC__/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="__PUBLIC__/colorpicker/css/bootstrap-colorpicker.css">
 <style>
-
-    .colorStyle >div{
-        float:left;
+    h3{
+        line-height: 50px;
+        text-indent: 1em;
+        color: #1E9FFF;
     }
-    .colorStyle,.you,.zuo{
-        margin-top: 15px;
-        margin-left: 50px;
-        margin-right: 50px;
-    }
-    .you{
-        margin-left: 0px;
-    }
-    .qualityBottom{
-        clear: both;
-    }
-    #big >div>div{
-        margin: 12px;
-    }
-    .homeTop,.qualityBottom{
-        width: 99.4%;
-        /*height: 240px;*/
-        margin-left: 5px;
-        margin-top: 5px;
-        border: 1px solid ;
-    }
-    .config{
-        width: 99.4%;
-        height: 30px;
-        position: relative;
-        top: -3px;
-    }
-    .config .edit,.config .app{
-        float: right;
-        background-color: #00c0ef;
-    }
-    .config .edit,.config .app{
-        margin-right: 0.5%;
-        margin-bottom: 5px;
-        margin-top: 5px;
-
-    }
-    .colorSelector{
-        position:relative;
-        width:36px;
-        height:36px;
-    }
-    .colorSelector div{
-        position:absolute;
-        top: -21px;
-        left: 35px;
-        width:30px;
-        height:30px;
-    }
-
-
 </style>
-<div id="big">
-    <div class="config">
-        <span class="app layui-btn layui-btn-sm">应用</span>
-        <!--<span class="edit layui-btn layui-btn-sm">编辑</span>-->
+<div class="layui-fuild">
+    <!--首页-->
+    <div class="layui-row">
+        <h3 class="">首页3D效果配置</h3>
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">选择集透明度</label>
+                <div id="pellucidity_home" class="layui-input-inline input-group " style="width:400px">
+                    <input type="text" name="pellucidity" class="form-control input-lg"/>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                </div>
+                <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">选择集颜色</label>
+                <div id="pigment_home" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
+                    <input type="text" name="pigment" class="form-control input-lg" value="#DD0F20"/>
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">透明效果的透明度</label>
+                <div id="transparent_effect_home" class="layui-input-inline input-group" style="width: 400px">
+                    <input type="text" name="transparent_effect" class="form-control input-lg"/>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                </div>
+                <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="homeApply" style="margin-left: 40px">应用</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="homeTop">
-        <div><h3>首页3D</h3></div>
-        <div class="colorStyle" style="margin-right: 50px;">
-            <div class="zuo" style="margin-right: 50px;">
-                <span></span>
-                <label for="home3dId" onselectstart="return false;">选择:透明度</label>
-                <input type='text' name='all_checked_plan' id="home3dId" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
+    <!--质量-->
+    <div class="layui-row">
+        <h3 class="">质量3D效果配置</h3>
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">选择集透明度</label>
+                <div id="pellucidity_quality" class="layui-input-inline input-group " style="width:400px">
+                    <input type="text" name="pellucidity" class="form-control input-lg"/>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                </div>
+                <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
             </div>
-            <div class="you">
-                <span>颜色:</span>
-                <div class='colorSelector' id="colorSelector">
-                    <div style="background-color: #0000ff"></div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">选择集颜色</label>
+                <div id="pigment_quality" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
+                    <input type="text" name="pigment" class="form-control input-lg" value="#DD0F20"/>
+                    <span class="input-group-addon"><i></i></span>
                 </div>
             </div>
-        </div>
-        <div class="colorStyle">
-            <div class="zuo" style="margin-right: 50px;">
-                <label for="transparency3dId" onselectstart="return false;">透明效果:透明度</label>
-                <input type='text' name='all_checked_plan' id="transparency3dId" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
-            </div>
-        </div>
-    </div>
-    <div class="qualityBottom" style="margin-top: 10px">
-        <div><h3>质量3D</h3></div>
-        <div class="colorStyle">
-            <div class="zuo">
-                <label for="quality3dId" onselectstart="return false;">选择:透明度</label>
-                <input type='text' name='all_checked_plan' id="quality3dId" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
-            </div>
-            <div class="you">
-                <span>颜色：</span>
-                <div class='colorSelector' id="colorpickerHolder1">
-                    <div style="background-color: #0000ff"></div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">透明效果的透明度</label>
+                <div id="transparent_effect_quality" class="layui-input-inline input-group" style="width: 400px">
+                    <input type="text" name="transparent_effect" class="form-control input-lg"/>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                 </div>
-                <!--<div id="colorpickerHolder1"></div>-->
+                <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
             </div>
-        </div>
-        <div class="colorStyle">
-            <div class="zuo">
-                <label for="qualifiedId" onselectstart="return false;">优良:透明度</label>
-                <input type='text' name='all_checked_plan' id="qualifiedId" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
-            </div>
-            <div class="you">
-                <span>颜色：</span>
-                <div class='colorSelector' id="colorpickerHolder2">
-                    <div style="background-color: #0000ff"></div>
-                </div>
-                <!--<div id="colorpickerHolder2"></div>-->
-            </div>
-        </div>
-
-    </div>
-    <div class="qualityBottom" style="margin-top: 10px;border: none;">
-        <div class="colorStyle">
-            <div class="zuo">
-                <label for="onTest" onselectstart="return false;">合格:透明度</label>
-                <input type='text' name='all_checked_plan' id="onTest" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
-            </div>
-            <div class="you">
-                <span>颜色：</span>
-                <div class='colorSelector' id="colorpickerHolder3">
-                    <div style="background-color: #0000ff"></div>
-                </div>
-                <!--<div id="colorpickerHolder3"></div>-->
-            </div>
-        </div>
-        <div class="colorStyle">
-            <div class="zuo">
-                <label for="unEvaluation" onselectstart="return false;">未验评:透明度</label>
-                <input type='text' name='all_checked_plan' id="unEvaluation" value='' placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/">
-            </div>
-            <div class="you">
-                <span>颜色：</span>
-                <!--<div id="colorpickerHolder4"></div>-->
-                <div class='colorSelector' id="colorpickerHolder4">
-                    <div style="background-color: #0000ff"></div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">质量优良颜色</label>
+                <div id="choiceness_pigment" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
+                    <input type="text" name="choiceness_pigment" class="form-control input-lg" value="#DD0F20"/>
+                    <span class="input-group-addon"><i></i></span>
                 </div>
             </div>
-        </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">质量合格颜色</label>
+                <div id="qualified_pigment" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
+                    <input type="text" name="qualified_pigment" class="form-control input-lg" value="#DD0F20"/>
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 150px;">未验评颜色</label>
+                <div id="un_evaluation_pigment" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
+                    <input type="text" name="un_evaluation_pigment" class="form-control input-lg" value="#DD0F20"/>
+                    <span class="input-group-addon"><i></i></span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="qualityApply" style="margin-left: 40px">应用</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-<!--<form class="layui-form" action="">-->
-    <!--<div class="layui-form-item">-->
-        <!--<label class="layui-form-label">选择:透明度</label>-->
-        <!--<div class="layui-input-block">-->
-            <!--<input type="text" name="pellucidity" lay-verify="required" placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="layui-input">-->
-        <!--</div>-->
-        <!--<div class="layui-form-mid layui-word-aux">-->
-            <!--<div class="you">-->
-                <!--<span>颜色:</span>-->
-                <!--<div class='colorSelector' id="colorSelector">-->
-                    <!--<div style="background-color: #0000ff"></div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="layui-form-item">-->
-        <!--<label class="layui-form-label">透明效果:透明度</label>-->
-        <!--<div class="layui-input-inline">-->
-            <!--<input type="text" name="transparent_effect"  lay-verify="required" placeholder="请手填透明度值" onkeyup="value=value.replace(/[^\d]/g,'') " ng-pattern="/[^a-zA-Z]/" class="layui-input">-->
-        <!--</div>-->
-        <!--<div class="layui-form-mid layui-word-aux">-->
-
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="layui-form-item">-->
-        <!--<div class="layui-input-block">-->
-            <!--<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>-->
-            <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</form>-->
+{include file="../../public/common_footer"}
+<script type="text/javascript" src="__PUBLIC__/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/colorpicker/js/bootstrap-colorpicker.js"></script>
 </body>
-<script>
-    $('#colorSelector').ColorPicker({
-
-        color: '#0000ff',
-
-        onShow: function (colpkr) {
-
-            $(colpkr).fadeIn(500);
-
-            return false;
-
-        },
-
-        onHide: function (colpkr) {
-
-            $(colpkr).fadeOut(500);
-
-            return false;
-
-        },
-        onSubmit: function(hsb, hex, rgb, el) {
-            console.log(rgb);
-            $('#colorSelector div').css('backgroundColor', '#' + hex);
-            $(el).ColorPickerHide();
-        },
-
-    });
-    $('#colorpickerHolder1').ColorPicker({
-
-        color: '#0000ff',
-
-        onShow: function (colpkr) {
-
-            $(colpkr).fadeIn(500);
-
-            return false;
-
-        },
-
-        onHide: function (colpkr) {
-
-            $(colpkr).fadeOut(500);
-
-            return false;
-
-        },
-        onSubmit: function(hsb, hex, rgb, el) {
-            console.log(rgb);
-            $('#colorpickerHolder1 div').css('backgroundColor', '#' + hex);
-            $(el).ColorPickerHide();
-        },
-
-    });
-    $('#colorpickerHolder2').ColorPicker({
-
-        color: '#0000ff',
-
-        onShow: function (colpkr) {
-
-            $(colpkr).fadeIn(500);
-
-            return false;
-
-        },
-
-        onHide: function (colpkr) {
-
-            $(colpkr).fadeOut(500);
-
-            return false;
-
-        },
-        onSubmit: function(hsb, hex, rgb ,el) {
-            console.log(rgb);
-            $('#colorpickerHolder2 div').css('backgroundColor', '#' + hex);
-            $(el).ColorPickerHide();
-        },
-
-    });
-
-    $('#colorpickerHolder3').ColorPicker({
-
-        color: '#0000ff',
-
-        onShow: function (colpkr) {
-
-            $(colpkr).fadeIn(500);
-
-            return false;
-
-        },
-
-        onHide: function (colpkr) {
-
-            $(colpkr).fadeOut(500);
-
-            return false;
-
-        },
-        onSubmit: function(hsb, hex, rgb ,el) {
-            console.log(rgb);
-            $('#colorpickerHolder3 div').css('backgroundColor', '#' + hex);
-            $(el).ColorPickerHide();
-        },
-
-    });
-
-    $('#colorpickerHolder4').ColorPicker({
-
-        color: '#0000ff',
-
-        onShow: function (colpkr) {
-
-            $(colpkr).fadeIn(500);
-
-            return false;
-
-        },
-
-        onHide: function (colpkr) {
-
-            $(colpkr).fadeOut(500);
-
-            return false;
-
-        },
-        onSubmit: function(hsb, hex, rgb ,el) {
-            console.log(rgb);
-            $('#colorpickerHolder4 div').css('backgroundColor', '#' + hex);
-            $(el).ColorPickerHide();
-        },
-
-    });
-
-
+<script type="text/javascript">
+    $.ajax({
+        url:"./index",
+        type:"get",
+        success:function (res) {
+            console.log(res);
+        }
+    })
+    $('#pigment_home,#pigment_quality,#choiceness_pigment,#qualified_pigment,#un_evaluation_pigment').colorpicker();
 </script>
 </html>
