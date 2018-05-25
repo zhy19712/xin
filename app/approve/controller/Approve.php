@@ -89,7 +89,7 @@ class Approve extends Permissions
 
                         //更新到relation表中 状态为已执行
                         Db::name('quality_division_controlpoint_relation')
-                            ->where(['control_id'=>$approveHistory['ControlId'],'division_id'=>$approveHistory['DivisionId']])
+                            ->where(['control_id'=>$approveHistory['ControlId'],'division_id'=>$approveHistory['DivisionId'],'type'=>1])
                             ->update(['status'=>1]);
 
                      }
