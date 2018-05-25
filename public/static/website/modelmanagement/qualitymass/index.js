@@ -526,7 +526,8 @@ function dropDown(type,eId) {
             var data = res.data;
             //构建select
             var selectTemp = [];
-            selectTemp.push('<select>');
+            selectTemp.push('<select onchange="change(this)">');
+            selectTemp.push('<option>请选择</option>');
             for(var j = 0;j<data.length;j++){
                 selectTemp.push('<option>');
                 selectTemp.push(data[j][type]);
@@ -540,7 +541,7 @@ function dropDown(type,eId) {
 
 //构建input
 function inputTemp() {
-    var ipt = '<input type="text">';
+    var ipt = '<input type="text" onchange="change(this)">';
     $('#searchTd5,#searchTd7,#searchTd9,#searchTd11,#searchTd12,#searchTd13').append(ipt);
 }
 inputTemp();
@@ -572,3 +573,69 @@ $('#searchTr td').each(function () {
         dropDown('pile_number_4','searchTd10');
     }
 });
+
+
+//筛选方法
+var dataArr = [];
+function change(that) {
+    $('#searchTr select').each(function (i,n) {
+        var val = $(n).find('option').val();
+        if(val=='请选择'){
+           $(n).find('option:first-child').val('');
+        }
+    });
+    var section = $('#searchTd0 select option:selected').val();
+    var unit = $('#searchTd1 select option:selected').val();
+    console.log(unit);
+    var parcel = $('#searchTd2 select option:selected').val();
+    var cell = $('#searchTd3 select option:selected').val();
+    var pile_number_1 = $('#searchTd4 select option:selected').val();
+    var pile_val_1 = $('#searchTd5 input').val();
+    var pile_number_2 = $('#searchTd6 select option:selected').val();
+    var pile_val_2 = $('#searchTd7 input').val();
+    var pile_number_3 = $('#searchTd8 select option:selected').val();
+    var pile_val_3 = $('#searchTd9 input').val();
+    var pile_number_4 = $('#searchTd10 select option:selected').val();
+    var pile_val_4 = $('#searchTd11 input').val();
+    var el_start = $('#searchTd12 input').val();
+    var el_cease = $('#searchTd13 input').val();
+
+
+
+
+var data = '&section='+section+'&unit='+unit+'&parcel='+parcel+'&cell='+cell+'&pile_number_1='+pile_number_1+
+    '&pile_val_1='+pile_val_1+'&pile_number_2='+pile_number_2+'&pile_val_2='+pile_val_2+'&pile_number_3='+pile_number_3+
+    '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease+'';
+    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+data).load();
+/*
+    $.ajax({
+        url: "/modelmanagement/common/model_quality_search",
+        type: "post",
+        data: {
+            section:section,
+            unit:unit,
+            parcel:parcel,
+            cellcell:cellcell,
+            pile_number_1:pile_number_1,
+            pile_val_1:pile_val_1,
+            pile_number_2:pile_number_2,
+            pile_val_2:pile_val_2,
+            pile_number_3:pile_number_3,
+            pile_val_3:pile_val_3,
+            pile_number_4:pile_number_4,
+            pile_val_4:pile_val_4,
+            el_start:el_start,
+            el_cease:el_cease
+        },
+        dataType: "json",
+        success: function (res) {
+            $('#searchTr select').each(function (i,n) {
+                var val = $(n).val();
+                if(val==''){
+                    $(n).val('请选择');
+                }
+            });
+        }
+    });*/
+}
+

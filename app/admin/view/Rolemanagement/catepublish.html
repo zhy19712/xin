@@ -43,7 +43,8 @@
     </script>
 
     <script>
-      var selectArr = [];
+        //选中的节点id  所有的节点id
+      var selectArr = [],treeIdAll = [];
       //获取参数
       var objdata = {};
       function urlSearch() {
@@ -68,6 +69,9 @@
       function DataFilter(treeId, parentNode, responseData) {
         selectArr = responseData.select;
         var responseData = responseData.all_point;
+        $.each(responseData,function (i,item) {
+          treeIdAll.push(item.id);
+        });
         return responseData;
       }
       //初始化配置树
@@ -109,10 +113,18 @@
               zTreeObj.expandAll(true);
               return;
             }
-            $.each(selectArr, function (i, item) {
-              var node = zTreeObj.getNodeByParam("id", item);
-              zTreeObj.checkNode(node, true, false);
-            });
+            try {
+              $.each(selectArr, function (i, item) {
+                //过滤垃圾数据
+                if(treeIdAll.indexOf(Number(item)) != -1){
+                  var node = zTreeObj.getNodeByParam("id", item);
+                  zTreeObj.checkNode(node, true, false);
+                }
+              });
+            }catch (e) {
+              console.log(e)
+            }
+
             zTreeObj.expandAll(true);
           }
         }
