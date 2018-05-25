@@ -245,6 +245,7 @@ function delNodetree() {
                         $(".path").html("");
                         zTreeObj.removeNode(sNodes[0]);
                         selfid = "";
+                        sNodes ='';
                     }else{
                       layer.msg(res.msg);
                     }
@@ -292,7 +293,8 @@ function conEdit(id){
             $("#role_name").val(res.data.role_name);
             $("#desc").val(res.data.desc);
             $('#create_owner').val(res.data.create_owner);
-            $('#date').val(res.data.date);
+
+            $('#date').val(res.data.create_time.split(" ")[0]);
         }
     })
 }
@@ -311,6 +313,7 @@ function conDel(id){
                     layer.msg("删除成功！");
                     var url = "/admin/common/datatablespre/tableName/admin_cate/id/"+selfid+".shtml";
                     tableItem.ajax.url(url).load();
+                  selectData = "";
                 }else{
                   layer.msg(res.msg);
                 }
