@@ -78,3 +78,29 @@ function previewList(id){
   showPdf(id,'./preview');
 
 }
+
+//下载的历史记录
+function record(id) {
+  $.ajax({
+    type: "post",
+    url: "./downloadrecord",
+    data: {id: id},
+    success: function (res) {
+      // if(res.code == 1){
+      console.log(res);
+      $("#downInfo").html("");
+      var strTr = '';
+      for (var i = 0; i < res.length; i++) {
+        strTr += '<tr>\n' +
+          '       <td>' + res[i].create_time + '</td>\n' +
+          '       <td>' + res[i].user + '</td>\n' +
+          '    </tr>'
+      }
+      $("#downInfo").append(strTr);
+      // }
+      if(res.code == 0){
+        layer.msg('历史记录' + res.msg);
+      }
+    }
+  })
+}
