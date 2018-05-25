@@ -541,6 +541,20 @@ class Element extends Permissions
         }
     }
 
+    public function getEvaluation()
+    {
+      $param=input("param.");
+      $unit_id=$param['unit_id'];
+      $model=new DivisionUnitModel();
+      $data=$model->getOne($unit_id);
+      if($data) {
+          return json(['msg'=>'success','evaluateDate'=>$data['EvaluateDate'],'evaluateResult'=>$data['EvaluateDate']]);
+       }
+       else{
+          return json(['msg'=>'fail']);
+       }
+    }
+
 
     //检查扫描件回传情况
     public function copycheck()
