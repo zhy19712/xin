@@ -217,7 +217,7 @@
         font-weight: bolder;
     }
     .eleHide{
-        display: block;
+        display: inline-block;
     }
     .webuploader-pick {
         width: 50px;
@@ -225,6 +225,14 @@
         border-radius: 50px;
         top: -27px;
         background: #00c0ef;
+    }
+    #file_upload_standards >div:nth-of-type(2){
+        position: absolute;
+        top: -26px !important;
+        left: 0px;
+        width: 50px !important;
+        height: 26px !important;
+        overflow: hidden;
     }
 </style>
 <body  class="easyui-layout">
@@ -338,7 +346,7 @@
                     <div class="mybtn">
                         <!--<div id='test3'><i class='fa fa-upload'></i>&nbsp;上传</div>-->
                         <div id="file_per_standards" style="display: inline-block;vertical-align: middle;"></div>
-                        <div id="test3" style="display: inline-block;vertical-align: middle;"><i class='fa fa-upload'></i></div>
+                        <div id="file_upload_standards" style="display: inline-block;vertical-align: middle;"><i class='fa fa-upload'></i></div>
                         <div id="file_list_standards" style="display: inline-block;vertical-align: middle;"></div>
                     </div>
                     <div class="bitCodes">

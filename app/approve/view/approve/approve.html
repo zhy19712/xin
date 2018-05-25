@@ -314,52 +314,57 @@
 
     //点击保存
     $("#test3").click(function () {
-        var dataArr = [];
-        var subId ;
-        var dataNextId = $("#valTypestepId").val();
-        if(dataNextId >= 10000){
-            dataArr.push(dataNextId-10000)
-        }else{
-            dataArr.push(dataNextId)
-        }
-        subId = dataArr.join(",");
-
-        console.log(typeId);
-        $.ajax({
-            url: "{:url('approve/approve/Approve')}",
-            type: "post",
-            data:{
-                dataId:$("#dataId").val(),
-                dataType:$("#dataType").val(),
-                res:(typeId == -1)?"-1":"1",
-                mark:$("#txtArea").val(),
-                next_approverid:subId,
-            },
-            success: function (res) {
-                console.log(res);
-                if(res.code == 1){
-                    parent.layer.msg("保存成功!");
-                    $.ajax({
-                        url:"/admin/Dashboard/changeStatus",
-                        type:"POST",
-                        data:{
-                            uint_id :$("#dataId").val(),
-                          type:2
-                        },
-                        dataType:"JSON",
-                        success:function () {
-                            console.log(12331);
-                            layer.msg("保存成功!");
-                            close();
-                            parent.layer.closeAll();
-                        }
-                    });
-                }else  if(res.code != 1){
-                    parent.layer.msg("处理保存失败,请稍后再试!");
-                }
+        if($("#nextStepPeople").text() != ""){
+            var dataArr = [];
+            var subId ;
+            var dataNextId = $("#valTypestepId").val();
+            if(dataNextId >= 10000){
+                dataArr.push(dataNextId-10000)
+            }else{
+                dataArr.push(dataNextId)
             }
-        });
+            subId = dataArr.join(",");
+
+            console.log(typeId);
+            $.ajax({
+                url: "{:url('approve/approve/Approve')}",
+                type: "post",
+                data:{
+                    dataId:$("#dataId").val(),
+                    dataType:$("#dataType").val(),
+                    res:(typeId == -1)?"-1":"1",
+                    mark:$("#txtArea").val(),
+                    next_approverid:subId,
+                },
+                success: function (res) {
+                    console.log(res);
+                    if(res.code == 1){
+                        parent.layer.msg("保存成功!");
+                        $.ajax({
+                            url:"/admin/Dashboard/changeStatus",
+                            type:"POST",
+                            data:{
+                                uint_id :$("#dataId").val(),
+                              type:2
+                            },
+                            dataType:"JSON",
+                            success:function () {
+                                console.log(12331);
+                                layer.msg("保存成功!");
+                                close();
+                                parent.layer.closeAll();
+                            }
+                        });
+                    }else  if(res.code != 1){
+                        parent.layer.msg("处理保存失败,请稍后再试!");
+                    }
+                }
+            });
+        }else if($("#nextStepPeople").text() == ""){
+            layer.msg("请填写下一步执行人信息！")
+        }
     });
+
 
 
 
