@@ -17,6 +17,7 @@ use app\quality\model\DivisionControlPointModel;
 use app\quality\model\DivisionModel;
 use app\quality\model\DivisionUnitModel;
 use app\quality\model\QualityFormInfoModel;
+use app\admin\model\MessageremindingModel;//消息记录
 use think\Exception;
 use think\Request;
 use think\Session;
@@ -210,6 +211,9 @@ class Qualityform extends Permissions
     {
         try {
             QualityFormInfoModel::destroy($id);
+            //删除的同时删除消息记录表中的信息
+            $model = new MessageremindingModel();
+            $model->delTb($id);
             return json(['code' => 1]);
         } catch (Exception $exception) {
             return json(['code' => -1]);

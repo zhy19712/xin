@@ -110,10 +110,10 @@ class MessageremindingModel extends Model
     /**
      * 删除一条记录
      */
-    public function delTb($data)
+    public function delTb($id)
     {
         try{
-            $this->where($data)->delete();
+            $this->where("id",$id)->delete();
             return ['code' => 1, 'msg' => '删除成功'];
         }catch(PDOException $e){
             return ['code' => -1,'msg' => $e->getMessage()];
