@@ -244,6 +244,16 @@ class QualitymassModel extends Model
         return $data;
     }
 
+    // 质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性
+    public function modelIdSearchModel($model_id)
+    {
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
+        $unit_id = $this->where(['version_number'=>$version_number,'model_id'=>$model_id])->value('unit_id');
+        $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>$unit_id])->column('model_id');
+        return $model_id;
+    }
+
     public function prevRelevance($version_number)
     {
         $data = $this->where(['version_number'=>$version_number])->field('model_name,unit_id')->select();
