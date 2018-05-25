@@ -571,7 +571,7 @@ $("#all_checked_plan").on("click", function () {
         $.ajax({
             type: "post",
             url: "/quality/element/checkout",
-            data: {checked: 0,checkall:0,id:'',unit_id:selectRow},
+            data: {checked: 0,checkall:0,id:'',unit_id:selectRow,procedureid:procedureId},
             success: function (res) {
                 console.log(res);
             }
@@ -580,7 +580,7 @@ $("#all_checked_plan").on("click", function () {
         $.ajax({
             type: "post",
             url: "/quality/element/checkout",
-            data: {checked: 1,checkall:1,id:'',unit_id:selectRow},
+            data: {checked: 1,checkall:1,id:'',unit_id:selectRow,procedureid:procedureId},
             success: function (res) {
                 console.log(res);
             }
