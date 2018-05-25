@@ -222,7 +222,29 @@ class Qualityform extends Permissions
         $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($data, ['id' => $id]);
         if($res)
         {
-            return json(['msg'=>'success']);
+            $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
+            $formdata = json_encode(unserialize($_formdata));
+            //规范data
+            $data['form_data']=$formdata;
+            $data['form_name']=$res['form_name'];
+            $data['DivisionId']=$res['DivisionId'];
+            $data['create_time']=time();
+            $data['ProcedureId']=$res['ProcedureId'];
+            $data['ControlPointId']=$res['ControlPointId'];
+            $data['ApproveStatus']=0;
+            $data['CurrentStep']=0;
+            $data['update_time']=time();
+
+            $qfi = Db::name('quality_form_info')
+                ->insert($data);
+            if($qfi)
+            {
+                return json(['msg' => 'success']);
+            }
+            else
+            {
+                return json(['msg' => 'fail','remark'=>'生成新数据时出错']);
+            }
         }
         else
         {
