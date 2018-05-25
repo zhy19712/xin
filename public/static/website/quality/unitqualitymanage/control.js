@@ -430,6 +430,9 @@ function resultInfo() {
         $("#date").prop("disabled",true);
       }
       layui.form.render('select');
+      if(!res.flag){
+        $(".result input[readonly]").addClass('disabledColor');
+      }
     }
   })
 
