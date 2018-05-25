@@ -1518,9 +1518,12 @@ class Common extends Controller
         } else {
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name('norm_controlpoint')
-                    ->where('id','in',$id_arr)
+                Db::name('norm_controlpoint')->alias('c')
+                    ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+                    ->where(['r.type'=>1,'r.division_id'=>$unit_id])
+                    ->where('r.control_id','in',$id_arr)//控制点必须对应在当前的工程类型下，防止切换单元类型
                     ->order('code')
+                    ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -1538,7 +1541,6 @@ class Common extends Controller
             $infos[] = $temp;
             $temp = [];
         }
-
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
