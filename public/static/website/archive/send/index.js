@@ -47,7 +47,7 @@ tableIncome = $("#tableIncome").DataTable({
                     strs +='<a title="' + data + '" class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="del(this)">删除</a>';
                     return strs;
                 }else {
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)">查看</a>';
+                    return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)" style="border-radius: 4px;">查看</a>';
                 }
             }
         }
