@@ -13,6 +13,9 @@ use app\quality\model\DivisionControlPointModel;
 use app\quality\model\DivisionUnitModel;
 use app\quality\model\QualityFormInfoModel;
 use app\quality\model\UploadModel;
+use app\admin\model\AdminGroup;//组织机构
+use app\admin\model\Admin;//用户表
+use app\admin\model\AdminCate;//角色分类表
 use app\standard\model\ControlPoint;
 use app\standard\model\MaterialTrackingDivision;
 use PhpOffice\Common\Autoloader;
@@ -455,16 +458,37 @@ class Element extends Permissions
     //检测管控中的控件能否使用
     public function checkform()
     {
+            $cp_name='单元工程质量验评';
             $search_name='单元工程质量等级评定表';
             $param = input('param.');
-            $cpr_id=$param['cpr_id'];
-            $cp_id=$param['cp_id'];
-            $unit_id=$param['unit_id'];
-            $IsInspect=1;//是否是检验批
+            $unit_id=17;
+            $unit= Db::name('quality_unit')
+                ->where(['id' =>$unit_id])
+                ->find();
+            //找工程类型，找验评工序，再找到对应控制点
+            $en_type=$unit['en_type'];
+            $nm=Db::name('norm_materialtrackingdivision')
+                ->where(['pid' =>$en_type])
+                ->where('name', 'like', '%'.$search_name)
+                ->find();
+            $nm_id=$nm['id'];
+
+            $cp=Db::name('norm_controlpoint')
+                ->where(['procedureid' =>$nm_id])
+                ->where('name', 'like', '%'.$cp_name)
+                ->find();
+            $cp_id=$cp['id'];
+
             $res = Db::name('quality_form_info')
                 ->where(['ControlPointId' =>$cp_id,'DivisionId' =>$unit_id,'ApproveStatus'=>2])
                 ->where('form_name', 'like', '%' . $search_name)
                 ->find();
+
+            $cpr=Db::name('quality_division_controlpoint_relation')
+                 ->where(['control_id' =>$cp_id,'division_id' =>$unit_id,'type'=>1])
+                 ->find();
+            $cpr_id=$cpr['id'];//获取cpr_id
+
             //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
             if (count($res)>0) {
                 return json(['msg' => 'fail','remark'=>'线上流程']);
@@ -476,72 +500,93 @@ class Element extends Permissions
                     ->where('data_name', 'like', '%'.$search_name .'%')
                     ->find();
                 if ($copy) {
-                    return json(['msg' => 'success']);
+                    $flag=$this->evaluatePremission($unit_id);
+                    if($flag==1)
+                    {
+                        return json(['msg' => 'success']);
+                    }
+                    else
+                    {
+                        return json(['msg' => 'fail','remark'=>'权限不足']);
+                    }
                 }
                 else {
-                    return json(['msg' => 'fail']);
+                    return json(['msg' => 'fail','remark'=>'尚未上传验评扫描件']);
                 }
             }
     }
-    //获取评测结果
-    public function getEvaluation()
+    //将表单中的中文日期转为英文
+    public  function setFormattime($timestr)
     {
-        $par=input('param.');
-        $unit_id=18;
-        $en_type=15;
-        //取出对应的质量评估工序id
-        $search_name='单元工程质量验评';
-        $nm=Db::name('norm_materialtrackingdivision')
-            ->where(['pid'=>$en_type,'cat'=>5])
-            ->where('name','like','%'.$search_name.'%')
+        $arr = date_parse_from_format('Y年m月d日',$timestr);
+        $time = mktime(0,0,0,$arr['month'],$arr['day'],$arr['year']);
+        return $time;
+    }
+    //获取评测结果
+    public function saveEvaluation($form_id)
+    {
+        //判定是否是等级评定表
+        $fm_name = '单元工程质量等级评定表';
+        $fm = Db::name('quality_form_info')
+            ->where(['id' => $form_id])
+            ->where('form_name', 'like', '%'.$fm_name .'%')
             ->find();
-        $cp_name='单元工程质量等级评定表';
-        $cp=Db::name('norm_controlpoint')
-            ->where(['procedureid'=>$nm['id']])
-            ->where('name','like','%'.$cp_name.'%')
-            ->find();
-        $res = Db::name('quality_division_controlpoint_relation')
-                ->where(['division_id' =>$unit_id,'ma_division_id' =>$nm['id'],'control_id'=>$cp['id'],'type'=>1])
-                ->find();
-        //找到对应的工序cpr_id
-        if(count($res)>0)
+        if (count($fm) > 0)
         {
-            $fm=Db::name('quality_form_info')
-                ->where(['DivisionId'=>$res['division_id'],'ProcedureId'=>$nm['id'],'ControlPointId'=>$res['control_id'],'ApproveStatus'=>2])
-                ->find();
-             if(count($nm)>0)
-             {
-                 $form_data=unserialize($fm['form_data']);//反序列化
-                 foreach($form_data as $v)
-                 {
-                     if($v['Name']=='input_date_1')
-                     {
-                         $evaluation_date=$v['Value'];//验评日期
-                     }
-                     break;
-                 }
-                 foreach($form_data as $v)
-                 {
-                     if($v['Name']=='input_hgl_result')
-                     {
-                         $evaluation=$v['Value'];//验评结果
-                     }
-                     break;
-                 }
-                 $data['evaluation_date']=$evaluation_date;
-                 #$data['evaluation']=$evaluation;//暂时无法填写评定等级
-                 return json(['data'=>$data]);
-             }
-             else
-              {
-                  return json(['data'=>'验评控制点下暂无已审批线上填报']);
-              }
+            $form_data = unserialize($fm['form_data']);//反序列化
+            foreach ($form_data as $v) {
+                if ($v['Name'] == 'input_date_1') {
+                    $evaluation_date=  $v['Value']==''? '':$v['Value'];//验评日期
+                    break;
+                }
+            }
+            foreach ($form_data as $v) {
+                if ($v['Name'] == 'input_hgl_result') {
+                    $evaluation = $v['Value']==''? "无验评日期":$v['Value'];//验评结果
+                    break;
+                }
+            }
+            switch ($evaluation)
+            {
+                case "无验评日期":
+                    $evaluation=0;
+                    break;
+                case "不合格":
+                    $evaluation=1;
+                    break;
+                case "合格":
+                    $evaluation=2;
+                    break;
+                case "优良":
+                    $evaluation=3;
+                    break;
+            }
+            $param['EvaluateDate'] = $this->setFormattime($evaluation_date);
+            $param['EvaluateResult'] = $evaluation;
+            $unitModel=new DivisionUnitModel();
+            $param['id']=$fm['DivisionId'];
+            $unitModel->editTb($param);
         }
         else
-         {
-            return json(['data'=>'暂无验评控制点']);
-         }
+        {
+            return json(['data' => '暂无验评']);
+        }
     }
+
+    public function getEvaluation()
+    {
+      $param=input("param.");
+      $unit_id=$param['unit_id'];
+      $model=new DivisionUnitModel();
+      $data=$model->getOne($unit_id);
+      if($data) {
+          return json(['msg'=>'success','evaluateDate'=>date('Y-m-d',$data['EvaluateDate']),'evaluateResult'=>$data['EvaluateResult']]);
+       }
+       else{
+          return json(['msg'=>'fail']);
+       }
+    }
+
 
     //检查扫描件回传情况
     public function copycheck()
@@ -549,7 +594,7 @@ class Element extends Permissions
         if ($this->request->isAjax()) {
             $cpr_id=input('param.')['cpr_id'];
             $res = Db::name('quality_upload')
-                ->where(['contr_relation_id'=>$cpr_id,'type'=>4])
+                ->where(['contr_relation_id'=>$cpr_id,'type'=>1])
                 ->find();
             //如果有结果
             if (count($res)>0) {
@@ -559,5 +604,36 @@ class Element extends Permissions
             }
         }
     }
+   //判断是否拥有监理和管理员权限
+    public function evaluatePremission($unit_id)
+    {
+        if(request()->isAjax()){
+            //实例化模型类
+            $admin = new Admin();
+            $admincate = new AdminCate();
+            //首先判断当前的登录人是否有验评权限，管理员和监理可以编辑
+            $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+            $admin_info = $admin->getOne($admin_id);
+            $admin_cate_id = $admin_info["admin_cate_id"];
+            if(!empty($admin_cate_id))
+            {
+                $admin_cate_id_array = explode(",",$admin_cate_id);
+                //查询角色角色分类表中超级管理员和监理单位中是否有当前登录的用户
+                $data = $admincate->getAlladminSupervisor();
+                //$flag = 1表示有权限
+                $flag = 1;
+                foreach ($admin_cate_id_array as $va) {
+                    if (in_array($va, $data)) {
+                        continue;
+                    }else {
+                        $flag = 0;
+                        break;
+                    }
+                }
+                return $flag;
+            }
+        }
+    }
+
 
 }

@@ -1,9 +1,15 @@
+//折叠面板
 function easyUiPanelToggle() {
     var number = $("#easyuiLayout").layout("panel", "east")[0].clientWidth;
     if(number<=0){
         $('#easyuiLayout').layout('expand','east');
     }
 }
+
+//初始化手风琴
+layui.use('element', function(){
+    var element = layui.element;
+});
 
 //工程划分
 function ztree(node_type) {
@@ -26,8 +32,8 @@ function ztree(node_type) {
             enable: true
         },
         callback:{
-            /*onClick: zTreeOnClick,
-            onCheck: zTreeOnCheck*/
+            onClick: zTreeOnClick,
+            onCheck: zTreeOnCheck
         },
         showLine:true,
         showTitle:true,
@@ -37,22 +43,49 @@ function ztree(node_type) {
 }
 ztree(0);
 
-/*function seeOnLine(that) {
-    var id = $(that).attr('formId');
-    var cprId = $(that).attr('cprId');
-    layer.open({
-        type: 2,
-        title: '在线填报',
-        shadeClose: true,
-        area: ['980px', '90%'],
-        content: '../../../quality/Qualityform/edit?cpr_id='+ cprId + '&id='+ id +'&currentStep=0&isView=True'
-    });
-}*/
+//点击节点
+function zTreeOnClick(event, treeId, treeNode) {
+    console.log(treeNode);
+    nodeId = treeNode.add_id;
+    node_type = treeNode.node_type;
+    var data = nodeModelNumber();
+    if(treeNode.level==5){
+        window.operateModel(data);
+    }
+}
 
-//初始化手风琴
-layui.use('element', function(){
-    var element = layui.element;
-});
+//显示隐藏模板事件
+function zTreeOnCheck(event, treeId, treeNode) {
+    nodeId = treeNode.add_id;
+    node_type = treeNode.node_type;
+    var data = nodeModelNumber();
+    var checked = treeNode.checked;
+    if(checked){
+        //隐藏关联构件
+        window.hideModel(data);
+    }else {
+        window.showModel(data);
+    }
+}
+
+//显示隐藏模板函数
+function nodeModelNumber() {
+    var result;
+    $.ajax({
+        url: "/modelmanagement/Qualitymass/nodeModelNumber",
+        type: "post",
+        async:false,
+        data: {
+            add_id:nodeId,
+            node_type:node_type
+        },
+        dataType: "json",
+        success: function (res) {
+            result = res.data;
+        }
+    });
+    return result;
+}
 
 //添加自定义属性
 $('#addAttr').click(function () {

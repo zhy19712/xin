@@ -12,6 +12,9 @@
                     url: "/modelmanagement/qualitymass/resourcePagName",
                     type: "post",
                     dataType: "json",
+                    data:{
+                        model_type:1
+                    },
                     success: function (res) {
                         //模型名称
                         var modelName = res.pag_name;
@@ -46,7 +49,7 @@
                         modelColor = +(res.configureInfo.panorama.pigment);
                         modelTrans = res.configureInfo.panorama.pellucidity;
                     }
-                })
+                });
                 //单选/多选模型
                 // TODO 此处需要重构
                 if(!isCtrlDown){
@@ -113,7 +116,15 @@
             <!-- 点击模型操作按钮 -->
             <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
                 RealBimOcx.DelAttrMask('AttrMask');
-                var modelTrans = 0.1;
+                var modelTrans;
+                $.ajax({
+                    url: "/modelmanagement/qualitymass/configureInfo",
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        modelTrans = res.configureInfo.panorama.transparent_effect;
+                    }
+                });
                 if(isSelect){
                     var modelIdArr = $('#modelIdArr').val();
                     var newModelIdArr = modelIdArr.split(',');

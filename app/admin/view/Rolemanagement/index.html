@@ -163,13 +163,13 @@
     <!--</form>-->
 </div>
 <div data-options="region:'east',title:'管理信息',split:true" style="width:330px;">
-    <div class="layui-tab">
+    <div class="layui-tab" style="height: 100%;">
         <ul class="layui-tab-title">
             <li class="layui-this">角色用户</li>
             <li>角色权限</li>
         </ul>
-        <div class="layui-tab-content">
-            <div class="layui-tab-item layui-show">
+        <div class="layui-tab-content" style="height: calc(100% - 65px);" >
+            <div class="layui-tab-item layui-show" >
                 <div style="width: 100%; height: 30px;">
                     <h3 class="path" style="margin-left: 5px;color:#56abe9;"></h3>
                     <div class="ibox-tools">
@@ -181,10 +181,10 @@
                 </div>
                 <div class="userContainer" style="width: 100%;"></div>
             </div>
-            <div class="layui-tab-item">
-                <div>
-                    <div style="width: 100%; display: none">
-                        <iframe src="/admin/rolemanagement/catepublish.shtml?path=" id="catepublish" frameborder="0" width="100%;" height="690px;"></iframe>
+            <div class="layui-tab-item" style="height: 100%;">
+                <div style="height: 100%;">
+                    <div style=" display: none;height: 100%;">
+                        <iframe src="/admin/rolemanagement/catepublish.shtml?path=" id="catepublish" frameborder="0" width="100%;" height="100%;"></iframe>
                     </div>
                 </div>
             </div>
