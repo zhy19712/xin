@@ -271,16 +271,17 @@ class Element extends Permissions
         //$phpword = $phpword->loadTemplate($formPath);
         $phpword= new TemplateProcessor($formPath);
         $infos = $this->qualityFormInfoService->getFormBaseInfo($cp['DivisionId']);
+
         foreach ($infos as $key => $value) {
             $phpword->setValue("{{$key}}", $value);
         }
         $formInfo = unserialize($cp['form_data']);
         foreach ($formInfo as $item) {
-            $phpword->setValue('{' . $item['Name'] . '}', '111');
+            $phpword->setValue('{'.$item['Name'].'}', $item['Value']);
         }
         $docname = $phpword->save();
 
-
+        header( 'Content-type:text/html;charset=utf-8');
         header('Content-Disposition: attachment; filename="' . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . '.docx"');
         //header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
         header('Content-Transfer-Encoding: binary');
@@ -445,48 +446,29 @@ class Element extends Permissions
        }
 
     }
+
     //检测管控中的控件能否使用
-    public function checkform(){
-
-        $search_name='单元工程质量等级评定表';
-
+    public function checkform()
+    {
+            $search_name='单元工程质量等级评定表';
             $param = input('param.');
             $cpr_id=$param['cpr_id'];
             $cp_id=$param['cp_id'];
             $unit_id=$param['unit_id'];
             $IsInspect=1;//是否是检验批
             $res = Db::name('quality_form_info')
-                ->where(['ControlPointId' =>$cp_id,'DivisionId' =>$unit_id,'ApproveStatus'=>2,'IsInspect'=>1])
+                ->where(['ControlPointId' =>$cp_id,'DivisionId' =>$unit_id,'ApproveStatus'=>2])
                 ->where('form_name', 'like', '%' . $search_name)
                 ->find();
             //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
             if (count($res)>0) {
-                $form_data=unserialize($res['form_data']);//反序列化
-                foreach($form_data as $v)
-                {
-                  if($v['Name']=='input_date_1')
-                  {
-                      $evaluation_date=$v;//验评日期
-                  }
-                  break;
-                }
-                foreach($form_data as $v)
-                {
-                    if($v['Name']=='input_hgl_result')
-                    {
-                        $evaluation=$v;//验评结果
-                    }
-                    break;
-                }
-                $data['evaluation_date']=$evaluation_date;
-                $data['$evaluation']=$evaluation;
-                return json(['msg' => 'fail1','remark'=>'线上流程','data'=>$data]);
+                return json(['msg' => 'fail','remark'=>'线上流程']);
             }
             //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
             else {
                 $copy = Db::name('quality_upload')
                     ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
-                    ->where('data_name', 'like', '%' . $search_name . '%')
+                    ->where('data_name', 'like', '%'.$search_name .'%')
                     ->find();
                 if ($copy) {
                     return json(['msg' => 'success']);
@@ -495,8 +477,65 @@ class Element extends Permissions
                     return json(['msg' => 'fail']);
                 }
             }
-
-
+    }
+    //获取评测结果
+    public function getEvaluation()
+    {
+        $par=input('param.');
+        $unit_id=18;
+        $en_type=15;
+        //取出对应的质量评估工序id
+        $search_name='单元工程质量验评';
+        $nm=Db::name('norm_materialtrackingdivision')
+            ->where(['pid'=>$en_type,'cat'=>5])
+            ->where('name','like','%'.$search_name.'%')
+            ->find();
+        $cp_name='单元工程质量等级评定表';
+        $cp=Db::name('norm_controlpoint')
+            ->where(['procedureid'=>$nm['id']])
+            ->where('name','like','%'.$cp_name.'%')
+            ->find();
+        $res = Db::name('quality_division_controlpoint_relation')
+                ->where(['division_id' =>$unit_id,'ma_division_id' =>$nm['id'],'control_id'=>$cp['id'],'type'=>1])
+                ->find();
+        //找到对应的工序cpr_id
+        if(count($res)>0)
+        {
+            $fm=Db::name('quality_form_info')
+                ->where(['DivisionId'=>$res['division_id'],'ProcedureId'=>$nm['id'],'ControlPointId'=>$res['control_id'],'ApproveStatus'=>2])
+                ->find();
+             if(count($nm)>0)
+             {
+                 $form_data=unserialize($fm['form_data']);//反序列化
+                 foreach($form_data as $v)
+                 {
+                     if($v['Name']=='input_date_1')
+                     {
+                         $evaluation_date=$v['Value'];//验评日期
+                     }
+                     break;
+                 }
+                 foreach($form_data as $v)
+                 {
+                     if($v['Name']=='input_hgl_result')
+                     {
+                         $evaluation=$v['Value'];//验评结果
+                     }
+                     break;
+                 }
+                 $data['evaluation_date']=$evaluation_date;
+                 #$data['evaluation']=$evaluation;//暂时无法填写评定等级
+                 return json(['data'=>$data]);
+             }
+             else
+              {
+                  return json(['data'=>'验评控制点下暂无已审批线上填报']);
+              }
+        }
+        else
+         {
+            return json(['data'=>'暂无验评控制点']);
+         }
     }
 
     //检查扫描件回传情况

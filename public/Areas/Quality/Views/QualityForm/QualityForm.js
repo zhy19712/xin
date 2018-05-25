@@ -71,7 +71,7 @@ $(function () {
         head.appendChild(script);
 
         window.addEventListener('onLineFormSave', function (e) {
-            formSave();//移动端保存表单
+            formSaveData();//移动端保存表单
         })
         $('.data_2 .form-control').on('click', function () {
             var $nowInput = $(this);
@@ -117,16 +117,17 @@ function IsPC() {
 }
 
 // 表单数据保存
-function formSave() {
-    var canSave = true;
-    if (typeof beforeSave === "function") {
-        canSave = beforeSave();
-    }
-    ;
-    if (!canSave) {
-        saveStyle === 0;
-        return;
-    }
+function formSaveData() {
+    // var canSave = true;
+    // if (typeof beforeSave === "function") {
+    //     canSave = beforeSave();
+    // }
+    // ;
+    // console.log(canSave)
+    // if (!canSave) {
+    //     saveStyle === 0;
+    //     return;
+    // }
     var formData = [];
     var htmlElements = $(".A4").find("[id]");
     $.each(htmlElements, function (i, item) {
@@ -204,6 +205,7 @@ function formSave() {
             }
             else {
                 $("#id").val(data.result);
+                console.log(saveStyle)
                 if (saveStyle === 0)
                     parent.layer.closeAll();
                 else
@@ -219,16 +221,21 @@ function formSave() {
     });
 };
 
+function formSave() {
+    saveStyle = 0;
+    formSaveData();
+}
+
 // 保存并提交
 function formSaveAndSubmit() {
     saveStyle = 1;
-    formSave();
+    formSaveData();
 };
 
 // 保存并审批
 function formSaveAndApprove() {
     saveStyle = 2;
-    formSave();
+    formSaveData();
 };
 
 // 保存成功后处理逻辑

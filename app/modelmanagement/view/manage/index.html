@@ -237,6 +237,34 @@
                     }
                 });
             </script>
+
+            <!-- 点击模型操作按钮 -->
+            <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
+                /*if(isSelect){
+                    var modelIdArr = $('#modelIdArr').val();
+                    var newModelIdArr = modelIdArr.split(',');
+                }else{
+                    return false;
+                }*/
+                switch (eType) {
+                    case "DO_HIDE":         //显示隐藏
+                        uObjSubIDArr = [];
+                        RealBimOcx.SetHugeObjSubValidStateBegin();
+                        $.each(newModelIdArr, function (i, item) {
+                            RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
+                        });
+                        RealBimOcx.SetHugeObjSubValidStateEnd();
+                        break;
+
+                    case "CANCEL_HIDE":     //取消隐藏
+                        RealBimOcx.SetAllHugeObjSubValidState(1);
+                        RealBimOcx.SetAllSubClrInfos(255,255,0xff);
+                        newModelIdArr = [];
+                        hiddenArr = [];
+                        isSelect = false;
+                }
+
+            </script>
         </div>
     </div>
 </div>
