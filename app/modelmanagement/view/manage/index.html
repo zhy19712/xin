@@ -116,17 +116,25 @@
                                 RealBimOcx.AddSubClrPercent(quUObjSubID,1,un_evaluation_pigment);    //第二个参数为透明度
                                 RealBimOcx.BatchAddSubClrInfoEnd();
                             }
-                            //质量分布
-                            $('#excellent_number').text(res.data.excellent_number);
-                            $('#excellent_rate').text(res.data.excellent_rate+'%');
-                            $('#qualified_number').text(res.data.qualified_number);
-                            $('#qualified_rate').text(res.data.qualified_rate+'%');
-                            $('#unchecked_number').text(res.data.unchecked_number);
-                            $('#unchecked_rate').text(res.data.unchecked_rate+'%');
                         }
                     });
                 }
                 review();
+
+                //质量分布
+                $.ajax({
+                    url: "/modelmanagement/qualitymass/examineFruit",
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        $('#excellent_number').text(res.data.excellent);
+                        $('#excellent_rate').text(res.data.excellent_percent+'%');
+                        $('#qualified_number').text(res.data.qualified);
+                        $('#qualified_rate').text(res.data.qualified_percent+'%');
+                        $('#unchecked_number').text(res.data.unqualified);
+                        $('#unchecked_rate').text(res.data.unqualified_percent+'%');
+                    }
+                });
             </script>
             <!-- 点击模型事件 -->
             <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
