@@ -1,3 +1,21 @@
+modelTrans = '';
+modelColor = '';
+choiceness_pigment = '';
+qualified_pigment = '';      //合格颜色
+un_evaluation_pigment = '';  //不合格颜色
+$.ajax({
+    url: "/modelmanagement/qualitymass/configureInfo",
+    type: "post",
+    dataType: "json",
+    success: function (res) {
+        modelTrans = res.configureInfo.quality.pellucidity;
+        modelColor = +res.configureInfo.quality.pigment;
+        choiceness_pigment = +res.configureInfo.quality.choiceness_pigment;
+        qualified_pigment = +res.configureInfo.quality.qualified_pigment;
+        un_evaluation_pigment = +res.configureInfo.quality.un_evaluation_pigment;
+    }
+});
+
 //折叠面板
 function easyUiPanelToggle() {
     var number = $("#easyuiLayout").layout("panel", "east")[0].clientWidth;
@@ -56,9 +74,11 @@ function zTreeOnClick(event, treeId, treeNode) {
 
 //显示隐藏模板事件
 function zTreeOnCheck(event, treeId, treeNode) {
+    console.log(111);
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
     var data = nodeModelNumber();
+    console.log(data);
     var checked = treeNode.checked;
     if(checked){
         //隐藏关联构件

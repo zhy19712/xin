@@ -61,23 +61,6 @@
                 }
                 RealBimOcx.SetSuitableCam();
 
-                var modelTrans;
-                var modelColor;
-                var choiceness_pigment;
-                var qualified_pigment;      //合格颜色
-                var un_evaluation_pigment;  //不合格颜色
-                $.ajax({
-                    url: "/modelmanagement/qualitymass/configureInfo",
-                    type: "post",
-                    dataType: "json",
-                    success: function (res) {
-                        modelTrans = res.configureInfo.quality.pellucidity;
-                        modelColor = +res.configureInfo.quality.pigment;
-                        choiceness_pigment = +res.configureInfo.quality.choiceness_pigment;
-                        qualified_pigment = +res.configureInfo.quality.qualified_pigment;
-                        un_evaluation_pigment = +res.configureInfo.quality.un_evaluation_pigment;
-                    }
-                });
                 //模块验评情况
                 review = function () {
                     $.ajax({
@@ -86,20 +69,15 @@
                         dataType: "json",
                         success: function (res) {
                             var data = res.data;
-                            //全部
-                            for(var k = 0;k<data.all.length;k++){
-                                var allUObjSubID = data.all[k];
-                                RealBimOcx.BatchAddSubClrInfoBegin();
-                                RealBimOcx.AddSubClrPercent(allUObjSubID,0.2,0xff529df8);    //第二个参数为透明度
-                                RealBimOcx.BatchAddSubClrInfoEnd();
-                            }
+                            //透明掉全部
+                            RealBimOcx.SetAllSubClrInfos(20,255,0xff529df8);
                             //未验评 un_evaluation
-                            for(var k = 0;k<data.un_evaluation.length;k++){
+                            /*for(var k = 0;k<data.un_evaluation.length;k++){
                                 var allUObjSubID = data.un_evaluation[k];
                                 RealBimOcx.BatchAddSubClrInfoBegin();
                                 RealBimOcx.AddSubClrPercent(allUObjSubID,0.2,0xff529df8);    //第二个参数为透明度
                                 RealBimOcx.BatchAddSubClrInfoEnd();
-                            }
+                            }*/
                             //优良 excellent
                             for(var i = 0;i<data.excellent.length;i++){
                                 var exUObjSubID = data.excellent[i];
@@ -148,26 +126,6 @@
                 RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);    //第二个参数为透明度
                 RealBimOcx.BatchAddSubClrInfoEnd();*/
                 uObjSubIDArr.push(uObjSubID);
-                $.ajax({
-                    url: "/modelmanagement/qualitymass/attributeArr",
-                    type: "post",
-                    data: {
-                        uObjSubIDArr:uObjSubIDArr
-                    },
-                    dataType: "json",
-                    success: function (res) {
-                        var modelId = res.data.model_id;
-                        for(var i = 0;i<modelId.length;i++){
-                            modelIdArr.push(modelId[i]);
-                            RealBimOcx.BatchAddSubClrInfoBegin();
-                            RealBimOcx.AddSubClrPercent(modelId[i],window.modelTrans,window.modelColor);    //第二个参数为透明度
-                            RealBimOcx.BatchAddSubClrInfoEnd();
-                        }
-                        $('#modelIdArr').val(modelIdArr);
-                    }
-                });
-
-
                 //显示管理信息
                 //easyUiPanelToggle();
                 //显示单元信息
@@ -492,12 +450,14 @@
     var modelIds; //模型是否选中
     //选中模型
     window.operateModel = function (data) {
-        RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
-        if(data!=''){
-            RealBimOcx.SetGroupInLogCamPos(data.join(',')); //镜头
+        var newData = [];
+        var dataStr = data.qualified+data.unqualified+data.excellent;
+        newData.push(dataStr);
+        if(newData!=''){
+            RealBimOcx.SetGroupInLogCamPos(newData[0]); //镜头
             RealBimOcx.BatchAddSubClrInfoBegin();
-            for(var i = 0;i<data.length;i++){
-                RealBimOcx.AddSubClrPercent(data[i],window.modelTrans,window.modelColor);      //
+            for(var i = 0;i<newData[0].length;i++){
+                RealBimOcx.AddSubClrPercent(i,1,modelColor); //上颜色
             }
             RealBimOcx.BatchAddSubClrInfoEnd();
         }
@@ -505,28 +465,28 @@
 
     //隐藏模型
     window.hideModel = function (data) {
-        modelIds=data;
-        RealBimOcx.SetHugeObjSubValidStateBegin();
-        for(var i = 0;i<data.length;i++){
-            RealBimOcx.SetHugeObjSubValidStateInfo(data[i],0);  // 0为隐藏  1为显示 模型
+        var newData = [];
+        var dataStr = data.qualified+data.unqualified+data.excellent;
+        newData.push(dataStr);
+        if(newData!=''){
+            RealBimOcx.SetHugeObjSubValidStateBegin();
+            for(var i = 0;i<newData[0].length;i++){
+                RealBimOcx.SetHugeObjSubValidStateInfo(i,0);  // 0为隐藏  1为显示 模型
+            }
+            RealBimOcx.SetHugeObjSubValidStateEnd();
         }
-        RealBimOcx.SetHugeObjSubValidStateEnd();
     }
     window.showModel = function (data) {
-        RealBimOcx.SetHugeObjSubValidStateBegin();
-        for(var i = 0;i<data.length;i++){
-            RealBimOcx.SetHugeObjSubValidStateInfo(data[i],1);      //显示模型
+        var newData = [];
+        var dataStr = data.qualified+data.unqualified+data.excellent;
+        newData.push(dataStr);
+        if(newData!=''){
+            RealBimOcx.SetHugeObjSubValidStateBegin();
+            for(var i = 0;i<newData[0].length;i++){
+                RealBimOcx.SetHugeObjSubValidStateInfo(i,1);      //显示模型
+            }
+            RealBimOcx.SetHugeObjSubValidStateEnd();
         }
-        RealBimOcx.SetHugeObjSubValidStateEnd();
-        //是否是透明状态
-        RealBimOcx.BatchAddSubClrInfoBegin();
-        for(var i = 0;i<data.length;i++){
-            RealBimOcx.AddSubClrPercent(data[i],0.2,0xff);      //透明模型
-        }
-        for(var i = 0;i<modelIds.length;i++){
-            RealBimOcx.AddSubClrPercent(modelIds[i],0.2,0x6400ff00);      //还原模型原始颜色
-        }
-        RealBimOcx.BatchAddSubClrInfoEnd();
     }
 </script>
 </body>
