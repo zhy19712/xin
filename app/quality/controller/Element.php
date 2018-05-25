@@ -562,7 +562,7 @@ class Element extends Permissions
         if ($this->request->isAjax()) {
             $cpr_id=input('param.')['cpr_id'];
             $res = Db::name('quality_upload')
-                ->where(['contr_relation_id'=>$cpr_id,'type'=>4])
+                ->where(['contr_relation_id'=>$cpr_id,'type'=>1])
                 ->find();
             //如果有结果
             if (count($res)>0) {
