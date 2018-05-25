@@ -575,34 +575,28 @@ $("#all_checked_plan").on('click',function () {
         $(".checkList").prop("checked",false);
         checked = 1;
     }
-    // if(procedureId){
-    // debugger;
     console.log(procedureId)
-        $.ajax({
-            url: '/quality/element/checkout',
-            data: {
-                checkall:checked,
-                id:'',
-                unit_id:selectRow,
-                procedureid:(procedureId == undefined || procedureId == "") ? "" : procedureId,
-                checked: checked
-            },
-            type: "POST",
-            dataType: "JSON",
-            success: function (res) {
-                // if(procedureId != ''){
-                //     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
-                // }
-                // if(procedureId == undefined || procedureId == ""){
-                //     tpyeTable();
-                //     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
-                // }
+    $.ajax({
+        url: '/quality/element/checkout',
+        data: {
+            checkall:checked,
+            id:'',
+            unit_id:selectRow,
+            procedureid:(procedureId == undefined || procedureId == "") ? "" : procedureId,
+            checked: checked
+        },
+        type: "POST",
+        dataType: "JSON",
+        success: function (res) {
+            if(procedureId != ''){
+                tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
             }
-        })
-    // debugger;
-
-    // }
-
+            if(procedureId == undefined || procedureId == ""){
+                tpyeTable();
+                tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+            }
+        }
+    })
 });
 
 var selectData ;//选中的数据流
