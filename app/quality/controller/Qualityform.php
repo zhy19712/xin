@@ -238,19 +238,31 @@ class Qualityform extends Permissions
         $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($olddata, ['id' => $id]);
         if($res)
         {
-            $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
-            $formdata = json_encode(unserialize($_formdata));
+
             //规范data
-            $data=$this->qualityFormInfoService->where(['id' => $id])->find();
-            $data['form_data']=$formdata;
-            $data['form_name']=$res['form_name'];
-            $data['DivisionId']=$res['DivisionId'];
+
+
+            $data_res=$this->qualityFormInfoService->where(['id' => $id])->find();
+
+            //将表内填的数据全部情况
+            $form_data=$data_res['form_data'];
+            $se_data=unserialize($form_data);
+            foreach($se_data as $k => $v)
+            {
+             $se_data[$k]['Value']='';
+
+            }
+            $data['form_data']=$se_data;
+            $data['form_name']=$data_res['form_name'];
+            $data['DivisionId']=$data_res['DivisionId'];
+            $data['user_id']=$data_res['user_id'];
             $data['create_time']=time();
-            $data['ProcedureId']=$res['ProcedureId'];
-            $data['ControlPointId']=$res['ControlPointId'];
+            $data['ProcedureId']=$data_res['ProcedureId'];
+            $data['ControlPointId']=$data_res['ControlPointId'];
             $data['ApproveStatus']=0;
             $data['CurrentStep']=0;
             $data['update_time']=time();
+
 
 
             $qfi = Db::name('quality_form_info')
