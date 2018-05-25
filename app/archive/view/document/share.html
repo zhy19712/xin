@@ -98,12 +98,10 @@
             color: white;
         }
         .layui-btn{
-            margin-right: 15px;
+            width: 20px;
+            height: 20px;
             border-radius: 100%;
-            width: 30px;
-            height: 30px;
             padding: 0;
-            line-height: 44px;
         }
         .layui-btn i.fa{
             position: relative;
@@ -121,7 +119,7 @@
 <div style="margin: 20px;margin-bottom: 0;" class="layui-container">
     <input type="hidden" id="wordId" value="{$docId}">
     <div class="layui-row">
-        <div class="layui-col-md7 " ><p id="path">已选图纸/图册&nbsp;>&nbsp;系统管理dfd ─ 维护测试专用角色</p></div>
+        <div class="layui-col-md7 " ><p id="path">已选文档&nbsp;>&nbsp;系统管理dfd ─ 维护测试专用角色</p></div>
     </div>
     <div class="layui-row">
         <div class="layui-col-md4">
@@ -133,7 +131,7 @@
             </div>
             <hr>
             <div style="overflow: auto; width: 100%;height: 324px;">
-                <ul id="treeDemo" class="ztree" style=" height: 80%; padding-left: 20px;"></ul>
+                <ul id="treeDemo" class="ztree" style=" height: 97%; padding-left: 20px;"></ul>
             </div>
         </div>
         <div class="layui-col-md6 ">
@@ -191,8 +189,8 @@
     //获取参数
     urlSearch();
     $("#path").html("已选图纸/图册&nbsp;>&nbsp;"+decodeURIComponent(objdata.path))
-    $("#roleId").val(objdata.id);
     console.log(objdata)
+    $("#roleId").val(objdata.roleId);
     $(function () {
         $("#btnSaveRoleUser").click(function () { saveRoleUser(); });
         $("#btnCloseRoleUser").click(function () { parent.layer.closeAll('iframe'); });
@@ -308,6 +306,9 @@
             // data:{id:roleId,name:''},
             success: function (res) {
                 console.log(res);
+                if(res.data == ""){
+                  return
+                }
                 $.each(res.data, function (i, item) {
                     html = "<p2 id='p" + item.id + "'>" + item.nickname + "&nbsp;<a id='a" + item.id + "'><i class='fa fa-times'></i></a><input type='hidden' value='" + item.id + "'></p2>"
                     $("#selectedUserDiv").append(html);
@@ -361,11 +362,11 @@
             data: sendData,
             success: function (res) {
                 if(res.code == 1){
-                    // window.opener.getAdminname(roleId);
-                    parent.layer.msg("保存成功");
-                    parent.layer.closeAll('iframe'); //关闭所有的iframe层
+                  window.opener.getAdminname(roleId);
+                  layer.msg("成功");
+                  window.close();
                 }else{
-                    parent.layer.msg("保存失败！")
+                  layer.msg("保存失败！")
                 }
             }
         });
