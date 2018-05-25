@@ -193,12 +193,19 @@ class Qualitymass extends Permissions
 
     // ============================   着急先把方法放到这里 后期有时间再转移
 
-    // 全景3D模型 --  资源包名称
+    // 前台根据资源包名称 显示该包下的模型
     public function resourcePagName()
     {
         if($this->request->isAjax()){
+            // 模型类型 model_type 1 全景3D模型(竣工模型) 2 质量模型(施工模型)
+            $param= input('post.');
+            $model_type = isset($param['model_type']) ? $param['model_type'] : 0;
+            if(empty($model_type)){
+                return json(['code'=>-1,'msg'=>'缺少参数']);
+            }
+
             $version = new VersionsModel();
-            $pag_name = $version->getPagName();
+            $pag_name = $version->getPagName($model_type);
             return json(['code'=>1,'pag_name'=>$pag_name,'msg'=>'资源包名称']);
         }
     }
@@ -242,13 +249,21 @@ class Qualitymass extends Permissions
     // 每个版本 每个模型下 都有 不固定的 自定义属性
     public function addAttr()
     {
-        // 新增 前台需要传递 的是  模型图编号 picture_id 属性名 attrKey  属性值 attrVal
-        // 编辑 前台需要传递 的是  模型图编号 picture_id 属性名 attrKey  属性值 attrVal   和 这条属性的主键 attrId
+        /**
+         * 之前的自定义属性是关联到模型图上的
+         * 现在是关联到单元工程上
+         *
+         * 当点击单元工程 -- 显示所有的自定义属性
+         * 当点击模型图时 -- 查到与该模型关联的 单元工程 再根据单元工程查自定义属性
+         */
+
+        // 新增 前台需要传递 的是  单元工程编号 add_id 属性名 attrKey  属性值 attrVal
+        // 编辑 前台需要传递 的是  单元工程编号 add_id 属性名 attrKey  属性值 attrVal   和 这条属性的主键 attrId
         if($this->request->isAjax()){
             $param = input('param.');
             // 验证规则
             $rule = [
-                ['picture_id', 'require|number|gt:-1', '请选择模型图|模型图编号只能是数字|模型图编号不能为负数'],
+                ['add_id', 'require|number|gt:-1', '请选择单元工程|单元工程编号只能是数字|单元工程编号不能为负数'],
                 ['attrKey', 'require', '属性名不能为空'],
                 ['attrVal', 'require', '属性值不能为空']
             ];
@@ -258,11 +273,7 @@ class Qualitymass extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
             $data = [];
-            // 获取当前启用的模型
-            $version = new VersionsModel();
-            $version_number = $version->statusOpen(2);
-            $data['version_number'] = $version_number;
-            $data['model_number'] = $param['picture_id'];
+            $data['unit_id'] = $param['add_id'];
             $data['attr_name'] = $param['attrKey'];
             $data['attr_value'] = $param['attrVal'];
             $custom = new QualityCustomAttributeModel();
@@ -302,12 +313,20 @@ class Qualitymass extends Permissions
     // 回显自定义属性
     public function getAttr()
     {
-        // 前台需要传递 的是  模型图编号 picture_id
+        /**
+         * 之前的自定义属性是关联到模型图上的
+         * 现在是关联到单元工程上
+         *
+         * 当点击单元工程 -- 显示所有的自定义属性
+         * 当点击模型图时 -- 查到与该模型关联的 单元工程 再根据单元工程查自定义属性
+         */
+        // 前台需要传递 的是 单元工程编号 add_id  模型图编号 model_id   编号类型 number_type 1 单元工程编号 2 模型编号
         if($this->request->isAjax()){
             $param = input('param.');
             // 验证规则
             $rule = [
-                ['picture_id', 'require|number|gt:-1', '请选择模型图|模型图编号只能是数字|模型图编号不能为负数']
+                ['model_id', 'require|number|gt:-1', '请选择模型图|模型图编号只能是数字|模型图编号不能为负数'],
+                ['model_id', 'require|number|gt:-1', '请选择模型图|模型图编号只能是数字|模型图编号不能为负数'],
             ];
             $validate = new \think\Validate($rule);
             //验证部分数据合法性
