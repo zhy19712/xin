@@ -576,7 +576,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     testing(nodeUnitId,controlRowId,controlId);
 });
 
-//验评结果
+//线上的验评结果
 function resultInfo(nodeUnitId) {
     $.ajax({
         url:"/quality/element/getEvaluation",
@@ -586,12 +586,23 @@ function resultInfo(nodeUnitId) {
         type:"POST",
         dataType:"JSON",
         success:function (res) {
-            console.log(res)
+            console.log(res);
             if(res.msg == 'success'){
                 $(".result form select").val(res.evaluateResult);
                 $(".result form #date").val(res.evaluateDate);
                 layui.form.render('select');
             }
+            // $(".result form select").val(res.evaluation_results);
+            // $(".result form #date").val(res.evaluation_time);
+            // if(!res.flag){
+            //     $(".result form select").prop("disabled",true);
+            //     $(".result input[readonly]").addClass('disabledColor');
+            //     $("#date").prop("disabled",true);
+            // }
+            // layui.form.render('select');
+            // if(!res.flag){
+            //     $(".result input[readonly]").addClass('disabledColor');
+            // }
         }
     })
 
@@ -652,6 +663,46 @@ function testing(nodeUnit_id,cpr_id,control_id) {
         //     alert("返回管控中的控件数据错误")
         // }
     });
+}
+
+//线下的验评结果手动填写
+layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
+    var form = layui.form
+        ,layer = layui.layer
+        ,laydate = layui.laydate;
+    //日期
+    laydate.render({
+        elem: '#date' //指定元素
+        ,done:function (value, date, endDate) {
+            //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            resultChange();
+        }
+    });
+
+    form.on('select(type)',function (data) {
+        resultChange();
+    });
+});
+
+//修改验评结果result
+function resultChange() {
+    $.ajax({
+        url:'/quality/element/Evaluate',
+        data:{
+            Unit_id:nodeUnitId,
+            EvaluateResult:$(".result form select").val(),
+            EvaluateDate:$(".result form #date").val()
+        },
+        type:'POST',
+        dataType:"JSON",
+        success:function (res) {
+            if(res.code == 1){
+                console.log("成功");
+            }else{
+                layer.msg(res.msg)
+            }
+        }
+    })
 }
 
 //easyui点击显示选择
