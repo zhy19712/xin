@@ -12,7 +12,7 @@ use think\exception\PDOException;
 use think\Model;
 class QualityCustomAttributeModel extends Model
 {
-    protected $name = 'quality_custom_attribute';
+    protected $name = 'model_quality_custom_attribute';
 
 
     public function insertTb($param)
@@ -67,7 +67,9 @@ class QualityCustomAttributeModel extends Model
         if($number_type == 2){
             $unit_id= Db::name('model_quality')->where('model_id',$number)->value('unit_id');
         }
-        $attr = $this->where(['unit_id'=>$unit_id])->field('id as attrId,attr_name as attrKey,attr_value as attrVal')->select();
+
+        $attr = $this->field('id as attrId,attr_name as attrKey,attr_value as attrVal')->where(['unit_id'=>$unit_id])->select();
+
         return $attr;
     }
 

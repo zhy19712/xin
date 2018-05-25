@@ -230,7 +230,6 @@ class QualitymassModel extends Model
             }else if($unit_data['EvaluateResult'] == 3){
                 $excellent[] = $unit_data['id']; // 优良
             }
-
             $custom = new QualityCustomAttributeModel();
             $data['attr'] = $custom->getAttrTb($add_id,1); // 1 单元工程编号 2 模型编号
 
@@ -251,7 +250,9 @@ class QualitymassModel extends Model
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
         $unit_id = $this->where(['version_number'=>$version_number,'model_id'=>$model_id])->value('unit_id');
         $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>$unit_id])->column('model_id');
-        return $model_id;
+        $data['unit_id'] = $unit_id;
+        $data['model_id'] = $model_id;
+        return $data;
     }
 
     public function prevRelevance($version_number)
