@@ -7,6 +7,7 @@
  */
 namespace app\modelmanagement\model;
 
+use think\Db;
 use think\exception\PDOException;
 use think\Model;
 class QualityCustomAttributeModel extends Model
@@ -58,12 +59,14 @@ class QualityCustomAttributeModel extends Model
         return $data;
     }
 
-    public function getAttrTb($model_number)
+    // 单元工程编号 或者 模型图编号 number   编号类型 number_type 1 单元工程编号 2 模型编号
+    public function getAttrTb($number,$number_type)
     {
-        // 获取当前启用的模型
-        $version = new VersionsModel();
-        $version_number = $version->statusOpen(2);
-        $attr = $this->where(['version_number'=>$version_number,'model_number'=>$model_number])->field('id as attrId,attr_name as attrKey,attr_value as attrVal')->select();
+        $unit_id = $number;
+        if($number_type == 1){
+            $unit_id= Db::name('model_quality')->where('model_id',$number)->value('unit_id');
+        }
+        $attr = $this->where(['unit_id'=>$unit_id])->field('id as attrId,attr_name as attrKey,attr_value as attrVal')->select();
         return ['code'=>1,'attr'=>$attr,'msg'=>'模型图自定义属性'];
     }
 
