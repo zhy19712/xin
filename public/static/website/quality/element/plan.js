@@ -566,20 +566,46 @@ function getSelectIdPlan(that) {
 
 //checkbox全选
 $("#all_checked_plan").on("click", function () {
-    var that = $(this);
-    if (that.prop("checked") === true) {
-        $("input[name='checkList_plan']").prop("checked", that.prop("checked"));
-        // $('#tableItem tbody tr').addClass('selected');
-        $('input[name="checkList_plan"]').each(function(){
-            getIdPlan(this);
-        });
-    } else {
-        $("input[name='checkList_plan']").prop("checked", false);
-        // $('#tableItem tbody tr').removeClass('selected');
-        $('input[name="checkList_plan"]').each(function(){
-            getIdPlan(this);
-        });
-    }
+    $.ajax({
+        type: "post",
+        url: "/quality/element/checkout",
+        data: {checked: 0,checkall:0,id:'',unit_id:selectRow},
+        success: function (res) {
+            console.log(res);
+        }
+    })
+    // var that = $(this);
+    // if (that.prop("checked") === true) {
+    //
+    //     $("input[name='checkList_plan']").prop("checked", that.prop("checked"));
+    //     // $('#tableItem tbody tr').addClass('selected');
+    //     $('input[name="checkList_plan"]').each(function(){
+    //         getIdPlan(this);
+    //     });
+    //     $.ajax({
+    //         type: "post",
+    //         url: "/quality/element/checkout",
+    //         data: {checked: 0,checkall:0},
+    //         success: function (res) {
+    //             console.log(res);
+    //         }
+    //     })
+    // } else {
+    //     $("input[name='checkList_plan']").prop("checked", false);
+    //     // $('#tableItem tbody tr').removeClass('selected');
+    //     $('input[name="checkList_plan"]').each(function(){
+    //         getIdPlan(this);
+    //     });
+    //     $.ajax({
+    //         type: "post",
+    //         url: "/quality/element/checkout",
+    //         data: {checked: 1,checkall:1},
+    //         success: function (res) {
+    //             console.log(res);
+    //         }
+    //     })
+    // }
+
     console.log(idArrPlan);
 });
 
