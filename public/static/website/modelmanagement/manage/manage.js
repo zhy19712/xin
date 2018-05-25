@@ -1,8 +1,9 @@
-modelTrans = '';
-modelColor = '';
-choiceness_pigment = '';
-qualified_pigment = '';      //合格颜色
-un_evaluation_pigment = '';  //不合格颜色
+modelTrans = '';        //透明度
+modelColor = '';        //选择集颜色
+choiceness_pigment = '';       //优良色值
+qualified_pigment = '';      //合格色值
+un_evaluation_pigment = '';  //不合格色值
+modeGroupIds = '';  //模型组ID
 $.ajax({
     url: "/modelmanagement/qualitymass/configureInfo",
     type: "post",
@@ -66,29 +67,28 @@ function zTreeOnClick(event, treeId, treeNode) {
     console.log(treeNode);
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
-    var data = nodeModelNumber();
+    modeGroupIds = nodeModelNumber();
+    console.log(modeGroupIds);
     if(treeNode.level==5){
-        window.operateModel(data);
+        window.operateModel(modeGroupIds);
     }
 }
 
 //显示隐藏模板事件
 function zTreeOnCheck(event, treeId, treeNode) {
-    console.log(111);
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
-    var data = nodeModelNumber();
-    console.log(data);
+    modeGroupIds = nodeModelNumber();
     var checked = treeNode.checked;
     if(checked){
         //隐藏关联构件
-        window.hideModel(data);
+        window.hideModel(modeGroupIds);
     }else {
-        window.showModel(data);
+        window.showModel(modeGroupIds);
     }
 }
 
-//显示隐藏模板函数
+//模板组ID
 function nodeModelNumber() {
     var result;
     $.ajax({
@@ -106,6 +106,7 @@ function nodeModelNumber() {
     });
     return result;
 }
+
 //添加自定义属性
 $('#addAttr').click(function () {
     var attrGroup = [];
