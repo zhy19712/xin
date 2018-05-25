@@ -250,7 +250,7 @@
         }
     });
     //保存
-    $(".move").html("<div id='test3'>保存</div>");
+    $(".move").html("<button id='test3' style='background:none;color: white;'>保存</button>");
 
     $(document).ready(function () {
         setTimeout(function () {
@@ -314,6 +314,7 @@
 
     //点击保存
     $("#test3").click(function () {
+        $("#test3").attr("disable",true);
         if($("#nextStepPeople").text() != ""){
             var dataArr = [];
             var subId ;
@@ -340,6 +341,7 @@
                     console.log(res);
                     if(res.code == 1){
                         parent.layer.msg("保存成功!");
+                        $("#test3").attr("disable",false);
                         $.ajax({
                             url:"/admin/Dashboard/changeStatus",
                             type:"POST",
