@@ -143,7 +143,7 @@ var drawingFormDom =['    <form  id="drawinfform" action="#" onsubmit="return fa
     '                <input type="hidden" name="filename" id="file_name" >',
     '            </div>',
     '            <div class="layui-form-mid layui-word-aux">',
-    '               <button type="button" class="layui-btn" id="upload">选择</button>',
+    '               <button type="button" class="layui-btn" id="upload" style="height: 36px;">选择</button>',
     '            </div>',
     '            </div>',
     '         </div>',
@@ -258,6 +258,7 @@ zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 //点击获取路径
 function onClick(e, treeId, node) {
     selectData = "";
+    drawingId = "";
     $(".layout-panel-center .panel-title").text("");
     sNodes = zTreeObj.getSelectedNodes();//选中节点
     selfid = zTreeObj.getSelectedNodes()[0].id;
@@ -353,6 +354,7 @@ function delNodetree() {
                         tableItem.ajax.url(url).load();
                         zTreeObj.removeNode(sNodes[0]);
                         selfid = "";
+                        sNodes = "";
                     }else{
                       layer.msg(res.msg);
                     }
@@ -495,8 +497,8 @@ function conEdit(id) {
               });
 
 
-              $("#addId").val(selfid);
-              $("#section").html(section);
+                $("#addId").val(selfid);
+                $("#section").html(section);
                 $("#picture_number").val(res.data.picture_number);
                 $("#picture_name").val(res.data.picture_name);
                 $("#picture_papaer_num").val(res.data.picture_papaer_num);
@@ -504,7 +506,8 @@ function conEdit(id) {
                 $("#design_name").val(res.data.design_name);
                 $("#check_name").val(res.data.check_name);
                 $("#examination_name").val(res.data.examination_name);
-                $("#completion_date").val(res.data.completion_date);
+
+                $("#completion_date").val(backMouths(res.data.completion_time));
                 $("#section").val(res.data.section);
                 $("#paper_category").val(res.data.paper_category);
                 $("#editId").val(res.data.id);
@@ -527,6 +530,8 @@ function conDel(id){
              layer.msg("删除成功");
              var url = "/archive/common/datatablespre/tableName/archive_atlas_cate/selfid/"+selfid+".shtml";
              tableItem.ajax.url(url).load();
+           selectData==="";
+           drawingId="";
          }else if(res.code===-1){
              layer.msg(res.msg);
          }
@@ -725,4 +730,11 @@ $(".ibox-tools i").click(function () {
 //
 function cateMsg(str) {
     layer.msg(str)
+}
+//时间戳格式化
+function backMouths(data) {
+  var date = new Date(data*1000);
+  var Y = date.getFullYear() + '-';
+  var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) ;
+  return Y + M ;
 }

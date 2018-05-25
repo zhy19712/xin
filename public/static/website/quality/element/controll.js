@@ -144,8 +144,8 @@ function nodeClick(e, treeId, node) {
     nodePid = zTreeObj.getSelectedNodes()[0].pId;//当前pid
     console.log(sNodes);
     console.log(nodeId + '---id');
-    console.log(nodeName + '---name');
-    console.log(nodePid + '---pid');
+    // console.log(nodeName + '---name');
+    // console.log(nodePid + '---pid');
     var path = sNodes.name; //选中节点的名字
     node = sNodes.getParentNode();//获取父节点
     groupId = sNodes.pId ;//父节点的id
@@ -271,8 +271,8 @@ function nodeClickUnit(e, treeId, node) {
     eTypeId = sNodesUnit.en_type;//当前en_type
     console.log(sNodesUnit);
     console.log(nodeUnitId + '---nodeUnitId');
-    console.log(nodeNameUnit + '---name');
-    console.log(nodePidUnit + '---pid');
+    // console.log(nodeNameUnit + '---name');
+    // console.log(nodePidUnit + '---pid');
     console.log(eTypeId+"---eTypeId")
     if(eTypeId){
         selfidName(eTypeId);
@@ -295,7 +295,7 @@ function selfidName(id) {
         data: {id: id},
         success: function (res) {
             // if(res.code == 1){
-            console.log(res);
+            // console.log(res);
             var optionStrAfter = '';
             for(var i = 0;i<res.length;i++) {
                 $("#imgListRight").html('');
@@ -346,7 +346,7 @@ function clickConName(id) {
     controlRowId ='';
     procedureId ='';
     procedureId = id;
-    console.log(procedureId);
+    // console.log(procedureId);
     if(nodeUnitId != undefined || nodeUnitId != null && procedureId != undefined || procedureId != null){
         // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
         // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&nm_id="+procedureId).load();
@@ -360,7 +360,7 @@ function clickConName(id) {
         $(".mybtnAdd").css("display","none");
         implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
         imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
-        onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
+        // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);// 报错可能是这个原因
         $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
                 '<thead>' +
                     '<tr style="text-align: center">' +
@@ -553,7 +553,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".bitCodes").css("display","none");
     $(".mybtn").css("display","none");
     $(".mybtnAdd").css("display","none");
-    console.log(flag)
+    // console.log(flag)
     if(flag != true){
         if($(".tabs-selected a span:first-child").html() === "扫描件回传"){
             $(".mybtn").css("display","block");
@@ -574,33 +574,24 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $("#resVal").val(resources);
 
     testing(nodeUnitId,controlRowId,controlId);
-    // console.log(type)
-    // if(type == 1){
-    //   $.ajax({
-    //     url:"/quality/element/copycheck",
-    //     data:{cpr_id:controlRowId},
-    //     type:'post',
-    //     success:function(res) {
-    //         console.log(res)
-    //         if(res.msg == "success"){
-    //             alert("已上传对应扫描件，如想重新上传请先删除之前的扫描件!")
-    //         }
-    //     }
-    // })
-    // }
 });
 
-//验评结果
+//线上的验评结果
 function resultInfo(nodeUnitId) {
     $.ajax({
-        url:"/quality/branch/evaluation",
+        url:"/quality/element/getEvaluation",
         data:{
-            division_id:nodeUnitId
+            unit_id:nodeUnitId
         },
         type:"POST",
         dataType:"JSON",
         success:function (res) {
-            console.log(res)
+            console.log(res);
+            if(res.msg == 'success'){
+                $(".result form select").val(res.evaluateResult);
+                $(".result form #date").val(res.evaluateDate);
+                layui.form.render('select');
+            }
             // $(".result form select").val(res.evaluation_results);
             // $(".result form #date").val(res.evaluation_time);
             // if(!res.flag){
@@ -609,6 +600,9 @@ function resultInfo(nodeUnitId) {
             //     $("#date").prop("disabled",true);
             // }
             // layui.form.render('select');
+            // if(!res.flag){
+            //     $(".result input[readonly]").addClass('disabledColor');
+            // }
         }
     })
 
@@ -669,6 +663,46 @@ function testing(nodeUnit_id,cpr_id,control_id) {
         //     alert("返回管控中的控件数据错误")
         // }
     });
+}
+
+//线下的验评结果手动填写
+layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
+    var form = layui.form
+        ,layer = layui.layer
+        ,laydate = layui.laydate;
+    //日期
+    laydate.render({
+        elem: '#date' //指定元素
+        ,done:function (value, date, endDate) {
+            //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            resultChange();
+        }
+    });
+
+    form.on('select(type)',function (data) {
+        resultChange();
+    });
+});
+
+//修改验评结果result
+function resultChange() {
+    $.ajax({
+        url:'/quality/element/Evaluate',
+        data:{
+            Unit_id:nodeUnitId,
+            EvaluateResult:$(".result form select").val(),
+            EvaluateDate:$(".result form #date").val()
+        },
+        type:'POST',
+        dataType:"JSON",
+        success:function (res) {
+            if(res.code == 1){
+                console.log("成功");
+            }else{
+                layer.msg(res.msg)
+            }
+        }
+    })
 }
 
 //easyui点击显示选择
@@ -752,8 +786,8 @@ function outerHeight() {
        // uploader.destroy();
        var  uploadFileId = res.id;
        var  uploadFileName = file.name;
-       console.log(file);
-       console.log(res);
+       // console.log(file);
+       // console.log(res);
        $.ajax({
             url:"/quality/element/copycheck",
             data:{cpr_id:controlRowId},
@@ -871,7 +905,6 @@ implementation = $('#implementation').DataTable({
 });
 
 //附件资料上传点击
-// var ccccc = true;
 layui.use(['element', "layer", 'form', 'upload'], function () {
     var $ = layui.jquery
         , element = layui.element
@@ -1103,7 +1136,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                         return "被退回"
                     }
                     if (data === -2) {
-                        return "作废"
+                        return "已作废"
                     }
                 }
             },
@@ -1331,8 +1364,6 @@ function returnOnLine(id,curStep) {
 
 //在线填报-点击作废
 function toVoidOnLine(id) {
-    // console.log(curStep);
-    // console.log(controlRowId);
     $.ajax({
         url: "/quality/qualityform/cancel",
         type: "post",
@@ -1342,7 +1373,6 @@ function toVoidOnLine(id) {
             if(res.msg == "success"){
                 layer.msg("该数据已作废了！")
                 $(".eleHide").css("display","none");
-
             }
         },
         error:function () {
