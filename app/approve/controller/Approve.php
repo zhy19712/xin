@@ -86,6 +86,12 @@ class Approve extends Permissions
                         //自动提取表单中的验评结果和日期更新到数据库里
                         $elementModel=new Element();
                         $res=$elementModel->saveEvaluation($par['dataId']);
+
+                        //更新到relation表中 状态为已执行
+                        Db::name('quality_division_controlpoint_relation')
+                            ->where(['control_id'=>$approveHistory['ControlId'],'division_id'=>$approveHistory['DivisionId']])
+                            ->update(['status'=>1]);
+
                      }
                      $CurrentStep= $approveHistory['CurrentStep']+1;
                 }
