@@ -459,7 +459,7 @@ $('#openNode').click(function(){
 
 /**==========结束初始化 单元工程段号 =============*/
 
-
+// 控制点的table 表
 var checkedData = true;
 function tpyeTable() {
     tableItemControl = $('#tableItemControl').DataTable({
