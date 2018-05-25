@@ -49,10 +49,13 @@
     #treeOption{
         width: 750px!important;
     }
+    table thead tr th{
+        text-align: center!important;
+    }
 </style>
 <div class="layui-fluid" style="height: 100%;">
     <div class="layui-row" id="table_content" style="height: 100%;">
-        <table id="tableIncome" class="layui-table" cellspacing="0"  width="100%">
+        <table id="tableIncome" class="layui-table" lay-size="sm" cellspacing="0"  width="100%">
             <thead>
             <tr>
                 <th>创建日期</th>
@@ -123,7 +126,7 @@
         <!--附件资料-->
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <table id="add_table_files" class="layui-table" cellspacing="0"  width="100%">
+                <table id="add_table_files" class="layui-table" lay-size="sm" cellspacing="0"  width="100%">
                     <thead>
                         <tr>
                             <th class="layui-col-xs9">文件名称</th>
@@ -165,7 +168,7 @@
 </div>
 <div id="incomeFileList" style="visibility: hidden;">
     <div class="easyui-layout" style="height:470px;">
-        <table id="tableFileList" class="layui-table" cellspacing="0">
+        <table id="tableFileList" class="layui-table" lay-size="sm" cellspacing="0">
             <thead>
             <tr>
                 <th>选择</th>
