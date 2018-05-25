@@ -445,6 +445,17 @@ class Element extends Permissions
         $unit_id=$param['unit_id'];
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
+        dump($param);
+        //检测工序
+        if(isset($param['procedureid']))
+        {
+            $wherenm['ma_division_id']=$param['procedureid'];
+        }
+        else
+        {
+            $wherenm='';
+        }
+
         if(isset($param['checkall']))
         {
             $whereid='';
@@ -457,6 +468,7 @@ class Element extends Permissions
         $res=Db::name('quality_division_controlpoint_relation')
             ->where(['division_id'=>$unit_id,'type'=>1])
             ->where($whereid)
+            ->where($wherenm)
             ->update(['checked'=>$checked]);
        if($res)
        {
