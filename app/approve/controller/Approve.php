@@ -9,6 +9,7 @@
 namespace app\approve\controller;
 
 use app\admin\controller\Permissions;
+use app\quality\controller\Element;
 use app\admin\model\Admin;
 use app\approve\model\ApproveModel;
 use app\quality\model\QualityFormInfoModel;
@@ -82,6 +83,9 @@ class Approve extends Permissions
                     else
                     {
                         $ApproveStatus = 2;//没有下一步审批人且通过审批，状态为2；
+                        //自动提取表单中的验评结果和日期更新到数据库里
+                        $elementModel=new Element();
+                        $res=$elementModel->saveEvaluation($par['dataId']);
                      }
                      $CurrentStep= $approveHistory['CurrentStep']+1;
                 }
@@ -122,8 +126,8 @@ class Approve extends Permissions
             ->find();
         //如果状态大于0，将起草人也加入进去
         $approverArr=explode(',', $res['ApproveIds']);
-        if(res['ApproveStatus']<2) {
-            array_pop($approverArr);//如果不是已完成就去掉待审批人，不让其显示
+        if($res['ApproveStatus']<2) {
+            array_pop($approverArr);//如果不是已完成或者退回就去掉待审批人，不让其显示
         }
         if(count($approverArr)>0)
         {
