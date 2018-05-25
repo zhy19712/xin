@@ -17,6 +17,7 @@ use app\quality\model\DivisionControlPointModel;
 use app\quality\model\DivisionModel;
 use app\quality\model\DivisionUnitModel;
 use app\quality\model\QualityFormInfoModel;
+use app\admin\model\MessageremindingModel;//消息记录
 use think\Exception;
 use think\Request;
 use think\Session;
@@ -172,6 +173,18 @@ class Qualityform extends Permissions
                 if($judge){
                     return json(['result' => 'Refund']);
                 }
+                //判断是否有扫描件
+                $cpr=Db::name('quality_division_controlpoint_relation')
+                    ->where(['control_id' =>$mod['ControlPointId'],'division_id' =>$mod['DivisionId'],'type'=>1])
+                    ->find();
+                $cpr_id=$cpr['id'];
+                $copy=Db::name('quality_upload')
+                    ->where(['contr_relation_id '=>$cpr_id,'type'=>1])
+                    ->find();
+
+                if($copy){
+                    return json(['result' => 'Refund','remark'=>'已经有扫描件']);
+                }
                 else {
                     $res = $this->qualityFormInfoService->insertGetId($mod);
                     $dto['Id'] = $res;
@@ -182,6 +195,7 @@ class Qualityform extends Permissions
                     ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId']])
                     ->where('ApproveStatus','in',[1,0])
                     ->find();
+                //判断是否有扫描件
                 if(count($judge)>0)
                 {
                     $mod['CurrentStep']=$judge['CurrentStep'];//步骤为当前步骤
@@ -210,6 +224,9 @@ class Qualityform extends Permissions
     {
         try {
             QualityFormInfoModel::destroy($id);
+            //删除的同时删除消息记录表中的信息
+            $model = new MessageremindingModel();
+            $model->delTb($id);
             return json(['code' => 1]);
         } catch (Exception $exception) {
             return json(['code' => -1]);
@@ -222,7 +239,29 @@ class Qualityform extends Permissions
         $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($data, ['id' => $id]);
         if($res)
         {
-            return json(['msg'=>'success']);
+            $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
+            $formdata = json_encode(unserialize($_formdata));
+            //规范data
+            $data['form_data']=$formdata;
+            $data['form_name']=$res['form_name'];
+            $data['DivisionId']=$res['DivisionId'];
+            $data['create_time']=time();
+            $data['ProcedureId']=$res['ProcedureId'];
+            $data['ControlPointId']=$res['ControlPointId'];
+            $data['ApproveStatus']=0;
+            $data['CurrentStep']=0;
+            $data['update_time']=time();
+
+            $qfi = Db::name('quality_form_info')
+                ->insert($data);
+            if($qfi)
+            {
+                return json(['msg' => 'success']);
+            }
+            else
+            {
+                return json(['msg' => 'fail','remark'=>'生成新数据时出错']);
+            }
         }
         else
         {
