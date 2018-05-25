@@ -126,7 +126,7 @@ class VersionsModel extends Model
         $version = new VersionsModel();
         $version_number = $version->statusOpen($model_type);
         // 获取资源包名称
-        $resource_name = $this->where(['model_type'=>1,'version_number'=>$version_number])->value('resource_name');
+        $resource_name = $this->where(['model_type'=>$model_type,'version_number'=>$version_number])->value('resource_name');
         return $resource_name;
     }
 

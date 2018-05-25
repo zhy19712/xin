@@ -320,13 +320,13 @@ class Qualitymass extends Permissions
          * 当点击单元工程 -- 显示所有的自定义属性
          * 当点击模型图时 -- 查到与该模型关联的 单元工程 再根据单元工程查自定义属性
          */
-        // 前台需要传递 的是 单元工程编号 add_id  模型图编号 model_id   编号类型 number_type 1 单元工程编号 2 模型编号
+        // 前台需要传递 的是 单元工程编号 或者 模型图编号 number   编号类型 number_type 1 单元工程编号 2 模型编号
         if($this->request->isAjax()){
             $param = input('param.');
             // 验证规则
             $rule = [
-                ['model_id', 'require|number|gt:-1', '请选择模型图|模型图编号只能是数字|模型图编号不能为负数'],
-                ['model_id', 'require|number|gt:-1', '请选择模型图|模型图编号只能是数字|模型图编号不能为负数'],
+                ['number', 'require|number|gt:-1', '缺少编号|编号只能是数字|编号不能为负数'],
+                ['number_type', 'require|number|gt:-1', '缺少编号类型|编号类型只能是数字|编号类型不能为负数']
             ];
             $validate = new \think\Validate($rule);
             //验证部分数据合法性
@@ -334,17 +334,8 @@ class Qualitymass extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
             $custom = new QualityCustomAttributeModel();
-            $flag = $custom->getAttrTb($param['picture_id']);
+            $flag = $custom->getAttrTb($param['number'],$param['number_type']);
             return json($flag);
-        }
-    }
-
-    // 顶部 -- 质量模型 -- 管理信息 -- 验收资料
-    public function test()
-    {
-        // 前台需要传递 的是
-        if($this->request->isAjax()){
-            return json(['code'=>1]);
         }
     }
 
