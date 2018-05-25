@@ -2,43 +2,81 @@
 <link rel="stylesheet" href="__PUBLIC__/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="__PUBLIC__/colorpicker/css/bootstrap-colorpicker.css">
 <style>
-    h3{
-        line-height: 50px;
+    h4{
+        line-height: 30px;
         text-indent: 1em;
         color: #1E9FFF;
+    }
+    h4 span{
+        position: relative;
+        top: -2px;
+    }
+    fieldset {
+        height: 100px;
+        display: block;
+        -webkit-margin-start: 2px;
+        -webkit-margin-end: 2px;
+        -webkit-padding-start: 0.75em;
+        -webkit-padding-end: 0.75em;
+        -webkit-padding-after: 0.625em;
+        min-width: -webkit-min-content;
+        border-width: 2px;
+        border-style: groove;
+        border-color: #EEEEEE;
+        border-image: initial;
+    }
+    .legends {
+        width: auto;
+        font-size: 16px;
+        display: block;
+        -webkit-padding-start: 2px;
+        -webkit-padding-end: 2px;
+        border-width: initial;
+        border-style: none;
+        border-color: initial;
+        border-image: initial;
     }
 </style>
 <div class="layui-fuild">
     <!--首页-->
     <div class="layui-row">
-        <h3 class="">首页3D效果配置</h3>
-        <form class="layui-form" action="">
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">选择集透明度</label>
-                <div id="pellucidity_home" class="layui-input-inline input-group " style="width:400px">
-                    <input type="text" name="pellucidity" class="form-control input-lg"/>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+        <h4 class=""><i class="glyphicon glyphicon-record"></i><span>首页3D效果配置</span></h4>
+        <form class="layui-form" action="" style="padding: 5px 40px">
+            <fieldset>
+                <legend class="legends">选择集</legend>
+                <div class="layui-row">
+                    <div class="layui-form-item layui-col-xs6">
+                        <label class="layui-form-label" style="width: 150px;">选择集透明度</label>
+                        <div class="layui-input-inline input-group ">
+                            <input  id="pellucidity_home" type="text" name="pellucidity" style="width: 254px;" class="form-control input-lg" />
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
+                    </div>
+                    <div class=" layui-col-xs4">
+                        <label class="layui-form-label" style="width: 150px;">选择集颜色</label>
+                        <div id="pigment_home_color" class="layui-input-block input-group colorpicker-component" title="Using input value">
+                            <input type="text" name="pigment"  id="pigment_home" class="form-control input-lg"/>
+                            <span class="input-group-addon"><i></i></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">选择集颜色</label>
-                <div id="pigment_home" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
-                    <input type="text" name="pigment" class="form-control input-lg" value="#DD0F20"/>
-                    <span class="input-group-addon"><i></i></span>
+            </fieldset>
+            <fieldset>
+                <legend class="legends">透明效果</legend>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;">透明效果的透明度</label>
+                    <div class="layui-input-inline input-group" style="width: 294px">
+                        <input type="text"  id="transparent_effect_home" name="transparent_effect" class="form-control input-lg"/>
+                        <input type="hidden" name="model_type" value="1"/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">透明效果的透明度</label>
-                <div id="transparent_effect_home" class="layui-input-inline input-group" style="width: 400px">
-                    <input type="text" name="transparent_effect" class="form-control input-lg"/>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                </div>
-                <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="homeApply" style="margin-left: 40px">应用</button>
+            </fieldset>
+            <div class="layui-form-item" style="margin-top: 20px;">
+                <div class="layui-input-block" style="text-align: center;">
+                    <button class="layui-btn" lay-submit lay-filter="homeApply">应用</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
@@ -46,54 +84,65 @@
     </div>
     <!--质量-->
     <div class="layui-row">
-        <h3 class="">质量3D效果配置</h3>
-        <form class="layui-form" action="">
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">选择集透明度</label>
-                <div id="pellucidity_quality" class="layui-input-inline input-group " style="width:400px">
-                    <input type="text" name="pellucidity" class="form-control input-lg"/>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+        <h4 class=""><i class="glyphicon glyphicon-record"></i><span>质量3D效果配置</span></h4>
+        <form class="layui-form" action="" style="padding: 5px 40px">
+            <fieldset>
+                <legend class="legends">选择集</legend>
+                <div class="layui-form-item layui-col-xs6">
+                    <label class="layui-form-label" style="width: 150px;">选择集透明度</label>
+                    <div class="layui-input-inline input-group ">
+                        <input  id="pellucidity_quality" type="text" name="pellucidity" class="form-control input-lg" style="width: 254px;"/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
                 </div>
-                <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">选择集颜色</label>
-                <div id="pigment_quality" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
-                    <input type="text" name="pigment" class="form-control input-lg" value="#DD0F20"/>
-                    <span class="input-group-addon"><i></i></span>
+                <div class="layui-col-xs4">
+                    <label class="layui-form-label" style="width: 150px;">选择集颜色</label>
+                    <div id="pigment_quality_color" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 314px;">
+                        <input  id="pigment_quality" type="text" name="pigment" class="form-control input-lg"/>
+                        <span class="input-group-addon"><i></i></span>
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">透明效果的透明度</label>
-                <div id="transparent_effect_quality" class="layui-input-inline input-group" style="width: 400px">
-                    <input type="text" name="transparent_effect" class="form-control input-lg"/>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+            </fieldset>
+            <fieldset>
+                <legend class="legends">透明效果</legend>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;">透明效果的透明度</label>
+                    <div class="layui-input-inline input-group" style="width: 294px">
+                        <input id="transparent_effect_quality" type="text" name="transparent_effect" class="form-control input-lg"/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
                 </div>
-                <div class="layui-form-mid layui-word-aux">(ps:透明度的值必须为0到1之间)</div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">质量优良颜色</label>
-                <div id="choiceness_pigment" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
-                    <input type="text" name="choiceness_pigment" class="form-control input-lg" value="#DD0F20"/>
-                    <span class="input-group-addon"><i></i></span>
+            </fieldset>
+            <fieldset>
+                <legend class="legends">验评结果</legend>
+                <div class="layui-col-xs4">
+                    <label class="layui-form-label" style="width: 150px;">优良颜色</label>
+                    <div id="choiceness_pigment_color" class="layui-input-block input-group colorpicker-component" title="Using input value">
+                        <input type="text"  id="choiceness_pigment" name="choiceness_pigment" class="form-control input-lg"/>
+                        <span class="input-group-addon"><i></i></span>
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">质量合格颜色</label>
-                <div id="qualified_pigment" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
-                    <input type="text" name="qualified_pigment" class="form-control input-lg" value="#DD0F20"/>
-                    <span class="input-group-addon"><i></i></span>
+
+                <div class="layui-col-xs4">
+                    <label class="layui-form-label" style="width: 150px;">合格颜色</label>
+                    <div id="qualified_pigment_color" class="layui-input-block input-group colorpicker-component" title="Using input value">
+                        <input type="text"  id="qualified_pigment" name="qualified_pigment" class="form-control input-lg"/>
+                        <span class="input-group-addon"><i></i></span>
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 150px;">未验评颜色</label>
-                <div id="un_evaluation_pigment" class="layui-input-block input-group colorpicker-component" title="Using input value" style="width: 400px">
-                    <input type="text" name="un_evaluation_pigment" class="form-control input-lg" value="#DD0F20"/>
-                    <span class="input-group-addon"><i></i></span>
+                <div class="layui-col-xs4">
+                    <label class="layui-form-label" style="width: 150px;">不合格颜色</label>
+                    <div id="un_evaluation_pigment_color" class="layui-input-block input-group colorpicker-component" title="Using input value">
+                        <input type="text"  id="un_evaluation_pigment" name="un_evaluation_pigment" class="form-control input-lg"/>
+                        <input type="hidden" name="model_type" value="2"/>
+                        <span class="input-group-addon"><i></i></span>
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
+            </fieldset>
+            <div class="layui-form-item" style="margin-top: 20px">
+                <div class="layui-input-block" style="text-align: center">
                     <button class="layui-btn" lay-submit lay-filter="qualityApply" style="margin-left: 40px">应用</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
@@ -111,8 +160,65 @@
         type:"get",
         success:function (res) {
             console.log(res);
+            if (res.code == 1){
+                var panorama = res.data.panorama;
+                var quality = res.data.quality;
+                $("#pellucidity_home").val(panorama.pellucidity);
+                $("#transparent_effect_home").val(panorama.transparent_effect);
+                $("#pigment_home").val(splitPrefix(panorama.pigment));
+                $("#pellucidity_quality").val(quality.pellucidity);
+                $("#transparent_effect_quality").val(quality.transparent_effect);
+                $("#pigment_quality").val(splitPrefix(quality.pigment));
+                $("#choiceness_pigment").val(splitPrefix(quality.pigment));
+                $("#qualified_pigment").val(splitPrefix(quality.pigment));
+                $("#un_evaluation_pigment").val(splitPrefix(splitPrefix(quality.pigment)));
+                //初始化调色盘
+                $('#pigment_home_color,#pigment_quality_color,#choiceness_pigment_color,#qualified_pigment_color,#un_evaluation_pigment_color').colorpicker({
+
+                });
+            }
         }
     })
-    $('#pigment_home,#pigment_quality,#choiceness_pigment,#qualified_pigment,#un_evaluation_pigment').colorpicker();
+
+    //3D效果配置
+    layui.use('form', function(){
+        var form = layui.form;
+        //首页
+        form.on('submit(homeApply)', function(data){
+            data.field.pigment = joinPrefix(data.field.pigment);
+            formSubmit(data);
+            return false;
+        });
+        //质量
+        form.on('submit(qualityApply)', function(data){
+            data.field.pigment = joinPrefix(data.field.pigment);
+            data.field.choiceness_pigment = joinPrefix(data.field.choiceness_pigment);
+            data.field.qualified_pigment = joinPrefix(data.field.qualified_pigment);
+            data.field.un_evaluation_pigment = joinPrefix(data.field.un_evaluation_pigment);
+            formSubmit(data);
+            return false;
+        });
+    });
+    //颜色格式
+    function splitPrefix(val) {
+        val = "#"+ val.substr(val.length-6);
+        return val;
+
+    }
+    function joinPrefix(val) {
+        val = "0x64"+ val.substr(val.length-6);
+        return val;
+    }
+    function formSubmit(data) {
+        $.ajax({
+            url: "./edit",
+            type: "post",
+            data:data.field,
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        });
+    }
 </script>
 </html>

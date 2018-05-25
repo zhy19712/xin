@@ -83,17 +83,21 @@ class Approve extends Permissions
                     {
                         $ApproveStatus = 2;//没有下一步审批人且通过审批，状态为2；
                      }
-                     $newApproveIds=implode(',', $ApproveIds);
+                     $CurrentStep= $approveHistory['CurrentStep']+1;
                 }
                 else
                  {
-                    $ApproveStatus = -1;
+                    $ApproveStatus = -1;//被退回
                     $newApproveIds=$approveHistory['ApproveIds'];//被退回审批人不变,因为涉及到审批历史
+                    $next_approverid=$approveHistory['user_id'];
+                    $ApproveIds[]=$next_approverid;//审批人变为起草人
+                    $CurrentStep= 0;
                  }
-                $CurrentStep= count($ApproveIds);//按审批人数量算步骤，创建人的步骤为0
+                $newApproveIds=implode(',', $ApproveIds);
+                 //按审批人数量算步骤，创建人的步骤为0
                 Db::name('quality_form_info')
                     ->where(['id'=>$par['dataId']])
-                    ->update(['CurrentApproverId'=>$next_approverid,'ApproveStatus'=>$ApproveStatus,'ApproveIds'=>$newApproveIds,'CurrentStep'=>$CurrentStep]);
+                    ->update(['CurrentApproverId'=>$next_approverid,'ApproveStatus'=>$ApproveStatus,'ApproveIds'=>$newApproveIds,'CurrentStep'=>$CurrentStep,'update_time'=>time()]);
                 return json(['code' => 1]);
             } else {
                 return json(['code' => -1]);
@@ -118,7 +122,10 @@ class Approve extends Permissions
             ->find();
         //如果状态大于0，将起草人也加入进去
         $approverArr=explode(',', $res['ApproveIds']);
-        if($res['CurrentStep']>0)
+        if(res['ApproveStatus']<2) {
+            array_pop($approverArr);//如果不是已完成就去掉待审批人，不让其显示
+        }
+        if(count($approverArr)>0)
         {
             array_unshift($approverArr,$res['user_id']);
         }

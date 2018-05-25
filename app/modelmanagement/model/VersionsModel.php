@@ -120,4 +120,14 @@ class VersionsModel extends Model
         return $prev_version_number;
     }
 
+    public function getPagName($model_type)
+    {
+        // 获取当前启用的模型
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen($model_type);
+        // 获取资源包名称
+        $resource_name = $this->where(['model_type'=>$model_type,'version_number'=>$version_number])->value('resource_name');
+        return $resource_name;
+    }
+
 }

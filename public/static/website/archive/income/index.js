@@ -41,7 +41,7 @@ tableItem = $("#tableIncome").DataTable({
                 if (row[6] == '2'){
                     return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="handle(this)">处理</a>';
                 }else {
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-primary layui-btn-sm"  href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)">查看</a>';
+                    return  '<a title="' + data + '" class="layui-btn  layui-btn-sm"  href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)" style="border-radius: 4px;">查看</a>';
                 }
             }
         }

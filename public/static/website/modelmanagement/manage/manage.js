@@ -6,34 +6,36 @@ function easyUiPanelToggle() {
 }
 
 //工程划分
-var nodes = [
-    {name: "父节点1", children: [
-        {name: "子节点1"},
-        {name: "子节点2"}
-    ]}
-];
-
-var setting = {
-    view: {
-        showLine: true, //设置 zTree 是否显示节点之间的连线。
-        selectedMulti: false //设置是否允许同时选中多个节点。
-    },
-    check:{
-        enable: true
-    },
-    data: {
-        simpleData: {
+function ztree(node_type) {
+    var setting = {
+        async: {
             enable: true,
-            idkey: "id",
-            pIdKey: "pid",
-            rootPId: null
-        }
-    },
-    callback: {
-        onClick: this.nodeClick
-    }
-};
-zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);
+            autoParam: ["pid","tid"],
+            type: "get",
+            url: "/modelmanagement/qualitymass/index?node_type="+node_type,
+            dataType: "json"
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId"
+            }
+        },
+        check:{
+            enable: true
+        },
+        callback:{
+            /*onClick: zTreeOnClick,
+            onCheck: zTreeOnCheck*/
+        },
+        showLine:true,
+        showTitle:true,
+        showIcon:false
+    };
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
+}
+ztree(0);
 
 /*function seeOnLine(that) {
     var id = $(that).attr('formId');

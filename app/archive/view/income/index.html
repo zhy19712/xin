@@ -38,12 +38,16 @@
         text-align: center;
         padding-top: 20px;
     }
+    table thead tr th{
+        text-align: center!important;
+    }
 </style>
 <div class="layui-fluid" style="height: 100%;">
     <div class="layui-row" style="height: 100%">
-        <table id="tableIncome" class="layui-table" cellspacing="0"  width="100%">
+        <table id="tableIncome" class="layui-table" lay-size="sm" cellspacing="0"  width="100%">
             <thead>
             <tr>
+                <th>创建时间</th>
                 <th>文件名称</th>
                 <th>文件日期</th>
                 <th>来文单位</th>
@@ -103,7 +107,7 @@
         <!--附件资料-->
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <table id="add_table_files" class="layui-table" cellspacing="0"  width="100%">
+                <table id="add_table_files" class="layui-table" lay-size="sm" cellspacing="0"  width="100%">
                     <thead>
                     <tr>
                         <th class="layui-col-xs9">文件名称</th>
