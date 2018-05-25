@@ -195,7 +195,6 @@ class Qualityform extends Permissions
                     ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId']])
                     ->where('ApproveStatus','in',[1,0])
                     ->find();
-                //判断是否有扫描件
                 if(count($judge)>0)
                 {
                     $mod['CurrentStep']=$judge['CurrentStep'];//步骤为当前步骤
@@ -235,13 +234,14 @@ class Qualityform extends Permissions
     //表单作废
     public function cancel($id)
     {
-        $data['ApproveStatus']=-2;
-        $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($data, ['id' => $id]);
+        $olddata['ApproveStatus']=-2;
+        $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($olddata, ['id' => $id]);
         if($res)
         {
             $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
             $formdata = json_encode(unserialize($_formdata));
             //规范data
+            $data=$this->qualityFormInfoService->where(['id' => $id])->find();
             $data['form_data']=$formdata;
             $data['form_name']=$res['form_name'];
             $data['DivisionId']=$res['DivisionId'];
@@ -251,6 +251,7 @@ class Qualityform extends Permissions
             $data['ApproveStatus']=0;
             $data['CurrentStep']=0;
             $data['update_time']=time();
+
 
             $qfi = Db::name('quality_form_info')
                 ->insert($data);
