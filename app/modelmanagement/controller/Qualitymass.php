@@ -198,6 +198,22 @@ class Qualitymass extends Permissions
         }
     }
 
+    // 质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性
+    public function modelIdSearchModel()
+    {
+        if($this->request->isAjax()){
+            // 前台 传递 选中模型的编号 model_id
+            $param = input('post.');
+            $model_id = isset($param['model_id']) ? $param['model_id'] : -1;
+            if(empty($model_id)){
+                return json(['code'=>-1,'msg'=>'缺少选中模型的编号']);
+            }
+            $quality = new QualitymassModel();
+            $data = $quality->modelIdSearchModel($model_id);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性']);
+        }
+    }
+
 
     // ============================   着急先把方法放到这里 后期有时间再转移
 
