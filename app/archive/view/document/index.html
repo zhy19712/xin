@@ -3,7 +3,7 @@
 <style>
 
     #nodeZtree .ztree-title i.fa {
-        width: 12%;
+        width: 18%;
     }
     #nodeZtree .ztree-title #add {
         margin-left: 6px;
@@ -520,7 +520,7 @@
                 {
                     targets: [0],
                     render: function (data, type, row) {
-                        return  '<a title="' + data + '" href="javascript:void(0);"  onclick=\"previewList('+row[4]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
+                        return  '<a title="' + data + '"  onclick=\"previewList('+row[4]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
                     }
                 },
                 {
@@ -529,7 +529,7 @@
                     "targets": [4],
                     "render": function (data, type, row) {
                         var a = data;
-                        var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='delFile("+row[4]+")'><i title='删除' class='fa fa-trash'></i></a>";
+                        var html = "<a type='button'  class='' style='margin-left: 5px;' onclick='delFile("+row[4]+")'><i title='删除' class='fa fa-trash'></i></a>";
                         html += "<a type='button' class='' style='margin-left: 5px;' onclick='downFile("+row[4]+")'><i title='下载' class='fa fa-download'></i></a>";
                         // html += "<a type='button' class='' style='margin-left: 5px;' onclick='AssFile(this)'><i title='关联文件' class='fa fa-chain'></i></a>";
                         // html += "<a type='button' class='' style='margin-left: 5px;' onclick='reviewHistory(this)'><i title='审阅历史' class='fa fa-file-text'></i></a>";
@@ -701,6 +701,7 @@
                 , layer = layui.layer
                 , layedit = layui.layedit
                 , laydate = layui.laydate;
+
             upload.render({
                 elem: '#test3',
                 url: "{:url('admin/common/upload?module=document&use=archive')}",
@@ -968,6 +969,7 @@
                                 // tableItem.ajax.url(url).load();
                                 zTreeObj.removeNode(sNodes);
                                 selfid = "";
+                                sNodes = '';
                             }
                         }
                     });
@@ -1077,66 +1079,49 @@
 
         //预览
         function showPdf(id,url) {
-            $.ajax({
-                url: url,
-                type: "post",
-                data: {id:id},
-                success: function (res) {
-                    if(res.code === 1){
-                        var path = res.path;
-                        console.log(res.path.split(".")[1]);
-                        if(res.path.split(".")[1]==="pdf"){
-                            window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
-                        }else{
-                            layer.photos({
-                                photos: {
-                                    "title": "", //相册标题
-                                    "id": id, //相册id
-                                    "start": 0, //初始显示的图片序号，默认0
-                                    "data": [   //相册包含的图片，数组格式
-                                        {
-                                            "alt": "图片名",
-                                            "pid": id, //图片id
-                                            "src": "../../../"+res.path, //原图地址
-                                            "thumb": "" //缩略图地址
-                                        }
-                                    ]
-                                }
-                                ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
-                            });
+          $.ajax({
+            url: url,
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+              console.log(res);
+              if(res.code === 1){
+                var path = res.data;
+                var houzhui = res.data.split(".");
+                if(houzhui[houzhui.length-1]=="pdf"){
+                  window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
+                }else{
+                  layer.photos({
+                    photos: {
+                      "title": "", //相册标题
+                      "id": id, //相册id
+                      "start": 0, //初始显示的图片序号，默认0
+                      "data": [   //相册包含的图片，数组格式
+                        {
+                          "alt": "图片名",
+                          "pid": id, //图片id
+                          "src": "../../../"+res.data, //原图地址
+                          "thumb": "" //缩略图地址
                         }
-
-                    }else {
-                        layer.msg(res.msg);
+                      ]
                     }
+                    ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                    ,success:function () {
+                      $('.layui-layer-shade').empty();
+                    }
+                  });
                 }
-            })
+
+              }else {
+                layer.msg(res.msg);
+              }
+            }
+          })
         }
 
         //预览文件
         function previewList(id){
-            layer.load(1, {shade: [0.8, '#393D49']})
-            $.ajax({
-                url: "{:url('document/preview')}",
-                data:{id:id},
-                type:"get",
-                success: function (res) {
-                    console.log(res);
-                    setTimeout(function () {
-                        var index = layer.load();
-                        layer.close(index);
-                    },3000)
-                    layer.msg("暂不支持该功能！")
-                    // if(res.code == 1){
-                    //     console.log(res);
-                    //     layer.msg(res.msg)
-                    //     // showPdf(id,'./atlascatePreview')
-                    //
-                    // }else {
-                    //     layer.msg(res.msg)
-                    // }
-                }
-            })
+          showPdf(id,'./preview');
 
         }
 
