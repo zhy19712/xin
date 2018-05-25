@@ -195,6 +195,7 @@ class QualitymassModel extends Model
             $data['qualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$qualified]])->column('model_id'); // 合格
             $data['excellent'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$excellent]])->column('model_id'); // 优良
             $data['all'] = $this->where(['version_number'=>$version_number])->column('model_id'); // 所有
+            $data['attr']= [];
             return $data;
         }else if($node_type == 2){
             // 获取选中标段下包含的所有节点编号
@@ -229,6 +230,10 @@ class QualitymassModel extends Model
             }else if($unit_data['EvaluateResult'] == 3){
                 $excellent[] = $unit_data['id']; // 优良
             }
+
+            $custom = new QualityCustomAttributeModel();
+            $data['attr'] = $custom->getAttrTb($add_id,1); // 1 单元工程编号 2 模型编号
+
         }
         // 获取所有单元工程检验批 所关联的模型编号
         $data['un_evaluation'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$un_evaluation]])->column('model_id'); // 未验评
