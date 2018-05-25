@@ -461,7 +461,7 @@ class Element extends Permissions
             $cp_name='单元工程质量验评';
             $search_name='单元工程质量等级评定表';
             $param = input('param.');
-            $unit_id=17;
+            $unit_id=$param['unit_id'];
             $unit= Db::name('quality_unit')
                 ->where(['id' =>$unit_id])
                 ->find();
