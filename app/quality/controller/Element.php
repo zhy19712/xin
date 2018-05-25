@@ -445,7 +445,6 @@ class Element extends Permissions
         $unit_id=$param['unit_id'];
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
-        dump($param);
         //检测工序
         if(isset($param['procedureid']))
         {
