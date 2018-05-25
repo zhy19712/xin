@@ -512,7 +512,7 @@ class Element extends Permissions
 
             //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
             if (count($res)>0) {
-                return json(['msg' => 'fail','remark'=>'线上流程']);
+                return json(['msg' => 'fail','remark'=>'线上流程','EvaluateDate'=>$unit['EvaluateDate'],'EvaluateDate'=>$unit['EvaluateDate']]);
             }
             //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
             else {
@@ -521,7 +521,7 @@ class Element extends Permissions
                     ->where('data_name', 'like', '%'.$search_name .'%')
                     ->find();
                 if ($copy) {
-                    $flag=$this->evaluatePremission($unit_id);
+                    $flag=$this->evaluatePremission();
                     if($flag==1)
                     {
                         return json(['msg' => 'success']);
@@ -633,7 +633,7 @@ class Element extends Permissions
         }
     }
    //判断是否拥有监理和管理员权限
-    public function evaluatePremission($unit_id)
+    public function evaluatePremission()
     {
         if(request()->isAjax()){
             //实例化模型类
