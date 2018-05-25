@@ -86,7 +86,6 @@ function nodeModelNumber() {
     });
     return result;
 }
-
 //添加自定义属性
 $('#addAttr').click(function () {
     var attrGroup = [];

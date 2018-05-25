@@ -82,10 +82,16 @@
                 //模块验评情况
                 review = function () {
                     $.ajax({
-                        url: "/admin/main/countUnit",
+                        url: "/modelmanagement/Qualitymass/nodeModelNumber",
                         type: "post",
                         dataType: "json",
+                        data:{
+                            add_id:nodeId,
+                            node_type:node_type
+                        },
                         success: function (res) {
+                            console.log(res);
+                            return false;
                             //未验评 model_picture（全部）
                             for(var k = 0;k<res.model_picture.length;k++){
                                 var allUObjSubID = res.model_picture[k].picture_number;
