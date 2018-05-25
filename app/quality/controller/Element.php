@@ -110,7 +110,12 @@ class Element extends Permissions
      */
     public function getProcedures($id)
     {
-        return json(MaterialTrackingDivision::all(['pid' => $id, 'type' => 3]));
+        //按工序类型排序
+        $res=Db::name('norm_materialtrackingdivision')
+            ->where(['pid' => $id, 'type' => 3])
+            ->order('sort_id')
+            ->select();
+        return json($res);
 
     }
     public function getUnitProcedures($division_id)
