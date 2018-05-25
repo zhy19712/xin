@@ -183,7 +183,6 @@ class Common extends Controller
         $el_start = isset($param['el_start']) ? $param['el_start'] : '';
         $el_cease = isset($param['el_cease']) ? $param['el_cease'] : '';
 
-
         /**
          *  桩号1名桩号2名 里面控制着 CS (场上) 和 CX (场下)
          * 当 只存在 一个值的 时候   桩号1值 是大于等于 桩号2值 是小于等于
@@ -194,57 +193,59 @@ class Common extends Controller
          */
         $search_data = [];
         if($section){
-            array_push($search_data,'"section" => '.$section);
-        }else if($unit){
-            array_push($search_data,'"unit" => '.$unit);
-        }else if($parcel){
-            array_push($search_data,'"parcel" => '.$parcel);
-        }else if($cell){
-            array_push($search_data,'"cell" => '.$cell);
-        }else if($pile_number_1 && $pile_val_1 && !$pile_val_2){
-            array_push($search_data,'"pile_number_1" => '.$pile_number_1);
-            array_push($search_data,'"pile_val_1" => '.'["egt",'.$pile_val_1.']');
-        }else if($pile_number_2 && $pile_val_2 && !$pile_val_1){
-            array_push($search_data,'"pile_number_2" => '.$pile_number_2);
-            array_push($search_data,'"pile_val_2" => '.'["elt",'.$pile_val_2.']');
-        }else if($pile_number_1 && $pile_val_1 && $pile_number_2 && $pile_val_2){
-            array_push($search_data,'"pile_number_1" => '.$pile_number_1);
-            array_push($search_data,'"pile_number_2" => '.$pile_number_2);
+            $search_data['q.section'] = $section;
+        }
+        if($unit){
+            $search_data['q.unit'] = $unit;
+        }
+        if($parcel){
+            $search_data['q.parcel'] = $parcel;
+        } if($cell){
+            $search_data['q.cell'] = $cell;
+        } if($pile_number_1 && $pile_val_1 && !$pile_val_2){
+            $search_data['q.pile_number_1'] = $pile_number_1;
+            $search_data['q.pile_val_1'] = ["egt",$pile_val_1];
+        } if($pile_number_2 && $pile_val_2 && !$pile_val_1){
+            $search_data['q.pile_number_2'] = $pile_number_2;
+            $search_data['q.pile_val_2'] = ["elt",$pile_val_2];
+        } if($pile_number_1 && $pile_val_1 && $pile_number_2 && $pile_val_2){
+            $search_data['q.pile_number_1'] = $pile_number_1;
+            $search_data['q.pile_number_2'] = $pile_number_2;
             if($pile_number_1 == $pile_number_2){
-                array_push($search_data,'"pile_val_1" => '.'["egt",'.$pile_val_1.']');
-                array_push($search_data,'"pile_val_1" => '.'["elt",'.$pile_val_2.']');
-                array_push($search_data,'"pile_val_2" => '.'["egt",'.$pile_val_1.']');
-                array_push($search_data,'"pile_val_2" => '.'["elt",'.$pile_val_2.']');
+                $search_data['q.pile_val_1'] = ["egt",$pile_val_1];
+                $search_data['q.pile_val_1'] = ["elt",$pile_val_2];
+                $search_data['q.pile_val_2'] = ["egt",$pile_val_1];
+                $search_data['q.pile_val_2'] = ["elt",$pile_val_2];
             }else{
-                array_push($search_data,'"pile_val_1" => '.'["egt",0]');
-                array_push($search_data,'"pile_val_1" => '.'["elt",'.$pile_val_1.']');
-                array_push($search_data,'"pile_val_2" => '.'["egt",0]');
-                array_push($search_data,'"pile_val_2" => '.'["elt",'.$pile_val_2.']');
+                $search_data['q.pile_val_1'] = ["egt",0];
+                $search_data['q.pile_val_1'] = ["elt",$pile_val_1];
+                $search_data['q.pile_val_2'] = ["egt",0];
+                $search_data['q.pile_val_2'] = ["elt",$pile_val_2];
             }
-        }else if($pile_number_3 && $pile_val_3 && !$pile_val_4){
-            array_push($search_data,'"pile_number_3" => '.$pile_number_3);
-            array_push($search_data,'"pile_val_3" => '.'["egt",'.$pile_val_3.']');
-        }else if($pile_number_4 && $pile_val_4 && !$pile_val_3){
-            array_push($search_data,'"pile_number_4" => '.$pile_number_4);
-            array_push($search_data,'"pile_val_4" => '.'["elt",'.$pile_val_4.']');
-        }else if($pile_number_3 && $pile_val_3 && $pile_number_4 && $pile_val_4){
-            array_push($search_data,'"pile_number_3" => '.$pile_number_3);
-            array_push($search_data,'"pile_number_4" => '.$pile_number_4);
+        } if($pile_number_3 && $pile_val_3 && !$pile_val_4){
+            $search_data['q.pile_number_3'] = $pile_number_3;
+            $search_data['q.pile_val_3'] = ["egt",$pile_val_3];
+        } if($pile_number_4 && $pile_val_4 && !$pile_val_3){
+            $search_data['q.pile_number_4'] = $pile_number_4;
+            $search_data['q.pile_val_4'] = ["elt",$pile_val_4];
+        } if($pile_number_3 && $pile_val_3 && $pile_number_4 && $pile_val_4){
+            $search_data['q.pile_number_3'] = $pile_number_3;
+            $search_data['q.pile_number_4'] = $pile_number_4;
             if($pile_number_3 == $pile_number_4){
-                array_push($search_data,'"pile_val_3" => '.'["egt",'.$pile_val_3.']');
-                array_push($search_data,'"pile_val_3" => '.'["elt",'.$pile_val_4.']');
-                array_push($search_data,'"pile_val_4" => '.'["egt",'.$pile_val_3.']');
-                array_push($search_data,'"pile_val_4" => '.'["elt",'.$pile_val_4.']');
+                $search_data['q.pile_val_3'] = ["egt",$pile_val_3];
+                $search_data['q.pile_val_3'] = ["elt",$pile_val_4];
+                $search_data['q.pile_val_4'] = ["egt",$pile_val_3];
+                $search_data['q.pile_val_4'] = ["elt",$pile_val_4];
             }else{
-                array_push($search_data,'"pile_val_3" => '.'["egt",0]');
-                array_push($search_data,'"pile_val_3" => '.'["elt",'.$pile_val_3.']');
-                array_push($search_data,'"pile_val_4" => '.'["egt",0]');
-                array_push($search_data,'"pile_val_4" => '.'["elt",'.$pile_val_4.']');
+                $search_data['q.pile_val_3'] = ["egt",0];
+                $search_data['q.pile_val_3'] = ["elt",$pile_val_3];
+                $search_data['q.pile_val_4'] = ["egt",0];
+                $search_data['q.pile_val_4'] = ["elt",$pile_val_4];
             }
-        }else if($el_start){
-            array_push($search_data,'"el_start" => '.'["egt",'.$el_start.']');
-        }else if($el_cease){
-            array_push($search_data,'"el_cease" => '.'["elt",'.$el_cease.']');
+        } if($el_start){
+            $search_data['q.el_start'] = ["egt",$el_start];
+        } if($el_cease){
+            $search_data['q.el_cease'] = ["elt",$el_cease];
         }
 
         //查询
