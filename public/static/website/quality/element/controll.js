@@ -96,7 +96,15 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
         ,laydate = layui.laydate;
     //日期
     laydate.render({
-        elem: '#date'
+        elem: '#date' //指定元素
+        ,done:function (value, date, endDate) {
+            //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            resultChange();
+        }
+    });
+
+    form.on('select(type)',function (data) {
+        resultChange();
     });
 });
 
@@ -284,6 +292,7 @@ function nodeClickUnit(e, treeId, node) {
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
+    testing(nodeUnitId);
     resultInfo(nodeUnitId);
 }
 
@@ -572,8 +581,6 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 
     //向提交页面之前放置值
     $("#resVal").val(resources);
-
-    testing(nodeUnitId,controlRowId,controlId);
 });
 
 //线上的验评结果
@@ -610,34 +617,34 @@ function resultInfo(nodeUnitId) {
 
 var selectAddShow; //在二次点击在线填报时触发
 //Testing管控中的控件能否使用
-function testing(nodeUnit_id,cpr_id,control_id) {
+function testing(nodeUnit_id) {
     $.ajax({
         url: "/quality/element/checkform",
         type: "post",
         data: {
-            division_id:nodeUnit_id,
-            cpr_id:controlRowId,
-            cp_id:controlId,
-            unit_id:nodeUnitId,
+            // division_id:nodeUnit_id,
+            // cpr_id:controlRowId,
+            // cp_id:controlId,
+            unit_id:nodeUnit_id,
         },
         success: function (res) {
             // console.log(res);
             if(res.msg == "fail"){
-                onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
-                $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                    '<thead>' +
-                    '<tr style="text-align: center">' +
-                    '<th>填报人</th>' +
-                    '<th>填报日期</th>' +
-                    '<th>当前审批人</th>' +
-                    '<th>审批状态</th>' +
-                    '<th>操作</th>' +
-                    '<th style="display: none;">当前审批人Id</th>' +
-                    '</tr>' +
-                    '</thead>' +
-                    '</table>');
-                funOnLine(nodeUnitId,procedureId,controlRowId);
-                onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
+                // $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                //     '<thead>' +
+                //     '<tr style="text-align: center">' +
+                //     '<th>填报人</th>' +
+                //     '<th>填报日期</th>' +
+                //     '<th>当前审批人</th>' +
+                //     '<th>审批状态</th>' +
+                //     '<th>操作</th>' +
+                //     '<th style="display: none;">当前审批人Id</th>' +
+                //     '</tr>' +
+                //     '</thead>' +
+                //     '</table>');
+                // funOnLine(nodeUnitId,procedureId,controlRowId);
+                // onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
                 selectAddShow = false;
                 $("option").attr('disabled',true);
                 layui.use(['form'], function(){
@@ -656,7 +663,7 @@ function testing(nodeUnit_id,cpr_id,control_id) {
                 });
                 $("#date").attr({"disabled":false});
                 $(".mybtnAdd").css("display","none");
-                $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
+                // $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
             }
         },
         // error:function () {
@@ -666,23 +673,23 @@ function testing(nodeUnit_id,cpr_id,control_id) {
 }
 
 //线下的验评结果手动填写
-layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
-    var form = layui.form
-        ,layer = layui.layer
-        ,laydate = layui.laydate;
-    //日期
-    laydate.render({
-        elem: '#date' //指定元素
-        ,done:function (value, date, endDate) {
-            //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-            resultChange();
-        }
-    });
-
-    form.on('select(type)',function (data) {
-        resultChange();
-    });
-});
+// layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
+//     var form = layui.form
+//         ,layer = layui.layer
+//         ,laydate = layui.laydate;
+//     //日期
+//     laydate.render({
+//         elem: '#date' //指定元素
+//         ,done:function (value, date, endDate) {
+//             //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+//             resultChange();
+//         }
+//     });
+//
+//     form.on('select(type)',function (data) {
+//         resultChange();
+//     });
+// });
 
 //修改验评结果result
 function resultChange() {
@@ -1373,6 +1380,7 @@ function toVoidOnLine(id) {
             if(res.msg == "success"){
                 layer.msg("该数据已作废了！")
                 $(".eleHide").css("display","none");
+                onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
             }
         },
         error:function () {
