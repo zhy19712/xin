@@ -499,11 +499,11 @@ function tpyeTable() {
                 "orderable": false,
                 "render": function(data, type, full, meta) {
                     if(full[0] == 0){
-                        var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                        var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' class='checkList' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     }else{
-                        var html = "<input type='checkbox' name='checkList_plan'  onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                        var html = "<input type='checkbox' name='checkList_plan' class='checkList'  onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     }
-                    // var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                    // var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' class='checkList' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     return html;
                 },
             },
@@ -564,61 +564,38 @@ function getSelectIdPlan(that) {
     console.log(idArrPlan);
 }
 
-//checkbox全选
-$("#all_checked_plan").on("click", function () {
-    var that = $(this);
-    if (that.prop("checked") === true) {
-        $.ajax({
-            type: "post",
-            url: "/quality/element/checkout",
-            data: {checked: 0,checkall:0,id:'',unit_id:selectRow,procedureid:procedureId},
-            success: function (res) {
-                console.log(res);
-            }
-        })
-    } else {
-        $.ajax({
-            type: "post",
-            url: "/quality/element/checkout",
-            data: {checked: 1,checkall:1,id:'',unit_id:selectRow,procedureid:procedureId},
-            success: function (res) {
-                console.log(res);
-            }
-        })
+//全选 全不选
+$("#all_checked_plan").on('click',function () {
+    var checked;
+    if($(this).is(':checked')){
+        $(".checkList").prop("checked",true);
+        checked = 0;
+    }else{
+        $(".checkList").prop("checked",false);
+        checked = 1;
     }
-
-    // if (that.prop("checked") === true) {
-    //
-    //     $("input[name='checkList_plan']").prop("checked", that.prop("checked"));
-    //     // $('#tableItem tbody tr').addClass('selected');
-    //     $('input[name="checkList_plan"]').each(function(){
-    //         getIdPlan(this);
-    //     });
-    //     $.ajax({
-    //         type: "post",
-    //         url: "/quality/element/checkout",
-    //         data: {checked: 0,checkall:0},
-    //         success: function (res) {
-    //             console.log(res);
-    //         }
-    //     })
-    // } else {
-    //     $("input[name='checkList_plan']").prop("checked", false);
-    //     // $('#tableItem tbody tr').removeClass('selected');
-    //     $('input[name="checkList_plan"]').each(function(){
-    //         getIdPlan(this);
-    //     });
-    //     $.ajax({
-    //         type: "post",
-    //         url: "/quality/element/checkout",
-    //         data: {checked: 1,checkall:1},
-    //         success: function (res) {
-    //             console.log(res);
-    //         }
-    //     })
-    // }
-
-    console.log(idArrPlan);
+    $.ajax({
+        url: '/quality/element/checkout',
+        data: {
+            checkall:checked,
+            id:'',
+            unit_id:selectRow,
+            // procedureid:((procedureId == undefined) ? '':procedureId),
+            checked: checked
+        },
+        type: "POST",
+        dataType: "JSON",
+        success: function (res) {
+            // if(res.code == 1){
+            //     if(conThisId != 0){
+            //         tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+            //     }
+            // }else{
+            //     layer.msg(res.msg);
+            //     tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
+            // }
+        }
+    })
 });
 
 var selectData ;//选中的数据流
@@ -719,28 +696,58 @@ function clickConName(id) {
     $(".mybtn").css("display","block");
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
-    // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
     console.log(id);
 }
 
-var chceck = 0;     //默认是0 为选中  ，1为未选中
-//点击去掉所选
+//单选的选中或取消 checkBox
 function getSelectIdPlanCheck(rowId,that){
-    // console.log(that);
-    // console.log($(that).is(':checked'));
+    var checked;     //0 为选中  ，1为未选中
     if($(that).is(':checked') == false){
-        chceck = 1;
+        checked = 1;
     }else if($(that).is(':checked') == true){
-        chceck = 0;
+        checked = 0;
     }
     $.ajax({
         type: "post",
         url: "/quality/element/checkout",
-        data: {division_id: division_id,id:rowId,checked:chceck,unit_id:selectRow},
+        data: {
+            division_id: division_id,
+            id:rowId,
+            checked:checked,
+            unit_id:selectRow
+        },
         success: function (res) {
             //什么都不返回说明是正确的
             console.log(res);
+            if(res.msg == "success"){
+                if(checked == 1 ){
+                    $('#all_checked_plan').prop("checked",false);
+                }else{
+                    var lock = 1;
+                    $(".checkList").each(function (i,item) {
+                        if(!$(item).is(":checked")){
+                            lock = 0;
+                            return;
+                        }
+                    });
+                    if( lock == 0){
+                        $('#all_checked_plan').prop("checked",false);
+                    }else{
+                        $('#all_checked_plan').prop("checked",true);
+                    }
+                }
+                if(procedureId != ''){
+                    tpyeTable();
+                    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+                }
+                if(procedureId == undefined || procedureId == ""){
+                    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
+                }
+            }else{
+                tpyeTable();
+                tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+            }
         }
     })
 }
