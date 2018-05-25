@@ -167,7 +167,7 @@ class Qualityform extends Permissions
                 $mod['create_time'] = time();
                 $judge=Db::name('quality_form_info')
                     ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId']])
-                    ->where('ApproveStatus','>',-1)
+                    ->where('ApproveStatus','>',-2)//除了作废状态其他都不让新建
                     ->find();
                 if($judge){
                     return json(['result' => 'Refund']);
