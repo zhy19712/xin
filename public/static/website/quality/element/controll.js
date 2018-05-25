@@ -681,7 +681,8 @@ $('#unitTab').tabs({
             }
             if(controlRowId && procedureId){
                 $(".mybtn").css("display","block");
-            }else if(controlRowId ==''|| procedureId == '' || flag == true) {
+            }
+            if(controlRowId ==''|| procedureId == '' || flag == true) {
                 $(".mybtn").css("display","none");
             }
         }else if(title != "扫描件回传"){
@@ -695,8 +696,8 @@ $('#unitTab').tabs({
             if(controlRowId && procedureId){
                 $(".bitCodes").css("display","block");
                 $(".mybtn").css("display","none");
-
-            }else if(controlRowId ==''|| procedureId == '' || flag == true) {
+            }
+            if(controlRowId ==''|| procedureId == '' || flag == true) {
                 $(".bitCodes").css("display","none");
             }
         }else if(title != "附件资料"){
@@ -712,7 +713,8 @@ $('#unitTab').tabs({
                 $(".mybtn").css("display", "none");
             }else if(controlRowId == undefined || controlRowId == null){
                 layer.msg("请选择控制点!")
-            }else if(controlRowId == '' || procedureId == '' || flag == true){
+            }
+            if(controlRowId == '' || procedureId == '' || flag == true){
                 $(".mybtnAdd").css("display","none");
             }
             if(selectAddShow == true){
@@ -738,17 +740,14 @@ function outerHeight() {
        server: "/admin/common/upload?module=quality&use=element",
        pick: {
            multiple: false,
-           id: "#test3",
+           id: "#file_upload_standards",
            innerHTML: "<i class='fa fa-upload'></i>上传"
        },
        resize: false
-
    });
-   // var $list = $('#addName');
    uploader.on( 'fileQueued', function( file ) {
        // $list.val('等待上传...');
    });
-
    uploader.on( 'uploadSuccess', function( file,res ) {
        // uploader.destroy();
        var  uploadFileId = res.id;
@@ -792,9 +791,8 @@ function outerHeight() {
             }
         });
    });
-
    uploader.on( 'uploadError', function( file ) {
-       layer.msg('上传出错');
+       layer.msg('上传出错！请稍后上传!');
    });
 
 /*============回传件上传开始==============*/
@@ -938,22 +936,6 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
 
 /*============回传件上传结束==============*/
 
-// $("#test3").click(function () {
-//     $.ajax({
-//         url:"/quality/element/copycheck",
-//         data:{cpr_id:controlRowId},
-//         type:'post',
-//         success:function(res) {
-//             if(res.msg == "success"){
-//                 $("#test4").trigger("click");
-//             }else{
-//                 layer.msg("请先删除");
-//             }
-//
-//
-//         }
-//     })
-// });
 
 /*============图像资料开始==============*/
 //图像资料结构表格
@@ -1133,32 +1115,32 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     // console.log(row);
                     // console.log(row[5]+"当前审批人Id");
                     // console.log($("#userId").val() + "当前登录人Id");
-                    console.log($("#userId").val())
+                    // console.log($("#userId").val())
                     var html = "";
-                    html += "<a title='查看' onclick='seeOnLine("+row[4]+")' style='margin-right:8px;'><i class='fa fa fa-search'></i></a>";
+                    html += "<a title='查看' onclick='seeOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-search'></i></a>";
                     if (row[3] === 0) {
-                        html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa-pencil'></i></a>";
-                        html += "<a title='删除' onclick='delOnLine("+row[4]+")' style='margin-right:8px;'><i class='fa fa fa-trash'></i></a>";
+                        html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa-pencil'></i></a>";
+                        html += "<a title='删除' onclick='delOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-trash'></i></a>";
                         // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
                     }
                     else if (row[3] === 1 && row[5] == $("#userId").val()) {
                         var str = JSON.stringify(row[2]);
-                        html += "<a title='编辑' onclick='editOnLine ("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil'></i></a>";
-                        // html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil-square-o'></i></a>";
-                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-file-text'></i></a>";
+                        html += "<a title='编辑' onclick='editOnLine ("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-pencil'></i></a>";
+                        // html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-pencil-square-o'></i></a>";
+                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
                     }
                     else if (row[3] === 2) {
-                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-file-text'></i></a>";
-                        html += "<a title='下载' onclick='downOnLine("+row[4]+")' class='eleHide' style='margin-right:8px;'><i class='fa fa fa-download'></i></a>";
-                        html += "<a title='作废' onclick='toVoidOnLine("+row[4]+")' class='eleHide' style='margin-right:8px;'><i class='fa fa fa-minus'></i></a>";
+                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
+                        html += "<a title='下载' onclick='downOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-download'></i></a>";
+                        html += "<a title='作废' onclick='toVoidOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-minus'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
                         // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
-                        html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-pencil'></i></a>";
-                        html += "<a title='删除' onclick='delOnLine("+row[4]+")' style='margin-right:8px;'><i class='fa fa fa-trash'></i></a>";
-                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-file-text'></i></a>";
+                        html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-pencil'></i></a>";
+                        html += "<a title='删除' onclick='delOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-trash'></i></a>";
+                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
                     }
-                    else html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-file-text'></i></a>";
+                    else html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
                     return html;
 
                 }
