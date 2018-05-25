@@ -566,6 +566,7 @@ function getSelectIdPlan(that) {
 
 //checkbox全选
 $("#all_checked_plan").on("click", function () {
+    var that = $(this);
     if (that.prop("checked") === true) {
         $.ajax({
             type: "post",
@@ -585,7 +586,7 @@ $("#all_checked_plan").on("click", function () {
             }
         })
     }
-    // var that = $(this);
+
     // if (that.prop("checked") === true) {
     //
     //     $("input[name='checkList_plan']").prop("checked", that.prop("checked"));
