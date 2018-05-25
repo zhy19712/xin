@@ -172,6 +172,18 @@ class Qualityform extends Permissions
                 if($judge){
                     return json(['result' => 'Refund']);
                 }
+                //判断是否有扫描件
+                $cpr=Db::name('quality_division_controlpoint_relation')
+                    ->where(['control_id' =>$mod['ControlPointId'],'division_id' =>$mod['DivisionId'],'type'=>1])
+                    ->find();
+                $cpr_id=$cpr['id'];
+                $copy=Db::name('quality_upload')
+                    ->where(['contr_relation_id '=>$cpr_id,'type'=>1])
+                    ->find();
+
+                if($copy){
+                    return json(['result' => 'Refund','remark'=>'已经有扫描件']);
+                }
                 else {
                     $res = $this->qualityFormInfoService->insertGetId($mod);
                     $dto['Id'] = $res;
@@ -182,6 +194,7 @@ class Qualityform extends Permissions
                     ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId']])
                     ->where('ApproveStatus','in',[1,0])
                     ->find();
+                //判断是否有扫描件
                 if(count($judge)>0)
                 {
                     $mod['CurrentStep']=$judge['CurrentStep'];//步骤为当前步骤
