@@ -222,7 +222,7 @@ class Atlas extends Permissions
                     'design_name' => $param['design_name'],//设计
                     'check_name' => $param['check_name'],//校验
                     'examination_name' => $param['examination_name'],//审查
-                    'completion_date' => $param['completion_date'],//完成日期
+                    'completion_time' => $param['completion_date'],//完成日期
                     'section' => $param['section'],//标段
                     'paper_category' => $param['paper_category']//图纸类别
                 ];
