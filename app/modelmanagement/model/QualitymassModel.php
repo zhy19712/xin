@@ -171,7 +171,7 @@ class QualitymassModel extends Model
     // 选中节点的 add_id  和 节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
     public function qualityNodeInfo($add_id,$node_type)
     {
-        $un_evaluation = $unqualified = $qualified = $excellent =[];
+        $un_evaluation = $unqualified = $qualified = $excellent =[-1];
 
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
