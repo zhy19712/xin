@@ -211,28 +211,70 @@ class Document extends Permissions
      * 预览
      * @return mixed
      */
-    public function preview($url = null)
+//    public function preview($url = null)
+//    {
+//        if ($this->request->isAjax()) {
+//            $doc = DocumentModel::get(input('id'), 'attachmentInfo');
+//            if ($doc->havePermission($doc['users'], Session::get('current_id'))) {
+//                $ext = $doc['attachment_info']['fileext'];
+//                $path = $doc['attachment_info']['filepath'];
+//                if ($ext == "doc" || $ext == "docx" || $ext == 'txt') {
+//                    return doc_to_pdf($path);
+//                } else if ($ext == "xls" || $ext == "xlsx") {
+//                    return excel_to_pdf($path);
+//                } else if ($ext == "ppt" || $ext == "pptx") {
+//                    return ppt_to_pdf($path);
+//                } else {
+//                    return json(['code' => 1, 'msg' => "", 'data' => $path]);
+//                }
+//            } else {
+//                return json(['code' => -1, 'msg' => '没有权限']);
+//            }
+//        }
+//        $this->assign('url', $url);
+//        return $this->fetch();
+//    }
+
+    /**
+     * 预览一条文档信息
+     * @return \think\response\Json
+     */
+    public function preview()
     {
-        if ($this->request->isAjax()) {
-            $doc = DocumentModel::get(input('id'), 'attachmentInfo');
-            if ($doc->havePermission($doc['users'], Session::get('current_id'))) {
-                $ext = $doc['attachment_info']['fileext'];
-                $path = $doc['attachment_info']['filepath'];
-                if ($ext == "doc" || $ext == "docx" || $ext == 'txt') {
-                    return doc_to_pdf($path);
-                } else if ($ext == "xls" || $ext == "xlsx") {
-                    return excel_to_pdf($path);
-                } else if ($ext == "ppt" || $ext == "pptx") {
-                    return ppt_to_pdf($path);
-                } else {
-                    return json(['code' => 1, 'msg' => "", 'data' => $path]);
+        if(request()->isAjax()){
+            //实例化模型类
+            $model = new DocumentModel();
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $model->getOne($param['id']);
+
+            //查询attachment表中的文件上传路径
+            $attachment = Db::name("attachment")->where("id",$data["attachmentId"])->find();
+            $path = "." .$attachment['filepath'];
+
+            $extension = strtolower(get_extension(substr($path,1)));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(!file_exists($pdf_path)){
+                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                    doc_to_pdf($path);
+                }else if($extension === 'xls' || $extension === 'xlsx'){
+                    excel_to_pdf($path);
+                }else if($extension === 'ppt' || $extension === 'pptx'){
+                    ppt_to_pdf($path);
+                }else if($extension === 'pdf'){
+                    $pdf_path = $path;
+                }else if($extension === "jpg" || $extension === "png" || $extension === "jpeg"){
+                    $pdf_path = $path;
+                }else {
+                    $code = 0;
+                    $msg = '不支持的文件格式';
                 }
-            } else {
-                return json(['code' => -1, 'msg' => '没有权限']);
+                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }else{
+                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
             }
         }
-        $this->assign('url', $url);
-        return $this->fetch();
     }
 
     /**
