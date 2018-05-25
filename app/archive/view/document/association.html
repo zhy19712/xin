@@ -60,7 +60,52 @@
             <ul id="ztree" class="ztree"></ul>
         </div>
         <div data-options="region:'center'">
+            <script>
+              var unitId = document.cookie.split(';')[0].split('=')[1];    //单元工程段号编号
+              var primaryId; //模型主键
+              //加载构件树
+              var modelId = [];
 
+
+              //构建构件树
+              function setZtree(nodes) {
+                var setting = {
+                  check: {
+                    enable: true
+                  },
+                  data: {
+                    simpleData: {
+                      enable: true,
+                      idKey: "id",
+                      pIdKey: "pId"
+                    }
+                  },
+                  view:{
+                    selectedMulti: false
+                  },
+                  callback:{
+                    onCheck: zTreeOnCheck,
+                    onClick: zTreeOnClick
+                  },
+                  showLine:true,
+                  showTitle:true,
+                  showIcon:true
+                };
+
+                zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);
+                echoRelation();
+                var node = [];
+                var checkedNodes = zTreeObj.getCheckedNodes(true);
+                console.log(checkedNodes)
+                picture_id = checkedNodes[0].picture_id;
+                node.push(checkedNodes[0]);
+                creatSelectedZtree(node);
+                zTreeObj.getNodeByParam('picture_id',primaryId);
+
+                  loadModel(checkedNodes[0].picture_number);
+
+              }
+            </script>
             <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
                 console.log(uObjSubID);
                 /*var node = [];
@@ -145,7 +190,22 @@
 
             <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
                 if(CompleteEvent == "LoadMainScene" && retError==0 ){
-                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                  RealBimOcx.SetAllHugeObjSubValidState(1);
+                  $.ajax({
+                    url: "{:url('quality/Division/openModelPicture')}",
+                    type: "post",
+                    dataType: "json",
+                    data:{
+                      id:window.unitId
+                    },
+                    success: function (res) {
+                      primaryId = res.one_picture_id;
+                      //转换节点数据
+                      var nodes = JSON.parse(res.data)
+                      setZtree(nodes);
+
+                    }
+                  });
                     //RealBimOcx.SetSceHugeObjVisible(false);
                 }
 
@@ -212,53 +272,7 @@
 {include file="../app/public/common_footer.html"}
 
 <script>
-    var unitId = document.cookie.split(';')[0].split('=')[1];    //单元工程段号编号
-    var primaryId; //模型主键
-    //加载构件树
-    var modelId = [];
-    $.ajax({
-        url: "{:url('quality/Division/openModelPicture')}",
-        type: "post",
-        dataType: "json",
-        data:{
-            id:window.unitId
-        },
-        success: function (res) {
-            primaryId = res.primaryId;
-            //转换节点数据
-            var nodes = JSON.parse(res.data)
-            setZtree(nodes);
-        }
-    });
 
-    //构建构件树
-    function setZtree(nodes) {
-        var setting = {
-            check: {
-                enable: true
-            },
-            data: {
-                simpleData: {
-                    enable: true,
-                    idKey: "id",
-                    pIdKey: "pId"
-                }
-            },
-            view:{
-                selectedMulti: false
-            },
-            callback:{
-                onCheck: zTreeOnCheck,
-                onClick: zTreeOnClick
-            },
-            showLine:true,
-            showTitle:true,
-            showIcon:true
-        };
-
-        zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);
-        echoRelation();
-    }
 
     //回显已关联节点
     function echoRelation() {
