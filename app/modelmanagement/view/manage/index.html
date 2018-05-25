@@ -249,18 +249,18 @@
                     window.open('./controll');
                 }*/
 
+                //验收资料
+
                 //获取模板信息
                 $.ajax({
-                    url: "./managementInfo",
+                    url: "/admin/main/managementInfo",
                     type: "post",
                     data: {
                         picture_number:uObjSubID
                     },
                     dataType: "json",
                     success: function (res) {
-                        workInfoTemplateFun(res);
-                        qualityTableTemplateFun(res);
-                        $('.infoTitle').text(res.unit_info.site);
+                        console.log(res);
                         $('#site').text(res.unit_info.site);
                         $('#serial_number').text(res.unit_info.coding);
                         $('#hinge').text(res.unit_info.hinge);
@@ -275,28 +275,50 @@
                         $('#completion_date').text(res.unit_info.completion_date);
                     }
                 });
-            </script>
 
+
+                //根据选中模型--获取所有关联模型编号和对应树节点id
+                $.ajax({
+                    url: "/modelmanagement/Qualitymass/modelIdSearchModel",
+                    type: "post",
+                    data: {
+                        model_id:uObjSubID
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if(res.data==''||res.data.unit_id==''||res.data.model_id==''){
+                            return false;
+                        }
+                        var model_id = res.data.model_id;
+                        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+                        var nodes = treeObj.getNodesByParam("add_id", res.data.unit_id);
+                        //选中对应树节点
+                        treeObj.selectNode(nodes[0]);
+                        //选中模板所在组添加颜色
+                        RealBimOcx.BatchAddSubClrInfoBegin();
+                        for(var i = 0;i<model_id.length;i++){
+                            RealBimOcx.AddSubClrPercent(model_id[i],1,modelColor);
+                        }
+                        RealBimOcx.BatchAddSubClrInfoEnd();
+                        return false;
+                        /*workInfoTemplateFun(res);
+                        qualityTableTemplateFun(res);*/
+                    }
+                });
+            </script>
             <!-- 点击模型操作按钮 -->
             <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
-                /*if(isSelect){
-                    var modelIdArr = $('#modelIdArr').val();
-                    var newModelIdArr = modelIdArr.split(',');
-                }else{
-                    return false;
-                }*/
-                var modelIdArr = $('#modelIdArr').val();
-                var newModelIdArr = modelIdArr.split(',');
                 switch (eType) {
                     case "DO_HIDE":         //显示隐藏
+                        console.log(modeGroupIds);
+                        return false;
                         uObjSubIDArr = [];
                         RealBimOcx.SetHugeObjSubValidStateBegin();
-                        $.each(newModelIdArr, function (i, item) {
+                        $.each(modeGroupIds, function (i, item) {
                             RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
                         });
                         RealBimOcx.SetHugeObjSubValidStateEnd();
                         break;
-
                     case "CANCEL_HIDE":     //取消隐藏
                         review();
                 }

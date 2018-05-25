@@ -193,6 +193,7 @@ class Qualitymass extends Permissions
 //                return json(['code'=>-1,'msg'=>'无效的节点类型']);
 //            }
             $quality = new QualitymassModel();
+
             $data = $quality->qualityNodeInfo($add_id,$node_type);
             return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--选中节点--所有关联模型编号--自定义属性']);
         }
