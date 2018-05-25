@@ -579,8 +579,15 @@ class Element extends Permissions
       $unit_id=$param['unit_id'];
       $model=new DivisionUnitModel();
       $data=$model->getOne($unit_id);
+
+      $evaluateDate=$data['EvaluateDate'];
+      if($evaluateDate!='')
+      {
+          $evaluateDatedate=date('Y-m-d',$evaluateDate);
+      }
+
       if($data) {
-          return json(['msg'=>'success','evaluateDate'=>date('Y-m-d',$data['EvaluateDate']),'evaluateResult'=>$data['EvaluateResult']]);
+          return json(['msg'=>'success','evaluateDate'=>$evaluateDate,'evaluateResult'=>$data['EvaluateResult']]);
        }
        else{
           return json(['msg'=>'fail']);
