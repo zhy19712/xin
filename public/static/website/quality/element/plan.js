@@ -564,6 +564,7 @@ function getSelectIdPlan(that) {
     console.log(idArrPlan);
 }
 
+var procedureId; //工序id
 //全选 全不选
 $("#all_checked_plan").on('click',function () {
     var checked;
@@ -574,28 +575,34 @@ $("#all_checked_plan").on('click',function () {
         $(".checkList").prop("checked",false);
         checked = 1;
     }
-    $.ajax({
-        url: '/quality/element/checkout',
-        data: {
-            checkall:checked,
-            id:'',
-            unit_id:selectRow,
-            // procedureid:((procedureId == undefined) ? '':procedureId),
-            checked: checked
-        },
-        type: "POST",
-        dataType: "JSON",
-        success: function (res) {
-            // if(res.code == 1){
-            //     if(conThisId != 0){
-            //         tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-            //     }
-            // }else{
-            //     layer.msg(res.msg);
-            //     tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
-            // }
-        }
-    })
+    // if(procedureId){
+    // debugger;
+    console.log(procedureId)
+        $.ajax({
+            url: '/quality/element/checkout',
+            data: {
+                checkall:checked,
+                id:'',
+                unit_id:selectRow,
+                procedureid:(procedureId == undefined || procedureId == "") ? "" : procedureId,
+                checked: checked
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (res) {
+                // if(procedureId != ''){
+                //     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
+                // }
+                // if(procedureId == undefined || procedureId == ""){
+                //     tpyeTable();
+                //     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+                // }
+            }
+        })
+    // debugger;
+
+    // }
+
 });
 
 var selectData ;//选中的数据流
@@ -681,6 +688,7 @@ $(".imgList").on("click","a",function () {
 
 //点击作业
 $(".imgList").on("click","#homeWork",function () {
+    procedureId = '';
     $(".bitCodes").css("display","block");
     $(".mybtn").css("display","none");
     $(".alldel").css("display","none");
@@ -738,11 +746,11 @@ function getSelectIdPlanCheck(rowId,that){
                     }
                 }
                 if(procedureId != ''){
-                    tpyeTable();
-                    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+                    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
                 }
                 if(procedureId == undefined || procedureId == ""){
-                    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
+                    tpyeTable();
+                    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
                 }
             }else{
                 tpyeTable();
