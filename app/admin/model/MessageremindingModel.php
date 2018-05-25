@@ -113,7 +113,7 @@ class MessageremindingModel extends Model
     public function delTb($id)
     {
         try{
-            $this->where("id",$id)->delete();
+            $this->where(["uint_id"=>$id,"type"=>2])->delete();
             return ['code' => 1, 'msg' => '删除成功'];
         }catch(PDOException $e){
             return ['code' => -1,'msg' => $e->getMessage()];
