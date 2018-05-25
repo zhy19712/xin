@@ -173,4 +173,34 @@ class QualitymassModel extends Model
         return $data;
     }
 
+    /**
+     * 根据模型的编号model_id查询关联的xin_quality_unit单元工程表中的信息
+     * @param $model_id
+     * @return array|false|\PDOStatement|string|Model
+     * @throws \think\exception\DbException
+     */
+    public function getUnitInfo($model_id)
+    {
+        $unit_info = Db::name('model_quality')->alias('q')
+            ->join('quality_unit u', 'q.unit_id = u.id', 'left')
+            ->where("q.model_id",$model_id)
+            ->field("u.site,u.coding,u.hinge,u.quantities,u.ma_bases,u.su_basis,u.el_start,u.el_cease,u.pile_number,u.start_date,u.completion_date,u.en_type,u.division_id,u.id")->find();
+        return $unit_info;
+    }
+
+    /**
+     * 根据归属工程en_type编号查询工序号
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\exception\DbException
+     */
+    public function getProcessInfo($en_type)
+    {
+        $processinfo = Db::name("norm_materialtrackingdivision")->alias('a')
+            ->where(["pid"=>$en_type,"type"=>3,"cat"=>5])
+            ->field("a.id,a.name")
+            ->order("sort_id asc")
+            ->select();
+        return $processinfo;
+    }
+
 }
