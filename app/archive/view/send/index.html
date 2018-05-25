@@ -19,6 +19,9 @@
     input:disabled{
         cursor: pointer!important;
     }
+    .cursores{
+        cursor: pointer!important;
+    }
     input:read-only{
         cursor: pointer!important;
     }
@@ -52,10 +55,15 @@
     table thead tr th{
         text-align: center!important;
     }
+    #add_file_modal .layui-btn-xs{
+        height: 17px!important;
+        line-height: 17px!important;
+        font-size: 10px;
+    }
 </style>
 <div class="layui-fluid" style="height: 100%;">
     <div class="layui-row" id="table_content" style="height: 100%;">
-        <table id="tableIncome" class="layui-table" lay-size="sm" cellspacing="0"  width="100%">
+        <table id="tableIncome" cellspacing="0"  width="100%">
             <thead>
             <tr>
                 <th>创建日期</th>
@@ -68,6 +76,9 @@
                 <th>操作</th>
             </tr>
             </thead>
+            <tbody>
+
+            </tbody>
         </table>
         <div id="form_container"></div>
     </div>
@@ -84,20 +95,20 @@
         <div class="layui-form-item">
             <label class="layui-form-label">文件日期</label>
             <div class="layui-input-block">
-                <input type="text" name="date" id="date" required lay-verify="required" class="layui-input" readonly="readonly">
+                <input type="text" name="date" id="date" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收件人</label>
             <div class="layui-input-block">
-                <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input" readonly="readonly">
+                <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
                 <input type="hidden" name="income_id" id="income_id">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收文单位</label>
             <div class="layui-input-block">
-                <input type="text" name="unit_name" id="unit_name" required lay-verify="required" class="layui-input" readonly="readonly">
+                <input type="text" name="unit_name" id="unit_name" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
             </div>
         </div>
         <div class="layui-form-item">
@@ -109,7 +120,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">关联收文</label>
             <div class="layui-input-block">
-                <input type="text" name="relevance_name" id="relevance_name"  class="layui-input" readonly="readonly">
+                <input type="text" name="relevance_name" id="relevance_name"  class="layui-input" readonly="readonly" style="cursor: pointer">
                 <input type="hidden" name="relevance_id" id="relevance_id"  class="layui-input">
             </div>
         </div>
@@ -168,7 +179,7 @@
 </div>
 <div id="incomeFileList" style="visibility: hidden;">
     <div class="easyui-layout" style="height:470px;">
-        <table id="tableFileList" class="layui-table" lay-size="sm" cellspacing="0">
+        <table id="tableFileList"  cellspacing="0">
             <thead>
             <tr>
                 <th>选择</th>

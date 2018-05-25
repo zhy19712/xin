@@ -181,7 +181,7 @@ class Document extends Permissions
         } else {
             //插入下载记录
             $this->documentDownRecord->save(['docId' => $mod['id'], 'user' => Session::get('current_nickname')]);
-            $fileName = $file_obj['filename'];
+            $fileName = $file_obj['name'];
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8", "gb2312", $fileName);
