@@ -144,8 +144,8 @@ function nodeClick(e, treeId, node) {
     nodePid = zTreeObj.getSelectedNodes()[0].pId;//当前pid
     console.log(sNodes);
     console.log(nodeId + '---id');
-    console.log(nodeName + '---name');
-    console.log(nodePid + '---pid');
+    // console.log(nodeName + '---name');
+    // console.log(nodePid + '---pid');
     var path = sNodes.name; //选中节点的名字
     node = sNodes.getParentNode();//获取父节点
     groupId = sNodes.pId ;//父节点的id
@@ -271,8 +271,8 @@ function nodeClickUnit(e, treeId, node) {
     eTypeId = sNodesUnit.en_type;//当前en_type
     console.log(sNodesUnit);
     console.log(nodeUnitId + '---nodeUnitId');
-    console.log(nodeNameUnit + '---name');
-    console.log(nodePidUnit + '---pid');
+    // console.log(nodeNameUnit + '---name');
+    // console.log(nodePidUnit + '---pid');
     console.log(eTypeId+"---eTypeId")
     if(eTypeId){
         selfidName(eTypeId);
@@ -295,7 +295,7 @@ function selfidName(id) {
         data: {id: id},
         success: function (res) {
             // if(res.code == 1){
-            console.log(res);
+            // console.log(res);
             var optionStrAfter = '';
             for(var i = 0;i<res.length;i++) {
                 $("#imgListRight").html('');
@@ -346,7 +346,7 @@ function clickConName(id) {
     controlRowId ='';
     procedureId ='';
     procedureId = id;
-    console.log(procedureId);
+    // console.log(procedureId);
     if(nodeUnitId != undefined || nodeUnitId != null && procedureId != undefined || procedureId != null){
         // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
         // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&nm_id="+procedureId).load();
@@ -553,7 +553,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".bitCodes").css("display","none");
     $(".mybtn").css("display","none");
     $(".mybtnAdd").css("display","none");
-    console.log(flag)
+    // console.log(flag)
     if(flag != true){
         if($(".tabs-selected a span:first-child").html() === "扫描件回传"){
             $(".mybtn").css("display","block");
@@ -574,20 +574,6 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $("#resVal").val(resources);
 
     testing(nodeUnitId,controlRowId,controlId);
-    // console.log(type)
-    // if(type == 1){
-    //   $.ajax({
-    //     url:"/quality/element/copycheck",
-    //     data:{cpr_id:controlRowId},
-    //     type:'post',
-    //     success:function(res) {
-    //         console.log(res)
-    //         if(res.msg == "success"){
-    //             alert("已上传对应扫描件，如想重新上传请先删除之前的扫描件!")
-    //         }
-    //     }
-    // })
-    // }
 });
 
 //验评结果
