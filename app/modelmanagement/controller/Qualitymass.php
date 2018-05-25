@@ -35,15 +35,17 @@ class Qualitymass extends Permissions
     {
         if(request()->isAjax()){
             // 传递 node_type 1 已关联节点 2 未关联节点 不传递默认0查询全部
+            // 如果 传递了 section_id 标段编号 只查询该标段下的节点
             $param = input('get.');
-            $node_type = isset($param['node_type']) ? $param['node_type'] : 0;
+            $node_type = isset($param['node_type']) ? $param['node_type'] : -1;
+            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
             $node = new DivisionModel();
             if($node_type==1){
-                $nodeStr = $node->getQualityNodeInfo($node_type);
+                $nodeStr = $node->getQualityNodeInfo($node_type,$section_id);
             }else if($node_type==2){
-                $nodeStr = $node->getQualityNodeInfo($node_type);
+                $nodeStr = $node->getQualityNodeInfo($node_type,$section_id);
             }else{
-                $nodeStr = $node->getQualityNodeInfo();
+                $nodeStr = $node->getQualityNodeInfo($node_type,$section_id);
             }
             return json($nodeStr);
         }
@@ -170,7 +172,9 @@ class Qualitymass extends Permissions
     /**
      * 获取选中节点的所有关联模型编号
      *
-     * 按照优良，合格，不合格，未验评分组返回
+     * 质量模型 调用此接口
+     * 按照 优良，合格，不合格，未验评分组 返回 模型编号
+     * 如果点击的是 单元工程段号(检验批编号) 的话 再将它的自定义属性也一并返回
      *
      * @return \think\response\Json
      * @author hutao
@@ -188,8 +192,8 @@ class Qualitymass extends Permissions
                 return json(['code'=>-1,'msg'=>'无效的节点类型']);
             }
             $quality = new QualitymassModel();
-            $data = $quality->nodeModelNumber($add_id,$node_type);
-            return json(['code'=>1,'data'=>$data,'msg'=>'选中节点的所有关联模型编号']);
+            $data = $quality->qualityNodeInfo($add_id,$node_type);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--选中节点--所有关联模型编号--自定义属性']);
         }
     }
 

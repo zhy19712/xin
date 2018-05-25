@@ -315,12 +315,18 @@ class DivisionModel extends Model
     /**
      * 质量模型 获取 工程划分树 包含 检验批
      * @param int $node_type
+     * @param int $section_id
      * @return string
      * @author hutao
      */
-    public function getQualityNodeInfo($node_type=0)
+    public function getQualityNodeInfo($node_type,$section_id)
     {
-        $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
+        if($section_id != -1){
+            $section = Db::name('section')->where(['id'=>$section_id])->order('id asc')->column('id,code,name'); // 标段列表
+        }else{
+            $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
+        }
+
         $division = $this->order('id asc')->column('id,pid,d_name,section_id,type,en_type,d_code'); // 工程列表
 
         $id_arr = Db::name('model_quality')->group('unit_id')->column('unit_id'); // 获取所有 已经关联过的 单元工程id编号
