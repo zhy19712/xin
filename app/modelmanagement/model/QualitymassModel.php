@@ -194,6 +194,7 @@ class QualitymassModel extends Model
             $data['unqualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$unqualified]])->column('model_id'); // 不合格
             $data['qualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$qualified]])->column('model_id'); // 合格
             $data['excellent'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$excellent]])->column('model_id'); // 优良
+            $data['all'] = $this->where(['version_number'=>$version_number])->column('model_id'); // 所有
             return $data;
         }else if($node_type == 2){
             // 获取选中标段下包含的所有节点编号
@@ -234,6 +235,7 @@ class QualitymassModel extends Model
         $data['unqualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$unqualified]])->column('model_id'); // 不合格
         $data['qualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$qualified]])->column('model_id'); // 合格
         $data['excellent'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$excellent]])->column('model_id'); // 优良
+        $data['all'] = $this->where(['version_number'=>$version_number])->column('model_id'); // 所有
         return $data;
     }
 
