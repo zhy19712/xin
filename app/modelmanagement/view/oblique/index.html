@@ -82,6 +82,9 @@
     .tabActive{
         border-color: #0c91e5!important;
     }
+    .tabActiveIn{
+        border-color: #0c91e5!important;
+    }
     .panoramaContainerWidth{
         width: 100%!important;
     }
@@ -497,6 +500,9 @@
     })
     $("#panoramaTabR .layui-tab-title li").click(function () {
         $(this).addClass('tabActive').siblings().removeClass('tabActive');
+    })
+    $(".imgContainer").click(function () {
+        $(this).addClass('tabActiveIn').siblings().removeClass('tabActiveIn');
     })
     //全景列表
     $("#panoramaList").click(function () {
