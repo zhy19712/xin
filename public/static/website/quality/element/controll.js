@@ -752,8 +752,8 @@ function outerHeight() {
        // uploader.destroy();
        var  uploadFileId = res.id;
        var  uploadFileName = file.name;
-       console.log(file);
-       console.log(res);
+       // console.log(file);
+       // console.log(res);
        $.ajax({
             url:"/quality/element/copycheck",
             data:{cpr_id:controlRowId},
