@@ -483,65 +483,64 @@ class Element extends Permissions
                 }
             }
     }
-    //获取评测结果
-    public function getEvaluation()
+    //将表单中的中文日期转为英文
+    public  function setFormattime($timestr)
     {
-        $par=input('param.');
-        $unit_id=18;
-        $en_type=15;
-        //取出对应的质量评估工序id
-        $search_name='单元工程质量验评';
-        $nm=Db::name('norm_materialtrackingdivision')
-            ->where(['pid'=>$en_type,'cat'=>5])
-            ->where('name','like','%'.$search_name.'%')
+        $arr = date_parse_from_format('Y年m月d日',$timestr);
+        $time = mktime(0,0,0,$arr['month'],$arr['day'],$arr['year']);
+        return $time;
+    }
+    //获取评测结果
+    public function saveEvaluation($form_id)
+    {
+        //判定是否是等级评定表
+        $fm_name = '单元工程质量等级评定表';
+        $fm = Db::name('quality_form_info')
+            ->where(['id' => $form_id])
+            ->where('form_name', 'like', '%'.$fm_name .'%')
             ->find();
-        $cp_name='单元工程质量等级评定表';
-        $cp=Db::name('norm_controlpoint')
-            ->where(['procedureid'=>$nm['id']])
-            ->where('name','like','%'.$cp_name.'%')
-            ->find();
-        $res = Db::name('quality_division_controlpoint_relation')
-                ->where(['division_id' =>$unit_id,'ma_division_id' =>$nm['id'],'control_id'=>$cp['id'],'type'=>1])
-                ->find();
-        //找到对应的工序cpr_id
-        if(count($res)>0)
+        if (count($fm) > 0)
         {
-            $fm=Db::name('quality_form_info')
-                ->where(['DivisionId'=>$res['division_id'],'ProcedureId'=>$nm['id'],'ControlPointId'=>$res['control_id'],'ApproveStatus'=>2])
-                ->find();
-             if(count($nm)>0)
-             {
-                 $form_data=unserialize($fm['form_data']);//反序列化
-                 foreach($form_data as $v)
-                 {
-                     if($v['Name']=='input_date_1')
-                     {
-                         $evaluation_date=$v['Value'];//验评日期
-                     }
-                     break;
-                 }
-                 foreach($form_data as $v)
-                 {
-                     if($v['Name']=='input_hgl_result')
-                     {
-                         $evaluation=$v['Value'];//验评结果
-                     }
-                     break;
-                 }
-                 $data['evaluation_date']=$evaluation_date;
-                 #$data['evaluation']=$evaluation;//暂时无法填写评定等级
-                 return json(['data'=>$data]);
-             }
-             else
-              {
-                  return json(['data'=>'验评控制点下暂无已审批线上填报']);
-              }
+            $form_data = unserialize($fm['form_data']);//反序列化
+            foreach ($form_data as $v) {
+                if ($v['Name'] == 'input_date_1') {
+                    $evaluation_date=  $v['Value']==''? '':$v['Value'];//验评日期
+                    break;
+                }
+            }
+            foreach ($form_data as $v) {
+                if ($v['Name'] == 'input_hgl_result') {
+                    $evaluation = $v['Value']==''? "无验评日期":$v['Value'];//验评结果
+                    break;
+                }
+            }
+            switch ($evaluation)
+            {
+                case "无验评日期":
+                    $evaluation=0;
+                    break;
+                case "不合格":
+                    $evaluation=1;
+                    break;
+                case "合格":
+                    $evaluation=2;
+                    break;
+                case "优良":
+                    $evaluation=3;
+                    break;
+            }
+            $param['EvaluateDate'] = $this->setFormattime($evaluation_date);
+            $param['EvaluateResult'] = $evaluation;
+            $unitModel=new DivisionUnitModel();
+            $param['id']=$fm['DivisionId'];
+            $unitModel->editTb($param);
         }
         else
-         {
-            return json(['data'=>'暂无验评控制点']);
-         }
+        {
+            return json(['data' => '暂无验评']);
+        }
     }
+
 
     //检查扫描件回传情况
     public function copycheck()
