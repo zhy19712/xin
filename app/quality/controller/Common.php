@@ -1504,6 +1504,7 @@ class Common extends Controller
             else{
                 $wherech='';
             }
+            
             //*****多表查询join改这里******
             $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
