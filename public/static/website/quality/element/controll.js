@@ -360,7 +360,7 @@ function clickConName(id) {
         $(".mybtnAdd").css("display","none");
         implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
         imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
-        onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
+        // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);// 报错可能是这个原因
         $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
                 '<thead>' +
                     '<tr style="text-align: center">' +
@@ -854,7 +854,6 @@ implementation = $('#implementation').DataTable({
 });
 
 //附件资料上传点击
-// var ccccc = true;
 layui.use(['element', "layer", 'form', 'upload'], function () {
     var $ = layui.jquery
         , element = layui.element
@@ -1314,8 +1313,6 @@ function returnOnLine(id,curStep) {
 
 //在线填报-点击作废
 function toVoidOnLine(id) {
-    // console.log(curStep);
-    // console.log(controlRowId);
     $.ajax({
         url: "/quality/qualityform/cancel",
         type: "post",
@@ -1325,7 +1322,6 @@ function toVoidOnLine(id) {
             if(res.msg == "success"){
                 layer.msg("该数据已作废了！")
                 $(".eleHide").css("display","none");
-
             }
         },
         error:function () {
