@@ -155,9 +155,9 @@ class Document extends Permissions
      * 共享文档
      * @return mixed
      */
-    public function share($id)
+    public function share($roleId)
     {
-        $this->assign('docId', $id);
+        $this->assign('docId', $roleId);
         return $this->fetch();
     }
 
@@ -206,34 +206,6 @@ class Document extends Permissions
     {
         return json(DocumentDownRecord::all(['docId' => $id]));
     }
-
-    /**
-     * 预览
-     * @return mixed
-     */
-//    public function preview($url = null)
-//    {
-//        if ($this->request->isAjax()) {
-//            $doc = DocumentModel::get(input('id'), 'attachmentInfo');
-//            if ($doc->havePermission($doc['users'], Session::get('current_id'))) {
-//                $ext = $doc['attachment_info']['fileext'];
-//                $path = $doc['attachment_info']['filepath'];
-//                if ($ext == "doc" || $ext == "docx" || $ext == 'txt') {
-//                    return doc_to_pdf($path);
-//                } else if ($ext == "xls" || $ext == "xlsx") {
-//                    return excel_to_pdf($path);
-//                } else if ($ext == "ppt" || $ext == "pptx") {
-//                    return ppt_to_pdf($path);
-//                } else {
-//                    return json(['code' => 1, 'msg' => "", 'data' => $path]);
-//                }
-//            } else {
-//                return json(['code' => -1, 'msg' => '没有权限']);
-//            }
-//        }
-//        $this->assign('url', $url);
-//        return $this->fetch();
-//    }
 
     /**
      * 预览一条文档信息
