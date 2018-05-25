@@ -92,7 +92,7 @@ $(function () {
 // 初始化操作按钮
 function initOperateButton() {
     var saveAndSubmitButtonDom = "<button class='btn btn-success btns' type='button' onclick='formSaveAndSubmit()'><i class='fa fa-check-square-o' ></i > <span class='bold'>保存并提交</span></button >";
-    var saveAndApproveButtionDom = "<button class='btn btn-success btns' type='button' onclick='formSaveAndApprove()'><i class='fa fa-pencil-square-o' ></i > <span class='bold'>保存并处理</span></button >";
+    var saveAndApproveButtionDom = "<button class='btn btn-success btns' type='button' id='saveClick' onclick='formSaveAndApprove()'><i class='fa fa-pencil-square-o' ></i > <span class='bold'>保存并处理</span></button >";
     if ($("#currentStep").val() === "0")
         // $(".hearBtn").append(saveAndSubmitButtonDom);
         $(".hearBtn").append(saveAndApproveButtionDom);
@@ -235,6 +235,7 @@ function formSaveAndSubmit() {
 // 保存并审批
 function formSaveAndApprove() {
     saveStyle = 2;
+    $("#saveClick").attr("disable",true);
     formSaveData();
 };
 
@@ -245,6 +246,7 @@ function handleAfterSave(dataId) {
     } else {
         var user = parent.$("#current_user").text().trim().replace("欢迎, ", "");
         parent.approve(dataId, user, $("#currentStep").val());
+        $("#saveClick").attr("disable",false);
     }
 };
 // 选择文件按钮事件
