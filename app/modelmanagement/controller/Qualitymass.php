@@ -169,6 +169,9 @@ class Qualitymass extends Permissions
 
     /**
      * 获取选中节点的所有关联模型编号
+     *
+     * 按照优良，合格，不合格，未验评分组返回
+     *
      * @return \think\response\Json
      * @author hutao
      */
@@ -217,6 +220,16 @@ class Qualitymass extends Permissions
             $version = new ConfigureModel();
             $configureInfo = $version->getConfigure();
             return json(['code'=>1,'configureInfo'=>$configureInfo,'msg'=>'模型效果配置信息']);
+        }
+    }
+
+    // 顶部 --  优良，合格，不合格 个数和百分率
+    public function examineFruit()
+    {
+        if($this->request->isAjax()){
+            $unit = new DivisionUnitModel();
+            $data = $unit->examineFruit();
+            return json(['code'=>1,'data'=>$data,''=>'[优良|合格|不合格]的个数和百分率']);
         }
     }
 
@@ -338,6 +351,5 @@ class Qualitymass extends Permissions
             return json($flag);
         }
     }
-
 
 }

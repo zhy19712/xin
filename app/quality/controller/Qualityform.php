@@ -177,13 +177,14 @@ class Qualityform extends Permissions
                     $dto['Id'] = $res;
                 }
             } else {
+                //判断是否有处于审批和新建的填报文件
                 $judge=Db::name('quality_form_info')
                     ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId']])
                     ->where('ApproveStatus','in',[1,0])
                     ->find();
-                if(count($judge))
+                if(count($judge)>0)
                 {
-                    $mod['CurrentStep']=$judge['CurrentStep'];
+                    $mod['CurrentStep']=$judge['CurrentStep'];//步骤为当前步骤
                 }
 
                 $this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($mod, ['id' => $dto['Id']]);

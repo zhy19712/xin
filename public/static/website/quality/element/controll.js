@@ -33,9 +33,11 @@ tableItem = $('#tableItem').DataTable({
             name: "status"
         },
         {
+            //当前这条数据的id
             name: "id"
         },
         {
+            //控制点id
             name: "control_id"
         },
         // {
@@ -161,7 +163,7 @@ function nodeClick(e, treeId, node) {
     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
-    imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id=").load();
+    imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
     console.log(controlRowId)
     console.log(procedureId)
 
@@ -282,6 +284,7 @@ function nodeClickUnit(e, treeId, node) {
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
+    resultInfo(nodeUnitId);
 }
 
 //点击单元工创建工序name
@@ -356,7 +359,7 @@ function clickConName(id) {
         $(".mybtn").css("display","none");
         $(".mybtnAdd").css("display","none");
         implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
-        imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id=").load();
+        imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
         onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
         $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
                 '<thead>' +
@@ -512,7 +515,7 @@ function delData(id,url) {
                         tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
                     }
                     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
-                    imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
+                    imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="+controlRowId).load();
                 }else if(res.code !=1){
                     layer.msg('返回数据错误！')
                 }
@@ -543,7 +546,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 
     if(controlRowId != undefined && controlRowId != null){
         implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
-        imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
+        imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="+controlRowId).load();
         funOnLine(nodeUnitId,procedureId,controlRowId)
         onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
     }
@@ -556,7 +559,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
             $(".mybtn").css("display","block");
         }else if($(".tabs-selected a span:first-child").html() === "附件资料"){
             $(".bitCodes").css("display","block");
-            $(".mybtn").css("display","block");
+            $(".mybtn").css("display","none");
         }else if($(".tabs-selected a span:first-child").html() === "在线填报"){
             $(".mybtnAdd").css("display", "block");
             $(".mybtn").css("display", "none");
@@ -573,16 +576,43 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     testing(nodeUnitId,controlRowId,controlId);
     // console.log(type)
     // if(type == 1){
-    //     $.ajax({
-    //         url:"/quality/element/copycheck",
-    //         data:{cpr_id:controlRowId},
-    //         type:'post',
-    //         success:function(res) {
-    //             console.log(res)
+    //   $.ajax({
+    //     url:"/quality/element/copycheck",
+    //     data:{cpr_id:controlRowId},
+    //     type:'post',
+    //     success:function(res) {
+    //         console.log(res)
+    //         if(res.msg == "success"){
+    //             alert("已上传对应扫描件，如想重新上传请先删除之前的扫描件!")
     //         }
-    //     })
+    //     }
+    // })
     // }
 });
+
+//验评结果
+function resultInfo(nodeUnitId) {
+    $.ajax({
+        url:"/quality/branch/evaluation",
+        data:{
+            division_id:nodeUnitId
+        },
+        type:"POST",
+        dataType:"JSON",
+        success:function (res) {
+            console.log(res)
+            // $(".result form select").val(res.evaluation_results);
+            // $(".result form #date").val(res.evaluation_time);
+            // if(!res.flag){
+            //     $(".result form select").prop("disabled",true);
+            //     $(".result input[readonly]").addClass('disabledColor');
+            //     $("#date").prop("disabled",true);
+            // }
+            // layui.form.render('select');
+        }
+    })
+
+}
 
 var selectAddShow; //在二次点击在线填报时触发
 //Testing管控中的控件能否使用
@@ -664,7 +694,8 @@ $('#unitTab').tabs({
             }
             if(controlRowId && procedureId){
                 $(".bitCodes").css("display","block");
-                $(".mybtn").css("display","block");
+                $(".mybtn").css("display","none");
+
             }else if(controlRowId ==''|| procedureId == '' || flag == true) {
                 $(".bitCodes").css("display","none");
             }
@@ -699,6 +730,72 @@ function outerHeight() {
     $("#implementation_wrapper").css("height",autoHeight+"px");
 }
 
+/*回传件上传*/
+   var uploader;
+   uploader = WebUploader.create({
+       auto: true,
+       swf:  '/static/public/webupload/Uploader.swf',
+       server: "/admin/common/upload?module=quality&use=element",
+       pick: {
+           multiple: false,
+           id: "#test3",
+           innerHTML: "<i class='fa fa-upload'></i>上传"
+       },
+       resize: false
+
+   });
+   // var $list = $('#addName');
+   uploader.on( 'fileQueued', function( file ) {
+       // $list.val('等待上传...');
+   });
+
+   uploader.on( 'uploadSuccess', function( file,res ) {
+       // uploader.destroy();
+       var  uploadFileId = res.id;
+       var  uploadFileName = file.name;
+       console.log(file);
+       console.log(res);
+       $.ajax({
+            url:"/quality/element/copycheck",
+            data:{cpr_id:controlRowId},
+            type:'post',
+            success:function(res) {
+                if(res.msg == "success"){
+                    $.ajax({
+                        url:"/quality/element/addExecution",
+                        data:{
+                            att_id:uploadFileId,
+                            filename: uploadFileName,
+                            cpr_id:controlRowId,
+                            type:1
+                        },
+                        type:'post',
+                        success:function(res) {
+                            // console.log(res);
+                            if(res.code == 1) {
+                                layer.msg(uploadFileName+'上传成功');
+                                implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
+                                imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="+controlRowId).load();
+                                if(procedureId !=''){
+                                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+                                }else if(procedureId == ''){
+                                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
+                                }
+                            } else {
+                                layer.msg('获取数据失败！');
+                            }
+                        }
+                    })
+                }else if(res.msg == "fail"){
+                    layer.msg(res.remark);
+                }
+            }
+        });
+   });
+
+   uploader.on( 'uploadError', function( file ) {
+       layer.msg('上传出错');
+   });
 
 /*============回传件上传开始==============*/
 //回传件上传结构表格
@@ -771,11 +868,12 @@ implementation = $('#implementation').DataTable({
         "zeroRecords": "没有找到记录",
     },
     "fnDrawCallback":function(obj){
-        outerHeight();
+        // outerHeight();
     }
 });
 
-//上传点击
+//附件资料上传点击
+// var ccccc = true;
 layui.use(['element', "layer", 'form', 'upload'], function () {
     var $ = layui.jquery
         , element = layui.element
@@ -785,26 +883,12 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
         , layer = layui.layer
         , layedit = layui.layedit
         , laydate = layui.laydate;
-    // $("#test3").click(function () {
-    //     alert(3)
-    // })
     upload.render({
-        elem: '#test3',
+        elem: '#test4',
         url: "/admin/common/upload?module=quality&use=element",
         accept:"file",
         // size:8192,
         before: function(obj){
-            // $.ajax({
-            //     url:"/quality/element/copycheck",
-            //     data:{cpr_id:controlRowId},
-            //     type:'post',
-            //     success:function(res) {
-            //         console.log(res)
-            //         if(res.msg == "success"){
-            //             alert("已上传对应扫描件，如想重新上传请先删除之前的扫描件!")
-            //         }
-            //     }
-            // })
             obj.preview(function(index, file, result){
                 uploadName = file.name;
                 console.log(file.name);//获取文件名，result就是base64
@@ -825,15 +909,14 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                         att_id:uploadId,
                         filename: uploadName, //名称
                         cpr_id:controlRowId,
-                        type:type
+                        type:4
                     },
                     type:'post',
                     success:function(res) {
                         console.log(res)
                         if(res.code == 1) {
                             implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
-                            imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="+controlRowId).load();
-                            // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
+                            imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="+controlRowId).load();
                             if(procedureId !=''){
                                 tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                             }else if(procedureId == ''){
@@ -850,11 +933,27 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
             }
         },
     });
+
 });
 
 /*============回传件上传结束==============*/
 
-
+// $("#test3").click(function () {
+//     $.ajax({
+//         url:"/quality/element/copycheck",
+//         data:{cpr_id:controlRowId},
+//         type:'post',
+//         success:function(res) {
+//             if(res.msg == "success"){
+//                 $("#test4").trigger("click");
+//             }else{
+//                 layer.msg("请先删除");
+//             }
+//
+//
+//         }
+//     })
+// });
 
 /*============图像资料开始==============*/
 //图像资料结构表格
@@ -867,7 +966,7 @@ imageData = $('#imageData').DataTable({
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {
-        "url": "/quality/common/datatablesPre?tableName=quality_upload&type=2&cpr_id="
+        "url": "/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="
     },
     dom:'rt',
     columns: [
@@ -1021,9 +1120,9 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     if (data === -1) {
                         return "被退回"
                     }
-                    // if (data === -2) {
-                    //     return "作废"
-                    // }
+                    if (data === -2) {
+                        return "作废"
+                    }
                 }
             },
             {
@@ -1034,6 +1133,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     // console.log(row);
                     // console.log(row[5]+"当前审批人Id");
                     // console.log($("#userId").val() + "当前登录人Id");
+                    console.log($("#userId").val())
                     var html = "";
                     html += "<a title='查看' onclick='seeOnLine("+row[4]+")' style='margin-right:8px;'><i class='fa fa fa-search'></i></a>";
                     if (row[3] === 0) {
@@ -1049,8 +1149,8 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     }
                     else if (row[3] === 2) {
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:8px;'><i class='fa fa fa-file-text'></i></a>";
-                        html += "<a title='下载' onclick='downOnLine("+row[4]+")' style='margin-right:8px;'><i class='fa fa fa-download'></i></a>";
-                        html += "<a title='作废' onclick='toVoidOnLine("+row[4]+")' style='margin-right:8px;'><i class='fa fa fa-minus'></i></a>";
+                        html += "<a title='下载' onclick='downOnLine("+row[4]+")' class='eleHide' style='margin-right:8px;'><i class='fa fa fa-download'></i></a>";
+                        html += "<a title='作废' onclick='toVoidOnLine("+row[4]+")' class='eleHide' style='margin-right:8px;'><i class='fa fa fa-minus'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
                         // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
@@ -1249,15 +1349,19 @@ function returnOnLine(id,curStep) {
 
 //在线填报-点击作废
 function toVoidOnLine(id) {
-    console.log(curStep);
-    console.log(controlRowId);
+    // console.log(curStep);
+    // console.log(controlRowId);
     $.ajax({
         url: "/quality/qualityform/cancel",
         type: "post",
         data: {id:id},
         success: function (res) {
             console.log(res);
+            if(res.msg == "success"){
+                layer.msg("该数据已作废了！")
+                $(".eleHide").css("display","none");
 
+            }
         },
         error:function () {
             alert("作废操作异常")
