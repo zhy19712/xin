@@ -581,6 +581,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 
     //向提交页面之前放置值
     $("#resVal").val(resources);
+    testing(nodeUnit_id);
 });
 
 //线上的验评结果
