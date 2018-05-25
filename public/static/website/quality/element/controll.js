@@ -579,22 +579,19 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 //验评结果
 function resultInfo(nodeUnitId) {
     $.ajax({
-        url:"/quality/branch/evaluation",
+        url:"/quality/element/getEvaluation",
         data:{
-            division_id:nodeUnitId
+            unit_id:nodeUnitId
         },
         type:"POST",
         dataType:"JSON",
         success:function (res) {
             console.log(res)
-            // $(".result form select").val(res.evaluation_results);
-            // $(".result form #date").val(res.evaluation_time);
-            // if(!res.flag){
-            //     $(".result form select").prop("disabled",true);
-            //     $(".result input[readonly]").addClass('disabledColor');
-            //     $("#date").prop("disabled",true);
-            // }
-            // layui.form.render('select');
+            if(res.msg == 'success'){
+                $(".result form select").val(res.evaluateResult);
+                $(".result form #date").val(res.evaluateDate);
+                layui.form.render('select');
+            }
         }
     })
 
@@ -1089,7 +1086,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                         return "被退回"
                     }
                     if (data === -2) {
-                        return "作废"
+                        return "已作废"
                     }
                 }
             },
