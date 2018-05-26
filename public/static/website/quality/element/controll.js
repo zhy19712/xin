@@ -319,7 +319,7 @@ function selfidName(id) {
                 $("#img0").css("display","none");
             }
 
-            $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 40px)");
+            $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 64px)");
 
             // }else if(res.code==0){
             //     layer.msg(res.msg);
