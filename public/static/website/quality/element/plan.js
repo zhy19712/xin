@@ -639,7 +639,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".listName").css("display","block");
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-    $("#all_checked_plan").attr("checked",true);
+    // $("#all_checked_plan").attr("checked",true);
 });
 
 //获取控制点name
@@ -726,7 +726,7 @@ function ischeckedBox() {
         }else{
             $('#all_checked_plan').prop("checked",true);
         }
-    },200)
+    },900)
 }
 
 //单选的选中或取消 checkBox
