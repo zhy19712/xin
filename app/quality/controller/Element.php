@@ -283,6 +283,7 @@ class Element extends Permissions
         foreach ($infos as $key => $value) {
             $phpword->setValue("{{$key}}", $value);
         }
+
         $formInfo = unserialize($cp['form_data']);
         foreach ($formInfo as $item) {
             $phpword->setValue('{'.$item['Name'].'}', $item['Value']);
@@ -363,6 +364,12 @@ class Element extends Permissions
         //$word->ActiveDocument->SaveAs($htmlpath,8);
         //$word->quit(0);
     }
+
+
+
+
+
+
     ##单元验评
 
     /**
@@ -454,7 +461,6 @@ class Element extends Permissions
         {
             $wherenm='';
         }
-
         if(isset($param['checkall']))
         {
             $whereid='';
@@ -473,14 +479,13 @@ class Element extends Permissions
        {
            return json(['msg'=>'success']);
        }
-
     }
 
     //检测管控中的控件能否使用
     public function checkform()
     {
-            $cp_name='单元工程质量验评';
-            $search_name='单元工程质量等级评定表';
+            $search_name='单元工程质量验评';
+            $cp_name='单元工程质量等级评定表';
             $param = input('param.');
             $unit_id=$param['unit_id'];
             $unit= Db::name('quality_unit')
@@ -518,7 +523,6 @@ class Element extends Permissions
             else {
                 $copy = Db::name('quality_upload')
                     ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
-                    ->where('data_name', 'like', '%'.$search_name .'%')
                     ->find();
                 if ($copy) {
                     $flag=$this->evaluatePremission();
@@ -532,7 +536,7 @@ class Element extends Permissions
                     }
                 }
                 else {
-                    return json(['msg' => 'fail','remark'=>'尚未上传验评扫描件']);
+                    return json(['msg' => 'fail','remark'=>'尚未上传验评扫描件或在线流程未完成审批']);
                 }
             }
     }
