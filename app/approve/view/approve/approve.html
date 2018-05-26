@@ -308,6 +308,9 @@
 
         form.on('radio(not)', function(data){
             typeId = data.value;
+            if(typeId == -1){
+                $("#nextStepPeople").text("");
+            }
         });
     });
 
@@ -335,7 +338,7 @@
                     dataType:$("#dataType").val(),
                     res:(typeId == -1)?"-1":"1",
                     mark:$("#txtArea").val(),
-                    next_approverid:subId,
+                    next_approverid:(typeId == -1)?"":subId,
                 },
                 success: function (res) {
                     console.log(res);
