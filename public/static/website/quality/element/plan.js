@@ -20,6 +20,7 @@ $.ztree({
         $(".imgList").css("display","none");
         tpyeTable();
         tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id=").load();
+        $("#all_checked_plan").attr("checked",false);
     }
 });
 
@@ -466,7 +467,6 @@ $('#openNode').click(function(){
 /**==========结束初始化 单元工程段号 =============*/
 
 // 控制点的table 表
-var checkedData = true;
 function tpyeTable() {
     tableItemControl = $('#tableItemControl').DataTable({
         pagingType: "full_numbers",
@@ -511,7 +511,6 @@ function tpyeTable() {
                     }
                     return html;
                 }
-
             },
             {
                 "targets": [1]
@@ -539,7 +538,6 @@ function tpyeTable() {
             "zeroRecords": "没有找到记录",
         }
     });
-
 }
 
 //获取选中行ID
@@ -639,7 +637,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".listName").css("display","block");
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-    // $("#all_checked_plan").attr("checked",true);
+    ischeckedBox()
 });
 
 //获取控制点name
