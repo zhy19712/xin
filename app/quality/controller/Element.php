@@ -446,7 +446,7 @@ class Element extends Permissions
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
         //检测工序
-        if(isset($param['procedureid']))
+        if(isset($param['procedureid'])&&$param['procedureid']>0)
         {
             $wherenm['ma_division_id']=$param['procedureid'];
         }
