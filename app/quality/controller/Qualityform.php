@@ -173,6 +173,7 @@ class Qualityform extends Permissions
                 if($judge){
                     return json(['result' => 'Refund']);
                 }
+                /*
                 //判断是否有扫描件
                 $cpr=Db::name('quality_division_controlpoint_relation')
                     ->where(['control_id' =>$mod['ControlPointId'],'division_id' =>$mod['DivisionId'],'type'=>1])
@@ -185,6 +186,7 @@ class Qualityform extends Permissions
                 if($copy){
                     return json(['result' => 'Refund','remark'=>'已经有扫描件']);
                 }
+                */
                 else {
                     $res = $this->qualityFormInfoService->insertGetId($mod);
                     $dto['Id'] = $res;
