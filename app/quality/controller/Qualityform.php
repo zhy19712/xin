@@ -236,13 +236,17 @@ class Qualityform extends Permissions
     {
         $olddata['ApproveStatus']=-2;
         $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($olddata, ['id' => $id]);
+
         if($res)
         {
-
             //规范data
 
-
             $data_res=$this->qualityFormInfoService->where(['id' => $id])->find();
+
+            //更新状态relation_id 状态为未执行
+            Db::name('quality_division_controlpoint_relation')
+                ->where(['control_id' =>$data_res['ControlPointId'],'division_id' =>$data_res['DivisionId'],'type'=>1])
+                ->update(['status'=>0]);
 
             //将表内填的数据全部情况
             $form_data=$data_res['form_data'];
@@ -262,7 +266,6 @@ class Qualityform extends Permissions
             $data['ApproveStatus']=0;
             $data['CurrentStep']=0;
             $data['update_time']=time();
-
 
 
             $qfi = Db::name('quality_form_info')
