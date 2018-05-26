@@ -94,18 +94,18 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
     var form = layui.form
         ,layer = layui.layer
         ,laydate = layui.laydate;
-    //日期
-    laydate.render({
-        elem: '#date' //指定元素
-        ,done:function (value, date, endDate) {
-            //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-            resultChange();
-        }
-    });
-
-    form.on('select(type)',function (data) {
-        resultChange();
-    });
+    // //日期
+    // laydate.render({
+    //     elem: '#date' //指定元素
+    //     ,done:function (value, date, endDate) {
+    //         //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+    //         resultChange();
+    //     }
+    // });
+    //
+    // form.on('select(type)',function (data) {
+    //     resultChange();
+    // });
 });
 
 
@@ -292,8 +292,8 @@ function nodeClickUnit(e, treeId, node) {
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-    testing(nodeUnitId);
-    resultInfo(nodeUnitId);
+    checkforming(nodeUnitId); //判断是否手填
+    resultInfo(nodeUnitId); //点击获取验评
 }
 
 //点击单元工创建工序name
@@ -516,6 +516,8 @@ function delData(id,url) {
                 console.log(res);
                 if(res.code ==1){
                     layer.msg("删除成功！");
+                    checkforming(nodeUnitId);
+                    resultInfo(nodeUnitId)
                     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
                     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                     if(procedureId !=''){
@@ -581,7 +583,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 
     //向提交页面之前放置值
     $("#resVal").val(resources);
-    testing(nodeUnitId);
+
 });
 
 //线上的验评结果
@@ -599,26 +601,19 @@ function resultInfo(nodeUnitId) {
                 $(".result form select").val(res.evaluateResult);
                 $(".result form #date").val(res.evaluateDate);
                 layui.form.render('select');
+                if(res.evaluateDate == 0){
+                    $("#date").val('');
+                }
             }
-            // $(".result form select").val(res.evaluation_results);
-            // $(".result form #date").val(res.evaluation_time);
-            // if(!res.flag){
-            //     $(".result form select").prop("disabled",true);
-            //     $(".result input[readonly]").addClass('disabledColor');
-            //     $("#date").prop("disabled",true);
-            // }
-            // layui.form.render('select');
-            // if(!res.flag){
-            //     $(".result input[readonly]").addClass('disabledColor');
-            // }
         }
     })
 
 }
 
-var selectAddShow; //在二次点击在线填报时触发
-//Testing管控中的控件能否使用
-function testing(nodeUnitId) {
+//在二次点击在线填报时触发
+var selectAddShow;
+//checkform判断是否手填验评
+function checkforming(nodeUnitId) {
     $.ajax({
         url: "/quality/element/checkform",
         type: "post",
@@ -630,7 +625,7 @@ function testing(nodeUnitId) {
         },
         success: function (res) {
             // console.log(res);
-            if(res.msg == "fail"){
+            if(res.msg == "fail"){//线上结果
                 // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
                 // $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
                 //     '<thead>' +
@@ -650,47 +645,48 @@ function testing(nodeUnitId) {
                 $("option").attr('disabled',true);
                 layui.use(['form'], function(){
                     var form = layui.form;
-                    form.render("select");
-                    $(".layui-input[readonly]").removeAttr('style', 'background: #FFFFFF !important');
+                    $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
                     $("#date").attr({"disabled":true});
+                    form.render("select");
                 });
-            }else if(res.msg == "success"){
+            }else if(res.msg == "success"){ //手动填写
                 selectAddShow = true;
                 $("option").removeAttr('disabled');
                 layui.use(['form'], function(){
                     var form = layui.form;
                     form.render("select");
-                    $(".layui-input[readonly]").attr('style', 'background: #FFFFFF !important');
                 });
                 $("#date").attr({"disabled":false});
-                $(".mybtnAdd").css("display","none");
+                setTimeout(function () {
+                    $(".layui-input[readonly]").attr('style', 'background: #ffffff !important');
+                    $(".result input[readonly]").addClass('disabledColor');
+                },900)
+
+                // $(".mybtnAdd").css("display","none");
                 // $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
             }
-        },
-        // error:function () {
-        //     alert("返回管控中的控件数据错误")
-        // }
+        }
     });
 }
 
 //线下的验评结果手动填写
-// layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
-//     var form = layui.form
-//         ,layer = layui.layer
-//         ,laydate = layui.laydate;
-//     //日期
-//     laydate.render({
-//         elem: '#date' //指定元素
-//         ,done:function (value, date, endDate) {
-//             //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-//             resultChange();
-//         }
-//     });
-//
-//     form.on('select(type)',function (data) {
-//         resultChange();
-//     });
-// });
+layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
+    var form = layui.form
+        ,layer = layui.layer
+        ,laydate = layui.laydate;
+    //日期
+    laydate.render({
+        elem: '#date' //指定元素
+        ,done:function (value, date, endDate) {
+            //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            resultChange();
+        }
+    });
+
+    form.on('select(type)',function (data) {
+        resultChange();
+    });
+});
 
 //修改验评结果result
 function resultChange() {
@@ -759,9 +755,9 @@ $('#unitTab').tabs({
             if(controlRowId == '' || procedureId == '' || flag == true){
                 $(".mybtnAdd").css("display","none");
             }
-            if(selectAddShow == true){
-                $(".mybtnAdd").css("display","none");
-            }
+            // if(selectAddShow == true){
+            //     $(".mybtnAdd").css("display","none");
+            // }
         }else if(title != "在线填报"){
             $(".mybtnAdd").css("display","none");
         }
@@ -776,6 +772,7 @@ function outerHeight() {
 
 /*回传件上传*/
    var uploader;
+
    uploader = WebUploader.create({
        auto: true,
        swf:  '/static/public/webupload/Uploader.swf',
@@ -785,7 +782,8 @@ function outerHeight() {
            id: "#file_upload_standards",
            innerHTML: "<i class='fa fa-upload'></i>上传"
        },
-       resize: false
+       resize: false,
+       duplicate :true, //是否可以重复上传
    });
    uploader.on( 'fileQueued', function( file ) {
        // $list.val('等待上传...');
@@ -814,9 +812,11 @@ function outerHeight() {
                         success:function(res) {
                             // console.log(res);
                             if(res.code == 1) {
+                                checkforming(nodeUnitId);
                                 layer.msg(uploadFileName+'上传成功');
                                 implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                                 imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="+controlRowId).load();
+
                                 if(procedureId !=''){
                                     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                                 }else if(procedureId == ''){
