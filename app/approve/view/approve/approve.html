@@ -317,7 +317,7 @@
 
     //点击保存
     $("#test3").click(function () {
-        $("#test3").attr("disable",true);
+        $("#test3").prop("disabled",true);
         if($("#nextStepPeople").text() != ""){
             var dataArr = [];
             var subId ;
@@ -344,7 +344,7 @@
                     console.log(res);
                     if(res.code == 1){
                         parent.layer.msg("保存成功!");
-                        $("#test3").attr("disable",false);
+                        $("#test3").attr("disabled",false);
                         $.ajax({
                             url:"/admin/Dashboard/changeStatus",
                             type:"POST",
