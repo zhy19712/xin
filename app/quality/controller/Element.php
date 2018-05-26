@@ -607,9 +607,9 @@ class Element extends Permissions
       $data=$model->getOne($unit_id);
 
       $evaluateDate=$data['EvaluateDate'];
-      if($evaluateDate!='')
+      if($evaluateDate!=0)
       {
-          $evaluateDatedate=date('Y-m-d',$evaluateDate);
+          $evaluateDate=date('Y-m-d',$evaluateDate);
       }
 
       if(count($data)>0) {
