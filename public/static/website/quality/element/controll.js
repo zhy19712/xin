@@ -319,7 +319,7 @@ function selfidName(id) {
                 $("#img0").css("display","none");
             }
 
-            $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 40px)");
+            $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 64px)");
 
             // }else if(res.code==0){
             //     layer.msg(res.msg);
@@ -581,7 +581,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 
     //向提交页面之前放置值
     $("#resVal").val(resources);
-    testing(nodeUnit_id);
+    testing(nodeUnitId);
 });
 
 //线上的验评结果
@@ -618,7 +618,7 @@ function resultInfo(nodeUnitId) {
 
 var selectAddShow; //在二次点击在线填报时触发
 //Testing管控中的控件能否使用
-function testing(nodeUnit_id) {
+function testing(nodeUnitId) {
     $.ajax({
         url: "/quality/element/checkform",
         type: "post",
@@ -626,7 +626,7 @@ function testing(nodeUnit_id) {
             // division_id:nodeUnit_id,
             // cpr_id:controlRowId,
             // cp_id:controlId,
-            unit_id:nodeUnit_id,
+            unit_id:nodeUnitId,
         },
         success: function (res) {
             // console.log(res);
