@@ -386,12 +386,13 @@ class Element extends Permissions
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
+    //手动填写验评结果的保存
     public function Evaluate()
     {
         $mod = input('post.');
         $_mod = DivisionUnitModel::get($mod['Unit_id']);
         $_mod['EvaluateResult'] = $mod['EvaluateResult'];
-        $_mod['EvaluateDate'] = $mod['EvaluateDate'];
+        $_mod['EvaluateDate'] = strtotime($mod['EvaluateDate']);
         $res = $_mod->save();
         if ($res) {
             return json(['code' => 1]);
@@ -507,7 +508,7 @@ class Element extends Permissions
 
             $res = Db::name('quality_form_info')
                 ->where(['ControlPointId' =>$cp_id,'DivisionId' =>$unit_id,'ApproveStatus'=>2])
-                ->where('form_name', 'like', '%' . $search_name)
+                ->where('form_name', 'like', '%' . $cp_name)
                 ->find();
 
             $cpr=Db::name('quality_division_controlpoint_relation')
@@ -611,7 +612,7 @@ class Element extends Permissions
           $evaluateDatedate=date('Y-m-d',$evaluateDate);
       }
 
-      if($data) {
+      if(count($data)>0) {
           return json(['msg'=>'success','evaluateDate'=>$evaluateDate,'evaluateResult'=>$data['EvaluateResult']]);
        }
        else{
