@@ -607,10 +607,15 @@ class Element extends Permissions
       $data=$model->getOne($unit_id);
 
       $evaluateDate=$data['EvaluateDate'];
-      if($evaluateDate!=0)
+      if(($evaluateDate!=0)||($evaluateDate!=0)!='')
       {
           $evaluateDate=date('Y-m-d',$evaluateDate);
       }
+      else
+      {
+          $evaluateDate=0;
+      }
+
 
       if(count($data)>0) {
           return json(['msg'=>'success','evaluateDate'=>$evaluateDate,'evaluateResult'=>$data['EvaluateResult']]);
