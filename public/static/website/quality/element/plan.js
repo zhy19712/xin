@@ -277,6 +277,11 @@ function maBasesTable() {
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=archive_atlas_cate'
         },
+        // iDisplayLength:1000,
+        // "scrollY": "200px",
+        // "scrollCollapse": "true",
+        // "paging": "false",
+        // isPage:false,
         columns:[
             {
                 name: "id",
@@ -396,7 +401,8 @@ $('#saveUnit').click(function () {
             en_type:en_type,
             division_id:division_id,
             id:window.rowId
-        }
+        },
+        isPage:true,
     });
 });
 
@@ -497,15 +503,15 @@ function tpyeTable() {
                 "targets":[0],
                 "searchable": false,
                 "orderable": false,
-                "render": function(data, type, full, meta) {
-                    if(full[0] == 0){
-                        var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' class='checkList' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                "render" :  function(data,type,row) {
+                    if(data == 0){
+                        var html = "<input type='checkbox' name='checkList_plan' class='checkList' checked id='"+row[3]+"' onclick='getSelectIdPlanCheck("+row[3]+",this)'>";
                     }else{
-                        var html = "<input type='checkbox' name='checkList_plan' class='checkList'  onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                        var html = "<input type='checkbox' name='checkList_plan' class='checkList' id='"+row[3]+"'  onclick='getSelectIdPlanCheck("+row[3]+",this)'>";
                     }
-                    // var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' class='checkList' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     return html;
-                },
+                }
+
             },
             {
                 "targets": [1]
@@ -565,6 +571,7 @@ function getSelectIdPlan(that) {
 }
 
 var procedureId; //工序id
+
 //全选 全不选
 $("#all_checked_plan").on('click',function () {
     var checked;
@@ -624,6 +631,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     if(selectRow != undefined || selectRow != null){
         tpyeTable();
         tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+        ischeckedBox();
     }else{
         alert("获取不到selectRow id!")
     }
@@ -641,7 +649,7 @@ function selfidName(id) {
         url: "/quality/element/getProcedures",
         data: {id: id},
         success: function (res) {
-            console.log(res);
+            // console.log(res);
             var optionStrAfter = '';
             for(var i = 0;i<res.length;i++) {
                 $("#imgListRight").html('');
@@ -669,7 +677,7 @@ function insetData(eTypeId) {
         data: {en_type: eTypeId,division_id:division_id,unit_id:selectRow},
         success: function (res) {
             //什么都不返回说明是正确的
-            console.log(res);
+            // console.log(res);
         }
     })
 }
@@ -689,6 +697,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+    ischeckedBox();
 });
 
 //点击工序控制点名字
@@ -700,6 +709,24 @@ function clickConName(id) {
     $("#tableContent .imgList").css('display','block');
     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
     console.log(id);
+    ischeckedBox();
+}
+//判断是否全选
+function ischeckedBox() {
+    setTimeout(function () {
+        var lock = 1;
+        $(".checkList").each(function (i,item) {
+            if(!$(item).is(":checked")){
+                lock = 0;
+                return;
+            }
+        });
+        if( lock == 0){
+            $('#all_checked_plan').prop("checked",false);
+        }else{
+            $('#all_checked_plan').prop("checked",true);
+        }
+    },200)
 }
 
 //单选的选中或取消 checkBox
