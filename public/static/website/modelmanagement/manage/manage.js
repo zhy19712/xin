@@ -71,6 +71,7 @@ function zTreeOnClick(event, treeId, treeNode) {
     node_type = treeNode.node_type;
     modeGroupIds = nodeModelNumber();
     if(treeNode.level==5){
+        getOne();   //回显自定义属性
         window.operateModel(modeGroupIds);
     }
 }
@@ -171,9 +172,9 @@ layui.use('element', function(){
                                 data.ApproveStatus = '已审批';
                         }
                         tbody.push('<tr>');
-                        tbody.push('<td>');
+                        tbody.push('<td><span class="filename">');
                         tbody.push(nickname);
-                        tbody.push('</td>');
+                        tbody.push('</span></td>');
                         tbody.push('<td>');
                         tbody.push(data.update_time);
                         tbody.push('</td>');
@@ -183,19 +184,19 @@ layui.use('element', function(){
                         tbody.push('<td class="btnWrap">');
                         if(admin_id==user_id){
                             if(approveStatus==-1){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine('+ onLineTableId +')"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,'+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==-2){
                                 tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==0){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine('+ onLineTableId +')"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,'+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==1){
                                 tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==2){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download" onclick="downOnLine('+ onLineTableId +')"></i><i class="fa fa-times" onclick="toVoidOnLine(this,'+ onLineTableId +')" pid='+ id +'></i>');
                             }
                         }else if(admin_id==currentApproverId){
                             if(approveStatus==1){
@@ -203,7 +204,7 @@ layui.use('element', function(){
                             }
                         }else{
                             if(approveStatus==-1){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine('+ onLineTableId +')"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,'+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==-2){
                                 tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
@@ -215,7 +216,7 @@ layui.use('element', function(){
                                 tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==2){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download" onclick="downOnLine('+ onLineTableId +')"></i><i class="fa fa-times" onclick="toVoidOnLine(this,'+ onLineTableId +')" pid='+ id +'></i>');
                             }
                         }
                         tbody.push('</td>');
@@ -237,18 +238,19 @@ layui.use('element', function(){
                     }
                     for(var j = 0;j<res.upload_form_sao.length;j++){
                         var data = res.upload_form_sao[j];
+                        var onLineTableId = data.id;
                         console.log(data);
                         tbody.push('<tr>');
-                        tbody.push('<td>');
+                        tbody.push('<td><span class="filename">');
                         tbody.push(data.data_name);
-                        tbody.push('</td>');
+                        tbody.push('</span></td>');
                         tbody.push('<td>');
                         tbody.push(data.nickname);
                         tbody.push('</td>');
                         tbody.push('<td>');
                         tbody.push(data.create_time);
                         tbody.push('</td>');
-                        tbody.push('<td><i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('<td><i class="fa fa-search" onclick="printConFile('+ onLineTableId +')"></i><i class="fa fa-download" onclick="downConFileImp('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delFile(this,'+ onLineTableId +')"></i></td>');
                         tbody.push('</tr>');
                     }
                     tbody.push('<tr><th class="table-title" colspan="4">附件资料</th></tr>');
@@ -260,25 +262,26 @@ layui.use('element', function(){
                     tbody.push('</tr>');
                     if(res.upload_form_fu==''){
                         tbody.push('<tr>');
-                        tbody.push('<td class="td-empty" colspan="4">');
+                        tbody.push('<td>');
                         tbody.push('无图像资料数据');
                         tbody.push('</td>');
                         tbody.push('</tr>');
                     }
                     for(var j = 0;j<res.upload_form_fu.length;j++){
                         var data = res.upload_form_fu[j];
+                        var onLineTableId = data.id;
                         console.log(data);
                         tbody.push('<tr>');
-                        tbody.push('<td>');
+                        tbody.push('<td><span class="filename">');
                         tbody.push(data.data_name);
-                        tbody.push('</td>');
+                        tbody.push('</span></td>');
                         tbody.push('<td>');
                         tbody.push(data.nickname);
                         tbody.push('</td>');
                         tbody.push('<td>');
                         tbody.push(data.create_time);
                         tbody.push('</td>');
-                        tbody.push('<td><i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('<td><i class="fa fa-search" onclick="printConFile('+ onLineTableId +')"></i><i class="fa fa-download" onclick="downConFileData('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delFile(this,'+ onLineTableId +')"></i></td>');
                         tbody.push('</tr>');
                     }
                     $('table[uid='+ id +'] tbody').append(tbody.join(''));
@@ -312,20 +315,183 @@ function editOnLine(id) {
 }
 
 //在线填报-删除
-function delOnLine(id) {
+function delOnLine(that,id) {
     layer.confirm("你将删除该数据，是否确认删除？", function () {
         $.ajax({
             url: "/quality/Qualityform/delForm",
             type: "post",
             data: {id: id},
             success: function (res) {
-                if (res.code === 1) {
-                    layer.msg("删除数据成功！", {time: 1500, shade: 0.1});
-                    onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                layer.msg("删除数据成功！");
+                $(that).parents('tr').remove();
+            }
+        });
+    });
+}
+
+//查看附件
+function showPdf(id,url) {
+    $.ajax({
+        url: url,
+        type: "post",
+        data: {id:id},
+        success: function (res) {
+            console.log(res);
+            if(res.code === 1){
+                var path = res.path;
+                var houzhui = res.path.split(".");
+                if(houzhui[houzhui.length-1]=="pdf"){
+                    window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
+                }else if(res.path.split(".")[1]==="png"||res.path.split(".")[1]==="jpg"||res.path.split(".")[1]==="jpeg"){
+                    layer.photos({
+                        photos: {
+                            "title": "", //相册标题
+                            "id": id, //相册id
+                            "start": 0, //初始显示的图片序号，默认0
+                            "data": [   //相册包含的图片，数组格式
+                                {
+                                    "alt": "图片名",
+                                    "pid": id, //图片id
+                                    "src": "../../../"+res.path, //原图地址
+                                    "thumb": "" //缩略图地址
+                                }
+                            ]
+                        }
+                        ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                        ,success:function () {
+                            $(".layui-layer-shade").empty();
+                        }
+                    });
+                }else{
+                    layer.msg("不支持的文件格式");
+                }
+
+            }else {
+                layer.msg(res.msg);
+            }
+        }
+    })
+}
+
+//点击打印模板
+function printConFile(id) {
+    showPdf(id,"/quality/Unitqualitymanage/relationPreview");
+}
+
+//删除封装的方法
+function delData(that,id,url) {
+    layer.confirm('是否删除该数据?', function(index){
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {id:id},
+            success: function (res) {
+                if(res.code ==1){
+                    $(that).parents('tr').remove();
+                    layer.msg("删除成功！");
+                }else if(res.code !=1){
+                    layer.msg('返回数据错误！')
                 }
             }
         });
     });
+}
+
+//扫描件回传、附件资料的删除
+function delFile(that,id) {
+    delData(that,id,"/quality/Unitqualitymanage/relationDel");
+}
+
+//在线填报-点击作废
+function toVoidOnLine(that,id) {
+    var pid = $(that).attr('pid');
+    layer.confirm('是否作废该数据? 如果作废,会生成一个新的待提交表单', function(index){
+        $.ajax({
+            url: "/quality/qualityform/cancel",
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                $('.controlTitle[id='+ pid +']').click();
+                $('.controlTitle[id='+ pid +']').click();
+                layer.msg("该数据已作废了！");
+            },
+            error:function () {
+                layer.msg("作废操作异常");
+            }
+        });
+        layer.close(index);
+    });
+
+}
+
+//下载list封装的方法
+function downloadList(id,url) {
+    $.ajax({
+        url: url,
+        type:"post",
+        dataType: "json",
+        data:{id:id},
+        success: function (res) {
+            if(res.code != 1){
+                layer.msg(res.msg);
+            }else {
+                $("#form_container").empty();
+                var str = "";
+                str += ""
+                    + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                    + "<form name=download"+id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
+                    + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                    + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                    + "<button type='submit' class=btn" + id +"></button>"
+                    + "</form>"
+                $("#form_container").append(str);
+                $("#form_container").find(".btn" + id).click();
+            }
+
+        }
+    })
+}
+
+//点击下面的列表的下载
+function downConFileImp(id) {
+    downloadList(id,"/quality/Unitqualitymanage/relationDownload");
+}
+
+//点击下面的列表的下载
+function downConFileData(id) {
+    downloadList(id,"/quality/Unitqualitymanage/relationDownload");
+}
+
+//下载封装的方法
+function downloadFrom(id,url) {
+    $.ajax({
+        url: url,
+        type:"post",
+        dataType: "json",
+        data:{formId:id},
+        success: function (res) {
+            if(res.code != 1){
+                layer.msg(res.msg);
+            }else {
+                $("#form_container_from").empty();
+                var str = "";
+                str += ""
+                    + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                    + "<form name=download"+id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
+                    + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                    + "<input class='file_url' style='display: none;' name='formId' value="+ id +">"
+                    + "<button type='submit' class=btn" + id +"></button>"
+                    + "</form>"
+                $("#form_container_from").append(str);
+                $("#form_container_from").find(".btn" + id).click();
+            }
+        }
+    })
+}
+
+//在线填报-下载
+function downOnLine(id) {
+    downloadFrom(id,"/quality/element/formDownload");
 }
 
 //添加自定义属性

@@ -246,3 +246,9 @@
     background: #dbdbdb;
     color: #fff;
 }
+.filename{
+    width: 100px;
+    display: inline-block;
+    word-wrap:break-word;
+    word-break:break-all;
+}
