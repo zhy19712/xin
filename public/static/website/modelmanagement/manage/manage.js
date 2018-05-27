@@ -140,6 +140,7 @@ layui.use('element', function(){
                 success: function (res) {
                     //在线填报
                     var tbody = [];
+                    var admin_id = res.admin_id;    //当前登录用户ID
                     tbody.push('<tr><th class="table-title" colspan="4">在线填报</th></tr>');
                     tbody.push('<tr>');
                     tbody.push('<th>填报人</th>');
@@ -155,8 +156,34 @@ layui.use('element', function(){
                         tbody.push('</td>');
                         tbody.push('</tr>');
                     }
+                    //<i class="fa fa-search"></i>
+                    //<i class="fa fa-edit"></i>
+                    //<i class="fa fa-trash-o"></i>
+                    //<i class="fa fa-download"></i>
+                    //<i class="fa fa-times"></i>
                     for(var i = 0;i<res.form_info.length;i++){
                         var data = res.form_info[i];
+                        var user_id = data.user_id;     //填报人ID
+                        var nickname = data.nickname;    //填报人名字
+                        var currentApproverId = data.CurrentApproverId;    //审批人ID
+                        var approveStatus = data.ApproveStatus;    //审批状态
+                        switch(data.ApproveStatus)
+                        {
+                            case -2:
+                                data.ApproveStatus = '作废';
+                                break;
+                            case -1:
+                                data.ApproveStatus = '被退回';
+                                break;
+                            case 0:
+                                data.ApproveStatus = '待提交';
+                                break;
+                            case 1:
+                                data.ApproveStatus = '审批中';
+                                break;
+                            default:
+                                data.ApproveStatus = '已审批';
+                        }
                         tbody.push('<tr>');
                         tbody.push('<td>');
                         tbody.push(data.nickname);
@@ -167,7 +194,45 @@ layui.use('element', function(){
                         tbody.push('<td>');
                         tbody.push(data.ApproveStatus);
                         tbody.push('</td>');
-                        tbody.push('<td><i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('<td class="btnWrap">');
+                        if(admin_id==user_id){
+                            if(approveStatus==-1){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                            }
+                            if(approveStatus==-2){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==0){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                            }
+                            if(approveStatus==1){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==2){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
+                            }
+                        }else if(admin_id==currentApproverId){
+                            if(approveStatus==1){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                        }else{
+                            if(approveStatus==-1){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                            }
+                            if(approveStatus==-2){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==0){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==1){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==2){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
+                            }
+                        }
+                        tbody.push('</td>');
                         tbody.push('</tr>');
                     }
                     tbody.push('<tr><th class="table-title" colspan="4">扫描上传</th></tr>');
