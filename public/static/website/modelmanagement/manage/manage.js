@@ -132,9 +132,9 @@ layui.use('element', function(){
                 url: "/modelmanagement/Manage/getLineReport",
                 type: "post",
                 data: {
-                    id: 56,
-                    procedureid: 22,
-                    unit_id: 18
+                    id: id,
+                    procedureid: procedureid,
+                    unit_id: unit_id
                 },
                 dataType: "json",
                 success: function (res) {
@@ -148,7 +148,13 @@ layui.use('element', function(){
                     tbody.push('<th>操作</th>');
                     tbody.push('</tr>');
                     $('table[uid='+ id +'] tbody').empty();
-                    $('table[uid='+ id +'] tbody').empty();
+                    if(res.form_info==''){
+                        tbody.push('<tr>');
+                        tbody.push('<td class="td-empty" colspan="4">');
+                        tbody.push('无在线填报数据');
+                        tbody.push('</td>');
+                        tbody.push('</tr>');
+                    }
                     for(var i = 0;i<res.form_info.length;i++){
                         var data = res.form_info[i];
                         tbody.push('<tr>');
@@ -171,8 +177,16 @@ layui.use('element', function(){
                     tbody.push('<th>上传日期</th>');
                     tbody.push('<th>操作</th>');
                     tbody.push('</tr>');
+                    if(res.upload_form_sao==''){
+                        tbody.push('<tr>');
+                        tbody.push('<td class="td-empty" colspan="4">');
+                        tbody.push('无扫描上传数据');
+                        tbody.push('</td>');
+                        tbody.push('</tr>');
+                    }
                     for(var j = 0;j<res.upload_form_sao.length;j++){
                         var data = res.upload_form_sao[j];
+                        console.log(data);
                         tbody.push('<tr>');
                         tbody.push('<td>');
                         tbody.push(data.data_name);
@@ -193,8 +207,16 @@ layui.use('element', function(){
                     tbody.push('<th>上传日期</th>');
                     tbody.push('<th>操作</th>');
                     tbody.push('</tr>');
+                    if(res.upload_form_fu==''){
+                        tbody.push('<tr>');
+                        tbody.push('<td class="td-empty" colspan="4">');
+                        tbody.push('无图像资料数据');
+                        tbody.push('</td>');
+                        tbody.push('</tr>');
+                    }
                     for(var j = 0;j<res.upload_form_fu.length;j++){
                         var data = res.upload_form_fu[j];
+                        console.log(data);
                         tbody.push('<tr>');
                         tbody.push('<td>');
                         tbody.push(data.data_name);
