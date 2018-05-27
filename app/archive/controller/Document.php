@@ -189,9 +189,6 @@ class Document extends Permissions
             {
                 return json(['code' => 1]);
             }
-        }else
-        {
-            return json(['code' => 1]);
         }
 
         $mod = DocumentModel::get(input('id'));
