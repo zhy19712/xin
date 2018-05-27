@@ -94,6 +94,9 @@
         width: 100%!important;
         height: 100%!important;
     }
+    #noborder tr th{
+        border: none!important;
+    }
 </style>
 
 <div id="nodeZtree" data-options="region:'west',title:'文档目录树',split:true" style="width:260px;">
@@ -139,7 +142,7 @@
         <div class="layui-upload-list">
             <table class="layui-table">
                 <thead>
-                <tr><th>文件名</th>
+                <tr><th style="width: 432px;">文件名</th>
                     <th>大小</th>
                     <th>状态</th>
                     <th>操作</th>
@@ -148,7 +151,7 @@
             </table>
         </div>
         <div class="layui-upload-list">
-            <table class="layui-table" border="0">
+            <table class="layui-table" border="0" id="noborder">
                 <thead>
                     <tr>
                         <th>

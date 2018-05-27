@@ -331,6 +331,7 @@ var tableItem = $('#tableItem').DataTable({
       }
     },
     {
+      "searchable": false,
       "orderable": false,
       targets: [4],
       render: function (data, type, row) {
