@@ -516,16 +516,12 @@ class Element extends Permissions
                  ->find();
             $cpr_id=$cpr['id'];//获取cpr_id
 
-            //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
-            if (count($res)>0) {
-                return json(['msg' => 'fail','remark'=>'线上流程','EvaluateDate'=>$unit['EvaluateDate'],'EvaluateDate'=>$unit['EvaluateDate']]);
-            }
-            //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
-            else {
-                $copy = Db::name('quality_upload')
+            //去附件表里找是否有扫描件上传，如果有就有权限修改
+            $copy = Db::name('quality_upload')
                     ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
                     ->find();
-                if ($copy) {
+              if(count($copy)>0)
+                {
                     $flag=$this->evaluatePremission();
                     if($flag==1)
                     {
@@ -536,13 +532,24 @@ class Element extends Permissions
                         return json(['msg' => 'fail','remark'=>'权限不足']);
                     }
                 }
-                else {
-                    return json(['msg' => 'fail','remark'=>'尚未上传验评扫描件或在线流程未完成审批']);
-                }
-            }
+                //如果没有扫描件去检查线上流程是否有验评结果
+               else
+                   {
+                       if (count($res) > 0)
+                       {
+                           return json(['msg' => 'fail', 'remark' => '线上流程', 'EvaluateDate' => $unit['EvaluateDate'], 'EvaluateDate' => $unit['EvaluateDate']]);
+                       }
+                       else
+                       {
+                           return json(['msg' => 'fail', 'remark' => '尚未上传验评扫描件或在线流程未完成审批']);
+                       }
+                   }
+
     }
+
     //将表单中的中文日期转为英文
     public  function setFormattime($timestr)
+
     {
         $arr = date_parse_from_format('Y年m月d日',$timestr);
         $time = mktime(0,0,0,$arr['month'],$arr['day'],$arr['year']);
