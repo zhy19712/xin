@@ -365,10 +365,7 @@ class Qualitymass extends Permissions
             {
                 $data = [];
             }
-
             return json(["code"=>1,"data"=>$data]);
-
-
         }
     }
 
