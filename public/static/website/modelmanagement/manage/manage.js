@@ -106,20 +106,6 @@ function nodeModelNumber() {
     return result;
 }
 
-//添加自定义属性
-$('#addAttr').click(function () {
-    var attrGroup = [];
-    attrGroup.push('<div class="layui-input-inline attrGroup">');
-    attrGroup.push('<input type="text" name="attrKey" required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
-    attrGroup.push('<input type="text" name="attrVal" required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
-    attrGroup.push('</div>');
-    attrGroup.push('<div class="layui-form-mid layui-word-aux">');
-    attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
-    attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
-    attrGroup.push('</div>');
-    $('#attrGroup').append(attrGroup.join(' '));
-});
-
 //验收资料
 layui.use('element', function(){
     var element = layui.element;
@@ -156,11 +142,6 @@ layui.use('element', function(){
                         tbody.push('</td>');
                         tbody.push('</tr>');
                     }
-                    //<i class="fa fa-search"></i>
-                    //<i class="fa fa-edit"></i>
-                    //<i class="fa fa-trash-o"></i>
-                    //<i class="fa fa-download"></i>
-                    //<i class="fa fa-times"></i>
                     for(var i = 0;i<res.form_info.length;i++){
                         var data = res.form_info[i];
                         var user_id = data.user_id;     //填报人ID
@@ -301,3 +282,67 @@ layui.use('element', function(){
         }
     });
 });
+
+//添加自定义属性
+$('#addAttr').click(function () {
+    var attrGroup = [];
+    attrGroup.push('<div class="layui-input-inline attrGroup">');
+    attrGroup.push('<input type="text" name="attrKey" required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
+    attrGroup.push('<input type="text" name="attrVal" required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
+    attrGroup.push('</div>');
+    attrGroup.push('<div class="layui-form-mid layui-word-aux">');
+    attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
+    attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
+    attrGroup.push('</div>');
+    $('#attrGroup').append(attrGroup.join(' '));
+});
+
+//保存自定义属性
+function saveAttr(that) {
+    var attrKey = $(that).parents('#attrGroup').find('input[name="attrKey"]').val();
+    console.log(attrKey);
+    var attrVal = $(that).parents('#attrGroup').find('input[name="attrVal"]').val();
+    console.log(attrVal);
+    $.ajax({
+        url: "/modelmanagement/Qualitymass/addAttr",
+        type: "post",
+        data: {
+            add_id:nodeId,
+            attrKey:attrKey,
+            attrVal:attrVal
+        },
+        dataType: "json",
+        success: function (res) {
+            layer.msg(res.msg);
+        }
+    });
+}
+
+//回显自定义属性
+function getOne() {
+    $.ajax({
+        url: "/modelmanagement/Qualitymass/getOne",
+        type: "post",
+        data: {
+            add_id:nodeId
+        },
+        dataType: "json",
+        success: function (res) {
+            $('#attrGroup').empty();
+            var attrGroup = [];
+            for(var i = 0;i<res.data.length;i++){
+                var attrKey = res.data[i].attr_name;
+                var attrVal = res.data[i].attr_value;
+                attrGroup.push('<div class="layui-input-inline attrGroup">');
+                attrGroup.push('<input type="text" name="attrKey" value='+ attrKey +' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
+                attrGroup.push('<input type="text" name="attrVal" value='+ attrVal +' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
+                attrGroup.push('</div>');
+                attrGroup.push('<div class="layui-form-mid layui-word-aux">');
+                attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
+                attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
+                attrGroup.push('</div>');
+            }
+            $('#attrGroup').append(attrGroup.join(' '));
+        }
+    });
+}
