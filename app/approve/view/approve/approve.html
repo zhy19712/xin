@@ -271,9 +271,10 @@
                     if(res.msg == "fail"){
                         $("#nextStep").hide();
                         $("#nextStepPeople").text("审批完成");
+                        $("#subPeople").val("退回起草人  "+res.creater);
                     }else if(res.msg == "success"){
                         $("#nextStep").show();
-                        $("#subPeople").val(res.creater);
+                        $("#subPeople").val("退回起草人  "+res.creater);
                     }
                 }
             });
@@ -315,6 +316,25 @@
             typeId = data.value;
             if(typeId == -1){
                 $("#nextStepPeople").text("");
+            }else if(typeId == 1){
+                $.ajax({
+                    url:"/quality/qualityform/getStep",
+                    type:"post",
+                    data:{
+                        form_id:$("#dataId").val()
+                    },
+                    success:function (res) {
+                        //返回成功可以选下一个人 fail不能
+                        if(res.msg == "fail"){
+                            $("#nextStep").hide();
+                            $("#nextStepPeople").text("审批完成");
+                            $("#subPeople").val("退回起草人  "+res.creater);
+                        }else if(res.msg == "success"){
+                            $("#nextStep").show();
+                            $("#subPeople").val("退回起草人  "+res.creater);
+                        }
+                    }
+                });
             }
         });
     });
