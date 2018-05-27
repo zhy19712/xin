@@ -102,4 +102,20 @@ class Manage extends Permissions
             return json(["code"=>1,"form_info"=>$form_info,"relation_form"=>$relation_form,"upload_form"=>$upload_form]);
         }
     }
+
+    /**
+     * 点击模型返回管理信息中的属性信息
+     * @return \think\response\Json
+     */
+    public function getManageInfo()
+    {
+        if ($this->request->isAjax()) {
+            //实例化模型类
+            $model =  new QualitymassModel();
+            $model_id = input('post.model_id')?input('post.model_id'):"";
+//            $model_id = 13;
+            $attribute = $model->getUnitInfo($model_id);
+            return json(["code"=>1,"attribute"=>$attribute]);
+        }
+    }
 }
