@@ -73,4 +73,11 @@ class QualityCustomAttributeModel extends Model
         return $attr;
     }
 
+    //根据模型id查询所有的已经自定义属性的值
+    public function getAllOne($id)
+    {
+        $data = $this->where("unit_id",$id)->select();
+        return $data;
+    }
+
 }

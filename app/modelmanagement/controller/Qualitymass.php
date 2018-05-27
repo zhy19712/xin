@@ -345,4 +345,28 @@ class Qualitymass extends Permissions
         return json($flag);
     }
 
+    /**
+     * 返回已经添加过得自定义属性值
+     * @return \think\response\Json
+     */
+    public function getOne()
+    {
+        if($this->request->isAjax()){
+            //实例化模型类
+            $model = new QualityCustomAttributeModel();
+            //前台传过来的值
+            $param = input('param.');
+            $id = isset($param['add_id']) ? $param['add_id'] : 0;
+
+            //回显查询已经添加的自定义属性值
+            $data = $model->getAllOne($id);
+
+            if(empty($data))
+            {
+                $data = [];
+            }
+            return json(["code"=>1,"data"=>$data]);
+        }
+    }
+
 }
