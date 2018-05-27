@@ -84,6 +84,16 @@
         height: 100%;
         border: none;
     }
+    .fa.fa-plus:before{
+        color: #fff;
+    }
+    .fa.fa-plus:hover:before {
+        color: #fff;
+    }
+    #testList div:last-child{
+        width: 100%!important;
+        height: 100%!important;
+    }
 </style>
 
 <div id="nodeZtree" data-options="region:'west',title:'文档目录树',split:true" style="width:260px;">
@@ -119,18 +129,49 @@
     </div>
 </div>
 
+<div style="display: none;" id="fileListBox">
+    <div  style="padding-top: 0;">
+        <div style="background-color:#0b1014;color: #ffffff;overflow: hidden">
+            <i class="fa fa-plus" style="display: block;font-size: 70px;color: #fff;float: left;"></i>
+            <h3 style="float: left;width: 700px;font-size: 25px;margin:2px 0 8px 4px;">选择文件</h3>
+            <p style="float: left;width: 700px;margin-left: 4px;">将文件添加到上传队列，然后点击开始上传按钮</p>
+        </div>
+        <div class="layui-upload-list">
+            <table class="layui-table">
+                <thead>
+                <tr><th>文件名</th>
+                    <th>大小</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr></thead>
+                <tbody id="demoList"></tbody>
+            </table>
+        </div>
+        <div class="layui-upload-list">
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <button type="button"  id="testList" style="margin-left: 5px;">增加文件</button>
+                            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                        </th>
+                        <th><span id="allsize"></span></th>
+                        <th><span id="status">0%</span></th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!--<button type="button"  id="testList" style="margin-left: 5px;">增加文件</button>-->
+        <!--<button type="button" class="layui-btn" id="testListAction">开始上传</button>-->
+        <!--<div id="status">0%</div>-->
+    </div>
+</div>
 
 {include file="../../public/common_footer"}
 <script src="__WEBSITE__/archive/document/index1.js"></script>
 </body>
 <script type="text/javascript">
-
-  // $(".mybtn >div").click(function () {
-  //     if (!selfid) {
-  //         layer.msg("请选择节点", {time: 1500, shade: 0.1});
-  //         return;
-  //     }else if(selfid){
-  //         $(".mybtn >div").attr("id","test3");
   // $("#picker").click(function(){
   //    uploader = WebUploader.create({
   //        auto: true,
@@ -189,60 +230,7 @@
   //        $list.val('上传出错');
   //    });
   // });
-  // layui.upload.render({
-  //     elem: '#test3',
-  //     url: "{:url('admin/common/upload?module=document&use=archive')}",
-  //     accept: 'file',//普通文件
-  //     exts: 'doc|docx|pdf',
-  //     before: function(obj){
-  //         obj.preview(function(index, file, result){
-  //             uploadName = file.name;
-  //             console.log(file.name);//获取文件名，result就是base64
-  //         })
-  //     },
-  //     done: function(res){
-  //         console.log(res)
-  //         if(res.code == 2){
-  //             uploadId = res.id;
-  //             $.ajax({
-  //                 url:"{:url('documenttype/add')}",
-  //                 data:{
-  //                     name: uploadName, //名称
-  //                     attachmentId: uploadId,  //文档关联Id
-  //                     type:selfid,
-  //                 },
-  //                 type:'post',
-  //                 success:function(res) {
-  //                     console.log(res)
-  //                     if(res.code == 1) {
-  //                         var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
-  //                         tableItem.ajax.url(url).load();
-  //                     } else {
-  //                         layer.msg('获取数据失败！');
-  //                     }
-  //                 }
-  //             })
-  //             layer.msg("上传成功！",{time:1500})
-  //         }else{
-  //             layer.msg("上传失败！",{time:1500})
-  //         }
-  //     },
-  // });
   //     }
-  // });
-
-
-
-  //关联模型
-  $("#model").click(function (){
-    if (!clickId) {
-      layer.msg("请先选择一条数据！", {time: 1500, shade: 0.1});
-      return;
-    }else {
-      document.cookie="unitId="+clickId;
-      window.open('./association');
-    }
-  });
 
 </script>
 </html>

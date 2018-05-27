@@ -62,7 +62,9 @@ class Documenttype extends Permissions
         $doctype = new DocumentTypeModel();
 
         $id = input("post.id");
-        $result = $model->getOne($id);
+
+        $result = $model->judge($id);
+
         if(!empty($result))
         {
             return json(["code"=>-1,'msg'=>"当前节点下有文件无法删除！"]);
