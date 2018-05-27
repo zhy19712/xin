@@ -175,6 +175,19 @@ Class DocumentModel extends Model
             return ['code' => -1,'msg' => $e->getMessage()];
         }
     }
+
+    /*
+     * 根据文档删除一条文档记录
+     */
+    public function delCate($id)
+    {
+        try{
+            $this->where("id",$id)->delete();
+            return ['code' => 1, 'msg' => '删除成功'];
+        }catch(PDOException $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
+    }
 }
 
 Class DocumentAttachment extends Model

@@ -94,6 +94,7 @@ class Documenttype extends Permissions
 
 //        return $this->documentTypeService->del(input('id'));
         $flag = $doctype->del($id);
+
         return json($flag);
 
     }
