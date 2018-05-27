@@ -29,10 +29,18 @@ Class DocumentModel extends Model
      * @param $mod
      * @return array
      */
-    public function add($mod)
+    public function add($param)
     {
-        $res = $this->allowField(true)->save($mod);
-        return $res;
+        try{
+            $result = $this->allowField(true)->save($param);
+            if(false === $result){
+                return ['code' => -1,'msg' => $this->getError()];
+            }else{
+                return ['code' => 1,'msg' => '添加成功'];
+            }
+        }catch (PDOException $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
     }
 
     /**
