@@ -69,7 +69,6 @@ class Documenttype extends Permissions
         }
 
         $data = $model->getpicinfo($id);
-
         if(!empty($data))
         {
             foreach ($data as $k=>$v)
@@ -95,7 +94,6 @@ class Documenttype extends Permissions
 
 //        return $this->documentTypeService->del(input('id'));
         $flag = $doctype->del($id);
-
         return json($flag);
 
     }
