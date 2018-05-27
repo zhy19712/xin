@@ -9,6 +9,7 @@
 namespace app\quality\controller;
 
 use app\admin\controller\Permissions;
+use app\quality\controller\Qualityform;
 use app\quality\model\DivisionControlPointModel;
 use app\quality\model\DivisionUnitModel;
 use app\quality\model\QualityFormInfoModel;
@@ -289,7 +290,7 @@ class Element extends Permissions
             $phpword->setValue('{'.$item['Name'].'}', $item['Value']);
         }
         $docname = $phpword->save();
-
+        ob_end_clean();
         header( 'Content-type:text/html;charset=utf-8');
         header('Content-Disposition: attachment; filename="' . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . '.docx"');
         //header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
