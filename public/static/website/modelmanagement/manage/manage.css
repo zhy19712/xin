@@ -229,7 +229,7 @@
 .layui-control-content .layui-table tbody tr:hover, .layui-control-content .layui-table thead tr, .layui-control-content .layui-table-click, .layui-control-content .layui-table-header, .layui-control-content .layui-table-hover, .layui-control-content .layui-table-mend, .layui-control-content .layui-table-patch, .layui-control-content .layui-table-tool, .layui-control-content [lay-even].layui-table tr:nth-child(2n){
     background: none;
 }
-.layui-table th,.layui-table td{
+.layui-acceptance-data .layui-table th,.layui-acceptance-data .layui-table td{
     padding: 0;
     height: 37px;
     line-height: normal;

@@ -215,15 +215,15 @@
                         var count = 0;
                         for (var i = 0; i < data.length; i++) {
                             acceptanceDataTemp.push('<div class="layui-colla-item">');
-                            acceptanceDataTemp.push('<h2 class="layui-colla-title layui-work-title workTitle">工序'+ (count++) +'：'+ data[i].name +'</h2>');
+                            acceptanceDataTemp.push('<h2 class="layui-colla-title layui-work-title workTitle">工序' + (count++) + '：' + data[i].name + '</h2>');
                             for (var j = 0; j < data[i].controlpoint_info.length; j++) {
                                 var controlData = data[i].controlpoint_info[j];
                                 acceptanceDataTemp.push('<div class="layui-colla-content layui-work-content">');
                                 acceptanceDataTemp.push('<div class="layui-collapse layui-control-data" id="controlData" lay-filter="control" lay-accordion>');
-                                acceptanceDataTemp.push('<h2 class="layui-colla-title layui-control-title controlTitle" unit_id='+ data[i].unit_id +' id='+ controlData.id +' procedureid='+ controlData.procedureid +'>'+ controlData.name +'</h2>');
+                                acceptanceDataTemp.push('<h2 class="layui-colla-title layui-control-title controlTitle" unit_id=' + data[i].unit_id + ' id=' + controlData.id + ' procedureid=' + controlData.procedureid + '>' + controlData.name + '</h2>');
                                 acceptanceDataTemp.push('<div class="layui-colla-content layui-control-content">');
                                 acceptanceDataTemp.push('<div class="layui-table-title tableTitle"></div>');
-                                acceptanceDataTemp.push('<table class="layui-table" uid='+ controlData.id +' id="online'+ controlData.id +'">');
+                                acceptanceDataTemp.push('<table class="layui-table" uid=' + controlData.id + ' id="online' + controlData.id + '">');
                                 acceptanceDataTemp.push('<tbody>');
                                 acceptanceDataTemp.push('</tbody>');
                                 acceptanceDataTemp.push('</table>');
@@ -234,7 +234,7 @@
                             acceptanceDataTemp.push('</div>');
                         }
                         $('#acceptanceData').append(acceptanceDataTemp.join(''));
-                        layui.use('element', function(){
+                        layui.use('element', function () {
                             var element = layui.element;
                             element.render('collapse');
                         });
@@ -371,7 +371,8 @@
             </div>
         </div>
         <div title="验收资料" style="overflow:auto;padding:10px;display:none;">
-            <div class="layui-collapse layui-acceptance-data" id="acceptanceData" lay-filter="collapse" lay-accordion></div>
+            <div class="layui-collapse layui-acceptance-data" id="acceptanceData" lay-filter="collapse"
+                 lay-accordion></div>
         </div>
     </div>
 </div>
@@ -427,25 +428,25 @@
     //模板信息
     modelInfo = function (uObjSubID) {
         $.ajax({
-            url: "/admin/main/managementInfo",
+            url: "./getManageInfo",
             type: "post",
             data: {
                 picture_number: uObjSubID
             },
             dataType: "json",
             success: function (res) {
-                $('#site').text(res.unit_info.site);
-                $('#serial_number').text(res.unit_info.coding);
-                $('#hinge').text(res.unit_info.hinge);
-                $('#quantities').text(res.unit_info.quantities);
-                $('#en_type').text(res.unit_info.en_type);
-                $('#ma_bases').text(res.unit_info.ma_bases);
-                $('#su_basis').text(res.unit_info.su_basis);
-                $('#el_start').text(res.unit_info.el_start);
-                $('#el_cease').text(res.unit_info.el_cease);
-                $('#pile_number').text(res.unit_info.pile_number);
-                $('#start_date').text(res.unit_info.start_date);
-                $('#completion_date').text(res.unit_info.completion_date);
+                $('#site').text(res.attribute.site);
+                $('#serial_number').text(res.attribute.coding);
+                $('#hinge').text(res.attribute.hinge);
+                $('#quantities').text(res.attribute.quantities);
+                $('#en_type').text(res.attribute.en_type);
+                $('#ma_bases').text(res.attribute.ma_bases);
+                $('#su_basis').text(res.attribute.su_basis);
+                $('#el_start').text(res.attribute.el_start);
+                $('#el_cease').text(res.attribute.el_cease);
+                $('#pile_number').text(res.attribute.pile_number);
+                $('#start_date').text(res.attribute.start_date);
+                $('#completion_date').text(res.attribute.completion_date);
             }
         });
     }
