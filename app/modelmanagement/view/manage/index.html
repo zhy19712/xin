@@ -1,6 +1,9 @@
 {include file="../app/public/common_header.html"}
 <link rel="stylesheet" href="__WEBSITE__/modelmanagement/manage/manage.css">
 <input type="hidden" id="modelIdArr">
+<input type="hidden" id="id">
+<input type="hidden" id="procedureid">
+<input type="hidden" id="unit_id">
 <div data-options="region:'west',title:'工程划分',split:true,collapsed:false" style="width:260px;">
     <select name="" id="">
         <option value="">标段1</option>
@@ -32,30 +35,32 @@
             </ul>
         </div>
         <div data-options="region:'center'" class="layer-center">
-            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD" width="100%"
+                    height="100%"></object>
             <!-- 初始化 -->
-            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+            <script language="javascript" for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
                 var modelPath = "http://192.168.1.2:8008/default.aspx?dir=url_res02&path=";
                 $.ajax({
                     url: "/modelmanagement/qualitymass/resourcePagName",
                     type: "post",
                     dataType: "json",
-                    data:{
-                        model_type:2
+                    data: {
+                        model_type: 2
                     },
                     success: function (res) {
                         //模型名称
                         var modelName = res.pag_name;
-                        RealBimOcx.SwitchBIMSceneSimple(modelPath,modelName);
+                        RealBimOcx.SwitchBIMSceneSimple(modelPath, modelName);
                     }
                 });
                 RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
-                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
-                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont01", "微软雅黑", true, true, 14, 14, 32, 1.0, 0 * 64, "");
+                RealBimOcx.CreateAGolFont("CustomFont02", "微软雅黑", true, true, 12, 12, 8, 1.0, 0 * 64, "");
             </script>
             <!-- 初始化完成 -->
-            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
-                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+            <script language="javascript" for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)"
+                    type="text/javascript">
+                if (CompleteEvent == "LoadMainScene" && retError == 0) {
                     RealBimOcx.SetAllHugeObjSubValidState(1);
                     RealBimOcx.SetSceHugeObjVisible(true);
                 }
@@ -70,7 +75,7 @@
                         success: function (res) {
                             var data = res.data;
                             //透明掉全部
-                            RealBimOcx.SetAllSubClrInfos(20,255,0xff529df8);
+                            RealBimOcx.SetAllSubClrInfos(20, 255, 0xff529df8);
                             //未验评 un_evaluation
                             /*for(var k = 0;k<data.un_evaluation.length;k++){
                                 var allUObjSubID = data.un_evaluation[k];
@@ -79,24 +84,24 @@
                                 RealBimOcx.BatchAddSubClrInfoEnd();
                             }*/
                             //优良 excellent
-                            for(var i = 0;i<data.excellent.length;i++){
+                            for (var i = 0; i < data.excellent.length; i++) {
                                 var exUObjSubID = data.excellent[i];
                                 RealBimOcx.BatchAddSubClrInfoBegin();
-                                RealBimOcx.AddSubClrPercent(exUObjSubID,1,choiceness_pigment);    //第二个参数为透明度
+                                RealBimOcx.AddSubClrPercent(exUObjSubID, 1, choiceness_pigment);    //第二个参数为透明度
                                 RealBimOcx.BatchAddSubClrInfoEnd();
                             }
                             //合格 qualified
-                            for(var j = 0;j<data.qualified.length;j++){
+                            for (var j = 0; j < data.qualified.length; j++) {
                                 var quUObjSubID = data.qualified[j];
                                 RealBimOcx.BatchAddSubClrInfoBegin();
-                                RealBimOcx.AddSubClrPercent(quUObjSubID,1,qualified_pigment);    //第二个参数为透明度
+                                RealBimOcx.AddSubClrPercent(quUObjSubID, 1, qualified_pigment);    //第二个参数为透明度
                                 RealBimOcx.BatchAddSubClrInfoEnd();
                             }
                             // 不合格 unqualified
-                            for(var l = 0;l<data.unqualified.length;l++){
+                            for (var l = 0; l < data.unqualified.length; l++) {
                                 var unQuUObjSubID = data.unqualified[l];
                                 RealBimOcx.BatchAddSubClrInfoBegin();
-                                RealBimOcx.AddSubClrPercent(unQuUObjSubID,1,un_evaluation_pigment);    //第二个参数为透明度
+                                RealBimOcx.AddSubClrPercent(unQuUObjSubID, 1, un_evaluation_pigment);    //第二个参数为透明度
                                 RealBimOcx.BatchAddSubClrInfoEnd();
                             }
                         }
@@ -111,23 +116,21 @@
                     dataType: "json",
                     success: function (res) {
                         $('#excellent_number').text(res.data.excellent);
-                        $('#excellent_rate').text(res.data.excellent_percent+'%');
+                        $('#excellent_rate').text(res.data.excellent_percent + '%');
                         $('#qualified_number').text(res.data.qualified);
-                        $('#qualified_rate').text(res.data.qualified_percent+'%');
+                        $('#qualified_rate').text(res.data.qualified_percent + '%');
                         $('#unchecked_number').text(res.data.unqualified);
-                        $('#unchecked_rate').text(res.data.unqualified_percent+'%');
+                        $('#unchecked_rate').text(res.data.unqualified_percent + '%');
                     }
                 });
             </script>
             <!-- 点击模型事件 -->
-            <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
-            /*    RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
-                RealBimOcx.BatchAddSubClrInfoBegin();
-                RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);    //第二个参数为透明度
-                RealBimOcx.BatchAddSubClrInfoEnd();*/
+            <script language="javascript" for="RealBimOcx"
+                    EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)"
+                    type="text/javascript">
+                uObjSubIdSingle = uObjSubID;        //自定义回显需要用到的参数
+                review();   //重置模型颜色
                 uObjSubIDArr.push(uObjSubID);
-                //显示管理信息
-                //easyUiPanelToggle();
                 //显示单元信息
                 $('#tabs').show();
                 //隐藏质量分布
@@ -197,84 +200,51 @@
                     var infoTemplateHtml = infoTemplate.join(',');
                     $('#layuiCollapse').append(infoTemplateHtml);
                 }*/
-                //工序信息模板
-                /*function workInfoTemplateFun(res) {
-                    $('#layuiTimeline').empty();
-                    var workInfoTemplate = [];
-                    for(var i = 0;i<res.processinfo.length;i++){
-                        var point_step = res.processinfo[i].point_step==1?'current':''; //执行到某个节点
-                        workInfoTemplate.push('<li class="layui-timeline-item">');
-                        workInfoTemplate.push('<i class="layui-icon layui-timeline-axis '+ point_step +'">&#xe617;</i>');
-                        workInfoTemplate.push('<div class="layui-timeline-content layui-text">');
-                        workInfoTemplate.push('<div class="layui-timeline-title">'+ res.processinfo[i].name +'</div>');
-                        workInfoTemplate.push('</div>');
-                        workInfoTemplate.push('</li>');
-                    }
-                    var workInfoTemplateHtml = workInfoTemplate.join('');
-                    $('#layuiTimeline').append(workInfoTemplateHtml);
-                }*/
-                //质量表格模板
-                /*function qualityTableTemplateFun(res) {
-                    $('#qualityTable tbody').empty();
-                    var qualityTableTemplate = [];
-                    for(var i = 0;i<res.processinfo.length;i++){
-                        if(res.processinfo[i].form_list.length>0){
-                            var form_list = res.processinfo[i].form_list;
-                        }
-                        if(!form_list){
-                            return false;
-                        }
-                        for(var j = 0;j<form_list.length;j++){
-                            qualityTableTemplate.push('<tr>');
-                            if(j == 0){
-                                qualityTableTemplate.push('<td rowspan='+ form_list.length +'>'+ res.processinfo[i].name +'</td>');
-                            }
-                            qualityTableTemplate.push('<td class="bg">'+ form_list[j].form_name +'</td>');
-                            qualityTableTemplate.push('<td>');
-                            qualityTableTemplate.push('<i class="fa fa-eye faEye" onclick="seeOnLine(this)" formId='+ form_list[j].form_id +' cprId='+ form_list[j].cpr_id +'></i>');
-                            qualityTableTemplate.push('<i class="fa fa-search" onclick="search(this)" pid='+ res.processinfo[i].pid +' uid='+ form_list[j].division_id +' ></i>');
-                            qualityTableTemplate.push('</td>');
-                            qualityTableTemplate.push('</tr>');
-                        }
-                    }
-                    var qualityTableTemplateHtml = qualityTableTemplate.join('');
-                    $('#qualityTable tbody').append(qualityTableTemplateHtml);
-                }*/
-
-                /*search = function (that) {
-                    var pid = $(that).attr('pid');
-                    var uid = $(that).attr('uid');
-                    document.cookie="unitEnginNoId="+pid;
-                    document.cookie="divisionId="+uid;
-                    window.open('./controll');
-                }*/
 
                 //验收资料
-
-                //获取模板信息
                 $.ajax({
-                    url: "/admin/main/managementInfo",
+                    url: "/modelmanagement/Manage/getAcceptance",
                     type: "post",
                     data: {
-                        picture_number:uObjSubID
+                        model_id: uObjSubID
                     },
                     dataType: "json",
                     success: function (res) {
-                        console.log(res);
-                        $('#site').text(res.unit_info.site);
-                        $('#serial_number').text(res.unit_info.coding);
-                        $('#hinge').text(res.unit_info.hinge);
-                        $('#quantities').text(res.unit_info.quantities);
-                        $('#en_type').text(res.unit_info.en_type);
-                        $('#ma_bases').text(res.unit_info.ma_bases);
-                        $('#su_basis').text(res.unit_info.su_basis);
-                        $('#el_start').text(res.unit_info.el_start);
-                        $('#el_cease').text(res.unit_info.el_cease);
-                        $('#pile_number').text(res.unit_info.pile_number);
-                        $('#start_date').text(res.unit_info.start_date);
-                        $('#completion_date').text(res.unit_info.completion_date);
+                        $('#acceptanceData').empty();
+                        var data = res.processinfo;
+                        var acceptanceDataTemp = [];
+                        var count = 0;
+                        for (var i = 0; i < data.length; i++) {
+                            acceptanceDataTemp.push('<div class="layui-colla-item">');
+                            acceptanceDataTemp.push('<h2 class="layui-colla-title layui-work-title workTitle">工序' + (count++) + '：' + data[i].name + '</h2>');
+                            for (var j = 0; j < data[i].controlpoint_info.length; j++) {
+                                var controlData = data[i].controlpoint_info[j];
+                                acceptanceDataTemp.push('<div class="layui-colla-content layui-work-content">');
+                                acceptanceDataTemp.push('<div class="layui-collapse layui-control-data" id="controlData" lay-filter="control" lay-accordion>');
+                                acceptanceDataTemp.push('<h2 class="layui-colla-title layui-control-title controlTitle" unit_id=' + data[i].unit_id + ' id=' + controlData.id + ' procedureid=' + controlData.procedureid + '>' + controlData.name + '</h2>');
+                                acceptanceDataTemp.push('<div class="layui-colla-content layui-control-content">');
+                                acceptanceDataTemp.push('<div class="layui-table-title tableTitle"></div>');
+                                acceptanceDataTemp.push('<table class="layui-table" uid=' + controlData.id + ' id="online' + controlData.id + '">');
+                                acceptanceDataTemp.push('<tbody>');
+                                acceptanceDataTemp.push('</tbody>');
+                                acceptanceDataTemp.push('</table>');
+                                acceptanceDataTemp.push('</div>');
+                                acceptanceDataTemp.push('</div>');
+                                acceptanceDataTemp.push('</div>');
+                            }
+                            acceptanceDataTemp.push('</div>');
+                        }
+                        $('#acceptanceData').append(acceptanceDataTemp.join(''));
+                        layui.use('element', function () {
+                            var element = layui.element;
+                            element.render('collapse');
+                        });
+                        $('.layui-colla-item:first-child').find('h2.workTitle').click();
                     }
                 });
+                //模板信息
+                modelInfo(uObjSubID);
+                console.log(uObjSubID);
 
 
                 //根据选中模型--获取所有关联模型编号和对应树节点id
@@ -282,11 +252,13 @@
                     url: "/modelmanagement/Qualitymass/modelIdSearchModel",
                     type: "post",
                     data: {
-                        model_id:uObjSubID
+                        model_id: uObjSubID
                     },
                     dataType: "json",
                     success: function (res) {
-                        if(res.data==''||res.data.unit_id==''||res.data.model_id==''){
+                        nodeId = res.data.unit_id;
+                        getOne();   //回显自定义属性
+                        if (res.data == '' || res.data.unit_id == '' || res.data.model_id == '') {
                             return false;
                         }
                         var model_id = res.data.model_id;
@@ -296,13 +268,11 @@
                         treeObj.selectNode(nodes[0]);
                         //选中模板所在组添加颜色
                         RealBimOcx.BatchAddSubClrInfoBegin();
-                        for(var i = 0;i<model_id.length;i++){
-                            RealBimOcx.AddSubClrPercent(model_id[i],1,modelColor);
+                        for (var i = 0; i < model_id.length; i++) {
+                            RealBimOcx.AddSubClrPercent(model_id[i], 1, modelColor);
                         }
                         RealBimOcx.BatchAddSubClrInfoEnd();
                         return false;
-                        /*workInfoTemplateFun(res);
-                        qualityTableTemplateFun(res);*/
                     }
                 });
             </script>
@@ -310,11 +280,12 @@
             <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
                 switch (eType) {
                     case "DO_HIDE":         //显示隐藏
-                        console.log(modeGroupIds);
-                        return false;
                         uObjSubIDArr = [];
+                        var newData = [];
+                        var dataStr = modeGroupIds.qualified + modeGroupIds.unqualified + modeGroupIds.excellent;
+                        newData.push(dataStr);
                         RealBimOcx.SetHugeObjSubValidStateBegin();
-                        $.each(modeGroupIds, function (i, item) {
+                        $.each(newData, function (i, item) {
                             RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
                         });
                         RealBimOcx.SetHugeObjSubValidStateEnd();
@@ -322,7 +293,6 @@
                     case "CANCEL_HIDE":     //取消隐藏
                         review();
                 }
-
             </script>
         </div>
     </div>
@@ -404,64 +374,10 @@
             </div>
         </div>
         <div title="验收资料" style="overflow:auto;padding:10px;display:none;">
-            <div class="layui-collapse">
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title infoTitle"></h2>
-                    <div class="layui-colla-content layui-show">
-                        <ul class="layui-timeline" id="layuiTimeline">
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <div class="layui-collapse layui-acceptance-data" id="acceptanceData" lay-filter="collapse"
+                 lay-accordion></div>
         </div>
-        <!--<div title="质量表格" style="padding:10px;display:none;">
-            <div class="layui-collapse">
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title infoTitle"></h2>
-                    <div class="layui-colla-content layui-show">
-                        <table class="layui-table" id="qualityTable" lay-size="sm">
-                            <colgroup>
-                                <col>
-                                <col>
-                                <col width="56">
-                            </colgroup>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
-    <!--    <div class="quality-distribute" id="qualityDistribute">
-            <h2 class="layui-info-title">质量分布</h2>
-            <table class="layui-table">
-                <thead>
-                    <tr>
-                        <th>类型</th>
-                        <th>数量</th>
-                        <th>占比</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>优良</td>
-                        <td id="excellent_number"></td>
-                        <td id="excellent_rate"></td>
-                    </tr>
-                    <tr>
-                        <td>合格</td>
-                        <td id="qualified_number"></td>
-                        <td id="qualified_rate"></td>
-                    </tr>
-                    <tr>
-                        <td>未验评</td>
-                        <td id="unchecked_number"></td>
-                        <td id="unchecked_rate"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>-->
 </div>
 
 {include file="../app/public/common_footer.html"}
@@ -472,14 +388,15 @@
     var modelIds; //模型是否选中
     //选中模型
     window.operateModel = function (data) {
+        review();
         var newData = [];
-        var dataStr = data.qualified+data.unqualified+data.excellent;
+        var dataStr = data.qualified + data.unqualified + data.excellent;
         newData.push(dataStr);
-        if(newData!=''){
+        if (newData != '') {
             RealBimOcx.SetGroupInLogCamPos(newData[0]); //镜头
             RealBimOcx.BatchAddSubClrInfoBegin();
-            for(var i = 0;i<newData[0].length;i++){
-                RealBimOcx.AddSubClrPercent(i,1,modelColor); //上颜色
+            for (var i = 0; i < newData[0].length; i++) {
+                RealBimOcx.AddSubClrPercent(i, 1, modelColor); //上颜色
             }
             RealBimOcx.BatchAddSubClrInfoEnd();
         }
@@ -488,27 +405,53 @@
     //隐藏模型
     window.hideModel = function (data) {
         var newData = [];
-        var dataStr = data.qualified+data.unqualified+data.excellent;
+        var dataStr = data.qualified + data.unqualified + data.excellent;
         newData.push(dataStr);
-        if(newData!=''){
+        if (newData != '') {
             RealBimOcx.SetHugeObjSubValidStateBegin();
-            for(var i = 0;i<newData[0].length;i++){
-                RealBimOcx.SetHugeObjSubValidStateInfo(i,0);  // 0为隐藏  1为显示 模型
+            for (var i = 0; i < newData[0].length; i++) {
+                RealBimOcx.SetHugeObjSubValidStateInfo(i, 0);  // 0为隐藏  1为显示 模型
             }
             RealBimOcx.SetHugeObjSubValidStateEnd();
         }
     }
     window.showModel = function (data) {
         var newData = [];
-        var dataStr = data.qualified+data.unqualified+data.excellent;
+        var dataStr = data.qualified + data.unqualified + data.excellent;
         newData.push(dataStr);
-        if(newData!=''){
+        if (newData != '') {
             RealBimOcx.SetHugeObjSubValidStateBegin();
-            for(var i = 0;i<newData[0].length;i++){
-                RealBimOcx.SetHugeObjSubValidStateInfo(i,1);      //显示模型
+            for (var i = 0; i < newData[0].length; i++) {
+                RealBimOcx.SetHugeObjSubValidStateInfo(i, 1);      //显示模型
             }
             RealBimOcx.SetHugeObjSubValidStateEnd();
         }
+    }
+
+    //模板信息
+    modelInfo = function (uObjSubID) {
+        $.ajax({
+            url: "./getManageInfo",
+            type: "post",
+            data: {
+                picture_number: uObjSubID
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#site').text(res.attribute.site);
+                $('#serial_number').text(res.attribute.coding);
+                $('#hinge').text(res.attribute.hinge);
+                $('#quantities').text(res.attribute.quantities);
+                $('#en_type').text(res.attribute.en_type);
+                $('#ma_bases').text(res.attribute.ma_bases);
+                $('#su_basis').text(res.attribute.su_basis);
+                $('#el_start').text(res.attribute.el_start);
+                $('#el_cease').text(res.attribute.el_cease);
+                $('#pile_number').text(res.attribute.pile_number);
+                $('#start_date').text(res.attribute.start_date);
+                $('#completion_date').text(res.attribute.completion_date);
+            }
+        });
     }
 </script>
 </body>

@@ -68,7 +68,6 @@ function zTreeOnClick(event, treeId, treeNode) {
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
     modeGroupIds = nodeModelNumber();
-    console.log(modeGroupIds);
     if(treeNode.level==5){
         window.operateModel(modeGroupIds);
     }
@@ -107,6 +106,183 @@ function nodeModelNumber() {
     return result;
 }
 
+//验收资料
+layui.use('element', function(){
+    var element = layui.element;
+    element.on('collapse(control)', function(data){
+        if(data.show){
+            var id = $(data.title).attr('id');
+            var procedureid = $(data.title).attr('procedureid');
+            var unit_id = $(data.title).attr('unit_id');
+            $.ajax({
+                url: "/modelmanagement/Manage/getLineReport",
+                type: "post",
+                data: {
+                    id: id,
+                    procedureid: procedureid,
+                    unit_id: unit_id
+                },
+                dataType: "json",
+                success: function (res) {
+                    //在线填报
+                    var tbody = [];
+                    var admin_id = res.admin_id;    //当前登录用户ID
+                    tbody.push('<tr><th class="table-title" colspan="4">在线填报</th></tr>');
+                    tbody.push('<tr>');
+                    tbody.push('<th>填报人</th>');
+                    tbody.push('<th>填报日期</th>');
+                    tbody.push('<th>审批状态</th>');
+                    tbody.push('<th>操作</th>');
+                    tbody.push('</tr>');
+                    $('table[uid='+ id +'] tbody').empty();
+                    if(res.form_info==''){
+                        tbody.push('<tr>');
+                        tbody.push('<td class="td-empty" colspan="4">');
+                        tbody.push('无在线填报数据');
+                        tbody.push('</td>');
+                        tbody.push('</tr>');
+                    }
+                    for(var i = 0;i<res.form_info.length;i++){
+                        var data = res.form_info[i];
+                        var user_id = data.user_id;     //填报人ID
+                        var nickname = data.nickname;    //填报人名字
+                        var currentApproverId = data.CurrentApproverId;    //审批人ID
+                        var approveStatus = data.ApproveStatus;    //审批状态
+                        switch(data.ApproveStatus)
+                        {
+                            case -2:
+                                data.ApproveStatus = '作废';
+                                break;
+                            case -1:
+                                data.ApproveStatus = '被退回';
+                                break;
+                            case 0:
+                                data.ApproveStatus = '待提交';
+                                break;
+                            case 1:
+                                data.ApproveStatus = '审批中';
+                                break;
+                            default:
+                                data.ApproveStatus = '已审批';
+                        }
+                        tbody.push('<tr>');
+                        tbody.push('<td>');
+                        tbody.push(data.nickname);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.update_time);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.ApproveStatus);
+                        tbody.push('</td>');
+                        tbody.push('<td class="btnWrap">');
+                        if(admin_id==user_id){
+                            if(approveStatus==-1){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                            }
+                            if(approveStatus==-2){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==0){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                            }
+                            if(approveStatus==1){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==2){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
+                            }
+                        }else if(admin_id==currentApproverId){
+                            if(approveStatus==1){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                        }else{
+                            if(approveStatus==-1){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                            }
+                            if(approveStatus==-2){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==0){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==1){
+                                tbody.push('<i class="fa fa-search"></i>');
+                            }
+                            if(approveStatus==2){
+                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
+                            }
+                        }
+                        tbody.push('</td>');
+                        tbody.push('</tr>');
+                    }
+                    tbody.push('<tr><th class="table-title" colspan="4">扫描上传</th></tr>');
+                    tbody.push('<tr>');
+                    tbody.push('<th>文件名称</th>');
+                    tbody.push('<th>上传人</th>');
+                    tbody.push('<th>上传日期</th>');
+                    tbody.push('<th>操作</th>');
+                    tbody.push('</tr>');
+                    if(res.upload_form_sao==''){
+                        tbody.push('<tr>');
+                        tbody.push('<td class="td-empty" colspan="4">');
+                        tbody.push('无扫描上传数据');
+                        tbody.push('</td>');
+                        tbody.push('</tr>');
+                    }
+                    for(var j = 0;j<res.upload_form_sao.length;j++){
+                        var data = res.upload_form_sao[j];
+                        console.log(data);
+                        tbody.push('<tr>');
+                        tbody.push('<td>');
+                        tbody.push(data.data_name);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.nickname);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.create_time);
+                        tbody.push('</td>');
+                        tbody.push('<td><i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('</tr>');
+                    }
+                    tbody.push('<tr><th class="table-title" colspan="4">附件资料</th></tr>');
+                    tbody.push('<tr>');
+                    tbody.push('<th>附件名称</th>');
+                    tbody.push('<th>上传人</th>');
+                    tbody.push('<th>上传日期</th>');
+                    tbody.push('<th>操作</th>');
+                    tbody.push('</tr>');
+                    if(res.upload_form_fu==''){
+                        tbody.push('<tr>');
+                        tbody.push('<td class="td-empty" colspan="4">');
+                        tbody.push('无图像资料数据');
+                        tbody.push('</td>');
+                        tbody.push('</tr>');
+                    }
+                    for(var j = 0;j<res.upload_form_fu.length;j++){
+                        var data = res.upload_form_fu[j];
+                        console.log(data);
+                        tbody.push('<tr>');
+                        tbody.push('<td>');
+                        tbody.push(data.data_name);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.nickname);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.create_time);
+                        tbody.push('</td>');
+                        tbody.push('<td><i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('</tr>');
+                    }
+                    $('table[uid='+ id +'] tbody').append(tbody.join(''));
+                }
+            });
+        }
+    });
+});
+
 //添加自定义属性
 $('#addAttr').click(function () {
     var attrGroup = [];
@@ -120,3 +296,53 @@ $('#addAttr').click(function () {
     attrGroup.push('</div>');
     $('#attrGroup').append(attrGroup.join(' '));
 });
+
+//保存自定义属性
+function saveAttr(that) {
+    var attrKey = $(that).parents('#attrGroup').find('input[name="attrKey"]').val();
+    console.log(attrKey);
+    var attrVal = $(that).parents('#attrGroup').find('input[name="attrVal"]').val();
+    console.log(attrVal);
+    $.ajax({
+        url: "/modelmanagement/Qualitymass/addAttr",
+        type: "post",
+        data: {
+            add_id:nodeId,
+            attrKey:attrKey,
+            attrVal:attrVal
+        },
+        dataType: "json",
+        success: function (res) {
+            layer.msg(res.msg);
+        }
+    });
+}
+
+//回显自定义属性
+function getOne() {
+    $.ajax({
+        url: "/modelmanagement/Qualitymass/getOne",
+        type: "post",
+        data: {
+            add_id:nodeId
+        },
+        dataType: "json",
+        success: function (res) {
+            $('#attrGroup').empty();
+            var attrGroup = [];
+            for(var i = 0;i<res.data.length;i++){
+                var attrKey = res.data[i].attr_name;
+                var attrVal = res.data[i].attr_value;
+                attrGroup.push('<div class="layui-input-inline attrGroup">');
+                attrGroup.push('<input type="text" name="attrKey" value='+ attrKey +' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
+                attrGroup.push('<input type="text" name="attrVal" value='+ attrVal +' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
+                attrGroup.push('</div>');
+                attrGroup.push('<div class="layui-form-mid layui-word-aux">');
+                attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
+                attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
+                attrGroup.push('</div>');
+            }
+            $('#attrGroup').append(attrGroup.join(' '));
+        }
+    });
+}

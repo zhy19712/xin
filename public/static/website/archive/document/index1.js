@@ -270,6 +270,7 @@ var tableItem = $('#tableItem').DataTable({
   pagingType: "full_numbers",
   processing: true,
   serverSide: true,
+  order:[[1,"desc"]],
   // sScrollX: '600px',
   ajax: {
     "url": "/archive/common/datatablesPre?tableName=archive_document&id=-1"
@@ -295,6 +296,7 @@ var tableItem = $('#tableItem').DataTable({
     {
       name: "id"
     }
+
   ],
   columnDefs: [
     {
@@ -316,7 +318,7 @@ var tableItem = $('#tableItem').DataTable({
     {
       targets: [0],
       render: function (data, type, row) {
-        return  '<a title="' + data + '"  onclick=\"previewList('+row[5]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
+        return  '<a id="'+row[5]+'" title="' + data + '"  onclick=\"previewList('+row[5]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
       }
     },
     {
@@ -330,6 +332,7 @@ var tableItem = $('#tableItem').DataTable({
       }
     },
     {
+      "searchable": false,
       "orderable": false,
       targets: [4],
       render: function (data, type, row) {
@@ -475,16 +478,22 @@ $(".mybtn").on("click",function () {
     layer.msg('请选择最子节点');
     return;
   }
+  uploaderInit();
   layer.open({
     type:1,
     title:"增加附件",
     area:["800px","90%"],
-    content:$("#fileListBox")
+    content:$("#fileListBox"),
+    end:function () {
+      $("#demoList,#allsize,#status").empty();
+      uploader.reset();
+    }
   })
 });
 
 //保存按钮点击事件
 $(".assModel").on("click",function () {
+
   if(!selfid){
     layer.msg("请先选择节点！");
     return;
@@ -493,94 +502,150 @@ $(".assModel").on("click",function () {
     layer.msg('请选择最子节点');
     return;
   }
-
+  if($("#tableItem .dataTables_empty").length == 1){
+    layer.msg("没有可编辑信息！");
+    return;
+  }
+  var remarkArr = [];
+  $("#tableItem tbody tr").each(function (i,item) {
+    var obj = {};
+    obj.id= $(item).find("td:first-child a").attr("id");
+    obj.remark = $(item).find("td:nth-child(5) span").text();
+    remarkArr.push(obj);
+  });
+  $.ajax({
+    url:"./editDocmentRemark",
+    type:"POST",
+    data:{remarkArr : remarkArr},
+    dataType:"JSON",
+    success:function (res) {
+      if(res.code == 1){
+        layer.msg('编辑成功');
+        var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+        tableItem.ajax.url(url).load();
+      }else{
+        layer.msg(res.msg);
+        var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+        tableItem.ajax.url(url).load();
+      }
+    }
+  });
 });
 
-//文件上传
-uploader = WebUploader.create({
-  auto: false,// 选完文件后，是否自动上传。
-  swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-  server: "./upload",// 文件接收服务端。
-  chunked: false, //分片
-  comress:null, //图片不压缩
-  fileSizeLimit: 1000 *1024 *1024,
-  // fileNumLimit: 6,
-  duplicate :false,// 重复上传图片，true为可重复false为不可重复
-  pick: {
-    multiple: true,
-    id: "#testList"
-  },
-});
+var uploader ;
+//上传
+function uploaderInit(){
+  if(!uploader){
+    //文件上传
+    uploader = WebUploader.create({
+      auto: false,// 选完文件后，是否自动上传。
+      swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+      server: "./upload",// 文件接收服务端。
+      chunked: false, //分片
+      comress:null, //图片不压缩
+      fileSizeLimit: 8388000,
+      // fileNumLimit: 6,
+      duplicate :false,// 重复上传图片，true为可重复false为不可重复
+      pick: {
+        multiple: true,
+        id: "#testList"
+      },
+    });
 
 // 当有文件添加进来的时候
-uploader.on( 'fileQueued', function( file ) {
-  console.log(file);
- var tr = $(['<tr id="'+ file.id +'">'
-    ,'<td>'+ file.name +'</td>'
-    ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
-    ,'<td>0%</td>'
-    ,'<td>'
-    ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
-    ,'</td>'
-    ,'</tr>'].join(''));
-  //删除
-  tr.find('.demo-delete').on('click', function(){
-    var $ele = $(this);
-    var id = $ele.parents("tr").attr("id");
-    console.log($ele,id)
-    var file = uploader.getFile(id);
-    uploader.removeFile(file,true);
-    tr.remove();
-  });
-  $("#demoList").append(tr);
-  $('#allsize').text(allsize()+"kb");
-});
+    uploader.on( 'fileQueued', function( file ) {
+      console.log(file);
+      var tr = $(['<tr id="'+ file.id +'">'
+        ,'<td>'+ file.name +'</td>'
+        ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
+        ,'<td>0%</td>'
+        ,'<td>'
+        ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+        ,'</td>'
+        ,'</tr>'].join(''));
+      //删除
+      tr.find('.demo-delete').on('click', function(){
+        var $ele = $(this);
+        var id = $ele.parents("tr").attr("id");
+        console.log($ele,id)
+        var file = uploader.getFile(id);
+        uploader.removeFile(file,true);
+        tr.remove();
+        $('#allsize').text(allsize()+"kb");
+      });
+      $("#demoList").append(tr);
+      $('#allsize').text(allsize()+"kb");
+    });
 
-uploader.on("uploadStart",function () {
-  uploader.options.formData.selfid = selfid;
-});
+    uploader.on("uploadStart",function () {
+      uploader.options.formData.selfid = selfid;
+    });
 
 // 文件上传过程中创建进度条实时显示。
-uploader.on('uploadProgress', function (file, percentage) {
-  var $li = $('#' + file.id),
-    $percent = $li.find('td:nth-child(3)');
-  $percent.text( percentage * 100 + '%');
+    uploader.on('uploadProgress', function (file, percentage) {
+      var $li = $('#' + file.id),
+        $percent = $li.find('td:nth-child(3)');
+      $percent.text( (percentage * 100).toFixed(2) + '%');
 
-});
+    });
 // 文件上传成功
-uploader.on( 'uploadSuccess', function( file,res ) {
-  // console.log(file)
-  // console.log(data)
-  if(res.code === 1){
-    $("#status").text(processAll());
-  }else {
-    layer.msg("抱歉，您没有此权限");
+    uploader.on( 'uploadSuccess', function( file,res ) {
+      // console.log(file)
+      // console.log(data)
+      if(res.code == 1){
+        $("#status").text(processAll());
+        if($("#status").text() == "100%"){
+          layer.closeAll();
+          var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+          tableItem.ajax.url(url).load();
+        }
+      }else {
+        layer.msg(res.msg);
+      }
+
+    });
+    uploader.on( 'all', function( type ) {
+      if ( type === 'startUpload' ) {
+        state = 'uploading';
+      } else if ( type === 'stopUpload' ) {
+        state = 'paused';
+      } else if ( type === 'uploadFinished' ) {
+        state = 'done';
+      }
+      if ( state === 'uploading' ) {
+        return;
+      } else {
+        $("#testListAction").text('开始上传');
+      }
+    });
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+      layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+    });
+    uploader.on("error",function (type){
+      if(type == "F_DUPLICATE"){
+        layer.msg("请不要重复选择文件！");
+      } else if(type == "Q_EXCEED_SIZE_LIMIT"){
+        layer.msg("系统提示,所选附件过大哦，换个小点的文件吧！");
+      }
+    });
   }
 
-});
-uploader.on( 'all', function( type ) {
-  if ( type === 'startUpload' ) {
-    state = 'uploading';
-  } else if ( type === 'stopUpload' ) {
-    state = 'paused';
-  } else if ( type === 'uploadFinished' ) {
-    state = 'done';
-  }
 
-  if ( state === 'uploading' ) {
-    $("#testListAction").text('暂停上传');
-  } else {
-    $("#testListAction").text('开始上传');
-  }
-});
+}
 
 var  state = 'pending';
 //开始上传
 $("#testListAction").on( 'click', function() {
+  if($("#demoList tr").length == 0){
+    layer.msg("请添加文件");
+    return ;
+  }
   if ( state === 'uploading' ) {
-    return
+    return;
   } else {
     uploader.upload();
+    $("#demoList tr .demo-delete").hide();
   }
 });
 
@@ -589,7 +654,7 @@ function processAll() {
   var num = 0;
   var allnum = $("#demoList tr").length;
   $("#demoList tr td:nth-child(3)").each(function (i,item) {
-      if($(item.text()) == "100%"){
+      if($(item).text() == "100.00%"){
         num++;
       }
   });
@@ -601,6 +666,6 @@ function allsize() {
   $("#demoList tr td:nth-child(2)").each(function (i,item) {
     allsize += parseFloat($(item).text());
   });
-  return allsize;
+  return allsize.toFixed(2);
 }
 

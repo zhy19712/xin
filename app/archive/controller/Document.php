@@ -416,7 +416,17 @@ class Document extends Permissions
             //实例化模型类
             $model = new DocumentModel();
             $param = input("post.remarkArr/a");
-            halt($param);
+            if(!empty($param))
+            {
+                foreach($param as $key=>$val)
+                {
+                    $model->editCate($val);
+                }
+                return json(["code"=>1,"msg"=>"编辑成功！"]);
+            }else
+            {
+                return json(["code"=>-1,"msg"=>"没有编辑信息！"]);
+            }
         }
     }
 }

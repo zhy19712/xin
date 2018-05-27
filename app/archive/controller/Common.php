@@ -137,6 +137,7 @@ class Common extends Controller
      */
     public function archive_document($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
+        $columnString = "u.nickname|f.name|a.remark";
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
