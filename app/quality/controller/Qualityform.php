@@ -59,6 +59,18 @@ class Qualityform extends Permissions
     {
         //获取模板路径
         //获取控制点信息，组合模板路径
+        $norm_template=Db::name('norm_template')->alias('t')
+            ->join('norm_controlpoint c', 't.id = c.qualitytemplateid', 'left')
+            ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+            ->where(['r.id'=>$cpr_id])
+            ->find();
+        $qualitytemplateid = $norm_template['qualitytemplateid'];
+
+        if ($qualitytemplateid == 0) {
+            return  '控制点未进行模板关联!';
+        }
+
+
         $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
         $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['controlpoint']['code'] . $cp['controlpoint']['name'] . ".html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
@@ -91,6 +103,8 @@ class Qualityform extends Permissions
             $formdata = json_encode(unserialize($_formdata));
         }
         $htmlContent = str_replace('{formData}', $formdata, $htmlContent);
+
+
         $htmlContent .= "<input type='hidden' id='cpr' value='{$cpr_id}'>";
         return $htmlContent;
     }
@@ -101,6 +115,9 @@ class Qualityform extends Permissions
      */
     protected function setFormInfo($qualityUnit_id, $htmlContent)
     {
+
+
+
         $mod = $this->divisionUnitService->with("Division.Section")->where(['id' => $qualityUnit_id])->find();
         $output = array();
         $output['JYPName'] = $mod['site'];
