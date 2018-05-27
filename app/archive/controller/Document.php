@@ -287,4 +287,19 @@ class Document extends Permissions
         return json(['code'=>1,'data'=>$list]);
 
     }
+
+    /**
+     * 删除下载白名单下的用户
+     * @return \think\response\Json
+     */
+    public function delAdminname()
+    {
+        if(request()->isAjax()){
+            //实例化model类型
+            $model = new DocumentModel();
+            $param = input('post.');
+            $flag = $model->delblacklist($param);
+            return json($flag);
+        }
+    }
 }
