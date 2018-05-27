@@ -107,6 +107,15 @@ Class DocumentModel extends Model
     }
 
     /**
+     * 根据左侧的树节点判断当前节点下是否存在文件
+     */
+    public function judge($id)
+    {
+        $data = $this->where('type', $id)->find();
+        return $data;
+    }
+
+    /**
      * 根据传过来的文档表xin_archive_document表的id,admin表中的admin_id,
      */
     public function delblacklist($param)
