@@ -107,7 +107,7 @@ Class DocumentModel extends Model
         //查询白名单中的用户id
         $users = $this->field("users")->where("id",$param['id'])->find();
 
-        if($users["blacklist"])
+        if($users["users"])
         {
             $list = explode("|",$users["users"]);
 

@@ -202,10 +202,10 @@ class Document extends Permissions
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
-    public function downloadrecord($id)
-    {
-        return json(DocumentDownRecord::all(['docId' => $id]));
-    }
+//    public function downloadrecord($id)
+//    {
+//        return json(DocumentDownRecord::all(['docId' => $id]));
+//    }
 
     /**
      * 预览一条文档信息
