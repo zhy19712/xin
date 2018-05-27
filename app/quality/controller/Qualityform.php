@@ -303,11 +303,14 @@ class Qualityform extends Permissions
         //如果当前步骤不是最后一步
         if ($res['CurrentStep']<$maxstep)
         {
-            return json(['msg'=>'success','creater'=>$res['user_id']]);
+            $user=Db::name('admin')
+                ->where(['id'=>$res['user_id']])
+                ->find();
+            return json(['msg'=>'success','creater'=>$user['nickname']]);
         }
         else
         {
-            return json(['msg'=>'fail','creater'=>$res['user_id']]);
+            return json(['msg'=>'fail','creater'=>$user['nickname']]);
         }
     }
 
