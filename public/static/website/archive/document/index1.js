@@ -207,6 +207,61 @@ layui.use(['element', "layer", 'upload'], function () {
     , upload = layui.upload
     , layer = layui.layer;
 
+  //多文件列表
+  // var demoListView = $('#demoList')
+  //   ,uploadListIns = upload.render({
+  //   elem: '#testList'
+  //   ,url: '/upload/'
+  //   ,accept: 'file'
+  //   ,multiple: true
+  //   ,auto: false
+  //   ,bindAction: '#testListAction'
+  //   ,choose: function(obj){
+  //     var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+  //     //读取本地文件
+  //     obj.preview(function(index, file, result){
+  //       var tr = $(['<tr id="upload-'+ index +'">'
+  //         ,'<td>'+ file.name +'</td>'
+  //         ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+  //         ,'<td>0%</td>'
+  //         ,'<td>'
+  //         ,'<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
+  //         ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+  //         ,'</td>'
+  //         ,'</tr>'].join(''));
+  //
+  //       //单个重传
+  //       tr.find('.demo-reload').on('click', function(){
+  //         obj.upload(index, file);
+  //       });
+  //
+  //       //删除
+  //       tr.find('.demo-delete').on('click', function(){
+  //         delete files[index]; //删除对应的文件
+  //         tr.remove();
+  //         uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+  //       });
+  //
+  //       demoListView.append(tr);
+  //     });
+  //   }
+  //   ,done: function(res, index, upload){
+  //     if(res.code == 0){ //上传成功
+  //       var tr = demoListView.find('tr#upload-'+ index)
+  //         ,tds = tr.children();
+  //       tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+  //       tds.eq(3).html(''); //清空操作
+  //       return delete this.files[index]; //删除文件队列已经上传成功的文件
+  //     }
+  //     this.error(index, upload);
+  //   }
+  //   ,error: function(index, upload){
+  //     var tr = demoListView.find('tr#upload-'+ index)
+  //       ,tds = tr.children();
+  //     tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+  //     tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+  //   }
+  // });
 
 });
 
@@ -240,6 +295,7 @@ var tableItem = $('#tableItem').DataTable({
     {
       name: "id"
     }
+
   ],
   columnDefs: [
     {
@@ -261,7 +317,7 @@ var tableItem = $('#tableItem').DataTable({
     {
       targets: [0],
       render: function (data, type, row) {
-        return  '<a title="' + data + '"  onclick=\"previewList('+row[5]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
+        return  '<a id="'+row[5]+'" title="' + data + '"  onclick=\"previewList('+row[5]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
       }
     },
     {
@@ -275,6 +331,7 @@ var tableItem = $('#tableItem').DataTable({
       }
     },
     {
+      "searchable": false,
       "orderable": false,
       targets: [4],
       render: function (data, type, row) {
@@ -410,10 +467,170 @@ $("#tableItem").on("blur",".inputRemark",function () {
   $(this).siblings().text(val).show();
 });
 
+//新增按钮点击事件
 $(".mybtn").on("click",function () {
   if(!selfid){
     layer.msg("请先选择节点！");
+    return;
   }
-  alert(123)
+  if(sNodes.children){
+    layer.msg('请选择最子节点');
+    return;
+  }
+  layer.open({
+    type:1,
+    title:"增加附件",
+    area:["800px","90%"],
+    content:$("#fileListBox")
+  })
 });
+
+//保存按钮点击事件
+$(".assModel").on("click",function () {
+
+  if(!selfid){
+    layer.msg("请先选择节点！");
+    return;
+  }
+  if(sNodes.children){
+    layer.msg('请选择最子节点');
+    return;
+  }
+  var remarkArr = [];
+  $("#tableItem tbody tr").each(function (i,item) {
+    var obj = {};
+    obj.id= $(item).find("td:first-child a").attr("id");
+    obj.remark = $(item).find("td:nth-child(5) span").text();
+    remarkArr.push(obj);
+  });
+  $.ajax({
+    url:"./editDocmentRemark",
+    type:"POST",
+    data:{remarkArr : remarkArr},
+    dataType:"JSON",
+    success:function (res) {
+      if(res.code == 1){
+        layer.msg('编辑成功');
+        var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+        tableItem.ajax.url(url).load();
+      }else{
+        layer.msg(res.msg);
+        var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+        tableItem.ajax.url(url).load();
+      }
+    }
+  });
+});
+
+//文件上传
+uploader = WebUploader.create({
+  auto: false,// 选完文件后，是否自动上传。
+  swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+  server: "./upload",// 文件接收服务端。
+  chunked: false, //分片
+  comress:null, //图片不压缩
+  fileSizeLimit: 1000 *1024 *1024,
+  // fileNumLimit: 6,
+  duplicate :false,// 重复上传图片，true为可重复false为不可重复
+  pick: {
+    multiple: true,
+    id: "#testList"
+  },
+});
+
+// 当有文件添加进来的时候
+uploader.on( 'fileQueued', function( file ) {
+  console.log(file);
+ var tr = $(['<tr id="'+ file.id +'">'
+    ,'<td>'+ file.name +'</td>'
+    ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
+    ,'<td>0%</td>'
+    ,'<td>'
+    ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+    ,'</td>'
+    ,'</tr>'].join(''));
+  //删除
+  tr.find('.demo-delete').on('click', function(){
+    var $ele = $(this);
+    var id = $ele.parents("tr").attr("id");
+    console.log($ele,id)
+    var file = uploader.getFile(id);
+    uploader.removeFile(file,true);
+    tr.remove();
+  });
+  $("#demoList").append(tr);
+  $('#allsize').text(allsize()+"kb");
+});
+
+uploader.on("uploadStart",function () {
+  uploader.options.formData.selfid = selfid;
+});
+
+// 文件上传过程中创建进度条实时显示。
+uploader.on('uploadProgress', function (file, percentage) {
+  var $li = $('#' + file.id),
+    $percent = $li.find('td:nth-child(3)');
+  $percent.text( percentage * 100 + '%');
+
+});
+// 文件上传成功
+uploader.on( 'uploadSuccess', function( file,res ) {
+  // console.log(file)
+  // console.log(data)
+  if(res.code === 1){
+    $("#status").text(processAll());
+    if($("#status").text() == "100%"){
+      layer.closeAll();
+      var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+      tableItem.ajax.url(url).load();
+    }
+  }else {
+    layer.msg("抱歉，您没有此权限");
+  }
+
+});
+uploader.on( 'all', function( type ) {
+  if ( type === 'startUpload' ) {
+    state = 'uploading';
+  } else if ( type === 'stopUpload' ) {
+    state = 'paused';
+  } else if ( type === 'uploadFinished' ) {
+    state = 'done';
+  }
+  if ( state === 'uploading' ) {
+    return;
+  } else {
+    $("#testListAction").text('开始上传');
+  }
+});
+
+var  state = 'pending';
+//开始上传
+$("#testListAction").on( 'click', function() {
+  if ( state === 'uploading' ) {
+    return;
+  } else {
+    uploader.upload();
+  }
+});
+
+//获取总进度
+function processAll() {
+  var num = 0;
+  var allnum = $("#demoList tr").length;
+  $("#demoList tr td:nth-child(3)").each(function (i,item) {
+      if($(item).text() == "100%"){
+        num++;
+      }
+  });
+  return parseInt(num / allnum * 100) + "%";
+}
+//获取总大小
+function allsize() {
+  var allsize = 0;
+  $("#demoList tr td:nth-child(2)").each(function (i,item) {
+    allsize += parseFloat($(item).text());
+  });
+  return allsize;
+}
 

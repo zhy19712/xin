@@ -131,11 +131,12 @@ class Approve extends Permissions
             ->where(['id'=>$dataId])
             ->find();
         //如果状态大于0，将起草人也加入进去
+        //如果有审批串，就将起草人也算进去
         $approverArr=explode(',', $res['ApproveIds']);
         if($res['ApproveStatus']<2) {
             array_pop($approverArr);//如果不是已完成或者退回就去掉待审批人，不让其显示
         }
-        if(count($approverArr)>0)
+        if(count($approverArr)>=0&&($res['CurrentApproverId']!='null'&&$res['CurrentApproverId']!=0))
         {
             array_unshift($approverArr,$res['user_id']);
         }
