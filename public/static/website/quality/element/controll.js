@@ -1227,6 +1227,7 @@ $("#unitWorkRightBottom").on("click",".mybtnAdd",function () {
         content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&unit_id='+ nodeUnitId +'&currentStep=0&isView=false',
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
         }
     });
 });

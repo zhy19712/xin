@@ -97,6 +97,9 @@
     #noborder tr th{
         border: none!important;
     }
+    .webuploader-pick{
+        display: block;
+    }
 </style>
 
 <div id="nodeZtree" data-options="region:'west',title:'文档目录树',split:true" style="width:260px;">
@@ -135,7 +138,7 @@
 <div style="display: none;" id="fileListBox">
     <div  style="padding-top: 0;">
         <div style="background-color:#0b1014;color: #ffffff;overflow: hidden">
-            <i class="fa fa-plus" style="display: block;font-size: 70px;color: #fff;float: left;"></i>
+            <i class="fa fa-plus" style="display: block;font-size: 70px;color: #fff;float: left;margin-left:5px;"></i>
             <h3 style="float: left;width: 700px;font-size: 25px;margin:2px 0 8px 4px;">选择文件</h3>
             <p style="float: left;width: 700px;margin-left: 4px;">将文件添加到上传队列，然后点击开始上传按钮</p>
         </div>
@@ -143,9 +146,9 @@
             <table class="layui-table">
                 <thead>
                 <tr><th style="width: 432px;">文件名</th>
-                    <th>大小</th>
-                    <th>状态</th>
-                    <th>操作</th>
+                    <th style="width: 72px;">大小</th>
+                    <th style="width: 62px;">状态</th>
+                    <th style="width: 99px;">操作</th>
                 </tr></thead>
                 <tbody id="demoList"></tbody>
             </table>
@@ -154,86 +157,21 @@
             <table class="layui-table" border="0" id="noborder">
                 <thead>
                     <tr>
-                        <th>
-                            <button type="button"  id="testList" style="margin-left: 5px;">增加文件</button>
-                            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                        <th style="width: 432px;">
+                            <button type="button"   id="testList" style="margin-left: 5px;">增加文件</button>
+                            <button type="button"  id="testListAction" style="width: 86px;height: 36px;background: #009688;cursor: pointer;color:#fff;border-radius: 4px;">开始上传</button>
                         </th>
-                        <th><span id="allsize"></span></th>
-                        <th><span id="status">0%</span></th>
-                        <th></th>
+                        <th style="width: 72px;"><span id="allsize"></span></th>
+                        <th style="width: 62px;"><span id="status">0%</span></th>
+                        <th style="width: 99px;"></th>
                     </tr>
                 </thead>
             </table>
         </div>
-        <!--<button type="button"  id="testList" style="margin-left: 5px;">增加文件</button>-->
-        <!--<button type="button" class="layui-btn" id="testListAction">开始上传</button>-->
-        <!--<div id="status">0%</div>-->
     </div>
 </div>
 
 {include file="../../public/common_footer"}
 <script src="__WEBSITE__/archive/document/index1.js"></script>
 </body>
-<script type="text/javascript">
-  // $("#picker").click(function(){
-  //    uploader = WebUploader.create({
-  //        auto: true,
-  //        // swf文件路径
-  //        swf:  '/static/public/webupload/Uploader.swf',
-  //
-  //        // 文件接收服务端。
-  //        server: "{:url('admin/common/upload?module=document&use=archive')}",
-  //
-  //        // 选择文件的按钮。可选。
-  //        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-  //        pick: {
-  //            multiple: false,
-  //            id: "#picker",
-  //            innerHTML: "上传文件"
-  //        },
-  //        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-  //        resize: false
-  //    });
-  //    var $list = $('#addName');
-  //    uploader.on( 'fileQueued', function( file ) {
-  //        $list.val('等待上传...');
-  //    });
-  //
-  //    uploader.on( 'uploadSuccess', function( file,res) {
-  //        $list.val('已上传成功');
-  //        console.log(res)
-  //
-  //        // if(res.code == 2){
-  //        //     uploadId = res.id;
-  //        //     $.ajax({
-  //        //         url:"{:url('documenttype/add')}",
-  //        //         data:{
-  //        //             name: uploadName, //名称
-  //        //             attachmentId: uploadId,  //文档关联Id
-  //        //             type:selfid,
-  //        //         },
-  //        //         type:'post',
-  //        //         success:function(res) {
-  //        //             console.log(res)
-  //        //             if(res.code == 1) {
-  //        //                 var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
-  //        //                 tableItem.ajax.url(url).load();
-  //        //             } else {
-  //        //                 layer.msg('获取数据失败！');
-  //        //             }
-  //        //         }
-  //        //     })
-  //        //     layer.msg("上传成功！",{time:1500})
-  //        // }else{
-  //        //     layer.msg("上传失败！",{time:1500})
-  //        // }
-  //    });
-  //
-  //    uploader.on( 'uploadError', function( file ) {
-  //        $list.val('上传出错');
-  //    });
-  // });
-  //     }
-
-</script>
 </html>
