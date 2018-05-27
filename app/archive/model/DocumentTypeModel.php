@@ -7,7 +7,7 @@
  */
 
 namespace app\archive\model;
-
+use think\Db;
 use think\Model;
 
 class DocumentTypeModel extends Model
@@ -17,6 +17,13 @@ class DocumentTypeModel extends Model
     public function addOrEdit($mod)
     {
         if (empty($mod['id'])) {
+
+            $result = Db::name("archive_document")->where("type",$mod["pid"])->find();
+
+            if(!empty($result))
+            {
+                return false;
+            }
             $res = $this->allowField(true)->insertGetId($mod);
         } else {
             $res = $this->allowField(true)->save($mod, ['id' => $mod['id']]);

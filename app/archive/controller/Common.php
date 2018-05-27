@@ -77,7 +77,65 @@ class Common extends Controller
         return $this->$table($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString);
     }
 
-    function archive_document($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+//    public function archive_document($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+//    {
+//        //查询
+//        //条件过滤后记录数 必要
+//        $recordsFiltered = 0;
+//        //表的总记录数 必要
+//        $id = input('id');
+//        $idArr = $this->documentTypeService->getChilds($id);
+//        $idArr[] = $id;
+//        $recordsTotal = 0;
+//        $recordsTotal = Db::name($table)->whereIn('type', $idArr)->count(0);
+//        $recordsFilteredResult = array();
+//        if (strlen($search) > 0) {
+//            //有搜索条件的情况
+//            if ($limitFlag) {
+//                //*****多表查询join改这里******
+//                $recordsFilteredResult = Db::name($table)
+//                    ->alias('a')
+//                    ->join('attachment f', 'a.attachmentId = f.id', 'left')
+//                    ->join('admin u', 'f.user_id=u.id', 'left')
+//                    ->field('a.id,a.docname,u.nickname as username,FROM_UNIXTIME(f.create_time) as create_time,a.remark,f.filesize')
+//                    ->whereIn('a.type', $idArr)
+//                    ->where($columnString, 'like', '%' . $search . '%')
+//                    ->where('a.docname|u.nickname', 'like', '%' . $search . '%')
+//                    ->order($order)->limit(intval($start), intval($length))
+//                    ->select();
+//                $recordsFiltered = sizeof($recordsFilteredResult);
+//            }
+//        } else {
+//            //没有搜索条件的情况
+//            if ($limitFlag) {
+//                $recordsFilteredResult = Db::name($table)->alias('a')
+//                    ->join('attachment f', 'a.attachmentId = f.id', 'left')
+//                    ->join('admin u', 'f.user_id=u.id', 'left')
+//                    ->field('a.id,a.docname,u.nickname as username,FROM_UNIXTIME(f.create_time) as create_time,a.remark,f.filesize')
+//                    ->whereIn('a.type', $idArr)
+//                    ->select();
+//                $recordsFiltered = $recordsTotal;
+//            }
+//        }
+//        $temp = array();
+//        $infos = array();
+//        foreach ($recordsFilteredResult as $key => $value) {
+//            //计算列长度
+//            $length = sizeof($columns);
+//            for ($i = 0; $i < $length; $i++) {
+//                array_push($temp, $value[$columns[$i]['name']]);
+//            }
+//            $infos[] = $temp;
+//            $temp = [];
+//        }
+//        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+//    }
+
+    /**
+     * 文档管理
+     * @throws \think\exception\DbException
+     */
+    public function archive_document($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //查询
         //条件过滤后记录数 必要
@@ -87,35 +145,37 @@ class Common extends Controller
         $idArr = $this->documentTypeService->getChilds($id);
         $idArr[] = $id;
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->whereIn('type', $idArr)->count(0);
+        $recordsTotal = Db::name($table)->alias("s")->whereIn('type', $idArr)->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('a')
+                $recordsFilteredResult = Db::name($table)
+                    ->alias('a')
                     ->join('attachment f', 'a.attachmentId = f.id', 'left')
                     ->join('admin u', 'f.user_id=u.id', 'left')
                     ->field('a.id,a.docname,u.nickname as username,FROM_UNIXTIME(f.create_time) as create_time,a.remark,f.filesize')
                     ->whereIn('a.type', $idArr)
-                    ->where($columnString, 'like', '%' . $search . '%')
-//                    ->where('a.docname|u.nickname', 'like', '%' . $search . '%')
-                    ->order($order)->limit(intval($start), intval($length))
+                    ->where($columnString, 'like', '%' . $search . '%')->order($order)->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
             //没有搜索条件的情况
             if ($limitFlag) {
-                $recordsFilteredResult = Db::name($table)->alias('a')
+                $recordsFilteredResult = Db::name($table)
+                    ->alias('a')
                     ->join('attachment f', 'a.attachmentId = f.id', 'left')
                     ->join('admin u', 'f.user_id=u.id', 'left')
                     ->field('a.id,a.docname,u.nickname as username,FROM_UNIXTIME(f.create_time) as create_time,a.remark,f.filesize')
                     ->whereIn('a.type', $idArr)
+                    ->order($order)->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
+
         $temp = array();
         $infos = array();
         foreach ($recordsFilteredResult as $key => $value) {
@@ -126,6 +186,7 @@ class Common extends Controller
             }
             $infos[] = $temp;
             $temp = [];
+
         }
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
