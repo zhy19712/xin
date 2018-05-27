@@ -1,5 +1,6 @@
 //下载的方法
 function download(id,url) {
+  var url1 = url;
   $.ajax({
     url: url,
     data:{id:id},
@@ -13,13 +14,17 @@ function download(id,url) {
         var str = "";
         str += ""
           + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-          + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
+          + "<form name=download"+ id +" action="+ url1 +" method='get' target=downloadFrame"+ id + ">"
           + "<span class='file_name' style='color: #000;'>"+str+"</span>"
           + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
           + "<button type='submit' class=btn" + id +"></button>"
           + "</form>"
         $("#form_container").append(str);
         $("#form_container").find(".btn" + id).click();
+        var url = "/archive/common/datatablespre/tableName/archive_document_downrecord/id/"+clickId+".shtml";
+        setTimeout(function () {
+          downlog.ajax.url(url).load();
+        },200);
       }
     }
   })
@@ -28,7 +33,6 @@ function download(id,url) {
 //下载调用
 function downFile(id){
   download(id,"./download");
-  record(id);
 }
 
 //预览
@@ -77,30 +81,4 @@ function showPdf(id,url) {
 function previewList(id){
   showPdf(id,'./preview');
 
-}
-
-//下载的历史记录
-function record(id) {
-  $.ajax({
-    type: "post",
-    url: "./downloadrecord",
-    data: {id: id},
-    success: function (res) {
-      // if(res.code == 1){
-      console.log(res);
-      $("#downInfo").html("");
-      var strTr = '';
-      for (var i = 0; i < res.length; i++) {
-        strTr += '<tr>\n' +
-          '       <td>' + res[i].create_time + '</td>\n' +
-          '       <td>' + res[i].user + '</td>\n' +
-          '    </tr>'
-      }
-      $("#downInfo").append(strTr);
-      // }
-      if(res.code == 0){
-        layer.msg('历史记录' + res.msg);
-      }
-    }
-  })
 }
