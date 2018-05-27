@@ -168,7 +168,7 @@ class Common extends Controller
                     ->alias('a')
                     ->join('attachment f', 'a.attachmentId = f.id', 'left')
                     ->join('admin u', 'f.user_id=u.id', 'left')
-                    ->field('a.id,a.docname,u.nickname as username,FROM_UNIXTIME(f.create_time) as create_time,a.remark,f.filesize')
+                    ->field('a.id,f.name as docname,u.nickname as username,FROM_UNIXTIME(f.create_time) as create_time,a.remark,f.filesize')
                     ->whereIn('a.type', $idArr)
                     ->order($order)->limit(intval($start), intval($length))
                     ->select();
