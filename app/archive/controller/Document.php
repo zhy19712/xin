@@ -167,11 +167,29 @@ class Document extends Permissions
      */
     public function download()
     {
+        //实例化模型类
+        $model = new DocumentModel();
+
         $mod = DocumentModel::get(input('id'));
+
         //权限控制
-        if (!$mod->havePermission($mod['users'], Session::get('current_id'))) {
-            return json(['code' => -2, 'msg' => "没有下载权限"]);
+//        if ($mod->havePermission($mod['users'], Session::get('current_id'))) {
+//            return json(['code' => -2, 'msg' => "没有下载权限"]);
+//        }
+        $id = input('param.id');
+
+        $blacklist = $model->getbalcklist($id);
+        if($blacklist['users'])
+        {
+            $list = explode("|",$blacklist['users']);
+            if(!(in_array(Session::get('current_id'),$list)))
+            {
+                return json(['code' => -1, 'msg' => "没有下载权限"]);
+            }
         }
+
+        $mod = DocumentModel::get(input('id'));
+
         $file_obj = Db::name('attachment')->where('id', $mod['attachmentId'])->find();
         $filePath = '.' . $file_obj['filepath'];
         if (!file_exists($filePath)) {
@@ -202,10 +220,10 @@ class Document extends Permissions
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
-    public function downloadrecord($id)
-    {
-        return json(DocumentDownRecord::all(['docId' => $id]));
-    }
+//    public function downloadrecord($id)
+//    {
+//        return json(DocumentDownRecord::all(['docId' => $id]));
+//    }
 
     /**
      * 预览一条文档信息
@@ -286,5 +304,20 @@ class Document extends Permissions
         $list = Db::name('admin')->whereIn('id', $users)->field('id,nickname')->select();
         return json(['code'=>1,'data'=>$list]);
 
+    }
+
+    /**
+     * 删除下载白名单下的用户
+     * @return \think\response\Json
+     */
+    public function delAdminname()
+    {
+        if(request()->isAjax()){
+            //实例化model类型
+            $model = new DocumentModel();
+            $param = input('post.');
+            $flag = $model->delblacklist($param);
+            return json($flag);
+        }
     }
 }

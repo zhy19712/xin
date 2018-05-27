@@ -695,7 +695,7 @@ function resultChange() {
         data:{
             Unit_id:nodeUnitId,
             EvaluateResult:$(".result form select").val(),
-            EvaluateDate:$(".result form #date").val()
+            EvaluateDate:($(".result form #date").val())?($(".result form #date").val()):arguments[0]
         },
         type:'POST',
         dataType:"JSON",
@@ -1372,22 +1372,26 @@ function returnOnLine(id,curStep) {
 
 //在线填报-点击作废
 function toVoidOnLine(id) {
-    $.ajax({
-        url: "/quality/qualityform/cancel",
-        type: "post",
-        data: {id:id},
-        success: function (res) {
-            console.log(res);
-            if(res.msg == "success"){
-                layer.msg("该数据已作废了！")
-                $(".eleHide").css("display","none");
-                onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+    layer.confirm('是否作废该数据? 如果作废,会生成一个新的待提交表单', function(index){
+        $.ajax({
+            url: "/quality/qualityform/cancel",
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                console.log(res);
+                if(res.msg == "success"){
+                    layer.msg("该数据已作废了！")
+                    $(".eleHide").css("display","none");
+                    onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                }
+            },
+            error:function () {
+                alert("作废操作异常")
             }
-        },
-        error:function () {
-            alert("作废操作异常")
-        }
+        });
+        layer.close(index);
     });
+
 }
 
 //下载封装的方法

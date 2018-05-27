@@ -48,7 +48,7 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer','upload'], function(
     elem: '#date' //指定元素
     ,done:function (value, date, endDate) {
       //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-      resultChange();
+      resultChange(value);
     }
   });
 
@@ -444,7 +444,7 @@ function resultChange() {
     data:{
       division_id:selfid,
       evaluation_results:$(".result form select").val(),
-      evaluation_time:$(".result form #date").val()
+      evaluation_time:($(".result form #date").val())?($(".result form #date").val()):arguments[0]
     },
     type:'POST',
     dataType:"JSON",

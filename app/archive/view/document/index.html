@@ -143,6 +143,29 @@
         background:none;
         color: white;
     }
+    .showclick{
+        font-size: 14px;
+    }
+    #downlog{
+        width: 90%;
+    }
+    #downlog ,#downlog tr ,#downlog tr td , #downlog tr th{
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    #downlog_length{
+        display: none;
+    }
+    .tbcontainer2{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        line-height: 34px;
+        background: #FFF;
+    }
+    .dataTables_wrapper, .tbcontainer{
+        display: block;
+    }
 </style>
 
 <div id="nodeZtree" data-options="region:'west',title:'文档目录树',split:true" style="width:260px;">
@@ -457,17 +480,17 @@
                             <div class="userContainer" style="width: 100%;margin-top: 10px"></div>
                         </div>
                         <div class="xiaZai" style="display: none;">
-                            <table class="table table-hover" id="tabob" style="width: 100%;margin-bottom: 0;">
-                                <thead>
-                                    <tr>
-                                        <th>下载日期</th>
-                                        <th>下载人员</th>
-                                    </tr>
+                            <table id="downlog"  style="width: 100%;">
+                                <thead style="width: 100% ;background-color:#ffefd7;">
+                                <tr>
+                                    <th style="width: 50%; ">下载日期</th>
+                                    <th style="width: 50%; ">下载人员</th>
+                                </tr>
                                 </thead>
-                                <tbody id="downInfo">
-
-                                </tbody>
                             </table>
+                            <div class="tbcontainer2">
+                                <div class="mark2"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -573,6 +596,57 @@
         $(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>上传文件</div>");
         $(".assModel").html("<div id='model'><i class='fa fa-plus'></i>关联模型</div>");
         $(".move").html("<div id='moveClick'><i class='fa fa-plus'></i>移动</div>");
+
+        //下载记录
+        var downlog = $('#downlog').DataTable( {
+          // paging: false, // 禁止分页
+          searching:false,
+          processing: true,
+          iDisplayLength : 15, //默认显示的记录数
+          serverSide: true,
+          ajax:{
+            "url":"{:url('archive/common/datatablesPre?tableName=archive_document_downrecord&id=0')}"
+          },
+          columns:[
+            {
+              name : "create_time"
+            },
+            {
+              name :"user"
+            }
+          ],
+          columnDefs: [
+            {
+              "targets": [0],
+              "render": function (data,type,row) {
+                var date = new Date(data*1000);
+                var Y = date.getFullYear() + '-';
+                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+                var h = (date.getHours() < 10 ? '0' + (date.getHours()):date.getHours())+ ':' ;
+                var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()):date.getMinutes())+ ':' ;
+                var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()):date.getSeconds());
+                return Y + M + D + h + m + s;
+              }
+            }
+          ],
+          ordering: false, // 禁止排序
+          language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "",
+            "infoEmpty": "",
+            "search": "搜索：",
+            "infoFiltered": "",
+            "paginate": {
+              "sPrevious": "<",
+              "sNext": ">"
+            }
+          },
+          "fnInitComplete": function (oSettings, json) {
+            $('#downlog_paginate').insertBefore(".mark2");
+          },
+        });
 
         var upload ;
         var uploadId ;
@@ -867,12 +941,10 @@
 
         //点击获取路径
         function nodeClick(e, treeId, node) {
-            console.log(node);
             selectData = "";
             clickId = '';
             clearAll();
             sNodes = zTreeObj.getSelectedNodes()[0];//选中节点
-            console.log(sNodes);
             selfid = zTreeObj.getSelectedNodes()[0].id;//当前id
             nodeName = zTreeObj.getSelectedNodes()[0].name;//当前name
             nodePid = zTreeObj.getSelectedNodes()[0].pid;//当前pid
@@ -918,8 +990,6 @@
                             } else {
                                 zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":value});
                             }
-                          var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=";
-                          tableItem.ajax.url(url).load();
                         }else{
                           layer.msg("失败");
                         }
@@ -977,7 +1047,7 @@
                                 zTreeObj.removeNode(sNodes);
                                 selfid = "";
                                 sNodes = '';
-                              var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=";
+                              var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=-1";
                               tableItem.ajax.url(url).load();
                             }else{
                               layer.msg("失败");
@@ -1036,7 +1106,7 @@
 
         //获取点击行
         $("#tableItem").delegate("tbody tr","click",function (e) {
-          clearAll();
+            clearAll();
             if($(e.target).hasClass("dataTables_empty")){
                 return;
             }
@@ -1048,10 +1118,13 @@
             clickId = selectData[4];
             fileStatus = selectData[3];
             console.log(clickId);
+          getAdminname(clickId);//加载共享人员名单
             getAttrList(selectData[4]);
 
-            record(clickId);//加载下载记录
-            getAdminname(clickId);//加载共享人员名单
+          //下载记录
+          var url = "/archive/common/datatablespre/tableName/archive_document_downrecord/id/"+clickId+".shtml";
+          downlog.ajax.url(url).load();
+
         });
 
         //掉后台接口 属性面板
@@ -1062,10 +1135,10 @@
                 data:{id:id},
                 success: function (res) {
                     console.log(res);
-                    if(res.code == 0){
+                    if(!res){
                         layer.msg('获取一条数据' + res.msg);
                     }
-                    $("#fileName").text(res.name);
+                    $("#fileName").text(res.docname);
                     $("#fileCategory").text(treefileCategory);
                     $("#uploadPerson").text(uploadPle);
                     $("#uploadTime").text(res.attachment_info.create_time);
@@ -1086,8 +1159,10 @@
           $("#fileSize").text("");
           $("#keyText").val("");
           $(".saveText").css('display','none');
-          $(".userContainer").html("");
-          record(-1);
+          // $(".userContainer").html("");
+          //下载记录
+          var url = "/archive/common/datatablespre/tableName/archive_document_downrecord/id/-1.shtml";
+          downlog.ajax.url(url).load();
         }
         //属性拼接的方法
         function getPathText(node) {
@@ -1166,7 +1241,7 @@
             $(".userContainer").html("");
             var str = ""
             for(var i=0 ; i<userList.length;i++){
-                str += '<p id="p'+userList[i].id+'">'+userList[i].nickname+'&nbsp;<a id="a'+userList[i].id+'"></a></p>';
+                str += '<p id="p'+userList[i].id+'">'+userList[i].nickname+'&nbsp;<a id="a'+userList[i].id+'"><i class="fa fa-times"></i></a></p>';
             }
             $(".userContainer").html(str);
         };
