@@ -300,12 +300,13 @@ class Qualityform extends Permissions
             $step[]=$v['Step'];
         }
         $maxstep=intval(max($step));
+        $user=Db::name('admin')
+            ->where(['id'=>$res['user_id']])
+            ->find();
         //如果当前步骤不是最后一步
         if ($res['CurrentStep']<$maxstep)
         {
-            $user=Db::name('admin')
-                ->where(['id'=>$res['user_id']])
-                ->find();
+
             return json(['msg'=>'success','creater'=>$user['nickname']]);
         }
         else
