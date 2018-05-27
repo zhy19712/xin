@@ -1118,12 +1118,13 @@
             clickId = selectData[4];
             fileStatus = selectData[3];
             console.log(clickId);
+          getAdminname(clickId);//加载共享人员名单
             getAttrList(selectData[4]);
 
           //下载记录
           var url = "/archive/common/datatablespre/tableName/archive_document_downrecord/id/"+clickId+".shtml";
           downlog.ajax.url(url).load();
-            getAdminname(clickId);//加载共享人员名单
+
         });
 
         //掉后台接口 属性面板
@@ -1134,7 +1135,7 @@
                 data:{id:id},
                 success: function (res) {
                     console.log(res);
-                    if(res.code == 0){
+                    if(!res){
                         layer.msg('获取一条数据' + res.msg);
                     }
                     $("#fileName").text(res.docname);
@@ -1158,7 +1159,7 @@
           $("#fileSize").text("");
           $("#keyText").val("");
           $(".saveText").css('display','none');
-          $(".userContainer").html("");
+          // $(".userContainer").html("");
           //下载记录
           var url = "/archive/common/datatablespre/tableName/archive_document_downrecord/id/-1.shtml";
           downlog.ajax.url(url).load();
