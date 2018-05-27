@@ -1092,6 +1092,9 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
             },
             {
                 name: "CurrentStep"
+            },
+            {
+                name: "user_id"
             }
         ],
         columnDefs: [
@@ -1157,9 +1160,11 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     // console.log(row[5]+"当前审批人Id");
                     // console.log($("#userId").val() + "当前登录人Id");
                     // console.log($("#userId").val())
+                    var userName = $(top.document).find("#current_user").text().trim();
+                    console.log(userName); //当前登人name
                     var html = "";
                     html += "<a title='查看' onclick='seeOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-search'></i></a>";
-                    if (row[3] === 0) {
+                    if (row[3] === 0 && userName == row[0]) {
                         html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa-pencil'></i></a>";
                         html += "<a title='删除' onclick='delOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-trash'></i></a>";
                         // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
@@ -1194,6 +1199,12 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
             },
             {
                 "targets": [6],
+                "visible": false,
+                "searchable": false,
+                "orderable": false
+            },
+            {
+                "targets": [7],
                 "visible": false,
                 "searchable": false,
                 "orderable": false
