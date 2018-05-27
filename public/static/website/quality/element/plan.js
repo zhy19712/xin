@@ -147,6 +147,10 @@ $('#save').click(function () {
 function tableInfo() {
     $.datatable({
         tableId:'tableItem',
+        // iDisplayLengths:1000,
+        // scrollYs: true,
+        // scrollCollapses: true,
+        // pagings: false,
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=quality_unit'
         },
@@ -198,9 +202,21 @@ function tableInfo() {
                 "visible": false
             },
         ],
+        // isPage:true,
+
+
     });
+    // $('.tbcontainer:last-child').remove();
+    $(".dataTables_wrapper .dataTables_scrollBody").css("overflow","initial");
+
+
 }
 tableInfo();
+// setTimeout(function () {
+//     $("#tableItem_info").remove();
+//     $("#tableItem_paginate").remove();
+// },1000)
+
 $('#add').html('新增');
 
 $('#add').click(function () {
@@ -250,7 +266,7 @@ layui.use('laydate', function(){
 });
 
 $('.maBasesBtn').click(function () {
-    $('.tbcontainer:last-child').remove();
+    $('#maBasesItem_wrapper .tbcontainer:last-child').remove();
     layer.open({
         title:'添加施工依据',
         id:'100',
@@ -386,6 +402,7 @@ $("#all_checked").on("click", function () {
 
 //单元工程段号新增
 $('#saveUnit').click(function () {
+    // $('.tbcontainer:last-child').remove();
     var tableItem = $('#tableItem').DataTable();
     var serial_number_before = $('input[name="serial_number_before"]').val();
     var serial_number_val = $('input[name="serial_number"]').val();
@@ -403,8 +420,17 @@ $('#saveUnit').click(function () {
             division_id:division_id,
             id:window.rowId
         },
-        isPage:true,
+        // others:function () {
+        //     insetData(en_type);
+        // }
     });
+    $('#tableItem_wrapper').next(".tbcontainer").remove();
+    $(".dataTables_wrapper .dataTables_paginate").css("float","none");
+    $(".dataTables_wrapper .dataTables_info").css("float","right");
+    $(".dataTables_wrapper .dataTables_length").css("float","none");
+    $(".dataTables_wrapper .dataTables_scrollBody").css("overflow","initial");
+    $(".dataTables_wrapper .tbcontainer").css("line-height","0px");
+    $(".dataTables_wrapper .tbcontainer").css("position","initial");
 });
 
 //单元工程段号编辑
@@ -618,6 +644,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(this).addClass("select-color").siblings().removeClass("select-color");
     selectData = tableItem.row(".select-color").data();//获取选中行数据
     console.log(selectData[7] +" ------选中的行id");
+    console.log(selectData[8] +" ------选中的行id");
     console.log(selectData);
     selectRow =selectData[7];
     eTypeId = selectData[8];
@@ -637,7 +664,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".listName").css("display","block");
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-    ischeckedBox()
+    // ischeckedBox()
 });
 
 //获取控制点name
@@ -724,7 +751,7 @@ function ischeckedBox() {
         }else{
             $('#all_checked_plan').prop("checked",true);
         }
-    },900)
+    },1000)
 }
 
 //单选的选中或取消 checkBox
