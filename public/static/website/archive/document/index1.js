@@ -295,6 +295,7 @@ var tableItem = $('#tableItem').DataTable({
     {
       name: "id"
     }
+
   ],
   columnDefs: [
     {
@@ -316,7 +317,7 @@ var tableItem = $('#tableItem').DataTable({
     {
       targets: [0],
       render: function (data, type, row) {
-        return  '<a title="' + data + '"  onclick=\"previewList('+row[5]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
+        return  '<a id="'+row[5]+'" title="' + data + '"  onclick=\"previewList('+row[5]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
       }
     },
     {
@@ -330,6 +331,7 @@ var tableItem = $('#tableItem').DataTable({
       }
     },
     {
+      "searchable": false,
       "orderable": false,
       targets: [4],
       render: function (data, type, row) {
@@ -485,6 +487,7 @@ $(".mybtn").on("click",function () {
 
 //保存按钮点击事件
 $(".assModel").on("click",function () {
+
   if(!selfid){
     layer.msg("请先选择节点！");
     return;
@@ -493,7 +496,30 @@ $(".assModel").on("click",function () {
     layer.msg('请选择最子节点');
     return;
   }
-
+  var remarkArr = [];
+  $("#tableItem tbody tr").each(function (i,item) {
+    var obj = {};
+    obj.id= $(item).find("td:first-child a").attr("id");
+    obj.remark = $(item).find("td:nth-child(5) span").text();
+    remarkArr.push(obj);
+  });
+  $.ajax({
+    url:"./editDocmentRemark",
+    type:"POST",
+    data:{remarkArr : remarkArr},
+    dataType:"JSON",
+    success:function (res) {
+      if(res.code == 1){
+        layer.msg('编辑成功');
+        var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+        tableItem.ajax.url(url).load();
+      }else{
+        layer.msg(res.msg);
+        var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+        tableItem.ajax.url(url).load();
+      }
+    }
+  });
 });
 
 //文件上传
@@ -553,6 +579,11 @@ uploader.on( 'uploadSuccess', function( file,res ) {
   // console.log(data)
   if(res.code === 1){
     $("#status").text(processAll());
+    if($("#status").text() == "100%"){
+      layer.closeAll();
+      var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+      tableItem.ajax.url(url).load();
+    }
   }else {
     layer.msg("抱歉，您没有此权限");
   }
@@ -566,9 +597,8 @@ uploader.on( 'all', function( type ) {
   } else if ( type === 'uploadFinished' ) {
     state = 'done';
   }
-
   if ( state === 'uploading' ) {
-    $("#testListAction").text('暂停上传');
+    return;
   } else {
     $("#testListAction").text('开始上传');
   }
@@ -578,7 +608,7 @@ var  state = 'pending';
 //开始上传
 $("#testListAction").on( 'click', function() {
   if ( state === 'uploading' ) {
-    return
+    return;
   } else {
     uploader.upload();
   }
@@ -589,7 +619,7 @@ function processAll() {
   var num = 0;
   var allnum = $("#demoList tr").length;
   $("#demoList tr td:nth-child(3)").each(function (i,item) {
-      if($(item.text()) == "100%"){
+      if($(item).text() == "100%"){
         num++;
       }
   });

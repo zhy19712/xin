@@ -205,6 +205,23 @@ Class DocumentModel extends Model
             return ['code' => -1,'msg' => $e->getMessage()];
         }
     }
+
+    /**
+     * 编辑一条文档信息
+     */
+    public function editCate($param)
+    {
+        try{
+            $result = $this->allowField(true)->save($param,['id' => $param['id']]);
+            if(false === $result){
+                return ['code' => -1,'msg' => $this->getError()];
+            }else{
+                return ['code' => 1, 'msg' => '编辑成功'];
+            }
+        }catch(PDOException $e){
+            return ['code' => 0, 'msg' => $e->getMessage()];
+        }
+    }
 }
 
 Class DocumentAttachment extends Model
