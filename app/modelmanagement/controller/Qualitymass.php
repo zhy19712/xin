@@ -356,7 +356,7 @@ class Qualitymass extends Permissions
             $model = new QualityCustomAttributeModel();
             //前台传过来的值
             $param = input('param.');
-            $id = isset($param['attrId']) ? $param['attrId'] : 0;
+            $id = isset($param['add_id']) ? $param['add_id'] : 0;
 
             //回显查询已经添加的自定义属性值
             $data = $model->getAllOne($id);

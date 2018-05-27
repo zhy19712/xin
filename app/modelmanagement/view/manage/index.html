@@ -128,7 +128,8 @@
             <script language="javascript" for="RealBimOcx"
                     EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)"
                     type="text/javascript">
-                review();
+                uObjSubIdSingle = uObjSubID;        //自定义回显需要用到的参数
+                review();   //重置模型颜色
                 uObjSubIDArr.push(uObjSubID);
                 //显示单元信息
                 $('#tabs').show();
@@ -255,6 +256,8 @@
                     },
                     dataType: "json",
                     success: function (res) {
+                        nodeId = res.data.unit_id;
+                        getOne();   //回显自定义属性
                         if (res.data == '' || res.data.unit_id == '' || res.data.model_id == '') {
                             return false;
                         }
