@@ -135,7 +135,7 @@ class Common extends Controller
      * 文档管理
      * @throws \think\exception\DbException
      */
-    public function archive_document($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    public function archive_document($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //查询
         //条件过滤后记录数 必要
