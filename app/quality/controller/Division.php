@@ -752,7 +752,6 @@ class Division extends Permissions{
             $id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
             if(request()->isGet()){
                 $data = $unit->getOne($id);
-                halt($data);
 
                 // 流水号在页面里是分开的,所以这里要截取分开
                 $parent_d_code = Db::name('quality_division')->where('id',$data['division_id'])->value('d_code');
