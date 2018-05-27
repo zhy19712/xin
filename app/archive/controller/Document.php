@@ -185,9 +185,6 @@ class Document extends Permissions
             if(!(in_array(Session::get('current_id'),$list)))
             {
                 return json(['code' => -1, 'msg' => "没有下载权限"]);
-            }else
-            {
-                return json(['code' => 1]);
             }
         }
 
