@@ -58,6 +58,9 @@ class Documenttype extends Permissions
         //判断当前节点下是否有文件
         //实例化模型类
         $model = new DocumentModel();
+
+        $doctype = new DocumentTypeModel();
+
         $id = input("post.id");
         $result = $model->getOne($id);
         if(!empty($result))
@@ -87,10 +90,13 @@ class Documenttype extends Permissions
                 Db::name('attachment')->where("id",$v["attachmentId"])->delete();
             }
         }
+
         $model->delselfidCate($id);
 
-        return $this->documentTypeService->del(input('id'));
+//        return $this->documentTypeService->del(input('id'));
+        $flag = $doctype->del($id);
 
+        return json($flag);
 
     }
 }
