@@ -10,6 +10,7 @@ namespace app\modelmanagement\controller;
 use app\admin\controller\Permissions;
 use app\modelmanagement\model\QualitymassModel;
 use think\Db;
+use \think\Session;
 
 class Manage extends Permissions
 {
