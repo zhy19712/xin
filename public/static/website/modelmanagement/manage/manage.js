@@ -68,7 +68,6 @@ function zTreeOnClick(event, treeId, treeNode) {
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
     modeGroupIds = nodeModelNumber();
-    console.log(modeGroupIds);
     if(treeNode.level==5){
         window.operateModel(modeGroupIds);
     }
@@ -119,4 +118,99 @@ $('#addAttr').click(function () {
     attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
     attrGroup.push('</div>');
     $('#attrGroup').append(attrGroup.join(' '));
+});
+
+//验收资料
+layui.use('element', function(){
+    var element = layui.element;
+    element.on('collapse(control)', function(data){
+        if(data.show){
+            var id = $(data.title).attr('id');
+            var procedureid = $(data.title).attr('procedureid');
+            var unit_id = $(data.title).attr('unit_id');
+            $.ajax({
+                url: "/modelmanagement/Manage/getLineReport",
+                type: "post",
+                data: {
+                    id: 56,
+                    procedureid: 22,
+                    unit_id: 18
+                },
+                dataType: "json",
+                success: function (res) {
+                    //在线填报
+                    var tbody = [];
+                    tbody.push('<tr><th class="table-title" colspan="4">在线填报</th></tr>');
+                    tbody.push('<tr>');
+                    tbody.push('<th>填报人</th>');
+                    tbody.push('<th>填报日期</th>');
+                    tbody.push('<th>审批状态</th>');
+                    tbody.push('<th>操作</th>');
+                    tbody.push('</tr>');
+                    $('table[uid='+ id +'] tbody').empty();
+                    $('table[uid='+ id +'] tbody').empty();
+                    for(var i = 0;i<res.form_info.length;i++){
+                        var data = res.form_info[i];
+                        tbody.push('<tr>');
+                        tbody.push('<td>');
+                        tbody.push(data.nickname);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.update_time);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.ApproveStatus);
+                        tbody.push('</td>');
+                        tbody.push('<td><i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('</tr>');
+                    }
+                    tbody.push('<tr><th class="table-title" colspan="4">扫描上传</th></tr>');
+                    tbody.push('<tr>');
+                    tbody.push('<th>文件名称</th>');
+                    tbody.push('<th>上传人</th>');
+                    tbody.push('<th>上传日期</th>');
+                    tbody.push('<th>操作</th>');
+                    tbody.push('</tr>');
+                    for(var j = 0;j<res.upload_form_sao.length;j++){
+                        var data = res.upload_form_sao[j];
+                        tbody.push('<tr>');
+                        tbody.push('<td>');
+                        tbody.push(data.data_name);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.nickname);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.create_time);
+                        tbody.push('</td>');
+                        tbody.push('<td><i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('</tr>');
+                    }
+                    tbody.push('<tr><th class="table-title" colspan="4">附件资料</th></tr>');
+                    tbody.push('<tr>');
+                    tbody.push('<th>附件名称</th>');
+                    tbody.push('<th>上传人</th>');
+                    tbody.push('<th>上传日期</th>');
+                    tbody.push('<th>操作</th>');
+                    tbody.push('</tr>');
+                    for(var j = 0;j<res.upload_form_fu.length;j++){
+                        var data = res.upload_form_fu[j];
+                        tbody.push('<tr>');
+                        tbody.push('<td>');
+                        tbody.push(data.data_name);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.nickname);
+                        tbody.push('</td>');
+                        tbody.push('<td>');
+                        tbody.push(data.create_time);
+                        tbody.push('</td>');
+                        tbody.push('<td><i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('</tr>');
+                    }
+                    $('table[uid='+ id +'] tbody').append(tbody.join(''));
+                }
+            });
+        }
+    });
 });
