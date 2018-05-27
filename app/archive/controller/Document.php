@@ -406,4 +406,17 @@ class Document extends Permissions
             return $this->error('上传失败：' . $file->getError());
         }
     }
+
+    /**
+     * 编辑上传的文档备注
+     */
+    public function editDocmentRemark()
+    {
+        if(request()->isAjax()){
+            //实例化模型类
+            $model = new DocumentModel();
+            $param = input("post.remarkArr/a");
+            halt($param);
+        }
+    }
 }
