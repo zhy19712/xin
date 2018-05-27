@@ -1434,7 +1434,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)->alias('a')
                     ->join('admin u', 'a.user_id = u.id', 'left')
                     ->join('admin c', 'a.CurrentApproverId = c.id', 'left')
-                    ->field('a.id,u.nickname as nickname,c.nickname as currentname,a.approvestatus,a.create_time,a.CurrentApproverId,a.CurrentStep')
+                    ->field('a.id,u.nickname as nickname,c.nickname as currentname,a.approvestatus,a.create_time,a.CurrentApproverId,a.CurrentStep,a.user_id')
                     ->where($whereStr)
                     ->order('create_time','desc')->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
