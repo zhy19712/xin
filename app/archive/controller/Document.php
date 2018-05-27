@@ -167,11 +167,35 @@ class Document extends Permissions
      */
     public function download()
     {
+        //实例化模型类
+        $model = new DocumentModel();
+
         $mod = DocumentModel::get(input('id'));
+
         //权限控制
-        if (!$mod->havePermission($mod['users'], Session::get('current_id'))) {
-            return json(['code' => -2, 'msg' => "没有下载权限"]);
+//        if ($mod->havePermission($mod['users'], Session::get('current_id'))) {
+//            return json(['code' => -2, 'msg' => "没有下载权限"]);
+//        }
+        $id = input('param.id');
+
+        $blacklist = $model->getbalcklist($id);
+        if($blacklist['users'])
+        {
+            $list = explode("|",$blacklist['users']);
+            if(!(in_array(Session::get('current_id'),$list)))
+            {
+                return json(['code' => -1, 'msg' => "没有下载权限"]);
+            }else
+            {
+                return json(['code' => 1]);
+            }
+        }else
+        {
+            return json(['code' => 1]);
         }
+
+        $mod = DocumentModel::get(input('id'));
+
         $file_obj = Db::name('attachment')->where('id', $mod['attachmentId'])->find();
         $filePath = '.' . $file_obj['filepath'];
         if (!file_exists($filePath)) {

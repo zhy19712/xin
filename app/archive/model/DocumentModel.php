@@ -143,6 +143,15 @@ Class DocumentModel extends Model
         }
 
     }
+
+    /**
+     * 查询当前图册下的被禁用的白名单
+     */
+    public function getbalcklist($id)
+    {
+        $data = $this->field("users")->where("id",$id)->find();
+        return $data;
+    }
 }
 
 Class DocumentAttachment extends Model
