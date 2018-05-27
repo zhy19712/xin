@@ -81,7 +81,7 @@ class Manage extends Permissions
             //查询xin_quality_form_info在线填报表的中的信息
         $form_info = Db::name("quality_form_info")->alias("q")
             ->join('admin ad', 'ad.id=q.user_id', 'left')
-            ->field("ad.nickname,FROM_UNIXTIME(q.update_time,'%Y-%c-%d') as update_time,q.ApproveStatus,q.id,q.user_id,q.CurrentApproverId")
+            ->field("ad.nickname,FROM_UNIXTIME(q.update_time,'%Y-%c-%d') as update_time,q.ApproveStatus,q.id,q.user_id,q.CurrentApproverId,q.CurrentStep")
             ->where(["DivisionId"=>$DivisionId,"ProcedureId"=>$ProcedureId,"ControlPointId"=>$ControlPointId])
             ->order("update_time desc")
             ->select();

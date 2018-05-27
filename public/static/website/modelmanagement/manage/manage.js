@@ -4,6 +4,8 @@ choiceness_pigment = '';       //优良色值
 qualified_pigment = '';      //合格色值
 un_evaluation_pigment = '';  //不合格色值
 modeGroupIds = '';  //模型组ID
+controlpoint_id = ''    //控制点Id
+currentStep = ''; //审批步骤
 $.ajax({
     url: "/modelmanagement/qualitymass/configureInfo",
     type: "post",
@@ -111,9 +113,10 @@ layui.use('element', function(){
     var element = layui.element;
     element.on('collapse(control)', function(data){
         if(data.show){
-            var id = $(data.title).attr('id');
+            var id = $(data.title).attr('id');      //控制点ID
             var procedureid = $(data.title).attr('procedureid');
             var unit_id = $(data.title).attr('unit_id');
+            controlpoint_id = id;
             $.ajax({
                 url: "/modelmanagement/Manage/getLineReport",
                 type: "post",
@@ -144,10 +147,12 @@ layui.use('element', function(){
                     }
                     for(var i = 0;i<res.form_info.length;i++){
                         var data = res.form_info[i];
+                        var onLineTableId = data.id;
                         var user_id = data.user_id;     //填报人ID
                         var nickname = data.nickname;    //填报人名字
                         var currentApproverId = data.CurrentApproverId;    //审批人ID
                         var approveStatus = data.ApproveStatus;    //审批状态
+                        currentStep = data.CurrentStep; //审批步骤
                         switch(data.ApproveStatus)
                         {
                             case -2:
@@ -167,7 +172,7 @@ layui.use('element', function(){
                         }
                         tbody.push('<tr>');
                         tbody.push('<td>');
-                        tbody.push(data.nickname);
+                        tbody.push(nickname);
                         tbody.push('</td>');
                         tbody.push('<td>');
                         tbody.push(data.update_time);
@@ -178,39 +183,39 @@ layui.use('element', function(){
                         tbody.push('<td class="btnWrap">');
                         if(admin_id==user_id){
                             if(approveStatus==-1){
-                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==-2){
-                                tbody.push('<i class="fa fa-search"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==0){
-                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==1){
-                                tbody.push('<i class="fa fa-search"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==2){
-                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
                             }
                         }else if(admin_id==currentApproverId){
                             if(approveStatus==1){
-                                tbody.push('<i class="fa fa-search"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                         }else{
                             if(approveStatus==-1){
-                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-edit"></i><i class="fa fa-trash-o"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==-2){
-                                tbody.push('<i class="fa fa-search"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==0){
-                                tbody.push('<i class="fa fa-search"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==1){
-                                tbody.push('<i class="fa fa-search"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
                             }
                             if(approveStatus==2){
-                                tbody.push('<i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download"></i><i class="fa fa-times"></i>');
                             }
                         }
                         tbody.push('</td>');
@@ -243,7 +248,7 @@ layui.use('element', function(){
                         tbody.push('<td>');
                         tbody.push(data.create_time);
                         tbody.push('</td>');
-                        tbody.push('<td><i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('<td><i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
                         tbody.push('</tr>');
                     }
                     tbody.push('<tr><th class="table-title" colspan="4">附件资料</th></tr>');
@@ -273,7 +278,7 @@ layui.use('element', function(){
                         tbody.push('<td>');
                         tbody.push(data.create_time);
                         tbody.push('</td>');
-                        tbody.push('<td><i class="fa fa-search"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
+                        tbody.push('<td><i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download"></i><i class="fa fa-close"></i></td>');
                         tbody.push('</tr>');
                     }
                     $('table[uid='+ id +'] tbody').append(tbody.join(''));
@@ -282,6 +287,46 @@ layui.use('element', function(){
         }
     });
 });
+
+//在线填报-查看
+function seeOnLine(id) {
+    layer.open({
+        type: 2,
+        title: '在线填报',
+        shadeClose: true,
+        area: ['980px', '90%'],
+        content: '/quality/Qualityform/edit?cpr_id='+ controlpoint_id + '&id='+ id +'&currentStep=null&isView=True'
+    });
+}
+
+//在线填报-编辑
+function editOnLine(id) {
+    isView = true;
+    layer.open({
+        type: 2,
+        title: '在线填报',
+        shadeClose: true,
+        area: ['980px', '90%'],
+        content: '/quality/Qualityform/edit?cpr_id='+ controlpoint_id + '&id='+ id +'&currentStep=' + currentStep
+    });
+}
+
+//在线填报-删除
+function delOnLine(id) {
+    layer.confirm("你将删除该数据，是否确认删除？", function () {
+        $.ajax({
+            url: "/quality/Qualityform/delForm",
+            type: "post",
+            data: {id: id},
+            success: function (res) {
+                if (res.code === 1) {
+                    layer.msg("删除数据成功！", {time: 1500, shade: 0.1});
+                    onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                }
+            }
+        });
+    });
+}
 
 //添加自定义属性
 $('#addAttr').click(function () {
