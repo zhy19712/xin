@@ -1,0 +1,1330 @@
+{include file="../../public/common_header"}
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<style>
+
+    #nodeZtree .ztree-title i.fa {
+        width: 18%;
+    }
+    #nodeZtree .ztree-title #add {
+        margin-left: 6px;
+    }
+
+    #tableContent .mybtn i.fa:before,#tableContent .assModel i.fa:before,#tableContent .move i.fa:before,#tableContent .file i.fa:before,#tableContent .oneKeyArchiv i.fa:before {
+        background: #00c0ef;
+        color: #ffffff;
+    }
+    #tableContent .mybtn,#tableContent .assModel,#tableContent .move,#tableContent .file,#tableContent .oneKeyArchiv{
+        float: right;
+        background-color: #00c0ef;
+    }
+    #tableContent .mybtn{
+        margin-right: 0%;
+        margin-bottom: 5px;
+    }
+    #tableContent .assModel{
+        margin-right: 0%;
+        margin-bottom: 5px;
+    }
+    #tableContent .move{
+        margin-right: 0%;
+        margin-left: 10px;
+        margin-bottom: 5px;
+    }
+    #tableContent table.dataTable.no-footer {
+        border-top: 1px dotted;
+    }
+    #tableContent #funKuai{
+        width: 100%;
+        position: absolute;
+        left: 72%;
+    }
+    #tableContent #funKuai>span{
+        background-color: #00c0ef;
+        margin-left: 5px;
+        color: #FFFFFF;
+    }
+    #tableContent #funKuai>span i.fa:before {
+        padding-right: 3px;
+        color: #FFFFFF;
+    }
+    #tableContent #tableItem_filter {
+        float: left;
+    }
+    #tableContent .select-color {
+        background-color: #FDD5B5 !important;
+    }
+    #tableContent h3 {
+        margin-top: 5px;
+        font-weight: 600;
+        font-size: 16px;
+        display: inline-block;
+    }
+    #tableContent .ibox-tools {
+        float: right;
+        margin-right: 30px;
+        margin-top: 10px;
+    }
+    #tableContent .ibox-tools2 {
+        float: right;
+        margin-right: 15px;
+    }
+    #tableContent .dataTables_wrapper .dataTables_scroll {
+        position: relative;
+        top: 15px;
+        border-top: 1px dotted #cecece;
+    }
+    #tableContent #tableItem tr td a{
+        color: #337ab7;
+    }
+    #tableContent .dataTables_wrapper {
+        display: none;
+    }
+
+    #information .layui-tab-content .attrBue{
+        width: 100%;
+    }
+    #information .layui-tab-content #tableAttr tr td{
+        padding: 8px;
+        border-top: 1px solid #e7eaec;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+        font-size: 12px;
+        max-height: 40px;
+    }
+    #information .layui-tab-content #tableAttr tr:hover{
+        background: #FDD5B5;
+        cursor: pointer;
+    }
+    #information .attrBue #keyText:focus{
+        border: 1px solid dodgerblue;
+    }
+    #information .attrBue #keyText{
+        margin: 8px;
+        padding: 8px;
+        margin-top: 0;
+        min-height: 100px;
+        overflow: hidden;
+        height: 90px;
+        width: 85%;
+    }
+    #information .attrBue .saveText{
+        display: none;
+        float: right;
+        margin-right: 20px;
+        margin-top: 10px;
+    }
+    #information #saveCircle,#information #reply{
+        margin-right: 15px;
+        border-radius: 100%;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        line-height: 0;
+    }
+    #information #saveCircle i.fa:before,#information #reply i.fa:before{
+        background:none;
+        color: white;
+    }
+    #information .userContainer p{
+        float: left;
+        margin: 4px;
+        background-color: #56ABE4;
+        text-align: center;
+        color: white;
+        font-size: 12px;
+        border: 1px solid #56ABE4;
+        border-radius: 20px;
+        line-height: 0.1;
+        padding: 10px;
+    }
+    #information .userContainer p i.fa:before {
+        background:none;
+        color: white;
+    }
+    .showclick{
+        font-size: 14px;
+    }
+    #downlog{
+        width: 90%;
+    }
+    #downlog ,#downlog tr ,#downlog tr td , #downlog tr th{
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    #downlog_length{
+        display: none;
+    }
+    .tbcontainer2{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        line-height: 34px;
+        background: #FFF;
+    }
+    .dataTables_wrapper, .tbcontainer{
+        display: block;
+    }
+</style>
+
+<div id="nodeZtree" data-options="region:'west',title:'文档目录树',split:true" style="width:260px;">
+    <div class="ztree-title">
+        <i id="add" title="新增节点" class="fa fa-lg fa-sitemap" onclick="addNodetree()"></i>
+        <i title="编辑节点" class="fa fa-lg fa-pencil" onclick="editNodetree()"></i>
+        <i title="删除节点" class="fa fa-lg fa-trash" onclick="delNodetree()"></i>
+        <!--<i title="下移" class="fa fa-lg fa-arrow-circle-down" id="downMoveNode"></i>-->
+        <!--<i title="上移" class="fa fa-lg fa-arrow-circle-up" id="upMoveNode"></i>-->
+        <i title="展开所有" class="fa fa-lg fa-plus-square" id="openNode"></i>
+        <i title="收起所有" class="fa fa-lg fa-minus-square" id="closeNode"></i>
+    </div>
+    <ul class="ztree" id="ztree"></ul>
+</div>
+<div id="tableContent" data-options="region:'center',title:'当前路径：'" style="padding:5px;background:#ffffff;">
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>文件名称</th>
+            <th>上传人</th>
+            <th>上传时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="info"></div>
+    <div id="form_container"></div>
+    <div class="tbcontainer">
+        <div class="mark"></div>
+    </div>
+</div>
+<div id="information" data-options="region:'east',title:'管理信息',split:true" style="width:330px;">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">属性</li>
+            <li>共享</li>
+        </ul>
+        <div class="layui-tab-content">
+            <!--属性-->
+            <div class="layui-tab-item layui-show attrBue">
+                <div>
+                    <table id="tableAttr" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <td>文件名称</td>
+                                <td id="fileName"></td>
+                            </tr>
+                            <tr>
+                                <td>文件类别</td>
+                                <td id="fileCategory"></td>
+                            </tr>
+                            <tr>
+                                <td>上传人</td>
+                                <td id="uploadPerson"></td>
+                            </tr>
+                            <tr>
+                                <td>上传时间</td>
+                                <td id="uploadTime"></td>
+                            </tr>
+                            <tr>
+                                <td>文件大小</td>
+                                <td id="fileSize"></td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <h2 style="margin-left:8px;font-size:14px; color:#676a6c; font-weight:bold; font-family:微软雅黑; ">关键词</h2>
+                    <textarea name="keyText" id="keyText" placeholder="关键词"></textarea>
+                    <div class="saveText">
+                        <button title="保存" id="saveCircle" class="layui-btn" type="button" style="margin-right: 15px;">
+                            <i class="fa fa-check" title="保存"></i>
+                        </button>
+                        <button title="关闭" id="reply" class="layui-btn layui-btn-warm" type="button" style="margin-right: 15px;">
+                            <i class="fa fa-times" style="color:#ffffff" ;></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="searchName">
+                </div>
+            </div>
+            <!--共享-->
+            <div class="layui-tab-item">
+                <div>
+                    <div id="Div3" class="tab-pane active" style="height: 346px;">
+
+                        <style type="text/css">
+                            body {
+                                background-color: white;
+                            }
+
+                            p2 {
+                                float: left;
+                                margin: 4px;
+                                background-color: #56ABE4;
+                                text-align: center;
+                                color: white;
+                                min-width: 60px;
+                                font-size: 12px;
+                                border: 1px solid #56ABE4;
+                                border-radius: 20px;
+                                float: left;
+                                line-height: 0.1;
+                                padding: 10px;
+                            }
+
+                            p3 {
+                                float: left;
+                                margin: 4px;
+                                background-color: #f47264;
+                                text-align: center;
+                                color: white;
+                                min-width: 60px;
+                                font-size: 12px;
+                                border: 1px solid #f47264;
+                                border-radius: 20px;
+                                float: left;
+                                line-height: 0.1;
+                                padding: 10px;
+                            }
+
+                            .col-md-4 {
+                                width: 35.4%;
+                                height: 400px;
+                                float: left;
+                                border: 1px solid #CECECE;
+                                margin: 5px;
+                            }
+
+                            .col-md-6 {
+                                width: 62.8%;
+                                height: 400px;
+                                float: right;
+                                border: 1px solid #CECECE;
+                                margin: 5px -4px 5px 5px;
+                            }
+
+                            .col-md-7 {
+                                width: 100%;
+                                float: left;
+                                height: 30px;
+                                border: 1px solid #CECECE;
+                                margin: 5px;
+                                margin-bottom: 3px;
+                            }
+
+                            .fa-times {
+                                color: white;
+                                font-size: 12px;
+                                margin-left: 2px;
+                            }
+
+                            p {
+                                margin-top: 4px;
+                            }
+
+                            .fa:hover {
+                                color: #F8AC59;
+                            }
+
+                            .input-group-sm > .form-control,
+                            .input-group-sm > .input-group-addon,
+                            .input-group-sm > .input-group-btn > .btn {
+                                height: 25px;
+                                padding: 2px 10px;
+                            }
+
+                            .selectContent {
+                                height: 100px;
+                                margin-top: 25px;
+                                width: 450px;
+                                position: absolute;
+                            }
+
+                            #outarrow {
+                                border-color: transparent transparent #CECECE;
+                                border-style: solid;
+                                border-width: 14px;
+                                height: 0;
+                                width: 0;
+                                position: absolute;
+                                top: -43px;
+                                left: 60px;
+                                opacity: 0.5;
+                            }
+
+                            #innerarrow {
+                                border-color: transparent transparent white;
+                                border-style: solid;
+                                border-width: 14px;
+                                height: 0;
+                                width: 0;
+                                position: absolute;
+                                top: -46px;
+                                left: 60px;
+                                margin-top: 6px;
+                            }
+
+                            .selCent {
+                                border: 1px solid #CECECE;
+                                width: 290px;
+                                height: 90px;
+                                margin-top: -15px;
+                                padding: 5px;
+                            }
+
+                            .pImg {
+                                width: 35px;
+                                margin-left: 5px;
+                            }
+
+                            .pTitle {
+                                height: 30px;
+                                line-height: 30px;
+                                color: #676A6C;
+                                font-weight: 700;
+                            }
+
+                            .selectBox {
+                                display: inline-block;
+                                height: 50px;
+                                line-height: 50px;
+                                width: 150px;
+                                border: 1px solid #cecece;
+                            }
+
+
+                            p1 {
+                                display: inline-block;
+                                color: #757779;
+                                margin-left: 45px;
+                            }
+                            /*滚动条*/
+
+                            .slimScrollBar {
+                                background: #bbb none repeat scroll 0 0 !important;
+                            }
+                            /*滚动条*/
+
+                            .blues {
+                                color: #56ABE4;
+                            }
+
+                            .rted {
+                                color: #CDCDCD;
+                            }
+
+                            #bents .aselect {
+                                color: #56ABE4;
+                            }
+
+                            .xiaZai {
+                                display: none;
+                            }
+                            /* 表格*/
+
+                            .table-hover > tbody > tr:hover > td,
+                            .table-hover > tbody > tr:hover > th {
+                                background-color: #fff7e1;
+                            }
+
+                            #tabob {
+                                table-layout: fixed;
+                                border: 1px solid #CED4D6;
+                            }
+
+                            #tabob td {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                text-align: center;
+                                font-size: 12px;
+                            }
+
+                            #tabob th {
+                                text-align: center;
+                                font-weight: bold;
+                                font-size: 12px;
+                                background-color: #ffefd7;
+                                color: #665173;
+                                padding: 5px;
+                                vertical-align: middle;
+                            }
+
+                            #tabob td,
+                            #tabob th {
+                                border: 1px solid #CED4D6;
+                                padding: 5px;
+                            }
+                            h4{
+                                font-size: 14px;
+                                font-weight: 800;
+                            }
+                        </style>
+
+                        <div id="bents">
+                            <h4 class="hui rted" style="margin: 10px;" id="tgd">
+                                <a style="margin-right: 7px;" onclick="shareShow()" class="rted aselect">共享人员</a>|
+                                <a style="margin-right: 7px;margin-left: 7px;" onclick="downLoadShow()" class="rted">下载记录</a>
+                            </h4>
+                            <div class="ibox-tools pepleAdd" style="float: right; margin-top: -30px;font-size: 15px; display: block;">
+                                <a class="relat" id="relat" onclick="addPeople()" style="margin-top:0px;margin-right: 8px;" title="添加人员"><i class="fa fa-lg fa-plus-square"></i></a>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed" style="margin:10px;"></div>
+                        <div class="gongXiang" style="display: block;">
+                            <!--<div style="width: 100%; height: 30px;margin-top: 10px">-->
+                                <!--<h3 style="font-weight: 800">共享白名单</h3>-->
+                            <!--</div>-->
+                            <div class="searchName" style="margin-top: 10px;">
+                                <input type="text" id="usernameSearch"  class="layui-input" placeholder="用户名称" />
+                            </div>
+                            <div class="userContainer" style="width: 100%;margin-top: 10px"></div>
+                        </div>
+                        <div class="xiaZai" style="display: none;">
+                            <table id="downlog"  style="width: 100%;">
+                                <thead style="width: 100% ;background-color:#ffefd7;">
+                                <tr>
+                                    <th style="width: 50%; ">下载日期</th>
+                                    <th style="width: 50%; ">下载人员</th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <div class="tbcontainer2">
+                                <div class="mark2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{include file="../../public/common_footer"}
+<script src="__WEBSITE__/archive/document/index.js"></script>
+</body>
+<script type="text/javascript">
+
+        //组织结构表格
+        var tableItem = $('#tableItem').DataTable({
+            pagingType: "full_numbers",
+            processing: true,
+            serverSide: true,
+            // sScrollX: '600px',
+            ajax: {
+                "url": "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="
+            },
+            dom: 'lf<"move layui-btn layui-btn-sm">' +
+            '<"assModel layui-btn layui-btn-sm">' +
+            '<"mybtn layui-btn layui-btn-sm">rtip',
+            columns: [
+                {
+                    name: "docname"
+                },
+                {
+                    name: "nickname"
+                },
+                {
+                    name: "create_time"
+                },
+                {
+                    name: "status"
+                },
+                {
+                    name: "id"
+                }
+            ],
+            columnDefs: [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    targets:[2]
+                },
+                {
+                    targets: [0],
+                    render: function (data, type, row) {
+                        return  '<a title="' + data + '"  onclick=\"previewList('+row[4]+')\">'+data+'<i class="fa fa-lg-2 fa-file-o"></a>';
+                    }
+                },
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [4],
+                    "render": function (data, type, row) {
+                        var a = data;
+                        var html = "<a type='button'  class='' style='margin-left: 5px;' onclick='delFile("+row[4]+")'><i title='删除' class='fa fa-trash'></i></a>";
+                        html += "<a type='button' class='' style='margin-left: 5px;' onclick='downFile("+row[4]+")'><i title='下载' class='fa fa-download'></i></a>";
+                        // html += "<a type='button' class='' style='margin-left: 5px;' onclick='AssFile(this)'><i title='关联文件' class='fa fa-chain'></i></a>";
+                        // html += "<a type='button' class='' style='margin-left: 5px;' onclick='reviewHistory(this)'><i title='审阅历史' class='fa fa-file-text'></i></a>";
+                        return html;
+                    }
+                },
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    targets: [3],
+                    render: function (data, type, row) {
+                        if (data == 1) {
+                            return "已归档";
+                        }
+                        return "待归档";
+                    }
+                }
+            ],
+            language: {
+                "lengthMenu": "_MENU_",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索：",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "sFirst": "<<",
+                    "sPrevious": "<",
+                    "sNext": ">",
+                    "sLast": ">>"
+                }
+            },
+            "fnInitComplete": function (oSettings, json) {
+                $('#tableItem_length').insertBefore(".mark");
+                $('#tableItem_info').insertBefore(".mark");
+                $('#tableItem_paginate').insertBefore(".mark");
+            }
+        });
+
+        //点击上传文件
+        $(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>上传文件</div>");
+        $(".assModel").html("<div id='model'><i class='fa fa-plus'></i>关联模型</div>");
+        $(".move").html("<div id='moveClick'><i class='fa fa-plus'></i>移动</div>");
+
+        //下载记录
+        var downlog = $('#downlog').DataTable( {
+          // paging: false, // 禁止分页
+          searching:false,
+          processing: true,
+          iDisplayLength : 15, //默认显示的记录数
+          serverSide: true,
+          ajax:{
+            "url":"{:url('archive/common/datatablesPre?tableName=archive_document_downrecord&id=0')}"
+          },
+          columns:[
+            {
+              name : "create_time"
+            },
+            {
+              name :"user"
+            }
+          ],
+          columnDefs: [
+            {
+              "targets": [0],
+              "render": function (data,type,row) {
+                var date = new Date(data*1000);
+                var Y = date.getFullYear() + '-';
+                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+                var h = (date.getHours() < 10 ? '0' + (date.getHours()):date.getHours())+ ':' ;
+                var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()):date.getMinutes())+ ':' ;
+                var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()):date.getSeconds());
+                return Y + M + D + h + m + s;
+              }
+            }
+          ],
+          ordering: false, // 禁止排序
+          language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "",
+            "infoEmpty": "",
+            "search": "搜索：",
+            "infoFiltered": "",
+            "paginate": {
+              "sPrevious": "<",
+              "sNext": ">"
+            }
+          },
+          "fnInitComplete": function (oSettings, json) {
+            $('#downlog_paginate').insertBefore(".mark2");
+          },
+        });
+
+        var upload ;
+        var uploadId ;
+        var uploadName ;
+        var clickId ;  //选中表格数据id
+        var clickTreeId ;//一键归档选树的id
+        var fileStatus ;
+        var userList=[];
+        var drawingId='';
+        var uploadInst;
+        var uploader;
+
+        // $(".mybtn >div").click(function () {
+        //     if (!selfid) {
+        //         layer.msg("请选择节点", {time: 1500, shade: 0.1});
+        //         return;
+        //     }else if(selfid){
+        //         $(".mybtn >div").attr("id","test3");
+                // $("#picker").click(function(){
+                //    uploader = WebUploader.create({
+                //        auto: true,
+                //        // swf文件路径
+                //        swf:  '/static/public/webupload/Uploader.swf',
+                //
+                //        // 文件接收服务端。
+                //        server: "{:url('admin/common/upload?module=document&use=archive')}",
+                //
+                //        // 选择文件的按钮。可选。
+                //        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                //        pick: {
+                //            multiple: false,
+                //            id: "#picker",
+                //            innerHTML: "上传文件"
+                //        },
+                //        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                //        resize: false
+                //    });
+                //    var $list = $('#addName');
+                //    uploader.on( 'fileQueued', function( file ) {
+                //        $list.val('等待上传...');
+                //    });
+                //
+                //    uploader.on( 'uploadSuccess', function( file,res) {
+                //        $list.val('已上传成功');
+                //        console.log(res)
+                //
+                //        // if(res.code == 2){
+                //        //     uploadId = res.id;
+                //        //     $.ajax({
+                //        //         url:"{:url('documenttype/add')}",
+                //        //         data:{
+                //        //             name: uploadName, //名称
+                //        //             attachmentId: uploadId,  //文档关联Id
+                //        //             type:selfid,
+                //        //         },
+                //        //         type:'post',
+                //        //         success:function(res) {
+                //        //             console.log(res)
+                //        //             if(res.code == 1) {
+                //        //                 var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+                //        //                 tableItem.ajax.url(url).load();
+                //        //             } else {
+                //        //                 layer.msg('获取数据失败！');
+                //        //             }
+                //        //         }
+                //        //     })
+                //        //     layer.msg("上传成功！",{time:1500})
+                //        // }else{
+                //        //     layer.msg("上传失败！",{time:1500})
+                //        // }
+                //    });
+                //
+                //    uploader.on( 'uploadError', function( file ) {
+                //        $list.val('上传出错');
+                //    });
+                // });
+                // layui.upload.render({
+                //     elem: '#test3',
+                //     url: "{:url('admin/common/upload?module=document&use=archive')}",
+                //     accept: 'file',//普通文件
+                //     exts: 'doc|docx|pdf',
+                //     before: function(obj){
+                //         obj.preview(function(index, file, result){
+                //             uploadName = file.name;
+                //             console.log(file.name);//获取文件名，result就是base64
+                //         })
+                //     },
+                //     done: function(res){
+                //         console.log(res)
+                //         if(res.code == 2){
+                //             uploadId = res.id;
+                //             $.ajax({
+                //                 url:"{:url('documenttype/add')}",
+                //                 data:{
+                //                     name: uploadName, //名称
+                //                     attachmentId: uploadId,  //文档关联Id
+                //                     type:selfid,
+                //                 },
+                //                 type:'post',
+                //                 success:function(res) {
+                //                     console.log(res)
+                //                     if(res.code == 1) {
+                //                         var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+                //                         tableItem.ajax.url(url).load();
+                //                     } else {
+                //                         layer.msg('获取数据失败！');
+                //                     }
+                //                 }
+                //             })
+                //             layer.msg("上传成功！",{time:1500})
+                //         }else{
+                //             layer.msg("上传失败！",{time:1500})
+                //         }
+                //     },
+                // });
+        //     }
+        // });
+
+        //管理信息的tab 切换
+        layui.use(['element', "layer", 'form', 'upload'], function () {
+            var $ = layui.jquery
+                , element = layui.element //Tab的切换功能，切换事件监听等，需要依赖element模块
+                , upload = layui.upload;
+
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate;
+
+            upload.render({
+                elem: '#test3',
+                url: "{:url('admin/common/upload?module=document&use=archive')}",
+                // exts: 'doc|docx|pdf|png|jpg|xls',
+                accept:"file",
+                before: function(obj){
+                    obj.preview(function(index, file, result){
+                        uploadName = file.name;
+                        console.log(file.name);//获取文件名，result就是base64
+                    })
+                },
+                done: function(res){
+                    console.log(res)
+                    if(res.code == 2){
+                        uploadId = res.id;
+                        $.ajax({
+                            url:"{:url('document/add')}",
+                            data:{
+                                docname: uploadName, //名称
+                                attachmentId: uploadId,  //文档关联Id
+                                type:selfid,
+                            },
+                            type:'post',
+                            success:function(res) {
+                                console.log(res)
+                                if(res.code == 1) {
+                                    var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+                                    tableItem.ajax.url(url).load();
+                                } else {
+                                    layer.msg('获取数据失败！');
+                                }
+                            }
+                        })
+                        layer.msg("上传成功！",{time:1500})
+                    }else{
+                        layer.msg("上传失败！",{time:1500})
+                    }
+                },
+            });
+        });
+
+        //关联模型
+        $("#model").click(function (){
+            if (!clickId) {
+                layer.msg("请先选择一条数据！", {time: 1500, shade: 0.1});
+                return;
+            }else {
+                document.cookie="unitId="+clickId;
+                window.open('./association');
+            }
+        });
+
+        //移动
+        $("#moveClick").click(function (){
+            if (!clickId) {
+                layer.msg("请选择移动的目标！", {time: 1500, shade: 0.1});
+                return;
+            }else {
+                layer.open({
+                    type: 2,
+                    title: '移动文档到',
+                    shadeClose: true,
+                    area: ['480px', '550px'],
+                    content: '{:url("move")}',
+                    success: function(layero, index){
+                        var body = layer.getChildFrame('body', index);
+                        // console.log(body.html())
+                        body.find("#moveZtreeId").val(clickId);
+                    },
+                    end: function () {
+                        var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=" + selfid;
+                        tableItem.ajax.url(url).load();
+                        clickId = '';
+                    }
+                });
+            }
+        });
+
+        // //归档
+        // $("#fileClick").click(function (){
+        //     if(fileStatus == 1){
+        //         layer.msg("归档文件不能重复归档！")
+        //     }else{
+        //         if (!clickId) {
+        //         layer.msg("请选择节点", {time: 1500, shade: 0.1});
+        //         return;
+        //     }else {
+        //         $.ajax({
+        //             type: "post",
+        //             url: "{:url('document/archiving')}",
+        //             data: {id: clickId},
+        //             success: function (res) {
+        //                 console.log(res)
+        //                 if (res.code == 1) {
+        //                     var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=" + selfid;
+        //                     tableItem.ajax.url(url).load();
+        //                     layer.msg("归档成功！")
+        //                 }
+        //             },
+        //             error: function (data) {
+        //                 debugger;
+        //             }
+        //         })
+        //     }
+        //     }
+        // });
+        //
+        // //一键归档
+        // $("#oneClick").click(function (){
+        //     if (!selfid) {
+        //         layer.msg("请选择节点", {time: 1500, shade: 0.1});
+        //         return;
+        //     }else{
+        //         $.ajax({
+        //             type:"post",
+        //             url:"{:url('document/batchArchiving')}",
+        //             data:{tid:clickTreeId},
+        //             success: function (res) {
+        //                 console.log(res)
+        //                 if(res.code == 1){
+        //                     var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+        //                     tableItem.ajax.url(url).load();
+        //                     layer.msg("一键归档成功！")
+        //                 }
+        //             },
+        //             error: function (data) {
+        //                 debugger;
+        //             }
+        //         })
+        //     }
+        // });
+
+        //初始化树节点
+        var selfid, nodeName, nodePid, zTreeObj, groupid, sNodes;
+
+        var setting = {
+            view: {
+                showLine: true, //设置 zTree 是否显示节点之间的连线。
+                selectedMulti: false, //设置是否允许同时选中多个节点。
+                // dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+            },
+            async: {
+                enable: true,
+                autoParam: ["pid"],
+                type: "post",
+                url: "{:url('documenttype/getAll')}",
+                dataType: "json",
+                // dataFilter: ajaxDataFilter
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idkey: "id",
+                    pIdKey: "pid",
+                    rootPId: 0
+                }
+            },
+            callback: {
+                onClick: this.nodeClick
+            }
+        };
+        zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
+
+        //点击获取路径
+        function nodeClick(e, treeId, node) {
+            selectData = "";
+            clickId = '';
+            clearAll();
+            sNodes = zTreeObj.getSelectedNodes()[0];//选中节点
+            selfid = zTreeObj.getSelectedNodes()[0].id;//当前id
+            nodeName = zTreeObj.getSelectedNodes()[0].name;//当前name
+            nodePid = zTreeObj.getSelectedNodes()[0].pid;//当前pid
+            console.log(selfid + '---id');
+            console.log(nodeName + '---name');
+            console.log(nodePid + '---pid');
+            var path = sNodes.name; //选中节点的名字
+            node = sNodes.getParentNode();//获取父节点
+            //判断是否还有父节点
+            if (node) {
+                //判断是否还有父节点
+                while (node) {
+                    path = node.name + "-" + path;
+                    node = node.getParentNode();
+                }
+            } else {
+                $(".layout-panel-center .panel-title").text(sNodes.name);
+            }
+            groupid = sNodes.pId //父节点的id
+            var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id="+selfid;
+            tableItem.ajax.url(url).load();
+            $("#tableContent .dataTables_wrapper").css('display','block');
+            $("#tableContent .tbcontainer").css('display','block');
+            $(".layout-panel-center .panel-title").text("当前路径:" + path)
+            getPathText(sNodes);
+            clickTreeId = selfid;
+        }
+
+        //点击添加节点
+        function addNodetree() {
+            var pid = selfid ? selfid : 0;
+            layer.prompt({title: '请输入节点名称',}, function (value, index, elem) {
+                $.ajax({
+                    url: "{:url('documenttype/addOrEdit')}",
+                    type: "post",
+                    data: {pid: pid, name: value},
+                    success: function (res) {
+                        console.log(res)
+                        if (res.code === 1) {
+                            console.log(sNodes)
+                            if (sNodes) {
+                                zTreeObj.addNodes(sNodes, {"id":res.data,"pid":pid,"name":value});
+                            } else {
+                                zTreeObj.addNodes(null, {"id":res.data,"pid":pid,"name":value});
+                            }
+                        }else{
+                          layer.msg("失败");
+                        }
+                    }
+                });
+                layer.close(index);
+            });
+        };
+
+        //编辑节点
+        function editNodetree() {
+            if (!selfid) {
+                layer.msg("请选择节点", {time: 1500, shade: 0.1});
+                return;
+            }
+            console.log(sNodes);
+            layer.prompt({
+                title: '编辑',
+                value: sNodes.name
+            }, function (value, index, elem) {
+                $.ajax({
+                    url: "{:url('documenttype/addOrEdit')}",
+                    type: "post",
+                    data: {id: selfid, name: value},
+                    success: function (res) {
+                        if (res.code === 1) {
+                            sNodes.name = value;
+                            zTreeObj.updateNode(sNodes);//更新节点名称
+                            layer.msg("编辑成功")
+                        }
+                    }
+                });
+                layer.close(index);
+            });
+        };
+
+        //删除节点
+        function delNodetree() {
+            if (!selfid) {
+                layer.msg("请选择节点");
+                return;
+            }
+            if (!sNodes.children) {
+                layer.confirm("该操作会将关联数据同步删除，是否确认删除？", function () {
+                    $.ajax({
+                        url: "{:url('documenttype/del')}",
+                        type: "post",
+                        data: {id: selfid},
+                        success: function (res) {
+                            if (res.code === 1) {
+                                layer.msg("删除节点成功", {time: 1500, shade: 0.1});
+                                //下面是更新列表
+                                // var url = "/admin/common/datatablespre/tableName/admin_cate/id/"+selfid+".shtml";
+                                // tableItem.ajax.url(url).load();
+                                zTreeObj.removeNode(sNodes);
+                                selfid = "";
+                                sNodes = '';
+                              var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=-1";
+                              tableItem.ajax.url(url).load();
+                            }else{
+                              layer.msg("失败");
+
+                            }
+                        }
+                    });
+                });
+            } else {
+                layer.msg("包含下级，无法删除", {time: 1500, shade: 0.1});
+            }
+
+        }
+
+        //全部展开
+        $('#openNode').click(function () {
+            zTreeObj.expandAll(true);
+        });
+
+        //收起所有
+        $('#closeNode').click(function () {
+            zTreeObj.expandAll(false);
+        });
+
+        //删除
+        function delFileFun(id,url) {
+            $.ajax({
+                type: "post",
+                url: url,
+                data: {id: id},
+                success: function (res) {
+                    if(res.code == 1){
+                        console.log(res);
+                        layer.msg("删除成功！");
+                        var url = "{:url('/archive/common/datatablesPre')}?tableName=archive_document&id=" + selfid;
+                        tableItem.ajax.url(url).load();
+                    }else if(res.code==0){
+                        layer.msg(res.msg);
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            });
+        }
+
+        //删除调用
+        function delFile(id){
+            console.log(id);
+            delFileFun(id,"{:url('document/del')}")
+        }
+
+        //右边的属性
+        var uploadPle;//上传人
+        var treefileCategory;//文件类别
+
+        //获取点击行
+        $("#tableItem").delegate("tbody tr","click",function (e) {
+            clearAll();
+            if($(e.target).hasClass("dataTables_empty")){
+                return;
+            }
+            $(".path").html("");
+            $(this).addClass("select-color").siblings().removeClass("select-color");
+            selectData = tableItem.row(".select-color").data();//获取选中行数据
+            console.log(selectData);
+            uploadPle = selectData[1];
+            clickId = selectData[4];
+            fileStatus = selectData[3];
+            console.log(clickId);
+          getAdminname(clickId);//加载共享人员名单
+            getAttrList(selectData[4]);
+
+          //下载记录
+          var url = "/archive/common/datatablespre/tableName/archive_document_downrecord/id/"+clickId+".shtml";
+          downlog.ajax.url(url).load();
+
+        });
+
+        //掉后台接口 属性面板
+        function getAttrList(id){
+            $.ajax({
+                type:"post",
+                url:"{:url('document/getOne')}",
+                data:{id:id},
+                success: function (res) {
+                    console.log(res);
+                    if(!res){
+                        layer.msg('获取一条数据' + res.msg);
+                    }
+                    $("#fileName").text(res.docname);
+                    $("#fileCategory").text(treefileCategory);
+                    $("#uploadPerson").text(uploadPle);
+                    $("#uploadTime").text(res.attachment_info.create_time);
+                    $("#keyText").val(res.remark);
+                    $("#fileSize").text((res.attachment_info.filesize)/1000+' KB');
+                },
+                error: function (data) {
+                    debugger;
+                }
+            })
+        }
+        //属性 共享人员 下载记录清空
+        function clearAll() {
+          $("#fileName").text("");
+          $("#fileCategory").text("");
+          $("#uploadPerson").text("");
+          $("#uploadTime").text("");
+          $("#fileSize").text("");
+          $("#keyText").val("");
+          $(".saveText").css('display','none');
+          // $(".userContainer").html("");
+          //下载记录
+          var url = "/archive/common/datatablespre/tableName/archive_document_downrecord/id/-1.shtml";
+          downlog.ajax.url(url).load();
+        }
+        //属性拼接的方法
+        function getPathText(node) {
+            var s = node.name;
+            while (node = node.getParentNode()) {
+                s = node.name + '>>' + s;
+            }
+            treefileCategory = s;
+            return s;
+        }
+
+        //title
+        $('#tableAttr thead').on( 'mouseover', 'td', function () {
+            $(this).attr('title',$(this).text());
+        }).on( 'mouseleave', 'td', function () {
+            $(this).removeAttr("title");
+        });
+
+        //保存 与返回
+        $('#keyText').focus(function () {
+            $(".saveText").css('display','block');
+        });
+
+        //保存 存的关键字
+        $('#saveCircle').click(function () {
+            if (!clickId) {
+                layer.msg("请选择节点！", {time: 1500, shade: 0.1});
+                return;
+            }else {
+                $.ajax({
+                    type: "post",
+                    url: "{:url('document/remark')}",
+                    data: {id: clickId, remark: $("#keyText").val()},
+                    success: function (res) {
+                        console.log(res)
+                        if(res.code == 1){
+                            layer.msg("保存成功！")
+                        }
+                    },
+                    error: function (data) {
+                        debugger;
+                    }
+                })
+                $(".saveText").css('display', 'none');
+            }
+        });
+
+        //返回
+        $('#reply').click(function () {
+            $(".saveText").css('display','none');
+            $("#keyText").val("");
+        });
+
+        //共享
+        $("#tgd a").click(function () {
+            $(this).siblings('a').removeClass('aselect'); // 删除其他兄弟元素的样式
+            $(this).addClass('aselect'); // 添加当前元素的样式
+        });
+
+        //共享人员
+        function shareShow() {
+            $('.xiaZai').hide();
+            $('.gongXiang').show();
+            $('.pepleAdd').show();
+        };
+
+        //下载记录
+        function downLoadShow() {
+            $('.xiaZai').show();
+            $('.gongXiang').hide();
+            $('.pepleAdd').hide();
+        };
+
+        //添加白名单
+        function showUser() {
+            $(".userContainer").html("");
+            var str = ""
+            for(var i=0 ; i<userList.length;i++){
+                str += '<p id="p'+userList[i].id+'">'+userList[i].nickname+'&nbsp;<a id="a'+userList[i].id+'"><i class="fa fa-times"></i></a></p>';
+            }
+            $(".userContainer").html(str);
+        };
+
+        //删除的点击事件
+        $(".userContainer").delegate("p a","click",function () {
+            var admin_id = $(this).attr('id').slice(1);
+            var that = $(this)
+            var id = drawingId===""?selectData[4]:drawingId;
+            $.ajax({
+                type:"post",
+                url:"./delAdminname",
+                data:{id:id,admin_id:admin_id},
+                success: function (res) {
+                    if(res.code===1){
+                        layer.msg("删除成功");
+                        console.log(that.parent("p"))
+                        that.parent("p").remove();
+                    }else{
+                        layer.msg(res.msg)
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            })
+        })
+
+        //人员回显的父页面
+        function getAdminname(id) {
+            $.ajax({
+                type:"get",
+                url: "{:url('document/PermissionRelationList')}?id="+id,
+                success: function (res) {
+                    console.log(res);
+                    if(res.code===1){
+                        userList = res.data;
+                        showUser();
+                    }else{
+                        layer.msg("获取数据失败！")
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            })
+        };
+
+        //共享人员弹层
+        function addPeople() {
+            if (!clickId) {
+                layer.msg("请选择节点", {time: 1500, shade: 0.1});
+                return;
+            }else if(clickId){
+
+              var path = $(".layout-panel-center .panel-title").text();//获取角色类型+角色名称的路径信息
+              window.open("./share?path=" + path + "&roleId=" +clickId, "授权", "height=560, width=1000, top=200,left=400, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no,status=no");
+            }
+        };
+
+        //筛选
+        $('#usernameSearch').bind('input propertychange', function() {
+            var userList2 = [];
+            var that = $(this);
+            if(that.val().trim()===""){
+                showUser();
+                return;
+            }
+            setTimeout(function () {
+                for(var i=0 ; i<userList.length;i++){
+                    //有就push进去
+                    if(userList[i].nickname.indexOf(that.val().trim())!== -1){
+                        userList2.push(userList[i]);
+                    }
+                }
+                $(".userContainer").html("");
+                var str = ""
+                for(var j=0 ; j<userList2.length;j++){
+                    str += '<p id="p'+userList2[j].id+'">'+userList2[j].nickname+'&nbsp;<a id="a'+userList2[j].id+'"></a></p>';
+                }
+                $(".userContainer").html(str);
+            },20)
+        });
+
+</script>
+</html>

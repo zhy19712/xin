@@ -7,8 +7,9 @@
  */
 
 namespace app\archive\model;
-
+use think\Db;
 use think\Model;
+use think\exception\PDOException;
 
 class DocumentTypeModel extends Model
 {
@@ -17,6 +18,13 @@ class DocumentTypeModel extends Model
     public function addOrEdit($mod)
     {
         if (empty($mod['id'])) {
+
+            $result = Db::name("archive_document")->where("type",$mod["pid"])->find();
+
+            if(!empty($result))
+            {
+                return false;
+            }
             $res = $this->allowField(true)->insertGetId($mod);
         } else {
             $res = $this->allowField(true)->save($mod, ['id' => $mod['id']]);
@@ -35,10 +43,11 @@ class DocumentTypeModel extends Model
         if ($count) {
             return json(['code' => -1, 'msg' => '请先删除子节点']);
         }
-        if (DocumentTypeModel::destroy($id)) {
-            return json(['code' => 1]);
-        } else {
-            return json(['code' => -1]);
+        try{
+            $this->where("id",$id)->delete();
+            return ['code' => 1, 'msg' => '删除成功'];
+        }catch(PDOException $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
         }
     }
 

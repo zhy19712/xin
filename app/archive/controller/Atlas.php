@@ -91,7 +91,7 @@ class Atlas extends Permissions
             //删除图册图片
             //根据节点id查询图片路径
             $data = $catemodel->getpicinfo($param['id']);
-            if($data)
+            if(!empty($data))
             {
                 foreach ($data as $k=>$v)
                 {

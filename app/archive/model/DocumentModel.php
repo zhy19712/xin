@@ -152,6 +152,42 @@ Class DocumentModel extends Model
         $data = $this->field("users")->where("id",$id)->find();
         return $data;
     }
+
+    /**
+     * 根据节点id查文档表的信息
+     *
+     */
+    public function getpicinfo($id)
+    {
+        $data = $this->field("attachmentId")->where("type",$id)->select();
+        return $data;
+    }
+
+    /*
+     * 根据节点的id删除文档
+     */
+    public function delselfidCate($id)
+    {
+        try{
+            $this->where("type",$id)->delete();
+            return ['code' => 1, 'msg' => '删除成功'];
+        }catch(PDOException $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
+    }
+
+    /*
+     * 根据文档删除一条文档记录
+     */
+    public function delCate($id)
+    {
+        try{
+            $this->where("id",$id)->delete();
+            return ['code' => 1, 'msg' => '删除成功'];
+        }catch(PDOException $e){
+            return ['code' => -1,'msg' => $e->getMessage()];
+        }
+    }
 }
 
 Class DocumentAttachment extends Model

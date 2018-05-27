@@ -91,15 +91,23 @@ class Manage extends Permissions
             ->find();
 
             //查询xin_quality_upload表中的扫描件和附件资料
-        $upload_form = Db::name("quality_upload")->alias("u")
+        $upload_form_sao = Db::name("quality_upload")->alias("u")
             ->join('attachment a', 'a.id=u.attachment_id', 'left')
             ->join('admin ad', 'ad.id=a.user_id', 'left')
             ->field("u.data_name,ad.nickname,FROM_UNIXTIME(a.create_time,'%Y-%c-%d') as create_time,u.id,u.type")
             ->where("u.contr_relation_id",$relation_form["id"])
-            ->where("type = 1 OR type = 4")
+            ->where("type = 1")
             ->select();
-            //form_info,在线填报，relation_form，relation关系表中的主键id,upload_form,type=1为扫描件，type=4为附件资料
-            return json(["code"=>1,"form_info"=>$form_info,"relation_form"=>$relation_form,"upload_form"=>$upload_form]);
+
+        $upload_form_fu = Db::name("quality_upload")->alias("u")
+                ->join('attachment a', 'a.id=u.attachment_id', 'left')
+                ->join('admin ad', 'ad.id=a.user_id', 'left')
+                ->field("u.data_name,ad.nickname,FROM_UNIXTIME(a.create_time,'%Y-%c-%d') as create_time,u.id,u.type")
+                ->where("u.contr_relation_id",$relation_form["id"])
+                ->where("type = 4")
+                ->select();
+            //form_info,在线填报，relation_form，relation关系表中的主键id,upload_form,$upload_form_sao扫描件,$upload_form_fu附件
+            return json(["code"=>1,"form_info"=>$form_info,"relation_form"=>$relation_form,"upload_form_sao"=>$upload_form_sao,"upload_form_fu"=>$upload_form_fu]);
         }
     }
 

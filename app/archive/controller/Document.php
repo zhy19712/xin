@@ -50,6 +50,10 @@ class Document extends Permissions
         return $this->fetch();
     }
 
+    /**
+     * 新增文档
+     * @return array
+     */
     public function add()
     {
         $mod = input('post.');
@@ -141,13 +145,37 @@ class Document extends Permissions
      */
     public function del()
     {
-        $par = input('id');
+        if(request()->isAjax()){
+            //实例化model类型
+            $model = new DocumentModel();
 
-        $f = $this->documentService->deleteDoc($par);
-        if ($f) {
-            return json(['code' => 1]);
-        } else {
-            return json(['code' => -1]);
+            $param = input('post.');
+
+                $data = $model->getOne($param['id']);
+                if($data["attachmentId"])
+                {
+                    //先删除图片
+                    //查询attachment表中的文件上传路径
+                    $attachment = Db::name("attachment")->where("id",$data["attachmentId"])->find();
+                    $path = "." .$attachment['filepath'];
+                    $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+
+                    if(file_exists($path)){
+                        unlink($path); //删除文件图片
+                    }
+
+                    if(file_exists($pdf_path)){
+                        unlink($pdf_path); //删除生成的预览pdf
+                    }
+
+                    //删除attachment表中对应的记录
+                    Db::name('attachment')->where("id",$data["attachmentId"])->delete();
+                }
+
+                $flag = $model->delCate($param['id']);
+
+                return $flag;
+
         }
     }
 
@@ -176,6 +204,7 @@ class Document extends Permissions
 //        if ($mod->havePermission($mod['users'], Session::get('current_id'))) {
 //            return json(['code' => -2, 'msg' => "没有下载权限"]);
 //        }
+
         $id = input('param.id');
 
         $blacklist = $model->getbalcklist($id);
@@ -213,17 +242,6 @@ class Document extends Permissions
             exit;
         }
     }
-
-    /**
-     * 文档下载记录
-     * @param $id 文档Id
-     * @return \think\response\Json
-     * @throws \think\exception\DbException
-     */
-//    public function downloadrecord($id)
-//    {
-//        return json(DocumentDownRecord::all(['docId' => $id]));
-//    }
 
     /**
      * 预览一条文档信息
