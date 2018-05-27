@@ -16,6 +16,13 @@ $.ajax({
         choiceness_pigment = +res.configureInfo.quality.choiceness_pigment;
         qualified_pigment = +res.configureInfo.quality.qualified_pigment;
         un_evaluation_pigment = +res.configureInfo.quality.un_evaluation_pigment;
+        var excellent = res.configureInfo.quality.choiceness_pigment.substr(4,6);
+        var qualified = res.configureInfo.quality.qualified_pigment.substr(4,6);
+        var unQualified = res.configureInfo.quality.un_evaluation_pigment.substr(4,6);
+        $('#excellent').css('background','#'+excellent);
+        $('#qualified').css('background','#'+qualified);
+        $('#unQualified').css('background','#'+unQualified);
+        $('#unReview').css('background','#529df8');
     }
 });
 
@@ -71,7 +78,9 @@ function zTreeOnClick(event, treeId, treeNode) {
     node_type = treeNode.node_type;
     modeGroupIds = nodeModelNumber();
     if(treeNode.level==5){
+        modelInfo();    //单元工程信息
         getOne();   //回显自定义属性
+        review();
         window.operateModel(modeGroupIds);
     }
 }

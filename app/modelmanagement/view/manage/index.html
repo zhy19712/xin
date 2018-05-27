@@ -17,15 +17,19 @@
             <ul class="layer-review">
                 <li>
                     <span>优良</span>
-                    <i class="green"></i>
+                    <i id="excellent"></i>
                 </li>
                 <li>
                     <span>合格</span>
-                    <i class="yellow"></i>
+                    <i id="qualified"></i>
+                </li>
+                <li>
+                    <span>不合格</span>
+                    <i id="unQualified"></i>
                 </li>
                 <li>
                     <span>未验评</span>
-                    <i class="blue"></i>
+                    <i id="unReview"></i>
                 </li>
             </ul>
             <ul class="layer-model-nav">
@@ -284,6 +288,7 @@
                         var newData = [];
                         var dataStr = modeGroupIds.qualified + modeGroupIds.unqualified + modeGroupIds.excellent;
                         newData.push(dataStr);
+                        console.log(newData);
                         RealBimOcx.SetHugeObjSubValidStateBegin();
                         $.each(newData, function (i, item) {
                             RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
@@ -297,7 +302,7 @@
         </div>
     </div>
 </div>
-<div data-options="region:'east',title:'管理信息',split:true" style="width:350px;">
+<div data-options="region:'east',title:'管理信息',split:true" style="width:350px;" class="manage-info">
     <div id="tabs" class="easyui-tabs" style="width:100%;">
         <div title="属性" style="padding:10px;">
             <div class="layui-collapse" id="layuiCollapse" lay-accordion>
@@ -388,7 +393,6 @@
     var modelIds; //模型是否选中
     //选中模型
     window.operateModel = function (data) {
-        review();
         var newData = [];
         var dataStr = data.qualified + data.unqualified + data.excellent;
         newData.push(dataStr);
@@ -404,6 +408,8 @@
 
     //隐藏模型
     window.hideModel = function (data) {
+        console.log(data);
+        console.log('隐藏');
         var newData = [];
         var dataStr = data.qualified + data.unqualified + data.excellent;
         newData.push(dataStr);
@@ -416,6 +422,8 @@
         }
     }
     window.showModel = function (data) {
+        console.log(data);
+        console.log('显示');
         var newData = [];
         var dataStr = data.qualified + data.unqualified + data.excellent;
         newData.push(dataStr);
