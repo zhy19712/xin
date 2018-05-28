@@ -90,3 +90,9 @@ i.fa-download:before,i.fa-plus:before,i.fa-download:hover:before,i.fa-plus:hover
 .content,.tab-content{
     border: none;
 }
+.dataTables_scrollHeadInner{
+    width: 100%!important;
+}
+.dataTables_scrollHeadInner table{
+    width: 100%!important;
+}

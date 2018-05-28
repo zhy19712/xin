@@ -160,7 +160,8 @@ class QualitymassModel extends Model
         if($section_id == -1){
             $total = Db::name('quality_unit')->field('id,EvaluateResult')->select(); // 获取所有单元工程检验批的编号和检验审批状态
         }else{
-            $total = Db::name('quality_unit')->where(['section_id'=>$section_id])->field('id,EvaluateResult')->select(); // 获取对应标段下的 所有单元工程检验批的编号和检验审批状态
+            $division = Db::name('quality_division')->where(['section_id'=>$section_id])->column('id'); // 获取对应标段下的 所有工程划分节点
+            $total = Db::name('quality_unit')->where(['division_id'=>['in',$division]])->field('id,EvaluateResult')->select(); // 获取所有工程划分节点下的 所有单元工程检验批的编号和检验审批状态
         }
         foreach ($total as $v){
             if($v['EvaluateResult'] == 0){
