@@ -311,7 +311,8 @@ class Common extends Controller
 
     public function quality_scene_picture($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
-        //查询
+        //自定义查询条件
+        $columnString = "s.filename|n.nickname|g.name";
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
@@ -425,7 +426,8 @@ class Common extends Controller
 
     public function quality_supervision_log($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
-        //查询
+        //自定义查询条件
+        $columnString = "s.filename|n.nickname|g.name";
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
@@ -528,7 +530,8 @@ class Common extends Controller
 
     public function quality_patrol_record($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
-        //查询
+        //自定义查询条件
+        $columnString = "s.filename|n.nickname|g.name";
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
@@ -630,7 +633,8 @@ class Common extends Controller
 
     public function quality_side_reporting($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
-        //查询
+        //自定义查询条件
+        $columnString = "s.filename|n.nickname|g.name";
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
@@ -733,7 +737,8 @@ class Common extends Controller
 
     public function quality_sampling($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
-        //查询
+        //自定义查询条件
+        $columnString = "s.filename|n.nickname|g.name";
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
@@ -837,7 +842,8 @@ class Common extends Controller
 
     public function quality_supervision_instruction($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
-        //查询
+        //自定义查询条件
+        $columnString = "s.filename|n.nickname|g.name";
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
@@ -1119,6 +1125,8 @@ class Common extends Controller
     // 分部质量管理 分部策划，分部管控 控制点列表、单位质量管理 单位策划，单位管控 控制点列表
     public function quality_subdivision_planning_list($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
+        //自定义查询条件
+        $columnString = "c.code|c.name";
         //自定义表名，工程划分、工序、控制点关系表
         $table = "quality_division_controlpoint_relation";
         //查询
