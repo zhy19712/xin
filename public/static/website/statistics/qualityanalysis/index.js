@@ -81,8 +81,8 @@ optionLine = {
   },
   legend: {
     data: [],
-    x:"right",
-    top:30
+    left:'right',
+    top:40,
   },
   tooltip: {
     trigger: 'axis',
@@ -90,6 +90,7 @@ optionLine = {
 
 
   grid: {
+    top:"110px",
     left: '3%',
     right: '4%',
     bottom: '3%',
