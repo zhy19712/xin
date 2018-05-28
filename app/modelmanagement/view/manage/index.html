@@ -133,77 +133,11 @@
                     EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)"
                     type="text/javascript">
                 uObjSubIdSingle = uObjSubID;        //自定义回显需要用到的参数
-                review();   //重置模型颜色
                 uObjSubIDArr.push(uObjSubID);
                 //显示单元信息
                 $('#tabs').show();
                 //隐藏质量分布
                 $('#qualityDistribute').hide();
-                //基本信息模板
-                /*function infoTemplateFun(res) {
-                    var infoTemplate = [];
-                    for(var i = 0;i<res.data.length;i++){
-                        infoTemplate.push('<div class="layui-colla-item">');
-                        infoTemplate.push('<h2 class="layui-colla-title infoTitle"></h2>');
-                        infoTemplate.push('<div class="layui-colla-content layui-show">');
-                        infoTemplate.push('<table class="layui-table" lay-skin="line" lay-size="sm">');
-                        infoTemplate.push('<tbody>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>检验批名称</td>');
-                        infoTemplate.push('<td>'+ res.data[i].site +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>检验批编码</td>');
-                        infoTemplate.push('<td id="serial_number">'+ res.data[i].serial_number +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>关键部位</td>');
-                        infoTemplate.push('<td id="hinge">'+ res.data[i].hinge +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>工程量</td>');
-                        infoTemplate.push('<td id="quantities">'+ res.data[i].quantities +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>工程类型</td>');
-                        infoTemplate.push('<td id="en_type">'+ res.data[i].en_type +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>施工依据</td>');
-                        infoTemplate.push('<td id="ma_bases">'+ res.data[i].ma_bases +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>补充依据</td>');
-                        infoTemplate.push('<td id="su_basis">'+ res.data[i].su_basis +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>高程（起）</td>');
-                        infoTemplate.push('<td id="el_start">'+ res.data[i].el_start +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>高程（止）</td>');
-                        infoTemplate.push('<td id="el_cease">'+ res.data[i].el_cease +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>桩号（起止）</td>');
-                        infoTemplate.push('<td id="pile_number">'+ res.data[i].pile_number +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>开始日期</td>');
-                        infoTemplate.push('<td id="start_date">'+ res.data[i].start_date +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>结束日期</td>');
-                        infoTemplate.push('<td id="completion_date">'+ res.data[i].completion_date +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('</tbody>');
-                        infoTemplate.push('</table>');
-                        infoTemplate.push('</div>');
-                        infoTemplate.push('</div>');
-                    }
-                    var infoTemplateHtml = infoTemplate.join(',');
-                    $('#layuiCollapse').append(infoTemplateHtml);
-                }*/
 
                 //验收资料
                 $.ajax({
@@ -250,7 +184,6 @@
                 modelInfo(uObjSubID);
                 console.log(uObjSubID);
 
-
                 //根据选中模型--获取所有关联模型编号和对应树节点id
                 $.ajax({
                     url: "/modelmanagement/Qualitymass/modelIdSearchModel",
@@ -260,6 +193,7 @@
                     },
                     dataType: "json",
                     success: function (res) {
+                        selectedModeGroupIds = res.data.model_id;
                         nodeId = res.data.unit_id;
                         getOne();   //回显自定义属性
                         if (res.data == '' || res.data.unit_id == '' || res.data.model_id == '') {
@@ -285,18 +219,18 @@
                 switch (eType) {
                     case "DO_HIDE":         //显示隐藏
                         uObjSubIDArr = [];
-                        var newData = [];
-                        var dataStr = modeGroupIds.qualified + modeGroupIds.unqualified + modeGroupIds.excellent;
-                        newData.push(dataStr);
-                        console.log(newData);
                         RealBimOcx.SetHugeObjSubValidStateBegin();
-                        $.each(newData, function (i, item) {
+                        $.each(selectedModeGroupIds, function (i, item) {
                             RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
                         });
                         RealBimOcx.SetHugeObjSubValidStateEnd();
                         break;
                     case "CANCEL_HIDE":     //取消隐藏
-                        review();
+                        RealBimOcx.SetHugeObjSubValidStateBegin();
+                        $.each(selectedModeGroupIds, function (i, item) {
+                            RealBimOcx.SetHugeObjSubValidStateInfo(item, 1);
+                        });
+                        RealBimOcx.SetHugeObjSubValidStateEnd();
                 }
             </script>
         </div>
@@ -434,6 +368,9 @@
             }
             RealBimOcx.SetHugeObjSubValidStateEnd();
         }
+        //透明掉全部
+        RealBimOcx.SetAllSubClrInfos(20, 255, 0xff529df8);
+        review();
     }
 
     //模板信息

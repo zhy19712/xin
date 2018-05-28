@@ -6,6 +6,7 @@ un_evaluation_pigment = '';  //不合格色值
 modeGroupIds = '';  //模型组ID
 controlpoint_id = ''    //控制点Id
 currentStep = ''; //审批步骤
+selectedModeGroupIds='' //选中的模型组ID 用于显示隐藏按钮操作
 $.ajax({
     url: "/modelmanagement/qualitymass/configureInfo",
     type: "post",
@@ -80,8 +81,8 @@ function zTreeOnClick(event, treeId, treeNode) {
     if(treeNode.level==5){
         modelInfo();    //单元工程信息
         getOne();   //回显自定义属性
-        review();
         window.operateModel(modeGroupIds);
+        review();
     }
 }
 
