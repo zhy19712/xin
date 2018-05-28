@@ -1,6 +1,8 @@
 {include file="../../public/common_header"}
 <link rel="stylesheet" href="__PUBLIC__/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="__PUBLIC__/colorpicker/css/bootstrap-colorpicker.css">
+<!--<link rel="stylesheet" href="__PUBLIC__/colorpicker/css/bootstrap-colorpicker.css">-->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap-colorpicker/2.5.2/css/bootstrap-colorpicker.css">
+
 <style>
     h4{
         line-height: 30px;
@@ -36,7 +38,15 @@
         border-image: initial;
     }
 </style>
+<div id="cp2" class="input-group colorpicker-component">
+
+    <input type="text" value="#00AABB" class="form-control" />
+
+    <span class="input-group-addon"><i></i></span>
+
+</div>
 <div class="layui-fuild" id="formContent">
+
     <!--首页-->
     <div class="layui-row">
         <h4 class=""><i class="glyphicon glyphicon-record" style="color: #009688;"></i><span>首页3D效果配置</span></h4>
@@ -57,7 +67,7 @@
                         <label class="layui-form-label" style="width: 150px;">选择集颜色</label>
                         <div id="pigment_home_color" class="layui-input-block input-group colorpicker-component" title="Using input value">
                             <input type="text" name="pigment"  id="pigment_home" class="form-control input-lg"/>
-                            <span class="input-group-addon"><i></i></span>
+                            <span class="input-group-addon"><i style="z-index: 9999"></i></span>
                         </div>
                     </div>
                 </div>
@@ -104,7 +114,7 @@
                     </div>
                 </div>
             </fieldset>
-            <fieldset>
+            <fieldset style="padding-bottom: 20px">
                 <legend class="legends">验评结果</legend>
                 <div class="layui-col-xs4">
                     <label class="layui-form-label" style="width: 150px;">优良颜色</label>
@@ -140,7 +150,8 @@
 </div>
 {include file="../../public/common_footer"}
 <script type="text/javascript" src="__PUBLIC__/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/colorpicker/js/bootstrap-colorpicker.js"></script>
+<!--<script type="text/javascript" src="__PUBLIC__/colorpicker/js/bootstrap-colorpicker.js"></script>-->
+<script src="https://cdn.bootcss.com/bootstrap-colorpicker/2.5.2/js/bootstrap-colorpicker.min.js"></script>
 <script type="text/javascript" src="__WEBSITE__/modelmanagement/configure/index.js"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+$('#cp1').colorpicker();
 $(function () {
     $.ajax({
         url:"/modelmanagement/configure/index",
