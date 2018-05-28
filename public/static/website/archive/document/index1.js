@@ -308,7 +308,7 @@ var tableItem = $('#tableItem').DataTable({
       "render":function (data,type,row) {
         var html = (data / 1024).toFixed(2);
           if(html > 1024 ){
-             html = (data / 1024).toFixed(2) + "Mb";
+             html = (html / 1024).toFixed(2) + "Mb";
           }else{
             html += "Kb";
           }
@@ -666,6 +666,7 @@ function allsize() {
   $("#demoList tr td:nth-child(2)").each(function (i,item) {
     allsize += parseFloat($(item).text());
   });
-  return allsize.toFixed(2);
+  allsize = allsize.toFixed(1);
+  return parseInt(allsize * 10) / 10;
 }
 
