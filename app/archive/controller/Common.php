@@ -532,7 +532,7 @@ class Common extends Controller
                         ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                         ->join('admin_group_type t', 'g.type=t.id', 'left')
-                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,s.attchment_id,u.nickname as income_name,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,t.name as unit_name,u.name,s.attchment_id,u.nickname as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.send_id'=>$uid])
                         ->order($order)->limit(intval($start), intval($length))->select();
