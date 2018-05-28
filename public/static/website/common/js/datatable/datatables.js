@@ -13,7 +13,12 @@
             processing:true,
             tableId:'tableItem',
             tbcontainer:'tbcontainer',
-            isPage:true
+            isPage:true,
+
+            iDisplayLength: 'iDisplayLengths',
+            scrollY: 'scrollYs',
+            scrollCollapse: 'scrollCollapses',
+            paging: 'pagings',
         }
 
         $.extend(option,options);
@@ -31,6 +36,10 @@
             pagingType: "full_numbers",
             processing: option.processing,
             serverSide: option.serverSide,
+            iDisplayLength: options.iDisplayLength,
+            scrollY: options.scrollY,
+            scrollCollapse: options.scrollCollapse,
+            paging: options.paging,
             dom: option.dom,
             ajax: option.ajax,
             columns: options.columns,

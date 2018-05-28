@@ -193,8 +193,25 @@ class Qualitymass extends Permissions
 //                return json(['code'=>-1,'msg'=>'无效的节点类型']);
 //            }
             $quality = new QualitymassModel();
+
             $data = $quality->qualityNodeInfo($add_id,$node_type);
             return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--选中节点--所有关联模型编号--自定义属性']);
+        }
+    }
+
+    // 质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性
+    public function modelIdSearchModel()
+    {
+        if($this->request->isAjax()){
+            // 前台 传递 选中模型的编号 model_id
+            $param = input('post.');
+            $model_id = isset($param['model_id']) ? $param['model_id'] : -1;
+            if(empty($model_id)){
+                return json(['code'=>-1,'msg'=>'缺少选中模型的编号']);
+            }
+            $quality = new QualitymassModel();
+            $data = $quality->modelIdSearchModel($model_id);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性']);
         }
     }
 
@@ -328,32 +345,27 @@ class Qualitymass extends Permissions
         return json($flag);
     }
 
-    // 回显自定义属性
-    public function getAttr()
+    /**
+     * 返回已经添加过得自定义属性值
+     * @return \think\response\Json
+     */
+    public function getOne()
     {
-        /**
-         * 之前的自定义属性是关联到模型图上的
-         * 现在是关联到单元工程上
-         *
-         * 当点击单元工程 -- 显示所有的自定义属性
-         * 当点击模型图时 -- 查到与该模型关联的 单元工程 再根据单元工程查自定义属性
-         */
-        // 前台需要传递 的是 单元工程编号 或者 模型图编号 number   编号类型 number_type 1 单元工程编号 2 模型编号
         if($this->request->isAjax()){
+            //实例化模型类
+            $model = new QualityCustomAttributeModel();
+            //前台传过来的值
             $param = input('param.');
-            // 验证规则
-            $rule = [
-                ['number', 'require|number|gt:-1', '缺少编号|编号只能是数字|编号不能为负数'],
-                ['number_type', 'require|number|gt:-1', '缺少编号类型|编号类型只能是数字|编号类型不能为负数']
-            ];
-            $validate = new \think\Validate($rule);
-            //验证部分数据合法性
-            if (!$validate->check($param)) {
-                return json(['code' => -1,'msg' => $validate->getError()]);
+            $id = isset($param['add_id']) ? $param['add_id'] : 0;
+
+            //回显查询已经添加的自定义属性值
+            $data = $model->getAllOne($id);
+
+            if(empty($data))
+            {
+                $data = [];
             }
-            $custom = new QualityCustomAttributeModel();
-            $flag = $custom->getAttrTb($param['number'],$param['number_type']);
-            return json($flag);
+            return json(["code"=>1,"data"=>$data]);
         }
     }
 

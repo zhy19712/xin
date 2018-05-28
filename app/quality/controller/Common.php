@@ -1422,7 +1422,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)->alias('a')
                     ->join('admin u', 'a.user_id = u.id', 'left')
                     ->join('admin c', 'a.CurrentApproverId = c.id', 'left')
-                    ->field('a.id,u.nickname as nickname,c.nickname as currentname,a.approvestatus,a.create_time,a.CurrentApproverId,a.CurrentStep')
+                    ->field('a.id,u.nickname as nickname,c.nickname as currentname,a.approvestatus,a.create_time,a.CurrentApproverId,a.CurrentStep,a.user_id')
                     ->where($whereStr)
                     ->order('create_time','desc')->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
@@ -1434,7 +1434,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)->alias('a')
                     ->join('admin u', 'a.user_id = u.id', 'left')
                     ->join('admin c', 'a.CurrentApproverId = c.id', 'left')
-                    ->field('a.id,u.nickname as nickname,c.nickname as currentname,a.approvestatus,a.create_time,a.CurrentApproverId,a.CurrentStep')
+                    ->field('a.id,u.nickname as nickname,c.nickname as currentname,a.approvestatus,a.create_time,a.CurrentApproverId,a.CurrentStep,a.user_id')
                     ->where($whereStr)
                     ->order('create_time','desc')->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
@@ -1504,6 +1504,7 @@ class Common extends Controller
             else{
                 $wherech='';
             }
+
             //*****多表查询join改这里******
             $recordsFilteredResult = Db::name('norm_controlpoint')->alias('c')
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
@@ -1518,9 +1519,12 @@ class Common extends Controller
         } else {
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name('norm_controlpoint')
-                    ->where('id','in',$id_arr)
+                Db::name('norm_controlpoint')->alias('c')
+                    ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+                    ->where(['r.type'=>1,'r.division_id'=>$unit_id])
+                    ->where('r.control_id','in',$id_arr)//控制点必须对应在当前的工程类型下，防止切换单元类型
                     ->order('code')
+                    ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -1538,7 +1542,6 @@ class Common extends Controller
             $infos[] = $temp;
             $temp = [];
         }
-
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 

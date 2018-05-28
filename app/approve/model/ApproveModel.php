@@ -87,7 +87,7 @@ class ApproveModel extends Model
                 $resultStr = "通过";
             }
             //更新数据
-            $dataType->UpdateApproveInfo($dataId, $currentApproverId, $currentStep, $approveStatus);
+            #$dataType->UpdateApproveInfo($dataId, $currentApproverId, $currentStep, $approveStatus);//在approve控制器里进行更新
             //记录审批历史
             self::save([
                 'data_type' => $dataType->class,
@@ -120,7 +120,7 @@ class ApproveModel extends Model
             return -1;
         }
         $mod = new ApproveInfo();
-        $mod->approveIds = $info['ApproveIds'];
+
         $approveIds = explode(',', $info['ApproveIds']);
         //流程结尾判断
         if ($info['CurrentStep'] < sizeof($approveIds)&&($info['CurrentStep']!=null)) {

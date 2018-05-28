@@ -59,6 +59,18 @@ class Qualityform extends Permissions
     {
         //获取模板路径
         //获取控制点信息，组合模板路径
+        $norm_template=Db::name('norm_template')->alias('t')
+            ->join('norm_controlpoint c', 't.id = c.qualitytemplateid', 'left')
+            ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+            ->where(['r.id'=>$cpr_id])
+            ->find();
+        $qualitytemplateid = $norm_template['qualitytemplateid'];
+
+        if ($qualitytemplateid == 0) {
+            return  '控制点未进行模板关联!';
+        }
+
+
         $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
         $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['controlpoint']['code'] . $cp['controlpoint']['name'] . ".html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
@@ -91,6 +103,8 @@ class Qualityform extends Permissions
             $formdata = json_encode(unserialize($_formdata));
         }
         $htmlContent = str_replace('{formData}', $formdata, $htmlContent);
+
+
         $htmlContent .= "<input type='hidden' id='cpr' value='{$cpr_id}'>";
         return $htmlContent;
     }
@@ -101,6 +115,9 @@ class Qualityform extends Permissions
      */
     protected function setFormInfo($qualityUnit_id, $htmlContent)
     {
+
+
+
         $mod = $this->divisionUnitService->with("Division.Section")->where(['id' => $qualityUnit_id])->find();
         $output = array();
         $output['JYPName'] = $mod['site'];
@@ -173,6 +190,7 @@ class Qualityform extends Permissions
                 if($judge){
                     return json(['result' => 'Refund']);
                 }
+                /*
                 //判断是否有扫描件
                 $cpr=Db::name('quality_division_controlpoint_relation')
                     ->where(['control_id' =>$mod['ControlPointId'],'division_id' =>$mod['DivisionId'],'type'=>1])
@@ -185,6 +203,7 @@ class Qualityform extends Permissions
                 if($copy){
                     return json(['result' => 'Refund','remark'=>'已经有扫描件']);
                 }
+                */
                 else {
                     $res = $this->qualityFormInfoService->insertGetId($mod);
                     $dto['Id'] = $res;
@@ -195,7 +214,6 @@ class Qualityform extends Permissions
                     ->where(['ControlPointId'=>$mod['ControlPointId'],'DivisionId'=>$mod['DivisionId']])
                     ->where('ApproveStatus','in',[1,0])
                     ->find();
-                //判断是否有扫描件
                 if(count($judge)>0)
                 {
                     $mod['CurrentStep']=$judge['CurrentStep'];//步骤为当前步骤
@@ -235,22 +253,39 @@ class Qualityform extends Permissions
     //表单作废
     public function cancel($id)
     {
-        $data['ApproveStatus']=-2;
-        $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($data, ['id' => $id]);
+        $olddata['ApproveStatus']=-2;
+        $res=$this->qualityFormInfoService->allowField(true)->isUpdate(true)->save($olddata, ['id' => $id]);
+
         if($res)
         {
-            $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
-            $formdata = json_encode(unserialize($_formdata));
             //规范data
-            $data['form_data']=$formdata;
-            $data['form_name']=$res['form_name'];
-            $data['DivisionId']=$res['DivisionId'];
+
+            $data_res=$this->qualityFormInfoService->where(['id' => $id])->find();
+
+            //更新状态relation_id 状态为未执行
+            Db::name('quality_division_controlpoint_relation')
+                ->where(['control_id' =>$data_res['ControlPointId'],'division_id' =>$data_res['DivisionId'],'type'=>1])
+                ->update(['status'=>0]);
+
+            //将表内填的数据全部情况
+            $form_data=$data_res['form_data'];
+            $se_data=unserialize($form_data);
+            foreach($se_data as $k => $v)
+            {
+             $se_data[$k]['Value']='';
+
+            }
+            $data['form_data']=$se_data;
+            $data['form_name']=$data_res['form_name'];
+            $data['DivisionId']=$data_res['DivisionId'];
+            $data['user_id']=$data_res['user_id'];
             $data['create_time']=time();
-            $data['ProcedureId']=$res['ProcedureId'];
-            $data['ControlPointId']=$res['ControlPointId'];
+            $data['ProcedureId']=$data_res['ProcedureId'];
+            $data['ControlPointId']=$data_res['ControlPointId'];
             $data['ApproveStatus']=0;
             $data['CurrentStep']=0;
             $data['update_time']=time();
+
 
             $qfi = Db::name('quality_form_info')
                 ->insert($data);
@@ -282,14 +317,18 @@ class Qualityform extends Permissions
             $step[]=$v['Step'];
         }
         $maxstep=intval(max($step));
+        $user=Db::name('admin')
+            ->where(['id'=>$res['user_id']])
+            ->find();
         //如果当前步骤不是最后一步
         if ($res['CurrentStep']<$maxstep)
         {
-            return json(['msg'=>'success','creater'=>$res['user_id']]);
+
+            return json(['msg'=>'success','creater'=>$user['nickname']]);
         }
         else
         {
-            return json(['msg'=>'fail','creater'=>$res['user_id']]);
+            return json(['msg'=>'fail','creater'=>$user['nickname']]);
         }
     }
 

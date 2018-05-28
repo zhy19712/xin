@@ -1,76 +1,101 @@
-.layer-review{
+.manage-info .panel-body {
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.layer-review {
     float: left;
     padding: 9px 10px;
 }
-.layer-review li{
+
+.layer-review li {
     display: inline-block;
     font-size: 14px;
 }
-.layer-review span,.layer-review i{
+
+.layer-review span, .layer-review i {
     display: inline-block;
     vertical-align: middle;
 }
-.layer-review i{
+
+.layer-review i {
     margin-right: 15px;
     border-radius: 50%;
     width: 16px;
     height: 16px;
 }
-.layer-review i.blue{
+
+.layer-review i.blue {
     background: #529df8;
 }
-.layer-review i.yellow{
+
+.layer-review i.yellow {
     background: #efb336;
 }
-.layer-review i.green{
+
+.layer-review i.green {
     background: #2aa515;
 }
-.layer-model-nav{
+
+.layer-model-nav {
     line-height: 39px;
     float: right;
 }
-.layer-model-nav li{
+
+.layer-model-nav li {
     display: inline-block;
 }
-.layer-model-nav i.fa:before{
+
+.layer-model-nav i.fa:before {
     color: #FFF;
 }
-.layer-model-nav i,.layer-model-nav span{
+
+.layer-model-nav i, .layer-model-nav span {
     display: inline-block;
     vertical-align: middle;
 }
-.layer-model-nav .layui-btn{
+
+.layer-model-nav .layui-btn {
     padding: 6px 12px;
     height: auto;
     line-height: 1.02857;
 }
-.layer-center{
+
+.layer-center {
     padding-top: 3px;
 }
-.layui-form-label{
+
+.layui-form-label {
     text-align: left;
 }
-.layui-colla-title{
+
+.layui-colla-title {
     color: #337ab7;
     font-weight: bold;
 }
-.layui-colla-content{
+
+.layui-colla-content {
     padding: 0;
 }
-.layui-colla-content .layui-form-item{
+
+.layui-colla-content .layui-form-item {
     margin: 0;
     border-bottom: 1px solid #cecece;
 }
-.tabs-header,.tabs-panels{
+
+.tabs-header, .tabs-panels {
     border: none;
 }
-.tabs-header{
+
+.tabs-header {
     background: none;
 }
-.tabs,.tabs li a.tabs-inner{
+
+.tabs, .tabs li a.tabs-inner {
     border-color: #cecece;
 }
-.layui-timeline-axis{
+
+.layui-timeline-axis {
     left: -14px;
     top: -6px;
     width: 40px;
@@ -80,72 +105,150 @@
     font-size: 40px;
     cursor: default;
 }
+
 .layui-timeline-axis:hover {
     color: #BFBFBF
 }
-.layui-timeline-axis.current{
+
+.layui-timeline-axis.current {
     color: #00B050
 }
+
 .layui-timeline-content {
     padding-left: 35px;
     font-weight: bold;
 }
-.layui-timeline-item:before{
+
+.layui-timeline-item:before {
     width: 3px;
 }
+
 .layui-timeline {
     padding: 30px;
 }
-.layui-table{
+
+.layui-table {
     margin: 0;
 }
-.layui-table i.fa{
+
+.layui-table i.fa {
     margin: 0 2px;
 }
-.layui-info-title{
+
+.layui-info-title {
     padding: 10px 0;
     text-align: center;
     font-size: 16px;
     font-weight: bold;
     color: #56abe4;
 }
-.layui-table .bg{
+
+.layui-table .bg {
     background: #00B050;
-    filter:alpha(opacity=50);
-    -moz-opacity:0.5;
-    opacity:0.5;
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    opacity: 0.5;
     color: #FFF;
 }
+
 /*质量3D自定义属性*/
-.custom-attr .layui-form-mid{
+.custom-attr .layui-form-mid {
     float: right;
     margin: 0;
 }
-.custom-attr .layui-input-block{
+
+.custom-attr .layui-input-block {
     margin: 0;
 }
-.layui-colla-content .attr-group{
+
+.layui-colla-content .attr-group {
     margin: 10px;
     border: 0;
 }
-.attr-group,.attr-group .layui-input-inline{
+
+.attr-group, .attr-group .layui-input-inline {
     width: 91%;
 }
-.attr-group .layui-input-inline{
+
+.attr-group .layui-input-inline {
     margin-bottom: 10px;
 }
-.attr-group .layui-input{
+
+.attr-group .layui-input {
     width: 49%;
     display: inline-block;
     vertical-align: middle;
     float: none;
 }
-.attr-group i.fa{
+
+.attr-group i.fa {
     display: block;
     margin: 3px 0;
     font-size: 14px;
 }
-.attr-group .layui-form-mid{
+
+.attr-group .layui-form-mid {
     padding: 0 !important;
     width: 14px;
+}
+
+/*验收资料*/
+.layui-acceptance-data,.layui-work-content,.layui-control-data{
+    border: none;
+}
+.layui-acceptance-data .layui-colla-item{
+    border: none;
+    border-bottom: 1px dashed #cecece;
+}
+.layui-work-title ,layui-control-title {
+    background: none;
+    color: #333;
+}
+.layui-work-title{
+    padding: 0;
+}
+.layui-work-content {
+
+}
+.layui-control-data{
+    padding: 0 10px;
+}
+.layui-control-title{
+    text-align: center;
+    background-color: #009688;
+    color: #f4f4f4;
+    border-top-left-radius:4px;
+    border-top-right-radius:4px;
+}
+.layui-work-title i, .layui-control-title i{
+    display: none;
+}
+.layui-control-content{
+
+}
+.layui-control-content .layui-table tbody tr:hover, .layui-control-content .layui-table thead tr, .layui-control-content .layui-table-click, .layui-control-content .layui-table-header, .layui-control-content .layui-table-hover, .layui-control-content .layui-table-mend, .layui-control-content .layui-table-patch, .layui-control-content .layui-table-tool, .layui-control-content [lay-even].layui-table tr:nth-child(2n){
+    background: none;
+}
+.layui-acceptance-data .layui-table th,.layui-acceptance-data .layui-table td{
+    padding: 0;
+    height: 37px;
+    line-height: normal;
+    text-align: center;
+    min-height: auto;
+}
+.layui-table th.table-title{
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background: #cce6f9;
+}
+.layui-table td.td-empty{
+    background: #dbdbdb;
+    color: #fff;
+}
+.filename{
+    width: 100px;
+    display: inline-block;
+    word-wrap:break-word;
+    word-break:break-all;
 }

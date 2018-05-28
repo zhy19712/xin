@@ -20,6 +20,7 @@ $.ztree({
         $(".imgList").css("display","none");
         tpyeTable();
         tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id=").load();
+        $("#all_checked_plan").attr("checked",false);
     }
 });
 
@@ -146,6 +147,10 @@ $('#save').click(function () {
 function tableInfo() {
     $.datatable({
         tableId:'tableItem',
+        // iDisplayLengths:1000,
+        // scrollYs: true,
+        // scrollCollapses: true,
+        // pagings: false,
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=quality_unit'
         },
@@ -197,9 +202,21 @@ function tableInfo() {
                 "visible": false
             },
         ],
+        // isPage:true,
+
+
     });
+    // $('.tbcontainer:last-child').remove();
+    $(".dataTables_wrapper .dataTables_scrollBody").css("overflow","initial");
+
+
 }
 tableInfo();
+// setTimeout(function () {
+//     $("#tableItem_info").remove();
+//     $("#tableItem_paginate").remove();
+// },1000)
+
 $('#add').html('新增');
 
 $('#add').click(function () {
@@ -249,7 +266,7 @@ layui.use('laydate', function(){
 });
 
 $('.maBasesBtn').click(function () {
-    $('.tbcontainer:last-child').remove();
+    $('#maBasesItem_wrapper .tbcontainer:last-child').remove();
     layer.open({
         title:'添加施工依据',
         id:'100',
@@ -277,6 +294,11 @@ function maBasesTable() {
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=archive_atlas_cate'
         },
+        // iDisplayLength:1000,
+        // "scrollY": "200px",
+        // "scrollCollapse": "true",
+        // "paging": "false",
+        // isPage:false,
         columns:[
             {
                 name: "id",
@@ -380,6 +402,7 @@ $("#all_checked").on("click", function () {
 
 //单元工程段号新增
 $('#saveUnit').click(function () {
+    // $('.tbcontainer:last-child').remove();
     var tableItem = $('#tableItem').DataTable();
     var serial_number_before = $('input[name="serial_number_before"]').val();
     var serial_number_val = $('input[name="serial_number"]').val();
@@ -396,8 +419,18 @@ $('#saveUnit').click(function () {
             en_type:en_type,
             division_id:division_id,
             id:window.rowId
-        }
+        },
+        // others:function () {
+        //     insetData(en_type);
+        // }
     });
+    $('#tableItem_wrapper').next(".tbcontainer").remove();
+    $(".dataTables_wrapper .dataTables_paginate").css("float","none");
+    $(".dataTables_wrapper .dataTables_info").css("float","right");
+    $(".dataTables_wrapper .dataTables_length").css("float","none");
+    $(".dataTables_wrapper .dataTables_scrollBody").css("overflow","initial");
+    $(".dataTables_wrapper .tbcontainer").css("line-height","0px");
+    $(".dataTables_wrapper .tbcontainer").css("position","initial");
 });
 
 //单元工程段号编辑
@@ -459,8 +492,7 @@ $('#openNode').click(function(){
 
 /**==========结束初始化 单元工程段号 =============*/
 
-
-var checkedData = true;
+// 控制点的table 表
 function tpyeTable() {
     tableItemControl = $('#tableItemControl').DataTable({
         pagingType: "full_numbers",
@@ -497,15 +529,14 @@ function tpyeTable() {
                 "targets":[0],
                 "searchable": false,
                 "orderable": false,
-                "render": function(data, type, full, meta) {
-                    if(full[0] == 0){
-                        var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                "render" :  function(data,type,row) {
+                    if(data == 0){
+                        var html = "<input type='checkbox' name='checkList_plan' class='checkList' checked id='"+row[3]+"' onclick='getSelectIdPlanCheck("+row[3]+",this)'>";
                     }else{
-                        var html = "<input type='checkbox' name='checkList_plan'  onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
+                        var html = "<input type='checkbox' name='checkList_plan' class='checkList' id='"+row[3]+"'  onclick='getSelectIdPlanCheck("+row[3]+",this)'>";
                     }
-                    // var html = "<input type='checkbox' name='checkList_plan' idv='"+data+"' checked='checked' onclick='getSelectIdPlanCheck("+full[3]+",this)'>";
                     return html;
-                },
+                }
             },
             {
                 "targets": [1]
@@ -533,7 +564,6 @@ function tpyeTable() {
             "zeroRecords": "没有找到记录",
         }
     });
-
 }
 
 //获取选中行ID
@@ -564,23 +594,40 @@ function getSelectIdPlan(that) {
     console.log(idArrPlan);
 }
 
-//checkbox全选
-$("#all_checked_plan").on("click", function () {
-    var that = $(this);
-    if (that.prop("checked") === true) {
-        $("input[name='checkList_plan']").prop("checked", that.prop("checked"));
-        // $('#tableItem tbody tr').addClass('selected');
-        $('input[name="checkList_plan"]').each(function(){
-            getIdPlan(this);
-        });
-    } else {
-        $("input[name='checkList_plan']").prop("checked", false);
-        // $('#tableItem tbody tr').removeClass('selected');
-        $('input[name="checkList_plan"]').each(function(){
-            getIdPlan(this);
-        });
+var procedureId; //工序id
+
+//全选 全不选
+$("#all_checked_plan").on('click',function () {
+    var checked;
+    if($(this).is(':checked')){
+        $(".checkList").prop("checked",true);
+        checked = 0;
+    }else{
+        $(".checkList").prop("checked",false);
+        checked = 1;
     }
-    console.log(idArrPlan);
+    console.log(procedureId)
+    $.ajax({
+        url: '/quality/element/checkout',
+        data: {
+            checkall:checked,
+            id:'',
+            unit_id:selectRow,
+            procedureid:(procedureId == undefined || procedureId == "") ? "" : procedureId,
+            checked: checked
+        },
+        type: "POST",
+        dataType: "JSON",
+        success: function (res) {
+            if(procedureId != ''){
+                tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
+            }
+            if(procedureId == undefined || procedureId == ""){
+                tpyeTable();
+                tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+            }
+        }
+    })
 });
 
 var selectData ;//选中的数据流
@@ -597,6 +644,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(this).addClass("select-color").siblings().removeClass("select-color");
     selectData = tableItem.row(".select-color").data();//获取选中行数据
     console.log(selectData[7] +" ------选中的行id");
+    console.log(selectData[8] +" ------选中的行id");
     console.log(selectData);
     selectRow =selectData[7];
     eTypeId = selectData[8];
@@ -608,6 +656,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     if(selectRow != undefined || selectRow != null){
         tpyeTable();
         tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+        ischeckedBox();
     }else{
         alert("获取不到selectRow id!")
     }
@@ -615,7 +664,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".listName").css("display","block");
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-    $("#all_checked_plan").attr("checked",true);
+    // ischeckedBox()
 });
 
 //获取控制点name
@@ -625,7 +674,7 @@ function selfidName(id) {
         url: "/quality/element/getProcedures",
         data: {id: id},
         success: function (res) {
-            console.log(res);
+            // console.log(res);
             var optionStrAfter = '';
             for(var i = 0;i<res.length;i++) {
                 $("#imgListRight").html('');
@@ -653,7 +702,7 @@ function insetData(eTypeId) {
         data: {en_type: eTypeId,division_id:division_id,unit_id:selectRow},
         success: function (res) {
             //什么都不返回说明是正确的
-            console.log(res);
+            // console.log(res);
         }
     })
 }
@@ -666,12 +715,14 @@ $(".imgList").on("click","a",function () {
 
 //点击作业
 $(".imgList").on("click","#homeWork",function () {
+    procedureId = '';
     $(".bitCodes").css("display","block");
     $(".mybtn").css("display","none");
     $(".alldel").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+    ischeckedBox();
 });
 
 //点击工序控制点名字
@@ -681,28 +732,76 @@ function clickConName(id) {
     $(".mybtn").css("display","block");
     $(".alldel").css("display","block");
     $("#tableContent .imgList").css('display','block');
-    // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
     console.log(id);
+    ischeckedBox();
+}
+//判断是否全选
+function ischeckedBox() {
+    setTimeout(function () {
+        var lock = 1;
+        $(".checkList").each(function (i,item) {
+            if(!$(item).is(":checked")){
+                lock = 0;
+                return;
+            }
+        });
+        if( lock == 0){
+            $('#all_checked_plan').prop("checked",false);
+        }else{
+            $('#all_checked_plan').prop("checked",true);
+        }
+    },1000)
 }
 
-var chceck = 0;     //默认是0 为选中  ，1为未选中
-//点击去掉所选
+//单选的选中或取消 checkBox
 function getSelectIdPlanCheck(rowId,that){
-    // console.log(that);
-    // console.log($(that).is(':checked'));
+    var checked;     //0 为选中  ，1为未选中
     if($(that).is(':checked') == false){
-        chceck = 1;
+        checked = 1;
     }else if($(that).is(':checked') == true){
-        chceck = 0;
+        checked = 0;
     }
     $.ajax({
         type: "post",
         url: "/quality/element/checkout",
-        data: {division_id: division_id,id:rowId,checked:chceck,unit_id:selectRow},
+        data: {
+            division_id: division_id,
+            id:rowId,
+            checked:checked,
+            unit_id:selectRow
+        },
         success: function (res) {
             //什么都不返回说明是正确的
             console.log(res);
+            if(res.msg == "success"){
+                if(checked == 1 ){
+                    $('#all_checked_plan').prop("checked",false);
+                }else{
+                    var lock = 1;
+                    $(".checkList").each(function (i,item) {
+                        if(!$(item).is(":checked")){
+                            lock = 0;
+                            return;
+                        }
+                    });
+                    if( lock == 0){
+                        $('#all_checked_plan').prop("checked",false);
+                    }else{
+                        $('#all_checked_plan').prop("checked",true);
+                    }
+                }
+                if(procedureId != ''){
+                    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id+"&nm_id="+procedureId).load();
+                }
+                if(procedureId == undefined || procedureId == ""){
+                    tpyeTable();
+                    tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+                }
+            }else{
+                tpyeTable();
+                tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+            }
         }
     })
 }

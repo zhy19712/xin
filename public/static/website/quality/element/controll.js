@@ -94,10 +94,18 @@ layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
     var form = layui.form
         ,layer = layui.layer
         ,laydate = layui.laydate;
-    //日期
-    laydate.render({
-        elem: '#date'
-    });
+    // //日期
+    // laydate.render({
+    //     elem: '#date' //指定元素
+    //     ,done:function (value, date, endDate) {
+    //         //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+    //         resultChange();
+    //     }
+    // });
+    //
+    // form.on('select(type)',function (data) {
+    //     resultChange();
+    // });
 });
 
 
@@ -284,7 +292,8 @@ function nodeClickUnit(e, treeId, node) {
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#2213e9");
-    resultInfo(nodeUnitId);
+    checkforming(nodeUnitId); //判断是否手填
+    resultInfo(nodeUnitId); //点击获取验评
 }
 
 //点击单元工创建工序name
@@ -310,7 +319,7 @@ function selfidName(id) {
                 $("#img0").css("display","none");
             }
 
-            $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 40px)");
+            $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 64px)");
 
             // }else if(res.code==0){
             //     layer.msg(res.msg);
@@ -507,6 +516,8 @@ function delData(id,url) {
                 console.log(res);
                 if(res.code ==1){
                     layer.msg("删除成功！");
+                    checkforming(nodeUnitId);
+                    resultInfo(nodeUnitId)
                     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
                     // tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                     if(procedureId !=''){
@@ -573,7 +584,6 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     //向提交页面之前放置值
     $("#resVal").val(resources);
 
-    testing(nodeUnitId,controlRowId,controlId);
 });
 
 //线上的验评结果
@@ -591,77 +601,71 @@ function resultInfo(nodeUnitId) {
                 $(".result form select").val(res.evaluateResult);
                 $(".result form #date").val(res.evaluateDate);
                 layui.form.render('select');
+                if(res.evaluateDate == 0){
+                    $("#date").val('');
+                }
             }
-            // $(".result form select").val(res.evaluation_results);
-            // $(".result form #date").val(res.evaluation_time);
-            // if(!res.flag){
-            //     $(".result form select").prop("disabled",true);
-            //     $(".result input[readonly]").addClass('disabledColor');
-            //     $("#date").prop("disabled",true);
-            // }
-            // layui.form.render('select');
-            // if(!res.flag){
-            //     $(".result input[readonly]").addClass('disabledColor');
-            // }
         }
     })
 
 }
 
-var selectAddShow; //在二次点击在线填报时触发
-//Testing管控中的控件能否使用
-function testing(nodeUnit_id,cpr_id,control_id) {
+//在二次点击在线填报时触发
+var selectAddShow;
+//checkform判断是否手填验评
+function checkforming(nodeUnitId) {
     $.ajax({
         url: "/quality/element/checkform",
         type: "post",
         data: {
-            division_id:nodeUnit_id,
-            cpr_id:controlRowId,
-            cp_id:controlId,
+            // division_id:nodeUnit_id,
+            // cpr_id:controlRowId,
+            // cp_id:controlId,
             unit_id:nodeUnitId,
         },
         success: function (res) {
             // console.log(res);
-            if(res.msg == "fail"){
-                onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
-                $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                    '<thead>' +
-                    '<tr style="text-align: center">' +
-                    '<th>填报人</th>' +
-                    '<th>填报日期</th>' +
-                    '<th>当前审批人</th>' +
-                    '<th>审批状态</th>' +
-                    '<th>操作</th>' +
-                    '<th style="display: none;">当前审批人Id</th>' +
-                    '</tr>' +
-                    '</thead>' +
-                    '</table>');
-                funOnLine(nodeUnitId,procedureId,controlRowId);
-                onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+            if(res.msg == "fail"){//线上结果
+                // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
+                // $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                //     '<thead>' +
+                //     '<tr style="text-align: center">' +
+                //     '<th>填报人</th>' +
+                //     '<th>填报日期</th>' +
+                //     '<th>当前审批人</th>' +
+                //     '<th>审批状态</th>' +
+                //     '<th>操作</th>' +
+                //     '<th style="display: none;">当前审批人Id</th>' +
+                //     '</tr>' +
+                //     '</thead>' +
+                //     '</table>');
+                // funOnLine(nodeUnitId,procedureId,controlRowId);
+                // onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
                 selectAddShow = false;
                 $("option").attr('disabled',true);
                 layui.use(['form'], function(){
                     var form = layui.form;
-                    form.render("select");
-                    $(".layui-input[readonly]").removeAttr('style', 'background: #FFFFFF !important');
+                    $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
                     $("#date").attr({"disabled":true});
+                    form.render("select");
                 });
-            }else if(res.msg == "success"){
+            }else if(res.msg == "success"){ //手动填写
                 selectAddShow = true;
                 $("option").removeAttr('disabled');
                 layui.use(['form'], function(){
                     var form = layui.form;
                     form.render("select");
-                    $(".layui-input[readonly]").attr('style', 'background: #FFFFFF !important');
                 });
                 $("#date").attr({"disabled":false});
-                $(".mybtnAdd").css("display","none");
-                $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
+                setTimeout(function () {
+                    $(".layui-input[readonly]").attr('style', 'background: #ffffff !important');
+                    $(".result input[readonly]").addClass('disabledColor');
+                },900)
+
+                // $(".mybtnAdd").css("display","none");
+                // $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
             }
-        },
-        // error:function () {
-        //     alert("返回管控中的控件数据错误")
-        // }
+        }
     });
 }
 
@@ -691,7 +695,7 @@ function resultChange() {
         data:{
             Unit_id:nodeUnitId,
             EvaluateResult:$(".result form select").val(),
-            EvaluateDate:$(".result form #date").val()
+            EvaluateDate:($(".result form #date").val())?($(".result form #date").val()):arguments[0]
         },
         type:'POST',
         dataType:"JSON",
@@ -751,9 +755,9 @@ $('#unitTab').tabs({
             if(controlRowId == '' || procedureId == '' || flag == true){
                 $(".mybtnAdd").css("display","none");
             }
-            if(selectAddShow == true){
-                $(".mybtnAdd").css("display","none");
-            }
+            // if(selectAddShow == true){
+            //     $(".mybtnAdd").css("display","none");
+            // }
         }else if(title != "在线填报"){
             $(".mybtnAdd").css("display","none");
         }
@@ -768,6 +772,7 @@ function outerHeight() {
 
 /*回传件上传*/
    var uploader;
+
    uploader = WebUploader.create({
        auto: true,
        swf:  '/static/public/webupload/Uploader.swf',
@@ -777,7 +782,8 @@ function outerHeight() {
            id: "#file_upload_standards",
            innerHTML: "<i class='fa fa-upload'></i>上传"
        },
-       resize: false
+       resize: false,
+       duplicate :true, //是否可以重复上传
    });
    uploader.on( 'fileQueued', function( file ) {
        // $list.val('等待上传...');
@@ -806,9 +812,11 @@ function outerHeight() {
                         success:function(res) {
                             // console.log(res);
                             if(res.code == 1) {
+                                checkforming(nodeUnitId);
                                 layer.msg(uploadFileName+'上传成功');
                                 implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                                 imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="+controlRowId).load();
+
                                 if(procedureId !=''){
                                     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                                 }else if(procedureId == ''){
@@ -1084,6 +1092,9 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
             },
             {
                 name: "CurrentStep"
+            },
+            {
+                name: "user_id"
             }
         ],
         columnDefs: [
@@ -1149,9 +1160,11 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     // console.log(row[5]+"当前审批人Id");
                     // console.log($("#userId").val() + "当前登录人Id");
                     // console.log($("#userId").val())
+                    var userName = $(top.document).find("#current_user").text().trim();
+                    console.log(userName); //当前登人name
                     var html = "";
                     html += "<a title='查看' onclick='seeOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-search'></i></a>";
-                    if (row[3] === 0) {
+                    if (row[3] === 0 && userName == row[0]) {
                         html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa-pencil'></i></a>";
                         html += "<a title='删除' onclick='delOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-trash'></i></a>";
                         // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
@@ -1164,7 +1177,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     }
                     else if (row[3] === 2) {
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
-                        html += "<a title='下载' onclick='downOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-download'></i></a>";
+                        // html += "<a title='下载' onclick='downOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-download'></i></a>";
                         html += "<a title='作废' onclick='toVoidOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-minus'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
@@ -1189,6 +1202,12 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                 "visible": false,
                 "searchable": false,
                 "orderable": false
+            },
+            {
+                "targets": [7],
+                "visible": false,
+                "searchable": false,
+                "orderable": false
             }
         ],
         language: {
@@ -1208,6 +1227,7 @@ $("#unitWorkRightBottom").on("click",".mybtnAdd",function () {
         content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&unit_id='+ nodeUnitId +'&currentStep=0&isView=false',
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
         }
     });
 });
@@ -1364,21 +1384,26 @@ function returnOnLine(id,curStep) {
 
 //在线填报-点击作废
 function toVoidOnLine(id) {
-    $.ajax({
-        url: "/quality/qualityform/cancel",
-        type: "post",
-        data: {id:id},
-        success: function (res) {
-            console.log(res);
-            if(res.msg == "success"){
-                layer.msg("该数据已作废了！")
-                $(".eleHide").css("display","none");
+    layer.confirm('是否作废该数据? 如果作废,会生成一个新的待提交表单', function(index){
+        $.ajax({
+            url: "/quality/qualityform/cancel",
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                console.log(res);
+                if(res.msg == "success"){
+                    layer.msg("该数据已作废了！")
+                    $(".eleHide").css("display","none");
+                    onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                }
+            },
+            error:function () {
+                alert("作废操作异常")
             }
-        },
-        error:function () {
-            alert("作废操作异常")
-        }
+        });
+        layer.close(index);
     });
+
 }
 
 //下载封装的方法

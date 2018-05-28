@@ -86,6 +86,12 @@ class Approve extends Permissions
                         //自动提取表单中的验评结果和日期更新到数据库里
                         $elementModel=new Element();
                         $res=$elementModel->saveEvaluation($par['dataId']);
+
+                        //更新到relation表中 状态为已执行
+                        Db::name('quality_division_controlpoint_relation')
+                            ->where(['control_id'=>$approveHistory['ControlPointId'],'division_id'=>$approveHistory['DivisionId'],'type'=>1])
+                            ->update(['status'=>1]);
+
                      }
                      $CurrentStep= $approveHistory['CurrentStep']+1;
                 }
@@ -125,14 +131,30 @@ class Approve extends Permissions
             ->where(['id'=>$dataId])
             ->find();
         //如果状态大于0，将起草人也加入进去
+        //如果有审批串，就将起草人也算进去
         $approverArr=explode(',', $res['ApproveIds']);
-        if($res['ApproveStatus']<2) {
-            array_pop($approverArr);//如果不是已完成或者退回就去掉待审批人，不让其显示
-        }
-        if(count($approverArr)>0)
+
+        //每个审批历史中将起草人放在第一位，并去掉审批串的待审批人
+        if(count($approverArr)>=0&&($res['CurrentApproverId']!='null'&&$res['CurrentApproverId']!=0))
         {
             array_unshift($approverArr,$res['user_id']);
+            array_pop($approverArr);
+
         }
+        //防止只出现一次审批的情况
+        if($res['ApproveStatus']==2&&($res['CurrentApproverId']=='null'||$res['CurrentApproverId']==0)&&($res['ApproveIds']=='null'||$res['ApproveIds']==0))
+        {
+
+            $approverArr=array();
+            $approverArr[]=$res['user_id'];
+        }
+        //待提交时将审批人串归0，无历史记录，防止出现null
+        if($res['ApproveStatus']==0&&($res['CurrentApproverId']=='null'||$res['CurrentApproverId']==0))
+        {
+
+            $approverArr=array();
+        }
+
         $userlist = array();
         foreach ($approverArr as $item) {
             $u = $this->adminService->where('id', $item)->with('Thumb')->find();

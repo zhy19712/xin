@@ -87,6 +87,9 @@
     #nextStep{
         color: #337ab7;
     }
+    .layui-form-item .layui-input-inline {
+        margin-right: 22px;
+    }
 </style>
 
 <div id="tableContent" data-options="region:'center'" style="padding:5px;background:#ffffff;">
@@ -137,9 +140,10 @@
                         <input id="not" type="radio" name="sex" value="-1" title="不通过" lay-filter="not">
                     </div>
                     <div class="layui-input-inline">
-                        <select name="isneedtemplate" id="itNeed" lay-filter="aihao">
-                            <option value="">返回提交人：管理员</option>
-                        </select>
+                        <input type="text" name="subPeople" id="subPeople" readonly lay-verify="required" autocomplete="off" class="layui-input">
+                        <!--<select name="isneedtemplate" id="itNeed" lay-filter="aihao">-->
+                            <!--<option value="">返回提交人：管理员</option>-->
+                        <!--</select>-->
                     </div>
                 </div>
             </div>
@@ -250,7 +254,7 @@
         }
     });
     //保存
-    $(".move").html("<div id='test3'>保存</div>");
+    $(".move").html("<button id='test3' style='background:none;color: white;'>保存</button>");
 
     $(document).ready(function () {
         setTimeout(function () {
@@ -267,8 +271,10 @@
                     if(res.msg == "fail"){
                         $("#nextStep").hide();
                         $("#nextStepPeople").text("审批完成");
+                        $("#subPeople").val("退回起草人  "+res.creater);
                     }else if(res.msg == "success"){
                         $("#nextStep").show();
+                        $("#subPeople").val("退回起草人  "+res.creater);
                     }
                 }
             });
@@ -299,7 +305,7 @@
     });
 
     var layer = layui.layer;
-    var typeId;
+    var typeId = 1;
     var form;
     //查询提交
     layui.use(['form', 'layedit', 'laydate','layer'], function(){
@@ -308,61 +314,135 @@
 
         form.on('radio(not)', function(data){
             typeId = data.value;
+            if(typeId == -1){
+                $("#nextStepPeople").text("");
+            }else if(typeId == 1){
+                $.ajax({
+                    url:"/quality/qualityform/getStep",
+                    type:"post",
+                    data:{
+                        form_id:$("#dataId").val()
+                    },
+                    success:function (res) {
+                        //返回成功可以选下一个人 fail不能
+                        if(res.msg == "fail"){
+                            $("#nextStep").hide();
+                            $("#nextStepPeople").text("审批完成");
+                            $("#subPeople").val("退回起草人  "+res.creater);
+                        }else if(res.msg == "success"){
+                            $("#nextStep").show();
+                            $("#subPeople").val("退回起草人  "+res.creater);
+                        }
+                    }
+                });
+            }
         });
     });
 
-
+    var testFlag = true;
     //点击保存
     $("#test3").click(function () {
-        if($("#nextStepPeople").text() != ""){
-            var dataArr = [];
-            var subId ;
-            var dataNextId = $("#valTypestepId").val();
-            if(dataNextId >= 10000){
-                dataArr.push(dataNextId-10000)
-            }else{
-                dataArr.push(dataNextId)
-            }
-            subId = dataArr.join(",");
 
-            console.log(typeId);
-            $.ajax({
-                url: "{:url('approve/approve/Approve')}",
-                type: "post",
-                data:{
-                    dataId:$("#dataId").val(),
-                    dataType:$("#dataType").val(),
-                    res:(typeId == -1)?"-1":"1",
-                    mark:$("#txtArea").val(),
-                    next_approverid:subId,
-                },
-                success: function (res) {
-                    console.log(res);
-                    if(res.code == 1){
-                        parent.layer.msg("保存成功!");
-                        $.ajax({
-                            url:"/admin/Dashboard/changeStatus",
-                            type:"POST",
-                            data:{
-                                uint_id :$("#dataId").val(),
-                              type:2
-                            },
-                            dataType:"JSON",
-                            success:function () {
-                                console.log(12331);
-                                layer.msg("保存成功!");
-                                close();
-                                parent.layer.closeAll();
-                            }
-                        });
-                    }else  if(res.code != 1){
-                        parent.layer.msg("处理保存失败,请稍后再试!");
+        if(testFlag){
+            testFlag = false;
+            if(typeId == -1){
+                $.ajax({
+                    url: "{:url('approve/approve/Approve')}",
+                    type: "post",
+                    data:{
+                        dataId:$("#dataId").val(),
+                        dataType:$("#dataType").val(),
+                        res:(typeId == -1)?"-1":"1",
+                        mark:$("#txtArea").val(),
+                        next_approverid:(typeId == -1)?"":subId,
+                    },
+                    success: function (res) {
+                        console.log(res);
+                        if(res.code == 1){
+                            parent.layer.msg("保存成功!");
+
+                            $.ajax({
+                                url:"/admin/Dashboard/changeStatus",
+                                type:"POST",
+                                data:{
+                                    uint_id :$("#dataId").val(),
+                                    type:2
+                                },
+                                dataType:"JSON",
+                                success:function () {
+                                    console.log(12331);
+                                    layer.msg("保存成功!");
+                                    close();
+                                    parent.layer.closeAll();
+                                    testFlag = true;
+                                }
+                            });
+
+                        }else  if(res.code != 1){
+                            parent.layer.msg("处理保存失败,请稍后再试!");
+                            testFlag = true;
+                        }
                     }
+                });
+            }else if(typeId == 1){
+                if($("#nextStepPeople").text() != ""){
+                    var dataArr = [];
+                    var subId ;
+                    var dataNextId = $("#valTypestepId").val();
+                    if(dataNextId >= 10000){
+                        dataArr.push(dataNextId-10000)
+                    }else{
+                        dataArr.push(dataNextId)
+                    }
+                    subId = dataArr.join(",");
+
+                    $.ajax({
+                        url: "{:url('approve/approve/Approve')}",
+                        type: "post",
+                        data:{
+                            dataId:$("#dataId").val(),
+                            dataType:$("#dataType").val(),
+                            res:(typeId == -1)?"-1":"1",
+                            mark:$("#txtArea").val(),
+                            next_approverid:(typeId == -1)?"":subId,
+                        },
+                        success: function (res) {
+                            console.log(res);
+                            if(res.code == 1){
+                                parent.layer.msg("保存成功!");
+
+                                $.ajax({
+                                    url:"/admin/Dashboard/changeStatus",
+                                    type:"POST",
+                                    data:{
+                                        uint_id :$("#dataId").val(),
+                                        type:2
+                                    },
+                                    dataType:"JSON",
+                                    success:function () {
+                                        console.log(12331);
+                                        layer.msg("保存成功!");
+                                        close();
+                                        parent.layer.closeAll();
+                                        testFlag = true;
+                                    }
+                                });
+
+                            }else  if(res.code != 1){
+                                parent.layer.msg("处理保存失败,请稍后再试!");
+                                testFlag = true;
+                            }
+                        }
+                    });
+                }else if($("#nextStepPeople").text() == ""){
+                    layer.msg("请填写下一步执行人信息！")
+                    testFlag = true;
                 }
-            });
-        }else if($("#nextStepPeople").text() == ""){
-            layer.msg("请填写下一步执行人信息！")
+            }
         }
+
+
+
     });
 
 

@@ -9,6 +9,7 @@
 namespace app\quality\controller;
 
 use app\admin\controller\Permissions;
+use app\quality\controller\Qualityform;
 use app\quality\model\DivisionControlPointModel;
 use app\quality\model\DivisionUnitModel;
 use app\quality\model\QualityFormInfoModel;
@@ -283,12 +284,13 @@ class Element extends Permissions
         foreach ($infos as $key => $value) {
             $phpword->setValue("{{$key}}", $value);
         }
+
         $formInfo = unserialize($cp['form_data']);
         foreach ($formInfo as $item) {
             $phpword->setValue('{'.$item['Name'].'}', $item['Value']);
         }
         $docname = $phpword->save();
-
+        ob_end_clean();
         header( 'Content-type:text/html;charset=utf-8');
         header('Content-Disposition: attachment; filename="' . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . '.docx"');
         //header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
@@ -363,6 +365,12 @@ class Element extends Permissions
         //$word->ActiveDocument->SaveAs($htmlpath,8);
         //$word->quit(0);
     }
+
+
+
+
+
+
     ##单元验评
 
     /**
@@ -379,12 +387,13 @@ class Element extends Permissions
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
+    //手动填写验评结果的保存
     public function Evaluate()
     {
         $mod = input('post.');
         $_mod = DivisionUnitModel::get($mod['Unit_id']);
         $_mod['EvaluateResult'] = $mod['EvaluateResult'];
-        $_mod['EvaluateDate'] = $mod['EvaluateDate'];
+        $_mod['EvaluateDate'] = strtotime($mod['EvaluateDate']);
         $res = $_mod->save();
         if ($res) {
             return json(['code' => 1]);
@@ -445,21 +454,40 @@ class Element extends Permissions
         $unit_id=$param['unit_id'];
         //点击的时候将checked值更新,0为选中，1为不选
         $checked=$param['checked'];
+        //检测工序
+        if(isset($param['procedureid'])&&$param['procedureid']>0)
+        {
+            $wherenm['ma_division_id']=$param['procedureid'];
+        }
+        else
+        {
+            $wherenm='';
+        }
+        if(isset($param['checkall']))
+        {
+            $whereid='';
+        }
+        else
+        {
+            $whereid['id']=$id;
+        }
+
         $res=Db::name('quality_division_controlpoint_relation')
-            ->where(['division_id'=>$unit_id,'id'=>$id,'type'=>1])
+            ->where(['division_id'=>$unit_id,'type'=>1])
+            ->where($whereid)
+            ->where($wherenm)
             ->update(['checked'=>$checked]);
        if($res)
        {
            return json(['msg'=>'success']);
        }
-
     }
 
     //检测管控中的控件能否使用
     public function checkform()
     {
-            $cp_name='单元工程质量验评';
-            $search_name='单元工程质量等级评定表';
+            $search_name='单元工程质量验评';
+            $cp_name='单元工程质量等级评定表';
             $param = input('param.');
             $unit_id=$param['unit_id'];
             $unit= Db::name('quality_unit')
@@ -481,7 +509,7 @@ class Element extends Permissions
 
             $res = Db::name('quality_form_info')
                 ->where(['ControlPointId' =>$cp_id,'DivisionId' =>$unit_id,'ApproveStatus'=>2])
-                ->where('form_name', 'like', '%' . $search_name)
+                ->where('form_name', 'like', '%' . $cp_name)
                 ->find();
 
             $cpr=Db::name('quality_division_controlpoint_relation')
@@ -489,18 +517,13 @@ class Element extends Permissions
                  ->find();
             $cpr_id=$cpr['id'];//获取cpr_id
 
-            //如果有已审批的质量评定表,说明是线上流程，不给予控件使用权限
-            if (count($res)>0) {
-                return json(['msg' => 'fail','remark'=>'线上流程']);
-            }
-            //没有的话去附件表里找是否有扫描件上传，如果有最终评定表，就给权限，没有就不给
-            else {
-                $copy = Db::name('quality_upload')
+            //去附件表里找是否有扫描件上传，如果有就有权限修改
+            $copy = Db::name('quality_upload')
                     ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
-                    ->where('data_name', 'like', '%'.$search_name .'%')
                     ->find();
-                if ($copy) {
-                    $flag=$this->evaluatePremission($unit_id);
+              if(count($copy)>0)
+                {
+                    $flag=$this->evaluatePremission();
                     if($flag==1)
                     {
                         return json(['msg' => 'success']);
@@ -510,13 +533,24 @@ class Element extends Permissions
                         return json(['msg' => 'fail','remark'=>'权限不足']);
                     }
                 }
-                else {
-                    return json(['msg' => 'fail','remark'=>'尚未上传验评扫描件']);
-                }
-            }
+                //如果没有扫描件去检查线上流程是否有验评结果
+               else
+                   {
+                       if (count($res) > 0)
+                       {
+                           return json(['msg' => 'fail', 'remark' => '线上流程', 'EvaluateDate' => $unit['EvaluateDate'], 'EvaluateDate' => $unit['EvaluateDate']]);
+                       }
+                       else
+                       {
+                           return json(['msg' => 'fail', 'remark' => '尚未上传验评扫描件或在线流程未完成审批']);
+                       }
+                   }
+
     }
+
     //将表单中的中文日期转为英文
     public  function setFormattime($timestr)
+
     {
         $arr = date_parse_from_format('Y年m月d日',$timestr);
         $time = mktime(0,0,0,$arr['month'],$arr['day'],$arr['year']);
@@ -581,12 +615,17 @@ class Element extends Permissions
       $data=$model->getOne($unit_id);
 
       $evaluateDate=$data['EvaluateDate'];
-      if($evaluateDate!='')
+      if(($evaluateDate!=0)||($evaluateDate!=0)!='')
       {
-          $evaluateDatedate=date('Y-m-d',$evaluateDate);
+          $evaluateDate=date('Y-m-d',$evaluateDate);
+      }
+      else
+      {
+          $evaluateDate=0;
       }
 
-      if($data) {
+
+      if(count($data)>0) {
           return json(['msg'=>'success','evaluateDate'=>$evaluateDate,'evaluateResult'=>$data['EvaluateResult']]);
        }
        else{
@@ -612,7 +651,7 @@ class Element extends Permissions
         }
     }
    //判断是否拥有监理和管理员权限
-    public function evaluatePremission($unit_id)
+    public function evaluatePremission()
     {
         if(request()->isAjax()){
             //实例化模型类

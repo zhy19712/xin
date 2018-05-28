@@ -166,9 +166,8 @@ class AtlasCateModel extends Model
     }
 
     /**
-     * 查询当前图册下的被禁用的黑名单
+     * 查询当前图册下的被禁用的白名单
      */
-
     public function getbalcklist($id)
     {
         $data = $this->field("blacklist")->where("id",$id)->find();

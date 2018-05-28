@@ -625,11 +625,27 @@ class Unitqualitymanage extends Permissions
    {
        // 前台需要 传递 id 编号
       $param = input('param.');
+
        $id = isset($param['id']) ? $param['id'] : 0;
        if($id == 0){
            return json(['code' => '-1','msg' => '编号有误']);
        }
       if(request()->isAjax()) {
+          //删除扫描件的时候删掉验评结果和验评日期
+          $qu=Db::name('quality_upload')
+              ->where(['id'=>$id])
+              ->find();
+          if($qu['type']==1)
+          {
+              $relation=Db::name('quality_division_controlpoint_relation')
+                       ->where(['id'=>$qu['contr_relation_id']])
+                       ->find();
+               Db::name('quality_unit')
+                   ->where(['id'=>$relation['division_id']])
+                   ->update(['EvaluateResult'=>0,'EvaluateDate'=>0]);
+          }
+
+
           $sd = new UnitqualitymanageModel();
            $flag = $sd->deleteTb($id);
            return json($flag);
