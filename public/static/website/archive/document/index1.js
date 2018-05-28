@@ -308,7 +308,7 @@ var tableItem = $('#tableItem').DataTable({
       "render":function (data,type,row) {
         var html = (data / 1024).toFixed(2);
           if(html > 1024 ){
-             html = (data / 1024).toFixed(2) + "Mb";
+             html = (html / 1024).toFixed(2) + "Mb";
           }else{
             html += "Kb";
           }
