@@ -33,11 +33,30 @@ class DivisionModel extends Model
      * 工程划分 type = 1 ，单位质量管理 type = 2 ，分部质量管理 type = 4 共用 树节点
      * @param int $type
      * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author hutao
      */
     public function getNodeInfo($type = 1)
     {
-        $section = Db::name('section')->column('id,code,name'); // 标段列表
+        $contractId = [];
+        // 总管理员可以看所有标段
+        // 根据用户查 组织，根据组织查合同，根据合同查 标段
+        $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
+        $cid = Db::name('admin')->alias('a')
+            ->join('admin_group g','a.admin_group_id=g.id','left')
+            ->join('contract c','g.name=c.firstParty','left')
+            ->join('contract c2','g.name=c2.secondParty','left')
+            ->where(['a.id'=>$user_id])->field('c.id,c2.id')->select();
+        foreach ($cid as $c){
+            $contractId[] = $c['id'];
+        }
+
+        $section = Db::name('section')->where(['contractId'=>['in',$contractId]])->order('id asc')->column('id,code,name'); // 标段列表
+
+
+//        $section = Db::name('section')->column('id,code,name'); // 标段列表
         $division = $this->column('id,pid,d_name,section_id,type,en_type,d_code'); // 工程列表
         $num = $this->count() + Db::name('section')->count() + 10000;
 
