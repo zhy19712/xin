@@ -4,6 +4,8 @@
 <input type="hidden" id="id">
 <input type="hidden" id="procedureid">
 <input type="hidden" id="unit_id">
+<input type="hidden" id="modelType">
+<input type="hidden" id="modelId">
 <div data-options="region:'west',title:'工程划分',split:true,collapsed:false" style="width:260px;">
     <div class="layui-form">
         <select name="section" id="section" lay-filter="section"></select>
@@ -320,17 +322,33 @@
 <script type="text/javascript">
     //选中模型
     window.operateModel = function (data) {
-        var newData = [];
-        var dataStr = data.qualified + data.unqualified + data.excellent;
-        newData.push(dataStr);
-        if (newData != '') {
-            RealBimOcx.SetGroupInLogCamPos(newData[0]); //镜头
+        var prevModelType = $('#modelType').val();
+        var prevModelId = $('#modelId').val();
+        if(prevModelType==1){
+            var prevModelColor = un_evaluation_pigment;
+        }
+        if(prevModelType==2){
+            var prevModelColor = qualified_pigment;
+        }
+        if(prevModelType==3){
+            var prevModelColor = choiceness_pigment;
+        }
+        console.log(prevModelColor);
+        console.log(prevModelId);
+        if (data.model_id != '') {
+            RealBimOcx.SetGroupInLogCamPos(data.model_id); //镜头
             RealBimOcx.BatchAddSubClrInfoBegin();
-            for (var i = 0; i < newData[0].length; i++) {
+            console.log(prevModelColor);
+            for(var j = 0;j<prevModelId.length;j++){
+                RealBimOcx.AddSubClrPercent(j, 1, prevModelColor);
+            }
+            for (var i = 0; i < data.model_id.length; i++) {
                 RealBimOcx.AddSubClrPercent(i, 1, modelColor); //上颜色
             }
             RealBimOcx.BatchAddSubClrInfoEnd();
         }
+        $('#modelType').val(data.model_type);
+        $('#modelId').val(data.model_id);
     }
 
     //隐藏模型
