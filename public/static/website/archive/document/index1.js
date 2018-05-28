@@ -667,6 +667,6 @@ function allsize() {
     allsize += parseFloat($(item).text());
   });
   allsize = allsize.toFixed(1);
-  return allsize;
+  return parseInt(allsize * 10) / 10;
 }
 
