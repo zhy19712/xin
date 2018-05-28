@@ -317,7 +317,10 @@ class DivisionModel extends Model
      */
     public function getQualityNodeInfo($node_type,$section_id)
     {
-        if($section_id != -1){
+        // 第一次进来 什么也不传递 默认查询全部
+        // 传递 node_type 1 已关联节点 2 未关联节点
+        // 如果 传递了 section_id 标段编号 只查询该标段下的节点
+        if($section_id > 0){
             $section = Db::name('section')->where(['id'=>$section_id])->order('id asc')->column('id,code,name'); // 标段列表
         }else{
             $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
