@@ -107,13 +107,13 @@
     var modelIds; //模型是否选中
     //选中模型
     window.operateModel = function (data) {
-        modelIds=data;
-        console.log(modelIds);
-        if(data!=''){
-            RealBimOcx.SetGroupInLogCamPos(data.join(','));
+        if(data.model_id!=''){
+            RealBimOcx.SetGroupInLogCamPos(data.model_id);
             RealBimOcx.BatchAddSubClrInfoBegin();
-            for(var i = 0;i<data.length;i++){
-                RealBimOcx.AddSubClrPercent(data[i],1,0x6400ff00);
+            debugger;
+            for(var i = 0;i<data.model_id.length;i++){
+                console.log(data.model_id);
+                RealBimOcx.AddSubClrPercent(data.model_id,1,0x6400ff00);
             }
             RealBimOcx.BatchAddSubClrInfoEnd();
         }

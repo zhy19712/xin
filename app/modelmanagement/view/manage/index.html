@@ -136,6 +136,7 @@
                     EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)"
                     type="text/javascript">
                 uObjSubIdSingle = uObjSubID;        //模型ID
+                console.log(uObjSubID);
                 //显示单元信息
                 $('#tabs').show();
                 //验收资料
@@ -192,6 +193,7 @@
                     },
                     dataType: "json",
                     success: function (res) {
+                        operateModel(res.data);
                         selectedModeGroupIds = res.data.model_id;
                         nodeId = res.data.unit_id;
                         getOne();   //回显自定义属性
@@ -324,6 +326,7 @@
     window.operateModel = function (data) {
         var prevModelType = $('#modelType').val();
         var prevModelId = $('#modelId').val();
+        var newPrevModelId = prevModelId.split(',');
         if(prevModelType==1){
             var prevModelColor = un_evaluation_pigment;
         }
@@ -333,17 +336,15 @@
         if(prevModelType==3){
             var prevModelColor = choiceness_pigment;
         }
-        console.log(prevModelColor);
-        console.log(prevModelId);
-        if (data.model_id != '') {
+        if (data.model_id!= '') {
             RealBimOcx.SetGroupInLogCamPos(data.model_id); //镜头
             RealBimOcx.BatchAddSubClrInfoBegin();
-            console.log(prevModelColor);
-            for(var j = 0;j<prevModelId.length;j++){
-                RealBimOcx.AddSubClrPercent(j, 1, prevModelColor);
-            }
             for (var i = 0; i < data.model_id.length; i++) {
-                RealBimOcx.AddSubClrPercent(i, 1, modelColor); //上颜色
+                console.log(data.model_id);
+                RealBimOcx.AddSubClrPercent(data.model_id[i], 1, modelColor); //上颜色
+            }
+            for(var j = 0;j<newPrevModelId.length;j++){
+                RealBimOcx.AddSubClrPercent(+newPrevModelId[j], 1, prevModelColor);
             }
             RealBimOcx.BatchAddSubClrInfoEnd();
         }
