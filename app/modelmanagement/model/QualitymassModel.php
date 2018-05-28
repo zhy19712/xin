@@ -129,6 +129,45 @@ class QualitymassModel extends Model
         return ['code'=>1,'msg'=>'删除成功'];
     }
 
+
+    // 显示或隐藏 -- 所有关联模型编号
+    public function concealment($add_id,$node_type)
+    {
+        // 节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
+        $unit_id = [];
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号
+        if($node_type == 1){
+            $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>['neq',0]])->column('model_id');
+            return $model_id;
+        }else if($node_type == 2){
+            // 获取选中标段下包含的所有节点编号
+            $division_id = Db::name('quality_division')->where(['section_id'=>$add_id])->column('id');
+            // 获取节点下包含的所有单元工程检验批
+            $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$division_id]])->column('id');
+        }else if($node_type == 3){
+            // 获取选中节点下包含的所有子节点编号
+            $division = new DivisionModel();
+            $child_node_id = [];
+            $child_node_obj = $division->cateTree($add_id);
+            foreach ($child_node_obj as $v){
+                $child_node_id[] = $v['id'];
+            }
+            $child_node_id[] = $add_id;
+            // 获取此节点下包含的所有单元工程检验批
+            $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$child_node_id]])->column('id');
+        }else if($node_type == 4){
+            $unit_id[] = $add_id;
+        }
+        // 获取所有单元工程检验批 所关联的模型编号
+        $model_id = [];
+        if(sizeof($unit_id)){
+            $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$unit_id]])->column('model_id');
+        }
+        return $model_id;
+    }
+
+
     // 前台 传递 选中节点的 number  和 编号的类型 number_type 1 单元工程段号(检验批编号) 2 模型编号
     public function qualityNodeInfo($number,$number_type)
     {
