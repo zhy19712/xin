@@ -1,4 +1,3 @@
-$('#cp1').colorpicker();
 $(function () {
     $.ajax({
         url:"/modelmanagement/configure/index",
@@ -20,9 +19,6 @@ $(function () {
                 $('#pigment_home_color,#pigment_quality_color,#choiceness_pigment_color,#qualified_pigment_color,#un_evaluation_pigment_color').colorpicker({
 
                 });
-                $('#pigment_home_color').on('changeColor',function (e) {
-                    $(this).find('input').css('background-color',e.color.toHex());
-                })
             }
         }
     })
