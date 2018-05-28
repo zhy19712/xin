@@ -244,7 +244,7 @@ class QualitymassModel extends Model
         if($number_type == 1){
             $unit_info = Db::name('model_quality')->alias('q')
                 ->join('quality_unit u', 'q.unit_id = u.id', 'left')
-                ->where(["q.id"=>$number,'q.version_number'=>$version_number])
+                ->where(["u.id"=>$number,'q.version_number'=>$version_number])
                 ->field("u.site,u.coding,u.hinge,u.quantities,u.ma_bases,u.su_basis,u.el_start,u.el_cease,u.pile_number,u.start_date,u.completion_date,u.en_type,u.division_id,u.id")->find();
         }else{
             $unit_info = Db::name('model_quality')->alias('q')
