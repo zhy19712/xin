@@ -38,7 +38,7 @@ function onClick(e, treeId, node) {
   selfid = zTreeObj.getSelectedNodes()[0].id;
   var path = sNodes[0].name; //选中节点的名字
   node = sNodes[0].getParentNode();//获取父节点
-  //判断是否是分部
+  //判断是否是单位
   if (sNodes[0].type == '1') {
     //
     selfidName()
