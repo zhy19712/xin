@@ -179,6 +179,52 @@ class Qualitymass extends Permissions
     }
 
     /**
+     * 页面第一次进来不用传递参数 默认返回所有模型
+     * 根据所选标段 返回 与该标段下的所有单元工程节点有关联关系的模型编号
+     * 并且 按照 [优良，合格，不合格，未验评] 分组
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function sectionModel()
+    {
+        if($this->request->isAjax()){
+            // 第一次进来不用传递参数 默认返回所有
+            // 前台 传递 选中标段的编号 section_id
+            $param = input('post.');
+            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+            $quality = new QualitymassModel();
+            $data = $quality->sectionModelInfo($section_id);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [优良，合格，不合格，未验评]']);
+        }
+    }
+
+    /**
+     * 点击眼睛图标显示隐藏模型
+     *
+     * 1 顶级节点      -- 隐藏所有模型
+     * 2 标段          -- 隐藏 该标段下 的所有关联模型
+     * 3 工程划分节点  -- 隐藏 该节点下 的所有关联模型
+     * 4 单元工程段号(检验批编号) -- 隐藏与 该单元工程 有关联的模型
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function concealment()
+    {
+        if($this->request->isAjax()){
+            // 前台 传递 选中眼睛节点的 add_id  和 眼睛节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
+            $param = input('post.');
+            $add_id = isset($param['add_id']) ? $param['add_id'] : -100;
+            $node_type = isset($param['node_type']) ? $param['node_type'] : -100;
+            if(empty($add_id) || empty($node_type)){
+                return json(['code'=>-1,'data'=>[],'msg'=>'缺少参数']);
+            }
+            $quality = new QualitymassModel();
+            $data = $quality->concealment($add_id,$node_type);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [显示或隐藏 -- 所有关联模型编号]']);
+        }
+    }
+
+    /**
      * 当点击节点或者模型的时候 ---
      * 通过 -- 选中节点或者选中的模型编号
      * 获取 -- 所有关联模型编号 -- 模型状态[优良，合格，不合格，未验评] -- 单元工程的编号
@@ -199,26 +245,6 @@ class Qualitymass extends Permissions
             $quality = new QualitymassModel();
             $data = $quality->qualityNodeInfo($number,$number_type);
             return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [所有关联模型编号,模型状态,单元工程的编号]']);
-        }
-    }
-
-    /**
-     * 页面第一次进来不用传递参数 默认返回所有模型
-     * 根据所选标段 返回 与该标段下的所有单元工程节点有关联关系的模型编号
-     * 并且 按照 [优良，合格，不合格，未验评] 分组
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function sectionModel()
-    {
-        if($this->request->isAjax()){
-            // 第一次进来不用传递参数 默认返回所有
-            // 前台 传递 选中标段的编号 section_id
-            $param = input('post.');
-            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
-            $quality = new QualitymassModel();
-            $data = $quality->sectionModelInfo($section_id);
-            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [优良，合格，不合格，未验评]']);
         }
     }
 
