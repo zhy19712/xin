@@ -179,8 +179,6 @@ class Qualitymass extends Permissions
     }
 
     /**
-     * 页面第一次进来不用传递参数 默认返回所有模型
-     *
      * 当点击节点或者模型的时候 ---
      * 通过 -- 选中节点或者选中的模型编号
      * 获取 -- 所有关联模型编号 -- 模型状态[优良，合格，不合格，未验评] -- 单元工程的编号
@@ -191,14 +189,32 @@ class Qualitymass extends Permissions
     public function nodeModelNumber()
     {
         if($this->request->isAjax()){
-            // 第一次进来不用传递参数 默认返回所有
             // 前台 传递 选中节点的 number  和 编号的类型 number_type 1 单元工程段号(检验批编号) 2 模型编号
             $param = input('post.');
             $number = isset($param['number']) ? $param['number'] : -100;
             $number_type = isset($param['number_type']) ? $param['number_type'] : -100;
+            if(empty($number) || empty($number_type)){
+                return json(['code'=>-1,'data'=>[],'msg'=>'缺少参数']);
+            }
             $quality = new QualitymassModel();
             $data = $quality->qualityNodeInfo($number,$number_type);
             return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [所有关联模型编号,模型状态,单元工程的编号]']);
+        }
+    }
+
+    // 页面第一次进来不用传递参数 默认返回所有模型
+    // 根据所选标段 返回 与该标段下的所有单元工程节点有关联关系的模型编号
+    // 并且 按照 [优良，合格，不合格，未验评] 分组
+    public function sectionModel()
+    {
+        if($this->request->isAjax()){
+            // 第一次进来不用传递参数 默认返回所有
+            // 前台 传递 选中标段的编号 section_id
+            $param = input('post.');
+            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+            $quality = new QualitymassModel();
+            $data = $quality->sectionModelInfo($section_id);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [优良，合格，不合格，未验评]']);
         }
     }
 

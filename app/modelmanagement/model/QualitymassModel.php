@@ -129,36 +129,12 @@ class QualitymassModel extends Model
         return ['code'=>1,'msg'=>'删除成功'];
     }
 
-    // 第一次进来不用传递参数 默认返回所有
     // 前台 传递 选中节点的 number  和 编号的类型 number_type 1 单元工程段号(检验批编号) 2 模型编号
     public function qualityNodeInfo($number,$number_type)
     {
-        $un_evaluation = $unqualified = $qualified = $excellent =[-1];
-
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
-
-        if($number == -100 && $number_type == -100){
-            $total = Db::name('quality_unit')->field('id,EvaluateResult')->select(); // 获取所有单元工程检验批的编号和检验审批状态
-            foreach ($total as $v){
-                if($v['EvaluateResult'] == 0){
-                    $un_evaluation[] = $v['id']; // 未验评
-                }else if($v['EvaluateResult'] == 1){
-                    $unqualified[] = $v['id']; // 不合格
-                }else if($v['EvaluateResult'] == 2){
-                    $qualified[] = $v['id']; // 合格
-                }else if($v['EvaluateResult'] == 3){
-                    $excellent[] = $v['id']; // 优良
-                }
-            }
-             // 根据检验批获取 每个验评结果下包含的 模型的编号
-            $data['un_evaluation'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$un_evaluation]])->column('model_id'); // 未验评
-            $data['unqualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$unqualified]])->column('model_id'); // 不合格
-            $data['qualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$qualified]])->column('model_id'); // 合格
-            $data['excellent'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$excellent]])->column('model_id'); // 优良
-            $data['all']= $this->where(['version_number'=>$version_number])->column('model_id'); // 所有
-            return $data;
-        }else if($number_type == 1){
+        if($number_type == 1){
             $data['unit_id'] = $number; // 单元工程编号
             $data['model_id'] = $this->where(['version_number'=>$version_number,'unit_id'=>$number])->column('model_id'); // 所有关联模型编号
             $data['model_type'] = Db::name('quality_unit')->where(['id'=>$number])->value('EvaluateResult'); // 验评结果：0未验评，1不合格，2合格，3优良
@@ -173,6 +149,37 @@ class QualitymassModel extends Model
             $data['model_type'] = Db::name('quality_unit')->where(['id'=>$data['unit_id']])->value('EvaluateResult'); // 验评结果：0未验评，1不合格，2合格，3优良
             return $data;
         }
+    }
+
+    // 按照 [优良，合格，不合格，未验评] 分组
+    public function sectionModelInfo($section_id)
+    {
+        $un_evaluation = $unqualified = $qualified = $excellent =[-1];
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
+        if($section_id == -1){
+            $total = Db::name('quality_unit')->field('id,EvaluateResult')->select(); // 获取所有单元工程检验批的编号和检验审批状态
+        }else{
+            $total = Db::name('quality_unit')->where(['section_id'=>$section_id])->field('id,EvaluateResult')->select(); // 获取对应标段下的 所有单元工程检验批的编号和检验审批状态
+        }
+        foreach ($total as $v){
+            if($v['EvaluateResult'] == 0){
+                $un_evaluation[] = $v['id']; // 未验评
+            }else if($v['EvaluateResult'] == 1){
+                $unqualified[] = $v['id']; // 不合格
+            }else if($v['EvaluateResult'] == 2){
+                $qualified[] = $v['id']; // 合格
+            }else if($v['EvaluateResult'] == 3){
+                $excellent[] = $v['id']; // 优良
+            }
+        }
+        // 根据检验批获取 每个验评结果下包含的 模型的编号
+        $data['un_evaluation'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$un_evaluation]])->column('model_id'); // 未验评
+        $data['unqualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$unqualified]])->column('model_id'); // 不合格
+        $data['qualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$qualified]])->column('model_id'); // 合格
+        $data['excellent'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$excellent]])->column('model_id'); // 优良
+        $data['all']= $this->where(['version_number'=>$version_number])->column('model_id'); // 所有
+        return $data;
     }
 
     public function prevRelevance($version_number)
