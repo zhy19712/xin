@@ -212,7 +212,7 @@ Class DocumentModel extends Model
     public function editCate($param)
     {
         try{
-            $result = $this->allowField(true)->save($param,['id' => $param['id']]);
+            $result = $this->allowField(true)->saveAll($param);
             if(false === $result){
                 return ['code' => -1,'msg' => $this->getError()];
             }else{

@@ -415,18 +415,23 @@ class Document extends Permissions
         if(request()->isAjax()){
             //实例化模型类
             $model = new DocumentModel();
+
             $param = input("post.remarkArr/a");
-            if(!empty($param))
-            {
-                foreach($param as $key=>$val)
-                {
-                    $model->editCate($val);
-                }
-                return json(["code"=>1,"msg"=>"编辑成功！"]);
-            }else
-            {
-                return json(["code"=>-1,"msg"=>"没有编辑信息！"]);
-            }
+
+            $flag = $model->editCate($param);
+
+            return json($flag);
+//            if(!empty($param))
+//            {
+//                foreach($param as $key=>$val)
+//                {
+//                    $model->editCate($val);
+//                }
+//                return json(["code"=>1,"msg"=>"编辑成功！"]);
+//            }else
+//            {
+//                return json(["code"=>-1,"msg"=>"没有编辑信息！"]);
+//            }
         }
     }
 }
