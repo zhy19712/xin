@@ -17,6 +17,7 @@ use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
 use app\quality\model\DivisionModel;
 use app\quality\model\DivisionUnitModel;
+use think\Db;
 
 /**
  * 质量模型
@@ -50,6 +51,19 @@ class Qualitymass extends Permissions
             return json($nodeStr);
         }
        return $this->fetch();
+    }
+
+    /**
+     * 标段下拉数据
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function section()
+    {
+        if(request()->isAjax()){
+            $data = Db::name('section')->column('id,name');
+            return json(['code'=>1,'data'=>$data,'msg'=>'标段下拉数据']);
+        }
     }
 
     /**
@@ -170,8 +184,9 @@ class Qualitymass extends Permissions
     }
 
     /**
-     * 获取选中节点的所有关联模型编号
+     * 选中节点或者选中的模型编号--所有关联模型编号--模型状态--自定义属性
      *
+     * 质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性
      * 质量模型 调用此接口
      * 按照 优良，合格，不合格，未验评分组 返回 模型编号
      * 如果点击的是 单元工程段号(检验批编号) 的话 再将它的自定义属性也一并返回
@@ -195,11 +210,11 @@ class Qualitymass extends Permissions
             $quality = new QualitymassModel();
 
             $data = $quality->qualityNodeInfo($add_id,$node_type);
-            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--选中节点--所有关联模型编号--自定义属性']);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--选中节点或者选中的模型编号--所有关联模型编号--模型状态--自定义属性']);
         }
     }
 
-    // 质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性
+    //
     public function modelIdSearchModel()
     {
         if($this->request->isAjax()){
