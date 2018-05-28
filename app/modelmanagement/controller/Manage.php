@@ -114,9 +114,11 @@ class Manage extends Permissions
         }
     }
 
+
     /**
-     * 点击模型返回管理信息中的属性信息
+     * 点击单元工程 或者 模型返回管理信息中的属性信息 以及自定义属性
      * @return \think\response\Json
+     * @throws \think\exception\DbException
      */
     public function getManageInfo()
     {
