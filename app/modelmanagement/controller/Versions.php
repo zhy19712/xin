@@ -58,17 +58,6 @@ class Versions extends Permissions
     public function upload()
     {
         // model_type 1 竣工模型 2 施工模型
-        $file_name = input('file_name');
-        if(empty($file_name)){
-            return json(['code'=>1,'msg'=>'缺少原文件名称']);
-        }
-
-        // 资源包名称不能重复
-        $is_exist = Db::name('attachment')->where('name',$file_name)->value('id');
-        if($is_exist){
-            return json(['code'=>'-1','msg'=>'资源包名称不能重复']);
-        }
-
         $model_type = input('model_type');
         if(empty($model_type)){
             return json(['code'=>1,'msg'=>'缺少类型']);
@@ -100,6 +89,13 @@ class Versions extends Permissions
             $data['name'] = $info->getInfo('name');//原文件名
             $data['filename'] = $info->getFilename();//文件名
             $data['filepath'] = $path . DS . $info->getSaveName();//文件路径
+
+            // 资源包名称不能重复
+            $is_exist = Db::name('attachment')->where('name',$data['name'])->value('id');
+            if($is_exist){
+                return json(['code'=>'-1','msg'=>'资源包名称不能重复']);
+            }
+
             $data['fileext'] = $info->getExtension();//文件后缀
             $data['filesize'] = $info->getSize();//文件大小
             $data['create_time'] = time();//时间
@@ -200,10 +196,21 @@ class Versions extends Permissions
                 // 1 竣工模型 -- 全景3D模型 操作的表是 model_complete
                 $attachment = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('name');
                 $file_name = explode('.',$attachment);
-                $this->completeGolIdTable('E:\WebServer\Resources\jungong' . DS . $file_name[0] . 'GolIdTable.txt');
-                $this->completeGroupProperties('E:\WebServer\Resources\jungong' . DS . $file_name[0] . 'GroupProperties.txt');
-                $this->qualityInsertTxtContent('E:\WebServer\Resources\shigong' . DS . $file_name[0] . 'GolIdTable.txt');
-
+                if($param['model_type'] == 1){
+                    $flag = $this->completeGolIdTable('E:\WebServer\Resources\jungong' . DS . $file_name[0] . 'GolIdTable.txt');
+                    if($flag['code'] == -1){
+                        return json(['code'=>-1,'msg'=>'竣工模型GolIdTable.txt'.$flag['msg']]);
+                    }
+                    $flag = $this->completeGroupProperties('E:\WebServer\Resources\jungong' . DS . $file_name[0] . 'GroupProperties.txt');
+                    if($flag['code'] == -1){
+                        return json(['code'=>-1,'msg'=>'竣工模型GroupProperties.txt'.$flag['msg']]);
+                    }
+                }else{
+                    $flag = $this->qualityInsertTxtContent('E:\WebServer\Resources\shigong' . DS . $file_name[0] . 'GolIdTable.txt');
+                    if($flag['code'] == -1){
+                        return json(['code'=>-1,'msg'=>'施工模型GolIdTable.txt'.$flag['msg']]);
+                    }
+                }
                 $flag = $send->insertTb($param);
             }else{
                 $param['id'] = $major_key;
@@ -221,22 +228,14 @@ class Versions extends Permissions
     public function enabledORDisable()
     {
         if($this->request->isAjax()){
-            // 前台需要传递的参数有:
-            // 主键编号 major_key
+            // 前台需要传递的参数有: 主键编号 major_key
             $param = input('param.');
-            // 验证规则
-            $rule = [
-                ['major_key', 'require', '缺少主键编号']
-            ];
-            $validate = new \think\Validate($rule);
-            //验证部分数据合法性
-            if (!$validate->check($param)) {
-                return json(['code' => -1,'msg' => $validate->getError()]);
+            $major_key = $param['major_key'];
+            if(empty($major_key)){
+                return json(['code' => -1,'msg' => '缺少主键编号']);
             }
-
             $send = new VersionsModel();
-            $param['id'] = $param['major_key'];
-            $flag = $send->editTb($param);
+            $flag = $send->editTb($major_key);
             return json($flag);
         }
     }
@@ -265,13 +264,26 @@ class Versions extends Permissions
                 return json($flag);
             }
 
-            //TODO  1 竣工模型 如果存在关联关系就 把关联关系全部删除
-
-            // 施工模型 删除此版本号 下 所有的关联关系
-            $quality = new QualitymassModel();
-            $flag = $quality->removeVersionsRelevance($flag['version_number']);
-            if($flag['code'] == -1){
-                return json($flag);
+            if($flag['model_type'] == 1){
+                // 竣工模型 如果存在关联关系就 把关联关系全部删除
+                $comp = new CompleteModel();
+                $flag = $comp->removeVersionsRelevance($flag['version_number']);
+                if($flag['code'] == -1){
+                    return json($flag);
+                }
+                // 竣工模型 如果存在模型分组的属性就 把模型分组的属性全部删除
+                $comp_group = new CompleteGroupModel();
+                $flag = $comp_group->removeVersionsRelevance($flag['version_number']);
+                if($flag['code'] == -1){
+                    return json($flag);
+                }
+            }else{
+                // 施工模型 删除此版本号 下 所有的关联关系
+                $quality = new QualitymassModel();
+                $flag = $quality->removeVersionsRelevance($flag['version_number']);
+                if($flag['code'] == -1){
+                    return json($flag);
+                }
             }
 
             // 最后删除版本记录和资源包文件
@@ -333,9 +345,11 @@ class Versions extends Permissions
         }
 
         $comp = new CompleteModel();
-        $comp->insertAll($data);
-
+        $flag = $comp->insertAll($data);
         fclose($files);
+        if(!$flag){
+            return json(['code' => '-1','msg' => '文件导入失败']);
+        }
     }
 
     /**
@@ -373,9 +387,11 @@ class Versions extends Permissions
 
         array_pop($data);
         $comp = new CompleteGroupModel();
-        $comp->insertAll($data);
-
+        $flag = $comp->insertAll($data);
         fclose($files);
+        if(!$flag){
+            return json(['code' => '-1','msg' => '文件导入失败']);
+        }
     }
 
 
@@ -458,8 +474,11 @@ class Versions extends Permissions
         }
 
         $picture = new QualitymassModel();
-        $picture->insertAll($data);
+        $flag = $picture->insertAll($data);
         fclose($files);
+        if(!$flag){
+            return json(['code' => '-1','msg' => '文件导入失败']);
+        }
     }
 
 }
