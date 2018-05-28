@@ -51,6 +51,9 @@ class DivisionModel extends Model
             // 单位工程 type = 1 子单位工程 type = 2 分部工程  type = 3 子分部工程 type = 4 分项工程   type = 5 单元工程   type = 6
             foreach ($division as $vo) {
                 if ($v['id'] == $vo['section_id']) {
+                    if($v['id'] == 2){
+                        break;
+                    }
                     if ($vo['type'] == 1) {
                         $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $id . '", "name":"' . $vo['d_name'] . '"' . ',"d_code":"' . $vo['d_code'] . '"' . ',"section_id":"' . $vo['section_id'] . '"' . ',"add_id":"' . $vo['id'] . '"' . ',"edit_id":"' . $vo['id'] . '"' . ',"type":"' . $vo['type'] . '"' . ',"en_type":"' . $vo['en_type'] . '"';
                         $str .= '},';
