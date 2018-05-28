@@ -556,6 +556,19 @@ function uploaderInit(){
         multiple: true,
         id: "#testList"
       },
+      accept:{
+        title:"Files",
+        extensions:"jpg,png,gif,mp4,jpeg,doc,docx,xls,xlsx,pdf,txt,zip",
+        mimeTypes: 'image/*,text/*'
+        //word
+        +',application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        //excel
+        +',application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        //ppt
+        +',application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        +',application/pdf'
+        +',application/zip'
+      }
     });
 
   // 当有文件添加进来的时候
@@ -634,6 +647,8 @@ function uploaderInit(){
         layer.msg("请不要重复选择文件！");
       } else if(type == "Q_EXCEED_SIZE_LIMIT"){
         layer.msg("系统提示,所选附件过大哦，换个小点的文件吧！");
+      } else if(type == "Q_TYPE_DENIED"){
+        layer.msg("不支持的文件格式");
       }
     });
   }
