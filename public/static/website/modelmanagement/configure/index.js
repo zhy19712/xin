@@ -17,11 +17,10 @@ $(function () {
                 $("#un_evaluation_pigment").val(splitPrefix(splitPrefix(quality.un_evaluation_pigment)));
                 //初始化调色盘
                 $('#pigment_home_color,#pigment_quality_color,#choiceness_pigment_color,#qualified_pigment_color,#un_evaluation_pigment_color').colorpicker({
-
+                    useAlpha:false,
+                    useHashPrefix: false
                 });
-                $('#pigment_home_color').on('changeColor',function (e) {
-                    $(this).find('input').css('background-color',e.color.toHex());
-                })
+                $(".colorpicker-alpha").css('display','none');
             }
         }
     })
@@ -31,7 +30,6 @@ $(function () {
         var form = layui.form;
         //首页
         form.on('submit(homeApply)', function(data){
-
             data.field.pigment = joinPrefix(data.field.pigment);
             data.field.model_type = '1';
             formSubmit(data);
