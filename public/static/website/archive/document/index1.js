@@ -666,6 +666,7 @@ function allsize() {
   $("#demoList tr td:nth-child(2)").each(function (i,item) {
     allsize += parseFloat($(item).text());
   });
-  return allsize.toFixed(1);
+  allsize = allsize.toFixed(1);
+  return allsize;
 }
 
