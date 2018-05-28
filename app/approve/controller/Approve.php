@@ -133,13 +133,28 @@ class Approve extends Permissions
         //如果状态大于0，将起草人也加入进去
         //如果有审批串，就将起草人也算进去
         $approverArr=explode(',', $res['ApproveIds']);
-        if($res['ApproveStatus']<2) {
-            array_pop($approverArr);//如果不是已完成或者退回就去掉待审批人，不让其显示
-        }
+
+        //每个审批历史中将起草人放在第一位，并去掉审批串的待审批人
         if(count($approverArr)>=0&&($res['CurrentApproverId']!='null'&&$res['CurrentApproverId']!=0))
         {
             array_unshift($approverArr,$res['user_id']);
+            array_pop($approverArr);
+
         }
+        //防止只出现一次审批的情况
+        if($res['ApproveStatus']==2&&($res['CurrentApproverId']=='null'||$res['CurrentApproverId']==0)&&($res['ApproveIds']=='null'||$res['ApproveIds']==0))
+        {
+
+            $approverArr=array();
+            $approverArr[]=$res['user_id'];
+        }
+        //待提交时将审批人串归0，无历史记录，防止出现null
+        if($res['ApproveStatus']==0&&($res['CurrentApproverId']=='null'||$res['CurrentApproverId']==0))
+        {
+
+            $approverArr=array();
+        }
+
         $userlist = array();
         foreach ($approverArr as $item) {
             $u = $this->adminService->where('id', $item)->with('Thumb')->find();

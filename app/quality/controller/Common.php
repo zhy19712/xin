@@ -1478,6 +1478,7 @@ class Common extends Controller
         else
          {
              //controlpoint里的id数组
+
              $id_arr=Db::name('norm_controlpoint')
                  ->where('procedureid','in',$nm_arr)
                  ->column('id');
@@ -1519,7 +1520,7 @@ class Common extends Controller
         } else {
             if ($limitFlag) {
                 //*****多表查询join改这里******
-                Db::name('norm_controlpoint')->alias('c')
+                $recordsFilteredResult =  Db::name('norm_controlpoint')->alias('c')
                     ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
                     ->where(['r.type'=>1,'r.division_id'=>$unit_id])
                     ->where('r.control_id','in',$id_arr)//控制点必须对应在当前的工程类型下，防止切换单元类型

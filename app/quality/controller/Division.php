@@ -385,10 +385,10 @@ class Division extends Permissions{
                     case '子分部工程编码':
                         $z_fcode_index = $k;
                         break;
-                    case '单元工程名称':
+                    case '分项工程名称':
                         $f_xname_index = $k;
                         break;
-                    case '单元工程编码':
+                    case '分项工程编码':
                         $f_xcode_index = $k;
                         break;
                     default :
@@ -410,7 +410,7 @@ class Division extends Permissions{
 
             $section_code = Db::name('section')->where(['id'=>$section_id])->value('code'); // 标段编码
 
-            // 单位工程 type = 1 子单位工程 type = 2 分部工程  type = 3 子分部工程 type = 4 单元工程 type = 5
+            // 单位工程 type = 1 子单位工程 type = 2 分部工程  type = 3 子分部工程 type = 4 分项工程 type = 5
             foreach($new_excel_array as $k=>$v){
                 if($k > 1 && $section_code == $v[$s_code_index]){ // 前两行都是标题和说明
                     // 单位工程
@@ -489,7 +489,7 @@ class Division extends Permissions{
                             return json(['code' => 0,'data' => '','msg' => '子分部工程-导入失败']);
                         }
                     }
-                    // 单元工程名称
+                    // 分项工程名称
                     $insert_subitem_data['d_name'] = $v[$f_xname_index];
                     $insert_subitem_data['d_code'] = $v[$f_xcode_index];
                     $insert_subitem_data['section_id'] = $section_id; // 标段编号

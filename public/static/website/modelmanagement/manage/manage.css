@@ -1,4 +1,4 @@
-.panel-body {
+.manage-info .panel-body {
     overflow: auto;
     overflow-x: hidden;
 }
@@ -245,4 +245,10 @@
 .layui-table td.td-empty{
     background: #dbdbdb;
     color: #fff;
+}
+.filename{
+    width: 100px;
+    display: inline-block;
+    word-wrap:break-word;
+    word-break:break-all;
 }

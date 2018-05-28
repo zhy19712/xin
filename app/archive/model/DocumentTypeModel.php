@@ -20,7 +20,7 @@ class DocumentTypeModel extends Model
         if (empty($mod['id'])) {
 
             $result = Db::name("archive_document")->where("type",$mod["pid"])->find();
-
+            //当前节点下存在文件无法添加下级节点
             if(!empty($result))
             {
                 return false;

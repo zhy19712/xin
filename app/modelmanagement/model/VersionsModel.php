@@ -28,17 +28,17 @@ class VersionsModel extends Model
         }
     }
 
-    public function editTb($param)
+    public function editTb($id)
     {
         try {
-            $data = $this->getOne($param['id']);
+            $data = $this->getOne($id);
             $count = $this->where(['model_type'=>$data['model_type']])->count();
             if($count == 1 && $data['status'] == 1){
                 return ['code' => -1,'status'=>1, 'msg' => '不能禁用所有版本,至少保留一个版本为启用状态'];
             }
 
-            $result = $this->where(['id' => ['neq',$param['id']],'model_type'=>$data['model_type']])->update(['status'=>0]);
-            $result = $this->where(['id' => $param['id'],'model_type'=>$data['model_type']])->update(['status'=>1]);
+            $result = $this->where(['id' => ['neq',$id],'model_type'=>$data['model_type']])->update(['status'=>0]);
+            $result = $this->where(['id' => $id,'model_type'=>$data['model_type']])->update(['status'=>1]);
 
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
@@ -100,7 +100,7 @@ class VersionsModel extends Model
         if($count == 1){
             return ['code' => -1,'msg' => '当前版本是唯一的,不能删除'];
         }
-        return ['code' => 1,'version_number'=>$data['version_number'],'msg' => '当前版本号'];
+        return ['code' => 1,'version_number'=>$data['version_number'],'model_type'=>$data['model_type'],'msg' => '当前版本号'];
     }
 
     public function statusOpen($model_type)

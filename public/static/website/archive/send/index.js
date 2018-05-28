@@ -430,8 +430,8 @@ function incomeZtree() {
 function incomeInfo() {
     $.datatable({
         ordering: true,
-        scrollY: "250px",
         scrollCollapse: true,
+        scrollX:false,
         ajax: {
             "url":"/admin/common/datatablesPre?tableName=admin"
         },

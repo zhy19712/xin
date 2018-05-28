@@ -71,48 +71,48 @@
                     switchSkin(skin === undefined ? 'blue' : skin);
                 }();
 
-                $('#color').click(function(){
-                layer.open({
-                    type:1,
-                    title:'配色方案',
-                    area: ['290px', 'calc(100% - 52px)'],
-                    offset: 'rb',
-                    shadeClose:true,
-                    id:'colors',
-                    anim: 2,
-                    shade:0.2,
-                    closeBtn:0,
-                    isOutAnim:false,
-                    resize:false,
-                    move: false,
-                    skin: 'color-class',
-                    btn:['黑白格','橘子橙','原谅绿','少女粉','天空蓝','枫叶红'],
-                    yes: function(index, layero){
-                        switchSkin('default');
-                      }
-                      ,btn2: function(index, layero){
-                        switchSkin('orange');
-                        return false;
-                      }
-                      ,btn3: function(index, layero){
-                        switchSkin('green');
-                        return false;
-                      }
-                      ,btn4: function(index, layero){
-                        switchSkin('pink');
-                        return false;
-                      }
-                      ,btn5: function(index, layero){
-                        switchSkin('blue');
-                        return false;
-                      }
-                      ,btn6: function(index, layero){
-                        switchSkin('red');
-                        return false;
-                      }
-
-               });
-           })
+           //      $('#color').click(function(){
+           //      layer.open({
+           //          type:1,
+           //          title:'配色方案',
+           //          area: ['290px', 'calc(100% - 52px)'],
+           //          offset: 'rb',
+           //          shadeClose:true,
+           //          id:'colors',
+           //          anim: 2,
+           //          shade:0.2,
+           //          closeBtn:0,
+           //          isOutAnim:false,
+           //          resize:false,
+           //          move: false,
+           //          skin: 'color-class',
+           //          btn:['黑白格','橘子橙','原谅绿','少女粉','天空蓝','枫叶红'],
+           //          yes: function(index, layero){
+           //              switchSkin('default');
+           //            }
+           //            ,btn2: function(index, layero){
+           //              switchSkin('orange');
+           //              return false;
+           //            }
+           //            ,btn3: function(index, layero){
+           //              switchSkin('green');
+           //              return false;
+           //            }
+           //            ,btn4: function(index, layero){
+           //              switchSkin('pink');
+           //              return false;
+           //            }
+           //            ,btn5: function(index, layero){
+           //              switchSkin('blue');
+           //              return false;
+           //            }
+           //            ,btn6: function(index, layero){
+           //              switchSkin('red');
+           //              return false;
+           //            }
+           //
+           //     });
+           // })
        });
    </script>
    <script type="text/javascript">
