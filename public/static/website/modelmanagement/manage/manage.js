@@ -1,3 +1,4 @@
+uObjSubIdSingle = '';   //模型ID
 modelTrans = '';        //透明度
 modelColor = '';        //选择集颜色
 choiceness_pigment = '';       //优良色值
@@ -7,6 +8,8 @@ modeGroupIds = '';  //模型组ID
 controlpoint_id = ''    //控制点Id
 currentStep = ''; //审批步骤
 selectedModeGroupIds='' //选中的模型组ID 用于显示隐藏按钮操作
+
+//获取模型配置的色值
 $.ajax({
     url: "/modelmanagement/qualitymass/configureInfo",
     type: "post",
@@ -27,6 +30,21 @@ $.ajax({
     }
 });
 
+//合格率
+$.ajax({
+    url: "/modelmanagement/qualitymass/examineFruit",
+    type: "post",
+    dataType: "json",
+    success: function (res) {
+        $('#excellent_number').text(res.data.excellent);
+        $('#excellent_rate').text(res.data.excellent_percent + '%');
+        $('#qualified_number').text(res.data.qualified);
+        $('#qualified_rate').text(res.data.qualified_percent + '%');
+        $('#unchecked_number').text(res.data.unqualified);
+        $('#unchecked_rate').text(res.data.unqualified_percent + '%');
+    }
+});
+
 //折叠面板
 function easyUiPanelToggle() {
     var number = $("#easyuiLayout").layout("panel", "east")[0].clientWidth;
@@ -40,14 +58,70 @@ layui.use('element', function(){
     var element = layui.element;
 });
 
+//初始化标段
+$.ajax({
+    url: "/modelmanagement/qualitymass/section",
+    type: "post",
+    dataType: "json",
+    success: function (res) {
+        var data = res.data;
+        var options = [];
+        options.push('<option value="-1">全部</option>');
+        for(var n in data){
+            options.push('<option value="'+ n +'">'+ data[n] +'</option>');
+        }
+        $('#section').append(options.join(''));
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render('select');
+        });
+    }
+});
+//标段切换
+layui.use('form', function(){
+    var form = layui.form;
+    form.on('select(section)', function(data){
+        var val = data.value;
+        //加载树
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {
+                section_id:val
+            },
+            dataType: "json",
+            success: function (res) {
+                ztree('',val);
+            }
+        });
+        if(val == -1){
+            allModel();
+        }else{
+            //加载模型
+            $.ajax({
+                url: "/modelmanagement/qualitymass/sectionModel",
+                type: "post",
+                data: {
+                    section_id:val
+                },
+                dataType: "json",
+                success: function (res) {
+                    selectedSectionShowModel(res);
+                }
+            });
+        }
+    });
+});
+
+
 //工程划分
-function ztree(node_type) {
+function ztree(node_type,section_id) {
     var setting = {
         async: {
             enable: true,
             autoParam: ["pid","tid"],
             type: "get",
-            url: "/modelmanagement/qualitymass/index?node_type="+node_type,
+            url: "/modelmanagement/qualitymass/index?node_type="+node_type+'&section_id='+section_id,
             dataType: "json"
         },
         data: {
@@ -70,7 +144,7 @@ function ztree(node_type) {
     };
     zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 }
-ztree(0);
+ztree(0,'');
 
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
@@ -79,10 +153,9 @@ function zTreeOnClick(event, treeId, treeNode) {
     node_type = treeNode.node_type;
     modeGroupIds = nodeModelNumber();
     if(treeNode.level==5){
-        modelInfo();    //单元工程信息
+        modelInfo(uObjSubIdSingle);    //单元工程信息
         getOne();   //回显自定义属性
         window.operateModel(modeGroupIds);
-        review();
     }
 }
 
@@ -108,8 +181,8 @@ function nodeModelNumber() {
         type: "post",
         async:false,
         data: {
-            add_id:nodeId,
-            node_type:node_type
+            number:nodeId,
+            number_type:1
         },
         dataType: "json",
         success: function (res) {
@@ -564,6 +637,32 @@ function getOne() {
                 attrGroup.push('</div>');
             }
             $('#attrGroup').append(attrGroup.join(' '));
+        }
+    });
+}
+
+//模板信息
+modelInfo = function (uObjSubID) {
+    $.ajax({
+        url: "./getManageInfo",
+        type: "post",
+        data: {
+            picture_number: uObjSubID
+        },
+        dataType: "json",
+        success: function (res) {
+            $('#site').text(res.attribute.site);
+            $('#serial_number').text(res.attribute.coding);
+            $('#hinge').text(res.attribute.hinge);
+            $('#quantities').text(res.attribute.quantities);
+            $('#en_type').text(res.attribute.en_type);
+            $('#ma_bases').text(res.attribute.ma_bases);
+            $('#su_basis').text(res.attribute.su_basis);
+            $('#el_start').text(res.attribute.el_start);
+            $('#el_cease').text(res.attribute.el_cease);
+            $('#pile_number').text(res.attribute.pile_number);
+            $('#start_date').text(res.attribute.start_date);
+            $('#completion_date').text(res.attribute.completion_date);
         }
     });
 }
