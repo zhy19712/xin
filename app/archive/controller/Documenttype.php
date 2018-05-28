@@ -6,6 +6,9 @@
  * Time: 13:51
  */
 
+/**
+ * 文档类型树管理
+ */
 namespace app\archive\controller;
 
 use app\admin\controller\Permissions;
@@ -64,7 +67,7 @@ class Documenttype extends Permissions
         $id = input("post.id");
 
         $result = $model->judge($id);
-
+        //如果当前节点下存在文件则无法直接删除、必须先删除节点下的所有文件
         if(!empty($result))
         {
             return json(["code"=>-1,'msg'=>"当前节点下有文件无法删除！"]);
