@@ -114,19 +114,25 @@ class Manage extends Permissions
         }
     }
 
+
     /**
-     * 点击模型返回管理信息中的属性信息
+     * 点击 单元工程或者 模型 返回管理信息中的属性信息 和自定义属性
      * @return \think\response\Json
+     * @throws \think\exception\DbException
      */
     public function getManageInfo()
     {
         if ($this->request->isAjax()) {
             //实例化模型类
             $model =  new QualitymassModel();
-            $model_id = input('post.model_id')?input('post.model_id'):"";
-//            $model_id = 13;
-            $attribute = $model->getUnitInfo($model_id);
-            return json(["code"=>1,"attribute"=>$attribute]);
+            $param = input('post.');
+            $number = isset($param['number']) ? $param['number'] : -1;
+            $number_type = isset($param['number_type']) ? $param['number_type'] : -1; // 1 单元工程编号 2 模型编号
+            if($number == -1 || $number_type == -1){
+                return json(['code'=> -1 ,'msg'=>'缺少参数']);
+            }
+            $data = $model->getUnitInfo($number,$number_type);
+            return json(["code"=>1,"unit_info"=>$data['unit_info'],'attr_info'=>$data['attr_info'],'msg'=>'管理信息中的属性信息和自定义属性']);
         }
     }
 }

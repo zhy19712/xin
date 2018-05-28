@@ -230,19 +230,30 @@ class QualitymassModel extends Model
 
     /**
      * 根据模型的编号model_id查询关联的xin_quality_unit单元工程表中的信息
-     * @param $model_id
+     * @param $number
+     * @param $number_type
      * @return array|false|\PDOStatement|string|Model
      * @throws \think\exception\DbException
      */
-    public function getUnitInfo($model_id)
+    public function getUnitInfo($number,$number_type)
     {
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
-        $unit_info = Db::name('model_quality')->alias('q')
-            ->join('quality_unit u', 'q.unit_id = u.id', 'left')
-            ->where(["q.model_id"=>$model_id,'q.version_number'=>$version_number])
-            ->field("u.site,u.coding,u.hinge,u.quantities,u.ma_bases,u.su_basis,u.el_start,u.el_cease,u.pile_number,u.start_date,u.completion_date,u.en_type,u.division_id,u.id")->find();
-        return $unit_info;
+        $attr = new QualityCustomAttributeModel();
+        // $number_type 1 单元工程编号 2 模型编号
+        if($number_type == 1){
+            $unit_info = Db::name('model_quality')->alias('q')
+                ->where(["q.id"=>$number])
+                ->field("u.site,u.coding,u.hinge,u.quantities,u.ma_bases,u.su_basis,u.el_start,u.el_cease,u.pile_number,u.start_date,u.completion_date,u.en_type,u.division_id,u.id")->find();
+        }else{
+            $unit_info = Db::name('model_quality')->alias('q')
+                ->join('quality_unit u', 'q.unit_id = u.id', 'left')
+                ->where(["q.model_id"=>$number,'q.version_number'=>$version_number])
+                ->field("u.site,u.coding,u.hinge,u.quantities,u.ma_bases,u.su_basis,u.el_start,u.el_cease,u.pile_number,u.start_date,u.completion_date,u.en_type,u.division_id,u.id")->find();
+        }
+        // $number_type 1 单元工程编号 2 模型编号
+        $attr_info = $attr->getAttrTb($number,$number_type,$version_number);
+        return ['unit_info'=>$unit_info,'attr_info'=>$attr_info];
     }
 
     /**
