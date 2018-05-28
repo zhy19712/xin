@@ -8,6 +8,7 @@ modeGroupIds = '';  //模型组ID
 controlpoint_id = ''    //控制点Id
 currentStep = ''; //审批步骤
 selectedModeGroupIds='' //选中的模型组ID 用于显示隐藏按钮操作
+selectedTreeNode = '';  //点击模型获取关联的工程划分节点
 
 //获取模型配置的色值
 $.ajax({
@@ -150,6 +151,7 @@ function zTreeOnClick(event, treeId, treeNode) {
     console.log(treeNode);
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
+    selectedTreeNode = treeNode;
     modeGroupIds = nodeModelNumber();
     if(treeNode.level==5){
         modelInfo(uObjSubIdSingle);    //单元工程信息
@@ -162,14 +164,31 @@ function zTreeOnClick(event, treeId, treeNode) {
 function zTreeOnCheck(event, treeId, treeNode) {
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
-    modeGroupIds = nodeModelNumber();
+    $.ajax({
+        url: "/modelmanagement/qualitymass/concealment",
+        type: "post",
+        data: {
+            add_id:nodeId,
+            node_type:node_type
+        },
+        dataType: "json",
+        success: function (res) {
+            var checked = treeNode.checked;
+            if(checked){
+                window.hideModel(res.data);
+            }else {
+                window.showModel(res.data);
+            }
+        }
+    });
+    /*modeGroupIds = nodeModelNumber();
     var checked = treeNode.checked;
     if(checked){
         //隐藏关联构件
         window.hideModel(modeGroupIds);
     }else {
         window.showModel(modeGroupIds);
-    }
+    }*/
 }
 
 //模板组ID
