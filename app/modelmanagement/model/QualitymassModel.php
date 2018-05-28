@@ -194,7 +194,6 @@ class QualitymassModel extends Model
             $data['unqualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$unqualified]])->column('model_id'); // 不合格
             $data['qualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$qualified]])->column('model_id'); // 合格
             $data['excellent'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$excellent]])->column('model_id'); // 优良
-            $data['all'] = $this->where(['version_number'=>$version_number])->column('model_id'); // 所有
             $data['attr']= [];
             return $data;
         }else if($node_type == 2){
@@ -239,7 +238,6 @@ class QualitymassModel extends Model
         $data['unqualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$unqualified]])->column('model_id'); // 不合格
         $data['qualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$qualified]])->column('model_id'); // 合格
         $data['excellent'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$excellent]])->column('model_id'); // 优良
-        $data['all'] = $this->where(['version_number'=>$version_number])->column('model_id'); // 所有
         return $data;
     }
 
@@ -248,10 +246,15 @@ class QualitymassModel extends Model
     {
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
-        $unit_id = $this->where(['version_number'=>$version_number,'model_id'=>$model_id])->value('unit_id');
-        $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>$unit_id])->column('model_id');
-        $data['unit_id'] = $unit_id;
+        $unit = $this->where(['version_number'=>$version_number,'model_id'=>$model_id])->field('unit_id,EvaluateResult')->select();
+        $model_id = $this->where(['version_number'=>$version_number,'unit_id'=>$unit['unit_id']])->column('model_id');
+        $data['unit_id'] = $unit['unit_id']; // 模型关联的节点
+        // 所有关联模型编号
         $data['model_id'] = $model_id;
+        $data['model_type'] = $unit['EvaluateResult']; // 验评结果：0未验评，1不合格，2合格，3优良
+        // 自定义属性
+        $custom = new QualityCustomAttributeModel();
+        $data['attr'] = $custom->getAttrTb($unit['unit_id'],1); // 1 单元工程编号 2 模型编号
         return $data;
     }
 
