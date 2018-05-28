@@ -205,6 +205,7 @@
                         var nodes = treeObj.getNodesByParam("add_id", res.data.unit_id);
                         //选中对应树节点
                         treeObj.selectNode(nodes[0]);
+                        selectedTreeNode = nodes[0];
                         //选中模板所在组添加颜色
                         RealBimOcx.BatchAddSubClrInfoBegin();
                         for (var i = 0; i < model_id.length; i++) {
@@ -219,18 +220,57 @@
             <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
                 switch (eType) {
                     case "DO_HIDE":         //显示隐藏
+                        if(selectedModeGroupIds==''){
+                            return false;
+                        }
+                        console.log(selectedTreeNode);
                         RealBimOcx.SetHugeObjSubValidStateBegin();
                         $.each(selectedModeGroupIds, function (i, item) {
                             RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
                         });
                         RealBimOcx.SetHugeObjSubValidStateEnd();
+                        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+                        console.log(selectedTreeNode);
+                        treeObj.checkNode(selectedTreeNode, true, false);
                         break;
                     case "CANCEL_HIDE":     //取消隐藏
-                        RealBimOcx.SetHugeObjSubValidStateBegin();
-                        $.each(selectedModeGroupIds, function (i, item) {
-                            RealBimOcx.SetHugeObjSubValidStateInfo(item, 1);
+                        if(selectedModeGroupIds==''){
+                            return false;
+                        }
+                        $.ajax({
+                            url: "/modelmanagement/Qualitymass/sectionModel",
+                            type: "post",
+                            dataType: "json",
+                            success: function (res) {
+                                var data = res.data;
+                                //透明掉全部
+                                RealBimOcx.SetAllSubClrInfos(20, 255, 0xff529df8);
+                                RealBimOcx.SetHugeObjSubValidStateBegin();
+                                //优良 excellent
+                                for (var i = 0; i < data.excellent.length; i++) {
+                                    var exUObjSubID = data.excellent[i];
+                                    RealBimOcx.SetHugeObjSubValidStateInfo(exUObjSubID, 1);
+                                }
+                                //合格 qualified
+                                for (var j = 0; j < data.qualified.length; j++) {
+                                    var quUObjSubID = data.qualified[j];
+                                    RealBimOcx.SetHugeObjSubValidStateInfo(quUObjSubID, 1);
+                                }
+                                // 不合格 unqualified
+                                for (var l = 0; l < data.unqualified.length; l++) {
+                                    var unQuUObjSubID = data.unqualified[l];
+                                    RealBimOcx.SetHugeObjSubValidStateInfo(unQuUObjSubID, 1);
+                                }
+                                RealBimOcx.SetHugeObjSubValidStateEnd();
+                                review();
+                            }
                         });
-                        RealBimOcx.SetHugeObjSubValidStateEnd();
+                        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+                        treeObj.checkAllNodes(false);
+                        selectedModeGroupIds='';
+                        selectedTreeNode='';
+                        $('#modelType').val('');
+                        $('#modelId').val('');
                 }
             </script>
         </div>
@@ -337,14 +377,14 @@
             var prevModelColor = choiceness_pigment;
         }
         if (data.model_id!= '') {
+            selectedModeGroupIds = data.model_id;
             RealBimOcx.SetGroupInLogCamPos(data.model_id); //镜头
             RealBimOcx.BatchAddSubClrInfoBegin();
-            for (var i = 0; i < data.model_id.length; i++) {
-                console.log(data.model_id);
-                RealBimOcx.AddSubClrPercent(data.model_id[i], 1, modelColor); //上颜色
-            }
             for(var j = 0;j<newPrevModelId.length;j++){
                 RealBimOcx.AddSubClrPercent(+newPrevModelId[j], 1, prevModelColor);
+            }
+            for (var i = 0; i < data.model_id.length; i++) {
+                RealBimOcx.AddSubClrPercent(data.model_id[i], 1, modelColor); //上颜色
             }
             RealBimOcx.BatchAddSubClrInfoEnd();
         }
@@ -354,36 +394,28 @@
 
     //隐藏模型
     window.hideModel = function (data) {
-        console.log(data);
-        console.log('隐藏');
-        var newData = [];
-        var dataStr = data.qualified + data.unqualified + data.excellent;
-        newData.push(dataStr);
-        if (newData != '') {
+        if (data != '') {
+            selectedModeGroupIds = data.model_id;
             RealBimOcx.SetHugeObjSubValidStateBegin();
-            for (var i = 0; i < newData[0].length; i++) {
-                RealBimOcx.SetHugeObjSubValidStateInfo(i, 0);  // 0为隐藏  1为显示 模型
+            for (var i = 0; i < data.length; i++) {
+                RealBimOcx.SetHugeObjSubValidStateInfo(data[i], 0);  // 0为隐藏  1为显示 模型
             }
             RealBimOcx.SetHugeObjSubValidStateEnd();
         }
     }
     //显示模型
     window.showModel = function (data) {
-        console.log(data);
-        console.log('显示');
-        var newData = [];
-        var dataStr = data.qualified + data.unqualified + data.excellent;
-        newData.push(dataStr);
-        if (newData != '') {
+        if (data != '') {
+            selectedModeGroupIds = data.model_id;
             RealBimOcx.SetHugeObjSubValidStateBegin();
-            for (var i = 0; i < newData[0].length; i++) {
-                RealBimOcx.SetHugeObjSubValidStateInfo(i, 1);      //显示模型
+            for (var i = 0; i < data.length; i++) {
+                RealBimOcx.SetHugeObjSubValidStateInfo(data[i], 1);      //显示模型
             }
             RealBimOcx.SetHugeObjSubValidStateEnd();
+            $('#modelType').val('');
+            $('#modelId').val('');
+            review();
         }
-        //透明掉全部
-        RealBimOcx.SetAllSubClrInfos(20, 255, 0xff529df8);
-        review();
     }
 </script>
 </body>
