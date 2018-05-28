@@ -29,8 +29,9 @@ class Qualitymass extends Permissions
 {
 
     /**
-     * 质量模型 --
-     * 左侧的树
+     * 顶部 -- 质量3D
+     * 模型管理 -- 质量模型关联
+     * 公用 --  左侧的树
      * @return mixed|\think\response\Json
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
