@@ -12,6 +12,7 @@ namespace app\quality\model;
 use think\Db;
 use think\exception\PDOException;
 use think\Model;
+use think\Session;
 
 class DivisionModel extends Model
 {
@@ -310,20 +311,35 @@ class DivisionModel extends Model
 
     /**
      * 质量模型 获取 工程划分树 包含 检验批
-     * @param int $node_type
-     * @param int $section_id
+     * 第一次进来 什么也不传递 默认查询全部
+     * 传递 node_type 1 已关联节点 2 未关联节点
+     * 如果 传递了 section_id 标段编号 只查询该标段下的节点
+     * @param $node_type
+     * @param $section_id
      * @return string
-     * @author hutao
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getQualityNodeInfo($node_type,$section_id)
     {
-        // 第一次进来 什么也不传递 默认查询全部
-        // 传递 node_type 1 已关联节点 2 未关联节点
-        // 如果 传递了 section_id 标段编号 只查询该标段下的节点
+        $contractId = [];
+        // 总管理员可以看所有标段
+        // 根据用户查 组织，根据组织查合同，根据合同查 标段
+        $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
+        $cid = Db::name('admin')->alias('a')
+            ->join('admin_group g','a.admin_group_id=g.id','left')
+            ->join('contract c','g.name=c.firstParty','left')
+            ->join('contract c2','g.name=c2.secondParty','left')
+            ->where(['a.id'=>$user_id])->field('c.id,c2.id')->select();
+        foreach ($cid as $c){
+            $contractId[] = $c['id'];
+        }
+
         if($section_id > 0){
-            $section = Db::name('section')->where(['id'=>$section_id])->order('id asc')->column('id,code,name'); // 标段列表
+            $section = Db::name('section')->where(['contractId'=>['in',$contractId],'id'=>$section_id])->order('id asc')->column('id,code,name'); // 标段列表
         }else{
-            $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
+            $section = Db::name('section')->where(['contractId'=>['in',$contractId]])->order('id asc')->column('id,code,name'); // 标段列表
         }
 
         $division = $this->order('id asc')->column('id,pid,d_name,section_id,type,en_type,d_code'); // 工程列表
