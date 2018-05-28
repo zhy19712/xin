@@ -236,9 +236,11 @@ class QualitymassModel extends Model
      */
     public function getUnitInfo($model_id)
     {
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
         $unit_info = Db::name('model_quality')->alias('q')
             ->join('quality_unit u', 'q.unit_id = u.id', 'left')
-            ->where("q.model_id",$model_id)
+            ->where(["q.model_id"=>$model_id,'q.version_number'=>$version_number])
             ->field("u.site,u.coding,u.hinge,u.quantities,u.ma_bases,u.su_basis,u.el_start,u.el_cease,u.pile_number,u.start_date,u.completion_date,u.en_type,u.division_id,u.id")->find();
         return $unit_info;
     }

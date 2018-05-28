@@ -197,16 +197,16 @@ class Versions extends Permissions
                 $attachment = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('name');
                 $file_name = explode('.',$attachment);
                 if($param['model_type'] == 1){
-                    $flag = $this->completeGolIdTable('E:\WebServer\Resources\jungong' . DS . $file_name[0] . 'GolIdTable.txt');
+                    $flag = $this->completeGolIdTable('E:\WebServer\Resources\jungong' . DS . $file_name[0] . DS . 'GolIdTable.txt');
                     if($flag['code'] == -1){
                         return json(['code'=>-1,'msg'=>'竣工模型GolIdTable.txt'.$flag['msg']]);
                     }
-                    $flag = $this->completeGroupProperties('E:\WebServer\Resources\jungong' . DS . $file_name[0] . 'GroupProperties.txt');
+                    $flag = $this->completeGroupProperties('E:\WebServer\Resources\jungong' . DS . $file_name[0] . DS . 'GroupProperties.txt');
                     if($flag['code'] == -1){
                         return json(['code'=>-1,'msg'=>'竣工模型GroupProperties.txt'.$flag['msg']]);
                     }
                 }else{
-                    $flag = $this->qualityInsertTxtContent('E:\WebServer\Resources\shigong' . DS . $file_name[0] . 'GolIdTable.txt');
+                    $flag = $this->qualityInsertTxtContent('E:\WebServer\Resources\shigong' . DS . $file_name[0] . DS . 'GolIdTable.txt');
                     if($flag['code'] == -1){
                         return json(['code'=>-1,'msg'=>'施工模型GolIdTable.txt'.$flag['msg']]);
                     }
@@ -259,28 +259,28 @@ class Versions extends Permissions
 
             $send = new VersionsModel();
             // 如果当前版本是唯一的,提示不能删除
-            $flag = $send->isOnly($id);
-            if($flag['code'] == -1){
-                return json($flag);
+            $only_flag = $send->isOnly($id);
+            if($only_flag['code'] == -1){
+                return json($only_flag);
             }
 
-            if($flag['model_type'] == 1){
+            if($only_flag['model_type'] == 1){
                 // 竣工模型 如果存在关联关系就 把关联关系全部删除
                 $comp = new CompleteModel();
-                $flag = $comp->removeVersionsRelevance($flag['version_number']);
+                $flag = $comp->removeVersionsRelevance($only_flag['version_number']);
                 if($flag['code'] == -1){
                     return json($flag);
                 }
                 // 竣工模型 如果存在模型分组的属性就 把模型分组的属性全部删除
                 $comp_group = new CompleteGroupModel();
-                $flag = $comp_group->removeVersionsRelevance($flag['version_number']);
-                if($flag['code'] == -1){
+                $new_flag = $comp_group->removeVersionsRelevance($only_flag['version_number']);
+                if($new_flag['code'] == -1){
                     return json($flag);
                 }
             }else{
                 // 施工模型 删除此版本号 下 所有的关联关系
                 $quality = new QualitymassModel();
-                $flag = $quality->removeVersionsRelevance($flag['version_number']);
+                $flag = $quality->removeVersionsRelevance($only_flag['version_number']);
                 if($flag['code'] == -1){
                     return json($flag);
                 }
@@ -298,13 +298,13 @@ class Versions extends Permissions
      * 此方法只是 读取 竣工模型 -- 全景3D模型 模型txt文件时使用
      * 获取txt文件内容并插入到数据库中
      * @param $filePath
-     * @return \think\response\Json
+     * @return array
      * @author hutao
      */
     public function completeGolIdTable($filePath)
     {
         if(!file_exists($filePath)){
-            return json(['code' => '-1','msg' => '文件不存在']);
+            return ['code' => '-1','msg' => '文件不存在'];
         }
         $files = fopen($filePath, "r") or die("Unable to open file!");
         $contents = $new_contents = $new_ids = $data = [];
@@ -344,11 +344,16 @@ class Versions extends Permissions
             $data[$k]['model_id'] = trim(next($val));
         }
 
+        $count = sizeof($data) - 1;
+        if(empty($data[$count]['group_name']) && empty($data[$count]['model_id'])){
+            array_pop($data);
+        }
+
         $comp = new CompleteModel();
         $flag = $comp->insertAll($data);
         fclose($files);
         if(!$flag){
-            return json(['code' => '-1','msg' => '文件导入失败']);
+            return ['code' => '-1','msg' => '文件导入失败'];
         }
     }
 
@@ -356,13 +361,13 @@ class Versions extends Permissions
      * 此方法只是 读取 竣工模型 -- 全景3D模型 分组的属性txt文件时使用
      * 获取txt文件内容并插入到数据库中
      * @param $filePath
-     * @return \think\response\Json
+     * @return array
      * @author hutao
      */
     public function completeGroupProperties($filePath)
     {
         if(!file_exists($filePath)){
-            return json(['code' => '-1','msg' => '文件不存在']);
+            return ['code' => '-1','msg' => '文件不存在'];
         }
         $files = fopen($filePath, "r") or die("Unable to open file!");
         $contents = $new_contents = $new_ids = $data = [];
@@ -385,12 +390,16 @@ class Versions extends Permissions
             $data[$k]['attribute_val'] = trim(next($item));
         }
 
-        array_pop($data);
+        $count = sizeof($data) - 1;
+        if(empty($data[$count]['group_name']) && empty($data[$count]['attribute_name'])){
+            array_pop($data);
+        }
+
         $comp = new CompleteGroupModel();
         $flag = $comp->insertAll($data);
         fclose($files);
         if(!$flag){
-            return json(['code' => '-1','msg' => '文件导入失败']);
+            return ['code' => '-1','msg' => '文件导入失败'];
         }
     }
 
@@ -399,13 +408,13 @@ class Versions extends Permissions
      * 此方法只是 读取施工模型 质量模型 txt文件时使用
      * 获取txt文件内容并插入到数据库中
      * @param $filePath
-     * @return \think\response\Json
+     * @return array
      * @author hutao
      */
     public function qualityInsertTxtContent($filePath)
     {
         if(!file_exists($filePath)){
-            return json(['code' => '-1','msg' => '文件不存在']);
+            return ['code' => '-1','msg' => '文件不存在'];
         }
         $files = fopen($filePath, "r") or die("Unable to open file!");
         $contents = $new_contents = $new_ids = $data = [];
@@ -459,6 +468,11 @@ class Versions extends Permissions
             $data[$k]['model_id'] = trim(next($val));
         }
 
+        $count = sizeof($data) - 1;
+        if(empty($data[$count]['section']) && empty($data[$count]['unit'])){
+            array_pop($data);
+        }
+
         // 继承当前版本的上一个版本的关联关系
         $previous_version_number = $version->prevVersionNumber($version_number); // 当前版本的上一个版本号
         if(!empty($previous_version_number)){
@@ -477,7 +491,7 @@ class Versions extends Permissions
         $flag = $picture->insertAll($data);
         fclose($files);
         if(!$flag){
-            return json(['code' => '-1','msg' => '文件导入失败']);
+            return ['code' => '-1','msg' => '文件导入失败'];
         }
     }
 
