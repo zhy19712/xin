@@ -90,15 +90,15 @@
     .fa.fa-plus:hover:before {
         color: #fff;
     }
-    #testList div:last-child{
-        width: 100%!important;
-        height: 100%!important;
+    #testList div:last-child,#testList label,#testList input{
+        width: 86px!important;
+        height: 36px!important;
     }
     #noborder tr th{
         border: none!important;
     }
     .webuploader-pick{
-        display: block;
+        display: inline-block;
     }
 </style>
 
@@ -158,8 +158,8 @@
                 <thead>
                     <tr>
                         <th style="width: 432px;">
-                            <button type="button"   id="testList" style="margin-left: 5px;">增加文件</button>
-                            <button type="button"  id="testListAction" style="width: 86px;height: 36px;background: #009688;cursor: pointer;color:#fff;border-radius: 4px;">开始上传</button>
+                            <a  id="testList" style="margin-left: 5px;float:left;width: 86px;height: 42.2px;">增加文件</a>
+                            <button type="button"  id="testListAction" style="width: 86px;height:38px;background: #009688;cursor: pointer;color:#fff;border-radius: 4px;margin-left: 5px;">开始上传</button>
                         </th>
                         <th style="width: 72px;"><span id="allsize"></span></th>
                         <th style="width: 62px;"><span id="status">0%</span></th>
