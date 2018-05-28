@@ -202,9 +202,13 @@ class Qualitymass extends Permissions
         }
     }
 
-    // 页面第一次进来不用传递参数 默认返回所有模型
-    // 根据所选标段 返回 与该标段下的所有单元工程节点有关联关系的模型编号
-    // 并且 按照 [优良，合格，不合格，未验评] 分组
+    /**
+     * 页面第一次进来不用传递参数 默认返回所有模型
+     * 根据所选标段 返回 与该标段下的所有单元工程节点有关联关系的模型编号
+     * 并且 按照 [优良，合格，不合格，未验评] 分组
+     * @return \think\response\Json
+     * @author hutao
+     */
     public function sectionModel()
     {
         if($this->request->isAjax()){
