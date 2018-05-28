@@ -188,8 +188,8 @@
                     targets: [6],
                     render :  function(data,type,row) {
                         // adminId = data;
-                        var html =  "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='conEdit(this)'><i class='fa fa-pencil' title='编辑'></i></a>" ;
-                        html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDel(this)'><i class='fa fa-trash' title='删除'></i></a>" ;
+                        var html =  "<span style='margin-left: 5px;' onclick='conEdit(this)'><i class='fa fa-pencil' title='编辑'></i></span>" ;
+                        html += "<span style='margin-left: 5px;' onclick='conDel(this)'><i class='fa fa-trash' title='删除'></i></span>" ;
                         return html;
                     }
                 },
