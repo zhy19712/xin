@@ -335,7 +335,7 @@ class Qualitymass extends Permissions
             $param = input('param.');
             // 验证规则
             $rule = [
-                ['add_id', 'require|number|gt:-1', '请选择单元工程|单元工程编号只能是数字|单元工程编号不能为负数'],
+                ['add_id', 'require', '请选择单元工程'],
                 ['attrKey', 'require', '属性名不能为空'],
                 ['attrVal', 'require', '属性值不能为空']
             ];
@@ -353,7 +353,7 @@ class Qualitymass extends Permissions
             if(empty($id)){
                 $flag = $custom->insertTb($data);
             }else{
-                if(!is_int($id)){
+                if(empty($id)){
                     return json(['code' => -1, 'msg' => '属性的主键编号只能是数字']);
                 }
                 $data['id'] = $id;
