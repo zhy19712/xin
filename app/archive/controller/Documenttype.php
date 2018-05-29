@@ -54,8 +54,7 @@ class Documenttype extends Permissions
                 ->order("id asc")
                 ->select();
 
-            return json(["code"=>1,$document_type_info]);
-
+            return json($document_type_info);
         }
     }
 
