@@ -104,9 +104,10 @@ class Admin extends Permissions
              * 系统自动判断赋值 category 1 组织机构 2 部门
              */
             if(empty($param['type'])){
-                $data = ['pid' => $param['pid'],'category' => '2','name' => $param['name']];
+                $p_name = $node->getOne($param['pid']);
+                $data = ['pid' => $param['pid'],'category' => '2','name' => $param['name'],'p_name' => $p_name['p_name']];
             }else{
-                $data = ['pid' => $param['pid'],'category' => '1','type' => $param['type'],'name' => $param['name']];
+                $data = ['pid' => $param['pid'],'category' => '1','type' => $param['type'],'name' => $param['name'],'p_name' => $param['name']];
             }
             if(empty($param['id'])){
                 $flag = $node->insertTb($data);
