@@ -59,7 +59,7 @@ class Admin extends Permissions
             $node = new AdminGroup();
             $info['node'] = $node->getOne($id);
             if($type != 0){
-                $info['nodeType'] = Db::name('admin_group_type')->select();
+                $info['nodeType'] = Db::name('admin_group_type')->where(['id'=>['in',[1,2,4,5,12]]])->select();
             }
             return json($info);
         }
