@@ -388,4 +388,28 @@ class Branch extends Permissions
             return json($flag);
         }
     }
+
+    /**
+     *
+     * 功能暂时废弃
+     * 控制点里的模板文件下载
+     * @return \think\response\Json
+     */
+    public function fileDownload()
+    {
+
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" ."01.02.01岩石地基开挖单元工程质量等级评定表.html";
+        $formPath = iconv('UTF-8', 'GB2312', $formPath);
+        $filePath = $formPath;
+        $fileName = "01.02.01岩石地基开挖单元工程质量等级评定表.html";
+        $fileName = iconv("utf-8", "gb2312", $fileName);
+        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+        $file = fopen($filePath, 'r');
+        echo fread($file, filesize($filePath));
+        fclose($file);
+    }
 }
