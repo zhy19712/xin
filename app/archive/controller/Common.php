@@ -471,7 +471,7 @@ class Common extends Controller
         if($uid ==1 && $pid==1){ // 管理员可以看所有的
             $gid_arr = Db::name('admin_group')->column('id');
         }else{
-            $gid_arr = Db::name('admin_group')->where(['pid'=>$pid])->column('id');
+            $gid_arr = Db::name('admin_group')->where(['pid'=>$pid])->whereOr(['id'=>$pid])->column('id');
         }
 
         if($type == 1){
