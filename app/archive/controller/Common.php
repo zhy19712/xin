@@ -422,13 +422,6 @@ class Common extends Controller
         //传过来的类别 table_type 1 收文 2 发文  3 关联文件列表
         $type = input('param.table_type');
         $uid = Session::has('admin') ? Session::get('admin') : 0;
-        if($type == 1){
-            $recordsTotal = Db::name($table)->where('income_id', $uid)->count();
-        }else if($type == 2){
-            $recordsTotal = Db::name($table)->where('send_id', $uid)->count();
-        }else{
-            $recordsTotal = Db::name($table)->where(['send_id'=>$uid,'status'=>3])->count();
-        }
 
         switch ($order){
             case 'create_time asc':
@@ -480,6 +473,21 @@ class Common extends Controller
         }else{
             $gid_arr = Db::name('admin_group')->where(['pid'=>$pid])->column('id');
         }
+
+        if($type == 1){
+            $recordsTotal = Db::name($table)->alias('s')
+                ->join('admin u', 's.send_id=u.id', 'left')
+                ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])->count();
+        }else if($type == 2){
+            $recordsTotal = Db::name($table)->alias('s')
+                ->join('admin u', 's.income_id=u.id', 'left')
+                ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                ->where(['u.admin_group_id'=>['in',$gid_arr]])->count();
+        }else{
+            $recordsTotal = Db::name($table)->where(['send_id'=>$uid,'status'=>3])->count();
+        }
+
 
         if (strlen($search) > 0) {
             //有搜索条件的情况
