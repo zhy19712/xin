@@ -12,9 +12,9 @@ tableItem = $("#tableIncome").DataTable({
         { name: "create_time" },
         { name: "file_name" },
         { name: "date" },
-        { name: "unit_name" },
+        { name: "p_name" },
         { name: "send_name" },
-        { name: "attchment_id"},
+        { name: "income_name"},
         { name: "status" },
         { name: "id" }
     ],

@@ -17,8 +17,8 @@ tableIncome = $("#tableIncome").DataTable({
         { name: "create_time" },
         { name: "file_name" },
         { name: "date" },
-        { name: "unit_name" },
-        { name: "attchment_id"},
+        { name: "p_name" },
+        { name: "send_name"},
         { name: "income_name" },
         { name: "status" },
         { name: "id" }
@@ -522,8 +522,8 @@ function incomeFile() {
             },
             { name: "file_name" },
             { name: "date" },
-            { name: "unit_name" },
-            { name: "attchment_id"},
+            { name: "p_name" },
+            { name: "income_name"},
             { name: "send_name" },
             {
                 name: "status",

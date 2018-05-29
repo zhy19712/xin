@@ -165,7 +165,8 @@ class AdminGroup extends Model
     {
         $data = $this->getOne($admin_group_id);
         if(!empty($data)){
-            if($data['pid'] == 1){
+            // category 1 组织机构 2 部门
+            if($data['category'] == 1){
                 $relation_id = $data['id'];
             }else{
                 $relation_id = $this->parentId($data['pid']);
