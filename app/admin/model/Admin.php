@@ -309,4 +309,20 @@ class Admin extends Model
         $data = $this->where('id', $id)->find();
         return $data;
     }
+
+    /**
+     * 根据用户的id查询组织机构下的信息
+     * @param $id
+     * @throws \think\exception\DbException
+     */
+     public function getGroupInfo($id)
+     {
+         $group_info = Db::name("admin")
+             ->alias("a")
+             ->join('admin_group g','a.admin_group_id = g.id','left')
+             ->field("g.pid")
+             ->where("a.id",$id)
+             ->find();
+         return $group_info;
+     }
 }
