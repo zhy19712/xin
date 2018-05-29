@@ -294,7 +294,7 @@ class Qualityanalysis extends Permissions
         $section = Db::name("section")->order("id asc")->column("shortName,id");//标段名
 
         foreach ($section as $aa => $bb) {
-            $section_name[] = $aa;
+            $section_name[] = strval($aa);
             $section_id[] = $bb;
         }
 

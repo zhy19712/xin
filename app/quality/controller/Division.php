@@ -781,7 +781,7 @@ class Division extends Permissions{
             // 验证规则
             $rule = [
                 ['division_id', 'require|number|gt:0', '请选择归属工程|归属工程编号只能是数字|请选择归属工程'],
-                ['serial_number', 'require|alphaDash', '流水号不能为空|流水号只能是字母、数字、下划线 _和破折号 - 的组合'],
+                ['serial_number', 'alphaDash', '流水号只能是字母、数字、下划线 _和破折号 - 的组合'],
                 ['site', 'require|max:100', '部位不能为空|部位不能超过100个字符'],
                 ['coding', 'require|alphaDash', '系统编码不能为空|系统编码只能是字母、数字、下划线 _和破折号 - 的组合'],
                 ['ma_bases', 'require', '请选择施工依据'],

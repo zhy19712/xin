@@ -1,6 +1,4 @@
 
-
-//组织结构表格
 var tableItem,      //控制点的table
     implementation, //扫描件回传table
     imageData,      //附件资料的table
@@ -84,28 +82,12 @@ tableItem = $('#tableItem').DataTable({
     }
 });
 
-//测量成果报审表 初检人@复检人@终检人@报送人@监理工程师
-//单元质量检查验收申请表 施工单位质检人员@监理人员
-//施工单位负责人@监理工程师@地质工程师@设计代表@建设单位代表@签署人
-
 //查询提交
 var layer = layui.layer;
 layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
     var form = layui.form
         ,layer = layui.layer
         ,laydate = layui.laydate;
-    // //日期
-    // laydate.render({
-    //     elem: '#date' //指定元素
-    //     ,done:function (value, date, endDate) {
-    //         //得到日期生成的值 得到日期时间对象 得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-    //         resultChange();
-    //     }
-    // });
-    //
-    // form.on('select(type)',function (data) {
-    //     resultChange();
-    // });
 });
 
 
@@ -233,7 +215,6 @@ function ajaxDataFilter(treeId, parentNode, responseData) {
     if (responseData) {
         for(var i =0; i < responseData.length; i++) {
             responseData[i].name = responseData[i].el_start + responseData[i].el_cease + responseData[i].pile_number + responseData[i].site;
-            // eTypeId = responseData[i].en_type;
         }
     }
     return responseData;
@@ -286,8 +267,6 @@ function nodeClickUnit(e, treeId, node) {
         selfidName(eTypeId);
     }
     if(nodeUnitId != undefined || nodeUnitId != null){
-        // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
-        // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
         tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
     }
     $("#tableContent .imgList").css('display','block');
@@ -343,8 +322,6 @@ $(".imgList").on("click","#homeWork",function () {
     $(".mybtn").css("display","none");
     $(".mybtnAdd").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
-    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId).load();
-    // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId).load();
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
     flag = true;
 });
@@ -355,10 +332,7 @@ function clickConName(id) {
     controlRowId ='';
     procedureId ='';
     procedureId = id;
-    // console.log(procedureId);
     if(nodeUnitId != undefined || nodeUnitId != null && procedureId != undefined || procedureId != null){
-        // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
-        // tableItem.ajax.url("/quality/element/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeId+"&unit_id="+nodeUnitId+"&nm_id="+procedureId).load();
         tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
     }
     $("#tableContent .imgList").css('display','block');
@@ -527,8 +501,8 @@ function delData(id,url) {
                     }
                     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
                     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="+controlRowId).load();
-                }else if(res.code !=1){
-                    layer.msg('返回数据错误！')
+                }else{
+                    layer.msg(res.msg)
                 }
             }
         })
@@ -792,8 +766,6 @@ function outerHeight() {
        // uploader.destroy();
        var  uploadFileId = res.id;
        var  uploadFileName = file.name;
-       // console.log(file);
-       // console.log(res);
        $.ajax({
             url:"/quality/element/copycheck",
             data:{cpr_id:controlRowId},
@@ -810,7 +782,6 @@ function outerHeight() {
                         },
                         type:'post',
                         success:function(res) {
-                            // console.log(res);
                             if(res.code == 1) {
                                 checkforming(nodeUnitId);
                                 layer.msg(uploadFileName+'上传成功');
@@ -823,7 +794,7 @@ function outerHeight() {
                                     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
                                 }
                             } else {
-                                layer.msg('获取数据失败！');
+                                layer.msg(res.msg);
                             }
                         }
                     })
@@ -961,12 +932,12 @@ layui.use(['element', "layer", 'form', 'upload'], function () {
                             }else if(procedureId == ''){
                                 tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
                             }
+                            layer.msg("上传成功！",{time:1500})
                         } else {
-                            layer.msg('获取数据失败！');
+                            layer.msg(res.msg);
                         }
                     }
                 })
-                layer.msg("上传成功！",{time:1500})
             }else{
                 layer.msg("上传失败！",{time:1500})
             }
@@ -1271,6 +1242,8 @@ function delOnLine(id) {
                 if (res.code === 1) {
                     layer.msg("删除数据成功！", {time: 1500, shade: 0.1});
                     onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                }else{
+                    layer.msg(res.msg)
                 }
             }
         });
@@ -1436,7 +1409,6 @@ function downloadFrom(id,url) {
 //在线填报-下载
 function downOnLine(id) {
     downloadFrom(id,"/quality/element/formDownload")
-    // console.log(id)
 }
 
 /*============在线填报结束==============*/
