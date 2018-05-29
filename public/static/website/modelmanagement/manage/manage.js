@@ -663,34 +663,38 @@ modelInfo = function (uObjSubID,number_type) {
         },
         dataType: "json",
         success: function (res) {
-            $('#site').text(res.unit_info.site);
-            $('#serial_number').text(res.unit_info.coding);
-            $('#hinge').text(res.unit_info.hinge);
-            $('#quantities').text(res.unit_info.quantities);
-            $('#en_type').text(res.unit_info.en_type);
-            $('#ma_bases').text(res.unit_info.ma_bases);
-            $('#su_basis').text(res.unit_info.su_basis);
-            $('#el_start').text(res.unit_info.el_start);
-            $('#el_cease').text(res.unit_info.el_cease);
-            $('#pile_number').text(res.unit_info.pile_number);
-            $('#start_date').text(res.unit_info.start_date);
-            $('#completion_date').text(res.unit_info.completion_date);
-            //回显自定义属性
-            $('#attrGroup').empty();
-            var attrGroup = [];
-            for (var i = 0; i < res.attr_info.length; i++) {
-                var attrKey = res.attr_info[i].attrKey;
-                var attrVal = res.attr_info[i].attrVal;
-                attrGroup.push('<div class="attrGroup"><div class="layui-input-inline">');
-                attrGroup.push('<input type="text" name="attrKey" value=' + attrKey + ' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
-                attrGroup.push('<input type="text" name="attrVal" value=' + attrVal + ' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
-                attrGroup.push('</div>');
-                attrGroup.push('<div class="layui-form-mid layui-word-aux">');
-                attrGroup.push('<i class="fa fa-check saveAttr" attrId='+ res.attr_info[i].attrId +' onclick="saveAttr(this)"></i>');
-                attrGroup.push('<i class="fa fa-close closeAttr" attrId='+ res.attr_info[i].attrId +' onclick="delAttr(this)"></i>');
-                attrGroup.push('</div></div>');
+            if(res.unit_info!=null){
+                $('#site').text(res.unit_info.site);
+                $('#serial_number').text(res.unit_info.coding);
+                $('#hinge').text(res.unit_info.hinge);
+                $('#quantities').text(res.unit_info.quantities);
+                $('#en_type').text(res.unit_info.en_type);
+                $('#ma_bases').text(res.unit_info.ma_bases);
+                $('#su_basis').text(res.unit_info.su_basis);
+                $('#el_start').text(res.unit_info.el_start);
+                $('#el_cease').text(res.unit_info.el_cease);
+                $('#pile_number').text(res.unit_info.pile_number);
+                $('#start_date').text(res.unit_info.start_date);
+                $('#completion_date').text(res.unit_info.completion_date);
             }
-            $('#attrGroup').append(attrGroup.join(' '));
+            //回显自定义属性
+            if(res.attr_info.length>0){
+                $('#attrGroup').empty();
+                var attrGroup = [];
+                for (var i = 0; i < res.attr_info.length; i++) {
+                    var attrKey = res.attr_info[i].attrKey;
+                    var attrVal = res.attr_info[i].attrVal;
+                    attrGroup.push('<div class="attrGroup"><div class="layui-input-inline">');
+                    attrGroup.push('<input type="text" name="attrKey" value=' + attrKey + ' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
+                    attrGroup.push('<input type="text" name="attrVal" value=' + attrVal + ' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
+                    attrGroup.push('</div>');
+                    attrGroup.push('<div class="layui-form-mid layui-word-aux">');
+                    attrGroup.push('<i class="fa fa-check saveAttr" attrId='+ res.attr_info[i].attrId +' onclick="saveAttr(this)"></i>');
+                    attrGroup.push('<i class="fa fa-close closeAttr" attrId='+ res.attr_info[i].attrId +' onclick="delAttr(this)"></i>');
+                    attrGroup.push('</div></div>');
+                }
+                $('#attrGroup').append(attrGroup.join(' '));
+            }
         }
     });
 }

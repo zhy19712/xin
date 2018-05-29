@@ -39,7 +39,6 @@ function zTreeOnClick(event, treeId, treeNode) {
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
     console.log(treeNode);
-    debugger;
     if(treeNode.level==5){
         alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
         elval();
