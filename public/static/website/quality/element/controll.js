@@ -766,8 +766,6 @@ function outerHeight() {
        // uploader.destroy();
        var  uploadFileId = res.id;
        var  uploadFileName = file.name;
-       // console.log(file);
-       // console.log(res);
        $.ajax({
             url:"/quality/element/copycheck",
             data:{cpr_id:controlRowId},
@@ -784,7 +782,6 @@ function outerHeight() {
                         },
                         type:'post',
                         success:function(res) {
-                            // console.log(res);
                             if(res.code == 1) {
                                 checkforming(nodeUnitId);
                                 layer.msg(uploadFileName+'上传成功');
@@ -1412,7 +1409,6 @@ function downloadFrom(id,url) {
 //在线填报-下载
 function downOnLine(id) {
     downloadFrom(id,"/quality/element/formDownload")
-    // console.log(id)
 }
 
 /*============在线填报结束==============*/
