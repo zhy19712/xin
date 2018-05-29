@@ -52,6 +52,7 @@ table td:last-child{
     display: none;
 }
 .node-name{
+    color: #0092ff;
     cursor: pointer;
 }
 .search-tr input,.search-tr select{
