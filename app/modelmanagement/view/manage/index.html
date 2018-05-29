@@ -17,19 +17,19 @@
         <div data-options="region:'north'" class="north" style="height:39px">
             <ul class="layer-review">
                 <li>
-                    <span>优良</span>
+                    <span>优良：</span>
                     <i id="excellent"></i>
                 </li>
                 <li>
-                    <span>合格</span>
+                    <span>合格：</span>
                     <i id="qualified"></i>
                 </li>
                 <li>
-                    <span>不合格</span>
+                    <span>不合格：</span>
                     <i id="unQualified"></i>
                 </li>
                 <li>
-                    <span>未验评</span>
+                    <span>未验评：</span>
                     <i id="unReview"></i>
                 </li>
             </ul>
@@ -89,7 +89,7 @@
                 //根据所选标段展示对应模型
                 selectedSectionShowModel = function (res) {
                     var data = res.data;
-                    var newData = data.excellent.concat(data.qualified,data.unqualified);
+                    var newData = data.excellent.concat(data.qualified, data.unqualified);
                     //隐藏掉所有模型
                     RealBimOcx.SetAllHugeObjSubValidState(0);
                     //根据所选标段拿到对应的模型数据
@@ -140,48 +140,9 @@
                 //显示单元信息
                 $('#tabs').show();
                 //验收资料
-                $.ajax({
-                    url: "/modelmanagement/Manage/getAcceptance",
-                    type: "post",
-                    data: {
-                        model_id: uObjSubID
-                    },
-                    dataType: "json",
-                    success: function (res) {
-                        $('#acceptanceData').empty();
-                        var data = res.processinfo;
-                        var acceptanceDataTemp = [];
-                        var count = 0;
-                        for (var i = 0; i < data.length; i++) {
-                            acceptanceDataTemp.push('<div class="layui-colla-item">');
-                            acceptanceDataTemp.push('<h2 class="layui-colla-title layui-work-title workTitle">工序' + (count++) + '：' + data[i].name + '</h2>');
-                            for (var j = 0; j < data[i].controlpoint_info.length; j++) {
-                                var controlData = data[i].controlpoint_info[j];
-                                acceptanceDataTemp.push('<div class="layui-colla-content layui-work-content">');
-                                acceptanceDataTemp.push('<div class="layui-collapse layui-control-data" id="controlData" lay-filter="control" lay-accordion>');
-                                acceptanceDataTemp.push('<h2 class="layui-colla-title layui-control-title controlTitle" unit_id=' + data[i].unit_id + ' id=' + controlData.id + ' procedureid=' + controlData.procedureid + '>' + controlData.name + '</h2>');
-                                acceptanceDataTemp.push('<div class="layui-colla-content layui-control-content">');
-                                acceptanceDataTemp.push('<div class="layui-table-title tableTitle"></div>');
-                                acceptanceDataTemp.push('<table class="layui-table" uid=' + controlData.id + ' id="online' + controlData.id + '">');
-                                acceptanceDataTemp.push('<tbody>');
-                                acceptanceDataTemp.push('</tbody>');
-                                acceptanceDataTemp.push('</table>');
-                                acceptanceDataTemp.push('</div>');
-                                acceptanceDataTemp.push('</div>');
-                                acceptanceDataTemp.push('</div>');
-                            }
-                            acceptanceDataTemp.push('</div>');
-                        }
-                        $('#acceptanceData').append(acceptanceDataTemp.join(''));
-                        layui.use('element', function () {
-                            var element = layui.element;
-                            element.render('collapse');
-                        });
-                        $('.layui-colla-item:first-child').find('h2.workTitle').click();
-                    }
-                });
+                acceptance(uObjSubID, 2);
                 //模板信息
-                modelInfo(uObjSubID,2);
+                modelInfo(uObjSubID, 2);
 
                 //根据选中模型--获取所有关联模型编号和对应树节点id
                 $.ajax({
@@ -189,7 +150,7 @@
                     type: "post",
                     data: {
                         number: uObjSubID,
-                        number_type:2
+                        number_type: 2
                     },
                     dataType: "json",
                     success: function (res) {
@@ -219,7 +180,7 @@
             <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
                 switch (eType) {
                     case "DO_HIDE":         //显示隐藏
-                        if(selectedModeGroupIds==''){
+                        if (selectedModeGroupIds == '') {
                             return false;
                         }
                         console.log(selectedTreeNode);
@@ -233,7 +194,7 @@
                         treeObj.checkNode(selectedTreeNode, true, false);
                         break;
                     case "CANCEL_HIDE":     //取消隐藏
-                        if(selectedModeGroupIds==''){
+                        if (selectedModeGroupIds == '') {
                             return false;
                         }
                         $.ajax({
@@ -266,8 +227,8 @@
                         });
                         var treeObj = $.fn.zTree.getZTreeObj("ztree");
                         treeObj.checkAllNodes(false);
-                        selectedModeGroupIds='';
-                        selectedTreeNode='';
+                        selectedModeGroupIds = '';
+                        selectedTreeNode = '';
                         $('#modelType').val('');
                         $('#modelId').val('');
                 }
@@ -276,62 +237,68 @@
     </div>
 </div>
 <div data-options="region:'east',title:'管理信息',split:true" style="width:350px;" class="manage-info">
-    <div id="tabs" class="easyui-tabs" style="width:100%;">
-        <div title="属性" style="padding:10px;">
-            <div class="layui-collapse" id="layuiCollapse" lay-accordion>
+    <div id="tabs" class="easyui-tabs" style="width:100%; padding: 10px">
+        <div title="属性">
+            <div class="layui-collapse layui-attr" id="layuiCollapse" lay-accordion>
                 <div class="layui-colla-item">
+                    <h1 class="layui-unit-title" id="unitTitle"></h1>
                     <h2 class="layui-colla-title">单元工程信息</h2><!--infoTitle-->
                     <div class="layui-colla-content layui-show">
-                        <table class="layui-table" lay-skin="line" lay-size="sm">
+                        <table class="layui-table" lay-even lay-size="sm">
+                            <colgroup>
+                                <col width="150">
+                                <col width="200">
+                                <col>
+                            </colgroup>
                             <tbody>
-                            <tr>
-                                <td>检验批名称</td>
-                                <td id="site"></td>
-                            </tr>
-                            <tr>
-                                <td>检验批编码</td>
-                                <td id="serial_number"></td>
-                            </tr>
-                            <tr>
-                                <td>关键部位</td>
-                                <td id="hinge"></td>
-                            </tr>
-                            <tr>
-                                <td>工程量</td>
-                                <td id="quantities"></td>
-                            </tr>
-                            <tr>
-                                <td>工程类型</td>
-                                <td id="en_type"></td>
-                            </tr>
-                            <tr>
-                                <td>施工依据</td>
-                                <td id="ma_bases"></td>
-                            </tr>
-                            <tr>
-                                <td>补充依据</td>
-                                <td id="su_basis"></td>
-                            </tr>
-                            <tr>
-                                <td>高程（起）</td>
-                                <td id="el_start"></td>
-                            </tr>
-                            <tr>
-                                <td>高程（止）</td>
-                                <td id="el_cease"></td>
-                            </tr>
-                            <tr>
-                                <td>桩号（起止）</td>
-                                <td id="pile_number"></td>
-                            </tr>
-                            <tr>
-                                <td>开始日期</td>
-                                <td id="start_date"></td>
-                            </tr>
-                            <tr>
-                                <td>结束日期</td>
-                                <td id="completion_date"></td>
-                            </tr>
+                                <tr>
+                                    <td>检验批名称</td>
+                                    <td id="site"></td>
+                                </tr>
+                                <tr>
+                                    <td>检验批编码</td>
+                                    <td id="serial_number"></td>
+                                </tr>
+                                <tr>
+                                    <td>关键部位</td>
+                                    <td id="hinge"></td>
+                                </tr>
+                                <tr>
+                                    <td>工程量</td>
+                                    <td id="quantities"></td>
+                                </tr>
+                                <tr>
+                                    <td>工程类型</td>
+                                    <td id="en_type"></td>
+                                </tr>
+                                <tr>
+                                    <td>施工依据</td>
+                                    <td id="ma_bases"></td>
+                                </tr>
+                                <tr>
+                                    <td>补充依据</td>
+                                    <td id="su_basis"></td>
+                                </tr>
+                                <tr>
+                                    <td>高程（起）</td>
+                                    <td id="el_start"></td>
+                                </tr>
+                                <tr>
+                                    <td>高程（止）</td>
+                                    <td id="el_cease"></td>
+                                </tr>
+                                <tr>
+                                    <td>桩号（起止）</td>
+                                    <td id="pile_number"></td>
+                                </tr>
+                                <tr>
+                                    <td>开始日期</td>
+                                    <td id="start_date"></td>
+                                </tr>
+                                <tr>
+                                    <td>结束日期</td>
+                                    <td id="completion_date"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -342,8 +309,8 @@
                         <form action="" class="layui-form">
                             <div class="layui-form-item">
                                 <div class="layui-form-item attr-group" id="attrGroup"></div>
-                                <div href="javascript:;" class="layui-form-mid layui-word-aux" id="addAttr">
-                                    <span class="layui-btn"><i class="fa fa-plus">新增</i></span>
+                                <div href="javascript:;" class="layui-form-mid layui-word-aux layui-attr-btn" id="addAttr">
+                                    <span class="layui-btn layui-btn-normal layui-btn-sm">新增</span>
                                 </div>
                             </div>
                         </form>
@@ -352,7 +319,8 @@
             </div>
         </div>
         <div title="验收资料" style="overflow:auto;padding:10px;display:none;">
-            <div class="layui-collapse layui-acceptance-data" id="acceptanceData" lay-filter="collapse" lay-accordion></div>
+            <div class="layui-collapse layui-acceptance-data" id="acceptanceData" lay-filter="collapse"
+                 lay-accordion></div>
         </div>
     </div>
 </div>
@@ -366,20 +334,20 @@
         var prevModelType = $('#modelType').val();
         var prevModelId = $('#modelId').val();
         var newPrevModelId = prevModelId.split(',');
-        if(prevModelType==1){
+        if (prevModelType == 1) {
             var prevModelColor = un_evaluation_pigment;
         }
-        if(prevModelType==2){
+        if (prevModelType == 2) {
             var prevModelColor = qualified_pigment;
         }
-        if(prevModelType==3){
+        if (prevModelType == 3) {
             var prevModelColor = choiceness_pigment;
         }
-        if (data.model_id!= '') {
+        if (data.model_id != '') {
             selectedModeGroupIds = data.model_id;
             RealBimOcx.SetGroupInLogCamPos(data.model_id); //镜头
             RealBimOcx.BatchAddSubClrInfoBegin();
-            for(var j = 0;j<newPrevModelId.length;j++){
+            for (var j = 0; j < newPrevModelId.length; j++) {
                 RealBimOcx.AddSubClrPercent(+newPrevModelId[j], 1, prevModelColor);
             }
             for (var i = 0; i < data.model_id.length; i++) {

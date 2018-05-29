@@ -720,7 +720,6 @@ class Main extends Permissions
 
                 }
 
-//                $processinfo[$key]["processinfo_list"] = $processinfo_list;
                 $form_list = Db::name("quality_form_info")->field("id as form_id,form_name,DivisionId as division_id,ProcedureId as ma_division_id,ControlPointId as control_id")->where("ProcedureId",$val["id"])->select();
 
                 foreach($form_list as $a=>$b)
@@ -734,9 +733,6 @@ class Main extends Permissions
 
                 $processinfo[$key]["form_list"] = $form_list;
             }
-
-
-
            return json(["code"=>1,"unit_info"=>$unit_info,"processinfo"=>$processinfo]);
         }
     }

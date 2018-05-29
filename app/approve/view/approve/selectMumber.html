@@ -319,10 +319,13 @@
     //搜索树
     $('#keywords').bind('input propertychange', function() {
         var key = $("#keywords").val();
-        var nodes = treeObj.getNodesByParam("name", key);
+        var nodes = treeObj.getNodesByParamFuzzy("name", key);
         $.each(nodes, function (i, item) {
             treeObj.expandNode(item.getParentNode(), true, false, true);
         });
+        if(key == ""){
+            treeObj.expandAll(false);
+        }
     });
     //左侧组织机构树双击事件处理
     function onClick(event, treeId, treeNode) {

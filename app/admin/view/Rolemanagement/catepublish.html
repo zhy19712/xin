@@ -140,6 +140,7 @@
           idArr.push(item.id);
         });
         //判断是否发生了改变
+        console.log(selectArr,idArr)
         if(selectArr.length == idArr.length ){
           if(selectArr.length == 0){
             window.parent.cateMsg("未发生改变！");
@@ -148,11 +149,12 @@
             var lock = true;
             $.each(selectArr, function (i, item) {
               //过滤垃圾数据
-              if(idArr.indexOf(Number(item)) == -1){
+              if(idArr.indexOf(Number(item)) != -1){
                     lock = false;
                     return false;
               }
             });
+            console.log(lock)
             if(!lock){
               window.parent.cateMsg("未发生改变！");
               return ;
@@ -167,6 +169,7 @@
           dataType:"JSON",
           success:function (res) {
             if(res.code==1){
+              selectArr = idArr;
               window.parent.cateMsg(res.msg);
             }else{
               window.parent.cateMsg(res.msg);
