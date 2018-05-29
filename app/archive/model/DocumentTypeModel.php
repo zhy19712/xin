@@ -87,4 +87,27 @@ class DocumentTypeModel extends Model
     {
         return $this->select();
     }
+
+    /**
+     * 根据类型名查询一条文档类型信息
+     */
+    public function getDocTypeInfo($name)
+    {
+        $document_type_id = Db::name("archive_documenttype")
+            ->where("name like '%".$name."%'")
+            ->find();
+        return $document_type_id;
+    }
+
+    /**
+     * 根据id查询pid为此id，id=1的值
+     */
+    public function getDocInfo($id)
+    {
+        $document_type_info = Db::name("archive_documenttype")
+            ->where(" id = 1 OR id = ".$id." OR pid = ".$id)
+            ->order("id asc")
+            ->select();
+        return $document_type_info;
+    }
 }

@@ -125,7 +125,6 @@ class Admin extends Model
     /**
      * 查询一个用户信息的用户名name
      */
-
     public function getName($where)
     {
         $data = $this->field("id,name")->where("id = ".$where['id']."  and name like '%" .$where['name']. "%'")->find();
@@ -135,7 +134,6 @@ class Admin extends Model
     /**
      * 根据传过来的admin_cate表中的id,admin表中的id,修改admin_cate_id中的值
      */
-
     public function deladmincateid($param)
     {
         //admin_id是admin表id，id为cate表id
@@ -178,7 +176,6 @@ class Admin extends Model
     /**
      * 根据传过来的admin_cate表中的id,删除admin表中的admin_cate_id中的所有的id
      */
-
     public function deladmincate($param)
     {
         //id为cate表id
@@ -215,7 +212,6 @@ class Admin extends Model
     /*
      * 根据admin_cate表的id，查询admin表中的admin_cate_id字段
      */
-
     public function getAdmincateid()
     {
         $data = $this->field("id,nickname,name,admin_cate_id")->select();
@@ -226,7 +222,6 @@ class Admin extends Model
     /*
      * 根据传过来的admin_id用户数组，cate表中的id
      */
-
     public function insertAdminid($param)
     {
         //先删除admin表中的所有的包含有当前传过来cate表id
@@ -255,11 +250,7 @@ class Admin extends Model
                 }
 
             }
-
-
             //再添加传过来的cate表中的id到admin_cate_id字段中
-
-
             if (!empty($param["admin_id"])) {
                 foreach ($param["admin_id"] as $ke => $va) {
 
@@ -288,13 +279,10 @@ class Admin extends Model
         }catch(PDOException $e){
             return ['code' => -1,'msg' => $e->getMessage()];
         }
-
-
     }
     /**
      * 根据admin表中的id查询用户名，用户id,组织机构admin_group_id
      */
-
     public function getadmininfo($id)
     {
         $data = $this->field("id,nickname as name,admin_group_id")->where("id",$id)->find();
@@ -309,4 +297,20 @@ class Admin extends Model
         $data = $this->where('id', $id)->find();
         return $data;
     }
+
+    /**
+     * 根据用户的id查询组织机构下的信息
+     * @param $id
+     * @throws \think\exception\DbException
+     */
+     public function getGroupInfo($id)
+     {
+         $group_info = Db::name("admin")
+             ->alias("a")
+             ->join('admin_group g','a.admin_group_id = g.id','left')
+             ->field("g.pid")
+             ->where("a.id",$id)
+             ->find();
+         return $group_info;
+     }
 }

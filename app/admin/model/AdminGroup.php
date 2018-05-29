@@ -176,5 +176,18 @@ class AdminGroup extends Model
         return $relation_id;
     }
 
+    /**
+     * 根据pid获取id的值
+     * @param $pid
+     * @throws \think\exception\DbException
+     */
+    public function getGroupId($pid)
+    {
+        $group_name = Db::name("admin_group")
+            ->field("id,name")
+            ->where("id",$pid)
+            ->find();
+        return $group_name;
+    }
 
 }
