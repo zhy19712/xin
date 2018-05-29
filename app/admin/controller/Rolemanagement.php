@@ -27,7 +27,6 @@ class Rolemanagement extends Permissions
     {
         $current_name = Session::get('current_nickname');
         $this->assign("current_name",$current_name);
-
         return $this->fetch();
     }
 
@@ -372,10 +371,6 @@ class Rolemanagement extends Permissions
 
                     return json(["code" => 1, "all_point" => $all_point, "select" => $info['cate']['permissions']]);
 
-//                $info['menu'] = $this->menulist($menus);
-//                $this->assign('info',$info);
-//                return $this->fetch();
-
             } else {
 
                 $menus = Db::name('admin_menu')->field("id,name,pid")->select();
@@ -429,39 +424,5 @@ class Rolemanagement extends Permissions
             }
         }
     }
-
-//    protected function menulist($menu,$id=0,$level=0){
-//
-//        static $menus = array();
-//        $size = count($menus)-1;
-//        foreach ($menu as $value) {
-//            if ($value['pid']==$id) {
-//                $value['level'] = $level+1;
-//                if($level == 0)
-//                {
-//                    $value['str'] = str_repeat('',$value['level']);
-//                    $menus[] = $value;
-//                }
-//                elseif($level == 2)
-//                {
-//                    $value['str'] = '&emsp;&emsp;&emsp;&emsp;'.'└ ';
-//                    $menus[$size]['list'][] = $value;
-//                }
-//                elseif($level == 3)
-//                {
-//                    $value['str'] = '&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;'.'└ ';
-//                    $menus[$size]['list'][] = $value;
-//                }
-//                else
-//                {
-//                    $value['str'] = '&emsp;&emsp;'.'└ ';
-//                    $menus[$size]['list'][] = $value;
-//                }
-//
-//                $this->menulist($menu,$value['id'],$value['level']);
-//            }
-//        }
-//        return $menus;
-//    }
 }
 

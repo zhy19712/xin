@@ -56,8 +56,6 @@ class VersionsModel extends Model
         try {
             $data = $this->getOne($id);
             if($data['resource_path']){
-                //TODO 先测试E盘能否成功，成功后 修改为 G盘
-
                 $file_path = 'E:\WebServer'.$data['resource_path'];
                 if(file_exists($file_path)){
                     unlink($file_path);

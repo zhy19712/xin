@@ -422,6 +422,198 @@ class Common extends Controller
         //传过来的类别 table_type 1 收文 2 发文  3 关联文件列表
         $type = input('param.table_type');
         $uid = Session::has('admin') ? Session::get('admin') : 0;
+
+        switch ($order){
+            case 'create_time asc':
+                $order = 's.create_time desc';
+                break;
+            case 'create_time desc':
+                $order = 's.create_time asc';
+                break;
+            case 'file_name asc':
+                $order = 's.file_name asc';
+                break;
+            case 'file_name desc':
+                $order = 's.file_name desc';
+                break;
+            case 'date asc':
+                $order = 's.date asc';
+                break;
+            case 'date desc':
+                $order = 's.date desc';
+                break;
+            case 'p_name asc':
+                $order = 'g.p_name asc';
+                break;
+            case 'p_name desc':
+                $order = 'g.p_name desc';
+                break;
+            case 'income_name asc':
+                $order = 'u.nickname asc';
+                break;
+            case 'income_name desc':
+                $order = 'u.nickname desc';
+                break;
+            case 'send_name asc':
+                $order = 'u.nickname asc';
+                break;
+            case 'send_name desc':
+                $order = 'u.nickname desc';
+                break;
+            default :
+        }
+
+        $recordsFilteredResult = array();
+
+        // 获取当前登陆用户的单位，只可以查看本单位的收发文信息
+        $group = new AdminGroup();
+        $pid = $group->relationId();
+        if($uid ==1 && $pid==1){ // 管理员可以看所有的
+            $gid_arr = Db::name('admin_group')->column('id');
+        }else{
+            $gid_arr = Db::name('admin_group')->where(['pid'=>$pid])->whereOr(['id'=>$pid])->column('id');
+        }
+
+        if($type == 1){
+            $recordsTotal = Db::name($table)->alias('s')
+                ->join('admin u', 's.send_id=u.id', 'left')
+                ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])->count();
+        }else if($type == 2){
+            $recordsTotal = Db::name($table)->alias('s')
+                ->join('admin u', 's.income_id=u.id', 'left')
+                ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                ->where(['u.admin_group_id'=>['in',$gid_arr]])->count();
+        }else{
+            $recordsTotal = Db::name($table)->where(['send_id'=>$uid,'status'=>3])->count();
+        }
+
+
+        if (strlen($search) > 0) {
+            //有搜索条件的情况
+            if ($limitFlag) {
+                //*****多表查询join改这里******
+                $exArr = explode('|',$columnString);
+                $newColumnString = '';
+                foreach($exArr as $ex){
+                    switch ($ex){
+                        case 'id':
+                            $newColumnString = 's.id' . '|' . $newColumnString;
+                            break;
+                        case 'file_name':
+                            $newColumnString = 's.file_name' . '|' . $newColumnString;
+                            break;
+                        case 'date':
+                            $newColumnString = 's.date' . '|' . $newColumnString;
+                            break;
+                        case 'p_name':
+                            $newColumnString = 'g.p_name' . '|' . $newColumnString;
+                            break;
+                        case 'income_name':
+                            $newColumnString = 'u.nickname' . '|' . $newColumnString;
+                            break;
+                        case 'send_name':
+                            $newColumnString = 'u.nickname' . '|' . $newColumnString;
+                            break;
+                        case 'status':
+                            $newColumnString = 's.status' . '|' . $newColumnString;
+                            break;
+                        default :
+                    }
+                }
+                $newColumnString = substr($newColumnString,0,strlen($newColumnString)-1);
+
+                if(in_array($search,['未','未发','未发送'])){
+                    $search = 1;$newColumnString = 's.status';
+                }if(in_array($search,['已发','已发送'])){
+                    $search = 2;$newColumnString = 's.status';
+                }if(in_array($search,['签','签收','已签收'])){
+                    $search = 3;$newColumnString = 's.status';
+                }if(in_array($search,['拒','拒收','已拒收'])){
+                    $search = 4;$newColumnString = 's.status';
+                }
+
+                if($type == 1){
+                    // 收文 查询 发件人的名称和单位
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.income_id) as income_name,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->where($newColumnString, 'like', '%' . $search . '%')
+                        ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }else if($type == 2){
+                    // 发文 查询 收件人的名称和单位
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.income_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.send_id) as send_name,u.nickname as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->where($newColumnString, 'like', '%' . $search . '%')
+                        ->where(['u.admin_group_id'=>['in',$gid_arr]])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }else{
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.income_id) as income_name,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->where($newColumnString, 'like', '%' . $search . '%')
+                        ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }
+                $recordsFiltered = sizeof($recordsFilteredResult);
+            }
+        } else {
+            //没有搜索条件的情况
+            if ($limitFlag) {
+                if($type == 1){
+                    // 收文 查询 发件人的名称和单位
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.income_id) as income_name,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }else if($type == 2){
+                    // 发文 查询 收件人的名称和单位
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.income_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.send_id) as send_name,u.nickname as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->where(['u.admin_group_id'=>['in',$gid_arr]])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }else{
+                    $recordsFilteredResult = Db::name($table)->alias('s')
+                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
+                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.income_id) as income_name,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
+                        ->order($order)->limit(intval($start), intval($length))->select();
+                }
+                $recordsFiltered = $recordsTotal;
+            }
+        }
+        $temp = array();
+        $infos = array();
+        foreach ($recordsFilteredResult as $key => $value) {
+            //计算列长度
+            $length = sizeof($columns);
+            for ($i = 0; $i < $length; $i++) {
+                array_push($temp, $value[$columns[$i]['name']]);
+            }
+            $infos[] = $temp;
+            $temp = [];
+        }
+        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+    }
+
+    function archive_income_send_back($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    {
+        //条件过滤后记录数 必要
+        $recordsFiltered = 0;
+        //表的总记录数 必要
+        //传过来的类别 table_type 1 收文 2 发文  3 关联文件列表
+        $type = input('param.table_type');
+        $uid = Session::has('admin') ? Session::get('admin') : 0;
         if($type == 1){
             $recordsTotal = Db::name($table)->where('income_id', $uid)->count();
         }else if($type == 2){

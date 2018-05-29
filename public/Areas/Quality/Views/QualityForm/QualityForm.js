@@ -38,7 +38,7 @@ $(function () {
 
             }
         });
-    }
+    } //从后台获取formdata数据
     var permissionByStepElements = $(".A4").find("[step]"); // 取所有设置有step属性的Html元素
     $.each(permissionByStepElements, function (i, item) {
         if ($(item).attr("step").indexOf($("#currentStep").val()) < 0) { // 如果设置的步骤不等于当前步骤 该html元素禁用
@@ -49,10 +49,10 @@ $(function () {
                 $(item).trigger("chosen:updated");
             }
         }
-    });
+    });//设置按钮禁用功能的开启与闭合
     if ($("#isView").val() === "True")
         $(".hearBtn").hide();
-    if (IsPC() == true) {
+    if (IsPC() == true) { //pc端的初始化页面
         initOperateButton();
         $('.data_2 .input-group.date').datepicker({
             format: 'yyyy年mm月dd日',

@@ -11,7 +11,7 @@ namespace app\contract\controller;
 use app\admin\controller\Permissions;
 use app\admin\model\AdminGroup;
 use app\contract\model\SectionModel;
-use think\Db;
+use think\Exception;
 
 class Section extends Permissions
 {
@@ -28,11 +28,8 @@ class Section extends Permissions
      */
     public function add()
     {
-        if (empty(input('id'))) {
-            $id = "";
-        } else {
-            $id = input('id');
-        }
+        $param = input('param.');
+        $id = isset($param['id']) ? $param['id'] : '';
         $orgs = AdminGroup::all(['category' => 1]);
         $this->assign('orgs', json_encode($orgs));
         $this->assign('id', $id);

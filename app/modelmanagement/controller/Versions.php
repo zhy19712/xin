@@ -69,8 +69,6 @@ class Versions extends Permissions
         }
         $web_config = Db::name('admin_webconfig')->where('web','web')->find();
 
-        //TODO 先测试E盘能否上传成功，成功后 修改为 G盘
-
         $path = 'E:\WebServer\Resources\jungong'; //文件路径
         if($model_type == 2){
             $path = 'E:\WebServer\Resources\shigong';
@@ -155,9 +153,6 @@ class Versions extends Permissions
             // 系统自动生成参数
             //  resource_path 资源路径 version_number 版本 version_date 版本日期
             $resource_path = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('filepath');
-
-            //TODO 先测试E盘能否成功，成功后 修改为 G盘
-
             $path_arr = explode('E:\WebServer',$resource_path);
             $param['resource_path'] = $path_arr[1];
             $version_number = $send->versionNumber($param['model_type']);
@@ -287,7 +282,6 @@ class Versions extends Permissions
             }
 
             // 最后删除版本记录和资源包文件
-            //TODO 注意删除里的E盘 修改为 G盘
             $flag = $send->deleteTb($param['major_key']);
             return json($flag);
         }

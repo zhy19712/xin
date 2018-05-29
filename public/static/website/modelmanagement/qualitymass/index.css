@@ -2,24 +2,43 @@
     padding: 5px 10px;
     border-bottom: 1px solid #cecece;
 }
+.tabs-container .node-setting{
+    padding: 15px 0;
+    margin-bottom: 15px;
+}
 .node-setting{
     padding: 10px 10px 5px;
+    border-bottom: 1px solid #e6e6e6;
 }
 .node-setting label{
-    padding-right: 10px;
+    padding: 0 10px 0 6px;
     vertical-align: middle;
     font-size: 14px;
 }
 .ztree{
     margin: 0;
 }
-.dataTables_wrapper, .tbcontainer{
-    display: block !important;
-    overflow-y: auto;
-    height: 300px;
-}
 .table-btn{
     margin-right: 10px;
+}
+table.dataTable.no-footer{
+    margin: 15px 0 20px;
+}
+.dataTables_scrollHeadInner table.dataTable.no-footer{
+    margin-bottom: 0;
+}
+.dataTables_scrollBody table.dataTable.no-footer{
+    margin-top: 0;
+}
+.model-info{
+    position: absolute;
+    left: 0;
+    top: 0px;
+    font-size: 14px;
+    line-height: 1;
+}
+.model-info p:first-child{
+    padding-bottom: 10px;
 }
 .icheckbox_square-green, .iradio_square-green{}
 /*修改全选的样式*/
@@ -36,13 +55,13 @@ table td:last-child{
     cursor: pointer;
 }
 .search-tr input,.search-tr select{
-    padding: 6px 12px;
+    padding: 2px 12px;
     width: 30px;
     border-radius: 4px;
     border: 1px solid #cecece;
 }
 .search-tr select{
-    padding: 6px 0;
+    padding: 2px 0;
     width: auto;
 }
 table.dataTable thead td{

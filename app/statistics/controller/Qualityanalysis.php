@@ -159,8 +159,6 @@ class Qualityanalysis extends Permissions
 
                     //计算优良率，合格率不合格率
                     $form_result_result[$qq]['excellent'] = round($count["优良"] / ($count["优良"] + $count["合格"]) * 100);//优良率
-//                    $form_result_result[$qq]['qualified'] = round($count["合格"] / ($count["优良"] + $count["合格"]) * 100);//合格率
-//                    $form_result_result[$qq]['total_rate'] = $form_result_result[$qq]['excellent'] + $form_result_result[$qq]['qualified'];
 
                 } else if (!isset($count["优良"]) && isset($count["合格"])) {
                     $section_rate_number["excellent_number"] = 0;
@@ -172,8 +170,6 @@ class Qualityanalysis extends Permissions
 
                     //计算优良率，合格率不合格率
                     $form_result_result[$qq]['excellent'] = 0;//优良率
-//                    $form_result_result[$qq]['qualified'] = round($count["合格"] / (0 + $count["合格"]) * 100);//合格率
-//                    $form_result_result[$qq]['total_rate'] = $form_result_result[$qq]['excellent'] + $form_result_result[$qq]['qualified'];
                 } else if (isset($count["优良"]) && !isset($count["合格"])) {
                     $section_rate_number["excellent_number"] = $count["优良"];
                     $section_rate_number["qualified_number"] = 0;
@@ -184,8 +180,7 @@ class Qualityanalysis extends Permissions
 
                     //计算优良率，合格率不合格率
                     $form_result_result[$qq]['excellent'] = round($count["优良"] / ($count["优良"] + 0) * 100);//优良率
-//                    $form_result_result[$qq]['qualified'] = 0;//合格率
-//                    $form_result_result[$qq]['total_rate'] = $form_result_result[$qq]['excellent'] + $form_result_result[$qq]['qualified'];
+
                 } else {
                     $section_rate_number["excellent_number"] = 0;
                     $section_rate_number["qualified_number"] = 0;
@@ -195,8 +190,7 @@ class Qualityanalysis extends Permissions
 
                     //计算优良率，合格率不合格率
                     $form_result_result[$qq]['excellent'] = 0;//优良率
-//                    $form_result_result[$qq]['qualified'] = 0;//合格率
-//                    $form_result_result[$qq]['total_rate'] = $form_result_result[$qq]['excellent'] + $form_result_result[$qq]['qualified'];
+
                 }
             }
             $result = ["section" => $section_name, "form_result_result" => $form_result_result];//柱状图表格
@@ -364,57 +358,35 @@ class Qualityanalysis extends Permissions
         foreach ($section_form_data as $qq => $rr) {
                 $count = array_count_values(array_column($rr, "Value"));//统计优良、合格、不合格的数量
                 if (isset($count["优良"]) && isset($count["合格"])) {
-//                    $section_rate_number["excellent_number"] = $count["优良"];
-//                    $section_rate_number["qualified_number"] = $count["合格"];
+
                 $count["优良"] = $count["优良"] ? $count["优良"] : 0;
                 $count["合格"] = $count["合格"] ? $count["合格"] : 0;
-//                $section_rate_number["total"] = $count["优良"] + $count["合格"];
-//
-//                $form_result_result[$qq]["section_rate_number"] = $section_rate_number;
+
 
                     //计算优良率，合格率不合格率
                     $form_result_result[$qq] = round($count["优良"] / ($count["优良"] + $count["合格"]) * 100);//优良率
-//                    $form_result_result[$qq]['qualified'] = round($count["合格"] / ($count["优良"] + $count["合格"]) * 100);//合格率
-//                    $form_result_result[$qq]['total_rate'] = $form_result_result[$qq]['excellent'] + $form_result_result[$qq]['qualified'];
+
 
                 } else if (!isset($count["优良"]) && isset($count["合格"])) {
-//                $section_rate_number["excellent_number"] = 0;
-//                $section_rate_number["qualified_number"] = $count["合格"];
-                $count["合格"] = $count["合格"] ? $count["合格"] : 0;
-//                $section_rate_number["total"] = 0 + $count["合格"];
 
-//                $form_result_result[$qq]["section_rate_number"] = $section_rate_number;
+                $count["合格"] = $count["合格"] ? $count["合格"] : 0;
 
                     //计算优良率，合格率不合格率
                     $form_result_result[$qq] = 0;//优良率
-//                    $form_result_result[$qq]['qualified'] = round($count["合格"] / (0 + $count["合格"]) * 100);//合格率
-//                    $form_result_result[$qq]['total_rate'] = $form_result_result[$qq]['excellent'] + $form_result_result[$qq]['qualified'];
-                } else if (isset($count["优良"]) && !isset($count["合格"])) {
-//                $section_rate_number["excellent_number"] = $count["优良"];
-//                $section_rate_number["qualified_number"] = 0;
-                $count["优良"] = $count["优良"] ? $count["优良"] : 0;
-//                $section_rate_number["total"] = $count["优良"] + 0;
 
-//                $form_result_result[$qq]["section_rate_number"] = $section_rate_number;
+                } else if (isset($count["优良"]) && !isset($count["合格"])) {
+
+                $count["优良"] = $count["优良"] ? $count["优良"] : 0;
 
                     //计算优良率，合格率不合格率
                     $form_result_result[$qq] = round($count["优良"] / ($count["优良"] + 0) * 100);//优良率
-//                    $form_result_result[$qq]['qualified'] = 0;//合格率
-//                    $form_result_result[$qq]['total_rate'] = $form_result_result[$qq]['excellent'] + $form_result_result[$qq]['qualified'];
+
                 } else {
-//                $section_rate_number["excellent_number"] = 0;
-//                $section_rate_number["qualified_number"] = 0;
-//                $section_rate_number["total"] = 0;
-//
-//                $form_result_result[$qq]["section_rate_number"] = $section_rate_number;
 
                     //计算优良率，合格率不合格率
                     $form_result_result[$qq]= 0;//优良率
-//                    $form_result_result[$qq]['qualified'] = 0;//合格率
-//                    $form_result_result[$qq]['total_rate'] = $form_result_result[$qq]['excellent'] + $form_result_result[$qq]['qualified'];
 
             }
-
         }
         $result = ["section" => $section_name, "form_result_result" => $form_result_result];//柱状图表格
         return json(["code" => 1, "data" => $result]);

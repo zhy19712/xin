@@ -45,6 +45,36 @@ i.fa:hover:before{
     font-weight: bold;
 }
 /* 树 */
+.ztree *{
+    font-size: 14px;
+}
+.ztree{
+    height: 95%;
+    overflow-y: auto;
+}
+.ztree li a.curSelectedNode{
+    background-color: #ececec;
+}
+.layui-layer-content .ztree{
+    margin-top: 0;
+}
+.layout-panel-west .ztree li span.button.ico_docu,.layout-panel-west .ztree li span.button.ico_open,.layout-panel-west .ztree li span.button.ico_close{
+    display: none;
+}
+.layout-panel-west .panel-header,.layout-panel-east .panel-header{
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    padding: 0;
+    border: none;
+}
+.layout-panel-west .panel-title,.layout-panel-east .panel-title{
+    height: 40px;
+    line-height: 40px;
+    font-weight: normal;
+    background: #009688;
+    color: #FFF;
+}
 .ztree-title{
     position: absolute;
     /*top: -31px;*/
@@ -60,17 +90,6 @@ i.fa:hover:before{
 　　.ztree-title{
         top: 0;
     }
-}
-.ztree li a.curSelectedNode{
-    background-color: #ececec;
-}
-.ztree{
-    margin-top: 30px;
-    height: 95%;
-    overflow-y: auto;
-}
-.layui-layer-content .ztree{
-    margin-top: 0;
 }
 /* layui表单 */
 
@@ -119,10 +138,10 @@ i.fa:hover:before{
 .pagination li a{
     position: relative;
     float: left;
-    padding: 6px 12px;
+    padding: 5px 12px;
     margin-left: -1px;
     line-height: 1.42857143;
-    color: #337ab7;
+    color: #333;
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -131,16 +150,15 @@ i.fa:hover:before{
     z-index: 3;
     color: #fff;
     /*cursor: default;*/
-    background-color: #337ab7;
-    border-color: #337ab7;
+    background-color: #009688;
+    border-color: #009688;
 }
 .pagination .disabled a{
     cursor: not-allowed;
 }
 select.form-control {
     display: inline-block;
-    margin: 0 5px;
-    padding: 5px 12px;
+    padding: 5px;
     font-size: 12px;
     line-height: 1.42857143;
     color: #555;
@@ -149,11 +167,39 @@ select.form-control {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+.dataTables_wrapper .dataTables_paginate .first,.dataTables_wrapper .dataTables_paginate .last{
+    display: none;
+}
 .dataTables_wrapper .dataTables_paginate .paginate_button{
     padding: 0;
+    margin-left: -2px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled a{
+    color: #d2d2d2 !important;
 }
 .dataTables_wrapper .dataTables_paginate{
+    float: left;
     padding: 0;
+    width: 100%;
+    height: 30px;
+    text-align: center;
+}
+.pagination{
+    height: 30px;
+}
+.dataTables_wrapper .dataTables_info{
+    position: absolute;
+    bottom: 0;
+    left: 70px;
+    padding: 0;
+    margin: 0;
+    height: 30px;
+    line-height: 30px;
+}
+.dataTables_wrapper .dataTables_length{
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
     border: 1px solid transparent;
@@ -164,11 +210,14 @@ select.form-control {
 }
 /* 表格 */
 .dataTables_wrapper,.tbcontainer{
-    display: none;
+    /*display: none;*/
+}
+.dataTables_scroll,table.table{
+    margin-bottom: 20px;
 }
 table.dataTable.no-footer{
     float: left;
-    margin-top: 5px;
+    margin: 5px 0 20px;
     border-top: 1px solid #cecece;
 }
 /* 表格搜索 */
@@ -187,7 +236,10 @@ table.dataTable.no-footer{
 }
 /* 弹层 */
 .layui-layer-content{
-    padding-top: 15px;
+    padding-top: 20px;
+}
+.layui-layer-content .layui-form{
+    padding-right: 20px;
 }
 .layui-layer-content .layui-btn{
     height: 30px;
