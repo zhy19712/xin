@@ -33,26 +33,17 @@ class DivisionModel extends Model
      * 工程划分 type = 1 ，单位质量管理 type = 2 ，分部质量管理 type = 4 共用 树节点
      * @param int $type
      * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      * @author hutao
      */
     public function getNodeInfo($type = 1)
     {
-        $contractId = [];
         // 总管理员可以看所有标段
         // 根据用户查 组织，根据组织查合同，根据合同查 标段
         $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
-        $cid = Db::name('admin')->alias('a')
+        $g_name = Db::name('admin')->alias('a')
             ->join('admin_group g','a.admin_group_id=g.id','left')
-            ->join('contract c','g.name=c.firstParty','left')
-            ->join('contract c2','g.name=c2.secondParty','left')
-            ->where(['a.id'=>$user_id])->field('c.id,c2.id')->select();
-        foreach ($cid as $c){
-            $contractId[] = $c['id'];
-        }
-
+            ->where(['a.id'=>$user_id])->value('g.name');
+        $contractId = Db::name('contract')->where(['firstParty'=>$g_name])->whereOr(['secondParty'=>$g_name])->column('id');
         $section = Db::name('section')->where(['contractId'=>['in',$contractId]])->order('id asc')->column('id,code,name'); // 标段列表
 
 
@@ -250,12 +241,8 @@ class DivisionModel extends Model
     {
         // 单位
         $arr_1 = $this->where(['type'=>['eq',1]])->column('id');
-//        echo '单位 -- 节点';
-//        dump($arr_1);
         // 单位下的工序
         $ma_1 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>2])->column('id');
-//        echo '单位 -- 工序';
-//        dump($ma_1);
         $res = $this->insertAllCon(0,$arr_1,$ma_1);
         if($res['code'] == -1){
             halt('单位错了');
@@ -263,12 +250,8 @@ class DivisionModel extends Model
         }
         // 分部
         $arr_2 = $this->where(['type'=>['eq',3]])->column('id');
-//        echo '分部 -- 节点';
-//        dump($arr_2);
         // 分部下的工序
         $ma_2 = Db::name('norm_materialtrackingdivision')->where(['type'=>2,'cat'=>3])->column('id');
-//        echo '分部 -- 工序';
-//        dump($ma_2);
         $res = $this->insertAllCon(0,$arr_2,$ma_2);
         if($res['code'] == -1){
             halt('分部错了');
@@ -277,11 +260,7 @@ class DivisionModel extends Model
         // 检验批
         $arr_3 = $this->where(['type'=>['in',[3,4,5,6]]])->column('id');
         $arr_4 = Db::name('quality_unit')->where(['division_id'=>['in',$arr_3]])->column('id');
-//        echo '检验批 -- 节点';
-//        dump($arr_4);
         $ma_3 = Db::name('norm_materialtrackingdivision')->where(['type'=>3,'cat'=>5])->column('id');
-//        echo '检验批 -- 工序';
-//        dump($ma_3);
         $res = $this->insertAllCon(1,$arr_4,$ma_3);
         if($res['code'] == -1){
             halt('检验批错了');
@@ -336,24 +315,16 @@ class DivisionModel extends Model
      * @param $node_type
      * @param $section_id
      * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     public function getQualityNodeInfo($node_type,$section_id)
     {
-        $contractId = [];
         // 总管理员可以看所有标段
         // 根据用户查 组织，根据组织查合同，根据合同查 标段
         $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
-        $cid = Db::name('admin')->alias('a')
+        $g_name = Db::name('admin')->alias('a')
             ->join('admin_group g','a.admin_group_id=g.id','left')
-            ->join('contract c','g.name=c.firstParty','left')
-            ->join('contract c2','g.name=c2.secondParty','left')
-            ->where(['a.id'=>$user_id])->field('c.id,c2.id')->select();
-        foreach ($cid as $c){
-            $contractId[] = $c['id'];
-        }
+            ->where(['a.id'=>$user_id])->value('g.name');
+        $contractId = Db::name('contract')->where(['firstParty'=>$g_name])->whereOr(['secondParty'=>$g_name])->column('id');
 
         if($section_id > 0){
             $section = Db::name('section')->where(['contractId'=>['in',$contractId],'id'=>$section_id])->order('id asc')->column('id,code,name'); // 标段列表
