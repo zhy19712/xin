@@ -12,9 +12,11 @@ namespace app\admin\model;
 use think\exception\PDOException;
 use think\Model;
 use think\Db;
+use think\Session;
 
 class AdminGroup extends Model
 {
+    protected $name = 'admin_group';
     //自动写入创建、更新时间 insertGetId和update方法中无效，只能用于save方法
     protected $autoWriteTimestamp = true;
 
@@ -146,5 +148,46 @@ class AdminGroup extends Model
         return $type_name;
     }
 
+    // 获取当前登陆人的组织机构
+    public function relationId()
+    {
+        $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
+        $admin_group_id = Db::name('admin')->where(['id'=>$user_id])->value('admin_group_id');
+        if($user_id == 1 && $admin_group_id == 1){
+            $relation_id = 1; // 管理员
+        }else{
+            $relation_id = $this->parentId($admin_group_id);
+        }
+        return $relation_id;
+    }
+
+    public function parentId($admin_group_id)
+    {
+        $data = $this->getOne($admin_group_id);
+        if(!empty($data)){
+            if($data['pid'] == 1){
+                $relation_id = $data['id'];
+            }else{
+                $relation_id = $this->parentId($data['pid']);
+            }
+        }else{
+            $relation_id = 0;
+        }
+        return $relation_id;
+    }
+
+    /**
+     * 根据pid获取id的值
+     * @param $pid
+     * @throws \think\exception\DbException
+     */
+    public function getGroupId($pid)
+    {
+        $group_name = Db::name("admin_group")
+            ->field("id,name")
+            ->where("id",$pid)
+            ->find();
+        return $group_name;
+    }
 
 }

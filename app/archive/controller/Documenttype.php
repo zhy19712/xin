@@ -16,6 +16,9 @@ use app\archive\model\DocumentTypeModel;
 use app\archive\model\DocumentModel;
 use think\Request;
 use \think\Db;
+use think\Session;
+use app\admin\model\Admin;//管理员
+use app\admin\model\AdminGroup;//组织机构
 
 class Documenttype extends Permissions
 {
@@ -26,7 +29,29 @@ class Documenttype extends Permissions
      */
     public function getAll()
     {
-        return json(DocumentTypeModel::all());
+        //实例化模型类
+        $admin = new Admin();
+        $group = new AdminGroup();
+        $doctype = new DocumentTypeModel();
+        //根据当前登录的人所在的组织机构查询相应的文档类型树
+        $admin_id = $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+
+        $group_info = $admin ->getGroupInfo($admin_id);
+
+        if($group_info["pid"] == 0)
+        {
+            return json(DocumentTypeModel::all());
+
+        }else
+        {
+            $group_name = $group->getGroupId($group_info["pid"]);
+
+            $document_type_id = $doctype->getDocTypeInfo($group_name["name"]);
+
+            $document_type_info = $doctype->getDocInfo($document_type_id["id"]);
+
+            return json($document_type_info);
+        }
     }
 
     protected $documentTypeService;
@@ -97,10 +122,8 @@ class Documenttype extends Permissions
 
         $model->delselfidCate($id);
 
-//        return $this->documentTypeService->del(input('id'));
         $flag = $doctype->del($id);
 
         return json($flag);
-
     }
 }

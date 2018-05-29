@@ -419,16 +419,14 @@ $('#saveUnit').click(function () {
             en_type:en_type,
             division_id:division_id,
             id:window.rowId
-        },
-        // others:function () {
-        //     insetData(en_type);
-        // }
+        }
     });
     $('#tableItem_wrapper').next(".tbcontainer").remove();
     $(".dataTables_wrapper .dataTables_paginate").css("float","none");
     $(".dataTables_wrapper .dataTables_info").css("float","right");
     $(".dataTables_wrapper .dataTables_length").css("float","none");
     $(".dataTables_wrapper .dataTables_scrollBody").css("overflow","initial");
+    // $(".dataTables_wrapper .dataTables_scrollBody").css("height","390px");
     $(".dataTables_wrapper .tbcontainer").css("line-height","0px");
     $(".dataTables_wrapper .tbcontainer").css("position","initial");
 });

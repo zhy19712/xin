@@ -9,10 +9,10 @@
 namespace app\quality\model;
 
 
+use app\admin\model\AdminGroup;
 use think\Db;
 use think\exception\PDOException;
 use think\Model;
-use think\Session;
 
 class DivisionModel extends Model
 {
@@ -37,14 +37,18 @@ class DivisionModel extends Model
      */
     public function getNodeInfo($type = 1)
     {
-        // 总管理员可以看所有标段
-        // 根据用户查 组织，根据组织查合同，根据合同查 标段
-        $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
-        $g_name = Db::name('admin')->alias('a')
-            ->join('admin_group g','a.admin_group_id=g.id','left')
-            ->where(['a.id'=>$user_id])->value('g.name');
-        $contractId = Db::name('contract')->where(['firstParty'=>$g_name])->whereOr(['secondParty'=>$g_name])->column('id');
-        $section = Db::name('section')->where(['contractId'=>['in',$contractId]])->order('id asc')->column('id,code,name'); // 标段列表
+        // 获取当前登陆人的组织机构
+        $group = new AdminGroup();
+        $relation_id = $group->relationId();
+        if($relation_id == 1){ // 管理员可以看所有的标段
+            $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
+        }else if($relation_id > 1){
+            $section = Db::name('section')->where('builderId',$relation_id)->whereOr('supervisorId',$relation_id)
+                ->whereOr('constructorId',$relation_id)->whereOr('designerId',$relation_id)->whereOr('otherId',$relation_id)
+                ->order('id asc')->column('id,code,name'); // 标段列表
+        }else{
+            $section = [];
+        }
 
 
 //        $section = Db::name('section')->column('id,code,name'); // 标段列表
@@ -318,18 +322,21 @@ class DivisionModel extends Model
      */
     public function getQualityNodeInfo($node_type,$section_id)
     {
-        // 总管理员可以看所有标段
-        // 根据用户查 组织，根据组织查合同，根据合同查 标段
-        $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
-        $g_name = Db::name('admin')->alias('a')
-            ->join('admin_group g','a.admin_group_id=g.id','left')
-            ->where(['a.id'=>$user_id])->value('g.name');
-        $contractId = Db::name('contract')->where(['firstParty'=>$g_name])->whereOr(['secondParty'=>$g_name])->column('id');
-
+        // 获取当前登陆人的组织机构
+        $group = new AdminGroup();
+        $relation_id = $group->relationId();
         if($section_id > 0){
-            $section = Db::name('section')->where(['contractId'=>['in',$contractId],'id'=>$section_id])->order('id asc')->column('id,code,name'); // 标段列表
+            $section = Db::name('section')->where(['id'=>$section_id])->order('id asc')->column('id,code,name'); // 标段列表
         }else{
-            $section = Db::name('section')->where(['contractId'=>['in',$contractId]])->order('id asc')->column('id,code,name'); // 标段列表
+            if($relation_id == 1){ // 管理员可以看所有的标段
+                $section = Db::name('section')->order('id asc')->column('id,code,name'); // 标段列表
+            }else if($relation_id > 1){
+                $section = Db::name('section')->where('builderId',$relation_id)->whereOr('supervisorId',$relation_id)
+                    ->whereOr('constructorId',$relation_id)->whereOr('designerId',$relation_id)->whereOr('otherId',$relation_id)
+                    ->order('id asc')->column('id,code,name'); // 标段列表
+            }else{
+                $section = [];
+            }
         }
 
         $division = $this->order('id asc')->column('id,pid,d_name,section_id,type,en_type,d_code'); // 工程列表

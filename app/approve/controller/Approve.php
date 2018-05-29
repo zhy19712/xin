@@ -139,19 +139,21 @@ class Approve extends Permissions
         {
             array_unshift($approverArr,$res['user_id']);
             array_pop($approverArr);
-
+        }
+        //如果是已完成或者已经作废，加入创建者，不去掉最终审批人
+        if($res['ApproveStatus']==2||$res['ApproveStatus']==-2)
+        {
+            array_unshift($approverArr,$res['user_id']);
         }
         //防止只出现一次审批的情况
-        if($res['ApproveStatus']==2&&($res['CurrentApproverId']=='null'||$res['CurrentApproverId']==0)&&($res['ApproveIds']=='null'||$res['ApproveIds']==0))
+         if($res['ApproveStatus']==2&&($res['CurrentApproverId']=='null'||$res['CurrentApproverId']==0)&&($res['ApproveIds']=='null'||$res['ApproveIds']==0))
         {
-
             $approverArr=array();
             $approverArr[]=$res['user_id'];
         }
         //待提交时将审批人串归0，无历史记录，防止出现null
-        if($res['ApproveStatus']==0&&($res['CurrentApproverId']=='null'||$res['CurrentApproverId']==0))
+         if($res['ApproveStatus']==0&&($res['CurrentApproverId']=='null'||$res['CurrentApproverId']==0))
         {
-
             $approverArr=array();
         }
 
