@@ -2,9 +2,11 @@
     overflow: auto;
     overflow-x: hidden;
 }
-.layui-form{
+
+.layui-form {
     padding: 10px;
 }
+
 .layer-review {
     float: left;
     padding: 9px 10px;
@@ -152,22 +154,27 @@
 }
 
 /* 质量3D属性 */
-.layui-attr{
-
+.layui-attr ,.layui-attr .layui-colla-content ,.layui-attr .layui-colla-content .layui-form-item{
+    border: none;
 }
-.layui-unit-title{
+
+.layui-unit-title {
     text-align: center;
     font-size: 16px;
     color: #009688;
+    height: 16px;
     line-height: 1;
     padding: 15px 0;
+    border-bottom: 1px solid #e5e5e5;
 }
-.layui-attr{
-    border: none;
-}
-.layui-attr .layui-colla-title{
+
+.layui-attr .layui-colla-title {
     background: none;
     color: #333;
+}
+
+.layui-attr td {
+    text-align: center;
 }
 /*质量3D自定义属性*/
 .custom-attr .layui-form-mid {
@@ -194,6 +201,7 @@
 
 .attr-group .layui-input {
     width: 49%;
+    height: 30px;
     display: inline-block;
     vertical-align: middle;
     float: none;
@@ -201,7 +209,6 @@
 
 .attr-group i.fa {
     display: block;
-    margin: 3px 0;
     font-size: 14px;
 }
 
@@ -209,64 +216,76 @@
     padding: 0 !important;
     width: 14px;
 }
+.custom-attr .layui-attr-btn{
+    margin-right: 18px;
+}
 
 /*验收资料*/
-.layui-acceptance-data,.layui-work-content,.layui-control-data{
+.layui-acceptance-data, .layui-work-content, .layui-control-data {
     border: none;
 }
-.layui-acceptance-data .layui-colla-item{
+
+.layui-acceptance-data .layui-colla-item {
     border: none;
     border-bottom: 1px dashed #cecece;
 }
-.layui-work-title ,layui-control-title {
+
+.layui-work-title, layui-control-title {
     background: none;
     color: #333;
 }
-.layui-work-title{
+
+.layui-work-title {
     padding: 0;
 }
-.layui-work-content {
 
-}
-.layui-control-data{
+.layui-control-data {
     padding: 0 10px;
 }
-.layui-control-title{
+
+.layui-control-title {
     text-align: center;
     background-color: #009688;
     color: #f4f4f4;
-    border-top-left-radius:4px;
-    border-top-right-radius:4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
-.layui-work-title i, .layui-control-title i{
+
+.layui-work-title i, .layui-control-title i {
     display: none;
 }
-.layui-control-content{
+
+.layui-control-content {
 
 }
-.layui-control-content .layui-table tbody tr:hover, .layui-control-content .layui-table thead tr, .layui-control-content .layui-table-click, .layui-control-content .layui-table-header, .layui-control-content .layui-table-hover, .layui-control-content .layui-table-mend, .layui-control-content .layui-table-patch, .layui-control-content .layui-table-tool, .layui-control-content [lay-even].layui-table tr:nth-child(2n){
+
+.layui-control-content .layui-table tbody tr:hover, .layui-control-content .layui-table thead tr, .layui-control-content .layui-table-click, .layui-control-content .layui-table-header, .layui-control-content .layui-table-hover, .layui-control-content .layui-table-mend, .layui-control-content .layui-table-patch, .layui-control-content .layui-table-tool, .layui-control-content [lay-even].layui-table tr:nth-child(2n) {
     background: none;
 }
-.layui-acceptance-data .layui-table th,.layui-acceptance-data .layui-table td{
+
+.layui-acceptance-data .layui-table th, .layui-acceptance-data .layui-table td {
     padding: 0;
     height: 37px;
     line-height: normal;
     text-align: center;
     min-height: auto;
 }
-.layui-table th.table-title{
+
+.layui-table th.table-title {
     height: 30px;
     line-height: 30px;
     text-align: center;
     background: #cce6f9;
 }
-.layui-table td.td-empty{
+
+.layui-table td.td-empty {
     background: #dbdbdb;
     color: #fff;
 }
-.filename{
+
+.filename {
     width: 100px;
     display: inline-block;
-    word-wrap:break-word;
-    word-break:break-all;
+    word-wrap: break-word;
+    word-break: break-all;
 }

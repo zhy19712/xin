@@ -74,8 +74,8 @@ function nodeModelNumber() {
         type: "post",
         async:false,
         data: {
-            add_id:nodeId,
-            node_type:1
+            number:nodeId,
+            number_type:1
         },
         dataType: "json",
         success: function (res) {
@@ -96,10 +96,14 @@ var tableItem = $('#tableItem').DataTable({
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
+    "scrollX": true,
+    "scrollY": "200px",
+    "scrollCollapse": "true",
+    "paging": "false",
     ajax: {
         "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search"
     },
-    dom: '<".noteverBtn layui-btn layui-btn-sm layui-btn-normal btn-right"><".alreadyBtn layui-btn layui-btn-sm layui-btn-normal btn-right table-btn">rtip',
+    dom: 'l<".noteverBtn layui-btn layui-btn-warm layui-btn-normal btn-right"><".alreadyBtn layui-btn layui-btn-normal btn-right table-btn">rtip',
     columns: [
         {
             name: "id",
@@ -191,8 +195,8 @@ var tableItem = $('#tableItem').DataTable({
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
-            "sPrevious": "<",
-            "sNext": ">",
+            "sPrevious": "上一页",
+            "sNext": "下一页",
             "sLast": ">>"
         }
     }
@@ -319,7 +323,7 @@ function elval() {
         success: function (res) {
             $('#tableItem_wrapper').find('div#modelInfo').remove();
             //起止高程/起止桩号模板
-            var Template =  '<div id="modelInfo">' +
+            var Template =  '<div id="modelInfo" class="model-info">' +
                 '<p>起止高程：' +
                 '<span>'+ res.el_val +'</span>' +
                 '</p>' +
@@ -484,6 +488,7 @@ function clickTree(that) {
     var uid = $(that).attr('uid');
     var treeObj = $.fn.zTree.getZTreeObj("ztree");
     var nodes = treeObj.getNodesByParam("add_id", uid, null);
+    console.log(nodes);
     var tId = nodes[0].tId;
     $('#'+tId+'_span').click();
 }
@@ -513,7 +518,7 @@ for(var i = 0;i<15;i++){
     firstTrTemp.push('</td>');
 }
 firstTrTemp.push('</tr>');
-$('#tableItem thead').append(firstTrTemp.join(''));
+$('.dataTables_scrollHeadInner table').append(firstTrTemp.join(''));
 
 //获取下拉列表的值
 function dropDown(type,eId) {
