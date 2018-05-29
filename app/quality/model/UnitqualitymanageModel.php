@@ -149,13 +149,41 @@ class UnitqualitymanageModel extends Model
                 }
             }
             Db::name('attachment')->where('id',$q_obj['attachment_id'])->delete();
+
+            // 如果扫描件被删除了，且没有已经完成审批的在线填报表单，就修改状态为 未执行
+
+            $copy = Db::name('quality_upload')
+                ->where(['contr_relation_id'=>$q_obj['contr_relation_id'],'type'=>1])
+                ->find();
+            $relation=Db::name('quality_division_controlpoint_relation')
+                ->where(['id'=>$copy['contr_relation_id']])
+                ->find();
+            $fm_info=Db::name('quality_form_info')
+                ->where(['ControlPointId'=>$relation['control_id'],'DivisionId'=>$relation['division_id'],'ApproveStatus'=>2])
+                ->find();
+
+            //判断是否是质量验评控制点
+            $search_name='单元工程质量等级评定表';
+            $key_controlpoint=Db::name('norm_controlpoint')
+                ->where(['id'=>$relation['control_id']])
+                ->where('name','like','%'.$search_name.'%')
+                ->count();
+
             Db::name('quality_upload')->where('id',$id)->delete();
-            // 如果扫描件被删除了，就修改状态为 未执行
+            //对扫描件进行计数
             $num = Db::name('quality_upload')
                 ->where(['contr_relation_id'=>$q_obj['contr_relation_id'],'type'=>1])
                 ->count();
-            if($num == 0){
+            if(($num== 0)&&(count($fm_info))==0)
+            {
                 $this->where('id',$q_obj['contr_relation_id'])->update(['status'=>0]);
+                // 如果删除的扫描件是单元工程验评控制点下的扫描件，且该扫描件没有已完成审批的在线填报信息，还需要初始化unit表中的验评结果和日期
+                if($key_controlpoint>0)
+                {
+                    Db::name('quality_unit')
+                        ->where(['id'=>$relation['division_id']])
+                        ->update(['EvaluateResult'=>0,'EvaluateDate'=>0]);
+                }
             }
             return ['code' => 1, 'msg' => '删除成功'];
         }catch(PDOException $e){
