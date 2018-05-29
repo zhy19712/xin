@@ -17,19 +17,19 @@
         <div data-options="region:'north'" class="north" style="height:39px">
             <ul class="layer-review">
                 <li>
-                    <span>优良</span>
+                    <span>优良：</span>
                     <i id="excellent"></i>
                 </li>
                 <li>
-                    <span>合格</span>
+                    <span>合格：</span>
                     <i id="qualified"></i>
                 </li>
                 <li>
-                    <span>不合格</span>
+                    <span>不合格：</span>
                     <i id="unQualified"></i>
                 </li>
                 <li>
-                    <span>未验评</span>
+                    <span>未验评：</span>
                     <i id="unReview"></i>
                 </li>
             </ul>
@@ -140,46 +140,7 @@
                 //显示单元信息
                 $('#tabs').show();
                 //验收资料
-                $.ajax({
-                    url: "/modelmanagement/Manage/getAcceptance",
-                    type: "post",
-                    data: {
-                        model_id: uObjSubID
-                    },
-                    dataType: "json",
-                    success: function (res) {
-                        $('#acceptanceData').empty();
-                        var data = res.processinfo;
-                        var acceptanceDataTemp = [];
-                        var count = 0;
-                        for (var i = 0; i < data.length; i++) {
-                            acceptanceDataTemp.push('<div class="layui-colla-item">');
-                            acceptanceDataTemp.push('<h2 class="layui-colla-title layui-work-title workTitle">工序' + (count++) + '：' + data[i].name + '</h2>');
-                            for (var j = 0; j < data[i].controlpoint_info.length; j++) {
-                                var controlData = data[i].controlpoint_info[j];
-                                acceptanceDataTemp.push('<div class="layui-colla-content layui-work-content">');
-                                acceptanceDataTemp.push('<div class="layui-collapse layui-control-data" id="controlData" lay-filter="control" lay-accordion>');
-                                acceptanceDataTemp.push('<h2 class="layui-colla-title layui-control-title controlTitle" unit_id=' + data[i].unit_id + ' id=' + controlData.id + ' procedureid=' + controlData.procedureid + '>' + controlData.name + '</h2>');
-                                acceptanceDataTemp.push('<div class="layui-colla-content layui-control-content">');
-                                acceptanceDataTemp.push('<div class="layui-table-title tableTitle"></div>');
-                                acceptanceDataTemp.push('<table class="layui-table" uid=' + controlData.id + ' id="online' + controlData.id + '">');
-                                acceptanceDataTemp.push('<tbody>');
-                                acceptanceDataTemp.push('</tbody>');
-                                acceptanceDataTemp.push('</table>');
-                                acceptanceDataTemp.push('</div>');
-                                acceptanceDataTemp.push('</div>');
-                                acceptanceDataTemp.push('</div>');
-                            }
-                            acceptanceDataTemp.push('</div>');
-                        }
-                        $('#acceptanceData').append(acceptanceDataTemp.join(''));
-                        layui.use('element', function () {
-                            var element = layui.element;
-                            element.render('collapse');
-                        });
-                        $('.layui-colla-item:first-child').find('h2.workTitle').click();
-                    }
-                });
+                acceptance(uObjSubID,2);
                 //模板信息
                 modelInfo(uObjSubID,2);
 
@@ -278,8 +239,9 @@
 <div data-options="region:'east',title:'管理信息',split:true" style="width:350px;" class="manage-info">
     <div id="tabs" class="easyui-tabs" style="width:100%; padding: 10px">
         <div title="属性">
-            <div class="layui-collapse" id="layuiCollapse" lay-accordion>
+            <div class="layui-collapse layui-attr" id="layuiCollapse" lay-accordion>
                 <div class="layui-colla-item">
+                    <h1 class="layui-unit-title" id="unitTitle"></h1>
                     <h2 class="layui-colla-title">单元工程信息</h2><!--infoTitle-->
                     <div class="layui-colla-content layui-show">
                         <table class="layui-table" lay-skin="line" lay-size="sm">

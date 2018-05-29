@@ -46,6 +46,8 @@
 
 .layer-model-nav li {
     display: inline-block;
+    margin-left: 20px;
+    font-size: 14px;
 }
 
 .layer-model-nav i.fa:before {
@@ -61,10 +63,6 @@
     padding: 6px 12px;
     height: auto;
     line-height: 1.02857;
-}
-
-.layer-center {
-    padding-top: 3px;
 }
 
 .layui-form-label {
@@ -153,6 +151,17 @@
     color: #FFF;
 }
 
+/* 质量3D属性 */
+.layui-attr{
+
+}
+.layui-unit-title{
+    text-align: center;
+    font-size: 16px;
+    color: #009688;
+    line-height: 1;
+    padding: 15px 0;
+}
 /*质量3D自定义属性*/
 .custom-attr .layui-form-mid {
     float: right;
