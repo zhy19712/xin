@@ -33,9 +33,6 @@ class Qualitymass extends Permissions
      * 模型管理 -- 质量模型关联
      * 公用 --  左侧的树
      * @return mixed|\think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      * @author hutao
      */
     public function index()
