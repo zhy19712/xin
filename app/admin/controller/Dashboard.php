@@ -95,10 +95,7 @@ class Dashboard extends Permissions
             }
             if(!empty($edit_data))
             {
-                foreach($edit_data as $c=>$d)
-                {
-                    $message->editTb($d);
-                }
+                $message->saveTb($edit_data);
             }
 
         }
@@ -170,12 +167,11 @@ class Dashboard extends Permissions
                 }
 
             }
+
             if(!empty($edit_data))
             {
-                foreach($edit_data as $c=>$d)
-                {
-                    $message->editTb($d);
-                }
+                    $message->saveTb($edit_data);
+
             }
         }
 

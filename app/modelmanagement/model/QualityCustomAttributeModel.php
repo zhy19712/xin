@@ -22,7 +22,8 @@ class QualityCustomAttributeModel extends Model
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
-                return ['code' => 1, 'data' => [], 'msg' => '添加成功'];
+                $id = $this->getLastInsID();
+                return ['code' => 1, 'attrId' => $id, 'msg' => '添加成功'];
             }
         } catch (PDOException $e) {
             return ['code' => -1, 'msg' => $e->getMessage()];
@@ -60,24 +61,15 @@ class QualityCustomAttributeModel extends Model
     }
 
     // 获取模型图自定义属性
-    public function getAttrTb($number,$number_type)
+    public function getAttrTb($number,$number_type,$version_number)
     {
-        // 单元工程编号 或者 模型图编号 number   编号类型 number_type 1 单元工程编号 2 模型编号
+        // 单元工程编号 或者 模型图编号 number   编号类型 number_type 1 单元工程编号 2 模型编号  当前启用的版本号 version_number
         $unit_id = $number;
         if($number_type == 2){
-            $unit_id= Db::name('model_quality')->where('model_id',$number)->value('unit_id');
+            $unit_id= Db::name('model_quality')->where(['model_id'=>$number,'version_number'=>$version_number])->value('unit_id');
         }
-
         $attr = $this->field('id as attrId,attr_name as attrKey,attr_value as attrVal')->where(['unit_id'=>$unit_id])->select();
-
         return $attr;
-    }
-
-    //根据模型id查询所有的已经自定义属性的值
-    public function getAllOne($id)
-    {
-        $data = $this->where("unit_id",$id)->select();
-        return $data;
     }
 
 }

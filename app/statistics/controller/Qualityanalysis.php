@@ -98,9 +98,9 @@ class Qualityanalysis extends Permissions
             $section_form_data = array();
 
             //柱状图
-            $section = Db::name("section")->order("id asc")->column("name,id");//标段名
+            $section = Db::name("section")->order("id asc")->column("shortName,id");//标段名
             foreach ($section as $aa => $bb) {
-                $section_name[] = $aa;
+                $section_name[] = strval($aa);
             }
 
             foreach ($section as $cc => $dd) {
@@ -291,10 +291,10 @@ class Qualityanalysis extends Permissions
         $section_form_data = array();
 
         //柱状图
-        $section = Db::name("section")->order("id asc")->column("name,id");//标段名
+        $section = Db::name("section")->order("id asc")->column("shortName,id");//标段名
 
         foreach ($section as $aa => $bb) {
-            $section_name[] = $aa;
+            $section_name[] = strval($aa);
             $section_id[] = $bb;
         }
 
@@ -321,7 +321,7 @@ class Qualityanalysis extends Permissions
                     ->where("s.id",$bbbb)
                     ->where("r.form_name like '%等级评定表%'")
                     ->where("r.create_time >= ".$start. " AND r.create_time <= ".$end)
-                    ->field("r.form_data,r.id,r.create_time,s.id as section_id,s.name as section_name")->order("s.id asc")->select();
+                    ->field("r.form_data,r.id,r.create_time,s.id as section_id,s.shortName as section_name")->order("s.id asc")->select();
 
                 if ($temp_data) {
                     $section_form_data[] = $temp_data;

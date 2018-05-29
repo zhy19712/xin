@@ -17,6 +17,7 @@ use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
 use app\quality\model\DivisionModel;
 use app\quality\model\DivisionUnitModel;
+use think\Db;
 
 /**
  * 质量模型
@@ -26,30 +27,41 @@ use app\quality\model\DivisionUnitModel;
  */
 class Qualitymass extends Permissions
 {
+
     /**
-     * 左侧的树
+     * 顶部 -- 质量3D
+     * 模型管理 -- 质量模型关联
+     * 公用 --  左侧的树
      * @return mixed|\think\response\Json
      * @author hutao
      */
     public function index()
     {
         if(request()->isAjax()){
-            // 传递 node_type 1 已关联节点 2 未关联节点 不传递默认0查询全部
+            // 第一次进来 什么也不传递 默认查询全部
+            // 传递 node_type 1 已关联节点 2 未关联节点
             // 如果 传递了 section_id 标段编号 只查询该标段下的节点
             $param = input('get.');
             $node_type = isset($param['node_type']) ? $param['node_type'] : -1;
             $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
             $node = new DivisionModel();
-            if($node_type==1){
-                $nodeStr = $node->getQualityNodeInfo($node_type,$section_id);
-            }else if($node_type==2){
-                $nodeStr = $node->getQualityNodeInfo($node_type,$section_id);
-            }else{
-                $nodeStr = $node->getQualityNodeInfo($node_type,$section_id);
-            }
+            $nodeStr = $node->getQualityNodeInfo($node_type,$section_id);
             return json($nodeStr);
         }
        return $this->fetch();
+    }
+
+    /**
+     * 标段下拉数据
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function section()
+    {
+        if(request()->isAjax()){
+            $data = Db::name('section')->column('id,name');
+            return json(['code'=>1,'data'=>$data,'msg'=>'标段下拉数据']);
+        }
     }
 
     /**
@@ -170,11 +182,55 @@ class Qualitymass extends Permissions
     }
 
     /**
-     * 获取选中节点的所有关联模型编号
+     * 页面第一次进来不用传递参数 默认返回所有模型
+     * 根据所选标段 返回 与该标段下的所有单元工程节点有关联关系的模型编号
+     * 并且 按照 [优良，合格，不合格，未验评] 分组
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function sectionModel()
+    {
+        if($this->request->isAjax()){
+            // 第一次进来不用传递参数 默认返回所有
+            // 前台 传递 选中标段的编号 section_id
+            $param = input('post.');
+            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+            $quality = new QualitymassModel();
+            $data = $quality->sectionModelInfo($section_id);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [优良，合格，不合格，未验评]']);
+        }
+    }
+
+    /**
+     * 点击眼睛图标显示隐藏模型
      *
-     * 质量模型 调用此接口
-     * 按照 优良，合格，不合格，未验评分组 返回 模型编号
-     * 如果点击的是 单元工程段号(检验批编号) 的话 再将它的自定义属性也一并返回
+     * 1 顶级节点      -- 隐藏所有模型
+     * 2 标段          -- 隐藏 该标段下 的所有关联模型
+     * 3 工程划分节点  -- 隐藏 该节点下 的所有关联模型
+     * 4 单元工程段号(检验批编号) -- 隐藏与 该单元工程 有关联的模型
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function concealment()
+    {
+        if($this->request->isAjax()){
+            // 前台 传递 选中眼睛节点的 add_id  和 眼睛节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
+            $param = input('post.');
+            $add_id = isset($param['add_id']) ? $param['add_id'] : -100;
+            $node_type = isset($param['node_type']) ? $param['node_type'] : -100;
+            if(empty($add_id) || empty($node_type)){
+                return json(['code'=>-1,'data'=>[],'msg'=>'缺少参数']);
+            }
+            $quality = new QualitymassModel();
+            $data = $quality->concealment($add_id,$node_type);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [显示或隐藏 -- 所有关联模型编号]']);
+        }
+    }
+
+    /**
+     * 当点击节点或者模型的时候 ---
+     * 通过 -- 选中节点或者选中的模型编号
+     * 获取 -- 所有关联模型编号 -- 模型状态[优良，合格，不合格，未验评] -- 单元工程的编号
      *
      * @return \think\response\Json
      * @author hutao
@@ -182,39 +238,18 @@ class Qualitymass extends Permissions
     public function nodeModelNumber()
     {
         if($this->request->isAjax()){
-            // 第一次进来不用传递参数 默认返回所有
-            // 前台 传递 选中节点的 add_id  和 节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
+            // 前台 传递 选中节点的 number  和 编号的类型 number_type 1 单元工程段号(检验批编号) 2 模型编号
             $param = input('post.');
-            $add_id = isset($param['add_id']) ? $param['add_id'] : 1;
-            $node_type = isset($param['node_type']) ? $param['node_type'] : 1;
-//            if(empty($add_id) || empty($node_type)){
-//                return json(['code'=>-1,'msg'=>'缺少参数']);
-//            }if(!in_array($node_type,[1,2,3,4])){
-//                return json(['code'=>-1,'msg'=>'无效的节点类型']);
-//            }
-            $quality = new QualitymassModel();
-
-            $data = $quality->qualityNodeInfo($add_id,$node_type);
-            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--选中节点--所有关联模型编号--自定义属性']);
-        }
-    }
-
-    // 质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性
-    public function modelIdSearchModel()
-    {
-        if($this->request->isAjax()){
-            // 前台 传递 选中模型的编号 model_id
-            $param = input('post.');
-            $model_id = isset($param['model_id']) ? $param['model_id'] : -1;
-            if(empty($model_id)){
-                return json(['code'=>-1,'msg'=>'缺少选中模型的编号']);
+            $number = isset($param['number']) ? $param['number'] : -100;
+            $number_type = isset($param['number_type']) ? $param['number_type'] : -100;
+            if(empty($number) || empty($number_type)){
+                return json(['code'=>-1,'data'=>[],'msg'=>'缺少参数']);
             }
             $quality = new QualitymassModel();
-            $data = $quality->modelIdSearchModel($model_id);
-            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型--根据选中模型--获取所有关联模型编号和关联单元工程自定义属性']);
+            $data = $quality->qualityNodeInfo($number,$number_type);
+            return json(['code'=>1,'data'=>$data,'msg'=>'质量模型: [所有关联模型编号,模型状态,单元工程的编号]']);
         }
     }
-
 
     // ============================   着急先把方法放到这里 后期有时间再转移
 
@@ -298,7 +333,7 @@ class Qualitymass extends Permissions
             $param = input('param.');
             // 验证规则
             $rule = [
-                ['add_id', 'require|number|gt:-1', '请选择单元工程|单元工程编号只能是数字|单元工程编号不能为负数'],
+                ['add_id', 'require', '请选择单元工程'],
                 ['attrKey', 'require', '属性名不能为空'],
                 ['attrVal', 'require', '属性值不能为空']
             ];
@@ -316,7 +351,7 @@ class Qualitymass extends Permissions
             if(empty($id)){
                 $flag = $custom->insertTb($data);
             }else{
-                if(!is_int($id)){
+                if(empty($id)){
                     return json(['code' => -1, 'msg' => '属性的主键编号只能是数字']);
                 }
                 $data['id'] = $id;
@@ -343,30 +378,6 @@ class Qualitymass extends Permissions
         $node = new QualityCustomAttributeModel();
         $flag = $node->deleteTb($param['attrId']);
         return json($flag);
-    }
-
-    /**
-     * 返回已经添加过得自定义属性值
-     * @return \think\response\Json
-     */
-    public function getOne()
-    {
-        if($this->request->isAjax()){
-            //实例化模型类
-            $model = new QualityCustomAttributeModel();
-            //前台传过来的值
-            $param = input('param.');
-            $id = isset($param['add_id']) ? $param['add_id'] : 0;
-
-            //回显查询已经添加的自定义属性值
-            $data = $model->getAllOne($id);
-
-            if(empty($data))
-            {
-                $data = [];
-            }
-            return json(["code"=>1,"data"=>$data]);
-        }
     }
 
 }

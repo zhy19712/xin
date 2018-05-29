@@ -73,7 +73,7 @@ function nodeModelNumber() {
         async:false,
         data: {
             add_id:nodeId,
-            node_type:node_type
+            node_type:1
         },
         dataType: "json",
         success: function (res) {

@@ -10,8 +10,14 @@
     }
     .ztree{
         margin: 0;
+        height: 98%;
     }
-
+    .dataTables_scrollHeadInner{
+        width: 100%!important;
+    }
+    .dataTables_scrollHeadInner table{
+        width: 100%!important;
+    }
 </style>
 <div data-options="region:'west',title:'国家标准分类',split:true" style="width:260px;">
     <ul class="ztree" id="ztree"></ul>
@@ -43,7 +49,7 @@
             <i class="fa fa-plus"></i>新增
         </button>
     </div>-->
-    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%;">
         <thead>
         <tr>
             <th>标准编号</th>

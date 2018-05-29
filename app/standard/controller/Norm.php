@@ -97,7 +97,7 @@ class Norm extends Permissions
         // 前台需要 传递 文件编号 id
         $norm = new NormModel();
         $data = $norm->getOne(input('file_id'));
-        $file_obj = Db::name('attachment')->where('id',$data['file_id'])->field('filename,filepath')->find();
+        $file_obj = Db::name('attachment')->where('id',$data['file_id'])->field('name,filename,filepath')->find();
         $filePath = '';
         if(!empty($file_obj['filepath'])){
             $filePath = '.' . $file_obj['filepath'];
@@ -107,7 +107,7 @@ class Norm extends Permissions
         }else if(request()->isAjax()){
             return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
         }else{
-            $fileName = $file_obj['filename'];
+            $fileName = empty($file_obj['name']) ? $file_obj['filename'] : $file_obj['name'];
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
