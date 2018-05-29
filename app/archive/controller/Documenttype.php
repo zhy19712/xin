@@ -17,6 +17,8 @@ use app\archive\model\DocumentModel;
 use think\Request;
 use \think\Db;
 use think\Session;
+use app\admin\model\Admin;//管理员
+use app\admin\model\AdminGroup;//组织机构
 
 class Documenttype extends Permissions
 {
@@ -27,32 +29,26 @@ class Documenttype extends Permissions
      */
     public function getAll()
     {
+        //实例化模型类
+        $admin = new Admin();
+        $group = new AdminGroup();
+        $doctype = new DocumentTypeModel();
         //根据当前登录的人所在的组织机构查询相应的文档类型树
         $admin_id = $admin_id= Session::has('admin') ? Session::get('admin') : 0;
-        $group_info = Db::name("admin")
-            ->alias("a")
-            ->join('admin_group g','a.admin_group_id = g.id','left')
-            ->field("g.pid")
-            ->where("a.id",$admin_id)
-            ->find();
+
+        $group_info = $admin ->getGroupInfo($admin_id);
+
         if($group_info["pid"] == 0)
         {
             return json(DocumentTypeModel::all());
+
         }else
         {
-            $group_name = Db::name("admin_group")
-                ->field("id,name")
-                ->where("id",$group_info["pid"])
-                ->find();
-            $document_type_id = Db::name("archive_documenttype")
-                ->where("name like '%".$group_name["name"]."%'")
-                ->find();
+            $group_name = $group->getGroupId($group_info["pid"]);
 
+            $document_type_id = $doctype->getDocTypeInfo($group_name["name"]);
 
-            $document_type_info = Db::name("archive_documenttype")
-                ->where(" id = 1 OR id = ".$document_type_id["id"]." OR pid = ".$document_type_id["id"])
-                ->order("id asc")
-                ->select();
+            $document_type_info = $doctype->getDocInfo($document_type_id["id"]);
 
             return json($document_type_info);
         }
