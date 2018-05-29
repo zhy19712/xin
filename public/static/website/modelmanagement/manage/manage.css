@@ -2,7 +2,9 @@
     overflow: auto;
     overflow-x: hidden;
 }
-
+.layui-form{
+    padding: 10px;
+}
 .layer-review {
     float: left;
     padding: 9px 10px;

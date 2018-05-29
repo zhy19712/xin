@@ -67,7 +67,7 @@ $.ajax({
     success: function (res) {
         var data = res.data;
         var options = [];
-        options.push('<option value="-1">全部</option>');
+        options.push('<option value="-1">全部标段</option>');
         for (var n in data) {
             options.push('<option value="' + n + '">' + data[n] + '</option>');
         }

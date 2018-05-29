@@ -26,9 +26,11 @@ function ztree(node_type) {
             onClick: zTreeOnClick,
             onCheck: zTreeOnCheck
         },
-        showLine:true,
-        showTitle:true,
-        showIcon:false
+        view:{
+            showLine:true,
+            showTitle:true,
+            showIcon:false
+        }
     };
     zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 }
