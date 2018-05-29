@@ -133,8 +133,8 @@ var tableItem = $('#tableItem').DataTable( {
 //获取点击行
 $("#tableItem").delegate("tbody tr","click",function (e) {
   if($(e.target).hasClass("dataTables_empty")){
-    return;
-  }
+        return;
+    }
   $(this).addClass("select-color").siblings().removeClass("select-color");
   selectData = tableItem.row(".select-color").data();//获取选中行数据
 
