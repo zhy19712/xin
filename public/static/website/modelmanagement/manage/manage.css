@@ -162,6 +162,13 @@
     line-height: 1;
     padding: 15px 0;
 }
+.layui-attr{
+    border: none;
+}
+.layui-attr .layui-colla-title{
+    background: none;
+    color: #333;
+}
 /*质量3D自定义属性*/
 .custom-attr .layui-form-mid {
     float: right;
