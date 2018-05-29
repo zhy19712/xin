@@ -51,20 +51,6 @@ class Document extends Permissions
     }
 
     /**
-     * 新增文档
-     * @return array
-     */
-    public function add()
-    {
-        $mod = input('post.');
-        if ($this->documentService->add($mod)) {
-            return ['code' => 1];
-        } else {
-            return ['code' => -1];
-        }
-    }
-
-    /**
      * 属性
      * @return \think\response\Json
      * @throws \think\exception\DbException
@@ -74,68 +60,6 @@ class Document extends Permissions
         return json(
             DocumentModel::get(input('id'), ['documentType', 'attachmentInfo'])
         );
-    }
-
-    /**
-     * 移动文档
-     * @return \think\response\Json
-     */
-    public function move()
-    {
-        if ($this->request->isAjax()) {
-            $mod = input('post.');
-            if ($this->documentService->move($mod)) {
-                return json(['code' => 1]);
-            } else {
-                return json(['code' => -1]);
-            }
-        }
-        return $this->fetch();
-    }
-
-    /**
-     * 编辑关键字
-     * @return \think\response\Json
-     */
-    public function remark()
-    {
-        $mod = input('post.');
-        if ($this->documentService->remark($mod)) {
-            return json(['code' => 1]);
-        }
-        return json(['code' => -1]);
-    }
-
-    /**
-     * 归档
-     * @return \think\response\Json
-     */
-    public function archiving()
-    {
-        $id = input('id');
-        if (
-        DocumentModel::update(['status' => 1], ['id' => $id])) {
-            return json(['code' => 1]);
-        } else {
-            return json(['code' => -1]);
-        }
-    }
-
-    /**
-     * 一键归档
-     * @return \think\response\Json
-     */
-    public function batchArchiving()
-    {
-        $tid = input('tid');
-        $tids = $this->documentTypeService->getChilds($tid);
-        $tids[] = $tid;
-        if ($this->documentService->whereIn('type', $tids)->update(['status' => 1])) {
-            return json(['code' => 1]);
-
-        } else {
-            return json(['code' => -1]);
-        }
     }
 
     /**
@@ -175,18 +99,7 @@ class Document extends Permissions
                 $flag = $model->delCate($param['id']);
 
                 return $flag;
-
         }
-    }
-
-    /**
-     * 共享文档
-     * @return mixed
-     */
-    public function share($roleId)
-    {
-        $this->assign('docId', $roleId);
-        return $this->fetch();
     }
 
     /**
@@ -195,28 +108,6 @@ class Document extends Permissions
      */
     public function download()
     {
-        //实例化模型类
-        $model = new DocumentModel();
-
-        $mod = DocumentModel::get(input('id'));
-
-        //权限控制
-//        if ($mod->havePermission($mod['users'], Session::get('current_id'))) {
-//            return json(['code' => -2, 'msg' => "没有下载权限"]);
-//        }
-
-        $id = input('param.id');
-
-        $blacklist = $model->getbalcklist($id);
-        if($blacklist['users'])
-        {
-            $list = explode("|",$blacklist['users']);
-            if(!(in_array(Session::get('current_id'),$list)))
-            {
-                return json(['code' => -1, 'msg' => "没有下载权限"]);
-            }
-        }
-
         $mod = DocumentModel::get(input('id'));
 
         $file_obj = Db::name('attachment')->where('id', $mod['attachmentId'])->find();
@@ -286,60 +177,6 @@ class Document extends Permissions
     }
 
     /**
-     * 文档权限
-     * @param $id
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function PermissionRelation($id)
-    {
-        $par = input('users');
-        $flag = DocumentModel::update(['users' => $par], ['id' => $id]);
-        if ($flag) {
-            return json(['code' => 1]);
-        } else {
-            return json(['code' => -1]);
-        }
-    }
-
-    /**
-     * 显示文档权限用户
-     * @param $id
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function PermissionRelationList($id)
-    {
-        $doc = DocumentModel::get($id);
-        if (empty($doc['users'])) {
-            return json(['code'=>1,'data'=>'']);
-        }
-        $users = explode("|", $doc['users']);
-        $list = Db::name('admin')->whereIn('id', $users)->field('id,nickname')->select();
-        return json(['code'=>1,'data'=>$list]);
-
-    }
-
-    /**
-     * 删除下载白名单下的用户
-     * @return \think\response\Json
-     */
-    public function delAdminname()
-    {
-        if(request()->isAjax()){
-            //实例化model类型
-            $model = new DocumentModel();
-            $param = input('post.');
-            $flag = $model->delblacklist($param);
-            return json($flag);
-        }
-    }
-
-    /**
      * 文档文件上传
      * @param string $module
      * @param string $use
@@ -385,8 +222,6 @@ class Document extends Permissions
 
             //返回上传的文件的id,attachment表中的主键id
             $attachmentId = Db::name('attachment')->insertGetId($data);
-//            $res['filename'] = $info->getFilename();//文件名
-//            $res['src'] = DS . 'uploads' . DS . $module . DS . $use . DS . $info->getSaveName();
 
             //把上传的文件信息再插入到xin_archive_document文档表
             $type = input("post.selfid");

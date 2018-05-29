@@ -67,7 +67,7 @@ $.ajax({
     success: function (res) {
         var data = res.data;
         var options = [];
-        options.push('<option value="-1">全部</option>');
+        options.push('<option value="-1">全部标段</option>');
         for (var n in data) {
             options.push('<option value="' + n + '">' + data[n] + '</option>');
         }
@@ -155,9 +155,9 @@ function zTreeOnClick(event, treeId, treeNode) {
     selectedTreeNode = treeNode;
     modeGroupIds = nodeModelNumber();
     if (treeNode.level == 5) {
-        console.log(uObjSubIdSingle);
+        acceptance(nodeId,1);   //验收资料-工序、控制点
         modelInfo(nodeId,1);    //单元工程信息
-        window.operateModel(modeGroupIds);
+        window.operateModel(modeGroupIds);  //模型选择集处理事件
     }
 }
 
@@ -211,7 +211,52 @@ function nodeModelNumber() {
     return result;
 }
 
-//验收资料
+//验收资料-工序、控制点
+acceptance = function (number,number_type) {
+    $.ajax({
+        url: "/modelmanagement/Manage/getAcceptance",
+        type: "post",
+        data: {
+            number: number,
+            number_type: number_type
+        },
+        dataType: "json",
+        success: function (res) {
+            $('#acceptanceData').empty();
+            var data = res.processinfo;
+            var acceptanceDataTemp = [];
+            var count = 0;
+            for (var i = 0; i < data.length; i++) {
+                acceptanceDataTemp.push('<div class="layui-colla-item">');
+                acceptanceDataTemp.push('<h2 class="layui-colla-title layui-work-title workTitle">工序' + (count++) + '：' + data[i].name + '</h2>');
+                for (var j = 0; j < data[i].controlpoint_info.length; j++) {
+                    var controlData = data[i].controlpoint_info[j];
+                    acceptanceDataTemp.push('<div class="layui-colla-content layui-work-content">');
+                    acceptanceDataTemp.push('<div class="layui-collapse layui-control-data" id="controlData" lay-filter="control" lay-accordion>');
+                    acceptanceDataTemp.push('<h2 class="layui-colla-title layui-control-title controlTitle" unit_id=' + data[i].unit_id + ' id=' + controlData.id + ' procedureid=' + controlData.procedureid + '>' + controlData.name + '</h2>');
+                    acceptanceDataTemp.push('<div class="layui-colla-content layui-control-content">');
+                    acceptanceDataTemp.push('<div class="layui-table-title tableTitle"></div>');
+                    acceptanceDataTemp.push('<table class="layui-table" uid=' + controlData.id + ' id="online' + controlData.id + '">');
+                    acceptanceDataTemp.push('<tbody>');
+                    acceptanceDataTemp.push('</tbody>');
+                    acceptanceDataTemp.push('</table>');
+                    acceptanceDataTemp.push('</div>');
+                    acceptanceDataTemp.push('</div>');
+                    acceptanceDataTemp.push('</div>');
+                }
+                acceptanceDataTemp.push('</div>');
+            }
+            $('#acceptanceData').append(acceptanceDataTemp.join(''));
+            layui.use('element', function () {
+                var element = layui.element;
+                element.render('collapse');
+            });
+            $('.layui-colla-item:first-child').find('h2.workTitle').click();
+        }
+    });
+}
+
+//验收资料-在线填报、扫描上传、附件资料
 layui.use('element', function () {
     var element = layui.element;
     element.on('collapse(control)', function (data) {
@@ -664,6 +709,7 @@ modelInfo = function (uObjSubID,number_type) {
         dataType: "json",
         success: function (res) {
             if(res.unit_info!=null){
+                $('#unitTitle').text(res.unit_info.site);
                 $('#site').text(res.unit_info.site);
                 $('#serial_number').text(res.unit_info.coding);
                 $('#hinge').text(res.unit_info.hinge);

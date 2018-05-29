@@ -58,8 +58,8 @@ var completedTable = $('#completedTable').DataTable({
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
-            "sPrevious": "<",
-            "sNext": ">",
+            "sPrevious": "上一页",
+            "sNext": "下一页",
             "sLast": ">>"
         }
     }/*,
@@ -130,8 +130,8 @@ var constructionTable = $('#constructionTable').DataTable({
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
-            "sPrevious": "<",
-            "sNext": ">",
+            "sPrevious": "上一页",
+            "sNext": "下一页",
             "sLast": ">>"
         }
     }/*,
@@ -167,7 +167,7 @@ $('.addBtn').click(function () {
         id:'1',
         type:1,
         anim:'4',
-        area:['600px','350px'],
+        area:['600px','355px'],
         content:$('#addModelLayer'),
         success:function () {
             uploadModel();
