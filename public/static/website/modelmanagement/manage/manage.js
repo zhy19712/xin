@@ -1,3 +1,4 @@
+uObjSubIdSingle = '';   //模型ID
 modelTrans = '';        //透明度
 modelColor = '';        //选择集颜色
 choiceness_pigment = '';       //优良色值
@@ -6,6 +7,10 @@ un_evaluation_pigment = '';  //不合格色值
 modeGroupIds = '';  //模型组ID
 controlpoint_id = ''    //控制点Id
 currentStep = ''; //审批步骤
+selectedModeGroupIds = '' //选中的模型组ID 用于显示隐藏按钮操作
+selectedTreeNode = '';  //点击模型获取关联的工程划分节点
+
+//获取模型配置的色值
 $.ajax({
     url: "/modelmanagement/qualitymass/configureInfo",
     type: "post",
@@ -16,37 +21,107 @@ $.ajax({
         choiceness_pigment = +res.configureInfo.quality.choiceness_pigment;
         qualified_pigment = +res.configureInfo.quality.qualified_pigment;
         un_evaluation_pigment = +res.configureInfo.quality.un_evaluation_pigment;
-        var excellent = res.configureInfo.quality.choiceness_pigment.substr(4,6);
-        var qualified = res.configureInfo.quality.qualified_pigment.substr(4,6);
-        var unQualified = res.configureInfo.quality.un_evaluation_pigment.substr(4,6);
-        $('#excellent').css('background','#'+excellent);
-        $('#qualified').css('background','#'+qualified);
-        $('#unQualified').css('background','#'+unQualified);
-        $('#unReview').css('background','#529df8');
+        var excellent = res.configureInfo.quality.choiceness_pigment.substr(4, 6);
+        var qualified = res.configureInfo.quality.qualified_pigment.substr(4, 6);
+        var unQualified = res.configureInfo.quality.un_evaluation_pigment.substr(4, 6);
+        $('#excellent').css('background', '#' + excellent);
+        $('#qualified').css('background', '#' + qualified);
+        $('#unQualified').css('background', '#' + unQualified);
+        $('#unReview').css('background', '#529df8');
+    }
+});
+
+//合格率
+$.ajax({
+    url: "/modelmanagement/qualitymass/examineFruit",
+    type: "post",
+    dataType: "json",
+    success: function (res) {
+        $('#excellent_number').text(res.data.excellent);
+        $('#excellent_rate').text(res.data.excellent_percent + '%');
+        $('#qualified_number').text(res.data.qualified);
+        $('#qualified_rate').text(res.data.qualified_percent + '%');
+        $('#unchecked_number').text(res.data.unqualified);
+        $('#unchecked_rate').text(res.data.unqualified_percent + '%');
     }
 });
 
 //折叠面板
 function easyUiPanelToggle() {
     var number = $("#easyuiLayout").layout("panel", "east")[0].clientWidth;
-    if(number<=0){
-        $('#easyuiLayout').layout('expand','east');
+    if (number <= 0) {
+        $('#easyuiLayout').layout('expand', 'east');
     }
 }
 
 //初始化手风琴
-layui.use('element', function(){
+layui.use('element', function () {
     var element = layui.element;
 });
 
+//初始化标段
+$.ajax({
+    url: "/modelmanagement/qualitymass/section",
+    type: "post",
+    dataType: "json",
+    success: function (res) {
+        var data = res.data;
+        var options = [];
+        options.push('<option value="-1">全部</option>');
+        for (var n in data) {
+            options.push('<option value="' + n + '">' + data[n] + '</option>');
+        }
+        $('#section').append(options.join(''));
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render('select');
+        });
+    }
+});
+//标段切换
+layui.use('form', function () {
+    var form = layui.form;
+    form.on('select(section)', function (data) {
+        var val = data.value;
+        //加载树
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {
+                section_id: val
+            },
+            dataType: "json",
+            success: function (res) {
+                ztree('', val);
+            }
+        });
+        if (val == -1) {
+            allModel();
+        } else {
+            //加载模型
+            $.ajax({
+                url: "/modelmanagement/qualitymass/sectionModel",
+                type: "post",
+                data: {
+                    section_id: val
+                },
+                dataType: "json",
+                success: function (res) {
+                    selectedSectionShowModel(res);
+                }
+            });
+        }
+    });
+});
+
 //工程划分
-function ztree(node_type) {
+function ztree(node_type, section_id) {
     var setting = {
         async: {
             enable: true,
-            autoParam: ["pid","tid"],
+            autoParam: ["pid", "tid"],
             type: "get",
-            url: "/modelmanagement/qualitymass/index?node_type="+node_type,
+            url: "/modelmanagement/qualitymass/index?node_type=" + node_type + '&section_id=' + section_id,
             dataType: "json"
         },
         data: {
@@ -56,31 +131,32 @@ function ztree(node_type) {
                 pIdKey: "pId"
             }
         },
-        check:{
+        check: {
             enable: true
         },
-        callback:{
+        callback: {
             onClick: zTreeOnClick,
             onCheck: zTreeOnCheck
         },
-        showLine:true,
-        showTitle:true,
-        showIcon:false
+        showLine: true,
+        showTitle: true,
+        showIcon: false
     };
     zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 }
-ztree(0);
+
+ztree(0, '');
 
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
     console.log(treeNode);
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
+    selectedTreeNode = treeNode;
     modeGroupIds = nodeModelNumber();
-    if(treeNode.level==5){
-        modelInfo();    //单元工程信息
-        getOne();   //回显自定义属性
-        review();
+    if (treeNode.level == 5) {
+        console.log(uObjSubIdSingle);
+        modelInfo(nodeId,1);    //单元工程信息
         window.operateModel(modeGroupIds);
     }
 }
@@ -89,14 +165,31 @@ function zTreeOnClick(event, treeId, treeNode) {
 function zTreeOnCheck(event, treeId, treeNode) {
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
-    modeGroupIds = nodeModelNumber();
+    $.ajax({
+        url: "/modelmanagement/qualitymass/concealment",
+        type: "post",
+        data: {
+            add_id: nodeId,
+            node_type: node_type
+        },
+        dataType: "json",
+        success: function (res) {
+            var checked = treeNode.checked;
+            if (checked) {
+                window.hideModel(res.data);
+            } else {
+                window.showModel(res.data);
+            }
+        }
+    });
+    /*modeGroupIds = nodeModelNumber();
     var checked = treeNode.checked;
     if(checked){
         //隐藏关联构件
         window.hideModel(modeGroupIds);
     }else {
         window.showModel(modeGroupIds);
-    }
+    }*/
 }
 
 //模板组ID
@@ -105,10 +198,10 @@ function nodeModelNumber() {
     $.ajax({
         url: "/modelmanagement/Qualitymass/nodeModelNumber",
         type: "post",
-        async:false,
+        async: false,
         data: {
-            add_id:nodeId,
-            node_type:node_type
+            number: nodeId,
+            number_type: 1
         },
         dataType: "json",
         success: function (res) {
@@ -119,10 +212,10 @@ function nodeModelNumber() {
 }
 
 //验收资料
-layui.use('element', function(){
+layui.use('element', function () {
     var element = layui.element;
-    element.on('collapse(control)', function(data){
-        if(data.show){
+    element.on('collapse(control)', function (data) {
+        if (data.show) {
             var id = $(data.title).attr('id');      //控制点ID
             var procedureid = $(data.title).attr('procedureid');
             var unit_id = $(data.title).attr('unit_id');
@@ -142,20 +235,20 @@ layui.use('element', function(){
                     var admin_id = res.admin_id;    //当前登录用户ID
                     tbody.push('<tr><th class="table-title" colspan="4">在线填报</th></tr>');
                     tbody.push('<tr>');
-                    tbody.push('<th>填报人</th>');
+                    tbody.push('<th><span class="filename">填报人</span></th>');
                     tbody.push('<th>填报日期</th>');
                     tbody.push('<th>审批状态</th>');
                     tbody.push('<th>操作</th>');
                     tbody.push('</tr>');
-                    $('table[uid='+ id +'] tbody').empty();
-                    if(res.form_info==''){
+                    $('table[uid=' + id + '] tbody').empty();
+                    if (res.form_info == '') {
                         tbody.push('<tr>');
                         tbody.push('<td class="td-empty" colspan="4">');
                         tbody.push('无在线填报数据');
                         tbody.push('</td>');
                         tbody.push('</tr>');
                     }
-                    for(var i = 0;i<res.form_info.length;i++){
+                    for (var i = 0; i < res.form_info.length; i++) {
                         var data = res.form_info[i];
                         var onLineTableId = data.id;
                         var user_id = data.user_id;     //填报人ID
@@ -163,8 +256,7 @@ layui.use('element', function(){
                         var currentApproverId = data.CurrentApproverId;    //审批人ID
                         var approveStatus = data.ApproveStatus;    //审批状态
                         currentStep = data.CurrentStep; //审批步骤
-                        switch(data.ApproveStatus)
-                        {
+                        switch (data.ApproveStatus) {
                             case -2:
                                 data.ApproveStatus = '作废';
                                 break;
@@ -191,41 +283,41 @@ layui.use('element', function(){
                         tbody.push(data.ApproveStatus);
                         tbody.push('</td>');
                         tbody.push('<td class="btnWrap">');
-                        if(admin_id==user_id){
-                            if(approveStatus==-1){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,'+ onLineTableId +')"></i>');
+                        if (admin_id == user_id) {
+                            if (approveStatus == -1) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i><i class="fa fa-edit" onclick="editOnLine(' + onLineTableId + ')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,' + onLineTableId + ')"></i>');
                             }
-                            if(approveStatus==-2){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
+                            if (approveStatus == -2) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i>');
                             }
-                            if(approveStatus==0){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,'+ onLineTableId +')"></i>');
+                            if (approveStatus == 0) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i><i class="fa fa-edit" onclick="editOnLine(' + onLineTableId + ')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,' + onLineTableId + ')"></i>');
                             }
-                            if(approveStatus==1){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
+                            if (approveStatus == 1) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i>');
                             }
-                            if(approveStatus==2){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download" onclick="downOnLine('+ onLineTableId +')"></i><i class="fa fa-times" onclick="toVoidOnLine(this,'+ onLineTableId +')" pid='+ id +'></i>');
+                            if (approveStatus == 2) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i><i class="fa fa-download" onclick="downOnLine(' + onLineTableId + ')"></i><i class="fa fa-times" onclick="toVoidOnLine(this,' + onLineTableId + ')" pid=' + id + '></i>');
                             }
-                        }else if(admin_id==currentApproverId){
-                            if(approveStatus==1){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
+                        } else if (admin_id == currentApproverId) {
+                            if (approveStatus == 1) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i>');
                             }
-                        }else{
-                            if(approveStatus==-1){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-edit" onclick="editOnLine('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,'+ onLineTableId +')"></i>');
+                        } else {
+                            if (approveStatus == -1) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i><i class="fa fa-edit" onclick="editOnLine(' + onLineTableId + ')"></i><i class="fa fa-trash-o" onclick="delOnLine(this,' + onLineTableId + ')"></i>');
                             }
-                            if(approveStatus==-2){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
+                            if (approveStatus == -2) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i>');
                             }
-                            if(approveStatus==0){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
+                            if (approveStatus == 0) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i>');
                             }
-                            if(approveStatus==1){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i>');
+                            if (approveStatus == 1) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i>');
                             }
-                            if(approveStatus==2){
-                                tbody.push('<i class="fa fa-search" onclick="seeOnLine('+ onLineTableId +')"></i><i class="fa fa-download" onclick="downOnLine('+ onLineTableId +')"></i><i class="fa fa-times" onclick="toVoidOnLine(this,'+ onLineTableId +')" pid='+ id +'></i>');
+                            if (approveStatus == 2) {
+                                tbody.push('<i class="fa fa-search" onclick="seeOnLine(' + onLineTableId + ')"></i><i class="fa fa-download" onclick="downOnLine(' + onLineTableId + ')"></i><i class="fa fa-times" onclick="toVoidOnLine(this,' + onLineTableId + ')" pid=' + id + '></i>');
                             }
                         }
                         tbody.push('</td>');
@@ -233,19 +325,19 @@ layui.use('element', function(){
                     }
                     tbody.push('<tr><th class="table-title" colspan="4">扫描上传</th></tr>');
                     tbody.push('<tr>');
-                    tbody.push('<th>文件名称</th>');
+                    tbody.push('<th><span class="filename">文件名称</span></th>');
                     tbody.push('<th>上传人</th>');
                     tbody.push('<th>上传日期</th>');
                     tbody.push('<th>操作</th>');
                     tbody.push('</tr>');
-                    if(res.upload_form_sao==''){
+                    if (res.upload_form_sao == '') {
                         tbody.push('<tr>');
                         tbody.push('<td class="td-empty" colspan="4">');
                         tbody.push('无扫描上传数据');
                         tbody.push('</td>');
                         tbody.push('</tr>');
                     }
-                    for(var j = 0;j<res.upload_form_sao.length;j++){
+                    for (var j = 0; j < res.upload_form_sao.length; j++) {
                         var data = res.upload_form_sao[j];
                         var onLineTableId = data.id;
                         console.log(data);
@@ -259,24 +351,24 @@ layui.use('element', function(){
                         tbody.push('<td>');
                         tbody.push(data.create_time);
                         tbody.push('</td>');
-                        tbody.push('<td><i class="fa fa-search" onclick="printConFile('+ onLineTableId +')"></i><i class="fa fa-download" onclick="downConFileImp('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delFile(this,'+ onLineTableId +')"></i></td>');
+                        tbody.push('<td><i class="fa fa-search" onclick="printConFile(' + onLineTableId + ')"></i><i class="fa fa-download" onclick="downConFileImp(' + onLineTableId + ')"></i><i class="fa fa-trash-o" onclick="delFile(this,' + onLineTableId + ')"></i></td>');
                         tbody.push('</tr>');
                     }
                     tbody.push('<tr><th class="table-title" colspan="4">附件资料</th></tr>');
                     tbody.push('<tr>');
-                    tbody.push('<th>附件名称</th>');
+                    tbody.push('<th><span class="filename">附件名称</span></th>');
                     tbody.push('<th>上传人</th>');
                     tbody.push('<th>上传日期</th>');
                     tbody.push('<th>操作</th>');
                     tbody.push('</tr>');
-                    if(res.upload_form_fu==''){
+                    if (res.upload_form_fu == '') {
                         tbody.push('<tr>');
                         tbody.push('<td>');
                         tbody.push('无图像资料数据');
                         tbody.push('</td>');
                         tbody.push('</tr>');
                     }
-                    for(var j = 0;j<res.upload_form_fu.length;j++){
+                    for (var j = 0; j < res.upload_form_fu.length; j++) {
                         var data = res.upload_form_fu[j];
                         var onLineTableId = data.id;
                         console.log(data);
@@ -290,10 +382,10 @@ layui.use('element', function(){
                         tbody.push('<td>');
                         tbody.push(data.create_time);
                         tbody.push('</td>');
-                        tbody.push('<td><i class="fa fa-search" onclick="printConFile('+ onLineTableId +')"></i><i class="fa fa-download" onclick="downConFileData('+ onLineTableId +')"></i><i class="fa fa-trash-o" onclick="delFile(this,'+ onLineTableId +')"></i></td>');
+                        tbody.push('<td><i class="fa fa-search" onclick="printConFile(' + onLineTableId + ')"></i><i class="fa fa-download" onclick="downConFileData(' + onLineTableId + ')"></i><i class="fa fa-trash-o" onclick="delFile(this,' + onLineTableId + ')"></i></td>');
                         tbody.push('</tr>');
                     }
-                    $('table[uid='+ id +'] tbody').append(tbody.join(''));
+                    $('table[uid=' + id + '] tbody').append(tbody.join(''));
                 }
             });
         }
@@ -307,7 +399,7 @@ function seeOnLine(id) {
         title: '在线填报',
         shadeClose: true,
         area: ['980px', '90%'],
-        content: '/quality/Qualityform/edit?cpr_id='+ controlpoint_id + '&id='+ id +'&currentStep=null&isView=True'
+        content: '/quality/Qualityform/edit?cpr_id=' + controlpoint_id + '&id=' + id + '&currentStep=null&isView=True'
     });
 }
 
@@ -319,12 +411,12 @@ function editOnLine(id) {
         title: '在线填报',
         shadeClose: true,
         area: ['980px', '90%'],
-        content: '/quality/Qualityform/edit?cpr_id='+ controlpoint_id + '&id='+ id +'&currentStep=' + currentStep
+        content: '/quality/Qualityform/edit?cpr_id=' + controlpoint_id + '&id=' + id + '&currentStep=' + currentStep
     });
 }
 
 //在线填报-删除
-function delOnLine(that,id) {
+function delOnLine(that, id) {
     layer.confirm("你将删除该数据，是否确认删除？", function () {
         $.ajax({
             url: "/quality/Qualityform/delForm",
@@ -339,19 +431,19 @@ function delOnLine(that,id) {
 }
 
 //查看附件
-function showPdf(id,url) {
+function showPdf(id, url) {
     $.ajax({
         url: url,
         type: "post",
-        data: {id:id},
+        data: {id: id},
         success: function (res) {
             console.log(res);
-            if(res.code === 1){
+            if (res.code === 1) {
                 var path = res.path;
                 var houzhui = res.path.split(".");
-                if(houzhui[houzhui.length-1]=="pdf"){
-                    window.open("/static/public/web/viewer.html?file=../../../" + path,"_blank");
-                }else if(res.path.split(".")[1]==="png"||res.path.split(".")[1]==="jpg"||res.path.split(".")[1]==="jpeg"){
+                if (houzhui[houzhui.length - 1] == "pdf") {
+                    window.open("/static/public/web/viewer.html?file=../../../" + path, "_blank");
+                } else if (res.path.split(".")[1] === "png" || res.path.split(".")[1] === "jpg" || res.path.split(".")[1] === "jpeg") {
                     layer.photos({
                         photos: {
                             "title": "", //相册标题
@@ -361,21 +453,21 @@ function showPdf(id,url) {
                                 {
                                     "alt": "图片名",
                                     "pid": id, //图片id
-                                    "src": "../../../"+res.path, //原图地址
+                                    "src": "../../../" + res.path, //原图地址
                                     "thumb": "" //缩略图地址
                                 }
                             ]
                         }
-                        ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
-                        ,success:function () {
+                        , anim: Math.floor(Math.random() * 7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                        , success: function () {
                             $(".layui-layer-shade").empty();
                         }
                     });
-                }else{
+                } else {
                     layer.msg("不支持的文件格式");
                 }
 
-            }else {
+            } else {
                 layer.msg(res.msg);
             }
         }
@@ -384,21 +476,21 @@ function showPdf(id,url) {
 
 //点击打印模板
 function printConFile(id) {
-    showPdf(id,"/quality/Unitqualitymanage/relationPreview");
+    showPdf(id, "/quality/Unitqualitymanage/relationPreview");
 }
 
 //删除封装的方法
-function delData(that,id,url) {
-    layer.confirm('是否删除该数据?', function(index){
+function delData(that, id, url) {
+    layer.confirm('是否删除该数据?', function (index) {
         $.ajax({
             type: "post",
             url: url,
-            data: {id:id},
+            data: {id: id},
             success: function (res) {
-                if(res.code ==1){
+                if (res.code == 1) {
                     $(that).parents('tr').remove();
                     layer.msg("删除成功！");
-                }else if(res.code !=1){
+                } else if (res.code != 1) {
                     layer.msg('返回数据错误！')
                 }
             }
@@ -407,24 +499,24 @@ function delData(that,id,url) {
 }
 
 //扫描件回传、附件资料的删除
-function delFile(that,id) {
-    delData(that,id,"/quality/Unitqualitymanage/relationDel");
+function delFile(that, id) {
+    delData(that, id, "/quality/Unitqualitymanage/relationDel");
 }
 
 //在线填报-点击作废
-function toVoidOnLine(that,id) {
+function toVoidOnLine(that, id) {
     var pid = $(that).attr('pid');
-    layer.confirm('是否作废该数据? 如果作废,会生成一个新的待提交表单', function(index){
+    layer.confirm('是否作废该数据? 如果作废,会生成一个新的待提交表单', function (index) {
         $.ajax({
             url: "/quality/qualityform/cancel",
             type: "post",
-            data: {id:id},
+            data: {id: id},
             success: function (res) {
-                $('.controlTitle[id='+ pid +']').click();
-                $('.controlTitle[id='+ pid +']').click();
+                $('.controlTitle[id=' + pid + ']').click();
+                $('.controlTitle[id=' + pid + ']').click();
                 layer.msg("该数据已作废了！");
             },
-            error:function () {
+            error: function () {
                 layer.msg("作废操作异常");
             }
         });
@@ -434,24 +526,24 @@ function toVoidOnLine(that,id) {
 }
 
 //下载list封装的方法
-function downloadList(id,url) {
+function downloadList(id, url) {
     $.ajax({
         url: url,
-        type:"post",
+        type: "post",
         dataType: "json",
-        data:{id:id},
+        data: {id: id},
         success: function (res) {
-            if(res.code != 1){
+            if (res.code != 1) {
                 layer.msg(res.msg);
-            }else {
+            } else {
                 $("#form_container").empty();
                 var str = "";
                 str += ""
-                    + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-                    + "<form name=download"+id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
-                    + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-                    + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
-                    + "<button type='submit' class=btn" + id +"></button>"
+                    + "<iframe name=downloadFrame" + id + " style='display:none;'></iframe>"
+                    + "<form name=download" + id + " action=" + url + " method='get' target=downloadFrame" + id + ">"
+                    + "<span class='file_name' style='color: #000;'>" + str + "</span>"
+                    + "<input class='file_url' style='display: none;' name='id' value=" + id + ">"
+                    + "<button type='submit' class=btn" + id + "></button>"
                     + "</form>"
                 $("#form_container").append(str);
                 $("#form_container").find(".btn" + id).click();
@@ -463,33 +555,33 @@ function downloadList(id,url) {
 
 //点击下面的列表的下载
 function downConFileImp(id) {
-    downloadList(id,"/quality/Unitqualitymanage/relationDownload");
+    downloadList(id, "/quality/Unitqualitymanage/relationDownload");
 }
 
 //点击下面的列表的下载
 function downConFileData(id) {
-    downloadList(id,"/quality/Unitqualitymanage/relationDownload");
+    downloadList(id, "/quality/Unitqualitymanage/relationDownload");
 }
 
 //下载封装的方法
-function downloadFrom(id,url) {
+function downloadFrom(id, url) {
     $.ajax({
         url: url,
-        type:"post",
+        type: "post",
         dataType: "json",
-        data:{formId:id},
+        data: {formId: id},
         success: function (res) {
-            if(res.code != 1){
+            if (res.code != 1) {
                 layer.msg(res.msg);
-            }else {
+            } else {
                 $("#form_container_from").empty();
                 var str = "";
                 str += ""
-                    + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-                    + "<form name=download"+id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
-                    + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-                    + "<input class='file_url' style='display: none;' name='formId' value="+ id +">"
-                    + "<button type='submit' class=btn" + id +"></button>"
+                    + "<iframe name=downloadFrame" + id + " style='display:none;'></iframe>"
+                    + "<form name=download" + id + " action=" + url + " method='get' target=downloadFrame" + id + ">"
+                    + "<span class='file_name' style='color: #000;'>" + str + "</span>"
+                    + "<input class='file_url' style='display: none;' name='formId' value=" + id + ">"
+                    + "<button type='submit' class=btn" + id + "></button>"
                     + "</form>"
                 $("#form_container_from").append(str);
                 $("#form_container_from").find(".btn" + id).click();
@@ -500,69 +592,109 @@ function downloadFrom(id,url) {
 
 //在线填报-下载
 function downOnLine(id) {
-    downloadFrom(id,"/quality/element/formDownload");
+    downloadFrom(id, "/quality/element/formDownload");
 }
 
 //添加自定义属性
 $('#addAttr').click(function () {
     var attrGroup = [];
-    attrGroup.push('<div class="layui-input-inline attrGroup">');
+    attrGroup.push('<div class="attrGroup"><div class="layui-input-inline">');
     attrGroup.push('<input type="text" name="attrKey" required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
     attrGroup.push('<input type="text" name="attrVal" required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
     attrGroup.push('</div>');
     attrGroup.push('<div class="layui-form-mid layui-word-aux">');
-    attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
-    attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
-    attrGroup.push('</div>');
+    attrGroup.push('<i class="fa fa-check saveAttr" attrId="" onclick="saveAttr(this)"></i>');
+    attrGroup.push('<i class="fa fa-close closeAttr" onclick="delAttr(this)"></i>');
+    attrGroup.push('</div></div>');
     $('#attrGroup').append(attrGroup.join(' '));
 });
 
 //保存自定义属性
 function saveAttr(that) {
-    var attrKey = $(that).parents('#attrGroup').find('input[name="attrKey"]').val();
-    console.log(attrKey);
-    var attrVal = $(that).parents('#attrGroup').find('input[name="attrVal"]').val();
+    var attrId = $(that).attr('attrId');
+    var attrKey = $(that).parents('.attrGroup').find('input[name="attrKey"]').val();
+    var attrVal = $(that).parents('.attrGroup').find('input[name="attrVal"]').val();
     console.log(attrVal);
     $.ajax({
         url: "/modelmanagement/Qualitymass/addAttr",
         type: "post",
         data: {
-            add_id:nodeId,
-            attrKey:attrKey,
-            attrVal:attrVal
+            attrId:attrId,
+            add_id: nodeId,
+            attrKey: attrKey,
+            attrVal: attrVal
         },
         dataType: "json",
         success: function (res) {
+            $(that).attr('attrId',res.attrId);
             layer.msg(res.msg);
         }
     });
 }
 
-//回显自定义属性
-function getOne() {
+//删除自定义属性
+function delAttr(that) {
+    var attrId = $(that).attr('attrId');
+    layer.confirm('确定删除该属性?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: "/modelmanagement/Qualitymass/delAttr",
+            type: "post",
+            data: {
+                attrId: attrId
+            },
+            dataType: "json",
+            success: function (res) {
+                $(that).parents('div.attrGroup').remove();
+                layer.msg(res.msg);
+            }
+        });
+        layer.close(index);
+    });
+}
+
+//模板信息
+modelInfo = function (uObjSubID,number_type) {
     $.ajax({
-        url: "/modelmanagement/Qualitymass/getOne",
+        url: "./getManageInfo",
         type: "post",
         data: {
-            add_id:nodeId
+            number: uObjSubID,
+            number_type:number_type
         },
         dataType: "json",
         success: function (res) {
-            $('#attrGroup').empty();
-            var attrGroup = [];
-            for(var i = 0;i<res.data.length;i++){
-                var attrKey = res.data[i].attr_name;
-                var attrVal = res.data[i].attr_value;
-                attrGroup.push('<div class="layui-input-inline attrGroup">');
-                attrGroup.push('<input type="text" name="attrKey" value='+ attrKey +' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
-                attrGroup.push('<input type="text" name="attrVal" value='+ attrVal +' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
-                attrGroup.push('</div>');
-                attrGroup.push('<div class="layui-form-mid layui-word-aux">');
-                attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
-                attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
-                attrGroup.push('</div>');
+            if(res.unit_info!=null){
+                $('#site').text(res.unit_info.site);
+                $('#serial_number').text(res.unit_info.coding);
+                $('#hinge').text(res.unit_info.hinge);
+                $('#quantities').text(res.unit_info.quantities);
+                $('#en_type').text(res.unit_info.en_type);
+                $('#ma_bases').text(res.unit_info.ma_bases);
+                $('#su_basis').text(res.unit_info.su_basis);
+                $('#el_start').text(res.unit_info.el_start);
+                $('#el_cease').text(res.unit_info.el_cease);
+                $('#pile_number').text(res.unit_info.pile_number);
+                $('#start_date').text(res.unit_info.start_date);
+                $('#completion_date').text(res.unit_info.completion_date);
             }
-            $('#attrGroup').append(attrGroup.join(' '));
+            //回显自定义属性
+            if(res.attr_info.length>0){
+                $('#attrGroup').empty();
+                var attrGroup = [];
+                for (var i = 0; i < res.attr_info.length; i++) {
+                    var attrKey = res.attr_info[i].attrKey;
+                    var attrVal = res.attr_info[i].attrVal;
+                    attrGroup.push('<div class="attrGroup"><div class="layui-input-inline">');
+                    attrGroup.push('<input type="text" name="attrKey" value=' + attrKey + ' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
+                    attrGroup.push('<input type="text" name="attrVal" value=' + attrVal + ' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
+                    attrGroup.push('</div>');
+                    attrGroup.push('<div class="layui-form-mid layui-word-aux">');
+                    attrGroup.push('<i class="fa fa-check saveAttr" attrId='+ res.attr_info[i].attrId +' onclick="saveAttr(this)"></i>');
+                    attrGroup.push('<i class="fa fa-close closeAttr" attrId='+ res.attr_info[i].attrId +' onclick="delAttr(this)"></i>');
+                    attrGroup.push('</div></div>');
+                }
+                $('#attrGroup').append(attrGroup.join(' '));
+            }
         }
     });
 }

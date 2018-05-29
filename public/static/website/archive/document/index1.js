@@ -372,7 +372,9 @@ $(".assModel").html("<div id='saveRemark'>保存</div>");
 //初始化树节点
 var selfid, //选中的节点id
   clickId, //选中的行id
-  sNodes; //选中的节点
+  sNodes //选中的节点
+, length = 0; //成功次数
+
 
 var setting = {
   view: {
@@ -486,7 +488,11 @@ $(".mybtn").on("click",function () {
     content:$("#fileListBox"),
     end:function () {
       $("#demoList,#allsize,#status").empty();
+      $("#status").text('0%');
       uploader.reset();
+      var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
+      tableItem.ajax.url(url).load();
+      length = 0;
     }
   })
 });
@@ -550,14 +556,27 @@ function uploaderInit(){
         multiple: true,
         id: "#testList"
       },
+      accept:{
+        title:"Files",
+        extensions:"jpg,png,gif,mp4,jpeg,doc,docx,xls,xlsx,pdf,txt,zip",
+        mimeTypes: 'image/*,text/*'
+        //word
+        +',application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        //excel
+        +',application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        //ppt
+        +',application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        +',application/pdf'
+        +',application/zip'
+      }
     });
 
-// 当有文件添加进来的时候
+  // 当有文件添加进来的时候
     uploader.on( 'fileQueued', function( file ) {
       console.log(file);
       var tr = $(['<tr id="'+ file.id +'">'
         ,'<td>'+ file.name +'</td>'
-        ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
+        ,'<td>'+ computeSize(file.size) +'</td>'
         ,'<td>0%</td>'
         ,'<td>'
         ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
@@ -571,33 +590,34 @@ function uploaderInit(){
         var file = uploader.getFile(id);
         uploader.removeFile(file,true);
         tr.remove();
-        $('#allsize').text(allsize()+"kb");
+        $('#allsize').text(allsize());
       });
       $("#demoList").append(tr);
-      $('#allsize').text(allsize()+"kb");
+      $('#allsize').text(allsize());
     });
 
     uploader.on("uploadStart",function () {
       uploader.options.formData.selfid = selfid;
     });
 
-// 文件上传过程中创建进度条实时显示。
+  // 文件上传过程中创建进度条实时显示。
     uploader.on('uploadProgress', function (file, percentage) {
       var $li = $('#' + file.id),
         $percent = $li.find('td:nth-child(3)');
       $percent.text( (percentage * 100).toFixed(2) + '%');
 
     });
-// 文件上传成功
+  // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,res ) {
       // console.log(file)
       // console.log(data)
       if(res.code == 1){
-        $("#status").text(processAll());
+        length++;
+        console.log(length);
+        console.log(processAll(length))
+        $("#status").text(processAll(length));
         if($("#status").text() == "100%"){
           layer.closeAll();
-          var url = "/archive/common/datatablesPre?tableName=archive_document&id="+selfid;
-          tableItem.ajax.url(url).load();
         }
       }else {
         layer.msg(res.msg);
@@ -627,11 +647,11 @@ function uploaderInit(){
         layer.msg("请不要重复选择文件！");
       } else if(type == "Q_EXCEED_SIZE_LIMIT"){
         layer.msg("系统提示,所选附件过大哦，换个小点的文件吧！");
+      } else if(type == "Q_TYPE_DENIED"){
+        layer.msg("不支持的文件格式");
       }
     });
   }
-
-
 }
 
 var  state = 'pending';
@@ -650,7 +670,7 @@ $("#testListAction").on( 'click', function() {
 });
 
 //获取总进度
-function processAll() {
+function processAll(length) {
   var num = 0;
   var allnum = $("#demoList tr").length;
   $("#demoList tr td:nth-child(3)").each(function (i,item) {
@@ -658,15 +678,34 @@ function processAll() {
         num++;
       }
   });
-  return parseInt(num / allnum * 100) + "%";
+  return parseInt(length / allnum * 100) + "%";
 }
 //获取总大小
 function allsize() {
   var allsize = 0;
   $("#demoList tr td:nth-child(2)").each(function (i,item) {
-    allsize += parseFloat($(item).text());
+      if($(item).text().indexOf("Mb") != -1){
+        allsize += parseFloat($(item).text())*1024;
+      }else{
+        allsize += parseFloat($(item).text());
+      }
   });
-  allsize = allsize.toFixed(1);
-  return parseInt(allsize * 10) / 10;
+  if(allsize > 1024){
+    allsize = (allsize / 1024).toFixed(1) +"Mb";
+  }else{
+    allsize = allsize.toFixed(1) + "Kb";
+  }
+
+  return allsize;
 }
 
+//计算大小
+function computeSize(data) {
+  var size = (data / 1024).toFixed(1);
+    if(size > 1024){
+      size = (size / 1024).toFixed(1) +"Mb"
+    }else{
+      size += "Kb"
+    }
+    return size;
+}

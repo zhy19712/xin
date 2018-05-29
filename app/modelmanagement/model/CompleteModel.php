@@ -90,4 +90,10 @@ class CompleteModel extends Model
         return $data;
     }
 
+    public function removeVersionsRelevance($version_number)
+    {
+        $this->where(['version_number'=>['eq',$version_number]])->delete();
+        return ['code'=>1,'msg'=>'删除成功'];
+    }
+
 }

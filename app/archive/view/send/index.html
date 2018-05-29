@@ -60,6 +60,9 @@
         line-height: 17px!important;
         font-size: 10px;
     }
+    .dataTables_scrollBody{
+        overflow-x: hidden!important;
+    }
 </style>
 <div class="layui-fluid" style="height: 100%;">
     <div class="layui-row" id="table_content" style="height: 100%;">
@@ -163,7 +166,7 @@
             <ul id="ztree" class="ztree"></ul>
         </div>
         <div data-options="region:'center',title:'收件人'" style="padding:5px;height: 350px;" id="treeOption">
-            <table id="tableItem" class="layui-table" lay-size="sm" width="750px">
+            <table id="tableItem" class="" lay-size="sm" width="750px">
                 <thead>
                 <tr>
                     <th>选择</th>

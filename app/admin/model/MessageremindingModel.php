@@ -74,6 +74,25 @@ class MessageremindingModel extends Model
     }
 
     /**
+     * 批量添加/保存
+     * @param $param
+     * @return array
+     */
+    public function saveTb($param)
+    {
+        try {
+            $result = $this->allowField(true)->saveAll($param);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'data' => [], 'msg' => '添加成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => -1, 'msg' => $e->getMessage()];
+        }
+    }
+
+    /**
      * 编辑全部信息
      */
     public function editTbAll($param)
