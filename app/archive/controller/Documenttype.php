@@ -16,6 +16,7 @@ use app\archive\model\DocumentTypeModel;
 use app\archive\model\DocumentModel;
 use think\Request;
 use \think\Db;
+use think\Session;
 
 class Documenttype extends Permissions
 {
@@ -26,7 +27,36 @@ class Documenttype extends Permissions
      */
     public function getAll()
     {
-        return json(DocumentTypeModel::all());
+        //根据当前登录的人所在的组织机构查询相应的文档类型树
+        $admin_id = $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+        $group_info = Db::name("admin")
+            ->alias("a")
+            ->join('admin_group g','a.admin_group_id = g.id','left')
+            ->field("g.pid")
+            ->where("a.id",$admin_id)
+            ->find();
+        if($group_info["pid"] == 0)
+        {
+            return json(DocumentTypeModel::all());
+        }else
+        {
+            $group_name = Db::name("admin_group")
+                ->field("id,name")
+                ->where("id",$group_info["pid"])
+                ->find();
+            $document_type_id = Db::name("archive_documenttype")
+                ->where("name like '%".$group_name["name"]."%'")
+                ->find();
+
+
+            $document_type_info = Db::name("archive_documenttype")
+                ->where(" id = 1 OR id = ".$document_type_id["id"]." OR pid = ".$document_type_id["id"])
+                ->order("id asc")
+                ->select();
+
+            return json(["code"=>1,$document_type_info]);
+
+        }
     }
 
     protected $documentTypeService;
