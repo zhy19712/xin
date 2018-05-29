@@ -156,8 +156,7 @@ function zTreeOnClick(event, treeId, treeNode) {
     modeGroupIds = nodeModelNumber();
     if (treeNode.level == 5) {
         console.log(uObjSubIdSingle);
-        modelInfo(uObjSubIdSingle);    //单元工程信息
-        getOne();   //回显自定义属性
+        modelInfo(nodeId,1);    //单元工程信息
         window.operateModel(modeGroupIds);
     }
 }
@@ -236,7 +235,7 @@ layui.use('element', function () {
                     var admin_id = res.admin_id;    //当前登录用户ID
                     tbody.push('<tr><th class="table-title" colspan="4">在线填报</th></tr>');
                     tbody.push('<tr>');
-                    tbody.push('<th>填报人</th>');
+                    tbody.push('<th><span class="filename">填报人</span></th>');
                     tbody.push('<th>填报日期</th>');
                     tbody.push('<th>审批状态</th>');
                     tbody.push('<th>操作</th>');
@@ -326,7 +325,7 @@ layui.use('element', function () {
                     }
                     tbody.push('<tr><th class="table-title" colspan="4">扫描上传</th></tr>');
                     tbody.push('<tr>');
-                    tbody.push('<th>文件名称</th>');
+                    tbody.push('<th><span class="filename">文件名称</span></th>');
                     tbody.push('<th>上传人</th>');
                     tbody.push('<th>上传日期</th>');
                     tbody.push('<th>操作</th>');
@@ -357,7 +356,7 @@ layui.use('element', function () {
                     }
                     tbody.push('<tr><th class="table-title" colspan="4">附件资料</th></tr>');
                     tbody.push('<tr>');
-                    tbody.push('<th>附件名称</th>');
+                    tbody.push('<th><span class="filename">附件名称</span></th>');
                     tbody.push('<th>上传人</th>');
                     tbody.push('<th>上传日期</th>');
                     tbody.push('<th>操作</th>');
@@ -599,89 +598,103 @@ function downOnLine(id) {
 //添加自定义属性
 $('#addAttr').click(function () {
     var attrGroup = [];
-    attrGroup.push('<div class="layui-input-inline attrGroup">');
+    attrGroup.push('<div class="attrGroup"><div class="layui-input-inline">');
     attrGroup.push('<input type="text" name="attrKey" required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
     attrGroup.push('<input type="text" name="attrVal" required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
     attrGroup.push('</div>');
     attrGroup.push('<div class="layui-form-mid layui-word-aux">');
-    attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
-    attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
-    attrGroup.push('</div>');
+    attrGroup.push('<i class="fa fa-check saveAttr" attrId="" onclick="saveAttr(this)"></i>');
+    attrGroup.push('<i class="fa fa-close closeAttr" onclick="delAttr(this)"></i>');
+    attrGroup.push('</div></div>');
     $('#attrGroup').append(attrGroup.join(' '));
 });
 
 //保存自定义属性
 function saveAttr(that) {
-    var attrKey = $(that).parents('#attrGroup').find('input[name="attrKey"]').val();
-    console.log(attrKey);
-    var attrVal = $(that).parents('#attrGroup').find('input[name="attrVal"]').val();
+    var attrId = $(that).attr('attrId');
+    var attrKey = $(that).parents('.attrGroup').find('input[name="attrKey"]').val();
+    var attrVal = $(that).parents('.attrGroup').find('input[name="attrVal"]').val();
     console.log(attrVal);
     $.ajax({
         url: "/modelmanagement/Qualitymass/addAttr",
         type: "post",
         data: {
+            attrId:attrId,
             add_id: nodeId,
             attrKey: attrKey,
             attrVal: attrVal
         },
         dataType: "json",
         success: function (res) {
+            $(that).attr('attrId',res.attrId);
             layer.msg(res.msg);
         }
     });
 }
 
-//回显自定义属性
-function getOne() {
-    $.ajax({
-        url: "/modelmanagement/Qualitymass/getOne",
-        type: "post",
-        data: {
-            add_id: nodeId
-        },
-        dataType: "json",
-        success: function (res) {
-            $('#attrGroup').empty();
-            var attrGroup = [];
-            for (var i = 0; i < res.data.length; i++) {
-                var attrKey = res.data[i].attr_name;
-                var attrVal = res.data[i].attr_value;
-                attrGroup.push('<div class="layui-input-inline attrGroup">');
-                attrGroup.push('<input type="text" name="attrKey" value=' + attrKey + ' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
-                attrGroup.push('<input type="text" name="attrVal" value=' + attrVal + ' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
-                attrGroup.push('</div>');
-                attrGroup.push('<div class="layui-form-mid layui-word-aux">');
-                attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
-                attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
-                attrGroup.push('</div>');
+//删除自定义属性
+function delAttr(that) {
+    var attrId = $(that).attr('attrId');
+    layer.confirm('确定删除该属性?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: "/modelmanagement/Qualitymass/delAttr",
+            type: "post",
+            data: {
+                attrId: attrId
+            },
+            dataType: "json",
+            success: function (res) {
+                $(that).parents('div.attrGroup').remove();
+                layer.msg(res.msg);
             }
-            $('#attrGroup').append(attrGroup.join(' '));
-        }
+        });
+        layer.close(index);
     });
 }
 
 //模板信息
-modelInfo = function (uObjSubID) {
+modelInfo = function (uObjSubID,number_type) {
     $.ajax({
         url: "./getManageInfo",
         type: "post",
         data: {
-            model_id: uObjSubID
+            number: uObjSubID,
+            number_type:number_type
         },
         dataType: "json",
         success: function (res) {
-            $('#site').text(res.attribute.site);
-            $('#serial_number').text(res.attribute.coding);
-            $('#hinge').text(res.attribute.hinge);
-            $('#quantities').text(res.attribute.quantities);
-            $('#en_type').text(res.attribute.en_type);
-            $('#ma_bases').text(res.attribute.ma_bases);
-            $('#su_basis').text(res.attribute.su_basis);
-            $('#el_start').text(res.attribute.el_start);
-            $('#el_cease').text(res.attribute.el_cease);
-            $('#pile_number').text(res.attribute.pile_number);
-            $('#start_date').text(res.attribute.start_date);
-            $('#completion_date').text(res.attribute.completion_date);
+            if(res.unit_info!=null){
+                $('#site').text(res.unit_info.site);
+                $('#serial_number').text(res.unit_info.coding);
+                $('#hinge').text(res.unit_info.hinge);
+                $('#quantities').text(res.unit_info.quantities);
+                $('#en_type').text(res.unit_info.en_type);
+                $('#ma_bases').text(res.unit_info.ma_bases);
+                $('#su_basis').text(res.unit_info.su_basis);
+                $('#el_start').text(res.unit_info.el_start);
+                $('#el_cease').text(res.unit_info.el_cease);
+                $('#pile_number').text(res.unit_info.pile_number);
+                $('#start_date').text(res.unit_info.start_date);
+                $('#completion_date').text(res.unit_info.completion_date);
+            }
+            //回显自定义属性
+            if(res.attr_info.length>0){
+                $('#attrGroup').empty();
+                var attrGroup = [];
+                for (var i = 0; i < res.attr_info.length; i++) {
+                    var attrKey = res.attr_info[i].attrKey;
+                    var attrVal = res.attr_info[i].attrVal;
+                    attrGroup.push('<div class="attrGroup"><div class="layui-input-inline">');
+                    attrGroup.push('<input type="text" name="attrKey" value=' + attrKey + ' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
+                    attrGroup.push('<input type="text" name="attrVal" value=' + attrVal + ' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
+                    attrGroup.push('</div>');
+                    attrGroup.push('<div class="layui-form-mid layui-word-aux">');
+                    attrGroup.push('<i class="fa fa-check saveAttr" attrId='+ res.attr_info[i].attrId +' onclick="saveAttr(this)"></i>');
+                    attrGroup.push('<i class="fa fa-close closeAttr" attrId='+ res.attr_info[i].attrId +' onclick="delAttr(this)"></i>');
+                    attrGroup.push('</div></div>');
+                }
+                $('#attrGroup').append(attrGroup.join(' '));
+            }
         }
     });
 }

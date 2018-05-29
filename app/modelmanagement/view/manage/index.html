@@ -181,7 +181,7 @@
                     }
                 });
                 //模板信息
-                modelInfo(uObjSubID);
+                modelInfo(uObjSubID,2);
 
                 //根据选中模型--获取所有关联模型编号和对应树节点id
                 $.ajax({
@@ -196,7 +196,6 @@
                         operateModel(res.data);
                         selectedModeGroupIds = res.data.model_id;
                         nodeId = res.data.unit_id;
-                        getOne();   //回显自定义属性
                         if (res.data == '' || res.data.unit_id == '' || res.data.model_id == '') {
                             return false;
                         }
