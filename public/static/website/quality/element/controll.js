@@ -127,6 +127,7 @@ zTreeObj = $.fn.zTree.init($("#ztree"), setting, null);
 
 //点击获取路径
 function nodeClick(e, treeId, node) {
+    $("#removeCon").remove();//删出静态页面的没有找到记录
     selectData = "";
     sNodes = zTreeObj.getSelectedNodes()[0];//选中节点
     nodeId = zTreeObj.getSelectedNodes()[0].id;//当前id
@@ -161,16 +162,19 @@ function nodeClick(e, treeId, node) {
     procedureId ='';
     if(controlRowId == '' || procedureId == '') {
         $(".mybtnAdd").css("display", "none");
-        onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
+        // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
         $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
             '<thead>' +
-                '<tr style="text-align: center">' +
-                    '<th>填报人</th>' +
-                    '<th>填报日期</th>' +
-                    '<th>当前审批人</th>' +
-                    '<th>审批状态</th>' +
-                    '<th>操作</th>' +
+                '<tr style="text-align: center;border-bottom:2px solid #111;border-top: 1px solid #cecece;">' +
+                    '<th style="padding:10px 18px;font-weight: bold;">填报人</th>' +
+                    '<th style="padding:10px 18px;font-weight: bold;">填报日期</th>' +
+                    '<th style="padding:10px 18px;font-weight: bold;">当前审批人</th>' +
+                    '<th style="padding:10px 18px;font-weight: bold;">审批状态</th>' +
+                    '<th style="padding:10px 18px;font-weight: bold;">操作</th>' +
                     '<th style="display: none;">当前审批人Id</th>' +
+                '</tr>' +
+                '<tr class="delElement" style="text-align: center">' +
+                    '<td colspan="5" style="padding:10px 18px;">没有找到记录</td>' +
                 '</tr>' +
             '</thead>' +
         '</table>');
@@ -323,6 +327,8 @@ $(".imgList").on("click","#homeWork",function () {
     $(".mybtnAdd").css("display","none");
     $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
+    implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
+    imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
     flag = true;
 });
 
@@ -345,17 +351,20 @@ function clickConName(id) {
         imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
         // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);// 报错可能是这个原因
         $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                '<thead>' +
-                    '<tr style="text-align: center">' +
-                        '<th>填报人</th>' +
-                        '<th>填报日期</th>' +
-                        '<th>当前审批人</th>' +
-                        '<th>审批状态</th>' +
-                        '<th>操作</th>' +
-                        '<th style="display: none;">当前审批人Id</th>' +
-                    '</tr>' +
-                '</thead>' +
-            '</table>');
+            '<thead>' +
+                '<tr style="text-align: center;border-bottom:2px solid #111;border-top: 1px solid #cecece;">' +
+                    '<th style="padding:10px 18px;font-weight: bold;">填报人</th>' +
+                    '<th style="padding:10px 18px;font-weight: bold;">填报日期</th>' +
+                    '<th style="padding:10px 18px;font-weight: bold;">当前审批人</th>' +
+                    '<th style="padding:10px 18px;font-weight: bold;">审批状态</th>' +
+                    '<th style="padding:10px 18px;font-weight: bold;">操作</th>' +
+                    '<th style="display: none;">当前审批人Id</th>' +
+                '</tr>' +
+                '<tr class="delElement" style="text-align: center">' +
+                    '<td colspan="5" style="padding:10px 18px;">没有找到记录</td>' +
+                '</tr>' +
+            '</thead>' +
+        '</table>');
     }
 };
 
@@ -530,6 +539,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     controlId = selectData[4];
 
     if(controlRowId != undefined && controlRowId != null){
+        $(".delElement").remove();
         implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
         imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id="+controlRowId).load();
         funOnLine(nodeUnitId,procedureId,controlRowId)
@@ -1198,8 +1208,7 @@ $("#unitWorkRightBottom").on("click",".mybtnAdd",function () {
         content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&unit_id='+ nodeUnitId +'&currentStep=0&isView=false',
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
-            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
-        }
+            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();        }
     });
 });
 

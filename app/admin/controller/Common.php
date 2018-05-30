@@ -264,15 +264,15 @@ class Common extends Controller
                 //是登录操作
                 $post = $this->request->post();
                 //验证  唯一规则： 表名，字段名，排除主键值，主键名
-//                $validate = new \think\Validate([
-//                    ['name', 'require|alphaDash', '用户名不能为空|用户名格式只能是字母、数字、——或_'],
-//                    ['password', 'require', '密码不能为空'],
-//                    ['captcha','require|captcha','验证码不能为空|验证码不正确'],
-//                ]);
                 $validate = new \think\Validate([
                     ['name', 'require|alphaDash', '用户名不能为空|用户名格式只能是字母、数字、——或_'],
-                    ['password', 'require', '密码不能为空']
+                    ['password', 'require', '密码不能为空'],
+                    ['captcha','require|captcha','验证码不能为空|验证码不正确'],
                 ]);
+//                $validate = new \think\Validate([
+//                    ['name', 'require|alphaDash', '用户名不能为空|用户名格式只能是字母、数字、——或_'],
+//                    ['password', 'require', '密码不能为空']
+//                ]);
                 //验证部分数据合法性
                 if (!$validate->check($post)) {
                     $this->error('提交失败：' . $validate->getError());
