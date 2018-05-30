@@ -4,3 +4,6 @@
 .layui-layer-content{
     padding: 0;
 }
+.dataTables_wrapper .dataTables_filter{
+    margin-bottom:20px;
+}

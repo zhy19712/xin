@@ -208,7 +208,7 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     processing: true,
     serverSide: true,
     "scrollX": true,
-    "scrollY": "200px",
+    "scrollY": "520px",
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {

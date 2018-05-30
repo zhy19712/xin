@@ -248,7 +248,7 @@ function view(rowId) {
         title:'查看模型',
         id:'2',
         type:2,
-        area:['1024px','600px'],
+        area:['100%','100%'],
         content:['./viewmodel','no'],
         success:function (layero, index) {
         },

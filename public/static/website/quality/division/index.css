@@ -16,6 +16,9 @@ textarea[name="remark"]{
 input[name="en_type"]{
 
 }
+.ztree{
+    margin-top: 30px;
+}
 .ztree-title i.fa {
     width: 15%;
     text-align: center;
