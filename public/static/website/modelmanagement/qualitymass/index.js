@@ -207,10 +207,14 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
+    "scrollX": true,
+    "scrollY": "200px",
+    "scrollCollapse": "true",
+    "paging": "false",
     ajax: {
         "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_quality"
     },
-    dom: '',
+    dom: 'lrtip',
     columns: [
         {
             name: "id",
@@ -488,13 +492,13 @@ function clickTree(that) {
     var uid = $(that).attr('uid');
     var treeObj = $.fn.zTree.getZTreeObj("ztree");
     var nodes = treeObj.getNodesByParam("add_id", uid, null);
-    console.log(nodes);
+    treeObj.selectNode(nodes[0]);
     var tId = nodes[0].tId;
     $('#'+tId+'_span').click();
 }
 
-/*//刷新已关联模型
-$('#modelTable').tabs({
+//刷新已关联模型
+/*$('#modelTable').tabs({
     onSelect: function(title,index){
         console.log(index);
         if(index==0){
@@ -518,7 +522,7 @@ for(var i = 0;i<15;i++){
     firstTrTemp.push('</td>');
 }
 firstTrTemp.push('</tr>');
-$('.dataTables_scrollHeadInner table').append(firstTrTemp.join(''));
+$('#tableItem_wrapper .dataTables_scrollHeadInner table').append(firstTrTemp.join(''));
 
 //获取下拉列表的值
 function dropDown(type,eId) {
@@ -532,6 +536,7 @@ function dropDown(type,eId) {
         success: function (res) {
             var data = res.data;
             //构建select
+            $('#searchTr td#'+eId).empty();
             var selectTemp = [];
             selectTemp.push('<select onchange="change(this)">');
             selectTemp.push('<option>请选择</option>');
