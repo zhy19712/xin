@@ -52,6 +52,7 @@
                             type:1
                         },
                         success:function(res){
+                            $('select[name="officeType"]').html('');
                             var options = [];
                             for(var i = 0;i<res.nodeType.length;i++){
                                 options.push('<option value='+ res.nodeType[i].id +'>'+ res.nodeType[i].name +'</option>');
