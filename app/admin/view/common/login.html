@@ -160,6 +160,7 @@
                 form = layui.form;
             $(window).on('load', function() {
                 form.on('submit(login)', function(data) {
+                    console.log($('#login').serialize());
                     $.ajax({
                         url:"{:url('admin/common/login')}",
                         data:$('#login').serialize(),
