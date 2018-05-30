@@ -476,12 +476,12 @@ class Common extends Controller
 
         if($type == 1){
             $recordsTotal = Db::name($table)->alias('s')
-                ->join('admin u', 's.send_id=u.id', 'left')
+                ->join('admin u', 's.income_id=u.id', 'left')
                 ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                 ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])->count();
         }else if($type == 2){
             $recordsTotal = Db::name($table)->alias('s')
-                ->join('admin u', 's.income_id=u.id', 'left')
+                ->join('admin u', 's.send_id=u.id', 'left')
                 ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
                 ->where(['u.admin_group_id'=>['in',$gid_arr]])->count();
         }else{
@@ -536,26 +536,26 @@ class Common extends Controller
                 if($type == 1){
                     // 收文 查询 发件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
-                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.income_id) as income_name,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else if($type == 2){
                     // 发文 查询 收件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
-                        ->join('admin u', 's.income_id=u.id', 'left')
+                        ->join('admin u', 's.send_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.send_id) as send_name,u.nickname as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as send_name,(select nickname from xin_admin where id = s.income_id) as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['u.admin_group_id'=>['in',$gid_arr]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('s')
-                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.income_id) as income_name,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
                         ->order($order)->limit(intval($start), intval($length))->select();
@@ -568,24 +568,24 @@ class Common extends Controller
                 if($type == 1){
                     // 收文 查询 发件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
-                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.income_id) as income_name,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else if($type == 2){
                     // 发文 查询 收件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
-                        ->join('admin u', 's.income_id=u.id', 'left')
+                        ->join('admin u', 's.send_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.send_id) as send_name,u.nickname as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as send_name,(select nickname from xin_admin where id = s.income_id) as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['u.admin_group_id'=>['in',$gid_arr]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('s')
-                        ->join('admin u', 's.send_id=u.id', 'left')
+                        ->join('admin u', 's.income_id=u.id', 'left')
                         ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,(select nickname from xin_admin where id = s.income_id) as income_name,u.nickname as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
