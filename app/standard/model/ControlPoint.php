@@ -34,6 +34,20 @@ class ControlPoint extends Model
         }
     }
 
+    public function editTb($param)
+    {
+        try{
+            $result = $this->allowField(true)->save($param,['id' => $param['id']]);
+            if(false === $result){
+                return ['code' => -1,'msg' => $this->getError()];
+            }else{
+                return ['code' => 1, 'msg' => '编辑成功'];
+            }
+        }catch(PDOException $e){
+            return ['code' => 0, 'msg' => $e->getMessage()];
+        }
+    }
+
 
     /**
      * 获取节点下所有子节点

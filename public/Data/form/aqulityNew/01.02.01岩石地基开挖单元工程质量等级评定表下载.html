@@ -12,6 +12,8 @@
     <link href="/Content/css/form.css" rel="stylesheet">
     <link href="/Content/css/edit.css" rel="stylesheet">
     <script src="/Content/js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.qrcode.min.js"></script>
+
     <script src="/Content/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script src="/Areas/Quality/Views/QualityForm/QualityForm.js"></script>
     <title></title>
@@ -59,6 +61,11 @@
             display: inline-block;
             width: 70px;
         }
+        input{
+            outline: none!important;
+            border: none!important;
+            max-width: 120px;
+        }
     </style>
 </head>
 
@@ -73,18 +80,17 @@
     <input id="currentStep" type="hidden" value="{$currentStep}" />
     <input id="isView" type="hidden" value="{$isView}" />
     <input id="formData" type="hidden" value='{$formData}' />
-    <div class="hearBtn">
-       <button class="btn btn-success btns" type="button" onclick="formAttachments()">
-            <i class="fa fa-file"></i><span class="bold">附件</span>
-        </button>
-        <button class="btn btn-success btns" type="button" onclick="formSave()">
-           <i class="fa fa-save"></i> <span class="bold">保存</span>
-        </button>
-    </div>
+
     <div class="hr-line-dashed" style="margin: 5px 0px 0px;clear: both;"></div>
     <div class="A4">
-        <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:16pt; font-weight:bold">河北丰宁抽水蓄能电站</span></p>
-        <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:16pt; font-weight:bold">岩石边坡开挖单元工程质量等级评定表</span></p>
+        <div id="fileTitle">
+            <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:16pt; font-weight:bold">河北丰宁抽水蓄能电站</span></p>
+            <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:16pt; font-weight:bold">岩石地基开挖单元工程质量等级评定表</span></p>
+            <div id="qrcode">
+
+            </div>
+        </div>
+
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
         <p style="line-height:10pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:10.5pt; font-weight:normal">合同编号：{ContractCode}                    </span><span style="font-family:仿宋; font-size:10.5pt; font-weight:normal">    </span><span style="font-family:仿宋; font-size:10.5pt; font-weight:normal">编号：{JYPCode}</span></p>-->
         <table class="tabWidth tabTitle">
@@ -106,7 +112,7 @@
                         <p style="line-height:16pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">单位工程名称及编号</span></p>
                     </td>
                     <td colspan="5" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:1.5pt; padding-left:2.48pt; padding-right:2.48pt; vertical-align:middle">
-                        <p style="line-height:16pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$DWName}</span><br /><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$DWCode}</span></p>
+                        <p style="line-height:16pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{DWName}</span><br /><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$DWCode}</span></p>
                     </td>
                     <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:1.5pt; padding-left:2.48pt; padding-right:2.48pt; vertical-align:middle">
                         <p style="line-height:16pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">单元工程量</span></p>
@@ -180,7 +186,7 @@
                         <p style="line-height:16pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">1</span></p>
                     </td>
                     <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
-                        <p style="line-height:16pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">△ 岩石边坡开挖</span></p>
+                        <p style="line-height:16pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">△ 岩石地基开挖</span></p>
                     </td>
                     <td colspan="4" style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:2.48pt; padding-right:2.48pt; vertical-align:middle">
                         <div class="col-sm-3 input-group selType">
@@ -353,7 +359,7 @@
                         <div class="form-group div-inline data_2" style="width: 34mm;margin-left: 10px;">
                             <div class="input-group date" style="width:100%;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_2" step="0" type="text" style="width:120px;margin: 2px 8px;" value="" form-required="日期必填。">
+                                <input id="input_date_2" step="0" type="text" class="form-control" value="" form-required="日期必填。">
                             </div>
                         </div>
                     </td>
@@ -368,7 +374,7 @@
                         <div class="form-group div-inline data_2" style="width: 34mm;margin-left: 10px;">
                             <div class="input-group date" style="width:100%;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_3" step="1" type="text" style="width:120px;margin: 2px 8px;" value="" form-required="日期必填。">
+                                <input id="input_date_3" step="1" type="text" class="form-control" value="" form-required="日期必填。">
                             </div>
                         </div>
                     </td>
@@ -383,7 +389,7 @@
                         <div class="form-group div-inline data_2" style="width: 34mm;">
                             <div class="input-group date" style="width:100%;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_4" step="2" type="text"  style="width:120px;margin: 2px 8px;" value="" form-required="日期必填。">
+                                <input id="input_date_4" step="2" type="text" class="form-control" value="" form-required="日期必填。">
                             </div>
                         </div>
                     </td>
@@ -399,7 +405,7 @@
                         <div class="form-group div-inline data_2" style="width: 34mm; margin-left: 24mm;">
                             <div class="input-group date">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_5" step="3" type="text"  style="margin: 2px auto;" value="" form-required="日期必填。">
+                                <input id="input_date_5" step="3" type="text" class="form-control" value="" form-required="日期必填。">
                             </div>
                         </div>
                     </td>
