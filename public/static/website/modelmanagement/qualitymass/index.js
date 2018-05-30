@@ -477,10 +477,12 @@ $('#relieveBtn').click(function(){
 //筛选已关联构件
 $('#alreadyTab').on('ifChecked', function(event){
     model_quality(1);
+    model_type = 1;
 });
 //筛选未关联构件
 $('#noteverTab').on('ifChecked', function(event){
     model_quality(2);
+    model_type = 2;
 });
 //筛选方法
 function model_quality(model_type) {
@@ -597,7 +599,6 @@ function change(that) {
     });
     var section = $('#searchTd0 select option:selected').val();
     var unit = $('#searchTd1 select option:selected').val();
-    console.log(unit);
     var parcel = $('#searchTd2 select option:selected').val();
     var cell = $('#searchTd3 select option:selected').val();
     var pile_number_1 = $('#searchTd4 select option:selected').val();
@@ -616,7 +617,7 @@ function change(that) {
 //模型关联筛选
 var data = '&section='+section+'&unit='+unit+'&parcel='+parcel+'&cell='+cell+'&pile_number_1='+pile_number_1+
     '&pile_val_1='+pile_val_1+'&pile_number_2='+pile_number_2+'&pile_val_2='+pile_val_2+'&pile_number_3='+pile_number_3+
-    '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease+'';
+    '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease+'&model_type='+model_type;
     tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+data).load();
 /*
     $.ajax({

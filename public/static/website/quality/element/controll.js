@@ -1144,7 +1144,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     // console.log($("#userId").val() + "当前登录人Id");
                     // console.log($("#userId").val())
                     var userName = $(top.document).find("#current_user").text().trim();
-                    console.log(userName); //当前登人name
+                    // console.log(userName); //当前登人name
                     var html = "";
                     html += "<a title='查看' onclick='seeOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-search'></i></a>";
                     if (row[3] === 0 && userName == row[0]) {
