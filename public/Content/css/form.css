@@ -92,3 +92,21 @@ canvas {
     z-index: 2147483647!important;
     background-color: white!important;
 }
+.sign_date{
+    border: none!important;
+    outline: none!important;
+}
+#fileTitle{
+    width: 210mm;
+    height: 80px;
+    margin: 0 auto;
+    position: relative;
+}
+#qrcode{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 80px;
+    height: 80px;
+    background-color: red;
+}
