@@ -223,6 +223,7 @@ table.dataTable.no-footer{
 }
 /* 表格搜索 */
 .dataTables_wrapper .dataTables_filter{
+    margin-bottom: 20px;
     line-height: 29px;
 }
 .dataTables_wrapper .dataTables_filter label{

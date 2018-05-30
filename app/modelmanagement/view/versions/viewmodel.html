@@ -11,7 +11,20 @@
     <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="99.5%"></object>
     <!-- 初始化 -->
     <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
-        RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+        var modelPath = "http://192.168.1.2:8008/default.aspx?dir=url_res02&path=";
+        $.ajax({
+            url: "/modelmanagement/qualitymass/resourcePagName",
+            type: "post",
+            dataType: "json",
+            data: {
+                model_type: parent.model_type
+            },
+            success: function (res) {
+                //模型名称
+                var modelName = res.pag_name;
+                RealBimOcx.SwitchBIMSceneSimple(modelPath, modelName);
+            }
+        });
         RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
         RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
         RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
