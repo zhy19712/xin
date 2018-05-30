@@ -24,6 +24,8 @@ class Send extends Permissions
 {
     public function index()
     {
+        $user_name = Session::has('current_nickname') ? Session::get('current_nickname') : 0;
+        $this->assign('user_name',$user_name);
         return $this->fetch();
     }
 
