@@ -1,5 +1,6 @@
 .manage-info .panel-body {
-    overflow: auto;
+    height: 700px;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -129,8 +130,8 @@
     padding: 30px;
 }
 
-.layui-table {
-    margin: 0;
+.layui-control-content .layui-table {
+    margin-top: -10px;
 }
 
 .layui-table i.fa {
@@ -244,11 +245,11 @@
 }
 
 .layui-control-title {
+    margin-bottom: 10px;
     text-align: center;
     background-color: #009688;
     color: #f4f4f4;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-radius: 4px;
 }
 
 .layui-work-title i, .layui-control-title i {
@@ -288,7 +289,7 @@
 }
 
 .filename {
-    width: 100px;
+    width: 90px;
     display: inline-block;
     word-wrap: break-word;
     word-break: break-all;
