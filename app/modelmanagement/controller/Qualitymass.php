@@ -242,7 +242,7 @@ class Qualitymass extends Permissions
             $param = input('post.');
             $number = isset($param['number']) ? $param['number'] : -100;
             $number_type = isset($param['number_type']) ? $param['number_type'] : -100;
-            if(empty($number) || empty($number_type)){
+            if($number == -100 || empty($number_type)){
                 return json(['code'=>-1,'data'=>[],'msg'=>'缺少参数']);
             }
             $quality = new QualitymassModel();
