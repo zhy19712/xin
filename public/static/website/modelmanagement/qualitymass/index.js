@@ -208,7 +208,7 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     processing: true,
     serverSide: true,
     "scrollX": true,
-    "scrollY": "200px",
+    "scrollY": "520px",
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {
@@ -498,20 +498,19 @@ function clickTree(that) {
 }
 
 //刷新已关联模型
-/*$('#modelTable').tabs({
+$('#modelTable').tabs({
+    width:'100%',
     onSelect: function(title,index){
-        console.log(index);
         if(index==0){
             tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search').load();
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
         }
         if(index==1){
             alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust()
         }
     }
-});*/
-
-
-
+});
 
 //构建查询表格模板
 var firstTrTemp = [];

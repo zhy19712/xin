@@ -45,10 +45,10 @@ class Templatemanage extends Permissions
             } else {
                 $res = $this->templateService->allowField(true)->save($mod, ['id' => $mod['id']]);
             }
-            if ($res) {
-                return json(['code' => 1, 'data' => $res]);
-            } else {
-                return json(['code' => -1, 'data' => $res]);
+            if(false === $res){
+                return ['code' => -1];
+            }else{
+                return ['code' => 1];
             }
         }
         $this->assign('id',$id);

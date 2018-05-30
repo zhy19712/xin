@@ -283,6 +283,10 @@
     color: #fff;
 }
 
+.layout-panel-west .ztree li span.button.ico_docu,.layout-panel-west .ztree li span.button.ico_open,.layout-panel-west .ztree li span.button.ico_close{
+    display: none;
+}
+
 .filename {
     width: 100px;
     display: inline-block;

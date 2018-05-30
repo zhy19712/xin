@@ -167,7 +167,16 @@ class Common extends Controller
         // pile_number_3 桩号3名 pile_val_3 桩号3值
         // pile_number_4 桩号4名 pile_val_4 桩号4值
         // el_start 高程起 el_cease 高程止
+        $search_data = [];
         $param = input('param.');
+
+        $model_type = isset($param['model_type']) ? $param['model_type'] : 0; // 0 默认是 查所有的构件 1 已关联构件 2 未关联构件
+        if($model_type == 1){
+            $search_data = ['q.unit_id'=>['neq',0]];
+        }else if($model_type == 2){
+            $search_data = ['q.unit_id'=>['eq',0]];
+        }
+
         $section = isset($param['section']) ? $param['section'] : '';
         $unit = isset($param['unit']) ? $param['unit'] : '';
         $parcel = isset($param['parcel']) ? $param['parcel'] : '';
@@ -191,7 +200,6 @@ class Common extends Controller
          *
          *  桩号3名桩号4名 里面控制着 CZ (场左) 和 CY (场右) 同上
          */
-        $search_data = [];
         if($section){
             $search_data['q.section'] = $section;
         }

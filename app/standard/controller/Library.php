@@ -81,9 +81,9 @@ class Library extends Permissions
             if (empty($mod['id'])) {
                 $res = $model->insertTb($mod);
             } else {
-                $res = $this->controlPointService->allowField(true)->save($mod, ['id' => $mod['id']]);
+                $res = $model->editTb($mod);
             }
-            return $res ? json(['code' => 1]) : json(['code' => -1]);
+            return json($res);
         }
 
         $this->assign('id', $id);
