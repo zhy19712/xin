@@ -65,7 +65,7 @@ tableItem = $('#tableItem').DataTable({
             "orderable": false,
             "targets": [3],
             "render": function (data, type, row) {
-                var html = "<span style='margin-left: 5px;' onclick='downConFile("+row[3]+")'><i title='下载' class='fa fa-download'></i></span>";
+                var html = "<button class='faStyle' title='下载' onclick='downConFile("+row[3]+")'><i class='fa fa-download'></i></button>";
                 // html += "<span style='margin-left: 5px;' onclick='printFile("+row[3]+")'><i title='打印' class='fa fa-print'></i></span>";
                 // html += "<span style='margin-left: 5px;' onclick='printConFile("+row[3]+")'><i title='打印' class='fa fa-print'></i></span>";
                 return html;
@@ -293,8 +293,10 @@ function selfidName(id) {
                 $("#imgListRight").html('');
                 optionStrAfter +=
                     '<a href="javascript:;"  class="imgListStyle" onclick="clickConName('+ res[i].id +')">' +
-                    '<img class="imgNone" id="img'+i+'" src="/static/website/elementimg/right.png" alt="箭头">' +
-                    '<img src="/static/website/elementimg/work.png" alt="工作">&nbsp;'+res[i].name+'<span style="display: none;">'+res[i].id+'</span>' +
+                        '<img class="imgNone" id="img'+i+'" src="/static/website/elementimg/next.png" alt="箭头">' +
+                        '<img src="/static/website/elementimg/procedure.png" alt="工作">' +
+                        '<span style="vertical-align: middle">&nbsp; '+res[i].name+'</span>' +
+                        '<span style="display: none;">'+res[i].id+'</span>' +
                     '</a>';
             };
             $("#imgListRight").append(optionStrAfter);
