@@ -40,9 +40,9 @@ var completedTable = $('#completedTable').DataTable({
                 var rowId = row[0];     //序号（主键编号）
                 var status = row[6];    //启用状态  1为启用  0为禁用
                 var className = status==1?'fa-eye':'fa-eye-slash';
-                var html = "<a type='button' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
+                var html = "<a type='button' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
+                html += "<a type='button' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
+                html += "<a type='button' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
                 return html;
             }
         }
@@ -112,9 +112,9 @@ var constructionTable = $('#constructionTable').DataTable({
                 var rowId = row[0];     //序号（主键编号）
                 var status = row[6];   //启用状态  1为启用  0为禁用
                 var className = status==1?'fa-eye':'fa-eye-slash';
-                var html = "<a type='button' href='javasrcipt:;' class='' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' class='' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
+                var html = "<a type='button' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-pencil'></i></a>";
+                html += "<a type='button' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
+                html += "<a type='button' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
                 return html;
             }
         }
