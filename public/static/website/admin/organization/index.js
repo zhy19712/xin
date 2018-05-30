@@ -484,7 +484,8 @@
             mimeTypes: 'image/jpg,image/jpeg,image/png'
         },
         // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-        resize: false
+        resize: false,
+        duplicate :true
 
     });
 
@@ -519,7 +520,8 @@
             mimeTypes: 'image/jpg,image/jpeg,image/png'
         },
         // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-        resize: false
+        resize: false,
+        duplicate :true
 
     });
 
@@ -658,7 +660,7 @@
     $('#add').click(function () {
         $.add({
             formId:'org',
-            area:['660px','650px'],
+            area:['670px','660px'],
             success:function(){
                 $('input[name="admin_group_id"]').val(admin_group_name);
                 $('.webuploader-pick').next('div').css({
@@ -761,7 +763,7 @@
         layer.open({
             id:'2',
             type:'1',
-            area:['660px','600px'],
+            area:['660px','660px'],
             title:'查看',
             btn:['关闭'],
             content:$('#orgStatic'),
@@ -786,7 +788,7 @@
         layer.open({
             id:'1',
             type:'1',
-            area:['660px','640px'],
+            area:['660px','660px'],
             title:'编辑',
             content:$('#editOrg'),
             success:function(){
