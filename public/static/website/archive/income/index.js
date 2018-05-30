@@ -1,3 +1,4 @@
+var user_name = $('#user_name').val();
 //收文状态表格
 tableItem = $("#tableIncome").DataTable({
     processing: true,
@@ -38,7 +39,7 @@ tableItem = $("#tableIncome").DataTable({
         {
             targets: [7],
             render: function (data, type, row,meta) {
-                if (row[6] == '2'){
+                if (row[6] == '2' && user_name == row[5]){
                     return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="handle(this)">处理</a>';
                 }else {
                     return  '<a title="' + data + '" class="layui-btn  layui-btn-sm"  href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)" style="border-radius: 4px;">查看</a>';
