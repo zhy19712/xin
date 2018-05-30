@@ -65,7 +65,7 @@ tableItem = $('#tableItem').DataTable({
             "orderable": false,
             "targets": [3],
             "render": function (data, type, row) {
-                var html = "<button class='faStyle' title='下载' onclick='downConFile("+row[3]+")'><i class='fa fa-download'></i></button>";
+                var html = "<a class='faStyle' title='下载' onclick='downConFile("+row[3]+")'><i class='fa fa-download'></i></a>";
                 // html += "<span style='margin-left: 5px;' onclick='printFile("+row[3]+")'><i title='打印' class='fa fa-print'></i></span>";
                 // html += "<span style='margin-left: 5px;' onclick='printConFile("+row[3]+")'><i title='打印' class='fa fa-print'></i></span>";
                 return html;
@@ -274,7 +274,7 @@ function nodeClickUnit(e, treeId, node) {
         tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
     }
     $("#tableContent .imgList").css('display','block');
-    $("#homeWork").css("color","#2213e9");
+    $("#homeWork").css("color","#00c0ef");
     checkforming(nodeUnitId); //判断是否手填
     resultInfo(nodeUnitId); //点击获取验评
 }
@@ -300,9 +300,9 @@ function selfidName(id) {
                     '</a>';
             };
             $("#imgListRight").append(optionStrAfter);
-            if($(".imgNone").attr("id") == 'img0'){
-                $("#img0").css("display","none");
-            }
+            // if($(".imgNone").attr("id") == 'img0'){
+            //     $("#img0").css("display","none");
+            // }
 
             $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 64px)");
 
@@ -316,8 +316,8 @@ function selfidName(id) {
 
 //点击置灰
 $(".imgList").on("click","a",function () {
-    $(this).css("color","#2213e9").siblings("a").css("color","#CDCDCD");
-    $("#homeWork").css("color","#CDCDCD");
+    $(this).css("color","#00c0ef").siblings("a").css("color","#333333");
+    $("#homeWork").css("color","#333333");
 });
 
 //控制控制点的显示的开关
@@ -327,7 +327,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(".bitCodes").css("display","none");
     $(".mybtn").css("display","none");
     $(".mybtnAdd").css("display","none");
-    $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
+    $(this).css("color","#00c0ef").parent("span").next("span").children("a").css("color","#333333");
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
@@ -766,7 +766,7 @@ function outerHeight() {
        pick: {
            multiple: false,
            id: "#file_upload_standards",
-           innerHTML: "<i class='fa fa-upload'></i>上传"
+           innerHTML: "<i class='fa fa-upload'></i>&nbsp;上传"
        },
        resize: false,
        duplicate :true, //是否可以重复上传
@@ -1144,32 +1144,31 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     // console.log($("#userId").val() + "当前登录人Id");
                     // console.log($("#userId").val())
                     var userName = $(top.document).find("#current_user").text().trim();
-                    // console.log(userName); //当前登人name
                     var html = "";
-                    html += "<a title='查看' onclick='seeOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-search'></i></a>";
+                    html += "<a class='faStyle' title='查看' onclick='seeOnLine("+row[4]+")'><i class='fa fa fa-search'></i></a>";
                     if (row[3] === 0 && userName == row[0]) {
-                        html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa-pencil'></i></a>";
-                        html += "<a title='删除' onclick='delOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-trash'></i></a>";
-                        // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
+                        html += "<a class='faStyle' title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")'><i class='fa fa-pencil'></i></a>";
+                        html += "<a class='faStyle' title='删除' onclick='delOnLine("+row[4]+")'><i class='fa fa fa-trash'></i></a>";
+                        // html += "<a class='faStyle' title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
                     }
                     else if (row[3] === 1 && row[5] == $("#userId").val()) {
                         var str = JSON.stringify(row[2]);
-                        html += "<a title='编辑' onclick='editOnLine ("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-pencil'></i></a>";
-                        // html += "<a title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-pencil-square-o'></i></a>";
-                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
+                        html += "<a class='faStyle' title='编辑' onclick='editOnLine ("+row[4]+","+row[6]+")'><i class='fa fa fa-pencil'></i></a>";
+                        // html += "<a class='faStyle' title='审批' onclick='approve("+row[4]+","+str+","+row[6]+")'><i class='fa fa fa-pencil-square-o'></i></a>";
+                        html += "<a class='faStyle' title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
                     }
                     else if (row[3] === 2) {
-                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
-                        // html += "<a title='下载' onclick='downOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-download'></i></a>";
-                        html += "<a title='作废' onclick='toVoidOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-minus'></i></a>";
+                        html += "<a class='faStyle' title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
+                        // html += "<a class='faStyle' title='下载' onclick='downOnLine("+row[4]+")' class='eleHide'><i class='fa fa fa-download'></i></a>";
+                        html += "<a class='faStyle' title='作废' onclick='toVoidOnLine("+row[4]+")' class='eleHide'><i class='fa fa fa-minus'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
-                        // html += "<a title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
-                        html += "<a title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-pencil'></i></a>";
-                        html += "<a title='删除' onclick='delOnLine("+row[4]+")' style='margin-right:6px;'><i class='fa fa fa-trash'></i></a>";
-                        html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
+                        // html += "<a class='faStyle' title='提交' onclick='submitOnLine("+row[4]+")'><i class='fa fa fa-check-square-o'></i></a>";
+                        html += "<a class='faStyle' title='编辑' onclick='editOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-pencil'></i></a>";
+                        html += "<a class='faStyle' title='删除' onclick='delOnLine("+row[4]+")'><i class='fa fa fa-trash'></i></a>";
+                        html += "<a class='faStyle' title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
                     }
-                    else html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
+                    else html += "<a class='faStyle' title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")'><i class='fa fa fa-file-text'></i></a>";
                     return html;
 
                 }
