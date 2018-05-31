@@ -239,8 +239,8 @@ table.dataTable.no-footer{
 .layui-layer-content{
     padding-top: 20px;
 }
-.layui-layer-content .layui-form{
-    padding-right: 20px;
+.layui-layer-content .layui-form .layui-input-block{
+    padding-right: 30px;
 }
 .layui-layer-content .layui-btn{
     height: 30px;

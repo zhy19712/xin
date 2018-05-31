@@ -68,16 +68,14 @@ class SendModel extends Model
             $data = Db::name('archive_income_send')->alias('s')
                 ->join('admin u', 's.send_id=u.id', 'left')
                 ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                ->join('admin_group_type t', 'g.type=t.id', 'left')
-                ->field('s.id,s.file_name,s.date,t.name as unit_name,u.nickname as send_name,s.remark,s.file_ids')
+                ->field('s.id,s.file_name,s.date,g.p_name as unit_name,u.nickname as send_name,s.remark,s.file_ids')
                 ->where(['s.id'=>$id])->find();
         }else{
             // 发文 查询 收件人的名称和单位
             $data = Db::name('archive_income_send')->alias('s')
                 ->join('admin u', 's.income_id=u.id', 'left')
                 ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                ->join('admin_group_type t', 'g.type=t.id', 'left')
-                ->field('s.id,s.file_name,s.date,u.nickname as income_name,t.name as unit_name,s.remark,s.relevance_id,s.file_ids')
+                ->field('s.id,s.file_name,s.date,u.nickname as income_name,g.p_name as unit_name,s.remark,s.relevance_id,s.file_ids')
                 ->where(['s.id'=>$id])->find();
         }
         $id_arr = explode(',',$data['file_ids']);

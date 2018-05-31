@@ -408,7 +408,7 @@ layui.use('element', function () {
                     tbody.push('</tr>');
                     if (res.upload_form_fu == '') {
                         tbody.push('<tr>');
-                        tbody.push('<td>');
+                        tbody.push('<td class="td-empty" colspan="4">');
                         tbody.push('无图像资料数据');
                         tbody.push('</td>');
                         tbody.push('</tr>');

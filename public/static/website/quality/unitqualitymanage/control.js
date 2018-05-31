@@ -113,17 +113,17 @@ function onClick(e, treeId, node) {
   }
 
   tableSituation.ajax.url("/quality/common/datatablesPre/tableName/quality_subdivision_planning_file/type/2/list_id/.shtml").load();
-  $("#homeWork").css("color","#2213e9").siblings().css("color","#CDCDCD");
+  $("#homeWork").css("color","#00c0ef").siblings().css("color","#333333");
 }
 //点击置灰
 $(".imgList").on("click","a",function () {
-  $(this).css("color","#2213e9").siblings("a").css("color","#CDCDCD");
-  $("#homeWork").css("color","#CDCDCD");
+  $(this).css("color","#00c0ef").siblings("a").css("color","#333333");
+  $("#homeWork").css("color","#333333");
 });
 
 //点击作业
 $(".imgList").on("click","#homeWork",function () {
-  $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
+  $(this).css("color","#00c0ef").parent("span").next("span").children("a").css("color","#333333");
   tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked/1/selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
   $(".selectShow").hide();
 });

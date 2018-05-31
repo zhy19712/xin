@@ -7,3 +7,6 @@
 .dataTables_wrapper .dataTables_filter{
     margin-bottom:20px;
 }
+.layui-form{
+    padding-top: 20px;
+}
