@@ -53,7 +53,7 @@ tableIncome = $("#tableIncome").DataTable({
             }
         }
         ],
-    dom: 'fr<"#addSend.mybtn layui-btn layui-btn-md">t<"#pagenations"lp>',
+    dom: 'fr<"#addSend.mybtn layui-btn layui-btn-md">t<"#showItme"l><"#pagenations"p>',
     language: {
         "sProcessing":"数据加载中...",
         "lengthMenu": "_MENU_",
