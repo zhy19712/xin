@@ -121,18 +121,7 @@ class Matchform extends Controller
                 'DWName'=>$output['DWName'],
                 'DWCode'=>$output['DWCode']
             ]);
-        //输出模板内容
-        //Todo 暂时使用replace替换，后期修改模板使用fetch自定义模板渲染
-        $res= Db::name('quality_division_controlpoint_relation')
-            ->where(['id'=>$cpr_id])
-            ->find();
-        $unit_id=$res['division_id'];
-        //获取表单基本信息
-        $formdata = "";
-        if (!is_null($id)) {
-            $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
-            $formdata = json_encode(unserialize($_formdata));
-        }
+        //返回模板内容
         return $htmlContent;
     }
     /**
