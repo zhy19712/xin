@@ -13,7 +13,9 @@
 namespace app\admin\model;
 use think\Model;
 use think\exception\PDOException;
-require '../../../extend/jpush/autoload.php';
+use think\Loader;
+
+vendor('JPush.autoload');
 
 use JPush\Client as JPush;
 
@@ -22,19 +24,19 @@ class JpushModel extends Model
     //极光推送appkey
     static public function app_key(){
 
-        $app_key = "极光账号的app_key";
+        $app_key = config("Jpush.app_key");
         return $app_key;
     }
     //极光推送master_secret
     static public function master_secret(){
 
-        $master_secret = "极光账号的master_secret";
+        $master_secret = config("Jpush.master_secret");
         return $master_secret;
     }
     //获取alias和tags
     public function getDevices($registrationID){
 
-        require_once '../../../extend/jpush/autoload.php';
+        vendor('JPush.autoload');
 
         $app_key = $this->app_key();
         $master_secret = $this->master_secret();
@@ -49,7 +51,7 @@ class JpushModel extends Model
     //添加tags
     public function addTags($registrationID,$tags){
 
-        require_once '../../../extend/jpush/autoload.php';
+        vendor('JPush.autoload');
 
         $app_key = $this->app_key();
         $master_secret = $this->master_secret();
@@ -65,7 +67,7 @@ class JpushModel extends Model
     //移除tags
     public function removeTags($registrationID,$tags){
 
-        require_once '../../../extend/jpush/autoload.php';
+        vendor('JPush.autoload');
 
         $app_key = $this->app_key();
         $master_secret = $this->master_secret();
@@ -80,19 +82,24 @@ class JpushModel extends Model
     //标签推送
     public function push($tag,$alert){
 
-        require_once '../../../extend/jpush/autoload.php';
+        vendor('JPush.autoload');
 
         $app_key = $this->app_key();
         $master_secret = $this->master_secret();
-
         $client = new JPush($app_key, $master_secret);
 
         $tags = implode(",",$tag);
 
+//        $client->push()
+//            ->setPlatform(array('ios', 'android'))
+//            ->addTag($tags)                          //标签
+//            ->setNotificationAlert($alert)           //内容
+//            ->send();
+
         $client->push()
-            ->setPlatform(array('ios', 'android'))
-            ->addTag($tags)                          //标签
-            ->setNotificationAlert($alert)           //内容
+            ->setPlatform('all')
+            ->addTag($tags)
+            ->setNotificationAlert($alert)
             ->send();
 
     }
@@ -100,7 +107,7 @@ class JpushModel extends Model
     //别名推送
     public function push_a($alias,$alert){
 
-        require_once '../../../extend/jpush/autoload.php';
+        vendor('JPush.autoload');
 
         $app_key = $this->app_key();
         $master_secret = $this->master_secret();
@@ -114,5 +121,6 @@ class JpushModel extends Model
             ->addAlias($alias)                      //别名
             ->setNotificationAlert($alert)          //内容
             ->send();
+
     }
 }

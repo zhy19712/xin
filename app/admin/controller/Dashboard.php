@@ -19,6 +19,11 @@ use app\quality\model\SendModel;//收文
 use \think\Db;
 use \think\Session;
 use think\exception\PDOException;
+use app\admin\model\JpushModel;
+
+use think\Loader;
+vendor('JPush.autoload');
+use JPush\AdminClient;
 
 class Dashboard extends Permissions
 {
@@ -43,7 +48,7 @@ class Dashboard extends Permissions
         $message = new MessageremindingModel();
         //获取当前登录的用户id
 
-        $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+        $admin_id = Session::has('admin') ? Session::get('admin') : 0;
 
 
         //查询单元工程审批人状态表
@@ -52,32 +57,26 @@ class Dashboard extends Permissions
         //定义两个空的数组用来存储值
         $data = array();
         $edit_data = array();
-        if(!empty($form_info))
-        {
-            foreach($form_info as $key=>$val)
-            {
-                $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["CurrentApproverId"]]);
+        if (!empty($form_info)) {
+            foreach ($form_info as $key => $val) {
+                $result = $message->getOne(["uint_id" => $val["id"], "current_approver_id" => $val["CurrentApproverId"]]);
 
-                if(!empty($result))
-                {
+                if (!empty($result)) {
                     $edit_data[$key]["id"] = $result["id"];
 
                     $edit_data[$key]["status"] = $val["ApproveStatus"];
 
-                }
-                else
-                {
+                } else {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["form_name"];
 
                     $data[$key]["create_time"] = strtotime($val["update_time"]);
 
 
-                    if($val["ApproveIds"])
-                    {
-                        $ids = explode(",",$val["ApproveIds"]);
+                    if ($val["ApproveIds"]) {
+                        $ids = explode(",", $val["ApproveIds"]);
 
-                        $data[$key]["sender"] = $ids[count($ids)-1];
+                        $data[$key]["sender"] = $ids[count($ids) - 1];
                     }
 
                     $data[$key]["task_category"] = "单元质量验评";
@@ -87,16 +86,13 @@ class Dashboard extends Permissions
                 }
             }
 
-            if(!empty($data))
-            {
-                foreach($data as $a=>$b)
-                {
+            if (!empty($data)) {
+                foreach ($data as $a => $b) {
                     $message->insertTb($b);
                 }
 
             }
-            if(!empty($edit_data))
-            {
+            if (!empty($edit_data)) {
                 $message->saveTb($edit_data);
             }
 
@@ -115,44 +111,37 @@ class Dashboard extends Permissions
         $message = new MessageremindingModel();
         //获取当前登录的用户id
 
-        $admin_id= Session::has('admin') ? Session::get('admin') : 0;
+        $admin_id = Session::has('admin') ? Session::get('admin') : 0;
         //查询收文
         $form_info = $send->getIncomeid($admin_id);
 
         //定义两个空的数组用来存储值
         $data = array();
         $edit_data = array();
-        if(!empty($form_info))
-        {
-            foreach($form_info as $key=>$val)
-            {
-                $result = $message->getOne(["uint_id"=>$val["id"],"current_approver_id"=>$val["income_id"]]);
+        if (!empty($form_info)) {
+            foreach ($form_info as $key => $val) {
+                $result = $message->getOne(["uint_id" => $val["id"], "current_approver_id" => $val["income_id"]]);
 
-                if(!empty($result))
-                {
+                if (!empty($result)) {
                     $edit_data[$key]["id"] = $result["id"];
                     //如果收发文中的status状态为2表示未执行
-                    if($val["status"] == 2 )
-                    {
+                    if ($val["status"] == 2) {
                         $edit_data[$key]["status"] = 1;//未执行
-                    }else//3、4表示已执行
+                    } else//3、4表示已执行
                     {
                         $edit_data[$key]["status"] = 2;//已执行
                     }
 
-                }
-                else
-                {
+                } else {
                     $data[$key]["uint_id"] = $val["id"];
                     $data[$key]["task_name"] = $val["file_name"];
                     $data[$key]["create_time"] = strtotime($val["update_time"]);
                     $data[$key]["sender"] = $val["send_id"];
                     $data[$key]["task_category"] = "收文";
                     //如果收发文中的status状态为2表示未执行
-                    if($val["status"] == 2 )
-                    {
+                    if ($val["status"] == 2) {
                         $data[$key]["status"] = 1;//未执行
-                    }else//3、4表示已执行
+                    } else//3、4表示已执行
                     {
                         $data[$key]["status"] = 2;//已执行
                     }
@@ -161,74 +150,115 @@ class Dashboard extends Permissions
                 }
             }
 
-            if(!empty($data))
-            {
-                foreach($data as $a=>$b)
-                {
+            if (!empty($data)) {
+                foreach ($data as $a => $b) {
                     $message->insertTb($b);
                 }
 
             }
 
-            if(!empty($edit_data))
-            {
-                    $message->saveTb($edit_data);
+            if (!empty($edit_data)) {
+                $message->saveTb($edit_data);
 
             }
         }
 
     }
 
-        /**
-         * 查询当前消息表中状态status=1的条数
-         * @return \think\response\Json
-         */
-        public function queryMessage()
-        {
-            if ($this->request->isAjax()) {
-                //实例化模型类
-                $message = new MessageremindingModel();
-                //获取当前的登录人的id
-                $admin_id= Session::has('admin') ? Session::get('admin') : 0;
-                //单元工程质量验评
-                $this->buildMessage();
-                //收发文
-                $this->buildSendMessage();
+    /**
+     * 查询当前消息表中状态status=1的条数
+     * @return \think\response\Json
+     */
+    public function queryMessage()
+    {
+        if ($this->request->isAjax()) {
+            //实例化模型类
+            $message = new MessageremindingModel();
+            //获取当前的登录人的id
+            $admin_id = Session::has('admin') ? Session::get('admin') : 0;
+            //单元工程质量验评
+            $this->buildMessage();
+            //收发文
+            $this->buildSendMessage();
 
-                $count_data = $message->getCount($admin_id);
+            $count_data = $message->getCount($admin_id);
 
-                return json(["count"=>$count_data]);
-            }
+            return json(["count" => $count_data]);
         }
+    }
 
-        /**
-         * 消息中的单元工程改变当前的状态
-         */
-        public function changeStatus()
-        {
-            if ($this->request->isAjax()) {
-                $uint_id = input("post.uint_id");
+    /**
+     * 消息中的单元工程改变当前的状态
+     */
+    public function changeStatus()
+    {
+        if ($this->request->isAjax()) {
+            $uint_id = input("post.uint_id");
 
-                $type = input("post.type");//1为收发文，2为单元管控
+            $type = input("post.type");//1为收发文，2为单元管控
 
-                //获取当前的登录人的id
-                $admin_id= Session::has('admin') ? Session::get('admin') : 0;
-                //实例化模型类
-                $message = new MessageremindingModel();
+            //获取当前的登录人的id
+            $admin_id = Session::has('admin') ? Session::get('admin') : 0;
+            //实例化模型类
+            $message = new MessageremindingModel();
 
-                $message_info = $message->getOne(["uint_id"=>$uint_id,"current_approver_id"=>$admin_id,"type"=>$type]);
+            $message_info = $message->getOne(["uint_id" => $uint_id, "current_approver_id" => $admin_id, "type" => $type]);
 
-                if($message_info["status"] == 1)
-                {
-                    $data = [
-                        "id" => $message_info["id"],
-                        "status" => 2
-                    ];
+            if ($message_info["status"] == 1) {
+                $data = [
+                    "id" => $message_info["id"],
+                    "status" => 2
+                ];
 
-                    $flag = $message->editTb($data);
-                }
-
-                return json(["code"=>1]);
+                $flag = $message->editTb($data);
             }
+
+            return json(["code" => 1]);
         }
+    }
+
+    public function test()
+    {
+        $jpush = new JpushModel();
+        $tag = [
+            "123456"
+        ];
+        $alert = "标签推送";
+        $jpush->push($tag,$alert);
+    }
+
+
+    public function test2()
+    {
+        var_dump(config("Jpush.app_key"));
+    }
+
+
+    public function test4()
+    {
+        // 这只是使用样例,不应该直接用于实际生产环境中 !!
+
+        $admin = new AdminClient(config("Jpush.app_key"),config("Jpush.master_secret"));
+        $response = $admin->createApp('丰宁', 'com.zgdj.djframe.app');
+        print_r($response);
+
+        $appKey = $response['body']['app_key'];
+        $response = $admin->deleteApp($appKey);
+        print_r($response);
+    }
+
+
+
+    public function test5()
+    {
+        vendor('JPush.autoload');
+        $client = new \JPush\Client(config("Jpush.app_key"),config("Jpush.master_secret"));
+        $client->push()
+            ->setPlatform('all')
+            ->addAllAudience()
+            ->setNotificationAlert('Hello, JPush')
+            ->send();
+    }
+
 }
+
