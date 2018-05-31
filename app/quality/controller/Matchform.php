@@ -77,7 +77,7 @@ class Matchform extends Controller
         }
 
         $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
-        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\aqulityNew\\" . $cp['controlpoint']['code'] . $cp['controlpoint']['name'] . ".html";
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\aqulityNew\\" . $cp['controlpoint']['code'] . $norm_template['name'] . "下载.html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
         if (!file_exists($formPath)) {
             return "模板文件不存在";
