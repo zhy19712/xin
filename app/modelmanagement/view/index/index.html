@@ -35,7 +35,7 @@
 
                 $.ajax({
                     url: "/modelmanagement/qualitymass/configureInfo",
-                    type: "post",
+                    type: "get",
                     dataType: "json",
                     success: function (res) {
                         modelColor = +(res.configureInfo.panorama.pigment);
