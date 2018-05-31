@@ -1,284 +1,301 @@
+</div>
+<script src="__PUBLIC__/layui/layui.js"></script>
+<script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<script src="__PUBLIC__/ztree/js/jquery.ztree.all.min.js"></script>
+<script>
+    //将所有模型页面按需装载到同一个iframe中，防止用户打开过多模型页面崩溃
+    function replaceTemplate(id) {
+        var iframe = document.getElementById("-1");
+        var iframew = iframe.contentWindow;
+        iframew.document.location.replace("{:url('./modelmanagement/index/index')}?id=" + id);
 
-   </div>
-    <script src="__PUBLIC__/layui/layui.js"></script>
-    <script src="__PUBLIC__/jquery/jquery.min.js"></script>
-    <script src="__PUBLIC__/ztree/js/jquery.ztree.all.min.js"></script>
-    <script>
-        //将所有模型页面按需装载到同一个iframe中，防止用户打开过多模型页面崩溃
-     function replaceTemplate(id){
-         var iframe=document.getElementById("-1");
-         var iframew=iframe.contentWindow;
-         iframew.document.location.replace("{:url('./modelmanagement/index/index')}?id=" + id);
+        // $.ajax({
+        //     url: "{:url('./modelmanagement/index/index')}?id=" + id,
+        //     dataType:"json",
+        //     async:true,
+        //     type:"GET",
+        //     beforeSend:function(){
+        //     },
+        //     success:function(req){
+        //         var iframe=document.getElementById("-1");
+        //         var iframew=iframe.contentWindow;
+        //         iframew.document.location.replace("{:url('./modelmanagement/index/change')}");
+        //         // iframew.document.open();
+        //         // iframew.document.write(req);
+        //         // iframew.document.close();
+        //     },
+        //     complete:function(){
+        //     },
+        //     error:function(){
+        //     }
+        // });
+    }
 
-         // $.ajax({
-         //     url: "{:url('./modelmanagement/index/index')}?id=" + id,
-         //     dataType:"json",
-         //     async:true,
-         //     type:"GET",
-         //     beforeSend:function(){
-         //     },
-         //     success:function(req){
-         //         var iframe=document.getElementById("-1");
-         //         var iframew=iframe.contentWindow;
-         //         iframew.document.location.replace("{:url('./modelmanagement/index/change')}");
-         //         // iframew.document.open();
-         //         // iframew.document.write(req);
-         //         // iframew.document.close();
-         //     },
-         //     complete:function(){
-         //     },
-         //     error:function(){
-         //     }
-         // });
-     }
+    var message;
+    layui.config({
+        base: '__COMMONJS__/',
+        version: '1.0.1'
+    }).use(['app', 'message'], function () {
+        var app = layui.app,
+            $ = layui.jquery,
+            layer = layui.layer;
+        //将message设置为全局以便子页面调用
+        message = layui.message;
+        //主入口
+        app.set({
+            type: 'iframe'
+        }).init();
 
-        var message;
-        layui.config({
-            base: '__COMMONJS__/',
-            version: '1.0.1'
-        }).use(['app', 'message'], function() {
-            var app = layui.app,
-                $ = layui.jquery,
-                layer = layui.layer;
-            //将message设置为全局以便子页面调用
-            message = layui.message;
-            //主入口
-            app.set({
-                type: 'iframe'
-            }).init();
+        $('dl.skin > dd').on('click', function () {
+            var $that = $(this);
+            var skin = $that.children('a').data('skin');
+            switchSkin(skin);
+        });
+        var setSkin = function (value) {
+                layui.data('kit_skin', {
+                    key: 'skin',
+                    value: value
+                });
+            },
+            getSkinName = function () {
+                return layui.data('kit_skin').skin;
+            },
+            switchSkin = function (value) {
+                var _target = $('link[kit-skin]')[0];
+                _target.href = _target.href.substring(0, _target.href.lastIndexOf('/') + 1) + value + _target.href.substring(_target.href.lastIndexOf('.'));
+                setSkin(value);
+            },
+            initSkin = function () {
+                var skin = getSkinName();
+                switchSkin(skin === undefined ? 'blue' : skin);
+            }();
 
-            $('dl.skin > dd').on('click', function() {
-                var $that = $(this);
-                var skin = $that.children('a').data('skin');
-                switchSkin(skin);
-            });
-            var setSkin = function(value) {
-                    layui.data('kit_skin', {
-                        key: 'skin',
-                        value: value
-                    });
-                },
-                getSkinName = function() {
-                    return layui.data('kit_skin').skin;
-                },
-                switchSkin = function(value) {
-                    var _target = $('link[kit-skin]')[0];
-                    _target.href = _target.href.substring(0, _target.href.lastIndexOf('/') + 1) + value + _target.href.substring(_target.href.lastIndexOf('.'));
-                    setSkin(value);
-                },
-                initSkin = function() {
-                    var skin = getSkinName();
-                    switchSkin(skin === undefined ? 'blue' : skin);
-                }();
+        //      $('#color').click(function(){
+        //      layer.open({
+        //          type:1,
+        //          title:'配色方案',
+        //          area: ['290px', 'calc(100% - 52px)'],
+        //          offset: 'rb',
+        //          shadeClose:true,
+        //          id:'colors',
+        //          anim: 2,
+        //          shade:0.2,
+        //          closeBtn:0,
+        //          isOutAnim:false,
+        //          resize:false,
+        //          move: false,
+        //          skin: 'color-class',
+        //          btn:['黑白格','橘子橙','原谅绿','少女粉','天空蓝','枫叶红'],
+        //          yes: function(index, layero){
+        //              switchSkin('default');
+        //            }
+        //            ,btn2: function(index, layero){
+        //              switchSkin('orange');
+        //              return false;
+        //            }
+        //            ,btn3: function(index, layero){
+        //              switchSkin('green');
+        //              return false;
+        //            }
+        //            ,btn4: function(index, layero){
+        //              switchSkin('pink');
+        //              return false;
+        //            }
+        //            ,btn5: function(index, layero){
+        //              switchSkin('blue');
+        //              return false;
+        //            }
+        //            ,btn6: function(index, layero){
+        //              switchSkin('red');
+        //              return false;
+        //            }
+        //
+        //     });
+        // })
+    });
+</script>
+<script type="text/javascript">
 
-           //      $('#color').click(function(){
-           //      layer.open({
-           //          type:1,
-           //          title:'配色方案',
-           //          area: ['290px', 'calc(100% - 52px)'],
-           //          offset: 'rb',
-           //          shadeClose:true,
-           //          id:'colors',
-           //          anim: 2,
-           //          shade:0.2,
-           //          closeBtn:0,
-           //          isOutAnim:false,
-           //          resize:false,
-           //          move: false,
-           //          skin: 'color-class',
-           //          btn:['黑白格','橘子橙','原谅绿','少女粉','天空蓝','枫叶红'],
-           //          yes: function(index, layero){
-           //              switchSkin('default');
-           //            }
-           //            ,btn2: function(index, layero){
-           //              switchSkin('orange');
-           //              return false;
-           //            }
-           //            ,btn3: function(index, layero){
-           //              switchSkin('green');
-           //              return false;
-           //            }
-           //            ,btn4: function(index, layero){
-           //              switchSkin('pink');
-           //              return false;
-           //            }
-           //            ,btn5: function(index, layero){
-           //              switchSkin('blue');
-           //              return false;
-           //            }
-           //            ,btn6: function(index, layero){
-           //              switchSkin('red');
-           //              return false;
-           //            }
-           //
-           //     });
-           // })
-       });
-   </script>
-   <script type="text/javascript">
+    layui.use('jquery', function () {
+        var $ = layui.jquery;
+        $('#clear').on('click', function () {
+            var the = $(this).find('i');
+            the.attr("class", "fa fa-spinner");
+            $.ajax({
+                url: "{:url('admin/common/clear')}"
+                , success: function (res) {
+                    if (res.code == 1) {
+                        setTimeout(function () {
+                            parent.message.show({
+                                skin: 'cyan',
+                                msg: res.msg
+                            });
+                            $('#clear i').attr("class", "fa fa-institution");
+                        }, 1000)
+                    }
+                }
+            })
+        });
+    });
 
-       layui.use('jquery', function() {
-           var $ = layui.jquery;
-           $('#clear').on('click', function() {
-               var the = $(this).find('i');
-               the.attr("class","fa fa-spinner");
-               $.ajax({
-                   url:"{:url('admin/common/clear')}"
-                   ,success:function(res) {
-                       if(res.code == 1) {
-                           setTimeout(function(){
-                               parent.message.show({
-                                   skin: 'cyan',
-                                   msg:res.msg
-                               });
-                               $('#clear i').attr("class","fa fa-institution");
-                           },1000)
-                       }
-                   }
-               })
-           });
-       });
+    $('#logout').click(function () {
+        layer.confirm('真的要退出?', {icon: 3, title: '提示', anim: 2}, function (index) {
+            $.ajax({
+                url: "{:url('admin/common/logout')}"
+                , success: function (res) {
+                    layer.msg(res.msg, {offset: '250px', anim: 4});
+                    if (res.code == 1) {
+                        setTimeout(function () {
+                            location.href = res.url;
+                        }, 2000)
+                    }
+                }
+            })
+        })
+    })
 
-       $('#logout').click(function(){
-           layer.confirm('真的要退出?',{icon: 3, title:'提示',anim: 2}, function(index){
-               $.ajax({
-                   url:"{:url('admin/common/logout')}"
-                   ,success:function(res) {
-                       layer.msg(res.msg,{offset: '250px',anim: 4});
-                       if(res.code == 1) {
-                           setTimeout(function(){
-                               location.href = res.url;
-                           },2000)
-                       }
-                   }
-               })
-           })
-       })
+    $('.layui-nav-item').click(function () {
+        $(this).siblings('li').attr('class', 'layui-nav-item');
+    })
+</script>
+<script type="text/javascript">
+    layui.use('layer', function () {
+        var layer = layui.layer;
+        var remember = '';
 
-       $('.layui-nav-item').click(function(){
-           $(this).siblings('li').attr('class','layui-nav-item');
-       })
-   </script>
-   <script type="text/javascript">
-       layui.use('layer', function(){
-           var layer = layui.layer;
-           var remember = '';
+        $('#tag').click(function () {
+            var tag = localStorage.getItem("tag");
+            layer.prompt({
+                formType: 2,
+                anim: 1,
+                offset: ['52px', 'calc(100% - 500px)'],
+                value: tag,
+                title: '便签',
+                skin: 'demo-class',
+                area: ['280px', '150px'],
+                id: 'remember',//设定一个id，防止重复弹出
+                btn: ['写好了', '忘了吧'],
+                shade: 0,
+                moveType: 1, //拖拽模式，0或者1
+                btn2: function (index, layero) {
+                    localStorage.removeItem("tag");
+                    $('#remember textarea').val('');
+                    return false;
+                }
+            }, function (value, index, elem) {
+                localStorage.setItem("tag", value);
+            })
+        });
+    });
+</script>
+<script>
+    //天气预报
+    $.ajax({
+        url: "http://api.map.baidu.com/telematics/v3/weather",
+        type: "post",
+        data: {
+            location: '郑州',
+            output: 'json',
+            ak: 'm63NiDWKoIiqKqtVB7VzFhfuI1aIPeWa'
+        },
+        dataType: 'jsonp',
+        success: function (res) {
+            console.log(res.results[0].weather_data[0]);
+            var data = res.results[0].weather_data[0];
+            $('#date').text(res.date);
+            $('#temperature').text(data.temperature);
+            $('#weather').text(data.weather);
+        }
+    })
+</script>
+<script>
+    // setTimeout(function () {
+    //   getMsg(0);
+    // },10000);
+    //
+    // function getMsg(count) {
+    //   console.log("*********************发请求啦***********************")
+    //   $.ajax({
+    //     url:'../Dashboard/ajaxLunxun',
+    //     type:'post',
+    //     dataType:'json',
+    //     data:{"count":count},
+    //     timeout:1000,
+    //     success:function(data, textStatus){
+    //       // console.log(data,textStatus);
+    //       if(data && data.count){
+    //         //请求成功，刷新数据
+    //         console.log(data.count);
+    //         if($(".msgNum").length){
+    //           $(".msgNum").text(data.count);
+    //         }else{
+    //           $(".message-wrap").append('<a class="layui-badge msgNum">data.count</a>');
+    //         }
+    //       }else{
+    //         $('.msgNum').remove("");
+    //       }
+    //       if(textStatus == "success"){
+    //         //成功之后，再发送请求，递归调用
+    //         getMsg(data.count);
+    //       }
+    //     },
+    //     error:function(XMLHttpRequest, textStatus, errorThrown){
+    //       // console.log(XMLHttpRequest,textStatus,errorThrown);
+    //       if(textStatus == "timeout"){
+    //         //有效时间内没有响应，请求超时，重新发请求
+    //         console.log("超时，再发");
+    //         getMsg(count);
+    //       }else{
+    //         console.log("其他错误");
+    //         // 其他的错误，如网络错误等
+    //         getMsg(count);
+    //       }
+    //
+    //     }
+    //   });
+    // }
+    //拉信息
+    function queryMessage() {
+        $.ajax({
+            url: '../Dashboard/queryMessage',
+            type: 'GET',
+            dataType: 'json',
+            timeOut: 2000,
+            success: function (data, textStatus) {
+                if (data && data.count) {
+                    var count = data.count > 99 ? "99+" : data.count;
+                    if ($(".msgNum").length) {
+                        $(".msgNum").text(count);
+                    } else {
+                        $(".message-wrap").append('<a data-url="{:url(\'admin/Dashboard/index\')}" data-title="控制面板" kit-target data-id=\'278\' class="layui-badge msgNum">' + count + '</a>');
+                    }
+                } else {
+                    $('.msgNum').remove("");
+                }
+            }
+        });
+    }
 
-           $('#tag').click(function(){
-               var tag = localStorage.getItem("tag");
-               layer.prompt({
-                   formType: 2,
-                   anim: 1,
-                   offset: ['52px', 'calc(100% - 500px)'],
-                   value: tag,
-                   title: '便签',
-                   skin: 'demo-class',
-                   area: ['280px', '150px'],
-                   id: 'remember' ,//设定一个id，防止重复弹出
-                   btn: ['写好了', '忘了吧'],
-                   shade: 0,
-                   moveType: 1, //拖拽模式，0或者1
-                   btn2: function(index, layero){
-                       localStorage.removeItem("tag");
-                       $('#remember textarea').val('');
-                       return false;
-                   }
-               },function(value, index, elem){
-                   localStorage.setItem("tag",value);
-               })
-           });
-       });
-   </script>
-   <script>
-       //天气预报
-       $.ajax({
-           url: "http://api.map.baidu.com/telematics/v3/weather",
-           type: "post",
-           data: {
-               location:'郑州',
-               output:'json',
-               ak:'m63NiDWKoIiqKqtVB7VzFhfuI1aIPeWa'
-           },
-           dataType: 'jsonp',
-           success: function (res) {
-               console.log(res.results[0].weather_data[0]);
-               var data = res.results[0].weather_data[0];
-               $('#date').text(res.date);
-               $('#temperature').text(data.temperature);
-               $('#weather').text(data.weather);
-           }
-       })
-   </script>
-   <script>
-       // setTimeout(function () {
-       //   getMsg(0);
-       // },10000);
-       //
-       // function getMsg(count) {
-       //   console.log("*********************发请求啦***********************")
-       //   $.ajax({
-       //     url:'../Dashboard/ajaxLunxun',
-       //     type:'post',
-       //     dataType:'json',
-       //     data:{"count":count},
-       //     timeout:1000,
-       //     success:function(data, textStatus){
-       //       // console.log(data,textStatus);
-       //       if(data && data.count){
-       //         //请求成功，刷新数据
-       //         console.log(data.count);
-       //         if($(".msgNum").length){
-       //           $(".msgNum").text(data.count);
-       //         }else{
-       //           $(".message-wrap").append('<a class="layui-badge msgNum">data.count</a>');
-       //         }
-       //       }else{
-       //         $('.msgNum').remove("");
-       //       }
-       //       if(textStatus == "success"){
-       //         //成功之后，再发送请求，递归调用
-       //         getMsg(data.count);
-       //       }
-       //     },
-       //     error:function(XMLHttpRequest, textStatus, errorThrown){
-       //       // console.log(XMLHttpRequest,textStatus,errorThrown);
-       //       if(textStatus == "timeout"){
-       //         //有效时间内没有响应，请求超时，重新发请求
-       //         console.log("超时，再发");
-       //         getMsg(count);
-       //       }else{
-       //         console.log("其他错误");
-       //         // 其他的错误，如网络错误等
-       //         getMsg(count);
-       //       }
-       //
-       //     }
-       //   });
-       // }
-       //拉信息
-       function queryMessage() {
-         $.ajax({
-           url:'../Dashboard/queryMessage',
-           type:'GET',
-           dataType:'json',
-           timeOut:2000,
-           success:function(data, textStatus){
-             if(data && data.count){
-               var count = data.count > 99 ?"99+": data.count;
-               if($(".msgNum").length){
-                 $(".msgNum").text(count);
-               }else{
-                 $(".message-wrap").append('<a data-url="{:url(\'admin/Dashboard/index\')}" data-title="控制面板" kit-target data-id=\'278\' class="layui-badge msgNum">'+count+'</a>');
-               }
-             }else{
-               $('.msgNum').remove("");
-             }
-           }
-         });
-       }
-       queryMessage();
-       setInterval(queryMessage,10000);
+    queryMessage();
+    setInterval(queryMessage, 10000);
 
-   </script>
+</script>
+
+<script>
+    var WshShell = new ActiveXObject("WScript.Shell");
+    //添加可信站点或IP
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\ZoneMap\\Ranges\\Range101\\", "");
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\ZoneMap\\Ranges\\Range101\\http", "2", "REG_DWORD");
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\ZoneMap\\Ranges\\Range101\\:Range", "www.xin.com");
+    //修改IE ActiveX 安全设置
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3\\1001", "0", "REG_DWORD");
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3\\1004", "0", "REG_DWORD");
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3\\1200", "0", "REG_DWORD");
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3\\1201", "0", "REG_DWORD");
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3\\1405", "0", "REG_DWORD");
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\3\\2201", "0", "REG_DWORD");
+    //禁用弹出窗口阻止程序
+    WshShell.RegWrite("HKCU\\Software\\Microsoft\\Internet Explorer\\New Windows\\PopupMgr", "no");
+</script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 var nodeId; //被点击节点ID
 var level;  //节点等级
 var node_type;  //节点类型
+var searchData = '';    //组合查询序列化
 
 //左侧的树
 function ztree(node_type) {
@@ -92,115 +93,117 @@ $('input[name="nodeRelation"],input[name="nodeRelationTab"]').iCheck({
 });
 
 //模型构件列表
-var tableItem = $('#tableItem').DataTable({
-    pagingType: "full_numbers",
-    processing: true,
-    serverSide: true,
-    "scrollX": true,
-    "scrollY": "200px",
-    "scrollCollapse": "true",
-    "paging": "false",
-    ajax: {
-        "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search"
-    },
-    dom: 'l<".noteverBtn layui-btn layui-btn-warm layui-btn-normal btn-right"><".alreadyBtn layui-btn layui-btn-normal btn-right table-btn">rtip',
-    columns: [
-        {
-            name: "id",
-            "render": function(data, type, full, meta) {
-                var ipt = "<input type='checkbox' name='checkList' idv="+ data +" unit="+ full[1] +" nickname="+ full[2] +" onclick='getSelectId(this)'>";
-                return ipt;
+function tableItemFun(model_type) {
+    tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        "scrollX": true,
+        "scrollY": "200px",
+        "scrollCollapse": "true",
+        "paging": "false",
+        ajax: {
+            "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search"+searchData+"&model_type="+model_type
+        },
+        dom: 'l<".noteverBtn layui-btn layui-btn-warm layui-btn-normal btn-right"><".alreadyBtn layui-btn layui-btn-normal btn-right table-btn">rtip',
+        columns: [
+            {
+                name: "id",
+                "render": function(data, type, full, meta) {
+                    var ipt = "<input type='checkbox' name='checkList' idv="+ data +" unit="+ full[1] +" nickname="+ full[2] +" onclick='getSelectId(this)'>";
+                    return ipt;
+                },
             },
-        },
-        {
-            name: "section"
-        },
-        {
-            name: "unit"
-        },
-        {
-            name: "parcel"
-        },
-        {
-            name: "cell"
-        },
-        {
-            name: "pile_number_1"
-        },
-        {
-            name: "pile_val_1"
-        },
-        {
-            name: "pile_number_2"
-        },
-        {
-            name: "pile_val_2"
-        },
-        {
-            name: "pile_number_3"
-        },
-        {
-            name: "pile_val_3"
-        },
-        {
-            name: "pile_number_4"
-        },
-        {
-            name: "pile_val_4"
-        },
-        {
-            name: "el_start"
-        },
-        {
-            name: "el_cease"
-        },
-        {
-            name: "site"
-        },
-        {
-            name: "uid"
-        }
-    ],
-    columnDefs: [
-        {
-            "searchable": false,
-            "orderable": false,
-            "targets": [15],
-            "render" :  function(data,type,row) {
-                var name = row[15];  //单元工程名称
-                var uid = row[16];  //单元工程编号
-                var newName = name==null?'无':name;
-                var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ newName +"</span>";
-                return html;
+            {
+                name: "section"
+            },
+            {
+                name: "unit"
+            },
+            {
+                name: "parcel"
+            },
+            {
+                name: "cell"
+            },
+            {
+                name: "pile_number_1"
+            },
+            {
+                name: "pile_val_1"
+            },
+            {
+                name: "pile_number_2"
+            },
+            {
+                name: "pile_val_2"
+            },
+            {
+                name: "pile_number_3"
+            },
+            {
+                name: "pile_val_3"
+            },
+            {
+                name: "pile_number_4"
+            },
+            {
+                name: "pile_val_4"
+            },
+            {
+                name: "el_start"
+            },
+            {
+                name: "el_cease"
+            },
+            {
+                name: "site"
+            },
+            {
+                name: "uid"
             }
-        },
-        {
-            "searchable": false,
-            "orderable": false,
-            "targets": [16],
-            "render" :  function(data,type,row) {
-                var uid = row[16];  //单元工程编号
-                var html =  "<input id='uid' type='hidden' value="+ uid +">" ;
-                return html;
+        ],
+        columnDefs: [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [15],
+                "render" :  function(data,type,row) {
+                    var name = row[15];  //单元工程名称
+                    var uid = row[16];  //单元工程编号
+                    var newName = name==null?'无':name;
+                    var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ newName +"</span>";
+                    return html;
+                }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [16],
+                "render" :  function(data,type,row) {
+                    var uid = row[16];  //单元工程编号
+                    var html =  "<input id='uid' type='hidden' value="+ uid +">" ;
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "sProcessing":"数据加载中...",
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
+                "sLast": ">>"
             }
         }
-    ],
-    language: {
-        "sProcessing":"数据加载中...",
-        "lengthMenu": "_MENU_",
-        "zeroRecords": "没有找到记录",
-        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-        "infoEmpty": "无记录",
-        "search": "搜索",
-        "infoFiltered": "(从 _MAX_ 条记录过滤)",
-        "paginate": {
-            "sFirst": "<<",
-            "sPrevious": "上一页",
-            "sNext": "下一页",
-            "sLast": ">>"
-        }
-    }
-});
+    });
+}
 
 //已关联模型表
 var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
@@ -402,7 +405,7 @@ $('.alreadyBtn').click(function(){
         },
         dataType: "json",
         success: function (res) {
-            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search').load();
+            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
             layer.msg(res.msg);
         }
     });
@@ -473,7 +476,13 @@ $('#relieveBtn').click(function(){
         layer.close(index);
     });
 });
-
+//默认选中未关联
+$('#notever, #noteverTab').iCheck('check');
+var isChecked = $('#notever, #noteverTab').is(':checked');
+if(isChecked){
+    tableItemFun(2);
+    model_type = 2;
+}
 //筛选已关联构件
 $('#alreadyTab').on('ifChecked', function(event){
     model_quality(1);
@@ -484,9 +493,14 @@ $('#noteverTab').on('ifChecked', function(event){
     model_quality(2);
     model_type = 2;
 });
+//筛选全部构件
+$('#allTab').on('ifChecked', function(event){
+    model_quality(0);
+    model_type = 0;
+});
 //筛选方法
 function model_quality(model_type) {
-    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&model_type='+model_type).load();
+    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
 }
 
 //点击已关联节点选中树中对应的节点
@@ -504,7 +518,7 @@ $('#modelTable').tabs({
     width:'100%',
     onSelect: function(title,index){
         if(index==0){
-            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search').load();
+            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
             $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
         }
         if(index==1){
@@ -589,7 +603,6 @@ $('#searchTr td').each(function () {
 
 
 //筛选方法
-var dataArr = [];
 function change(that) {
     $('#searchTr select').each(function (i,n) {
         var val = $(n).find('option').val();
@@ -612,42 +625,10 @@ function change(that) {
     var el_start = $('#searchTd12 input').val();
     var el_cease = $('#searchTd13 input').val();
 
-
-
-//模型关联筛选
-var data = '&section='+section+'&unit='+unit+'&parcel='+parcel+'&cell='+cell+'&pile_number_1='+pile_number_1+
+    //模型关联筛选
+    searchData = '&section='+section+'&unit='+unit+'&parcel='+parcel+'&cell='+cell+'&pile_number_1='+pile_number_1+
     '&pile_val_1='+pile_val_1+'&pile_number_2='+pile_number_2+'&pile_val_2='+pile_val_2+'&pile_number_3='+pile_number_3+
-    '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease+'&model_type='+model_type;
-    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+data).load();
-/*
-    $.ajax({
-        url: "/modelmanagement/common/model_quality_search",
-        type: "post",
-        data: {
-            section:section,
-            unit:unit,
-            parcel:parcel,
-            cellcell:cellcell,
-            pile_number_1:pile_number_1,
-            pile_val_1:pile_val_1,
-            pile_number_2:pile_number_2,
-            pile_val_2:pile_val_2,
-            pile_number_3:pile_number_3,
-            pile_val_3:pile_val_3,
-            pile_number_4:pile_number_4,
-            pile_val_4:pile_val_4,
-            el_start:el_start,
-            el_cease:el_cease
-        },
-        dataType: "json",
-        success: function (res) {
-            $('#searchTr select').each(function (i,n) {
-                var val = $(n).val();
-                if(val==''){
-                    $(n).val('请选择');
-                }
-            });
-        }
-    });*/
+    '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease;
+    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
 }
 
