@@ -50,17 +50,6 @@
             <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
                 RealBimOcx.DelAttrMask('AttrMask');
                 uObjSubIdSingle = uObjSubID;
-                $.ajax({
-                    url: "/modelmanagement/qualitymass/configureInfo",
-                    type: "post",
-                    dataType: "json",
-                    success: function (res) {
-                        modelColor = +(res.configureInfo.panorama.pigment);
-                        modelTrans = res.configureInfo.panorama.pellucidity;
-                        console.log('点击初始化时获取到的透明度：'+modelTrans);
-                        console.log('点击初始化时获取到的颜色：'+modelColor);
-                    }
-                });
                 var test;   //属性蒙版
                 isSelect = true;
                 //单选/多选模型
