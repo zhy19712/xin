@@ -11,9 +11,10 @@ selectedModeGroupIds = '' //选中的模型组ID 用于显示隐藏按钮操作
 selectedTreeNode = '';  //点击模型获取关联的工程划分节点
 
 //获取模型配置的色值
+//TODO get请求
 $.ajax({
     url: "/modelmanagement/qualitymass/configureInfo",
-    type: "post",
+    type: "get",
     dataType: "json",
     success: function (res) {
         modelTrans = res.configureInfo.quality.pellucidity;
@@ -32,9 +33,10 @@ $.ajax({
 });
 
 //合格率
+//TODO get请求
 $.ajax({
     url: "/modelmanagement/qualitymass/examineFruit",
-    type: "post",
+    type: "get",
     dataType: "json",
     success: function (res) {
         $('#excellent_number').text(res.data.excellent);
@@ -60,9 +62,10 @@ layui.use('element', function () {
 });
 
 //初始化标段
+//TODO get请求
 $.ajax({
     url: "/modelmanagement/qualitymass/section",
-    type: "post",
+    type: "get",
     dataType: "json",
     success: function (res) {
         var data = res.data;
@@ -99,9 +102,10 @@ layui.use('form', function () {
             allModel();
         } else {
             //加载模型
+            //TODO get请求
             $.ajax({
                 url: "/modelmanagement/qualitymass/sectionModel",
-                type: "post",
+                type: "get",
                 data: {
                     section_id: val
                 },
