@@ -32,7 +32,7 @@
                     RealBimOcx.SetSceHugeObjVisible(true);
                 }
                 RealBimOcx.SetSuitableCam();
-
+                //TODO get请求
                 $.ajax({
                     url: "/modelmanagement/qualitymass/configureInfo",
                     type: "get",
@@ -121,14 +121,6 @@
             <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
                 RealBimOcx.DelAttrMask('AttrMask');
                 var opacityModelTrans;
-                $.ajax({
-                    url: "/modelmanagement/qualitymass/configureInfo",
-                    type: "post",
-                    dataType: "json",
-                    success: function (res) {
-                        opacityModelTrans = res.configureInfo.panorama.transparent_effect;
-                    }
-                });
                 if(isSelect){
                     var modelIdArr = $('#modelIdArr').val();
                     var newModelIdArr = modelIdArr.split(',');

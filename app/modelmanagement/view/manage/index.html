@@ -70,10 +70,10 @@
                     RealBimOcx.SetSceHugeObjVisible(true);
                 }
                 RealBimOcx.SetSuitableCam();
-
+                //TODO get请求
                 $.ajax({
                     url: "/modelmanagement/qualitymass/sectionModel",
-                    type: "post",
+                    type: "get",
                     dataType: "json",
                     success: function (res) {
                         allModel();
@@ -102,9 +102,10 @@
                 }
                 //模块验评情况
                 review = function () {
+                    //TODO get请求
                     $.ajax({
                         url: "/modelmanagement/Qualitymass/sectionModel",
-                        type: "post",
+                        type: "get",
                         dataType: "json",
                         success: function (res) {
                             var data = res.data;
@@ -198,8 +199,9 @@
                             return false;
                         }
                         $.ajax({
+                            //TODO get请求
                             url: "/modelmanagement/Qualitymass/sectionModel",
-                            type: "post",
+                            type: "get",
                             dataType: "json",
                             success: function (res) {
                                 var data = res.data;
