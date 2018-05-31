@@ -228,7 +228,6 @@ class Element extends Permissions
                 }
 
             }
-
             //设置临时文件，避免C盘Temp不可写报错
 //            Settings::setTempDir('temp');
 //            $phpword = new PhpWord();
@@ -381,46 +380,46 @@ class Element extends Permissions
         ////$phpword->save("1.html");
     }
 
-    public function word2html()
-    {
-        //$word = new \COM("word.application") or die("Unable to instanciate Word");
-        //$word->Visible = 1;
-        //$word->Documents->Open('D:\Works\php\fengning\public\1.docx');
-        //$word->Documents[1]->SaveAs('./1.html', 8);
-        //$word->Quit();
-        //$word = null;
-        //unset($word);
-
-        $word = new \COM("word.application") or die("Can't start Word!");
-        $word->Visible = 0;
-        $word->Documents->Open('D:\Works\php\fengning\public\1.docx', false, false, false, "1", "1", true);
-
-
-        $word->ActiveDocument->final = false;
-        $word->ActiveDocument->Saved = true;
-        $word->ActiveDocument->ExportAsFixedFormat(
-            'D:\Works\php\fengning\public\1.pdf',
-            17,                         // wdExportFormatPDF
-            false,                      // open file after export
-            0,                          // wdExportOptimizeForPrint
-            3,                          // wdExportFromTo
-            1,                          // begin page
-            5000,                       // end page
-            7,                          // wdExportDocumentWithMarkup
-            true,                       // IncludeDocProps
-            true,                       // KeepIRM
-            1                           // WdExportCreateBookmarks
-        );
-        $word->ActiveDocument->Close();
-        $word->Quit();
-
-        //$word=new \COM("Word.Application") or die("无法打开 MS Word");
-        //$word->visible = 1 ;
-        //$word->Documents->Open('D:\\Works\\php\\fengning\\public\\1.docx')or die("无法打开这个文件");
-        //$htmlpath=substr('D:\\Works\\php\\fengning\\public\\1.docx',0,-4);
-        //$word->ActiveDocument->SaveAs($htmlpath,8);
-        //$word->quit(0);
-    }
+//    public function word2html()
+//    {
+//        //$word = new \COM("word.application") or die("Unable to instanciate Word");
+//        //$word->Visible = 1;
+//        //$word->Documents->Open('D:\Works\php\fengning\public\1.docx');
+//        //$word->Documents[1]->SaveAs('./1.html', 8);
+//        //$word->Quit();
+//        //$word = null;
+//        //unset($word);
+//
+//        $word = new \COM("word.application") or die("Can't start Word!");
+//        $word->Visible = 0;
+//        $word->Documents->Open('D:\Works\php\fengning\public\1.docx', false, false, false, "1", "1", true);
+//
+//
+//        $word->ActiveDocument->final = false;
+//        $word->ActiveDocument->Saved = true;
+//        $word->ActiveDocument->ExportAsFixedFormat(
+//            'D:\Works\php\fengning\public\1.pdf',
+//            17,                         // wdExportFormatPDF
+//            false,                      // open file after export
+//            0,                          // wdExportOptimizeForPrint
+//            3,                          // wdExportFromTo
+//            1,                          // begin page
+//            5000,                       // end page
+//            7,                          // wdExportDocumentWithMarkup
+//            true,                       // IncludeDocProps
+//            true,                       // KeepIRM
+//            1                           // WdExportCreateBookmarks
+//        );
+//        $word->ActiveDocument->Close();
+//        $word->Quit();
+//
+//        //$word=new \COM("Word.Application") or die("无法打开 MS Word");
+//        //$word->visible = 1 ;
+//        //$word->Documents->Open('D:\\Works\\php\\fengning\\public\\1.docx')or die("无法打开这个文件");
+//        //$htmlpath=substr('D:\\Works\\php\\fengning\\public\\1.docx',0,-4);
+//        //$word->ActiveDocument->SaveAs($htmlpath,8);
+//        //$word->quit(0);
+//    }
 
 
 
