@@ -206,6 +206,19 @@ function tableItemFun(model_type) {
     //设置按钮文字
     $('.alreadyBtn').html('关联');
     $('.noteverBtn').html('解除关联');
+
+    //翻页事件
+    tableItem.on('draw',function () {
+        for(var i = 0;i<idArr.length;i++){
+            console.log();
+            $('input[type="checkbox"][name="checkList"][idv='+ idArr[i] +']').prop("checked",true);
+        }
+        /*$('input[type="checkbox"][name="checkList"]').prop("checked",false);
+        $('#all_checked').prop('checked',false);*/
+    });
+
+    //取消全选的事件绑定
+    $("#tableItem_wrapper .dataTables_scrollHeadInner thead tr th:first-child").unbind();
 }
 
 //已关联模型表
@@ -314,9 +327,6 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     }
 });
 
-//取消全选的事件绑定
-$("thead tr th:first-child").unbind();
-
 
 //起止高程和桩号的值
 function elval() {
@@ -387,8 +397,10 @@ $("#all_checked").on("click", function () {
             getId(this);
         });
     }
+    idArr = idArr.removalArray();
     console.log(idArr);
 });
+
 
 //关联构件
 $('.alreadyBtn').click(function(){
