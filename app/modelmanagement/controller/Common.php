@@ -270,8 +270,8 @@ class Common extends Controller
                     ->join('quality_unit u', 'u.id = q.unit_id', 'left')
                     ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,u.site,u.id as uid')
                     ->where($search_data)
-                    ->order($order)->select();
-                $recordsFiltered = sizeof($recordsFilteredResult);
+                    ->order($order)->limit(intval($start), intval($length))->select();
+                $recordsFiltered = Db::name($table)->alias('q')->join('quality_unit u', 'u.id = q.unit_id', 'left')->where($search_data)->count();
             }
         } else {
             //没有搜索条件的情况
