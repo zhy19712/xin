@@ -267,6 +267,9 @@ class Element extends Permissions
                     'DWCode'=>$output['DWCode']
                 ]);
             $tempPath=ROOT_PATH . 'public' . DS . "data\\form\\temp\\";
+            if (!file_exists($tempPath)){
+                mkdir ($tempPath,0777,true);
+            }
             $tempHtml=$tempPath.time().".html";
             $tempPdf=$tempPath.time().".pdf";
             //将渲染过的html代码填充到临时文件中
@@ -329,6 +332,12 @@ class Element extends Permissions
         $host="http://".$_SERVER['HTTP_HOST'];
         $html=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
         $tempPath=ROOT_PATH . 'public' . DS . "data\\form\\temp\\";
+
+        //根据情况新建目录
+        if (!file_exists($tempPath)){
+            mkdir ($tempPath,0777,true);
+        }
+
         $tempPdf=$tempPath.time().".pdf";
         $flag=file_exists($tempPath);
         if ($this->request->isAjax())

@@ -2,6 +2,7 @@ var nodeId; //被点击节点ID
 var level;  //节点等级
 var node_type;  //节点类型
 var searchData = '';    //组合查询序列化
+var tableItem = '';
 
 //左侧的树
 function ztree(node_type) {
@@ -206,6 +207,58 @@ function tableItemFun(model_type) {
     //设置按钮文字
     $('.alreadyBtn').html('关联');
     $('.noteverBtn').html('解除关联');
+
+    //翻页事件
+    tableItem.on('draw',function () {
+        for(var i = 0;i<idArr.length;i++){
+            $('input[type="checkbox"][name="checkList"][idv='+ idArr[i] +']').prop("checked",true);
+        }
+    });
+
+    //取消全选的事件绑定
+    $("#tableItem_wrapper .dataTables_scrollHeadInner thead tr th:first-child").unbind();
+
+    //关联构件
+    $('.alreadyBtn').click(function(){
+        if(!nodeId){
+            layer.msg('请选择单元工程');
+            return false;
+        }
+        $.ajax({
+            url: "./relevance",
+            type: "post",
+            data: {
+                add_id:nodeId,
+                id_arr:idArr
+            },
+            dataType: "json",
+            success: function (res) {
+                tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
+                layer.msg(res.msg);
+                $('#all_checked').prop("checked",false);
+            }
+        });
+    });
+
+    //选中的构件 --  解除关联
+    $('.noteverBtn').click(function(){
+        layer.confirm('确定解除该关联模型?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./removeRelevance",
+                type: "post",
+                data: {
+                    id_arr:idArr
+                },
+                dataType: "json",
+                success: function (res) {
+                    alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
+                    layer.msg(res.msg);
+                }
+            });
+            layer.close(index);
+        });
+
+    });
 }
 
 //已关联模型表
@@ -314,9 +367,6 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     }
 });
 
-//取消全选的事件绑定
-$("thead tr th:first-child").unbind();
-
 
 //起止高程和桩号的值
 function elval() {
@@ -387,48 +437,10 @@ $("#all_checked").on("click", function () {
             getId(this);
         });
     }
+    idArr = idArr.removalArray();
     console.log(idArr);
 });
 
-//关联构件
-$('.alreadyBtn').click(function(){
-    if(!nodeId){
-        layer.msg('请选择单元工程');
-        return false;
-    }
-    $.ajax({
-        url: "./relevance",
-        type: "post",
-        data: {
-            add_id:nodeId,
-            id_arr:idArr
-        },
-        dataType: "json",
-        success: function (res) {
-            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
-            layer.msg(res.msg);
-        }
-    });
-});
-
-//选中的构件 --  解除关联
-$('.noteverBtn').click(function(){
-    layer.confirm('确定解除该关联模型?', {icon: 3, title:'提示'}, function(index){
-        $.ajax({
-            url: "./removeRelevance",
-            type: "post",
-            data: {
-                id_arr:idArr
-            },
-            dataType: "json",
-            success: function (res) {
-                layer.msg(res.msg);
-            }
-        });
-        layer.close(index);
-    });
-
-});
 
 //筛选已关联树节点
 $('#already').on('ifChecked', function(event){
@@ -475,6 +487,7 @@ $('#relieveBtn').click(function(){
             },
             dataType: "json",
             success: function (res) {
+                alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
                 layer.msg(res.msg);
             }
         });
