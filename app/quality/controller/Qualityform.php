@@ -77,6 +77,10 @@ class Qualityform extends Permissions
         if (!file_exists($formPath)) {
             return "模板文件不存在";
         }
+        $host="http://".$_SERVER['HTTP_HOST'];
+        $code=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
+
+
         $output = $this->qualityFormInfoService->getFormBaseInfo($cp['division_id']);
         $formdata = "";
         if (!is_null($id)) {
@@ -87,6 +91,7 @@ class Qualityform extends Permissions
             [   'id'=>$id,
                 'divisionId'=>$cp['division_id'],
                 'templateId'=>$cp['controlpoint']['qualitytemplateid'],
+                'qrcode'=>$code,
                 'isInspect'=>$cp['type'] ? 'true' : 'false',
                 'procedureId'=>$cp['ma_division_id'],
                 'formName'=>$cp['ControlPoint']['name'],
