@@ -1160,7 +1160,7 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
                     }
                     else if (row[3] === 2) {
                         html += "<a title='审批历史' onclick='historyOnLine("+row[4]+","+row[6]+")' style='margin-right:6px;'><i class='fa fa fa-file-text'></i></a>";
-                        // html += "<a title='下载' onclick='downOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-download'></i></a>";
+                        html += "<a title='下载' onclick='downOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-download'></i></a>";
                         html += "<a title='作废' onclick='toVoidOnLine("+row[4]+")' class='eleHide' style='margin-right:6px;'><i class='fa fa fa-minus'></i></a>";
                     }
                     else if (row[3] === -1 && row[5] == $("#userId").val()) {
