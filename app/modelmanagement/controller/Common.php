@@ -270,7 +270,7 @@ class Common extends Controller
                     ->join('quality_unit u', 'u.id = q.unit_id', 'left')
                     ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,u.site,u.id as uid')
                     ->where($search_data)
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                    ->order($order)->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {

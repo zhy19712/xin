@@ -442,24 +442,6 @@ class Common extends Controller
             case 'date desc':
                 $order = 's.date desc';
                 break;
-            case 'p_name asc':
-                $order = 'g.p_name asc';
-                break;
-            case 'p_name desc':
-                $order = 'g.p_name desc';
-                break;
-            case 'income_name asc':
-                $order = 'u.nickname asc';
-                break;
-            case 'income_name desc':
-                $order = 'u.nickname desc';
-                break;
-            case 'send_name asc':
-                $order = 'u.nickname asc';
-                break;
-            case 'send_name desc':
-                $order = 'u.nickname desc';
-                break;
             default :
         }
 
@@ -488,7 +470,6 @@ class Common extends Controller
             $recordsTotal = Db::name($table)->where(['send_id'=>$uid,'status'=>3])->count();
         }
 
-
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
@@ -500,20 +481,14 @@ class Common extends Controller
                         case 'id':
                             $newColumnString = 's.id' . '|' . $newColumnString;
                             break;
+                        case 'create_time':
+                            $newColumnString = 's.create_time' . '|' . $newColumnString;
+                            break;
                         case 'file_name':
                             $newColumnString = 's.file_name' . '|' . $newColumnString;
                             break;
                         case 'date':
                             $newColumnString = 's.date' . '|' . $newColumnString;
-                            break;
-                        case 'p_name':
-                            $newColumnString = 'g.p_name' . '|' . $newColumnString;
-                            break;
-                        case 'income_name':
-                            $newColumnString = 'u.nickname' . '|' . $newColumnString;
-                            break;
-                        case 'send_name':
-                            $newColumnString = 'u.nickname' . '|' . $newColumnString;
                             break;
                         case 'status':
                             $newColumnString = 's.status' . '|' . $newColumnString;
@@ -523,9 +498,12 @@ class Common extends Controller
                 }
                 $newColumnString = substr($newColumnString,0,strlen($newColumnString)-1);
 
-                if(in_array($search,['未','未发','未发送'])){
+                if(strtotime($search)){
+                    $search = strtotime($search);
+                }
+                if(in_array($search,['未发','未发送'])){
                     $search = 1;$newColumnString = 's.status';
-                }if(in_array($search,['已发','已发送'])){
+                }if(in_array($search,['已发','已发送','未处','未处理'])){
                     $search = 2;$newColumnString = 's.status';
                 }if(in_array($search,['签','签收','已签收'])){
                     $search = 3;$newColumnString = 's.status';
@@ -537,8 +515,7 @@ class Common extends Controller
                     // 收文 查询 发件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->join('admin u', 's.income_id=u.id', 'left')
-                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,(select p_name from xin_admin_group as g where g.id = (select admin_group_id from xin_admin where id = s.send_id)) as p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])
                         ->order($order)->limit(intval($start), intval($length))->select();
@@ -546,16 +523,14 @@ class Common extends Controller
                     // 发文 查询 收件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->join('admin u', 's.send_id=u.id', 'left')
-                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as send_name,(select nickname from xin_admin where id = s.income_id) as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,(select p_name from xin_admin_group as g where g.id = (select admin_group_id from xin_admin where id = s.income_id)) as p_name,u.nickname as send_name,(select nickname from xin_admin where id = s.income_id) as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['u.admin_group_id'=>['in',$gid_arr]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->join('admin u', 's.income_id=u.id', 'left')
-                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,(select p_name from xin_admin_group as g where g.id = (select admin_group_id from xin_admin where id = s.send_id)) as p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where($newColumnString, 'like', '%' . $search . '%')
                         ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
                         ->order($order)->limit(intval($start), intval($length))->select();
@@ -569,23 +544,20 @@ class Common extends Controller
                     // 收文 查询 发件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->join('admin u', 's.income_id=u.id', 'left')
-                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,(select p_name from xin_admin_group as g where g.id = (select admin_group_id from xin_admin where id = s.send_id)) as p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['u.admin_group_id'=>['in',$gid_arr],'s.status'=>['neq',1]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else if($type == 2){
                     // 发文 查询 收件人的名称和单位
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->join('admin u', 's.send_id=u.id', 'left')
-                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as send_name,(select nickname from xin_admin where id = s.income_id) as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,(select p_name from xin_admin_group as g where g.id = (select admin_group_id from xin_admin where id = s.income_id)) as p_name,u.nickname as send_name,(select nickname from xin_admin where id = s.income_id) as income_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['u.admin_group_id'=>['in',$gid_arr]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->join('admin u', 's.income_id=u.id', 'left')
-                        ->join('admin_group g', 'u.admin_group_id=g.id', 'left')
-                        ->field('s.id,s.file_name,s.date,g.p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
+                        ->field('s.id,s.file_name,s.date,(select p_name from xin_admin_group as g where g.id = (select admin_group_id from xin_admin where id = s.send_id)) as p_name,u.nickname as income_name,(select nickname from xin_admin where id = s.send_id) as send_name,s.status,FROM_UNIXTIME(s.create_time) as create_time')
                         ->where(['s.income_id'=>$uid,'s.status'=>['eq',3]])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
