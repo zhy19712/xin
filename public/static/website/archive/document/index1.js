@@ -549,7 +549,7 @@ function uploaderInit(){
       server: "./upload",// 文件接收服务端。
       chunked: false, //分片
       comress:null, //图片不压缩
-      fileSizeLimit: 8388000,
+      fileSizeLimit: 1024*1024*1024,
       // fileNumLimit: 6,
       duplicate :false,// 重复上传图片，true为可重复false为不可重复
       pick: {

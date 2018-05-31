@@ -108,30 +108,44 @@ class Document extends Permissions
      */
     public function download()
     {
-        $mod = DocumentModel::get(input('id'));
-
-        $file_obj = Db::name('attachment')->where('id', $mod['attachmentId'])->find();
-        $filePath = '.' . $file_obj['filepath'];
-        if (!file_exists($filePath)) {
-            return json(['code' => '-1', 'msg' => '文件不存在']);
-        } else if (request()->isAjax()) {
-            return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
-        } else {
-            //插入下载记录
-            $this->documentDownRecord->save(['docId' => $mod['id'], 'user' => Session::get('current_nickname')]);
-            $fileName = $file_obj['name'];
-            $file = fopen($filePath, "r"); //   打开文件
-            //输入文件标签
-            $fileName = iconv("utf-8", "gb2312", $fileName);
-            Header("Content-type:application/octet-stream ");
-            Header("Accept-Ranges:bytes ");
-            Header("Accept-Length:   " . filesize($filePath));
-            Header("Content-Disposition:   attachment;   filename= " . $fileName);
-            //   输出文件内容
-            echo fread($file, filesize($filePath));
-            fclose($file);
-            exit;
+        if (request()->isAjax()) {
+            $id = input('param.id');//id
+            //实例化model类
+            $model = new DocumentModel();
+            $param = $model->getOne($id);
+            //查询attachment文件上传表中的文件上传路径
+            $attachment = Db::name("attachment")->where("id", $param["attachmentId"])->find();
+            //上传文件路径
+            $path = $attachment["filepath"];
+            if (!$path || !file_exists("." . $path)) {
+                return json(['code' => '-1', 'msg' => '文件不存在']);
+            }
+            return json(['code' => 1]);
         }
+        $id = input('param.id');
+
+        //实例化model类
+        $model = new DocumentModel();
+        $param = $model->getOne($id);
+        //查询attachment文件上传表中的文件上传路径
+        $attachment = Db::name("attachment")->where("id", $param["attachmentId"])->find();
+        //上传文件路径
+        $path = $attachment["filepath"];
+
+        $filePath = '.' . $path;
+        $fileName = $attachment['name'];
+        $file = fopen($filePath, "r"); //   打开文件
+        //输入文件标签
+        $fileName = iconv("utf-8", "gb2312", $fileName);
+        Header("Content-type:application/octet-stream ");
+        Header("Accept-Ranges:bytes ");
+        Header("Accept-Length:   " . filesize($filePath));
+        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+        //   输出文件内容
+        echo fread($file, filesize($filePath));
+        fclose($file);
+        exit;
+
     }
 
     /**
