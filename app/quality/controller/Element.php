@@ -10,6 +10,7 @@ namespace app\quality\controller;
 
 use app\admin\controller\Permissions;
 use app\quality\controller\Qualityform;
+use app\quality\controller\Matchform;
 use app\quality\model\DivisionControlPointModel;
 use app\quality\model\DivisionUnitModel;
 use app\quality\model\QualityFormInfoModel;
@@ -200,6 +201,7 @@ class Element extends Permissions
      * @throws \think\exception\DbException
      */
     public function download($cpr_id)
+
     {
         $cp = $this->divisionControlPointService->with('ControlPoint')->where('id', $cpr_id)->find();
         $norm_template=Db::name('norm_template')->alias('t')
@@ -213,38 +215,88 @@ class Element extends Permissions
         }
         else
          {
-            $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . ".docx";
+            $template_name=$norm_template['name'];
+            $formPath = ROOT_PATH . 'public' . DS . "data\\form\\aqulityNew\\" . $cp['ControlPoint']['code'] . $template_name . ".html";
             $formPath = iconv('UTF-8', 'GB2312', $formPath);
             $flag = file_exists($formPath);
-            if ($this->request->isAjax()) {
+            if ($this->request->isAjax())
+            {
                 if (!$flag) {
                     return json(['code' => -1, 'msg' => '文件不存在!']);
+                }else{
+                    return json(['code' => 1, 'msg' => '文件存在!']);
                 }
-                return json(['code' => 1]);
+
             }
-            if (!$flag) {
-                return "文件不存在";
-            }
+
             //设置临时文件，避免C盘Temp不可写报错
-            Settings::setTempDir('temp');
-            $phpword = new PhpWord();
-            $phpword = $phpword->loadTemplate($formPath);
-            $infos = $this->qualityFormInfoService->getFormBaseInfo($cp['division_id']);
-            foreach ($infos as $key => $value) {
-                $phpword->setValue('{' . $key . '}', $value);
+//            Settings::setTempDir('temp');
+//            $phpword = new PhpWord();
+//            $phpword = $phpword->loadTemplate($formPath);
+         $output = $this->qualityFormInfoService->getFormBaseInfo($cp['division_id']);
+//            foreach ($infos as $key => $value) {
+//                $phpword->setValue('{' . $key . '}', $value);
+//            }
+        //渲染指定文件
+        $htmlcontent=    $this->fetch($formPath,
+                [   'id'=>'',
+                    'divisionId'=>'',
+                    'templateId'=>'',
+                    'isInspect'=>'',
+                    'procedureId'=>'',
+                    'formName'=>'',
+                    'currentStep'=>'',
+                    'controlPointId'=>'',
+                    'isView'=>'',
+                    'formData'=>'',
+                    'JYPName'=>$output['JYPName'],
+                    'JYPCode'=>$output['JYPCode'],
+                    'Quantity'=>$output['Quantity'],
+                    'PileNo'=>$output['PileNo'],
+                    'Altitude'=>$output['Altitude'],
+                    'BuildBase'=>$output['BuildBase'],
+                    'DYName'=>$output['DYName'],
+                    'DYCode'=>$output['DYCode'],
+                    'Constructor'=>$output['Constructor'],
+                    'Supervisor'=>$output['Supervisor'],
+                    'SectionCode'=>$output['SectionCode'],
+                    'SectionName'=>'丰宁抽水蓄能电站',
+                    'ContractCode'=>$output['SectionCode'],
+                    'FBName'=>$output['FBName'],
+                    'FBCode'=>$output['FBCode'],
+                    'DWName'=>$output['DWName'],
+                    'DWCode'=>$output['DWCode']
+                ]);
+            $tempPath=ROOT_PATH . 'public' . DS . "data\\form\\temp\\";
+            $tempHtml=$tempPath.time().".html";
+            $tempPdf=$tempPath.time().".pdf";
+            //将渲染过的html代码填充到临时文件中
+            file_put_contents($tempHtml,$htmlcontent);
+            //清空缓冲区
+            ob_end_clean();
+            //调用wkhtml工具将html文件生成pdf文件
+            shell_exec("wkhtmltopdf ".$tempHtml." ".$tempPdf);
+            $filePath = iconv("utf-8", "gb2312", $tempPdf);
+            $fileName =$cp['ControlPoint']['code'] . $template_name.".pdf";
+            $fileName =iconv("utf-8", "gb2312", $fileName);
+
+
+            if(file_exists($filePath)){
+                header("Content-type:application/pdf");
+                header("Content-Disposition:attachment;filename=".$fileName);
+                $file = fopen($filePath, 'r');
+                echo fread($file, filesize($filePath));
+                fclose($file);
+                //删除临时文件
+                unlink($tempHtml);
+                unlink($tempPdf);
             }
-            $docname = $phpword->save();
+            else
+            {
+                return(['msg'=>'未找到下载文件']);
+                exit;
+            }
 
-
-            header('Content-Disposition: attachment; filename="' . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . '.docx"');
-            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-            header('Content-Transfer-Encoding: binary');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Expires: 0');
-
-            $file = fopen($docname, 'r');
-            echo fread($file, filesize($docname));
-            fclose($file);
         }
     }
 
@@ -257,52 +309,56 @@ class Element extends Permissions
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //在线填报表单下载
     public function formDownload($formId)
     {
-        $cp = $this->qualityFormInfoService->with('ControlPoint')->where('id', $formId)->find();
-        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . ".docx";
-        $formPath = iconv('UTF-8', 'GB2312', $formPath);
-        $flag = file_exists($formPath);
 
-        if ($this->request->isAjax()) {
+
+        $cp = $this->qualityFormInfoService->with('ControlPoint')->where('id', $formId)->find();
+
+        $relation=Db::name('quality_division_controlpoint_relation')
+                 ->where(['division_id'=>$cp['DivisionId'],'control_id'=>$cp['ControlPointId'],'type'=>1])
+                 ->find();
+        $norm_template=Db::name('norm_template')->alias('t')
+            ->join('norm_controlpoint c', 't.id = c.qualitytemplateid', 'left')
+            ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+            ->where(['r.id'=>$relation['id']])
+            ->find();
+        $cpr_id=$relation['id'];
+        $template_name=$norm_template['name'];
+
+        $host="http://".$_SERVER['HTTP_HOST'];
+        $html=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
+        $tempPath=ROOT_PATH . 'public' . DS . "data\\form\\temp\\";
+        $tempPdf=$tempPath.time().".pdf";
+        $flag=file_exists($tempPath);
+        if ($this->request->isAjax())
+        {
             if (!$flag) {
                 return json(['code' => -1, 'msg' => '文件不存在!']);
+            }else{
+                return json(['code' => 1, 'msg' => '文件存在!']);
             }
-            return json(['code' => 1]);
-        }
-        if (!$flag) {
-            return "文件不存在";
-        }
 
-        //设置临时文件，避免C盘Temp不可写报错
-        Settings::setTempDir('temp');
-        $phpword = new PhpWord();
-        //$phpword = $phpword->loadTemplate($formPath);
-        $phpword= new TemplateProcessor($formPath);
-        $infos = $this->qualityFormInfoService->getFormBaseInfo($cp['DivisionId']);
-
-        foreach ($infos as $key => $value) {
-            $phpword->setValue("{{$key}}", $value);
         }
-
-        $formInfo = unserialize($cp['form_data']);
-        foreach ($formInfo as $item) {
-            $phpword->setValue('{'.$item['Name'].'}', $item['Value']);
-        }
-        $docname = $phpword->save();
+        //清空缓冲区
         ob_end_clean();
-        header( 'Content-type:text/html;charset=utf-8');
-        header('Content-Disposition: attachment; filename="' . $cp['ControlPoint']['code'] . $cp['ControlPoint']['name'] . '.docx"');
-        //header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-        header('Content-Transfer-Encoding: binary');
-        header("Content-type:application/octet-stream ");
-        header("Accept-Ranges:bytes ");
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Expires: 0');
+        //调用wkhtml工具将html文件生成pdf文件
+        $fileName=$cp['ControlPoint']['code'] . $template_name.".pdf";
+        shell_exec("wkhtmltopdf ".$html." ".$tempPdf);
 
-        $file = fopen($docname, 'r');
-        echo fread($file, filesize($docname));
+        //将路径全部转为中文，防止出现乱码
+        $filePath = iconv("utf-8", "gb2312", $tempPdf);
+        $fileName = iconv("utf-8", "gb2312", $fileName);
+        //开始下载
+        header("Content-type:application/pdf");
+        header("Content-Disposition:attachment;filename=".$fileName);
+        $file = fopen($filePath, 'r');
+        echo fread($file, filesize($filePath));
         fclose($file);
+        //删除临时文件
+        unlink($tempPdf);
+
     }
 
     public function printPDF($cpr_id)
@@ -680,6 +736,7 @@ class Element extends Permissions
             }
         }
     }
+
 
 
 }
