@@ -1,7 +1,7 @@
 {include file="../app/public/common_header.html"}
 <style type="text/css">
     #division .ztree,#unitWork .ztree{
-        height: 100%;
+        height: 97.9%;
         padding-bottom: 5px;
     }
     #division #ztree,#unitWork #ztreeUnit{
@@ -11,7 +11,7 @@
         display: block;
     }
     #unitWorkRightBottom .mybtn i.fa:before,#unitWorkRightBottom .bitCodes i.fa:before,#unitWorkRightBottom .mybtnAdd i.fa:before,#unitWorkRightBottom .saveCheck i.fa:before{
-        background: #00c0ef;
+        /*background: #00c0ef;*/
         color: #ffffff;
     }
     #unitWorkRightBottom .mybtn,#unitWorkRightBottom .bitCodes,#unitWorkRightBottom .mybtnAdd{
@@ -19,13 +19,13 @@
         right: 0;
         top: 0;
         color: #FFFFFF;
-        width: 50px;
+        width: 58px;
         text-align: center;
-        border-radius: 50px;
+        border-radius: 3px;
         height: 25px;
         line-height: 26px;
         margin-top: 2px;
-        background-color: #00c0ef;
+        background-color: #009688;
         cursor: pointer;
     }
     #unitWorkRightBottom .bitCodes{
@@ -34,7 +34,7 @@
     #unitWorkRightBottom .mybtn,#unitWorkRightBottom .bitCodes,#unitWorkRightBottom .mybtnAdd{
         margin-right: 0.5%;
         margin-bottom: 5px;
-        margin-top: .25%;
+        margin-top: .19%;
     }
     #tableContent #tableItem_filter {
         float: left;
@@ -56,30 +56,44 @@
     }
     #tableContent .imgList {
         /*border-top: 1px dotted;*/
+        /*width: 100%;*/
+        /*overflow-x:auto ;*/
         border-bottom: 1px dotted;
         padding: 5px 3px;
     }
     #tableContent .imgList #homeWork {
-        margin-right:3px;
+        /*margin-right:5px;*/
     }
     #tableContent .imgList img {
         border-radius: 50%;
-        margin-top: 3px;
+        margin-top: -3px;
+        margin-right: 5px;
     }
     #tableContent .imgListStyle {
-        margin:5px 0px 3px 8px;
+        margin:5px 0px 3px 4px;
     }
     #tableContent .imgList a{
         cursor: pointer;
         font-style: inherit;
-        /*color: #2213e9;*/
+        color: #00c0ef;
         color: gray;
         font-size: 13px;
-        font-weight: 600;
+        /*font-weight: 600;*/
     }
-    #tableContent .imgList a:hover{
-        color: #2213e9;
+    /*#tableContent .imgList a:hover{*/
+        /*color: #00c0ef;*/
+    /*}*/
+    #tableContent .imgList a span{
+        font-size: 16px;
     }
+    #tableContent .imgList a img:nth-of-type(1){
+        width: 32px;
+        height: 32px;
+        margin: 0 14px 0 0;
+    }
+    /*#tableContent .imgList a img:nth-of-type(2){*/
+        /*margin: 0 0 0 5px;*/
+    /*}*/
     #tableContent .listName{
         padding:  .5% 0;
         border-bottom: 1px dotted;
@@ -183,36 +197,28 @@
         display: inline;
     }
     .webuploader-pick {
-        width: 50px;
+        width: 58px;
         padding: 0px 0px;
-        border-radius: 50px;
+        border-radius: 3px;
         top: -27px;
-        background: #00c0ef;
+        background: #009688;
     }
+    /*改扫描件回传这个样式，一定要改这个大小，不然没有功能*/
     #file_upload_standards >div:nth-of-type(2){
         position: absolute;
         top: -26px !important;
         left: 0px;
-        width: 50px !important;
-        height: 26px !important;
+        width: 58px !important;
+        height: 25px !important;
         overflow: hidden;
     }
     .result .disabledColor{
         background-color: #FFFFFF !important
     }
-
     .faStyle{
-        width: 40px;
-        height: 26px;
-        border-radius: 3px;
-        background: #009688;
+        margin-left: 5px;
     }
-    table.table i.fa {
-        margin-left: 0px;
-    }
-    .faStyle i.fa:before {
-        color: #FFFFFF;
-    }
+
 
 </style>
 <!--右边的工程划分-->
@@ -255,10 +261,10 @@
                             </div>
                         </form>
                     </div>
-                    <div class="listName" id="nameCon"><h3>控制点</h3></div>
+                    <div class="listName" id="nameCon"><h3><i class='fa fa-dot-circle-o'></i> 控制点</h3></div>
                     <div class="imgList">
-                        <span id="imgListLeft">
-                            <a id="homeWork" class="imgListStyle" href="javascript:;"><img src="__WEBSITE__/elementimg/task.png" alt="工作"><span style="vertical-align: middle">&nbsp; 作业</span></a>
+                        <span id="imgListLeft" style="margin-left: 15px;">
+                            <a id="homeWork" class="imgListStyle" href="javascript:;"><img src="__WEBSITE__/elementimg/task.png" alt="工作"><span style="vertical-align: middle;margin-left: -10px;">&nbsp; 作业</span></a>
                         </span>
                         <span id="imgListRight">
 

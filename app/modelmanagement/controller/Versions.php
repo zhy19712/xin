@@ -10,11 +10,11 @@ namespace app\modelmanagement\controller;
 
 
 use app\admin\controller\Permissions;
+use app\admin\model\Attachment;
 use app\modelmanagement\model\CompleteGroupModel;
 use app\modelmanagement\model\CompleteModel;
 use app\modelmanagement\model\QualitymassModel;
 use app\modelmanagement\model\VersionsModel;
-use PhpOffice\PhpWord\Shared\ZipArchive;
 use think\Db;
 use think\Session;
 
@@ -105,15 +105,17 @@ class Versions extends Permissions
                 $data['admin_id'] = $data['user_id'];
                 $data['audit_time'] = time();
             }
-            $res['id'] = Db::name('attachment')->insertGetId($data);
             $res['src'] = $path . DS . $info->getSaveName();
             $res['code'] = 2;
-
             // 记得打开php.ini里的com.allow_dcom = true
-            $obj = new \COM('Wscript.Shell');
+            $obj = new \COM('WScript.Shell');
             //执行doc解压命令
-            $filepath = $res['src'];
-            $obj->run("winrar x $filepath  $path",1,true);
+            $file_path = $res['src'];
+            $flag = $obj->run("winrar x $file_path $path",1,true);
+            if($flag == 1){ // 0 是成功 1是失败
+                return json(['code'=>-1,'msg'=>'解压文件失败']);
+            }
+            $res['id'] = Db::name('attachment')->insertGetId($data);
             return json($res);
         } else {
             // 上传失败获取错误信息
@@ -191,18 +193,22 @@ class Versions extends Permissions
                 // 1 竣工模型 -- 全景3D模型 操作的表是 model_complete
                 $attachment = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('name');
                 $file_name = explode('.',$attachment);
+                $attr = new Attachment();
                 if($param['model_type'] == 1){
                     $flag = $this->completeGolIdTable('E:\WebServer\Resources\jungong' . DS . $file_name[0] . DS . 'GolIdTable.txt');
                     if($flag['code'] == -1){
+                        $attr->deleteTb($param['attachment_id']);
                         return json(['code'=>-1,'msg'=>'竣工模型GolIdTable.txt'.$flag['msg']]);
                     }
                     $flag = $this->completeGroupProperties('E:\WebServer\Resources\jungong' . DS . $file_name[0] . DS . 'GroupProperties.txt');
                     if($flag['code'] == -1){
+                        $attr->deleteTb($param['attachment_id']);
                         return json(['code'=>-1,'msg'=>'竣工模型GroupProperties.txt'.$flag['msg']]);
                     }
                 }else{
                     $flag = $this->qualityInsertTxtContent('E:\WebServer\Resources\shigong' . DS . $file_name[0] . DS . 'GolIdTable.txt');
                     if($flag['code'] == -1){
+                        $attr->deleteTb($param['attachment_id']);
                         return json(['code'=>-1,'msg'=>'施工模型GolIdTable.txt'.$flag['msg']]);
                     }
                 }

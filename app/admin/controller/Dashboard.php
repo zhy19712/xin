@@ -11,6 +11,7 @@
  * Class Dashboard
  * @package app\admin\controller
  */
+
 namespace app\admin\controller;
 use app\admin\model\MessageremindingModel;//消息记录
 use app\quality\model\QualityFormInfoModel;//单元工程审批表
@@ -21,6 +22,7 @@ use think\exception\PDOException;
 
 class Dashboard extends Permissions
 {
+
     /**
      * 消息提醒模板首页
      * @return mixed

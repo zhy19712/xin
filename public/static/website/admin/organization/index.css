@@ -1,3 +1,6 @@
+.ztree{
+    margin-top: 35px;
+}
 .current-path{
     padding-bottom: 5px;
     margin-bottom: 5px;
@@ -30,6 +33,6 @@
 .layui-form-item .department .layui-form-mid i.fa:before{
     color: #FFF;
 }
-.layui-textarea{
-    width: 94.5%;
+.dataTables_filter{
+    margin-bottom: 5px;
 }

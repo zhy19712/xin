@@ -53,12 +53,12 @@ function onClick(e, treeId, node) {
     $(".mybtn").css("display","none");//新增
     $(".alldel").css("display","none");//全部删除
 
-    $("#homeWork").css("color","#2213e9").siblings().css("color","#CDCDCD");
+    $("#homeWork").css("color","#00c0ef").siblings().css("color","#333333");
 }
 //点击置灰
 $(".imgList").on("click","a",function () {
-    $(this).css("color","#2213e9").siblings("a").css("color","#CDCDCD");
-    $("#homeWork").css("color","#CDCDCD");
+    $(this).css("color","#00c0ef").siblings("a").css("color","#333333");
+    $("#homeWork").css("color","#333333");
 });
 
 //点击作业
@@ -66,7 +66,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(".bitCodes").css("display","block");
     $(".mybtn").css("display","none");
     $(".alldel").css("display","none");
-    $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
+    $(this).css("color","#00c0ef").parent("span").next("span").children("a").css("color","#333333");
     tableItem.ajax.url("/quality/common/datatablespre/tableName/quality_subdivision_planning_list/checked//selfid/"+selfid+"/procedureid/"+conThisId+".shtml").load();
 });
 //点击工序控制点名字
