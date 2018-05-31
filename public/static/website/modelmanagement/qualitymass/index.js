@@ -203,6 +203,9 @@ function tableItemFun(model_type) {
             }
         }
     });
+    //设置按钮文字
+    $('.alreadyBtn').html('关联');
+    $('.noteverBtn').html('解除关联');
 }
 
 //已关联模型表
@@ -314,9 +317,6 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
 //取消全选的事件绑定
 $("thead tr th:first-child").unbind();
 
-//设置按钮文自
-$('.alreadyBtn').html('关联');
-$('.noteverBtn').html('解除关联');
 
 //起止高程和桩号的值
 function elval() {
@@ -438,6 +438,11 @@ $('#already').on('ifChecked', function(event){
 //筛选未关联树节点
 $('#notever').on('ifChecked', function(event){
     screenNode(2);
+});
+
+//筛选全部树节点
+$('#all').on('ifChecked', function(event){
+    screenNode(0);
 });
 
 //筛选是否关联模型单元工程节点
