@@ -202,6 +202,16 @@ function tableItemFun(model_type) {
                 "sNext": "下一页",
                 "sLast": ">>"
             }
+        },
+        fnCreatedRow:function (nRow, aData, iDataIndex) {
+            var txt = $(nRow).find('.node-name').text();
+            if(txt=='无'||txt==null||txt=='null'){
+                $(nRow).find('.node-name').onclick=null;
+                $(nRow).find('.node-name').css({
+                    'color':'#999',
+                    'cursor':'auto'
+                });
+            }
         }
     });
     //设置按钮文字
@@ -367,7 +377,6 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     }
 });
 
-
 //起止高程和桩号的值
 function elval() {
     $.ajax({
@@ -440,7 +449,6 @@ $("#all_checked").on("click", function () {
     idArr = idArr.removalArray();
     console.log(idArr);
 });
-
 
 //筛选已关联树节点
 $('#already').on('ifChecked', function(event){
@@ -524,11 +532,13 @@ function model_quality(model_type) {
 //点击已关联节点选中树中对应的节点
 function clickTree(that) {
     var uid = $(that).attr('uid');
-    var treeObj = $.fn.zTree.getZTreeObj("ztree");
-    var nodes = treeObj.getNodesByParam("add_id", uid, null);
-    treeObj.selectNode(nodes[0]);
-    var tId = nodes[0].tId;
-    $('#'+tId+'_span').click();
+    if(uid!="null"){
+        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+        var nodes = treeObj.getNodesByParam("add_id", uid, null);
+        treeObj.selectNode(nodes[0]);
+        var tId = nodes[0].tId;
+        $('#'+tId+'_span').click();
+    }
 }
 
 //刷新已关联模型
