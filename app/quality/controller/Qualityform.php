@@ -72,39 +72,48 @@ class Qualityform extends Permissions
 
 
         $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
-        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $cp['controlpoint']['code'] . $cp['controlpoint']['name'] . ".html";
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\aqulityNew\\" . $cp['controlpoint']['code'] . $norm_template['name'] . ".html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
         if (!file_exists($formPath)) {
             return "模板文件不存在";
         }
-        $htmlContent = file_get_contents($formPath);
-        $htmlContent = str_replace("{id}", $id, $htmlContent);
-        $htmlContent = str_replace("{templateId}", $cp['controlpoint']['qualitytemplateid'], $htmlContent);
-        $htmlContent = str_replace('{divisionId}', $cp['division_id'], $htmlContent);
-        $htmlContent = str_replace('{isInspect}', $cp['type'] ? 'true' : 'false', $htmlContent);
-        $htmlContent = str_replace('{procedureId}', $cp['ma_division_id'], $htmlContent);
-        $htmlContent = str_replace('{controlPointId}', $cp['control_id'], $htmlContent);
-        $htmlContent = str_replace('{formName}', $cp['ControlPoint']['name'], $htmlContent);
-        $htmlContent = str_replace('{currentStep}', $currentStep, $htmlContent);
-        $htmlContent = str_replace('{isView}', $isView, $htmlContent);
-
-        //输出模板内容
-        //Todo 暂时使用replace替换，后期修改模板使用fetch自定义模板渲染
-        $res= Db::name('quality_division_controlpoint_relation')
-            ->where(['id'=>$cpr_id])
-            ->find();
-        $unit_id=$res['division_id'];
-        $htmlContent = $this->setFormInfo($unit_id, $htmlContent);
-
-        //获取表单基本信息
+        $output = $this->qualityFormInfoService->getFormBaseInfo($cp['division_id']);
         $formdata = "";
         if (!is_null($id)) {
             $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
             $formdata = json_encode(unserialize($_formdata));
         }
-        $htmlContent = str_replace('{formData}', $formdata, $htmlContent);
-
-
+        $htmlContent=    $this->fetch($formPath,
+            [   'id'=>$id,
+                'divisionId'=>$cp['division_id'],
+                'templateId'=>$cp['controlpoint']['qualitytemplateid'],
+                'isInspect'=>$cp['type'] ? 'true' : 'false',
+                'procedureId'=>$cp['ma_division_id'],
+                'formName'=>$cp['ControlPoint']['name'],
+                'currentStep'=>$currentStep,
+                'controlPointId'=>$cp['control_id'],
+                'isView'=>$isView,
+                'formData'=>$formdata,
+                'JYPName'=>$output['JYPName'],
+                'JYPCode'=>$output['JYPCode'],
+                'Quantity'=>$output['Quantity'],
+                'PileNo'=>$output['PileNo'],
+                'Altitude'=>$output['Altitude'],
+                'BuildBase'=>$output['BuildBase'],
+                'DYName'=>$output['DYName'],
+                'DYCode'=>$output['DYCode'],
+                'Constructor'=>$output['Constructor'],
+                'Supervisor'=>$output['Supervisor'],
+                'SectionCode'=>$output['SectionCode'],
+                'SectionName'=>'丰宁抽水蓄能电站',
+                'ContractCode'=>$output['SectionCode'],
+                'FBName'=>$output['FBName'],
+                'FBCode'=>$output['FBCode'],
+                'DWName'=>$output['DWName'],
+                'DWCode'=>$output['DWCode']
+            ]);
+        //输出模板内容
+        //获取表单基本信息
         $htmlContent .= "<input type='hidden' id='cpr' value='{$cpr_id}'>";
         return $htmlContent;
     }
@@ -115,7 +124,6 @@ class Qualityform extends Permissions
      */
     protected function setFormInfo($qualityUnit_id, $htmlContent)
     {
-
 
 
         $mod = $this->divisionUnitService->with("Division.Section")->where(['id' => $qualityUnit_id])->find();
@@ -142,10 +150,21 @@ class Qualityform extends Permissions
         $output['FBCode'] = $Info['FB']['d_code'];
         $output['DWName'] = $Info['DW']['d_name'];
         $output['DWCode'] = $Info['DW']['d_code'];
-        foreach ($output as $key => $value) {
-            $htmlContent = str_replace("{{$key}}", $value, $htmlContent);
-        }
-        return $htmlContent;
+
+        return $output;
+    }
+    //返回给前台表单网址，前台生成二维码
+    public function qrcode()
+    {
+        //cpr_id获取
+        $par=input('param.');
+        $cpr_id=$par['cpr_id'];
+
+        //拼接表单地址
+        $host="http://".$_SERVER['HTTP_HOST'];
+        $html=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
+
+        return json(['code'=>1,'message'=>'success','data'=>$html]);
     }
 
     /**
