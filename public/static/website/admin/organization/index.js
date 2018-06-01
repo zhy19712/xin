@@ -36,6 +36,7 @@
         }
 
         if(nodes[0].level==0){
+            $('input[name="pname"]').val(nodes[0].name);
             layer.open({
                 id:'5',
                 type:'1',
