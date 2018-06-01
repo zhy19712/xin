@@ -131,13 +131,15 @@ class Qualitymass extends Permissions
     public function removeRelevanceNode()
     {
         if(request()->isAjax()){
-            // 传递 选中节点的 add_id
-            $id = input('add_id');
-            if(empty($id)){
-                return json(['code'=>-1,'msg'=>'缺少节点的编号']);
+            // 传递 选中节点的 add_id 和 节点的类型 node_type 1 顶级节点 2 标段 3 工程划分节点 4 单元工程段号(检验批编号)
+            $param = input('param.');
+            $add_id = isset($param['add_id']) ? $param['add_id'] : -1;
+            $node_type = isset($param['node_type']) ? $param['node_type'] : -1;
+            if($add_id == -1 || $node_type == -1){
+                return json(['code'=>-1,'data'=>[],'msg'=>'缺少参数']);
             }
             $node = new DivisionModel();
-            $flag = $node->removeRelevanceNode($id);
+            $flag = $node->removeRelevanceNode($add_id,$node_type);
             return json($flag);
         }
     }

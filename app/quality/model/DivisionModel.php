@@ -10,6 +10,7 @@ namespace app\quality\model;
 
 
 use app\admin\model\AdminGroup;
+use app\modelmanagement\model\VersionsModel;
 use think\Db;
 use think\exception\PDOException;
 use think\Model;
@@ -402,19 +403,25 @@ class DivisionModel extends Model
         return $arr;
     }
 
-    public function removeRelevanceNode($id)
+    public function removeRelevanceNode($id,$node_type)
     {
-        // 获取此节点下包含的所有子节点编号
-        $child_node_id = [];
-        $child_node_obj = $this->cateTree($id);
-        foreach ($child_node_obj as $v){
-            $child_node_id[] = $v['id'];
+        if($node_type == 4){
+            $unit_id = [$id];
+        }else{
+            // 获取此节点下包含的所有子节点编号
+            $child_node_id = [];
+            $child_node_obj = $this->cateTree($id);
+            foreach ($child_node_obj as $v){
+                $child_node_id[] = $v['id'];
+            }
+            $child_node_id[] = $id;
+            // 获取此节点下包含的所有单元工程检验批
+            $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$child_node_id]])->column('id');
         }
-        $child_node_id[] = $id;
-        // 获取此节点下包含的所有单元工程检验批
-        $unit_id = Db::name('quality_unit')->where(['division_id'=>['in',$child_node_id]])->column('id');
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
         // 解除所有的关联关系
-        Db::name('model_quality')->where(['unit_id'=>['in',$unit_id]])->update(['unit_id'=>0]);
+        Db::name('model_quality')->where(['unit_id'=>['in',$unit_id],'version_number'=>$version_number])->update(['unit_id'=>0]);
         return ['code'=>1,'msg'=>'解除成功'];
     }
 
