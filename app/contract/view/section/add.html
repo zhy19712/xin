@@ -90,6 +90,15 @@
             display: none;
             z-index: 7;
         }
+        .layui-form .layui-btn{
+            height: 30px;
+            line-height: 30px;
+        }
+        .layui-form .layui-form-item:last-child .layui-input-block{
+            min-height: 30px;
+            text-align: right;
+            padding: 20px 15px 0 0;
+        }
 
     </style>
 <body>
@@ -176,11 +185,9 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <div class="col-xs-12" style="text-align: center;">
-                            <button class="layui-btn" lay-submit="" lay-filter="demo1"><i class="fa fa-save"></i> 保存
-                            </button>&nbsp;&nbsp;&nbsp;
-                            <button type="reset" class="layui-btn layui-btn-danger"><i class="fa fa-close"></i> 返回
-                            </button>
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">返回</button>
                         </div>
                     </div>
                 </form>
