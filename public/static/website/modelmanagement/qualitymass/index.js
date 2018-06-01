@@ -205,16 +205,16 @@ function tableItemFun(model_type) {
             }
         },
         fnCreatedRow:function (nRow, aData, iDataIndex) {
+            var txt = $(nRow).find('.node-name').text();
             if(!nodeIsChecked){
-                $(nRow).find('.node-name').onclick=null;
+                $(nRow).find('.node-name').removeAttr('onclick');
                 $(nRow).find('.node-name').css({
                     'color':'#999',
                     'cursor':'auto'
                 });
             }
-            var txt = $(nRow).find('.node-name').text();
             if(txt=='无'||txt==null||txt=='null'){
-                $(nRow).find('.node-name').onclick=null;
+                $(nRow).find('.node-name').removeAttr('onclick');
                 $(nRow).find('.node-name').css({
                     'color':'#999',
                     'cursor':'auto'
