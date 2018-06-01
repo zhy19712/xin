@@ -9,6 +9,15 @@
 .ztree-title i.fa{
     width: 11%;
 }
+.ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+    color: #009688;
+}
+.ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+    color: #d85c74;
+}
+.ztree-title i.fa-arrow-circle-down:before{
+    color: #dca107;
+}
 .current-path i.fa:hover:before{
     color: #FFF;
 }
