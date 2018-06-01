@@ -336,6 +336,7 @@
                     }
                 })
             } else if ($("#addId").val() != '') {
+                data.field.otherIdArr = formSelects.value('selectOther', 'val');
                 $.ajax({
                     type: "Post",
                     url: "{:url('addoredit')}",
