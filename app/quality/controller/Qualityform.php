@@ -110,8 +110,8 @@ class Qualityform extends Permissions
                 'Constructor'=>$output['Constructor'],
                 'Supervisor'=>$output['Supervisor'],
                 'SectionCode'=>$output['SectionCode'],
-                'SectionName'=>'丰宁抽水蓄能电站',
-                'ContractCode'=>$output['SectionCode'],
+                'SectionName'=>$output['SectionName'],
+                'ContractCode'=>$output['ContractCode'],
                 'FBName'=>$output['FBName'],
                 'FBCode'=>$output['FBCode'],
                 'DWName'=>$output['DWName'],
@@ -127,37 +127,37 @@ class Qualityform extends Permissions
      * 设置表单基本信息
      * @param $qualityUnit_id 检验批
      */
-    protected function setFormInfo($qualityUnit_id, $htmlContent)
-    {
-
-
-        $mod = $this->divisionUnitService->with("Division.Section")->where(['id' => $qualityUnit_id])->find();
-        $output = array();
-        $output['JYPName'] = $mod['site'];
-        $output['JYPCode'] = $output['JJCode'] = $mod['coding'];
-        $output['Quantity'] = $mod['quantities'];
-        $output['PileNo'] = $mod['pile_number'];
-        $output['Altitude'] = $mod['el_start'] . $mod['el_cease'];
-        $output['BuildBase'] = $mod['ma_bases'] ? "" : $this->getBuildBaseInfo($mod['ma_bases']) . $mod['su_basis'];
-        $output['DYName'] = $mod['Division']['d_name'];
-        $output['DYCode'] = $mod['Division']['d_code'];
-        //标段信息
-        if ($mod['Division']['Section'] != null) {
-            $_section = $mod['Division']['Section'];
-            $output['Constructor'] = $_section['constructorId'] ? AdminGroup::get($_section['constructorId'])['name'] : "";
-            $output ['Supervisor'] = $_section['supervisorId'] ? AdminGroup::get($_section['supervisorId'])['name'] : "";
-            $output ['SectionCode'] = $_section['code'];
-            $output['SectionName'] = "丰宁抽水蓄能电站";
-            $output['ContractCode'] = $_section['contractId'] ? ContractModel::get($_section['contractId'])['contractName'] : "";
-        }
-        $Info = $this->getDivsionInfo($mod['division_id']);
-        $output['FBName'] = $Info['FB']['d_name'];
-        $output['FBCode'] = $Info['FB']['d_code'];
-        $output['DWName'] = $Info['DW']['d_name'];
-        $output['DWCode'] = $Info['DW']['d_code'];
-
-        return $output;
-    }
+//    protected function setFormInfo($qualityUnit_id, $htmlContent)
+//    {
+//
+//
+//        $mod = $this->divisionUnitService->with("Division.Section")->where(['id' => $qualityUnit_id])->find();
+//        $output = array();
+//        $output['JYPName'] = $mod['site'];
+//        $output['JYPCode'] = $output['JJCode'] = $mod['coding'];
+//        $output['Quantity'] = $mod['quantities'];
+//        $output['PileNo'] = $mod['pile_number'];
+//        $output['Altitude'] = $mod['el_start'] . $mod['el_cease'];
+//        $output['BuildBase'] = $mod['ma_bases'] ? "" : $this->getBuildBaseInfo($mod['ma_bases']) . $mod['su_basis'];
+//        $output['DYName'] = $mod['Division']['d_name'];
+//        $output['DYCode'] = $mod['Division']['d_code'];
+//        //标段信息
+//        if ($mod['Division']['Section'] != null) {
+//            $_section = $mod['Division']['Section'];
+//            $output['Constructor'] = $_section['constructorId'] ? AdminGroup::get($_section['constructorId'])['name'] : "";
+//            $output ['Supervisor'] = $_section['supervisorId'] ? AdminGroup::get($_section['supervisorId'])['name'] : "";
+//            $output ['SectionCode'] = $_section['code'];
+//            $output['SectionName'] = "丰宁抽水蓄能电站";
+//            $output['ContractCode'] = $_section['contractId'] ? ContractModel::get($_section['contractId'])['contractName'] : "";
+//        }
+//        $Info = $this->getDivsionInfo($mod['division_id']);
+//        $output['FBName'] = $Info['FB']['d_name'];
+//        $output['FBCode'] = $Info['FB']['d_code'];
+//        $output['DWName'] = $Info['DW']['d_name'];
+//        $output['DWCode'] = $Info['DW']['d_code'];
+//
+//        return $output;
+//    }
     //返回给前台表单网址，前台生成二维码
     public function qrcode()
     {
