@@ -2,8 +2,8 @@
     margin-top: 35px;
 }
 .current-path{
-    padding-bottom: 5px;
-    margin-bottom: 5px;
+    padding-bottom: 0;
+    margin-bottom: 0;
     border-bottom: 1px solid #cecece;
 }
 .ztree-title i.fa{
@@ -34,5 +34,8 @@
     color: #FFF;
 }
 .dataTables_filter{
-    margin-bottom: 5px;
+    margin: 9px 0;
+}
+.add{
+    margin: 5px 0;
 }
