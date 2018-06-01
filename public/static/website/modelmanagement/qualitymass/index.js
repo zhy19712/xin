@@ -503,7 +503,8 @@ $('#relieveBtn').click(function(){
             url: "./removeRelevanceNode",
             type: "post",
             data: {
-                add_id:nodeId
+                add_id:nodeId,
+                node_type:node_type
             },
             dataType: "json",
             success: function (res) {
