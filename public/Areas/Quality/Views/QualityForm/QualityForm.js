@@ -297,9 +297,13 @@ function signature(htmlElement) {
 };
 
 //二维码
-$('#qrcode').qrcode({
-    render: "canvas", //也可以替换为table
-    width: 100,
-    height: 100,
-    text: "http://www.baidu.com"
-});
+function getQrcode() {
+    var link = $("#getQrcode").val();
+    $('#qrcode').qrcode({
+        render: "canvas", //也可以替换为table
+        width: 100,
+        height: 100,
+        text: link
+    });
+}
+getQrcode();

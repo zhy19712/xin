@@ -292,4 +292,12 @@ return [
         //中文验证码字符集
         'zhSet'    => '',
     ],
+
+
+    //极光推送配置
+    'Jpush' => [
+        'app_key'=>'710465ebb901366c0a1cfc40',
+        'master_secret'=>'8f8cee46c519cc940817f25f',
+    ],
+
 ];

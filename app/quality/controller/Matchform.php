@@ -88,10 +88,14 @@ class Matchform extends Controller
         }
         $output = $this->setFormInfo($norm_template['division_id']);
         $htmlContent = file_get_contents($formPath);
+
+        $host="http://".$_SERVER['HTTP_HOST'];
+        $code=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
         $htmlContent=    $this->fetch($formPath,
             [   'id'=>$id,
                 'divisionId'=>$cp['division_id'],
                 'templateId'=>$cp['controlpoint']['qualitytemplateid'],
+                'qrcode'=>$code,
                 'isInspect'=>$cp['type'],
                 'procedureId'=>$cp['ma_division_id'],
                 'formName'=>$cp['ControlPoint']['name'],
