@@ -39,9 +39,10 @@
         <thead>
         <tr>
             <th>选择</th>
+            <th>创建日期</th>
             <th>文件名称</th>
             <th>文件日期</th>
-            <th>来文单位</th>
+            <th>收文单位</th>
             <th>发件人</th>
             <th>收件人</th>
             <th>状态</th>
@@ -72,10 +73,11 @@
       {
         name: "id"
       },
+      { name: "create_time" },
       { name: "file_name" },
       { name: "date" },
-      { name: "unit_name" },
-      { name: "attchment_id"},
+      { name: "p_name" },
+      { name: "send_name"},
       { name: "income_name" },
       { name: "status" }
     ],
@@ -108,7 +110,7 @@
       {
         "searchable": false,
         "orderable": false,
-        'targets': [6],
+        'targets': [7],
         'render': function (data, type, row,meta) {
           if (data == '1'){
             return  '未发送';

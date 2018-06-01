@@ -97,21 +97,21 @@ class Common extends Controller
     }
 
     // ht 质量模型表 模型图上的 只查询选中节点已经关联的构件
-    // 模型构建列表下面的勾选 已关联构件 和 未关联构件 共用方法
     public function model_quality($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
-        $param = input('param.');
-        $model_type = isset($param['model_type']) ? $param['model_type'] : 0; // 0 默认是 只查询选中节点已经关联的构件 1 已关联构件 2 未关联构件
-        if($model_type == 0){
-            $search_data = ['q.unit_id'=>-1];
-            if($id){
-                $search_data = ['q.unit_id'=>$id];
-            }
-        }else if($model_type == 1){
-            $search_data = ['q.unit_id'=>['neq',0]];
-        }else{
-            $search_data = ['q.unit_id'=>['eq',0]];
-        }
+//        $param = input('param.');
+//        $model_type = isset($param['model_type']) ? $param['model_type'] : 0; // 0 默认是 只查询选中节点已经关联的构件 1 已关联构件 2 未关联构件
+//        if($model_type == 0){
+//            $search_data = ['q.unit_id'=>-1];
+//            if($id){
+//                $search_data = ['q.unit_id'=>$id];
+//            }
+//        }else if($model_type == 1){
+//            $search_data = ['q.unit_id'=>['neq',0]];
+//        }else{
+//            $search_data = ['q.unit_id'=>['eq',0]];
+//        }
+        $search_data = ['q.unit_id'=>$id];
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
@@ -155,7 +155,8 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    // ht 质量模型表 根据选中的值 叠加查询
+    // 模型构建列表下面的勾选 已关联构件 和 未关联构件
+    // ht 质量模型表 根据选中的值 叠加查询  共用方法
     public function model_quality_search($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         $table = 'model_quality';
@@ -172,9 +173,9 @@ class Common extends Controller
 
         $model_type = isset($param['model_type']) ? $param['model_type'] : 0; // 0 默认是 查所有的构件 1 已关联构件 2 未关联构件
         if($model_type == 1){
-            $search_data = ['q.unit_id'=>['neq',0]];
+            $search_data['q.unit_id'] = ['gt',0];
         }else if($model_type == 2){
-            $search_data = ['q.unit_id'=>['eq',0]];
+            $search_data['q.unit_id'] = ['eq',0];
         }
 
         $section = isset($param['section']) ? $param['section'] : '';
