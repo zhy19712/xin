@@ -450,9 +450,11 @@ $('#saveUnit').click(function () {
             en_type:en_type,
             division_id:division_id,
             id:window.rowId
+        },
+        others:function () {
+            $('#unit').css("display","none");
         }
     });
-    $('#unit').css("display","none");
     $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
 
     // $(".dataTables_scrollBody .dataTables_paginate").css("float","none");
