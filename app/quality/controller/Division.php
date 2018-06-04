@@ -64,12 +64,15 @@ class Division extends Permissions{
         if($add_id){
             $node = new DivisionModel();
             $data = $node->getOne($add_id);
-            $coding = Db::name('quality_unit')->where('division_id',$add_id)->order('id desc')->value('coding');
-            if(empty($coding)){
-                $num = 1;
+            $code_arr = Db::name('quality_unit')->where('division_id',$add_id)->column('coding');
+            if(sizeof($code_arr)){
+                foreach ($code_arr as $k=>$v){
+                    $arr = explode('-',$v);
+                    $num_arr[] = end($arr)+1;
+                }
+                $num = max($num_arr);
             }else{
-                $arr = explode('-',$coding);
-                $num = end($arr)+1;
+                $num = 1;
             }
             if($num >= 10 && $num < 100){
                 $new_num = '0'.$num;
