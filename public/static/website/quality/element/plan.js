@@ -452,6 +452,7 @@ $('#saveUnit').click(function () {
             id:window.rowId
         }
     });
+    $('#unit').css("display","none");
     $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
 
     // $(".dataTables_scrollBody .dataTables_paginate").css("float","none");
