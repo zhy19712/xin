@@ -96,6 +96,19 @@ class Send extends Permissions
             $send = new SendModel();
             $major_key = isset($param['major_key']) ? $param['major_key'] : 0;
 
+            // 为了更好查询和搜索，追加发件人收件人名称来文单位收文单位
+            $param['send_name'] = Session::has('current_nickname') ? Session::get('current_nickname') : 0;
+            $group = new AdminGroup();
+            $pid = $group->relationId();
+            $param['send_group_id'] = $pid;
+            $param['send_p_name'] = Db::name('admin_group')->where(['id'=>$pid])->value('name');
+            if($param['income_id']){
+                $param['income_name'] = Db::name('admin')->where(['id'=>$param['income_id']])->value('nickname');
+                $pid = $group->relationId($param['income_id']);
+                $param['income_group_id'] = $pid;
+                $param['income_p_name'] = Db::name('admin_group')->where(['id'=>$pid])->value('name');
+            }
+
             if(empty($major_key)){
                 $flag = $send->insertTb($param);
             }else{

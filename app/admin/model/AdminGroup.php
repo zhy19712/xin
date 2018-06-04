@@ -149,9 +149,11 @@ class AdminGroup extends Model
     }
 
     // 获取当前登陆人的组织机构
-    public function relationId()
+    public function relationId($user_id=0)
     {
-        $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
+        if($user_id==0){
+            $user_id = Session::has('admin') ? Session::get('admin') : 0; // 当前登录人
+        }
         $admin_group_id = Db::name('admin')->where(['id'=>$user_id])->value('admin_group_id');
         if($user_id == 1 && $admin_group_id == 1){
             $relation_id = 1; // 管理员
