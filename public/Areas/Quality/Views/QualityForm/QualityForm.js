@@ -295,7 +295,16 @@ function signature(htmlElement) {
         });
     }
 };
-
+// 表单附件
+function formAttachments() {
+    var cpr = $("#cpr").val();
+    top.layer.open({
+        type: 2,
+        title: "表单附件",
+        area: ['800px', '400px'],
+        content: '/Quality/QualityForm/QalityFormAttachment?cpr_id=' + cpr,
+    });
+};
 //二维码
 function getQrcode() {
     var link = $("#getQrcode").val();
