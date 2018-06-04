@@ -114,7 +114,7 @@ class JpushModel extends Model
 
         $client = new JPush($app_key, $master_secret);
 
-        $alias = implode(",",$alias);
+//        $alias = implode(",",$alias);
 
         $client->push()
             ->setPlatform(array('ios', 'android'))
@@ -123,4 +123,6 @@ class JpushModel extends Model
             ->send();
 
     }
+
+
 }
