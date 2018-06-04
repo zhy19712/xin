@@ -147,14 +147,14 @@ $('#save').click(function () {
 function tableInfo() {
     $.datatable({
         tableId:'tableItem',
-        // iDisplayLengths:1000,
-        // scrollYs: true,
-        // scrollCollapses: true,
-        // pagings: false,
+        iDisplayLengths:1000,
+        scrollYs: true,
+        scrollCollapses: true,
+        pagings: false,
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=quality_unit'
         },
-        dom: 'lf<".current-path"<"#add.add layui-btn layui-btn-normal layui-btn-sm">>tipr',
+        dom: 'f<".current-path"<"#add.add layui-btn layui-btn-normal layui-btn-sm">>tr',
         columns:[
             {
                 name: "serial_number"
@@ -202,14 +202,9 @@ function tableInfo() {
                 "visible": false
             },
         ],
-        // isPage:true,
-
-
     });
     // $('.tbcontainer:last-child').remove();
-    $(".dataTables_wrapper .dataTables_scrollBody").css("overflow","initial");
-
-
+    $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
 }
 tableInfo();
 // setTimeout(function () {
@@ -278,6 +273,7 @@ $('.maBasesBtn').click(function () {
             maBasesTable();
         },
         yes:function () {
+            $('input[name="ma_bases"]').val(idArr);
             $('input[name="ma_bases"]').val(idArr);
             layer.close(layer.index);
         },
@@ -357,6 +353,7 @@ function maBasesTable() {
 var idArr = [];
 function getId(that) {
     var isChecked = $(that).prop('checked');
+    console.log(that)
     var id = $(that).attr('idv');
     var checkedLen = $('input[type="checkbox"][name="checkList"]:checked').length;
     var checkboxLen = $('input[type="checkbox"][name="checkList"]').length;
@@ -421,14 +418,14 @@ $('#saveUnit').click(function () {
             id:window.rowId
         }
     });
-    $('#tableItem_wrapper').next(".tbcontainer").remove();
-    $(".dataTables_wrapper .dataTables_paginate").css("float","none");
-    $(".dataTables_wrapper .dataTables_info").css("float","right");
-    $(".dataTables_wrapper .dataTables_length").css("float","none");
-    $(".dataTables_wrapper .dataTables_scrollBody").css("overflow","initial");
-    // $(".dataTables_wrapper .dataTables_scrollBody").css("height","390px");
-    $(".dataTables_wrapper .tbcontainer").css("line-height","0px");
-    $(".dataTables_wrapper .tbcontainer").css("position","initial");
+    $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
+
+    // $(".dataTables_scrollBody .dataTables_paginate").css("float","none");
+    // $(".dataTables_wrapper .dataTables_info").css("float","right");
+    // $(".dataTables_wrapper .dataTables_length").css("float","none");
+    // $(".dataTables_wrapper .dataTables_scrollBody").css("overflow","initial");
+    // $(".dataTables_wrapper .tbcontainer").css("line-height","0px");
+    // $(".dataTables_wrapper .tbcontainer").css("position","initial");
 });
 
 //单元工程段号编辑
@@ -455,6 +452,7 @@ function edit(that) {
             $('input[name="site"]').val(res.site);
             $('input[name="start_date"]').val(res.start_date);
             $('input[name="su_basis"]').val(res.su_basis);
+            $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
         }
     });
 }
@@ -680,8 +678,8 @@ function selfidName(id) {
                 controlPointName = res[i].name;
                 optionStrAfter +=
                     "<a href=\"javascript:;\"  class=\"imgListStyle\" onclick=\"clickConName("+ res[i].id +")\">" +
-                    "<img class='imgNone' id='img"+i+"' src=\"/static/website/elementimg/right.png\" alt=\"箭头\">" +
-                    "<img src=\"/static/website/elementimg/work.png\" alt=\"工作\">&nbsp;"+res[i].name+"<span style='display: none;'>"+res[i].id+"</span>" +
+                    "<img class='imgNone' id='img"+i+"' src=\"/static/website/elementimg/next.png\" alt=\"箭头\">" +
+                    "<img src=\"/static/website/elementimg/procedure.png\" alt=\"工作\">&nbsp;"+res[i].name+"<span style='display: none;'>"+res[i].id+"</span>" +
                     "</a>\n";
             };
             $("#imgListRight").append(optionStrAfter);

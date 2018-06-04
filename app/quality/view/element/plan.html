@@ -101,18 +101,21 @@
         overflow-x: hidden!important;
     }
 
-    /*#tableContent .dataTables_scroll,#unitWork .dataTables_scroll{*/
-        /*height: 100% !important;*/
-    /*}*/
-    /*#tableContent .dataTables_scrollBody,#unitWork .dataTables_scrollBody{*/
-        /*max-height: none!important;*/
-        /*width: 100%;*/
-        /*height: calc(100% - 137px)!important;*/
-        /*border-bottom: none!important;*/
-    /*}*/
-    /*#tableItemControl_wrapper,#tableItem_wrapper{*/
-        /*height: 100% !important;*/
-    /*}*/
+    #tableContent .dataTables_scroll,#unitWork .dataTables_scroll{
+        height: 100% !important;
+    }
+    #tableContent .dataTables_scrollBody,#unitWork .dataTables_scrollBody{
+        max-height: none!important;
+        width: 100%;
+        height: calc(100% - 76px)!important;
+        border-bottom: none!important;
+    }
+    #tableItemControl_wrapper,#tableItem_wrapper{
+        height: 100% !important;
+    }
+    .tbcontainer{
+        display: none;
+    }
     #tableContent .dataTables_scroll{
         height: 100% !important;
     }
@@ -147,6 +150,9 @@
     .layui-layer-page .layui-layer-btn {
         margin-top: -20px;
     }
+    #maBasesItem_wrapper .dataTables_scrollHead{
+        width: 100% !important;
+    }
 </style>
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
@@ -175,7 +181,7 @@
         <div id="tableContent" data-options="region:'center',title:'控制点',split:true" style="width:1255px; position: relative;padding-top: 5px;">
             <div class="imgList">
                 <span id="imgListLeft">
-                    <a id="homeWork" class="imgListStyle" href="javascript:;"><img src="__WEBSITE__/elementimg/work.png" alt="工作">&nbsp;作业</a>
+                    <a id="homeWork" class="imgListStyle" href="javascript:;"><img src="__WEBSITE__/elementimg/task.png" alt="工作">&nbsp;作业</a>
                 </span>
                 <span class="imgListStyle" id="imgListRight">
                 </span>

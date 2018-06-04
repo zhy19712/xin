@@ -111,7 +111,8 @@ class Common extends Controller
                     ->field('serial_number,site,coding,hinge,pile_number,start_date,completion_date,id,en_type')
                     ->where('division_id', $id)
                     ->where($columnString, 'like', '%' . $search . '%')
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                    ->order($order)->select();
+//                    ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
@@ -121,7 +122,8 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)
                     ->field('serial_number,site,coding,hinge,pile_number,start_date,completion_date,id,en_type')
                     ->where('division_id', $id)
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                    ->order($order)->select();
+//                    ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
