@@ -347,6 +347,7 @@ $('.maBasesBtn').click(function () {
         },
         cancel: function(index, layero){
             layer.close(layer.index);
+            $('#maBasesLayer').hide();
         }
     });
 });
