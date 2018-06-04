@@ -12,18 +12,20 @@
  * @package app\admin\controller
  */
 
-namespace app\admin\controller;
+namespace app\api\controller;
 use app\admin\model\MessageremindingModel;//消息记录
 use app\quality\model\QualityFormInfoModel;//单元工程审批表
 use app\quality\model\SendModel;//收文
+use think\Controller;
 use \think\Db;
 use \think\Session;
 use think\exception\PDOException;
 use app\admin\model\JpushModel;
 use app\admin\model\JpushTestModel;
 use think\Loader;
+vendor('JPush.autoload');
 
-class Dashboard extends Permissions
+class Dashboard extends Log
 {
 
     /**
@@ -88,14 +90,11 @@ class Dashboard extends Permissions
                 foreach ($data as $a => $b) {
                     $message->insertTb($b);
                 }
-
             }
             if (!empty($edit_data)) {
                 $message->saveTb($edit_data);
             }
-
         }
-
     }
 
     /**
@@ -152,15 +151,12 @@ class Dashboard extends Permissions
                 foreach ($data as $a => $b) {
                     $message->insertTb($b);
                 }
-
             }
 
             if (!empty($edit_data)) {
                 $message->saveTb($edit_data);
-
             }
         }
-
     }
 
     /**
@@ -210,9 +206,121 @@ class Dashboard extends Permissions
 
                 $flag = $message->editTb($data);
             }
-
             return json(["code" => 1]);
         }
+    }
+
+    /**
+     * 别名推送
+     */
+    public function test()
+    {
+        $jpush = new JpushModel();
+        $alias = "admin";
+        $alert = "id = 1,pid = 2,cid = 3";
+        $jpush->push_a($alias,$alert);
+    }
+
+    /**
+     * 向app端推送消息
+     */
+    public function sendMessage()
+    {
+        vendor('JPush.autoload');
+        $client = new \JPush\Client(config("Jpush.app_key"),config("Jpush.master_secret"));
+        $regid = 1;
+        $content = "";
+        $client->push()
+            ->setPlatform('all')
+//            ->addAllAudience()
+            ->sendNotifySpecial($regid,$content)
+//            ->setNotificationAlert('Hello, JPush')
+            ->send();
+    }
+
+    /**
+     * 推送给指定的设备
+     * 最新测试极光推送
+     * @return \think\response\Json
+     */
+    public function test5()
+    {
+        $model = new JpushTestModel();
+        //向特定用户进行推送—单播
+        //$regid可以是一个单个regid组成的字符串，也可以是多个regid组成的数组
+        //$data['content']是你所需要推送的内容
+        $regid = "140fe1da9ef8282cb5c";
+        $data["content"] = "333333";
+        $result_s = $model->sendNotifySpecial($regid,$data['content']);
+        return json(["code"=>1,"data"=>$result_s]);
+        //想所有用户进行推送—广播
+//        $result_a = sendNotifyAll($data['content']);
+
+        //获取统计用户是否获取推送消息的信息(或者有多少用户收到了推送消息)
+        //$msgids是你推送消息的消息id
+//        $result_r = reportNotify($msgIds);
+    }
+
+    /**
+     * app端获取所有的消息列表
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
+     */
+    public function getAllMessage()
+    {
+        //实例化模型类
+        $model = new QualityFormInfoModel();
+
+        //获取传过来的所有的值
+        $param = $_POST;
+        //查询不同的状态1为未执行，2为已执行
+        $status = $param["status"];
+        //当前登录人的id
+        $admin_id = $param["id"];
+        //分页的条数
+        $count = $param["count"];
+        //当前的页码
+        $page = $param["page"];
+
+        $message_list = Db::name("admin_message_reminding")->alias("m")
+            ->join('admin a','m.sender = a.id','left')
+            ->field("m.task_name,m.create_time,a.nickname as sender,m.task_category,m.status,m.id,m.type,m.uint_id")
+            ->where("m.status",$status)
+            ->where("m.current_approver_id",$admin_id)
+            ->select();
+
+        if(!empty($message_list))
+        {
+            foreach($message_list as $key=>$val)
+            {
+                if($val["type"] == 2)//等于2代表单元工程
+                {
+                    $form_info = $model->getInfomation($val["uint_id"]);
+
+                    $cpr_id = Db::name("quality_division_controlpoint_relation")
+                        ->field("id")
+                        ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
+                        ->find();
+
+                    $form_data["cpr_id"] = $cpr_id["id"];
+
+                    $form_data["CurrentStep"] = $form_info["CurrentStep"];
+
+                    $message_list[$key]["form_info"] = $form_data;
+                }else
+                {
+                    $message_list[$key]["form_info"] = [];
+                }
+
+            }
+        }
+        $order = 0;
+        //当前的所有的数据条数
+        $pageCount = count($message_list);
+
+        $pageArray = page_array($count,$page,$message_list,$order);
+
+        return json(["code"=>1,"pageCount"=>$pageCount,"pageArray"=>$pageArray]);
     }
 }
 
