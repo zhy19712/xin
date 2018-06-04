@@ -763,7 +763,7 @@ class Division extends Permissions{
                         ->find();
                     $bases[]=$atlas['picture_name'].$atlas['picture_number'];
                 }
-                $data['bases_string']=implode(',',$bases);//取出图纸信息并转为字符串
+                $data['ma_bases_name']=implode(',',$bases);//取出图纸信息并转为字符串
 
                 // 流水号在页面里是分开的,所以这里要截取分开
                 $parent_d_code = Db::name('quality_division')->where('id',$data['division_id'])->value('d_code');
