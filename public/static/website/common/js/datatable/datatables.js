@@ -50,12 +50,12 @@
                 "zeroRecords": "没有找到记录",
                 "info": "第 _PAGE_ 页 ( 共 _PAGES_ 页, _TOTAL_ 项 )",
                 "infoEmpty": "无记录",
-                "search": "搜索：",
+                "search": "搜索",
                 "infoFiltered": "(从 _MAX_ 条记录过滤)",
                 "paginate": {
                     "sFirst": "<<",
-                    "sPrevious": "<",
-                    "sNext": ">",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
                     "sLast": ">>"
                 }
             },
