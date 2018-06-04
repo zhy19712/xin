@@ -16,6 +16,7 @@ use app\contract\model\ContractModel;
 use think\Exception;
 use think\exception\PDOException;
 use think\Model;
+use think\Db;
 
 class QualityFormInfoModel extends Model implements IApprove
 {
@@ -56,24 +57,40 @@ class QualityFormInfoModel extends Model implements IApprove
      */
     public function getFormBaseInfo($qualityUnit_id)
     {
+
         $mod = $this->divisionUnitService->with("Division.Section")->where(['id' => $qualityUnit_id])->find();
+        $unit=Db::name('quality_unit')->where(['id'=>$qualityUnit_id])->find();
+        $division=Db::name('quality_division')->where(['id'=>$unit['division_id']])->find();
+        $section=Db::name('section')->where(['id'=>$division['section_id']])->find();
         $output = array();
         $output['JYPName'] = $mod['site'];
-        $output['JYPCode'] = $output['JJCode'] = $mod['coding'];
+        $output['JYPCode'] = $output['JJCode'] = $unit['serial_number'];
         $output['Quantity'] = $mod['quantities'];
         $output['PileNo'] = $mod['pile_number'];
         $output['Altitude'] = $mod['el_start'] . $mod['el_cease'];
-        $output['BuildBase'] = $mod['ma_bases'] ? "" : $this->getBuildBaseInfo($mod['ma_bases']) . $mod['su_basis'];
         $output['DYName'] = $mod['Division']['d_name'];
         $output['DYCode'] = $mod['Division']['d_code'];
+
+        $atlas_id=$unit['ma_bases'];
+        $atlas_id=explode(',',$atlas_id);
+        foreach ($atlas_id as $id)
+        {
+            $atlas= Db::name('archive_atlas_cate ')
+                ->where('id',$id)
+                ->find();
+            $bases[]=$atlas['picture_name'].$atlas['picture_number'].$unit['su_basis'];
+        }
+        $output['BuildBase']=implode(',',$bases);
         //标段信息
         if ($mod['Division']['Section'] != null) {
+
             $_section = $mod['Division']['Section'];
+            $contract=Db::name('contract')->where(['id'=>$section['contractId']])->find();
             $output['Constructor'] = $_section['constructorId'] ? AdminGroup::get($_section['constructorId'])['name'] : "";
             $output ['Supervisor'] = $_section['supervisorId'] ? AdminGroup::get($_section['supervisorId'])['name'] : "";
             $output ['SectionCode'] = $_section['code'];
-            $output['SectionName'] = "丰宁抽水蓄能电站";
-            $output['ContractCode'] = $_section['contractId'] ? ContractModel::get($_section['contractId'])['contractName'] : "";
+            $output['SectionName'] = $contract['projectName'];
+            $output['ContractCode'] =  $contract['contractCode'];
         }
         $Info = $this->getDivsionInfo($mod['division_id']);
         $output['FBName'] = $Info['FB']['d_name'];

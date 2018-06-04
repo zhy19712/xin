@@ -109,20 +109,25 @@ class QualitymassModel extends Model
         return $data;
     }
 
-    // 解除所有的关联关系
+    // 解除关联
     public function removeRelevance($id_arr)
     {
-        $this->where(['id'=>['in',$id_arr]])->update(['unit_id'=>0]);
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
+        $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->update(['unit_id'=>0]);
         return ['code'=>1,'msg'=>'解除成功'];
     }
 
+    // 关联
     public function relevance($id,$id_arr)
     {
-        // 关联
-        $this->where(['id'=>['in',$id_arr]])->update(['unit_id'=>$id]);
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
+        $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->update(['unit_id'=>$id]);
         return ['code'=>1,'msg'=>'关联成功'];
     }
 
+    // 解除该版本的关联关系
     public function removeVersionsRelevance($version_number)
     {
         $this->where(['version_number'=>['eq',$version_number]])->delete();

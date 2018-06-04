@@ -219,15 +219,15 @@ class Element extends Permissions
             $formPath = ROOT_PATH . 'public' . DS . "data\\form\\aqulityNew\\" . $cp['ControlPoint']['code'] . $template_name . "下载.html";
             $formPath = iconv('UTF-8', 'GB2312', $formPath);
             $flag = file_exists($formPath);
-            if ($this->request->isAjax())
-            {
-                if (!$flag) {
-                    return json(['code' => -1, 'msg' => '文件不存在!']);
-                }else{
+           if ($this->request->isAjax())
+           {
+               if (!$flag) {
+                   return json(['code' => -1, 'msg' => '文件不存在!']);
+               }else{
                     return json(['code' => 1, 'msg' => '文件存在!']);
-                }
+               }
 
-            }
+           }
             //设置临时文件，避免C盘Temp不可写报错
 //            Settings::setTempDir('temp');
 //            $phpword = new PhpWord();
@@ -246,6 +246,7 @@ class Element extends Permissions
                     'formName'=>'',
                     'currentStep'=>'',
                     'controlPointId'=>'',
+                    'qrcode'=>'',
                     'isView'=>'',
                     'formData'=>'',
                     'JYPName'=>$output['JYPName'],
@@ -259,13 +260,14 @@ class Element extends Permissions
                     'Constructor'=>$output['Constructor'],
                     'Supervisor'=>$output['Supervisor'],
                     'SectionCode'=>$output['SectionCode'],
-                    'SectionName'=>'丰宁抽水蓄能电站',
-                    'ContractCode'=>$output['SectionCode'],
+                    'SectionName'=>$output['SectionName'],
+                    'ContractCode'=>$output['ContractCode'],
                     'FBName'=>$output['FBName'],
                     'FBCode'=>$output['FBCode'],
                     'DWName'=>$output['DWName'],
                     'DWCode'=>$output['DWCode']
                 ]);
+
             $tempPath=ROOT_PATH . 'public' . DS . "data\\form\\temp\\";
             if (!file_exists($tempPath)){
                 mkdir ($tempPath,0777,true);
@@ -290,8 +292,7 @@ class Element extends Permissions
                 echo fread($file, filesize($filePath));
                 fclose($file);
                 //删除临时文件
-                unlink($tempHtml);
-                unlink($tempPdf);
+
             }
             else
             {

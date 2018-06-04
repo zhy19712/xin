@@ -2,7 +2,8 @@ var nodeId; //被点击节点ID
 var level;  //节点等级
 var node_type;  //节点类型
 var searchData = '';    //组合查询序列化
-var tableItem = '';
+var tableItem = '';     //模型构件列表实例
+var nodeIsChecked = ''; //关联节点勾选状态
 
 //左侧的树
 function ztree(node_type) {
@@ -202,6 +203,23 @@ function tableItemFun(model_type) {
                 "sNext": "下一页",
                 "sLast": ">>"
             }
+        },
+        fnCreatedRow:function (nRow, aData, iDataIndex) {
+            var txt = $(nRow).find('.node-name').text();
+            if(!nodeIsChecked){
+                $(nRow).find('.node-name').removeAttr('onclick');
+                $(nRow).find('.node-name').css({
+                    'color':'#999',
+                    'cursor':'auto'
+                });
+            }
+            if(txt=='无'||txt==null||txt=='null'){
+                $(nRow).find('.node-name').removeAttr('onclick');
+                $(nRow).find('.node-name').css({
+                    'color':'#999',
+                    'cursor':'auto'
+                });
+            }
         }
     });
     //设置按钮文字
@@ -367,7 +385,6 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     }
 });
 
-
 //起止高程和桩号的值
 function elval() {
     $.ajax({
@@ -441,20 +458,22 @@ $("#all_checked").on("click", function () {
     console.log(idArr);
 });
 
-
 //筛选已关联树节点
 $('#already').on('ifChecked', function(event){
     screenNode(1);
+    nodeIsChecked = true;
 });
 
 //筛选未关联树节点
 $('#notever').on('ifChecked', function(event){
     screenNode(2);
+    nodeIsChecked = false;
 });
 
 //筛选全部树节点
 $('#all').on('ifChecked', function(event){
     screenNode(0);
+    nodeIsChecked = true;
 });
 
 //筛选是否关联模型单元工程节点
@@ -468,6 +487,7 @@ function screenNode(node_type) {
         dataType: "json",
         success: function (res) {
             ztree(node_type);
+            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
         }
     });
 }
@@ -483,7 +503,8 @@ $('#relieveBtn').click(function(){
             url: "./removeRelevanceNode",
             type: "post",
             data: {
-                add_id:nodeId
+                add_id:nodeId,
+                node_type:node_type
             },
             dataType: "json",
             success: function (res) {
@@ -494,6 +515,7 @@ $('#relieveBtn').click(function(){
         layer.close(index);
     });
 });
+
 //默认选中未关联
 $('#notever, #noteverTab').iCheck('check');
 var isChecked = $('#notever, #noteverTab').is(':checked');
@@ -501,8 +523,9 @@ if(isChecked){
     tableItemFun(2);
     model_type = 2;
 }
+
 //筛选已关联构件
-$('#alreadyTab').on('ifChecked', function(event){
+$('#alreadyTab').on('ifClicked', function(event){
     model_quality(1);
     model_type = 1;
 });
@@ -524,11 +547,13 @@ function model_quality(model_type) {
 //点击已关联节点选中树中对应的节点
 function clickTree(that) {
     var uid = $(that).attr('uid');
-    var treeObj = $.fn.zTree.getZTreeObj("ztree");
-    var nodes = treeObj.getNodesByParam("add_id", uid, null);
-    treeObj.selectNode(nodes[0]);
-    var tId = nodes[0].tId;
-    $('#'+tId+'_span').click();
+    if(uid!="null"){
+        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+        var nodes = treeObj.getNodesByParam("add_id", uid, null);
+        treeObj.selectNode(nodes[0]);
+        var tId = nodes[0].tId;
+        $('#'+tId+'_span').click();
+    }
 }
 
 //刷新已关联模型
