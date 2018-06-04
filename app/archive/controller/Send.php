@@ -14,6 +14,8 @@ use app\admin\model\Attachment;
 use app\quality\model\SendModel;
 use think\Db;
 use think\Session;
+use app\admin\model\JpushModel;
+vendor('JPush.autoload');
 
 /**
  * 发文
@@ -101,6 +103,25 @@ class Send extends Permissions
                 $flag = $send->editTb($param);
             }
             return json($flag);
+        }
+    }
+
+    /**
+     * 发文 -- 调取极光推送发送一条通知消息
+     * @return \think\response\Json
+     */
+    public function jpushSendMessage()
+    {
+        if($this->request->isAjax()){
+            $jpush = new JpushModel();
+            $id = input("post.last_id");//前台传过来的发文的id
+//            $id = 33;
+            //获取当前的用户名
+            $admin_name = Session::has('current_name') ? Session::get('current_name') : 0; //收件人姓名
+//            $admin_name = "admin";
+            $alias = $admin_name;
+            $alert = "major_key:{$id},type:收文,see_type:2";
+            $jpush->push_a($alias,$alert);
         }
     }
 
