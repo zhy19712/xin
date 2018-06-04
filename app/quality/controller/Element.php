@@ -216,7 +216,7 @@ class Element extends Permissions
         else
          {
             $template_name=$norm_template['name'];
-            $formPath = ROOT_PATH . 'public' . DS . "data\\form\\aqulityNew\\" . $cp['ControlPoint']['code'] . $template_name . "下载.html";
+            $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $cp['ControlPoint']['code'] . $template_name . "下载.html";
             $formPath = iconv('UTF-8', 'GB2312', $formPath);
             $flag = file_exists($formPath);
            if ($this->request->isAjax())

@@ -72,7 +72,7 @@ class Qualityform extends Permissions
 
 
         $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
-        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\aqulityNew\\" . $cp['controlpoint']['code'] . $norm_template['name'] . ".html";
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $cp['controlpoint']['code'] . $norm_template['name'] . ".html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
         if (!file_exists($formPath)) {
             return "模板文件不存在";
