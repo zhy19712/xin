@@ -12,7 +12,7 @@
  * @package app\admin\controller
  */
 
-namespace app\admin\controller;
+namespace app\api\controller;
 use app\admin\model\MessageremindingModel;//消息记录
 use app\quality\model\QualityFormInfoModel;//单元工程审批表
 use app\quality\model\SendModel;//收文
@@ -24,9 +24,8 @@ use app\admin\model\JpushModel;
 use app\admin\model\JpushTestModel;
 use think\Loader;
 vendor('JPush.autoload');
-use JPush\AdminClient;
 
-class Appdashboard extends Controller
+class Dashboard extends Log
 {
 
     /**
