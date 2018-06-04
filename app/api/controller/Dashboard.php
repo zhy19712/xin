@@ -12,7 +12,7 @@
  * @package app\admin\controller
  */
 
-namespace app\admin\controller;
+namespace app\api\controller;
 use app\admin\model\MessageremindingModel;//消息记录
 use app\quality\model\QualityFormInfoModel;//单元工程审批表
 use app\quality\model\SendModel;//收文
@@ -24,9 +24,8 @@ use app\admin\model\JpushModel;
 use app\admin\model\JpushTestModel;
 use think\Loader;
 vendor('JPush.autoload');
-use JPush\AdminClient;
 
-class Appdashboard extends Controller
+class Dashboard extends Log
 {
 
     /**
@@ -91,14 +90,11 @@ class Appdashboard extends Controller
                 foreach ($data as $a => $b) {
                     $message->insertTb($b);
                 }
-
             }
             if (!empty($edit_data)) {
                 $message->saveTb($edit_data);
             }
-
         }
-
     }
 
     /**
@@ -155,15 +151,12 @@ class Appdashboard extends Controller
                 foreach ($data as $a => $b) {
                     $message->insertTb($b);
                 }
-
             }
 
             if (!empty($edit_data)) {
                 $message->saveTb($edit_data);
-
             }
         }
-
     }
 
     /**
@@ -213,7 +206,6 @@ class Appdashboard extends Controller
 
                 $flag = $message->editTb($data);
             }
-
             return json(["code" => 1]);
         }
     }
@@ -260,9 +252,7 @@ class Appdashboard extends Controller
         $regid = "140fe1da9ef8282cb5c";
         $data["content"] = "333333";
         $result_s = $model->sendNotifySpecial($regid,$data['content']);
-
         return json(["code"=>1,"data"=>$result_s]);
-
         //想所有用户进行推送—广播
 //        $result_a = sendNotifyAll($data['content']);
 
@@ -331,7 +321,6 @@ class Appdashboard extends Controller
         $pageArray = page_array($count,$page,$message_list,$order);
 
         return json(["code"=>1,"pageCount"=>$pageCount,"pageArray"=>$pageArray]);
-
     }
 }
 
