@@ -217,25 +217,8 @@ class Dashboard extends Log
     {
         $jpush = new JpushModel();
         $alias = "admin";
-        $alert = "id = 1,pid = 2,cid = 3";
+        $alert = "id:1,pid:2,cid:3";
         $jpush->push_a($alias,$alert);
-    }
-
-    /**
-     * 向app端推送消息
-     */
-    public function sendMessage()
-    {
-        vendor('JPush.autoload');
-        $client = new \JPush\Client(config("Jpush.app_key"),config("Jpush.master_secret"));
-        $regid = 1;
-        $content = "";
-        $client->push()
-            ->setPlatform('all')
-//            ->addAllAudience()
-            ->sendNotifySpecial($regid,$content)
-//            ->setNotificationAlert('Hello, JPush')
-            ->send();
     }
 
     /**

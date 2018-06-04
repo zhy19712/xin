@@ -328,4 +328,3 @@ function getQrcode() {
         text: link
     });
 }
-getQrcode();

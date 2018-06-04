@@ -120,7 +120,6 @@
             <!-- 点击模型操作按钮 -->
             <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
                 RealBimOcx.DelAttrMask('AttrMask');
-                var opacityModelTrans;
                 if(isSelect){
                     var modelIdArr = $('#modelIdArr').val();
                     var newModelIdArr = modelIdArr.split(',');
@@ -165,7 +164,7 @@
                         uObjSubIDArr = [];
                         RealBimOcx.BatchAddSubClrInfoBegin();
                         $.each(newModelIdArr, function (i, item) {
-                            RealBimOcx.AddSubClrPercent(item,opacityModelTrans,0x64);
+                            RealBimOcx.AddSubClrPercent(item,modelTrans,0x64);
                         });
                         RealBimOcx.BatchAddSubClrInfoEnd();
                         break;
