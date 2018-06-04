@@ -237,10 +237,10 @@ class Admin extends Permissions
                 if (!$validate->check($post)) {
                     return $this->error($validate->getError());
                 }
-                $n = preg_match_all("/^(13|14|15|17|18)[0-9]{9}$/",$post['mobile'],$array);
+     /*           $n = preg_match_all("/^(13|14|15|17|18)[0-9]{9}$/",$post['mobile'],$array);
                 if(empty($n)){
                     return $this->error('手机格式有误');
-                }
+                }*/
 
 
                 //验证昵称是否存在
