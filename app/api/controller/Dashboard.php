@@ -267,9 +267,10 @@ class Dashboard extends Log
 
         $message_list = Db::name("admin_message_reminding")->alias("m")
             ->join('admin a','m.sender = a.id','left')
-            ->field("m.task_name,m.create_time,a.nickname as sender,m.task_category,m.status,m.id,m.type,m.uint_id")
+            ->field("m.task_name,FROM_UNIXTIME(m.create_time,'%Y-%c-%d %h:%i:%s') as create_time,a.nickname as sender,m.task_category,m.status,m.id,m.type,m.uint_id")
             ->where("m.status",$status)
             ->where("m.current_approver_id",$admin_id)
+            ->order("create_time desc")
             ->select();
 
         if(!empty($message_list))
@@ -292,7 +293,10 @@ class Dashboard extends Log
                     $message_list[$key]["form_info"] = $form_data;
                 }else
                 {
-                    $message_list[$key]["form_info"] = [];
+                    $form_data["cpr_id"] = "";
+
+                    $form_data["CurrentStep"] = "";
+                    $message_list[$key]["form_info"] = $form_data;
                 }
 
             }
