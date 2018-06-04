@@ -90,6 +90,15 @@
             display: none;
             z-index: 7;
         }
+        .layui-form .layui-btn{
+            height: 30px;
+            line-height: 30px;
+        }
+        .layui-form .layui-form-item:last-child .layui-input-block{
+            min-height: 30px;
+            text-align: right;
+            padding: 20px 15px 0 0;
+        }
 
     </style>
 <body>
@@ -167,17 +176,18 @@
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">其他现场管理机构</label>
-                            <select name="otherId" id="otherId">
+                            <!--<select name="otherId" id="otherId">
+                                <option value="">请选择</option>
+                            </select>-->
+                            <select id="otherId" xm-select="selectOther">
                                 <option value="">请选择</option>
                             </select>
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <div class="col-xs-12" style="text-align: center;">
-                            <button class="layui-btn" lay-submit="" lay-filter="demo1"><i class="fa fa-save"></i> 保存
-                            </button>&nbsp;&nbsp;&nbsp;
-                            <button type="reset" class="layui-btn layui-btn-danger"><i class="fa fa-close"></i> 返回
-                            </button>
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1">保存</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">返回</button>
                         </div>
                     </div>
                 </form>
@@ -189,6 +199,38 @@
 <input name="hidOrgs" type="hidden" value='{$orgs}' id="_orgs">
 </body>
 <script id="nameLay">
+    layui.config({
+        base: '/static/public/layui/plugin/'    //此处写的相对路径, 实际以项目中的路径为准
+    }).extend({
+        formSelects: 'formSelects'
+    });
+    function otherData() {
+        var otherArr = [];
+        var otherVal = JSON.parse($("#_orgs").val());
+        for (var i = 0; i < otherVal.length; i++) {
+            if (orgs[i].type == 12) {
+                otherArr.push({name:orgs[i].name, val:orgs[i].id,selected:false,disabled:false})
+            }
+        }
+        return otherArr;
+    }
+    layui.use(['jquery', 'form', 'formSelects'], function(){
+        var otherNames = otherData();
+        var $ = layui.jquery,
+            form = layui.form,
+            formSelects = layui.formSelects;
+        formSelects.render({
+            name: 'selectOther',         //xm-select的值
+            type: 3,                 //等效xm-select-type, 选择样式
+            on: function(data, arr){ //监听数据变化
+                console.log(data);   //layui.form.on的data
+                console.table(arr);  //已选择数据的数组
+            },
+            data: {
+                arr: otherNames
+            }
+        });
+    });
     var orgs = JSON.parse($("#_orgs").val());
     //页面元素初始化
     $(function () {
@@ -197,7 +239,6 @@
     });
 
     function Init() {
-        // console.log(orgs)
         for (var i = 0; i < orgs.length; i++) {
             //(业主)建设单位1
             //监理单位2
@@ -212,8 +253,6 @@
                 $("#designerId").append($("<option/>").text(orgs[i].name).attr({"value": orgs[i].id}));
             } else if (orgs[i].type == 5) {
                 $("#constructorId").append($("<option/>").text(orgs[i].name).attr({"value": orgs[i].id}));
-            } else if (orgs[i].type == 12) {
-                $("#otherId").append($("<option/>").text(orgs[i].name).attr({"value": orgs[i].id}));
             }
         }
         //所属合同的渲染
@@ -276,7 +315,6 @@
         });
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
-
         function closWin() {
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
@@ -287,16 +325,13 @@
         }
         //监听提交
         form.on('submit(demo1)', function (data) {
-            console.log($("#addId").val())
-            console.log(data);
             if ($("#addId").val() == '') {
-                console.log($("#addId").val())
+                data.field.otherIdArr = formSelects.value('selectOther', 'val');
                 $.ajax({
                     type: "Post",
                     url: "{:url('addoredit')}",
                     data: data.field,
                     success: function (res) {
-                        console.log(res)
                         if (res.code == 1) {
                             refreshSub();
                             parent.layer.msg('保存成功！');
@@ -308,7 +343,7 @@
                     }
                 })
             } else if ($("#addId").val() != '') {
-
+                data.field.otherIdArr = formSelects.value('selectOther', 'val');
                 $.ajax({
                     type: "Post",
                     url: "{:url('addoredit')}",
