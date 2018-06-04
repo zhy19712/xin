@@ -302,7 +302,7 @@ class Qualityform extends Permissions
             $data['form_data']=$se_data;
             $data['form_name']=$data_res['form_name'];
             $data['DivisionId']=$data_res['DivisionId'];
-            $data['user_id']=$data_res['CurrentApproverId'];//谁作废谁为填报人
+            $data['user_id']=$_SESSION['think']['current_id'];//谁作废谁为填报人
             $data['create_time']=time();
             $data['ProcedureId']=$data_res['ProcedureId'];
             $data['ControlPointId']=$data_res['ControlPointId'];
