@@ -99,3 +99,23 @@ i.fa-download:before,i.fa-plus:before,i.fa-download:hover:before,i.fa-plus:hover
 .dataTables_scrollHeadInner table{
     width: 100%!important;
 }
+
+/*王建伟加的滚动条*/
+.content .dataTables_scroll{
+    height: 100% !important;
+}
+/*#content .dataTables_scrollBody{*/
+    /*overflow: inherit !important;*/
+/*}*/
+.content .dataTables_scrollBody{
+    max-height: none!important;
+    width: 100%;
+    height: calc(100% - 76px)!important;
+    border-bottom: none!important;
+}
+#tableItem_wrapper{
+    height: 100% !important;
+}
+.tbcontainer{
+    display: none;
+}
