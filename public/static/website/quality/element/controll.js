@@ -254,6 +254,8 @@ function initData(nodeId){
     zTreeObjUnit = $.fn.zTree.init($("#ztreeUnit"), settingUnit, null);
 }
 
+//控制控制点的显示的开关
+var flag = true;
 //点击获取路径
 function nodeClickUnit(e, treeId, node) {
     selectData = "";
@@ -277,6 +279,13 @@ function nodeClickUnit(e, treeId, node) {
     $("#homeWork").css("color","#00c0ef");
     checkforming(nodeUnitId); //判断是否手填
     resultInfo(nodeUnitId); //点击获取验评
+    $(".mybtn").css("display", "none");
+    $(".bitCodes").css("display","none");
+    $(".mybtnAdd").css("display","none");
+    controlRowId ='';
+    procedureId ='';
+    flag = true;
+    // console.log(flag)
 }
 
 //点击单元工创建工序name
@@ -320,8 +329,7 @@ $(".imgList").on("click","a",function () {
     $("#homeWork").css("color","#333333");
 });
 
-//控制控制点的显示的开关
-var flag = true;
+
 //点击作业
 $(".imgList").on("click","#homeWork",function () {
     $(".bitCodes").css("display","none");
