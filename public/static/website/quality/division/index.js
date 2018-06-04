@@ -477,10 +477,12 @@ $('#saveUnit').click(function () {
             en_type:en_type,
             division_id:division_id,
             id:window.rowId
+        },
+        others:function () {
+            $('#unit').css("display","none");
         }
     });
     setTimeout(function () {
-        $('#unit').css("display","none");
         $("#tableItem_wrapper .tbcontainer").css("display","none");
     },300)
 });
