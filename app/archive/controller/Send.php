@@ -14,6 +14,8 @@ use app\admin\model\Attachment;
 use app\quality\model\SendModel;
 use think\Db;
 use think\Session;
+use app\admin\model\JpushModel;
+vendor('JPush.autoload');
 
 /**
  * 发文
@@ -94,6 +96,19 @@ class Send extends Permissions
             $send = new SendModel();
             $major_key = isset($param['major_key']) ? $param['major_key'] : 0;
 
+            // 为了更好查询和搜索，追加发件人收件人名称来文单位收文单位
+            $param['send_name'] = Session::has('current_nickname') ? Session::get('current_nickname') : 0;
+            $group = new AdminGroup();
+            $pid = $group->relationId();
+            $param['send_group_id'] = $pid;
+            $param['send_p_name'] = Db::name('admin_group')->where(['id'=>$pid])->value('name');
+            if($param['income_id']){
+                $param['income_name'] = Db::name('admin')->where(['id'=>$param['income_id']])->value('nickname');
+                $pid = $group->relationId($param['income_id']);
+                $param['income_group_id'] = $pid;
+                $param['income_p_name'] = Db::name('admin_group')->where(['id'=>$pid])->value('name');
+            }
+
             if(empty($major_key)){
                 $flag = $send->insertTb($param);
             }else{
@@ -101,6 +116,25 @@ class Send extends Permissions
                 $flag = $send->editTb($param);
             }
             return json($flag);
+        }
+    }
+
+    /**
+     * 发文 -- 调取极光推送发送一条通知消息
+     * @return \think\response\Json
+     */
+    public function jpushSendMessage()
+    {
+        if($this->request->isAjax()){
+            $jpush = new JpushModel();
+            $id = input("post.last_id");//前台传过来的发文的id
+//            $id = 33;
+            //获取当前的用户名
+            $admin_name = Session::has('current_name') ? Session::get('current_name') : 0; //收件人姓名
+//            $admin_name = "admin";
+            $alias = $admin_name;
+            $alert = "major_key:{$id},type:收文,see_type:2";
+            $jpush->push_a($alias,$alert);
         }
     }
 

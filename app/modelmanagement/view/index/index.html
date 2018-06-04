@@ -32,16 +32,16 @@
                     RealBimOcx.SetSceHugeObjVisible(true);
                 }
                 RealBimOcx.SetSuitableCam();
-
-                modelColor='';
-                modelTrans='';
+                //TODO get请求
                 $.ajax({
                     url: "/modelmanagement/qualitymass/configureInfo",
-                    type: "post",
+                    type: "get",
                     dataType: "json",
                     success: function (res) {
                         modelColor = +(res.configureInfo.panorama.pigment);
                         modelTrans = res.configureInfo.panorama.pellucidity;
+                        console.log('初始化时获取到的透明度：'+modelTrans);
+                        console.log('初始化时获取到的颜色：'+modelColor);
                     }
                 });
 
@@ -71,7 +71,8 @@
                         success: function (res) {
                             var modelId = res.data.model_id;
                             var attribute = res.data.attribute;
-                            console.log(modelColor);
+                            console.log('点击模型时获取到的透明度：'+modelTrans);
+                            console.log('点击模型时获取到的颜色：'+modelColor);
                             RealBimOcx.BatchAddSubClrInfoBegin();
                             for(var i = 0;i<modelId.length;i++){
                                 modelIdArr.push(modelId[i]);
@@ -119,15 +120,7 @@
             <!-- 点击模型操作按钮 -->
             <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
                 RealBimOcx.DelAttrMask('AttrMask');
-                var modelTrans;
-                $.ajax({
-                    url: "/modelmanagement/qualitymass/configureInfo",
-                    type: "post",
-                    dataType: "json",
-                    success: function (res) {
-                        modelTrans = res.configureInfo.panorama.transparent_effect;
-                    }
-                });
+                var opacityModelTrans;
                 if(isSelect){
                     var modelIdArr = $('#modelIdArr').val();
                     var newModelIdArr = modelIdArr.split(',');
@@ -172,7 +165,7 @@
                         uObjSubIDArr = [];
                         RealBimOcx.BatchAddSubClrInfoBegin();
                         $.each(newModelIdArr, function (i, item) {
-                            RealBimOcx.AddSubClrPercent(item,modelTrans,0x64);
+                            RealBimOcx.AddSubClrPercent(item,opacityModelTrans,0x64);
                         });
                         RealBimOcx.BatchAddSubClrInfoEnd();
                         break;
@@ -195,6 +188,8 @@
     modelIdArr = [];        //模型ID数组
     isSelect = true;
     isCtrlDown = false;
+    modelColor='';
+    modelTrans='';
     //键盘事件
     $(document).keydown(function (event) {
         var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;

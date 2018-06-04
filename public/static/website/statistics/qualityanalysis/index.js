@@ -175,12 +175,12 @@ function getInitLeft(section,data){
       },
       {
         name: '合格',
-        data: excellentNumber
-        ,type: 'bar'
+        data: qualifiedNumber,
+        type: 'bar'
       },
       {
         name: '优良',
-        data: qualifiedNumber,
+        data: excellentNumber,
         type: 'bar'
       }
     ]

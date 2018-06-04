@@ -108,7 +108,7 @@ class Common extends Controller
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)
-                    ->field('serial_number,site,coding,hinge,pile_number,start_date,completion_date,id,en_type')
+                    ->field('serial_number,site,coding,hinge,pile_number,start_date,completion_date,id,en_type,el_start,el_cease')
                     ->where('division_id', $id)
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->order($order)->select();
@@ -120,7 +120,7 @@ class Common extends Controller
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name($table)
-                    ->field('serial_number,site,coding,hinge,pile_number,start_date,completion_date,id,en_type')
+                    ->field('serial_number,site,coding,hinge,pile_number,start_date,completion_date,id,en_type,el_start,el_cease')
                     ->where('division_id', $id)
                     ->order($order)->select();
 //                    ->order($order)->limit(intval($start), intval($length))->select();

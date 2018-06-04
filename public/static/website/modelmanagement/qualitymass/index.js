@@ -1,6 +1,9 @@
 var nodeId; //被点击节点ID
 var level;  //节点等级
 var node_type;  //节点类型
+var searchData = '';    //组合查询序列化
+var tableItem = '';     //模型构件列表实例
+var nodeIsChecked = ''; //关联节点勾选状态
 
 //左侧的树
 function ztree(node_type) {
@@ -92,115 +95,189 @@ $('input[name="nodeRelation"],input[name="nodeRelationTab"]').iCheck({
 });
 
 //模型构件列表
-var tableItem = $('#tableItem').DataTable({
-    pagingType: "full_numbers",
-    processing: true,
-    serverSide: true,
-    "scrollX": true,
-    "scrollY": "200px",
-    "scrollCollapse": "true",
-    "paging": "false",
-    ajax: {
-        "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search"
-    },
-    dom: 'l<".noteverBtn layui-btn layui-btn-warm layui-btn-normal btn-right"><".alreadyBtn layui-btn layui-btn-normal btn-right table-btn">rtip',
-    columns: [
-        {
-            name: "id",
-            "render": function(data, type, full, meta) {
-                var ipt = "<input type='checkbox' name='checkList' idv="+ data +" unit="+ full[1] +" nickname="+ full[2] +" onclick='getSelectId(this)'>";
-                return ipt;
+function tableItemFun(model_type) {
+    tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        "scrollX": true,
+        "scrollY": "200px",
+        "scrollCollapse": "true",
+        "paging": "false",
+        ajax: {
+            "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search"+searchData+"&model_type="+model_type
+        },
+        dom: 'l<".noteverBtn layui-btn layui-btn-warm layui-btn-normal btn-right"><".alreadyBtn layui-btn layui-btn-normal btn-right table-btn">rtip',
+        columns: [
+            {
+                name: "id",
+                "render": function(data, type, full, meta) {
+                    var ipt = "<input type='checkbox' name='checkList' idv="+ data +" unit="+ full[1] +" nickname="+ full[2] +" onclick='getSelectId(this)'>";
+                    return ipt;
+                },
             },
-        },
-        {
-            name: "section"
-        },
-        {
-            name: "unit"
-        },
-        {
-            name: "parcel"
-        },
-        {
-            name: "cell"
-        },
-        {
-            name: "pile_number_1"
-        },
-        {
-            name: "pile_val_1"
-        },
-        {
-            name: "pile_number_2"
-        },
-        {
-            name: "pile_val_2"
-        },
-        {
-            name: "pile_number_3"
-        },
-        {
-            name: "pile_val_3"
-        },
-        {
-            name: "pile_number_4"
-        },
-        {
-            name: "pile_val_4"
-        },
-        {
-            name: "el_start"
-        },
-        {
-            name: "el_cease"
-        },
-        {
-            name: "site"
-        },
-        {
-            name: "uid"
-        }
-    ],
-    columnDefs: [
-        {
-            "searchable": false,
-            "orderable": false,
-            "targets": [15],
-            "render" :  function(data,type,row) {
-                var name = row[15];  //单元工程名称
-                var uid = row[16];  //单元工程编号
-                var newName = name==null?'无':name;
-                var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ newName +"</span>";
-                return html;
+            {
+                name: "section"
+            },
+            {
+                name: "unit"
+            },
+            {
+                name: "parcel"
+            },
+            {
+                name: "cell"
+            },
+            {
+                name: "pile_number_1"
+            },
+            {
+                name: "pile_val_1"
+            },
+            {
+                name: "pile_number_2"
+            },
+            {
+                name: "pile_val_2"
+            },
+            {
+                name: "pile_number_3"
+            },
+            {
+                name: "pile_val_3"
+            },
+            {
+                name: "pile_number_4"
+            },
+            {
+                name: "pile_val_4"
+            },
+            {
+                name: "el_start"
+            },
+            {
+                name: "el_cease"
+            },
+            {
+                name: "site"
+            },
+            {
+                name: "uid"
+            }
+        ],
+        columnDefs: [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [15],
+                "render" :  function(data,type,row) {
+                    var name = row[15];  //单元工程名称
+                    var uid = row[16];  //单元工程编号
+                    var newName = name==null?'无':name;
+                    var html =  "<span id='nodeName' class='node-name' onclick='clickTree(this)' uid="+ uid +">"+ newName +"</span>";
+                    return html;
+                }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [16],
+                "render" :  function(data,type,row) {
+                    var uid = row[16];  //单元工程编号
+                    var html =  "<input id='uid' type='hidden' value="+ uid +">" ;
+                    return html;
+                }
+            }
+        ],
+        language: {
+            "sProcessing":"数据加载中...",
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
+                "sLast": ">>"
             }
         },
-        {
-            "searchable": false,
-            "orderable": false,
-            "targets": [16],
-            "render" :  function(data,type,row) {
-                var uid = row[16];  //单元工程编号
-                var html =  "<input id='uid' type='hidden' value="+ uid +">" ;
-                return html;
+        fnCreatedRow:function (nRow, aData, iDataIndex) {
+            var txt = $(nRow).find('.node-name').text();
+            if(!nodeIsChecked){
+                $(nRow).find('.node-name').removeAttr('onclick');
+                $(nRow).find('.node-name').css({
+                    'color':'#999',
+                    'cursor':'auto'
+                });
+            }
+            if(txt=='无'||txt==null||txt=='null'){
+                $(nRow).find('.node-name').removeAttr('onclick');
+                $(nRow).find('.node-name').css({
+                    'color':'#999',
+                    'cursor':'auto'
+                });
             }
         }
-    ],
-    language: {
-        "sProcessing":"数据加载中...",
-        "lengthMenu": "_MENU_",
-        "zeroRecords": "没有找到记录",
-        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-        "infoEmpty": "无记录",
-        "search": "搜索",
-        "infoFiltered": "(从 _MAX_ 条记录过滤)",
-        "paginate": {
-            "sFirst": "<<",
-            "sPrevious": "上一页",
-            "sNext": "下一页",
-            "sLast": ">>"
+    });
+    //设置按钮文字
+    $('.alreadyBtn').html('关联');
+    $('.noteverBtn').html('解除关联');
+
+    //翻页事件
+    tableItem.on('draw',function () {
+        for(var i = 0;i<idArr.length;i++){
+            $('input[type="checkbox"][name="checkList"][idv='+ idArr[i] +']').prop("checked",true);
         }
-    }
-});
+    });
+
+    //取消全选的事件绑定
+    $("#tableItem_wrapper .dataTables_scrollHeadInner thead tr th:first-child").unbind();
+
+    //关联构件
+    $('.alreadyBtn').click(function(){
+        if(!nodeId){
+            layer.msg('请选择单元工程');
+            return false;
+        }
+        $.ajax({
+            url: "./relevance",
+            type: "post",
+            data: {
+                add_id:nodeId,
+                id_arr:idArr
+            },
+            dataType: "json",
+            success: function (res) {
+                tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
+                layer.msg(res.msg);
+                $('#all_checked').prop("checked",false);
+            }
+        });
+    });
+
+    //选中的构件 --  解除关联
+    $('.noteverBtn').click(function(){
+        layer.confirm('确定解除该关联模型?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./removeRelevance",
+                type: "post",
+                data: {
+                    id_arr:idArr
+                },
+                dataType: "json",
+                success: function (res) {
+                    alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
+                    layer.msg(res.msg);
+                }
+            });
+            layer.close(index);
+        });
+
+    });
+}
 
 //已关联模型表
 var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
@@ -308,13 +385,6 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     }
 });
 
-//取消全选的事件绑定
-$("thead tr th:first-child").unbind();
-
-//设置按钮文自
-$('.alreadyBtn').html('关联');
-$('.noteverBtn').html('解除关联');
-
 //起止高程和桩号的值
 function elval() {
     $.ajax({
@@ -384,57 +454,26 @@ $("#all_checked").on("click", function () {
             getId(this);
         });
     }
+    idArr = idArr.removalArray();
     console.log(idArr);
-});
-
-//关联构件
-$('.alreadyBtn').click(function(){
-    if(!nodeId){
-        layer.msg('请选择单元工程');
-        return false;
-    }
-    $.ajax({
-        url: "./relevance",
-        type: "post",
-        data: {
-            add_id:nodeId,
-            id_arr:idArr
-        },
-        dataType: "json",
-        success: function (res) {
-            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search').load();
-            layer.msg(res.msg);
-        }
-    });
-});
-
-//选中的构件 --  解除关联
-$('.noteverBtn').click(function(){
-    layer.confirm('确定解除该关联模型?', {icon: 3, title:'提示'}, function(index){
-        $.ajax({
-            url: "./removeRelevance",
-            type: "post",
-            data: {
-                id_arr:idArr
-            },
-            dataType: "json",
-            success: function (res) {
-                layer.msg(res.msg);
-            }
-        });
-        layer.close(index);
-    });
-
 });
 
 //筛选已关联树节点
 $('#already').on('ifChecked', function(event){
     screenNode(1);
+    nodeIsChecked = true;
 });
 
 //筛选未关联树节点
 $('#notever').on('ifChecked', function(event){
     screenNode(2);
+    nodeIsChecked = false;
+});
+
+//筛选全部树节点
+$('#all').on('ifChecked', function(event){
+    screenNode(0);
+    nodeIsChecked = true;
 });
 
 //筛选是否关联模型单元工程节点
@@ -448,6 +487,7 @@ function screenNode(node_type) {
         dataType: "json",
         success: function (res) {
             ztree(node_type);
+            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
         }
     });
 }
@@ -463,10 +503,12 @@ $('#relieveBtn').click(function(){
             url: "./removeRelevanceNode",
             type: "post",
             data: {
-                add_id:nodeId
+                add_id:nodeId,
+                node_type:node_type
             },
             dataType: "json",
             success: function (res) {
+                alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
                 layer.msg(res.msg);
             }
         });
@@ -474,8 +516,16 @@ $('#relieveBtn').click(function(){
     });
 });
 
+//默认选中未关联
+$('#notever, #noteverTab').iCheck('check');
+var isChecked = $('#notever, #noteverTab').is(':checked');
+if(isChecked){
+    tableItemFun(2);
+    model_type = 2;
+}
+
 //筛选已关联构件
-$('#alreadyTab').on('ifChecked', function(event){
+$('#alreadyTab').on('ifClicked', function(event){
     model_quality(1);
     model_type = 1;
 });
@@ -484,19 +534,26 @@ $('#noteverTab').on('ifChecked', function(event){
     model_quality(2);
     model_type = 2;
 });
+//筛选全部构件
+$('#allTab').on('ifChecked', function(event){
+    model_quality(0);
+    model_type = 0;
+});
 //筛选方法
 function model_quality(model_type) {
-    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&model_type='+model_type).load();
+    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
 }
 
 //点击已关联节点选中树中对应的节点
 function clickTree(that) {
     var uid = $(that).attr('uid');
-    var treeObj = $.fn.zTree.getZTreeObj("ztree");
-    var nodes = treeObj.getNodesByParam("add_id", uid, null);
-    treeObj.selectNode(nodes[0]);
-    var tId = nodes[0].tId;
-    $('#'+tId+'_span').click();
+    if(uid!="null"){
+        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+        var nodes = treeObj.getNodesByParam("add_id", uid, null);
+        treeObj.selectNode(nodes[0]);
+        var tId = nodes[0].tId;
+        $('#'+tId+'_span').click();
+    }
 }
 
 //刷新已关联模型
@@ -504,7 +561,7 @@ $('#modelTable').tabs({
     width:'100%',
     onSelect: function(title,index){
         if(index==0){
-            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search').load();
+            tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
             $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
         }
         if(index==1){
@@ -589,7 +646,6 @@ $('#searchTr td').each(function () {
 
 
 //筛选方法
-var dataArr = [];
 function change(that) {
     $('#searchTr select').each(function (i,n) {
         var val = $(n).find('option').val();
@@ -612,42 +668,10 @@ function change(that) {
     var el_start = $('#searchTd12 input').val();
     var el_cease = $('#searchTd13 input').val();
 
-
-
-//模型关联筛选
-var data = '&section='+section+'&unit='+unit+'&parcel='+parcel+'&cell='+cell+'&pile_number_1='+pile_number_1+
+    //模型关联筛选
+    searchData = '&section='+section+'&unit='+unit+'&parcel='+parcel+'&cell='+cell+'&pile_number_1='+pile_number_1+
     '&pile_val_1='+pile_val_1+'&pile_number_2='+pile_number_2+'&pile_val_2='+pile_val_2+'&pile_number_3='+pile_number_3+
-    '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease+'&model_type='+model_type;
-    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+data).load();
-/*
-    $.ajax({
-        url: "/modelmanagement/common/model_quality_search",
-        type: "post",
-        data: {
-            section:section,
-            unit:unit,
-            parcel:parcel,
-            cellcell:cellcell,
-            pile_number_1:pile_number_1,
-            pile_val_1:pile_val_1,
-            pile_number_2:pile_number_2,
-            pile_val_2:pile_val_2,
-            pile_number_3:pile_number_3,
-            pile_val_3:pile_val_3,
-            pile_number_4:pile_number_4,
-            pile_val_4:pile_val_4,
-            el_start:el_start,
-            el_cease:el_cease
-        },
-        dataType: "json",
-        success: function (res) {
-            $('#searchTr select').each(function (i,n) {
-                var val = $(n).val();
-                if(val==''){
-                    $(n).val('请选择');
-                }
-            });
-        }
-    });*/
+    '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease;
+    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
 }
 

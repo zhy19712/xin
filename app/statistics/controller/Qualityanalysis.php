@@ -80,7 +80,7 @@ class Qualityanalysis extends Permissions
      */
     public function getIndexLeft()
     {
-        if(request()->isAjax()){
+
             $search_time = input('post.time_slot');
 //            $search_time = "2018.03.26-2018.04.25";
             //截取开始时间和结束时间
@@ -195,7 +195,7 @@ class Qualityanalysis extends Permissions
             }
             $result = ["section" => $section_name, "form_result_result" => $form_result_result];//柱状图表格
             return json(["code" => 1, "data" => $result]);
-        }
+
     }
 
     /**
@@ -253,7 +253,6 @@ class Qualityanalysis extends Permissions
      */
     public function getIndexRight()
     {
-      if (request()->isAjax()){
         //查询的年份
         $search_year = input('post.year');
 
@@ -389,7 +388,8 @@ class Qualityanalysis extends Permissions
             }
         }
         $result = ["section" => $section_name, "form_result_result" => $form_result_result];//柱状图表格
+
         return json(["code" => 1, "data" => $result]);
-        }
+
     }
 }

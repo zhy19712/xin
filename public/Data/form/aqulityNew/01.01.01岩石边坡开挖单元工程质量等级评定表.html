@@ -73,6 +73,8 @@
     <input id="currentStep" type="hidden" value="{$currentStep}" />
     <input id="isView" type="hidden" value="{$isView}" />
     <input id="formData" type="hidden" value='{$formData}' />
+    <input id="getQrcode" type="hidden" value='{$qrcode}' />
+
     <div class="hearBtn">
        <button class="btn btn-success btns" type="button" onclick="formAttachments()">
             <i class="fa fa-file"></i><span class="bold">附件</span>
@@ -426,6 +428,7 @@
         <p style="line-height:1pt; margin:0pt; text-align:justify"><span style="font-family:仿宋; font-size:10.5pt">&#xa0;</span></p>
     </div>
     <script>
+        getQrcode();
         function shigong(){
             var a = 0,
                 b = 0,

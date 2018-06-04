@@ -303,11 +303,24 @@ function signature(htmlElement) {
         });
     }
 };
-
+// 表单附件
+function formAttachments() {
+    var cpr = $("#cpr").val();
+    top.layer.open({
+        type: 2,
+        title: "表单附件",
+        area: ['800px', '400px'],
+        content: '/Quality/QualityForm/QalityFormAttachment?cpr_id=' + cpr,
+    });
+};
 //二维码
-$('#qrcode').qrcode({
-    render: "canvas", //也可以替换为table
-    width: 100,
-    height: 100,
-    text: "http://www.baidu.com"
-});
+function getQrcode() {
+    var link = $("#getQrcode").val();
+    $('#qrcode').qrcode({
+        render: "canvas", //也可以替换为table
+        width: 100,
+        height: 100,
+        text: link
+    });
+}
+getQrcode();
