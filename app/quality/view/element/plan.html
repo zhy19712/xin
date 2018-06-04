@@ -153,6 +153,9 @@
     #maBasesItem_wrapper .dataTables_scrollHead{
         width: 100% !important;
     }
+    .selectmaBases{
+        background: #FDD5B5;
+    }
 </style>
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
@@ -170,10 +173,12 @@
                     <th>系统编码</th>
                     <th>关键部位</th>
                     <th>起止桩号</th>
+                    <th>高程（起）</th>
+                    <th>高程（止）</th>
                     <th>开工日期</th>
                     <th>完工日期</th>
                     <th>操作</th>
-                    <th style="display: none">操作</th>
+                    <th>en_type</th>
                 </tr>
                 </thead>
             </table>
@@ -237,7 +242,8 @@
         <div class="layui-inline">
             <label class="layui-form-label">施工依据</label>
             <div class="layui-input-inline">
-                <input type="text" name="ma_bases" placeholder="请选择施工依据" lay-verify="required" autocomplete="off" class="layui-input maBasesBtn" readonly>
+                <input type="text" name="ma_bases_name" placeholder="请选择施工依据" lay-verify="required" autocomplete="off" class="layui-input maBasesBtn" readonly>
+                <input type="hidden" name="ma_bases" placeholder="请选择施工依据" lay-verify="required" autocomplete="off" class="layui-input maBasesBtn" readonly>
             </div>
             <div class="layui-form-mid layui-word-aux icon maBasesBtn">
                 <i class="fa fa-navicon"></i>

@@ -172,6 +172,12 @@ function tableInfo() {
                 name: "pile_number"
             },
             {
+                name: "el_start"
+            },
+            {
+                name: "el_cease"
+            },
+            {
                 name: "start_date"
             },
             {
@@ -188,7 +194,18 @@ function tableInfo() {
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [7],
+                "targets": [3],
+                "render" :  function(data,type,row) {
+                    if(data == 0){
+                        return '否'
+                    }
+                    return '是'
+                }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [9],
                 "render" :  function(data,type,row) {
                     var html = "<i class='fa fa-pencil' uid="+ data +" title='编辑' onclick='edit(this)'></i>" ;
                     html += "<i class='fa fa-trash' uid="+ data +" title='删除' onclick='del(this)'></i>" ;
@@ -198,9 +215,15 @@ function tableInfo() {
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [8],
+                "targets": [10],
                 "visible": false
             },
+            {
+                "targets": [2],
+                "visible": false,
+                "searchable": false,
+                "orderable": false
+            }
         ],
     });
     // $('.tbcontainer:last-child').remove();
@@ -211,6 +234,9 @@ tableInfo();
 //     $("#tableItem_info").remove();
 //     $("#tableItem_paginate").remove();
 // },1000)
+
+//声明选中行的name
+var idArrName = [];
 
 $('#add').html('新增');
 
@@ -273,7 +299,7 @@ $('.maBasesBtn').click(function () {
             maBasesTable();
         },
         yes:function () {
-            $('input[name="ma_bases"]').val(idArr);
+            $('input[name="ma_bases_name"]').val(idArrName);
             $('input[name="ma_bases"]').val(idArr);
             layer.close(layer.index);
         },
@@ -364,10 +390,17 @@ function getId(that) {
     }
     if(isChecked){
         idArr.push(id);
+        idArrName.push(mapNum+' '+mapName);
         idArr.removalArray();
+        idArrName.removalArray();
+        console.log(idArrName)
     }else{
         idArr.remove(id);
+        idArrName.remove(mapNum+' '+mapName);
         idArr.removalArray();
+        idArrName.removalArray();
+        console.log(idArrName)
+
         $('#all_checked').prop('checked',false);
     }
 }
@@ -445,6 +478,7 @@ function edit(that) {
             $('input[name="en_type"]').attr('id',res.en_type);
             $('select[name="hinge"]').val(res.hinge);
             $('input[name="ma_bases"]').val(res.ma_bases);
+            $('input[name="ma_bases_name"]').val(res.ma_bases_name);
             $('input[name="pile_number"]').val(res.pile_number);
             $('input[name="quantities"]').val(res.quantities);
             $('input[name="serial_number"]').val(res.serial_number);
@@ -583,7 +617,22 @@ function getIdPlan(that) {
         $('#all_checked_plan').prop('checked',false);
     }
 }
-
+var mapName;//图名
+var mapNum;//图号
+//获取施工依据的名字
+$("#maBasesItem").delegate("tbody tr","click",function (e) {
+    if($(e.target).hasClass("dataTables_empty")){
+        return;
+    }
+    var tableItem = $('#maBasesItem').DataTable();
+    $(this).addClass("selectmaBases").siblings().removeClass("selectmaBases");
+    selectData = tableItem.row(".selectmaBases").data();//获取选中行数据
+    console.log(selectData[1] +" ------图名");
+    console.log(selectData[2] +" ------图号");
+    // console.log(selectData);
+    mapName =selectData[1];
+    mapNum = selectData[2];
+});
 //单选
 function getSelectIdPlan(that) {
     getId(that);
@@ -639,11 +688,11 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     var tableItem = $('#tableItem').DataTable();
     $(this).addClass("select-color").siblings().removeClass("select-color");
     selectData = tableItem.row(".select-color").data();//获取选中行数据
-    console.log(selectData[7] +" ------选中的行id");
-    console.log(selectData[8] +" ------选中的行id");
+    console.log(selectData[9] +" ------选中的行id");
+    console.log(selectData[10] +" ------选中的行en_typeId");
     console.log(selectData);
-    selectRow =selectData[7];
-    eTypeId = selectData[8];
+    selectRow =selectData[9];
+    eTypeId = selectData[10];
     if(eTypeId){
         selfidName(eTypeId);
     }
