@@ -288,7 +288,7 @@ layui.use('laydate', function(){
 
 $('.maBasesBtn').click(function () {
     $('#maBasesItem_wrapper .tbcontainer:last-child').remove();
-    layer.open({
+    var index = layer.open({
         title:'添加施工依据',
         id:'100',
         type:'1',
@@ -302,6 +302,7 @@ $('.maBasesBtn').click(function () {
             $('input[name="ma_bases_name"]').val(idArrName);
             $('input[name="ma_bases"]').val(idArr);
             layer.close(layer.index);
+            $('#maBasesLayer').css("display","none")
         },
         cancel: function(index, layero){
             layer.close(layer.index);
@@ -494,6 +495,11 @@ function edit(that) {
 //关闭弹层
 $.close({
     formId:'unit'
+});
+$('.close').click(function () {
+    $('#unit')[0].reset();
+    $('#unit').css("display","none");
+    layer.closeAll('page');
 });
 
 //单元工程段号删除
