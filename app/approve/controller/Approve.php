@@ -17,6 +17,9 @@ use think\Request;
 use think\Session;
 use think\Db;
 
+use app\admin\model\JpushModel;
+vendor('JPush.autoload');
+
 /**
  * 流程审批
  * Class Approve
@@ -108,6 +111,15 @@ class Approve extends Permissions
                 Db::name('quality_form_info')
                     ->where(['id'=>$par['dataId']])
                     ->update(['CurrentApproverId'=>$next_approverid,'ApproveStatus'=>$ApproveStatus,'ApproveIds'=>$newApproveIds,'CurrentStep'=>$CurrentStep,'update_time'=>time()]);
+
+                //极光推送给下一个审批人消息
+//                $jpush = new JpushModel();
+                //获取当前的用户名
+//                $admin_name = Session::has('current_name') ? Session::get('current_name') : 0; //收件人姓名
+//                $alias = $admin_name;
+//                $alert = "id:{$par['dataId']},type:单元工程,CurrentApproverId:{$next_approverid},CurrentStep:{$CurrentStep}";
+//                $jpush->push_a($alias,$alert);
+
                 return json(['code' => 1]);
             } else {
                 return json(['code' => -1]);

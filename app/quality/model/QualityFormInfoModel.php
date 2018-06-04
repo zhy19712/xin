@@ -261,4 +261,12 @@ class QualityFormInfoModel extends Model implements IApprove
         return $data;
     }
 
+    /**
+     * 按照条件进行查询
+     */
+    public function getInfomation($id)
+    {
+        $data = $this->field("id,CurrentStep,user_id,DivisionId,ProcedureId,ControlPointId,CurrentApproverId,ApproveStatus")->where('id', $id)->find();
+        return $data;
+    }
 }
