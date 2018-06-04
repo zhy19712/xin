@@ -48,7 +48,6 @@ canvas {
     right: 0mm;
     top: 0mm
 }
-
 .paging {
     page-break-before: always;
 }
@@ -105,7 +104,7 @@ canvas {
 #qrcode{
     position: absolute;
     right: 0px;
-    top: 0px;
+    top: -40px;
     width: 80px;
     height: 80px;
 }
