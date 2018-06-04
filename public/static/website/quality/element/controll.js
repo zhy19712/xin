@@ -636,7 +636,7 @@ function checkforming(nodeUnitId) {
                 // funOnLine(nodeUnitId,procedureId,controlRowId);
                 // onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
                 selectAddShow = false;
-                $("option").attr('disabled',true);
+                $(".result form select").prop("disabled",true);
                 layui.use(['form'], function(){
                     var form = layui.form;
                     $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
@@ -645,7 +645,7 @@ function checkforming(nodeUnitId) {
                 });
             }else if(res.msg == "success"){ //手动填写
                 selectAddShow = true;
-                $("option").removeAttr('disabled');
+                $(".result form select").prop("disabled",false);
                 layui.use(['form'], function(){
                     var form = layui.form;
                     form.render("select");
