@@ -25,7 +25,7 @@ use app\admin\model\JpushTestModel;
 use think\Loader;
 vendor('JPush.autoload');
 
-class Dashboard extends Log
+class Dashboard extends Login
 {
 
     /**
@@ -287,15 +287,16 @@ class Dashboard extends Log
                         ->find();
 
                     $form_data["cpr_id"] = $cpr_id["id"];
-
+                    $form_data["id"] = $form_info["id"];
                     $form_data["CurrentStep"] = $form_info["CurrentStep"];
 
                     $message_list[$key]["form_info"] = $form_data;
                 }else
                 {
                     $form_data["cpr_id"] = "";
-
+                    $form_data["id"] = "";
                     $form_data["CurrentStep"] = "";
+
                     $message_list[$key]["form_info"] = $form_data;
                 }
 
