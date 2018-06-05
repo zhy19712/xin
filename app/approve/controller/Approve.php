@@ -112,13 +112,21 @@ class Approve extends Permissions
                     ->where(['id'=>$par['dataId']])
                     ->update(['CurrentApproverId'=>$next_approverid,'ApproveStatus'=>$ApproveStatus,'ApproveIds'=>$newApproveIds,'CurrentStep'=>$CurrentStep,'update_time'=>time()]);
 
-                //极光推送给下一个审批人消息
+
+//                //查询关联表quality_division_controlpoint_relation的信息
+//                $form_info = Db::name("quality_form_info")->where("id",$par['dataId'])->find();
+//                $relation_info = Db::name("quality_division_controlpoint_relation")
+//                    ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
+//                    ->find();
+////                极光推送给下一个审批人消息
 //                $jpush = new JpushModel();
-                //获取当前的用户名
+////                获取当前的用户名
 //                $admin_name = Session::has('current_name') ? Session::get('current_name') : 0; //收件人姓名
 //                $alias = $admin_name;
-//                $alert = "id:{$par['dataId']},type:单元工程,CurrentApproverId:{$next_approverid},CurrentStep:{$CurrentStep}";
+//                $alert = "id:{$par['dataId']},type:单元工程,CurrentApproverId:{$next_approverid},CurrentStep:{$form_info["CurrentStep"]},cpr_id:{$relation_info["id"]}";
 //                $jpush->push_a($alias,$alert);
+
+
 
                 return json(['code' => 1]);
             } else {
