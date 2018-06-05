@@ -588,7 +588,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 
 });
 
-//线上的验评结果
+//获取线上的验评结果
 function resultInfo(nodeUnitId) {
     $.ajax({
         url:"/quality/element/getEvaluation",
@@ -662,8 +662,8 @@ function checkforming(nodeUnitId) {
                 setTimeout(function () {
                     $(".layui-input[readonly]").attr('style', 'background: #ffffff !important');
                     $(".result input[readonly]").addClass('disabledColor');
-                },900)
-
+                },1000)
+                // layer.msg(res.remark);
                 // $(".mybtnAdd").css("display","none");
                 // $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
             }
@@ -797,12 +797,14 @@ function outerHeight() {
        // uploader.destroy();
        var  uploadFileId = res.id;
        var  uploadFileName = file.name;
+       //检查扫描件回传情况
        $.ajax({
             url:"/quality/element/copycheck",
             data:{cpr_id:controlRowId},
             type:'post',
             success:function(res) {
                 if(res.msg == "success"){
+                    /*新增控制点执行情况及附件资料*/
                     $.ajax({
                         url:"/quality/element/addExecution",
                         data:{
