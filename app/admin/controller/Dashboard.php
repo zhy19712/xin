@@ -20,10 +20,8 @@ use \think\Db;
 use \think\Session;
 use think\exception\PDOException;
 use app\admin\model\JpushModel;
-
+use app\admin\model\JpushTestModel;
 use think\Loader;
-vendor('JPush.autoload');
-use JPush\AdminClient;
 
 class Dashboard extends Permissions
 {
@@ -216,49 +214,5 @@ class Dashboard extends Permissions
             return json(["code" => 1]);
         }
     }
-
-    public function test()
-    {
-        $jpush = new JpushModel();
-        $tag = [
-            "123456"
-        ];
-        $alert = "标签推送";
-        $jpush->push($tag,$alert);
-    }
-
-
-    public function test2()
-    {
-        var_dump(config("Jpush.app_key"));
-    }
-
-
-    public function test4()
-    {
-        // 这只是使用样例,不应该直接用于实际生产环境中 !!
-
-        $admin = new AdminClient(config("Jpush.app_key"),config("Jpush.master_secret"));
-        $response = $admin->createApp('丰宁', 'com.zgdj.djframe.app');
-        print_r($response);
-
-        $appKey = $response['body']['app_key'];
-        $response = $admin->deleteApp($appKey);
-        print_r($response);
-    }
-
-
-
-    public function test5()
-    {
-        vendor('JPush.autoload');
-        $client = new \JPush\Client(config("Jpush.app_key"),config("Jpush.master_secret"));
-        $client->push()
-            ->setPlatform('all')
-            ->addAllAudience()
-            ->setNotificationAlert('Hello, JPush')
-            ->send();
-    }
-
 }
 

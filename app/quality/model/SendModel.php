@@ -21,7 +21,8 @@ class SendModel extends Model
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
-                return ['code' => 1,'data'=>'', 'msg' => '添加成功'];
+                $last_id = $this->getLastInsID();
+                return ['code' => 1,'data'=>$last_id, 'msg' => '添加成功'];
             }
         } catch (PDOException $e) {
             return ['code' => -1, 'msg' => $e->getMessage()];

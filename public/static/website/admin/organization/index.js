@@ -36,6 +36,7 @@
         }
 
         if(nodes[0].level==0){
+            $('input[name="pname"]').val(nodes[0].name);
             layer.open({
                 id:'5',
                 type:'1',
@@ -403,6 +404,8 @@
         ajax: {
             "url":"/admin/common/datatablesPre?tableName=admin"
         },
+        dom:'lf<"#add.add layui-btn layui-btn-normal btn-right">rtip',
+        isPage:false,
         columns:[
             {
                 name: "g_order"
@@ -450,9 +453,7 @@
         ]
     });
 
-    $('#tableItem tbody').on( 'click', 'tr', function () {
-        $(this).toggleClass('active').siblings().removeClass('active');
-    } );
+    $('#add').html('新增');
 
     //新增上传电子签名
     uploader = WebUploader.create({

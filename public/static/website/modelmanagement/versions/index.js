@@ -8,7 +8,7 @@ var completedTable = $('#completedTable').DataTable({
     ajax: {
         "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management"
     },
-    dom: 'lf<".addBtn layui-btn layui-btn-sm layui-btn-normal btn-right">rtip',
+    dom: 'lf<".addBtn layui-btn layui-btn-normal btn-right">rtip',
     columns: [
         {
             name: "id"
@@ -80,7 +80,7 @@ var constructionTable = $('#constructionTable').DataTable({
     ajax: {
         "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management"
     },
-    dom: 'lf<".addBtn layui-btn layui-btn-sm layui-btn-normal btn-right">rtip',
+    dom: 'lf<".addBtn layui-btn layui-btn-normal btn-right">rtip',
     columns: [
         {
             name: "id"
@@ -173,6 +173,7 @@ $('.addBtn').click(function () {
             uploadModel();
         },
         cancel: function(index){
+            $('#addModelLayer').hide();
             layer.close(index);
         }
     });
@@ -239,6 +240,7 @@ layui.use('form', function(){
 
 //关闭新增模型弹层
 $('#close').click(function(){
+    $('#addModelLayer').hide();
     layer.close(index);
 });
 

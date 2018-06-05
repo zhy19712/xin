@@ -16,7 +16,7 @@ class Template extends Permissions
     {
         $data = Db::name('quality_form_info')->where('id',368)->find();
 
-        $formPath = ROOT_PATH . 'public' . DS . "data/form/aqulityNew/" . "01.01.01岩石边坡开挖单元工程质量等级评定表下载.html";
+        $formPath = ROOT_PATH . 'public' . DS . "data". DS ."form". DS ."qualityNew". DS . "01.01.01岩石边坡开挖单元工程质量等级评定表下载.html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
 
         $content = $this->fetch($formPath,[
@@ -51,7 +51,7 @@ class Template extends Permissions
       //  $content = iconv('UTF-8', 'GB2312', $content);
 
         $filename = ROOT_PATH . 'public' . DS . "data\\form\\temp\\" . "1.html";
-        file_put_contents($filename, $content);
+               file_put_contents($filename, $content);
 
 
        shell_exec("wkhtmltopdf $filename $filename.pdf");

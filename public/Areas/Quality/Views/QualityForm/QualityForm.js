@@ -1,5 +1,10 @@
 var fileTargetHtmlElementId; // 定义附件上传后要更新的目标html元素Id
 var saveStyle = 0; // 保存类型：0保存；1保存并提交；2保存并审批
+layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
+    var form = layui.form
+        ,layer = layui.layer
+        ,laydate = layui.laydate;
+});
 $(function () {
     if ($("#formData").val() && $("#formData").val() != "false") {
         console.log( $("#formData").val()!= "false")
@@ -198,10 +203,14 @@ function formSaveData() {
         },
         success: function (data) {
             if (data.result === "Faild") {
-                alert("保存失败。");
+                layer.confirm('保存失败。', function(index){
+                    layer.close(index);
+                });
             }
             else if(data.result === "Refund") {
-                alert("已经有对应文件。");
+                layer.confirm('已经有对应文件。', function(index){
+                    layer.close(index);
+                });
             }
             else {
                 $("#id").val(data.result);
@@ -270,7 +279,9 @@ function fileChange() {
                 $("#" + fileTargetHtmlElementId).attr("src", data.src);
         },
         error: function (data, status, e) {
-            alert("上传失败。");
+            layer.confirm('上传失败。', function(index){
+                layer.close(index);
+            });
         }
     });
 };
@@ -290,12 +301,23 @@ function signature(htmlElement) {
                 if (userSignature)
                     $("#" + targetId).attr("src", userSignature);
                 else
-                    alert("请先上传个人签名。");
+                    layer.confirm('请先上传个人签名。', function(index){
+                        layer.close(index);
+                    });
             }
         });
     }
 };
-
+// 表单附件
+function formAttachments() {
+    var cpr = $("#cpr").val();
+    top.layer.open({
+        type: 2,
+        title: "表单附件",
+        area: ['800px', '400px'],
+        content: '/Quality/QualityForm/QalityFormAttachment?cpr_id=' + cpr,
+    });
+};
 //二维码
 function getQrcode() {
     var link = $("#getQrcode").val();
@@ -306,4 +328,3 @@ function getQrcode() {
         text: link
     });
 }
-getQrcode();

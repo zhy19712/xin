@@ -77,7 +77,7 @@ class Matchform extends Controller
         }
 
         $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
-        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\aqulityNew\\" . $cp['controlpoint']['code'] . $norm_template['name'] . "下载.html";
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $cp['controlpoint']['code'] . $norm_template['name'] . "下载.html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
         if (!file_exists($formPath)) {
             return "模板文件不存在";
@@ -86,7 +86,7 @@ class Matchform extends Controller
             $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
             $formdata = json_encode(unserialize($_formdata));
         }
-        $output = $this->setFormInfo($norm_template['division_id']);
+        $output = $this->getFormBaseInfo($norm_template['division_id']);
         $htmlContent = file_get_contents($formPath);
 
         $host="http://".$_SERVER['HTTP_HOST'];
@@ -113,53 +113,59 @@ class Matchform extends Controller
                 'DYCode'=>$output['DYCode'],
                 'Constructor'=>$output['Constructor'],
                 'Supervisor'=>$output['Supervisor'],
-                'SectionCode'=>$output['SectionCode'],
-                'SectionName'=>'丰宁抽水蓄能电站',
-                'ContractCode'=>$output['SectionCode'],
+                'SectionCode'=>$output['ContractCode'],
+                'SectionName'=>$output['SectionName'],
+                'ContractCode'=>$output['ContractCode'],
                 'FBName'=>$output['FBName'],
                 'FBCode'=>$output['FBCode'],
                 'DWName'=>$output['DWName'],
                 'DWCode'=>$output['DWCode']
             ]);
-        //输出模板内容
-        //Todo 暂时使用replace替换，后期修改模板使用fetch自定义模板渲染
-        $res= Db::name('quality_division_controlpoint_relation')
-            ->where(['id'=>$cpr_id])
-            ->find();
-        $unit_id=$res['division_id'];
-        //获取表单基本信息
-        $formdata = "";
-        if (!is_null($id)) {
-            $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
-            $formdata = json_encode(unserialize($_formdata));
-        }
+        //返回模板内容
         return $htmlContent;
     }
     /**
      * 设置表单基本信息
      * @param $qualityUnit_id 检验批
      */
-    protected function setFormInfo($qualityUnit_id)
+    public function getFormBaseInfo($qualityUnit_id)
     {
 
-        $mod = $this->divisionUnitService->with("Division.Section")->where(['id' => $qualityUnit_id])->find();
         $output = array();
+        $mod = $this->divisionUnitService->with("Division.Section")->where(['id' => $qualityUnit_id])->find();
+        $unit=Db::name('quality_unit')->where(['id'=>$qualityUnit_id])->find();
+        $division=Db::name('quality_division')->where(['id'=>$unit['division_id']])->find();
+        $section=Db::name('section')->where(['id'=>$division['section_id']])->find();
+
+        //获取施工依据图纸信息
+        $atlas_id=$unit['ma_bases'];
+        $atlas_id=explode(',',$atlas_id);
+        foreach ($atlas_id as $id)
+            {
+              $atlas= Db::name('archive_atlas_cate ')
+                      ->where('id',$id)
+                      ->find();
+              $bases[]=$atlas['picture_name'].$atlas['picture_number'].$unit['su_basis'];
+             }
+        $output['BuildBase']=implode(',',$bases);
+
         $output['JYPName'] = $mod['site'];
-        $output['JYPCode'] = $output['JJCode'] = $mod['coding'];
+        $output['JYPCode'] = $output['JJCode'] = $unit['serial_number'];
         $output['Quantity'] = $mod['quantities'];
         $output['PileNo'] = $mod['pile_number'];
         $output['Altitude'] = $mod['el_start'] . $mod['el_cease'];
-        $output['BuildBase'] = $mod['ma_bases'] ? "" : $this->getBuildBaseInfo($mod['ma_bases']) . $mod['su_basis'];
         $output['DYName'] = $mod['Division']['d_name'];
         $output['DYCode'] = $mod['Division']['d_code'];
         //标段信息
         if ($mod['Division']['Section'] != null) {
+
             $_section = $mod['Division']['Section'];
+            $contract=Db::name('contract')->where(['id'=>$section['contractId']])->find();
             $output['Constructor'] = $_section['constructorId'] ? AdminGroup::get($_section['constructorId'])['name'] : "";
             $output ['Supervisor'] = $_section['supervisorId'] ? AdminGroup::get($_section['supervisorId'])['name'] : "";
             $output ['SectionCode'] = $_section['code'];
-            $output['SectionName'] = "丰宁抽水蓄能电站";
-            $output['ContractCode'] = $_section['contractId'] ? ContractModel::get($_section['contractId'])['contractName'] : "";
+            $output['SectionName'] = $contract['projectName'];
+            $output['ContractCode'] =  $contract['contractCode'];
         }
         $Info = $this->getDivsionInfo($mod['division_id']);
         $output['FBName'] = $Info['FB']['d_name'];

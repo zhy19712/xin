@@ -254,8 +254,11 @@ function initData(nodeId){
     zTreeObjUnit = $.fn.zTree.init($("#ztreeUnit"), settingUnit, null);
 }
 
+//控制控制点的显示的开关
+var flag = true;  //true 为显示   false 为隐藏
 //点击获取路径
 function nodeClickUnit(e, treeId, node) {
+    // flag = false;
     selectData = "";
     sNodesUnit = zTreeObjUnit.getSelectedNodes()[0];//选中节点
     nodeUnitId = sNodesUnit.id;//当前id
@@ -277,6 +280,16 @@ function nodeClickUnit(e, treeId, node) {
     $("#homeWork").css("color","#00c0ef");
     checkforming(nodeUnitId); //判断是否手填
     resultInfo(nodeUnitId); //点击获取验评
+    //当切换单元工程段号时做的判断
+    // if(flag == false){
+        $(".mybtn").css("display", "none");
+        $(".bitCodes").css("display","none");
+        $(".mybtnAdd").css("display","none");
+        flag = true;
+        controlRowId ='';
+        procedureId ='';
+    // }
+    // console.log(flag)
 }
 
 //点击单元工创建工序name
@@ -320,8 +333,7 @@ $(".imgList").on("click","a",function () {
     $("#homeWork").css("color","#333333");
 });
 
-//控制控制点的显示的开关
-var flag = true;
+
 //点击作业
 $(".imgList").on("click","#homeWork",function () {
     $(".bitCodes").css("display","none");
@@ -332,11 +344,13 @@ $(".imgList").on("click","#homeWork",function () {
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
     flag = true;
+    controlRowId ='';
+    procedureId ='';
 });
 
 //点击工序名字刷新列表
 function clickConName(id) {
-    flag = false;
+    // flag = false;
     controlRowId ='';
     procedureId ='';
     procedureId = id;
@@ -539,7 +553,9 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     controlRowId = selectData[3];
     // resources = selectData[4];
     controlId = selectData[4];
-
+    console.log(controlRowId + "konzhidian")
+    console.log(procedureId +"gongxu")
+    // flag = true;
     if(controlRowId != undefined && controlRowId != null){
         $(".delElement").remove();
         implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id="+controlRowId).load();
@@ -551,7 +567,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".mybtn").css("display","none");
     $(".mybtnAdd").css("display","none");
     // console.log(flag)
-    if(flag != true){
+    // if(flag != true){
         if($(".tabs-selected a span:first-child").html() === "扫描件回传"){
             $(".mybtn").css("display","block");
         }else if($(".tabs-selected a span:first-child").html() === "附件资料"){
@@ -561,11 +577,11 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
             $(".mybtnAdd").css("display", "block");
             $(".mybtn").css("display", "none");
         }
-    }else if(flag == true){
-        $(".mybtn").css("display", "none");
-        $(".bitCodes").css("display","none");
-        $(".mybtnAdd").css("display","none");
-    }
+    // }else if(flag == true){
+    //     $(".mybtn").css("display", "none");
+    //     $(".bitCodes").css("display","none");
+    //     $(".mybtnAdd").css("display","none");
+    // }
 
     //向提交页面之前放置值
     $("#resVal").val(resources);
@@ -628,7 +644,7 @@ function checkforming(nodeUnitId) {
                 // funOnLine(nodeUnitId,procedureId,controlRowId);
                 // onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
                 selectAddShow = false;
-                $("option").attr('disabled',true);
+                $(".result form select").prop("disabled",true);
                 layui.use(['form'], function(){
                     var form = layui.form;
                     $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
@@ -637,7 +653,7 @@ function checkforming(nodeUnitId) {
                 });
             }else if(res.msg == "success"){ //手动填写
                 selectAddShow = true;
-                $("option").removeAttr('disabled');
+                $(".result form select").prop("disabled",false);
                 layui.use(['form'], function(){
                     var form = layui.form;
                     form.render("select");
@@ -700,46 +716,49 @@ $('#unitTab').tabs({
     border:false,
     onSelect:function(title,index){
         if(title === "扫描件回传"){
-            if(flag == true){
-                $(".mybtn").css("display","none");
-            }
+
             if(controlRowId && procedureId){
                 $(".mybtn").css("display","block");
             }
-            if(controlRowId ==''|| procedureId == '' || flag == true) {
+            if(controlRowId =='' || procedureId == '') {
                 $(".mybtn").css("display","none");
+            }
+            if(flag == true && controlRowId != ""){
+                $(".mybtn").css("display","block");
             }
         }else if(title != "扫描件回传"){
             $(".mybtn").css("display","none");
         }
 
         if(title === "附件资料"){
-            if(flag == true){
-                $(".bitCodes").css("display","none");
-            }
+
             if(controlRowId && procedureId){
                 $(".bitCodes").css("display","block");
                 $(".mybtn").css("display","none");
             }
-            if(controlRowId ==''|| procedureId == '' || flag == true) {
+            if(controlRowId =='' || procedureId == '') {
                 $(".bitCodes").css("display","none");
+            }
+            if(flag == true && controlRowId != ""){
+                $(".bitCodes").css("display","block");
             }
         }else if(title != "附件资料"){
             $(".bitCodes").css("display","none");
         }
 
         if(title === "在线填报"){
-            if(flag == true){
-                $(".mybtnAdd").css("display","none");
-            }
+
             if(controlRowId && procedureId){
                 $(".mybtnAdd").css("display", "block");
                 $(".mybtn").css("display", "none");
             }else if(controlRowId == undefined || controlRowId == null){
                 layer.msg("请选择控制点!")
             }
-            if(controlRowId == '' || procedureId == '' || flag == true){
+            if(controlRowId == '' || procedureId == ''){
                 $(".mybtnAdd").css("display","none");
+            }
+            if(flag == true && controlRowId != ""){
+                $(".mybtnAdd").css("display","block");
             }
             // if(selectAddShow == true){
             //     $(".mybtnAdd").css("display","none");

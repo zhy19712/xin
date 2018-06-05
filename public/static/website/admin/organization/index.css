@@ -2,12 +2,21 @@
     margin-top: 35px;
 }
 .current-path{
-    padding-bottom: 5px;
-    margin-bottom: 5px;
+    padding-bottom: 0;
+    margin-bottom: 0;
     border-bottom: 1px solid #cecece;
 }
 .ztree-title i.fa{
     width: 11%;
+}
+.ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+    color: #009688;
+}
+.ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+    color: #d85c74;
+}
+.ztree-title i.fa-arrow-circle-down:before{
+    color: #dca107;
 }
 .current-path i.fa:hover:before{
     color: #FFF;
@@ -34,5 +43,8 @@
     color: #FFF;
 }
 .dataTables_filter{
-    margin-bottom: 5px;
+    margin: 9px 0;
+}
+.add{
+    margin: 5px 0;
 }

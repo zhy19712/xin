@@ -64,12 +64,15 @@ class Division extends Permissions{
         if($add_id){
             $node = new DivisionModel();
             $data = $node->getOne($add_id);
-            $coding = Db::name('quality_unit')->where('division_id',$add_id)->order('id desc')->value('coding');
-            if(empty($coding)){
-                $num = 1;
+            $code_arr = Db::name('quality_unit')->where('division_id',$add_id)->column('coding');
+            if(sizeof($code_arr)){
+                foreach ($code_arr as $k=>$v){
+                    $arr = explode('-',$v);
+                    $num_arr[] = end($arr)+1;
+                }
+                $num = max($num_arr);
             }else{
-                $arr = explode('-',$coding);
-                $num = end($arr)+1;
+                $num = 1;
             }
             if($num >= 10 && $num < 100){
                 $new_num = '0'.$num;
@@ -750,8 +753,20 @@ class Division extends Permissions{
             $unit = new DivisionUnitModel();
             $param = input('param.');
             $id = $this->request->has('id') ? $this->request->param('id', 0, 'intval') : 0;
+
             if(request()->isGet()){
                 $data = $unit->getOne($id);
+                //从图纸表里拉取数据
+               $atlas_id=$data['ma_bases'];
+               $atlas_id=explode(',',$atlas_id);
+               foreach ($atlas_id as $id)
+               {
+                   $atlas= Db::name('archive_atlas_cate ')
+                        ->where('id',$id)
+                        ->find();
+                    $bases[]=$atlas['picture_name'].$atlas['picture_number'];
+                }
+                $data['ma_bases_name']=implode(',',$bases);//取出图纸信息并转为字符串
 
                 // 流水号在页面里是分开的,所以这里要截取分开
                 $parent_d_code = Db::name('quality_division')->where('id',$data['division_id'])->value('d_code');

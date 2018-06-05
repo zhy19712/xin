@@ -26,7 +26,7 @@ $.ztree({
             tablePath:'/quality/common/datatablesPre?tableName=quality_unit',
             isLoadPath:false
         });
-        getModel(treeNode);
+        // getModel(treeNode);
     }
 });
 
@@ -225,10 +225,14 @@ $('#save').click(function () {
 function tableInfo() {
     $.datatable({
         tableId:'tableItem',
+        iDisplayLengths:9999,
+        scrollYs: true,
+        scrollCollapses: true,
+        pagings: false,
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=quality_unit'
         },
-        dom: 'lf<".current-path"<"#add.add layui-btn layui-btn-normal layui-btn-sm">>tipr',
+        dom: 'f<".current-path"<"#add.add layui-btn layui-btn-normal layui-btn-sm">>tr',
         columns:[
             {
                 name: "serial_number"
@@ -270,6 +274,10 @@ function tableInfo() {
             }
         ],
     });
+    setTimeout(function () {
+        // $("#tableItem_wrapper .dataTables_scrollBody").css("overflow-x","initial");
+        $("#tableItem_wrapper .tbcontainer").css("display","none");
+    },300)
 }
 tableInfo();
 $('#add').html('新增');
@@ -335,9 +343,11 @@ $('.maBasesBtn').click(function () {
         yes:function () {
             $('input[name="ma_bases"]').val(idArr);
             layer.close(layer.index);
+            $('#maBasesLayer').css("display","none");
         },
         cancel: function(index, layero){
             layer.close(layer.index);
+            $('#maBasesLayer').hide();
         }
     });
 });
@@ -468,8 +478,14 @@ $('#saveUnit').click(function () {
             en_type:en_type,
             division_id:division_id,
             id:window.rowId
+        },
+        others:function () {
+            $('#unit').css("display","none");
         }
     });
+    setTimeout(function () {
+        $("#tableItem_wrapper .tbcontainer").css("display","none");
+    },300)
 });
 
 //单元工程段号编辑
@@ -498,13 +514,20 @@ function edit(that) {
             $('input[name="su_basis"]').val(res.su_basis);
         }
     });
+    setTimeout(function () {
+        $("#tableItem_wrapper .tbcontainer").css("display","none");
+    },300)
 }
 
 //关闭弹层
 $.close({
     formId:'unit'
 });
-
+$('.close').click(function () {
+    $('#unit')[0].reset();
+    $('#unit').css("display","none");
+    layer.closeAll('page');
+});
 //单元工程段号删除
 function del(that) {
     var tableItem = $('#tableItem').DataTable();
