@@ -240,6 +240,10 @@ $('#closeNode').click(function () {
 
 //点击新增控制节点
 $(".mybtn #test3").click(function () {
+  if(sNodes.level == 0 || sNodes.level == 1){
+    layer.msg('请选择合适的节点');
+    return;
+  }
   layer.open({
     type: 2,
     title: '添加控制点信息',
