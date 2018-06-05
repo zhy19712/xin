@@ -11,9 +11,10 @@
     <link href="/Content/css/form.css" rel="stylesheet">
     <link href="/Content/css/edit.css" rel="stylesheet">
     <script src="/Content/js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.qrcode.min.js"></script>
+
     <script src="/Content/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script src="/Areas/Quality/Views/QualityForm/QualityForm.js"></script>
-    <script src="/Content/js/jquery.qrcode.min.js"></script>
 
     <title></title>
     <style>
@@ -64,6 +65,15 @@
         }
         .auto-style1 {
             height: 30pt;
+        }
+        .tabTitle {
+            margin: auto;
+            width: 210mm;
+        }
+        textarea{
+            outline: none!important;
+            border: none!important;
+            resize:none!important;
         }
     </style>
 </head>
@@ -535,6 +545,7 @@
                 $('#input_y_av').val(s);
             }
         });
+        getQrcode();
     </script>
 </body>
 </html>

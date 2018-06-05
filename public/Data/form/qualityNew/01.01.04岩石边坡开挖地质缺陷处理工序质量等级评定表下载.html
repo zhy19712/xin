@@ -70,14 +70,6 @@
             margin: 0 auto;
             position: relative;
         }
-        #qrcode{
-            position: absolute;
-            right: 0px;
-            top: 0px;
-            width: 80px;
-            height: 80px;
-            background-color: red;
-        }
     </style>
 </head>
 
@@ -450,23 +442,24 @@
         </div>
         <p style="line-height:1pt; margin:0pt; text-align:justify"><span style="font-family:仿宋; font-size:10.5pt">&#xa0;</span></p>
     </div>
-    <script>
-    $('#input_hgl_1,#input_hgl_2').change(function() {
-            var a = $('#input_hgl_1').val();
-            var b = $('#input_hgl_2').val();
-            var s = b / a * 100;
-            s = parseFloat(s).toFixed(1);
-            if (!s || isNaN(s)) {
-                $('#input_hgl_3').val('/');
-                $('#input_hgl_6').val('/');
-                $('#input_hgl_9').val('/');
-            } else {
-                $('#input_hgl_3').val(s);
-                $('#input_hgl_6').val(s);
-                $('#input_hgl_9').val(s);
-            }
-        });
-    </script>
-</body>
 
+</body>
+<script>
+    $('#input_hgl_1,#input_hgl_2').change(function() {
+        var a = $('#input_hgl_1').val();
+        var b = $('#input_hgl_2').val();
+        var s = b / a * 100;
+        s = parseFloat(s).toFixed(1);
+        if (!s || isNaN(s)) {
+            $('#input_hgl_3').val('/');
+            $('#input_hgl_6').val('/');
+            $('#input_hgl_9').val('/');
+        } else {
+            $('#input_hgl_3').val(s);
+            $('#input_hgl_6').val(s);
+            $('#input_hgl_9').val(s);
+        }
+    });
+    getQrcode();
+</script>
 </html>
