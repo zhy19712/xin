@@ -868,7 +868,6 @@ class Division extends Permissions{
         $param = input('param.');
         //从图纸表里拉取数据
         $atlas_id=$param['atlas_id'];
-        $atlas_id=explode(',',$atlas_id);
         foreach ($atlas_id as $id)
         {
             $atlas= Db::name('archive_atlas_cate ')
