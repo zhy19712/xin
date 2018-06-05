@@ -56,6 +56,8 @@ class Section extends Permissions
         if ($this->request->isAjax()) {
             try {
                 $mod = input('post.');
+                $mod['otherId'] = implode(',',$mod['otherIdArr']);
+                unset($mod['otherIdArr']);
                 $m = new SectionModel();
                 $res = $m->AddOrEdit($mod);
                 if ($res) {
