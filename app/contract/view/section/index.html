@@ -19,34 +19,42 @@
         #secTable table td{
             word-break:break-all;
         }
+        #secTable{
+            padding-left: .5em;
+        }
     </style>
 <!--<body class="easyui-layout" style="overflow-y:hidden;">-->
 <!--表格-->
-<div id="secTable" class="wrapper wrapper-content" style="width: 99.5%;vertical-align: top;padding: 0;margin-left: 4px;text-align: center">
-    <div class="ibox float-e-margins">
-        <div class="ibox-content">
-            <div class="row">
-                <div id="mytable1_wrapper">
-                    <table id="admin_table" width="100%" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>标段编码</th>
-                                <th>标段名称</th>
-                                <th>合同金额（万元）</th>
-                                <th>业主单位</th>
-                                <th>施工单位</th>
-                                <th>设计单位</th>
-                                <th>监理单位</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-            <div class="xia"></div>
+<div id="secTable" data-options="region:'center',split:true">
+    <div id="mytable1_wrapper">
+        <table id="admin_table" width="100%" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>标段编码</th>
+                <th>标段名称</th>
+                <th>合同金额（万元）</th>
+                <th>业主单位</th>
+                <th>施工单位</th>
+                <th>设计单位</th>
+                <th>监理单位</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+        </table>
+        <div class="tbcontainer">
+            <div class="mark"></div>
         </div>
     </div>
 </div>
+<!--<div id="secTable" class="wrapper wrapper-content" style="width: 99.5%;vertical-align: top;padding: 0;margin-left: 4px;text-align: center">-->
+    <!--<div class="ibox float-e-margins">-->
+        <!--<div class="ibox-content">-->
+            <!--<div class="row">-->
+                <!---->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 
 <!--</body>-->
 {include file="../../public/common_footer"}
@@ -106,10 +114,15 @@
             "infoFiltered": "(从 _MAX_ 条记录过滤)",
             "paginate": {
                 "sFirst": "<<",
-                "sPrevious": "上一页",
-                "sNext": "下一页",
+                "sPrevious": "<",
+                "sNext": ">",
                 "sLast": ">>"
             }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#admin_table_length').insertBefore(".mark");
+            $('#admin_table_info').insertBefore(".mark");
+            $('#admin_table_paginate').insertBefore(".mark");
         }
     });
     $("div.mybtn").html('新增');

@@ -22,7 +22,7 @@ vendor('JPush.autoload');
  * Class Income
  * @package app\participants\controller
  */
-class Send extends Log
+class Send extends Login
 {
     public function index()
     {
@@ -111,6 +111,15 @@ class Send extends Log
 
             if(empty($major_key)){
                 $flag = $send->insertTb($param);
+                $jpush = new JpushModel();
+                $id = $flag["data"];//前台传过来的发文的id
+//            $id = 33;
+                //获取当前的用户名
+                $admin_name = Db::name('admin')->where(['id'=>$param['income_id']])->value('name');
+                $alias = $admin_name;
+                $alert = "major_key:{$id},type:收文,see_type:2";
+                $jpush->push_a($alias,$alert);
+
             }else{
                 $param['id'] = $major_key;
                 $flag = $send->editTb($param);
@@ -126,6 +135,7 @@ class Send extends Log
      */
     public function preview()
     {
+//        if($this->request->isAjax()){
             // 前台需要传递的参数有:  主键编号 major_key 文件类型 see_type 1 收文 2 发文
             // 查看就PDF、Word、图片这三种，其他的都不显示查看
             // 前台可以根据我返回的文件后缀来判断是否显示  查看功能
@@ -143,7 +153,17 @@ class Send extends Log
             }
             $send = new SendModel();
             $flag = $send->getOne($param['major_key'],$param['see_type']);
+
+            foreach($flag["attachment"] as $key=>$val)
+            {
+
+                    $upload_info = Db::name('attachment')->where('id',$val["id"])->field('filepath')->find();
+
+                    $flag["attachment"][$key]["url"] = $_SERVER['HTTP_HOST'].$upload_info["filepath"];
+            }
+
             return json($flag);
+//        }
     }
 
     /**
@@ -196,8 +216,6 @@ class Send extends Log
         }
         if(!file_exists($filePath)){
             return json(['code' => '-1','msg' => '文件不存在']);
-        }else if(request()->isAjax()){
-            return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
         }else{
             $fileName = $file_obj['name'];
             $file = fopen($filePath, "r"); //   打开文件
@@ -225,7 +243,7 @@ class Send extends Log
      */
     public function attachmentPreview()
     {
-        if($this->request->isAjax()){
+//        if($this->request->isAjax()){
             // 前台需要传递的参数有:  附件编号 file_id
             // 查看就PDF、Word、图片这三种，其他的都不显示查看
             // 前台可以根据我返回的文件后缀来判断是否显示  查看功能
@@ -261,7 +279,7 @@ class Send extends Log
             }else{
                 return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
             }
-        }
+//        }
     }
 
     /**

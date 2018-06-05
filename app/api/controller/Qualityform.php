@@ -7,14 +7,14 @@
  */
 namespace app\api\controller;
 
-use app\api\controller\Log;
+use app\api\controller\Login;
 use think\Db;
 use think\Session;
 use think\Controller;
 use think\Request;
 
 
-class Qualityform extends Log
+class Qualityform extends Login
 {
     //获取某个表单的信息
     public function getFormInfo()

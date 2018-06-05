@@ -144,7 +144,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-            "url": "{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="
+            "url": "{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id=-1"
         },
         dom: 'lf<"mybtn layui-btn layui-btn-sm">rtip',
         columns: [
@@ -280,13 +280,10 @@
         procedureId = selfid;
         if(sNodes.level == 3){
             tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id="+selfid).load();
-            $("#tableContent .dataTables_wrapper").css('display','block');
-            $("#tableContent .tbcontainer").css('display','block');
             $(".layout-panel-center .panel-title").text("当前路径:" + path);
         }else if(sNodes.level != 3){
-            $("#tableContent .dataTables_wrapper").css('display','none');
-            $("#tableContent .tbcontainer").css('display','none');
-            $(".layout-panel-center .panel-title").text("当前路径:");
+          tableItem.ajax.url("{:url('/standard/common/datatablesPre')}?tableName=norm_controlpoint&id=-1").load();
+            $(".layout-panel-center .panel-title").text("当前路径:" + path);
         }
     }
 
@@ -383,6 +380,10 @@
 
     //点击新增控制节点
     $(".mybtn #test3").click(function () {
+      if(sNodes.level != 3){
+        layer.msg('请选择合适的节点');
+            return ;
+      }
         layer.open({
             type: 2,
             title: '添加控制点信息',

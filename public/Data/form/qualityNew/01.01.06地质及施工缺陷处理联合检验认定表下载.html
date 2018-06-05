@@ -85,15 +85,6 @@
     <input id="formData" type="hidden" value='{formData}' />
     <input id="currentStep" type="hidden" value="{currentStep}" />
     <input id="getQrcode" type="hidden" value='{$qrcode}' />
-
-    <div class="hearBtn">
-        <button class="btn btn-success btns" type="button" onclick="formAttachments()">
-            <i class="fa fa-file"></i><span class="bold">附件</span>
-        </button>
-        <button class="btn btn-success btns" type="button" onclick="formSave()">
-            <i class="fa fa-save"></i><span class="bold">保存</span>
-        </button>
-    </div>
     <div class="hr-line-dashed" style="margin: 5px 0px 0px; clear: both;"></div>
     <div class="A4">
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">河北丰宁抽水蓄能电站</span></p>
@@ -207,9 +198,6 @@
                         <div class="qianming qianmingBlock">
                             <img id="img_1" class="signBtoName" src="" onload="img1Load()" step="0" form-required="签名必填。"/>
 
-                            <button for="img_1" step="0" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
                         </div>
 
                         <div class="form-group div-inline data_2" style="float: right; margin-top: -45px; margin-right: 10px; width: 40mm;">
@@ -235,9 +223,6 @@
                         <div class="qianming qianmingBlock">
                             <img id="img_2" class="signBtoName" src="" onload="img2Load()" step="1" form-required="签名必填。"/>
 
-                            <button for="img_2" step="1" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
                         </div>
 
                         <div class="form-group div-inline data_2" style="float: right; margin-top: -45px; margin-right: 10px; width: 40mm;">
@@ -264,16 +249,10 @@
                         <div class="qianming qianmingBlock" style="margin-left: 15mm;">
                             <img id="img_3" class="signBtoName" src="" onload="img3Load()" step="2" form-required="签名必填。"/>
 
-                            <button for="img_3" step="2" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
                         </div>
                         <div class="qianming qianmingBlock" style="margin-top: -14mm; margin-left: 70mm;">
                             <img id="img_10" class="signBtoName" src="" onload="img10Load()" step="3" form-required="签名必填。"/>
 
-                            <button for="img_10" step="3" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
                         </div>
                         <div class="form-group div-inline data_2" style="width: 40mm; margin-bottom: 5px; margin-left: 32mm; float: left;">
                             <div class="input-group date" style="width: 100%;">
@@ -335,9 +314,6 @@
                         <div class="qianming qianmingBlock">
                             <img id="img_4" class="signBtoName" src="" onload="img4Load()" step="4" form-required="签名必填。"/>
 
-                            <button for="img_4" step="4" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
                         </div>
 
                         <div class="form-group div-inline data_2" style="float: right; margin-top: -45px; margin-right: 10px; width: 40mm;">
@@ -381,45 +357,35 @@
                         <!--                        <img id="img_5" class="signBtoName" src="../../img/2016-6-14 10-35-58.jpg" />-->
                         <div class="qianming">
                             <img id="img_5" class="signBtoName" src="" />
-                            <button for="img_5" step="0" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
+
                         </div>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                         <!--                        <img id="img_6" class="signBtoName" src="../../img/2016-6-14 10-35-58.jpg" />-->
                         <div class="qianming">
                             <img id="img_6" class="signBtoName" src="" />
-                            <button for="img_6" step="2" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
+
                         </div>
                     </td>
                     <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                         <!--                        <img id="img_7" class="signBtoName" src="../../img/2016-6-14 10-35-58.jpg" />-->
                         <div class="qianming">
                             <img id="img_7" class="signBtoName" src="" />
-                            <button for="img_7" step="3" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
+
                         </div>
                     </td>
                     <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                         <!--                        <img id="img_8" class="signBtoName" src="../../img/2016-6-14 10-35-58.jpg" />-->
                         <div class="qianming">
                             <img id="img_8" class="signBtoName" src="" />
-                            <button for="img_8" step="1" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
+
                         </div>
                     </td>
                     <td style="text-align: center; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                         <!--                        <img id="img_9" class="signBtoName" src="../../img/2016-6-14 10-35-58.jpg" />-->
                         <div class="qianming">
                             <img id="img_9" class="signBtoName" src="" />
-                            <button for="img_9" step="4" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
+
                         </div>
                     </td>
                 </tr>
@@ -523,6 +489,7 @@
         function date6Change() {
             $("#input_date_11").val($("#input_date_6").val());
         }
+        getQrcode();
     </script>
 </body>
 

@@ -104,7 +104,7 @@
             <i class="fa fa-file-text-o" style="margin-right: 0px;"></i>
             <p2>处理信息</p2>
         </div>
-        <div class="move layui-btn layui-btn-sm"></div>
+        <div class="move"></div>
     </div>
     <div class="hr-line-dashed" style="margin: 8px 10px 10px;"></div>
     <div>
@@ -254,7 +254,7 @@
         }
     });
     //保存
-    $(".move").html("<button id='test3' style='background:none;color: white;'>保存</button>");
+    $(".move").html("<div id='test3' class='layui-btn layui-btn-sm'>保存</div>");
 
     $(document).ready(function () {
         setTimeout(function () {
@@ -425,6 +425,7 @@
                                         close();
                                         parent.layer.closeAll();
                                         testFlag = true;
+                                        // parent.parent.refsh();
                                     }
                                 });
 

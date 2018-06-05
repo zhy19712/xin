@@ -65,7 +65,7 @@
         "scrollCollapse": "true",
         serverSide: true,
         ajax: {
-            "url": "{:url('/quality/common/datatablesPre')}?tableName=quality_upload&type=2&cpr_id="+$("#hiddenValId").val()
+            "url": "{:url('/quality/common/datatablesPre')}?tableName=quality_upload&type=4&cpr_id="+$("#hiddenValId").val()
         },
         dom:'l' +
         // '<"mybtn layui-btn layui-btn-sm">' +
@@ -198,6 +198,9 @@
                                 ]
                             }
                             ,anim: Math.floor(Math.random()*7) //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                            ,success:function () {
+                                $(".layui-layer-shade").empty();
+                            }
                         });
                     }else{
                         layer.msg("不支持的文件格式");

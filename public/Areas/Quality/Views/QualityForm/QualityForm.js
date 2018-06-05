@@ -1,10 +1,5 @@
 var fileTargetHtmlElementId; // 定义附件上传后要更新的目标html元素Id
 var saveStyle = 0; // 保存类型：0保存；1保存并提交；2保存并审批
-layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
-    var form = layui.form
-        ,layer = layui.layer
-        ,laydate = layui.laydate;
-});
 $(function () {
     if ($("#formData").val() && $("#formData").val() != "false") {
         console.log( $("#formData").val()!= "false")

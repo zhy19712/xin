@@ -5,7 +5,7 @@ var tableItem = $('#tableItem').DataTable({
   processing: true,
   serverSide: true,
   ajax: {
-    "url": "../common/datatablesPre.shtml?tableName=norm_controlpoint&id="
+    "url": "../common/datatablesPre.shtml?tableName=norm_controlpoint&id=-1"
   },
   dom: 'lf<"mybtn layui-btn layui-btn-sm">rtip',
   columns: [
@@ -131,18 +131,14 @@ function nodeClick(e, treeId, node) {
   if(sNodes.level != 0){
     if(sNodes.level != 1){
       tableItem.ajax.url("../common/datatablesPre.shtml?tableName=norm_controlpoint&id="+selfid).load();
-      $("#tableContent .dataTables_wrapper").css('display','block');
-      $("#tableContent .tbcontainer").css('display','block');
+
     }else if(sNodes.level == 1){
-      $("#tableContent .dataTables_wrapper").css('display','none');
-      $("#tableContent .tbcontainer").css('display','none');
+      tableItem.ajax.url("../common/datatablesPre.shtml?tableName=norm_controlpoint&id=-1").load();
     }
     $(".layout-panel-center .panel-title").text("当前路径:" + path);
   }else if(sNodes.level == 0){
-    tableItem.ajax.url("../common/datatablesPre.shtml?tableName=norm_controlpoint&id=").load();
-    $("#tableContent .dataTables_wrapper").css('display','none');
-    $("#tableContent .tbcontainer").css('display','none');
-    $(".layout-panel-center .panel-title").text("");
+    tableItem.ajax.url("../common/datatablesPre.shtml?tableName=norm_controlpoint&id=-1").load();
+    $(".layout-panel-center .panel-title").text("当前路径:"+ path);
   }
   procedureId = selfid;
 }
@@ -244,6 +240,10 @@ $('#closeNode').click(function () {
 
 //点击新增控制节点
 $(".mybtn #test3").click(function () {
+  if(sNodes.level == 0 || sNodes.level == 1){
+    layer.msg('请选择合适的节点');
+    return;
+  }
   layer.open({
     type: 2,
     title: '添加控制点信息',

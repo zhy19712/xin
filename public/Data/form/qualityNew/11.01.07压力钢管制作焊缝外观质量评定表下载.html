@@ -12,9 +12,9 @@
     <link href="/Content/css/form.css" rel="stylesheet">
     <link href="/Content/css/edit.css" rel="stylesheet">
     <script src="/Content/js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="/Content/js/jquery.qrcode.min.js"></script>
     <script src="/Content/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script src="/Areas/Quality/Views/QualityForm/QualityForm.js"></script>
-    <script src="/Content/js/jquery.qrcode.min.js"></script>
 
     <title></title>
     <style>
@@ -63,6 +63,15 @@
         .selType {
             display: inline-block;
             width: 70px;
+        }
+        .tabTitle {
+            margin: auto;
+            width: 210mm;
+        }
+        textarea{
+            outline: none!important;
+            border: none!important;
+            resize:none!important;
         }
     </style>
 </head>
@@ -516,5 +525,7 @@
         <a target="_blank" href="http://www.docpe.com">档铺网——在线文档免费处理</a>
     </div>
 </body>
-
+<script>
+    getQrcode();
+</script>
 </html>
