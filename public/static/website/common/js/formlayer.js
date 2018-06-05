@@ -27,6 +27,7 @@
             success:option.success,
             cancel: function(index, layero){
                 $('#'+option.formId)[0].reset();
+                $('#'+ option.formId).hide();
             }
         });
     };
@@ -128,6 +129,7 @@
             },
             cancel: function(index, layero){
                 $('#'+option.formId)[0].reset();
+                $('#'+option.formId).hide();
             }
         });
     };

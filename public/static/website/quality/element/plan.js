@@ -306,6 +306,7 @@ $('.maBasesBtn').click(function () {
         },
         cancel: function(index, layero){
             layer.close(layer.index);
+            $('#maBasesLayer').hide();
         }
     });
 });
@@ -450,9 +451,11 @@ $('#saveUnit').click(function () {
             en_type:en_type,
             division_id:division_id,
             id:window.rowId
+        },
+        others:function () {
+            $('#unit').css("display","none");
         }
     });
-    $('#unit').css("display","none");
     $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
 
     // $(".dataTables_scrollBody .dataTables_paginate").css("float","none");
@@ -495,13 +498,18 @@ function edit(that) {
 
 //关闭弹层
 $.close({
-    formId:'unit'
+    formId:'unit',
+    others:function(){
+        $('#unit').css("display","none");
+        layer.closeAll('page');
+    }
 });
 $('.close').click(function () {
     $('#unit')[0].reset();
     $('#unit').css("display","none");
     layer.closeAll('page');
 });
+
 
 //单元工程段号删除
 function del(that) {
