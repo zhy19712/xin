@@ -54,7 +54,7 @@ class Send extends Login
      */
     public function send()
     {
-        if($this->request->isAjax()){
+//        if($this->request->isAjax()){
 
             // 前台需要传递的参数有:
             // file_name 文件名称 date 文件日期 income_id 收件人编号
@@ -125,7 +125,7 @@ class Send extends Login
                 $flag = $send->editTb($param);
             }
             return json($flag);
-        }
+//        }
     }
 
     /**
@@ -275,9 +275,11 @@ class Send extends Login
                     $code = 0;
                     $msg = '不支持的文件格式';
                 }
-                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+                $pdf_path = $_SERVER['HTTP_HOST'].substr($pdf_path,1);
+                return json(['code' => $code, 'path' =>$pdf_path, 'msg' => $msg]);
             }else{
-                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+                $pdf_path = $_SERVER['HTTP_HOST'].substr($pdf_path,1);
+                return json(['code' => $code, 'path' => $pdf_path, 'msg' => $msg]);
             }
 //        }
     }

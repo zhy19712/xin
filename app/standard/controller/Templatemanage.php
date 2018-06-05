@@ -15,6 +15,7 @@ namespace app\standard\controller;
 use app\admin\controller\Permissions;
 use app\standard\model\TemplateModel;
 use think\Request;
+use think\Db;
 
 class Templatemanage extends Permissions
 {
@@ -80,5 +81,74 @@ class Templatemanage extends Permissions
         } else {
             return json(['code' => -1]);
         }
+    }
+
+    /**
+     * 模板下载，暂时功能，用完废弃
+     * @return \think\response\Json
+     */
+    public function download()
+    {
+//        if(request()->isAjax()){
+//            // 前台需要 传递 文件编号 id
+//            $param = input('param.');
+//            $file_id = isset($param['id']) ? $param['id'] : 0;
+//            if ($file_id == 0) {
+//                return json(['code' => '-1', 'msg' => '编号有误']);
+//            }
+//            $file_obj = Db::name('norm_template')->where('id', $file_id)->field('code,name')->find();
+//            if (empty($file_obj)) {
+//                return json(['code' => '-1', 'msg' => '编号无效']);
+//            }
+//            $formPath = ROOT_PATH . 'public' . DS . "data\\form\\quality\\" . $file_obj['code'] . $file_obj['name'] . "下载.html";
+//            $formPath = iconv('UTF-8', 'GB2312', $formPath);
+//            if (!file_exists($formPath)) {
+//                return json(['code' => '-1', 'msg' => '文件不存在']);
+//            } else {
+//                return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
+//            }
+//        }
+
+        $param = input('param.');
+        $file_id = isset($param['id']) ? $param['id'] : 0;
+        $file_id = 57;
+        if ($file_id == 0) {
+            return json(['code' => '-1', 'msg' => '编号有误']);
+        }
+        $file_obj = Db::name('norm_template')->where('id', $file_id)->field('code,name')->find();
+
+            $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $file_obj['code'] . $file_obj['name'] . "下载.html";
+
+            $tempPath = ROOT_PATH . 'public' . DS . "data\\form\\temp\\";
+            if (!file_exists($tempPath)){
+                mkdir ($tempPath,0777,true);
+            }
+
+
+            $tempPdf = "F:\phpStudy\phpStudy\WWW\xin\public\Data\form\temp\111.pdf";
+            //清空缓冲区
+            ob_end_clean();
+            //调用wkhtml工具将html文件生成pdf文件
+            shell_exec("wkhtmltopdf http://www.baidu.com" .$tempPdf);
+
+            $filePath = iconv("utf-8", "gb2312", $tempPdf);
+            $fileName = $file_obj['code'] . $file_obj['name'].".pdf";
+            $fileName =iconv("utf-8", "gb2312", $fileName);
+
+            if(file_exists($filePath)){
+                header("Content-type:application/pdf");
+                header("Content-Disposition:attachment;filename=".$fileName);
+                $file = fopen($filePath, 'r');
+                echo fread($file, filesize($filePath));
+                fclose($file);
+                //删除临时文件
+
+
+            }
+            else
+            {
+                return json(['msg'=>'未找到下载文件']);
+                exit;
+            }
     }
 }
