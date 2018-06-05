@@ -624,9 +624,19 @@ function resultInfo(nodeUnitId) {
                 $(".result form select").val(res.evaluateResult);
                 $(".result form #date").val(res.evaluateDate);
                 layui.form.render('select');
+                $(".result form select").prop("disabled",true);
+                layui.use(['form'], function(){
+                    var form = layui.form;
+                    $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
+                    $("#date").attr({"disabled":true});
+                    form.render("select");
+                });
                 if(res.evaluateDate == 0){
                     $("#date").val('');
                 }
+                setTimeout(function () {
+                    $(".result input[readonly]").removeClass('disabledColor');
+                },900)
             }
         }
     })
