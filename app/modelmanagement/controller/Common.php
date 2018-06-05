@@ -168,7 +168,7 @@ class Common extends Controller
         // pile_number_3 桩号3名 pile_val_3 桩号3值
         // pile_number_4 桩号4名 pile_val_4 桩号4值
         // el_start 高程起 el_cease 高程止
-        $search_data = [];
+        $search_data = $search_data_1 = $search_data_2 = [];
         $param = input('param.');
 
         $model_type = isset($param['model_type']) ? $param['model_type'] : 0; // 0 默认是 查所有的构件 1 已关联构件 2 未关联构件
@@ -194,12 +194,34 @@ class Common extends Controller
         $el_cease = isset($param['el_cease']) ? $param['el_cease'] : '';
 
         /**
-         *  桩号1名桩号2名 里面控制着 CS (场上) 和 CX (场下)
+         * 桩号1名桩号2名 里面控制着 CS (场上) 和 CX (场下)
          * 当 只存在 一个值的 时候   桩号1值 是大于等于 桩号2值 是小于等于
-         * 当 两个值都存在 并且 选择的桩号名一致 的 时候  桩号1值 <= 结果<=桩号2值 取两个值的区间值
+         * 例如: $pile_number_1 = cs  $pile_val_1 = 10
+         *       where 条件就是 $pile_number_1='cs' and  $pile_val_1 >= 10
+         *
+         *       pile_number_2 = cs  $pile_val_2 = 10
+         *       where 条件就是 $pile_number_2='cs' and  $pile_val_2 <= 10
+         *
+         * 当 两个值都存在 并且 选择的桩号名一致 的 时候  桩号1值 <=   取两个值的区间值    <=桩号2值
+         * 例如: $pile_number_1 = cs  $pile_val_1 = 10  pile_number_2 = cs  $pile_val_2 = 20
+         *       where 条件就是 $pile_number_1='cs' and  $pile_val_1 >= 10  and $pile_number_2='cs' and  $pile_val_2 <= 10
+         *
+         * (注意:桩号2的值不一定是最小的,当桩号2的值小于桩号1的值的时候)
+         * 例如: $pile_number_1 = cs  $pile_val_1 = 20  pile_number_2 = cs  $pile_val_2 = 10
+         *       where 条件就是 $pile_number_1='cs' and  $pile_val_1 <= 20  and $pile_number_2='cs' and  $pile_val_2 >= 10
+         *
          * 当 两个值都存在 并且 选择的桩号名不一致 的 时候  0<= 结果<=桩号1值      0<= 结果<=桩号2值
+         * 例如: $pile_number_1 = cs  $pile_val_1 = 10  pile_number_2 = cx  $pile_val_2 = 20
+         *       where 条件就是 ($pile_number_1='cs' and  0 <= $pile_val_1 <= 10  and $pile_number_2='cx' and  0 <= $pile_val_2 <= 20)
+         *                      or($pile_number_1='cs' and  0 <= $pile_val_1 <= 10  and $pile_number_2='cs' and  0 <= $pile_val_2 <= 10)
+         *                      or($pile_number_1='cx' and  0 <= $pile_val_1 <= 20  and $pile_number_2='cx' and  0 <= $pile_val_2 <= 20)
          *
          *  桩号3名桩号4名 里面控制着 CZ (场左) 和 CY (场右) 同上
+         *
+         * Select * from table where (zhuanghao1name="CS" AND zhuanghao1 BETWEEN 0 and data1 AND zhuanghao2name="CX" AND zhuanghao2 BETWEEN 0 and data2)
+         *  OR (zhuanghao1name="CS" AND zhuanghao1 BETWEEN 0 and data1 AND zhuanghao2name="CS" AND zhuanghao2 BETWEEN 0 and data1)
+         *  OR (zhuanghao1name="CX" AND zhuanghao1 BETWEEN 0 and data2 AND zhuanghao2name="CX" AND zhuanghao2 BETWEEN 0 and data2)
+         *
          */
         if($section){
             $search_data['q.section'] = $section;
@@ -209,51 +231,67 @@ class Common extends Controller
         }
         if($parcel){
             $search_data['q.parcel'] = $parcel;
-        } if($cell){
+        }
+        if($cell){
             $search_data['q.cell'] = $cell;
-        } if($pile_number_1 && $pile_val_1 && !$pile_val_2){
+        }
+
+        if(($pile_number_1 != '' && $pile_val_1 != '') && $pile_val_2 == ''){
             $search_data['q.pile_number_1'] = $pile_number_1;
             $search_data['q.pile_val_1'] = ["egt",$pile_val_1];
-        } if($pile_number_2 && $pile_val_2 && !$pile_val_1){
+        }
+        if(($pile_number_2 != '' && $pile_val_2 != '') && $pile_val_1 == ''){
             $search_data['q.pile_number_2'] = $pile_number_2;
             $search_data['q.pile_val_2'] = ["elt",$pile_val_2];
-        } if($pile_number_1 && $pile_val_1 && $pile_number_2 && $pile_val_2){
+        }
+        if(($pile_number_1 != '' && $pile_val_1 != '') && ($pile_number_2 != '' && $pile_val_2 != '')){
             $search_data['q.pile_number_1'] = $pile_number_1;
             $search_data['q.pile_number_2'] = $pile_number_2;
             if($pile_number_1 == $pile_number_2){
-                $search_data['q.pile_val_1'] = ["egt",$pile_val_1];
-                $search_data['q.pile_val_1'] = ["elt",$pile_val_2];
-                $search_data['q.pile_val_2'] = ["egt",$pile_val_1];
-                $search_data['q.pile_val_2'] = ["elt",$pile_val_2];
+                if($pile_val_1 <= $pile_val_2){
+                    $search_data['q.pile_val_1'] = ["egt",$pile_val_1];
+                    $search_data['q.pile_val_2'] = ["elt",$pile_val_2];
+                }else{
+                    $search_data['q.pile_val_1'] = ["elt",$pile_val_1];
+                    $search_data['q.pile_val_2'] = ["egt",$pile_val_2];
+                }
             }else{
-                $search_data['q.pile_val_1'] = ["egt",0];
-                $search_data['q.pile_val_1'] = ["elt",$pile_val_1];
-                $search_data['q.pile_val_2'] = ["egt",0];
-                $search_data['q.pile_val_2'] = ["elt",$pile_val_2];
+                $search_data['q.pile_val_1'] = [["egt",0],["elt",$pile_val_1]];
+                $search_data['q.pile_val_2'] = [["egt",0],["elt",$pile_val_2]];
+                $search_data_1 = "q.pile_number_1 = '" . $pile_number_1 . "' and q.pile_number_2 = '" . $pile_number_1 . "' and 0 <= q.pile_val_1 <= " . $pile_val_1 . " and  0 <= q.pile_val_2 <= " . $pile_val_1;
+                $search_data_2 = "q.pile_number_1 = '" . $pile_number_2 . "' and q.pile_number_2 = '" . $pile_number_2 . "' and 0 <= q.pile_val_1 <= " . $pile_val_2 . " and  0 <= q.pile_val_2 <= " . $pile_val_2;
             }
-        } if($pile_number_3 && $pile_val_3 && !$pile_val_4){
+        }
+        if(($pile_number_3 != '' && $pile_val_3 != '') && $pile_val_4 == ''){
             $search_data['q.pile_number_3'] = $pile_number_3;
             $search_data['q.pile_val_3'] = ["egt",$pile_val_3];
-        } if($pile_number_4 && $pile_val_4 && !$pile_val_3){
+        }
+        if(($pile_number_4 != '' && $pile_val_4 != '') && $pile_val_3 == ''){
             $search_data['q.pile_number_4'] = $pile_number_4;
             $search_data['q.pile_val_4'] = ["elt",$pile_val_4];
-        } if($pile_number_3 && $pile_val_3 && $pile_number_4 && $pile_val_4){
+        }
+        if(($pile_number_3 != '' && $pile_val_3 != '') && ($pile_number_4 != '' && $pile_val_4 != '')){
             $search_data['q.pile_number_3'] = $pile_number_3;
             $search_data['q.pile_number_4'] = $pile_number_4;
             if($pile_number_3 == $pile_number_4){
-                $search_data['q.pile_val_3'] = ["egt",$pile_val_3];
-                $search_data['q.pile_val_3'] = ["elt",$pile_val_4];
-                $search_data['q.pile_val_4'] = ["egt",$pile_val_3];
-                $search_data['q.pile_val_4'] = ["elt",$pile_val_4];
+                if($pile_val_3 <= $pile_val_4){
+                    $search_data['q.pile_val_3'] = ["egt",$pile_val_3];
+                    $search_data['q.pile_val_4'] = ["elt",$pile_val_4];
+                }else{
+                    $search_data['q.pile_val_3'] = ["elt",$pile_val_3];
+                    $search_data['q.pile_val_4'] = ["egt",$pile_val_4];
+                }
             }else{
-                $search_data['q.pile_val_3'] = ["egt",0];
-                $search_data['q.pile_val_3'] = ["elt",$pile_val_3];
-                $search_data['q.pile_val_4'] = ["egt",0];
-                $search_data['q.pile_val_4'] = ["elt",$pile_val_4];
+                $search_data['q.pile_val_3'] = [["egt",0],["elt",$pile_val_3]];
+                $search_data['q.pile_val_4'] = [["egt",0],["elt",$pile_val_4]];
+                $search_data_1 .= "q.pile_number_3 = '" . $pile_number_3 . "' and q.pile_number_4 = '" . $pile_number_3 . "' and 0 <= q.pile_val_1 <= " . $pile_val_3 . " and  0 <= q.pile_val_2 <= " . $pile_val_3;
+                $search_data_2 .= "q.pile_number_3 = '" . $pile_number_4 . "' and q.pile_number_4 = '" . $pile_number_4 . "' and 0 <= q.pile_val_1 <= " . $pile_val_4 . " and  0 <= q.pile_val_2 <= " . $pile_val_4;
             }
-        } if($el_start){
+        }
+        if($el_start){
             $search_data['q.el_start'] = ["egt",$el_start];
-        } if($el_cease){
+        }
+        if($el_cease){
             $search_data['q.el_cease'] = ["elt",$el_cease];
         }
 
@@ -271,6 +309,8 @@ class Common extends Controller
                     ->join('quality_unit u', 'u.id = q.unit_id', 'left')
                     ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,u.site,u.id as uid')
                     ->where($search_data)
+                    ->whereOr($search_data_1)
+                    ->whereOr($search_data_2)
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = Db::name($table)->alias('q')->join('quality_unit u', 'u.id = q.unit_id', 'left')->where($search_data)->count();
             }
