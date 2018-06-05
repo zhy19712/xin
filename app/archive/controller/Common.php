@@ -534,7 +534,7 @@ class Common extends Controller
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('s')
                         ->field('id,file_name,date,send_p_name as p_name,income_name,send_name,status,FROM_UNIXTIME(create_time) as create_time')
-                        ->where(['income_group_id'=>['in',$gid_arr],'status'=>3])
+                        ->where(['income_id'=>['eq',$uid],'status'=>3])
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
                 $recordsFiltered = $recordsTotal;
