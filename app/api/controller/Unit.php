@@ -7,7 +7,7 @@
  */
 namespace app\api\controller;
 
-use app\api\controller\Log;
+use app\api\controller\Login;
 use app\quality\model\DivisionUnitModel;
 use app\admin\model\Admin;
 use app\admin\model\AdminGroup;
@@ -16,7 +16,7 @@ use think\Session;
 use think\Controller;
 use think\Request;
 
-Class Unit extends Log
+Class Unit extends Login
 {
     //获取单元划分段号的信息
     public function getUnit()

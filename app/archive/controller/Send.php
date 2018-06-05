@@ -146,7 +146,7 @@ class Send extends Permissions
      */
     public function preview()
     {
-        if($this->request->isAjax()){
+//        if($this->request->isAjax()){
             // 前台需要传递的参数有:  主键编号 major_key 文件类型 see_type 1 收文 2 发文
             // 查看就PDF、Word、图片这三种，其他的都不显示查看
             // 前台可以根据我返回的文件后缀来判断是否显示  查看功能
@@ -165,7 +165,7 @@ class Send extends Permissions
             $send = new SendModel();
             $flag = $send->getOne($param['major_key'],$param['see_type']);
             return json($flag);
-        }
+//        }
     }
 
     /**

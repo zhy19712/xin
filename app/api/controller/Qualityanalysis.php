@@ -16,7 +16,7 @@ use think\exception\PDOException;
 use think\Db;
 use think\Controller;
 
-class Qualityanalysis extends Log
+class Qualityanalysis extends Login
 {
     /**
      * 模板首页
