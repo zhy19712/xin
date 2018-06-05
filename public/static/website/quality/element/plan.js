@@ -520,6 +520,7 @@ function del(that) {
         ajaxUrl:'../division/delUnit',
         tablePath:'/quality/common/datatablesPre?tableName=quality_unit&id='+ window.nodeId +'',
         others:function () {
+            window.rowId = '';
             $(".imgList").css("display","none");
             tpyeTable();
             tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id=").load();
