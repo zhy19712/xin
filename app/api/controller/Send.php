@@ -158,7 +158,8 @@ class Send extends Login
             {
 
                     $upload_info = Db::name('attachment')->where('id',$val["id"])->field('filepath')->find();
-                    $flag["attachment"][$key]["url"] = ROOT_PATH . 'public'.$upload_info["filepath"];
+
+                    $flag["attachment"][$key]["url"] = $_SERVER['HTTP_HOST'].$upload_info["filepath"];
             }
 
             return json($flag);
