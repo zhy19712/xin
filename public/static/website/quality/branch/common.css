@@ -21,7 +21,7 @@
 #tableContent .dataTables_wrapper .dataTables_scroll {
     position: relative;
     top: 6px;
-    border-top: 1px dotted #cecece;
+    border-top: none;
 }
 #tableContent .even {
     background-color: #ffffff;

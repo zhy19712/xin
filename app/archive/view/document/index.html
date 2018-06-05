@@ -16,20 +16,27 @@
         margin-top: 34px;
     }
     #tableContent .mybtn i.fa:before,#tableContent .assModel i.fa:before,#tableContent .move i.fa:before,#tableContent .file i.fa:before,#tableContent .oneKeyArchiv i.fa:before {
-        background: #00c0ef;
+        background: #0092ff;
         color: #ffffff;
     }
     #tableContent .mybtn,#tableContent .assModel,#tableContent .move,#tableContent .file,#tableContent .oneKeyArchiv{
         float: right;
+        width: 70px;
+        height: 32px;
+        font-size: 16px;
         background-color: #0092ff;
     }
     #tableContent .mybtn{
-        margin-right: 10px;
-        margin-bottom: 5px;
+        margin-right: 30px;
+        margin-top: 4px;
+        border-radius: 3px;
     }
     #tableContent .assModel{
         margin-right: 10px;
         margin-bottom: 5px;
+        margin-top: 4px;
+        border-radius: 3px;
+        background-color: #FFB800;
     }
     #tableContent table.dataTable.no-footer {
         border-top: 1px dotted;
@@ -49,6 +56,8 @@
         color: #FFFFFF;
     }
     #tableContent #tableItem_filter {
+        padding-top: 6px;
+        padding-bottom: 5px;
         float: left;
     }
     #tableContent .select-color {
@@ -138,11 +147,6 @@
 
 <div style="display: none;" id="fileListBox">
     <div  style="padding-top: 0;">
-        <div style="background-color:#0b1014;color: #ffffff;overflow: hidden">
-            <i class="fa fa-plus" style="display: block;font-size: 70px;color: #fff;float: left;margin-left:5px;"></i>
-            <h3 style="float: left;width: 700px;font-size: 25px;margin:2px 0 8px 4px;">选择文件</h3>
-            <p style="float: left;width: 700px;margin-left: 4px;">将文件添加到上传队列，然后点击开始上传按钮</p>
-        </div>
         <div class="layui-upload-list">
             <table class="layui-table">
                 <thead>
@@ -159,8 +163,7 @@
                 <thead>
                     <tr>
                         <th style="width: 432px;">
-                            <a  id="testList" style="margin-left: 5px;float:left;width: 86px;height: 42.2px;">增加文件</a>
-                            <button type="button"  id="testListAction" style="width: 86px;height:38px;background: #009688;cursor: pointer;color:#fff;border-radius: 4px;margin-left: 5px;">开始上传</button>
+
                         </th>
                         <th style="width: 72px;"><span id="allsize"></span></th>
                         <th style="width: 62px;"><span id="status">0%</span></th>
@@ -168,6 +171,10 @@
                     </tr>
                 </thead>
             </table>
+            <div style="float: right;margin-right: 50px;">
+                <a  id="testList" style="margin-left: 5px;float:left;width: 86px;height: 42.2px;">增加文件</a>
+                <button type="button"  id="testListAction" style="width: 86px;height:36px;background: #009688;cursor: pointer;color:#fff;border-radius: 4px;margin-left: 30px;">开始上传</button>
+            </div>
         </div>
     </div>
 </div>

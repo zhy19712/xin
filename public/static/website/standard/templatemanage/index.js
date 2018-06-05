@@ -189,16 +189,6 @@ function delFile(id) {
 
 //测试用
 function downloadFile(id) {
-  var url1 = url;
-  $.ajax({
-    url: "./download",
-    data:{id:id},
-    type:"post",
-    success: function (res) {
-      if(res.code != 1){
-        console.log(res);
-        layer.msg(res.msg);
-      }else {
         $("#form_container").empty();
         var str = "";
         str += ""
@@ -210,9 +200,7 @@ function downloadFile(id) {
           + "</form>"
         $("#form_container").append(str);
         $("#form_container").find(".btn" + id).click();
-      }
-    }
-  })
+
 }
 // var datainfo = [
 // ];
