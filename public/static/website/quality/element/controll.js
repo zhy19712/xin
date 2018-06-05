@@ -313,9 +313,6 @@ function nodeClickUnit(e, treeId, node) {
     // console.log(flag)
 }
 
-function refreshTable() {
-    
-}
 //点击单元工创建工序name
 function selfidName(id) {
     $.ajax({
@@ -1255,6 +1252,7 @@ $("#unitWorkRightBottom").on("click",".mybtnAdd",function () {
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
             tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+            resultInfo(nodeUnitId);
         }
     });
 });
@@ -1284,6 +1282,7 @@ function editOnLine(id,step) {
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
             tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+            resultInfo(nodeUnitId);
         }
     });
 }
