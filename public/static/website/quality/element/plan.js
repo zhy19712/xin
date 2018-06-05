@@ -544,11 +544,12 @@ function edit(that) {
             $('input[name="su_basis"]').val(res.su_basis);
             $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
             var baseId =[];
+            var dataId =[];
             var id = $('input[name="ma_bases"]').val();
             baseId.push(id);
             var dataId = baseId[0].split(',');
             console.log(dataId);
-            getMaBasesName(baseId)
+            getMaBasesName(dataId)
         }
     });
 
@@ -761,7 +762,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
             tpyeTable();
             tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
             ischeckedBox();
-        },800)
+        },900)
 
     }else{
         alert("获取不到selectRow id!")
