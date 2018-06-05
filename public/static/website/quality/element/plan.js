@@ -301,8 +301,9 @@ $('.maBasesBtn').click(function () {
         },
         yes:function () {
             // $('input[name="ma_bases_name"]').val(idArrName);
-            $('input[name="ma_bases"]').val(idArr);
-            getMaBasesName(idArr);
+            console.log(dedupe(idArr)+"11");
+            $('input[name="ma_bases"]').val(dedupe(idArr));
+            getMaBasesName(dedupe(idArr));
             layer.close(layer.index);
             $('#maBasesLayer').css("display","none")
         },
@@ -402,7 +403,6 @@ function getMaBasesName(baseId){
 var idArr = [];
 function getId(that) {
     var isChecked = $(that).prop('checked');
-    console.log(that)
     var id = $(that).attr('idv');
     var checkedLen = $('input[type="checkbox"][name="checkList"]:checked').length;
     var checkboxLen = $('input[type="checkbox"][name="checkList"]').length;
@@ -416,16 +416,29 @@ function getId(that) {
         idArrName.push(mapNum+' '+mapName);
         idArr.removalArray();
         idArrName.removalArray();
-        console.log(idArrName)
+        // console.log(idArrName)
     }else{
         idArr.remove(id);
         idArrName.remove(mapNum+' '+mapName);
         idArr.removalArray();
         idArrName.removalArray();
-        console.log(idArrName)
+        // console.log(idArrName)
 
         $('#all_checked').prop('checked',false);
     }
+}
+
+function dedupe(array){
+    return Array.from(new Set(array));
+}
+Array.prototype.removalArray = function(){
+    var newArr = [];
+    for (var i = 0; i < this.length; i++) {
+        if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
+            newArr.push(this[i]);
+        }
+    }
+    return newArr;
 }
 
 //单选
@@ -444,8 +457,8 @@ $("#maBasesItem").delegate("tbody tr","click",function (e) {
     var tableItem = $('#maBasesItem').DataTable();
     $(this).addClass("selectmaBases").siblings().removeClass("selectmaBases");
     selectData = tableItem.row(".selectmaBases").data();//获取选中行数据
-    console.log(selectData[1] +" ------图名");
-    console.log(selectData[2] +" ------图号");
+    // console.log(selectData[1] +" ------图名");
+    // console.log(selectData[2] +" ------图号");
     // console.log(selectData);
     mapName =selectData[1];
     mapNum = selectData[2];
@@ -530,8 +543,15 @@ function edit(that) {
             $('input[name="start_date"]').val(res.start_date);
             $('input[name="su_basis"]').val(res.su_basis);
             $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
+            var baseId =[];
+            var id = $('input[name="ma_bases"]').val();
+            baseId.push(id);
+            var dataId = baseId[0].split(',');
+            console.log(dataId);
+            getMaBasesName(baseId)
         }
     });
+
 }
 
 //关闭弹层
