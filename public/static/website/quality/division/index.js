@@ -535,7 +535,10 @@ function del(that) {
         tableItem:tableItem,
         that:that,
         ajaxUrl:'./delUnit',
-        tablePath:'/quality/common/datatablesPre?tableName=quality_unit&id='+ window.nodeId +''
+        tablePath:'/quality/common/datatablesPre?tableName=quality_unit&id='+ window.nodeId +'',
+        others:function () {
+            window.rowId = '';
+        }
     });
 }
 
