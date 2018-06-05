@@ -472,7 +472,6 @@ h6,
 .h4,
 .h5,
 .h6 {
-  sans-serif;
   font-weight: 500;
   line-height: 1.1;
   color: inherit;
@@ -2883,8 +2882,7 @@ input[type="button"].btn-block {
 
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('../oldfonts/glyphicons-halflings-regular.eot');
-  src: url('../oldfonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../oldfonts/glyphicons-halflings-regular.woff') format('woff'), url('../oldfonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../oldfonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+
 }
 
 .glyphicon {
@@ -4389,7 +4387,6 @@ textarea.input-group-sm > .input-group-btn > .btn {
   background-color: #ffffff;
   border: 1px solid #ccc;
   border-bottom-color: transparent;
-  background:url(../../static/public/images/bg_x.png) repeat-x 0 -45px;
 }
 .nav_nofloat{ clear:none; overflow:hidden}
 .nav_style{
@@ -4398,14 +4395,13 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .nav_style > li > a:hover {
-  border-color: #ccc #ccc #cc;}
+  border-color: #ccc}
 
 .nav_style > li.active > a,
 .nav_style > li.active > a:hover,
 .nav_style > li.active > a:focus {
 	font-weight:bold;
 	color:#663300;
-  background:url(../../static/public/images/bg_x.png) repeat-x 0 -480px;
 }
 
 
