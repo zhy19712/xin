@@ -103,7 +103,9 @@
             opacity: 1;
             color: inherit;
         }
-
+        .eee{
+            background-color: #eee;
+        }
     </style>
 <body>
 <div class="row">
@@ -194,6 +196,8 @@
                 success: function (res) {
                     console.log(res);
                     if(res.qualitytemplateid != ""){
+                      $('#temCode').prop("disabled",true).addClass('eee');
+                      $('#temName').prop("disabled",true).addClass('eee');
                         var quId =res.qualitytemplateid;
                         $.ajax({
                             url: "{:url('./standard/library/gettemplatename')}?id=" + quId,

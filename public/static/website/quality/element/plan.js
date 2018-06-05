@@ -64,6 +64,7 @@ $('.typeZtreeBtn').click(function () {
         },
         cancel: function(index, layero){
             layer.close(layer.index);
+            $('#ztreeLayer').hide();
         }
     });
 });
@@ -226,7 +227,7 @@ function tableInfo() {
             }
         ],
     });
-    // $('.tbcontainer:last-child').remove();
+    $('.tbcontainer:last-child').remove();
     $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
 }
 tableInfo();
@@ -299,8 +300,9 @@ $('.maBasesBtn').click(function () {
             maBasesTable();
         },
         yes:function () {
-            $('input[name="ma_bases_name"]').val(idArrName);
+            // $('input[name="ma_bases_name"]').val(idArrName);
             $('input[name="ma_bases"]').val(idArr);
+            getMaBasesName(idArr);
             layer.close(layer.index);
             $('#maBasesLayer').css("display","none")
         },
@@ -377,6 +379,25 @@ function maBasesTable() {
     });
 }
 
+//获取名字
+function getMaBasesName(baseId){
+    $.ajax({
+        type: "post",
+        url: "/quality/division/getMabases",
+        data: {
+            atlas_id:baseId,
+        },
+        success: function (res) {
+            console.log(res)
+            if(res.code == 1){
+                $('input[name="ma_bases_name"]').val(res.data);
+            }else{
+                layer.msg(res.msg)
+            }
+        }
+    })
+}
+
 //获取选中行ID
 var idArr = [];
 function getId(that) {
@@ -412,6 +433,23 @@ function getSelectId(that) {
     getId(that);
     console.log(idArr);
 }
+
+var mapName;//图名
+var mapNum;//图号
+//获取施工依据的名字
+$("#maBasesItem").delegate("tbody tr","click",function (e) {
+    if($(e.target).hasClass("dataTables_empty")){
+        return;
+    }
+    var tableItem = $('#maBasesItem').DataTable();
+    $(this).addClass("selectmaBases").siblings().removeClass("selectmaBases");
+    selectData = tableItem.row(".selectmaBases").data();//获取选中行数据
+    console.log(selectData[1] +" ------图名");
+    console.log(selectData[2] +" ------图号");
+    // console.log(selectData);
+    mapName =selectData[1];
+    mapNum = selectData[2];
+});
 
 //checkbox全选
 $("#all_checked").on("click", function () {
@@ -632,22 +670,7 @@ function getIdPlan(that) {
         $('#all_checked_plan').prop('checked',false);
     }
 }
-var mapName;//图名
-var mapNum;//图号
-//获取施工依据的名字
-$("#maBasesItem").delegate("tbody tr","click",function (e) {
-    if($(e.target).hasClass("dataTables_empty")){
-        return;
-    }
-    var tableItem = $('#maBasesItem').DataTable();
-    $(this).addClass("selectmaBases").siblings().removeClass("selectmaBases");
-    selectData = tableItem.row(".selectmaBases").data();//获取选中行数据
-    console.log(selectData[1] +" ------图名");
-    console.log(selectData[2] +" ------图号");
-    // console.log(selectData);
-    mapName =selectData[1];
-    mapNum = selectData[2];
-});
+
 //单选
 function getSelectIdPlan(that) {
     getId(that);
@@ -714,9 +737,12 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     //向后台插数据
     insetData(eTypeId);
     if(selectRow != undefined || selectRow != null){
-        tpyeTable();
-        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
-        ischeckedBox();
+        setTimeout(function () {
+            tpyeTable();
+            tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+            ischeckedBox();
+        },800)
+
     }else{
         alert("获取不到selectRow id!")
     }

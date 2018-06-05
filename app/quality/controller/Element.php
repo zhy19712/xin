@@ -562,14 +562,18 @@ class Element extends Permissions
                 ->find();
             //找工程类型，找验评工序，再找到对应控制点
             $en_type=$unit['en_type'];
+
             $nm=Db::name('norm_materialtrackingdivision')
                 ->where(['pid' =>$en_type])
-                ->where('name', 'like', '%'.$search_name)
-                ->find();
-            $nm_id=$nm['id'];
+                ->select();
+            foreach ($nm as $m)
+            {
+                $nm_arr[]=$m['id'];
+
+            }
 
             $cp=Db::name('norm_controlpoint')
-                ->where(['procedureid' =>$nm_id])
+                ->where('procedureid','in',$nm_arr )
                 ->where('name', 'like', '%'.$cp_name)
                 ->find();
             $cp_id=$cp['id'];
@@ -584,11 +588,9 @@ class Element extends Permissions
                  ->find();
             $cpr_id=$cpr['id'];//获取cpr_id
 
-            //去附件表里找是否有扫描件上传，如果有就有权限修改
-            $copy = Db::name('quality_upload')
-                    ->where(['contr_relation_id' => $cpr_id, 'type' => 1])
-                    ->find();
-              if(count($copy)>0)
+            //查看这个控制点是否已经执行
+
+              if($cpr['status']==1)
                 {
                     $flag=$this->evaluatePremission();
                     if($flag==1)
@@ -734,13 +736,10 @@ class Element extends Permissions
                 //查询角色角色分类表中超级管理员和监理单位中是否有当前登录的用户
                 $data = $admincate->getAlladminSupervisor();
                 //$flag = 1表示有权限
-                $flag = 1;
+                $flag = 0;
                 foreach ($admin_cate_id_array as $va) {
                     if (in_array($va, $data)) {
-                        continue;
-                    }else {
-                        $flag = 0;
-                        break;
+                        $flag=1;
                     }
                 }
                 return $flag;
