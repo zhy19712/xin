@@ -336,13 +336,10 @@ class Branch extends Permissions
                 //查询角色角色分类表中超级管理员和监理单位中是否有当前登录的用户
                 $data = $admincate->getAlladminSupervisor();
                 //$flag = 1表示有权限
-                $flag = 1;
+                $flag = 0;
                 foreach ($admin_cate_id_array as $va) {
                     if (in_array($va, $data)) {
-                        continue;
-                    }else {
-                        $flag = 0;
-                        break;
+                        $flag = 1;
                     }
                 }
 

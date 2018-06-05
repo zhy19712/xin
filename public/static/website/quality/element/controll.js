@@ -588,7 +588,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
 
 });
 
-//线上的验评结果
+//获取线上的验评结果
 function resultInfo(nodeUnitId) {
     $.ajax({
         url:"/quality/element/getEvaluation",
@@ -662,8 +662,8 @@ function checkforming(nodeUnitId) {
                 setTimeout(function () {
                     $(".layui-input[readonly]").attr('style', 'background: #ffffff !important');
                     $(".result input[readonly]").addClass('disabledColor');
-                },900)
-
+                },1000)
+                // layer.msg(res.remark);
                 // $(".mybtnAdd").css("display","none");
                 // $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
             }
@@ -797,12 +797,14 @@ function outerHeight() {
        // uploader.destroy();
        var  uploadFileId = res.id;
        var  uploadFileName = file.name;
+       //检查扫描件回传情况
        $.ajax({
             url:"/quality/element/copycheck",
             data:{cpr_id:controlRowId},
             type:'post',
             success:function(res) {
                 if(res.msg == "success"){
+                    /*新增控制点执行情况及附件资料*/
                     $.ajax({
                         url:"/quality/element/addExecution",
                         data:{
@@ -1228,7 +1230,8 @@ $("#unitWorkRightBottom").on("click",".mybtnAdd",function () {
         content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&unit_id='+ nodeUnitId +'&currentStep=0&isView=false',
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
-            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();        }
+            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+        }
     });
 });
 
@@ -1256,6 +1259,7 @@ function editOnLine(id,step) {
         content: '/quality/Qualityform/edit?cpr_id='+ controlRowId + '&id='+ id +'&currentStep=' + step,
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
         }
     });
 }
@@ -1438,6 +1442,10 @@ function downloadFrom(id,url) {
 //在线填报-下载
 function downOnLine(id) {
     downloadFrom(id,"/quality/element/formDownload")
+}
+
+function refsh() {
+    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
 }
 
 /*============在线填报结束==============*/

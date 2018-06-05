@@ -286,20 +286,25 @@ class Unitqualitymanage extends Permissions
            return json(['code' => '-1','msg' => '编号有误']);
        }
       if(request()->isAjax()) {
-          //删除扫描件的时候删掉验评结果和验评日期
+          //删除扫描件的时候判断是否有对应已经完成表单，如果没有则删掉验评结果和验评日期
           $qu=Db::name('quality_upload')
               ->where(['id'=>$id])
               ->find();
-          if($qu['type']==1)
-          {
-              $relation=Db::name('quality_division_controlpoint_relation')
-                       ->where(['id'=>$qu['contr_relation_id']])
-                       ->find();
-               Db::name('quality_unit')
-                   ->where(['id'=>$relation['division_id']])
-                   ->update(['EvaluateResult'=>0,'EvaluateDate'=>0]);
-          }
+          if($qu['type']==1) {
+              $relation = Db::name('quality_division_controlpoint_relation')
+                  ->where(['id' => $qu['contr_relation_id']])
+                  ->find();
+              $form_info=Db::name('quality_form_info')
+                  ->where(['DivisionId'=>$relation['division_id'],'ControlPointId'=>$relation['control_id'],'ApproveStatus'=>2])
+                  ->count();
 
+              if ($form_info<1)
+              {
+                  Db::name('quality_unit')
+                      ->where(['id' => $relation['division_id']])
+                      ->update(['EvaluateResult' => 0, 'EvaluateDate' => 0]);
+              }
+          }
 
           $sd = new UnitqualitymanageModel();
            $flag = $sd->deleteTb($id);

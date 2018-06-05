@@ -266,6 +266,33 @@ class Qualityform extends Permissions
     {
         try {
             QualityFormInfoModel::destroy($id);
+            //看表名是否是单元工程质量等级评定表
+            $form_info=Db::name('quality_form_info')
+                ->where(['id'=>$id])
+                ->find();
+            if(strstr($form_info['form_name'],"单元工程质量等级评定表"))
+            {
+              $cpr=Db::name('quality_division_controlpoint_relation')
+                  ->where(['divison_id'=>$form_info['DivisionId'],'control_id'=>$form_info['ControlPointId'],'type'=>1])
+                  ->find();
+              $cpr_id=$cpr['id'];
+              //看扫描件是否有对应文件
+              $uploads=Db::name('quality_upload')
+                  ->where(['contr_relation_id'=>$cpr_id,'type'=>1])
+                  ->count();
+               if($uploads<1)
+               {
+                   Db::name('quality_unit')
+                       ->where(['id' => $cpr['division_id']])
+                       ->update(['EvaluateResult' => 0, 'EvaluateDate' => 0]);
+               }
+
+
+
+            }
+
+
+
             //删除的同时删除消息记录表中的信息
             $model = new MessageremindingModel();
             $model->delTb($id);
