@@ -10,13 +10,12 @@
  * Class Qualityanalysis
  * @package app\quality\controller
  */
-namespace app\api\controller;
-//use app\admin\controller\Permissions;
+namespace app\quality\controller;
+use app\admin\controller\Permissions;
 use think\exception\PDOException;
 use think\Db;
-use think\Controller;
 
-class Qualityanalysis extends Login
+class Qualityanalysis extends Permissions
 {
     /**
      * 模板首页

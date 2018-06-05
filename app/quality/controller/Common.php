@@ -111,7 +111,8 @@ class Common extends Controller
                     ->field('serial_number,site,coding,hinge,pile_number,start_date,completion_date,id,en_type,el_start,el_cease')
                     ->where('division_id', $id)
                     ->where($columnString, 'like', '%' . $search . '%')
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                    ->order($order)->select();
+//                    ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
         } else {
@@ -121,7 +122,8 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)
                     ->field('serial_number,site,coding,hinge,pile_number,start_date,completion_date,id,en_type,el_start,el_cease')
                     ->where('division_id', $id)
-                    ->order($order)->limit(intval($start), intval($length))->select();
+                    ->order($order)->select();
+//                    ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
             }
         }
@@ -917,7 +919,7 @@ class Common extends Controller
         $recordsFiltered = 0;
         $recordsFilteredResult = array();
         $par = array();
-        $par['a.type'] = $this->request->has('type') ? $this->request->param('type') : 1;
+        $par['a.type'] = 4;
         $par['a.contr_relation_id'] = $this->request->param('cpr_id');
         //表的总记录数 必要
         $recordsTotal = Db::name($table)->where(['type' => $par['a.type'], 'contr_relation_id' => $par['a.contr_relation_id']])->count();
@@ -1212,12 +1214,13 @@ class Common extends Controller
             ->column('id');
 
         //如果传的有工序id
-        if($this->request->has('nm_id'))
+        if($this->request->has('nm_id')&&$param['nm_id']!='')
         {
             $wherestr['procedureid']=$param['nm_id'];
             $id_arr=Db::name('norm_controlpoint')
                 ->where($wherestr)
                 ->column('id');
+
         }
         else
          {
@@ -1226,6 +1229,8 @@ class Common extends Controller
              $id_arr=Db::name('norm_controlpoint')
                  ->where('procedureid','in',$nm_arr)
                  ->column('id');
+
+
          }
 
         $search=Db::name('quality_division_controlpoint_relation')
@@ -1234,7 +1239,7 @@ class Common extends Controller
         //如果之前触发了insertalldata函数
         if (count($search) > 0) {
             //是否有传入工序
-            if($this->request->has('nm_id'))
+            if($this->request->has('nm_id')&&$param['nm_id']!='')
             {
                 $wherenm['r.ma_division_id']=$param['nm_id'];
             }

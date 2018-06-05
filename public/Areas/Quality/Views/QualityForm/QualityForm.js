@@ -198,10 +198,14 @@ function formSaveData() {
         },
         success: function (data) {
             if (data.result === "Faild") {
-                alert("保存失败。");
+                layer.confirm('保存失败。', function(index){
+                    layer.close(index);
+                });
             }
             else if(data.result === "Refund") {
-                alert("已经有对应文件。");
+                layer.confirm('已经有对应文件。', function(index){
+                    layer.close(index);
+                });
             }
             else {
                 $("#id").val(data.result);
@@ -270,7 +274,9 @@ function fileChange() {
                 $("#" + fileTargetHtmlElementId).attr("src", data.src);
         },
         error: function (data, status, e) {
-            alert("上传失败。");
+            layer.confirm('上传失败。', function(index){
+                layer.close(index);
+            });
         }
     });
 };
@@ -290,7 +296,9 @@ function signature(htmlElement) {
                 if (userSignature)
                     $("#" + targetId).attr("src", userSignature);
                 else
-                    alert("请先上传个人签名。");
+                    layer.confirm('请先上传个人签名。', function(index){
+                        layer.close(index);
+                    });
             }
         });
     }
