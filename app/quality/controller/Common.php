@@ -919,7 +919,7 @@ class Common extends Controller
         $recordsFiltered = 0;
         $recordsFilteredResult = array();
         $par = array();
-        $par['a.type'] = $this->request->has('type') ? $this->request->param('type') : 1;
+        $par['a.type'] = 4;
         $par['a.contr_relation_id'] = $this->request->param('cpr_id');
         //表的总记录数 必要
         $recordsTotal = Db::name($table)->where(['type' => $par['a.type'], 'contr_relation_id' => $par['a.contr_relation_id']])->count();
