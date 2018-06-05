@@ -155,8 +155,8 @@ function nodeClick(e, treeId, node) {
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
-    console.log(controlRowId)
-    console.log(procedureId)
+    // console.log(controlRowId)
+    // console.log(procedureId)
 
     controlRowId ='';
     procedureId ='';
@@ -275,6 +275,27 @@ function nodeClickUnit(e, treeId, node) {
     }
     if(nodeUnitId != undefined || nodeUnitId != null){
         tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
+        implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
+        imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
+    }
+    if(controlRowId == '' || procedureId == '') {
+        $(".mybtnAdd").css("display", "none");
+        // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
+        $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+            '<thead>' +
+            '<tr style="text-align: center;border-bottom:2px solid #111;border-top: 1px solid #cecece;">' +
+            '<th style="padding:10px 18px;font-weight: bold;">填报人</th>' +
+            '<th style="padding:10px 18px;font-weight: bold;">填报日期</th>' +
+            '<th style="padding:10px 18px;font-weight: bold;">当前审批人</th>' +
+            '<th style="padding:10px 18px;font-weight: bold;">审批状态</th>' +
+            '<th style="padding:10px 18px;font-weight: bold;">操作</th>' +
+            '<th style="display: none;">当前审批人Id</th>' +
+            '</tr>' +
+            '<tr class="delElement" style="text-align: center">' +
+            '<td colspan="5" style="padding:10px 18px;">没有找到记录</td>' +
+            '</tr>' +
+            '</thead>' +
+            '</table>');
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#00c0ef");
@@ -292,6 +313,9 @@ function nodeClickUnit(e, treeId, node) {
     // console.log(flag)
 }
 
+function refreshTable() {
+    
+}
 //点击单元工创建工序name
 function selfidName(id) {
     $.ajax({
