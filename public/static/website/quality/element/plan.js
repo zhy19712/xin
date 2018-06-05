@@ -300,7 +300,7 @@ $('.maBasesBtn').click(function () {
             maBasesTable();
         },
         yes:function () {
-            $('input[name="ma_bases_name"]').val(idArrName);
+            // $('input[name="ma_bases_name"]').val(idArrName);
             $('input[name="ma_bases"]').val(idArr);
             getMaBasesName(idArr);
             layer.close(layer.index);
@@ -389,7 +389,11 @@ function getMaBasesName(baseId){
         },
         success: function (res) {
             console.log(res)
-            // $('input[name="ma_bases_name"]').val(idArrName);
+            if(res.code == 1){
+                $('input[name="ma_bases_name"]').val(res.data);
+            }else{
+                layer.msg(res.msg)
+            }
         }
     })
 }
@@ -733,9 +737,12 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     //向后台插数据
     insetData(eTypeId);
     if(selectRow != undefined || selectRow != null){
-        tpyeTable();
-        tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
-        ischeckedBox();
+        setTimeout(function () {
+            tpyeTable();
+            tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
+            ischeckedBox();
+        },800)
+
     }else{
         alert("获取不到selectRow id!")
     }
