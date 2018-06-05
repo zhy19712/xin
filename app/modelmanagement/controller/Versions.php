@@ -73,6 +73,7 @@ class Versions extends Permissions
         if($model_type == 2){
             $path = 'E:\WebServer\Resources\shigong';
         }
+        
         if(!is_dir($path)){
             mkdir($path, 0777, true);
         }
