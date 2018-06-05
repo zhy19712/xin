@@ -5,13 +5,15 @@
     <title>fengning_main</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="__PUBLIC__/jquery/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="__PUBLIC__/layui/layui.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
     <style>
         #memberAdd {
             padding-top: 15px;
@@ -90,11 +92,13 @@
             display: none;
             z-index: 7;
         }
-        .layui-form .layui-btn{
+
+        .layui-form .layui-btn {
             height: 30px;
             line-height: 30px;
         }
-        .layui-form .layui-form-item:last-child .layui-input-block{
+
+        .layui-form .layui-form-item:last-child .layui-input-block {
             min-height: 30px;
             text-align: right;
             padding: 20px 15px 0 0;
@@ -110,34 +114,39 @@
             </div>
             <div class="ibox-content">
                 <!--新增用户信息开始-->
-                <form class="layui-form" name="memberAdd" id="memberAdd" method="post" action="#" onsubmit="return false">
+                <form class="layui-form" name="memberAdd" id="memberAdd" method="post" action="#"
+                      onsubmit="return false">
                     <input type="hidden" name="id" id="addId" value="{:$id}">
                     <div class="borForm">
                         <span class="bgSpan">基础信息</span>
                         <div class="layui-form-item">
                             <label class="layui-form-label">标段编码</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="code" id="code" placeholder="标段编码" lay-verify="required" autocomplete="off" class="layui-input">
+                                <input type="text" name="code" id="code" placeholder="标段编码" lay-verify="required"
+                                       autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <label class="layui-form-label">标段简称</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="shortName" id="shortName" placeholder="标段简称" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <input type="text" name="shortName" id="shortName" placeholder="标段简称"
+                                           lay-verify="required" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
                                 <label class="layui-form-label">合同金额</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="money" placeholder="合同金额" id="money" lay-verify="required" autocomplete="off" class="layui-input">
+                                    <input type="text" name="money" placeholder="合同金额" id="money" lay-verify="required"
+                                           autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">标段名称</label>
                             <div class="layui-input-block" class="inpLength">
-                                <input type="text" name="name" id="name" lay-verify="title" autocomplete="off" placeholder="请输入标段名称" class="layui-input">
+                                <input type="text" name="name" id="name" lay-verify="title" autocomplete="off"
+                                       placeholder="请输入标段名称" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -204,25 +213,27 @@
     }).extend({
         formSelects: 'formSelects'
     });
+
     function otherData() {
         var otherArr = [];
         var otherVal = JSON.parse($("#_orgs").val());
         for (var i = 0; i < otherVal.length; i++) {
             if (orgs[i].type == 12) {
-                otherArr.push({name:orgs[i].name, val:orgs[i].id,selected:false,disabled:false})
+                otherArr.push({name: orgs[i].name, val: orgs[i].id, selected: false, disabled: false})
             }
         }
         return otherArr;
     }
-    layui.use(['jquery', 'form', 'formSelects'], function(){
+
+    layui.use(['jquery', 'form', 'formSelects'], function () {
         var otherNames = otherData();
-        var $ = layui.jquery,
-            form = layui.form,
-            formSelects = layui.formSelects;
+        $ = layui.jquery;
+        form = layui.form;
+        formSelects = layui.formSelects;
         formSelects.render({
             name: 'selectOther',         //xm-select的值
             type: 3,                 //等效xm-select-type, 选择样式
-            on: function(data, arr){ //监听数据变化
+            on: function (data, arr) { //监听数据变化
                 console.log(data);   //layui.form.on的data
                 console.table(arr);  //已选择数据的数组
             },
@@ -271,14 +282,16 @@
     //数据初始化
     function Initdata() {
         var id = $("#addId").val();
-        console.log(id);
-        if (id.length>0) {
+        var othersArr = otherData();
+        if (id.length > 0) {
             $.ajax({
                 url: "{:url('./contract/section/getOne')}?id=" + id,
                 type: "post",
                 data: {id: id},
                 dataType: "json",
                 success: function (res) {
+                    var otherIds = res.otherId;
+                    var otherIdsArr = otherIds.split(',');
                     $('#addId').val(res.id);
                     $('#code').val(res.code);
                     $('#shortName').val(res.shortName);
@@ -291,6 +304,11 @@
                     $('#builderId').val(res.builderId);
                     $('#eveluateUserId').val(res.eveluateUserId);
                     layui.form.render();
+                    formSelects.render({
+                        name: 'selectOther',
+                        type: 3,
+                        init: otherIdsArr
+                    });
                 }
             });
         }
@@ -315,6 +333,7 @@
         });
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
+
         function closWin() {
             var index = parent.layer.getFrameIndex(window.name);
             parent.layer.close(index);
@@ -323,6 +342,7 @@
         function refreshSub() {
             parent.admin_table.ajax.url("{:url('contract/common/datatablesPre?tableName=section')}").load();
         }
+
         //监听提交
         form.on('submit(demo1)', function (data) {
             if ($("#addId").val() == '') {
@@ -339,7 +359,6 @@
                         }
                     },
                     error: function (data) {
-                        debugger;
                     }
                 })
             } else if ($("#addId").val() != '') {
@@ -358,7 +377,6 @@
                         }
                     },
                     error: function (data) {
-                        debugger;
                     }
                 })
 
