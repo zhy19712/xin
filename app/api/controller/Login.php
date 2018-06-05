@@ -7,7 +7,7 @@ use think\Session;
 use think\Controller;
 use think\Request;
 
-class Log extends Controller
+class Login extends Controller
 {
 
     public function __construct()

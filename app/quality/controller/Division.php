@@ -756,17 +756,7 @@ class Division extends Permissions{
 
             if(request()->isGet()){
                 $data = $unit->getOne($id);
-                //从图纸表里拉取数据
-               $atlas_id=$data['ma_bases'];
-               $atlas_id=explode(',',$atlas_id);
-               foreach ($atlas_id as $id)
-               {
-                   $atlas= Db::name('archive_atlas_cate ')
-                        ->where('id',$id)
-                        ->find();
-                    $bases[]=$atlas['picture_name'].$atlas['picture_number'];
-                }
-                $data['ma_bases_name']=implode(',',$bases);//取出图纸信息并转为字符串
+
 
                 // 流水号在页面里是分开的,所以这里要截取分开
                 $parent_d_code = Db::name('quality_division')->where('id',$data['division_id'])->value('d_code');
@@ -870,6 +860,29 @@ class Division extends Permissions{
                 return json($flag);
             }
         }
+    }
+
+    //获取施工依据的信息
+    public function getMabases()
+    {
+        $unit = new DivisionUnitModel();
+        $param = input('param.');
+        $id = $param['unit_id'];
+        $data = $unit->getOne($id);
+        //从图纸表里拉取数据
+        $atlas_id=$data['ma_bases'];
+        $atlas_id=explode(',',$atlas_id);
+        foreach ($atlas_id as $id)
+        {
+            $atlas= Db::name('archive_atlas_cate ')
+                ->where('id',$id)
+                ->find();
+            //拼接信息：图名+图号
+            $bases[]=$atlas['picture_name'].$atlas['picture_number'];
+        }
+        $ma_bases_name=implode(',',$bases);//取出图纸信息并转为字符串
+        return json(['code'=>1,'msg'=>'success','data'=>$data]);
+
     }
 
 
