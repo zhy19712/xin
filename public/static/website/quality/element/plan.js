@@ -58,6 +58,7 @@ $('.typeZtreeBtn').click(function () {
                 $('input[name="en_type"]').val(typeTreeNode.name);
                 $('input[name="en_type"]').attr('id',typeTreeNode.id);
                 layer.close(layer.index);
+                $('#ztreeLayer').hide();
             }else{
                 layer.msg('请选择工作项！');
             }
