@@ -70,9 +70,9 @@ var tableItem = $('#tableItem').DataTable({
             "orderable": false,
             "targets": [4],
             "render": function (data, type, row) {
-                var a = data;
                 var html = "<span class='' style='margin-left: 5px;' onclick='editFile("+row[4]+")'><i title='编辑' class='fa fa-pencil'></i></span>";
                 html += "<span class='' style='margin-left: 5px;' onclick='delFile("+row[4]+")'><i title='删除' class='fa fa-trash'></i></span>";
+                html += "<span class='' style='margin-left: 5px;' onclick='downloadFile("+row[4]+")'><i title='下载' class='fa fa-download'></i></span>";
                 return html;
             }
         }
@@ -187,6 +187,33 @@ function delFile(id) {
     });
 };
 
+//测试用
+function downloadFile(id) {
+  var url1 = url;
+  $.ajax({
+    url: "./download",
+    data:{id:id},
+    type:"post",
+    success: function (res) {
+      if(res.code != 1){
+        console.log(res);
+        layer.msg(res.msg);
+      }else {
+        $("#form_container").empty();
+        var str = "";
+        str += ""
+          + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+          + "<form name=download"+ id +" action='./download' method='get' target=downloadFrame"+ id + ">"
+          + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+          + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+          + "<button type='submit' class=btn" + id +"></button>"
+          + "</form>"
+        $("#form_container").append(str);
+        $("#form_container").find(".btn" + id).click();
+      }
+    }
+  })
+}
 // var datainfo = [
 // ];
 // var iiiii = 0;
