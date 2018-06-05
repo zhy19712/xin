@@ -487,6 +487,7 @@ $(".mybtn").on("click",function () {
     area:["800px","90%"],
     content:$("#fileListBox"),
     end:function () {
+      $("#fileListBox").hide();
       $("#demoList,#allsize,#status").empty();
       $("#status").text('0%');
       uploader.reset();
