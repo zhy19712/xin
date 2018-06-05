@@ -1214,12 +1214,13 @@ class Common extends Controller
             ->column('id');
 
         //如果传的有工序id
-        if($this->request->has('nm_id'))
+        if($this->request->has('nm_id')&&$param['nm_id']!='')
         {
             $wherestr['procedureid']=$param['nm_id'];
             $id_arr=Db::name('norm_controlpoint')
                 ->where($wherestr)
                 ->column('id');
+
         }
         else
          {
@@ -1228,6 +1229,8 @@ class Common extends Controller
              $id_arr=Db::name('norm_controlpoint')
                  ->where('procedureid','in',$nm_arr)
                  ->column('id');
+
+
          }
 
         $search=Db::name('quality_division_controlpoint_relation')
@@ -1236,7 +1239,7 @@ class Common extends Controller
         //如果之前触发了insertalldata函数
         if (count($search) > 0) {
             //是否有传入工序
-            if($this->request->has('nm_id'))
+            if($this->request->has('nm_id')&&$param['nm_id']!='')
             {
                 $wherenm['r.ma_division_id']=$param['nm_id'];
             }
