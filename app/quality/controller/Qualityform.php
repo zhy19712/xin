@@ -313,10 +313,26 @@ class Qualityform extends Permissions
 
             $data_res=$this->qualityFormInfoService->where(['id' => $id])->find();
 
-            //更新状态relation_id 状态为未执行
-            Db::name('quality_division_controlpoint_relation')
+            //判断是否有扫描件，更新 状态和验评结果，日期
+
+           $cpr= Db::name('quality_division_controlpoint_relation')
                 ->where(['control_id' =>$data_res['ControlPointId'],'division_id' =>$data_res['DivisionId'],'type'=>1])
-                ->update(['status'=>0]);
+                ->find();
+           $copy_num=Db::name('quality_upload')
+               ->where(['contr_relation_id' =>$cpr['id']])
+               ->count();
+           if($copy_num<1)
+           {
+               Db::name('quality_division_controlpoint_relation')
+                   ->where(['control_id' =>$data_res['ControlPointId'],'division_id' =>$data_res['DivisionId'],'type'=>1])
+                   ->update(['status'=>0]);
+
+               Db::name('quality_unit')
+                   ->where(['id'=>$cpr['division_id']])
+                   ->update(['EvaluateResult'=>0,'EvaluateDate'=>0]);
+
+
+           }
 
             //将表内填的数据全部情况
             $form_data=$data_res['form_data'];

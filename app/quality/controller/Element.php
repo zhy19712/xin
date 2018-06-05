@@ -590,9 +590,11 @@ class Element extends Permissions
                  ->find();
             $cpr_id=$cpr['id'];//获取cpr_id
 
-            //查看这个控制点是否已经执行
-
-              if($cpr['status']==1)
+            //查看是否有扫描件
+            $copy_num=Db::name('quality_upload')
+                      ->where(['contr_relation_id'=>$cpr_id,'type'=>1])
+                      ->count();
+              if($copy_num>0)
                 {
                     $flag=$this->evaluatePremission();
                     if($flag==1)
@@ -647,14 +649,22 @@ class Element extends Permissions
             }
             foreach ($form_data as $v) {
                 if ($v['Name'] == 'input_hgl_result') {
-                    $evaluation = $v['Value']==''? "无验评结果":$v['Value'];//验评结果
+                    if($v['Value']=='/')
+                    {
+                        $evaluation = '合格';
+                    }
+                    else
+                    {
+                        $evaluation = $v['Value'] == '' ? "无验评结果" : $v['Value'];//验评结果
+                    }
                     break;
                 }
             }
             switch ($evaluation)
             {
+                //无验评结果暂时未合格
                 case "无验评结果":
-                    $evaluation=0;
+                    $evaluation=2;
                     break;
                 case "合格":
                     $evaluation=2;
