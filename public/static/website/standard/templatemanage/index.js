@@ -189,7 +189,6 @@ function delFile(id) {
 
 //测试用
 function downloadFile(id) {
-  var url1 = url;
   $.ajax({
     url: "./download",
     data:{id:id},
