@@ -64,6 +64,7 @@ $('.typeZtreeBtn').click(function () {
         },
         cancel: function(index, layero){
             layer.close(layer.index);
+            $('#ztreeLayer').hide();
         }
     });
 });
@@ -226,7 +227,7 @@ function tableInfo() {
             }
         ],
     });
-    // $('.tbcontainer:last-child').remove();
+    $('.tbcontainer:last-child').remove();
     $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
 }
 tableInfo();
@@ -301,6 +302,7 @@ $('.maBasesBtn').click(function () {
         yes:function () {
             $('input[name="ma_bases_name"]').val(idArrName);
             $('input[name="ma_bases"]').val(idArr);
+            getMaBasesName(idArr);
             layer.close(layer.index);
             $('#maBasesLayer').css("display","none")
         },
@@ -377,6 +379,21 @@ function maBasesTable() {
     });
 }
 
+//获取名字
+function getMaBasesName(baseId){
+    $.ajax({
+        type: "post",
+        url: "/quality/division/getMabases",
+        data: {
+            atlas_id:baseId,
+        },
+        success: function (res) {
+            console.log(res)
+            // $('input[name="ma_bases_name"]').val(idArrName);
+        }
+    })
+}
+
 //获取选中行ID
 var idArr = [];
 function getId(that) {
@@ -412,6 +429,23 @@ function getSelectId(that) {
     getId(that);
     console.log(idArr);
 }
+
+var mapName;//图名
+var mapNum;//图号
+//获取施工依据的名字
+$("#maBasesItem").delegate("tbody tr","click",function (e) {
+    if($(e.target).hasClass("dataTables_empty")){
+        return;
+    }
+    var tableItem = $('#maBasesItem').DataTable();
+    $(this).addClass("selectmaBases").siblings().removeClass("selectmaBases");
+    selectData = tableItem.row(".selectmaBases").data();//获取选中行数据
+    console.log(selectData[1] +" ------图名");
+    console.log(selectData[2] +" ------图号");
+    // console.log(selectData);
+    mapName =selectData[1];
+    mapNum = selectData[2];
+});
 
 //checkbox全选
 $("#all_checked").on("click", function () {
@@ -632,22 +666,7 @@ function getIdPlan(that) {
         $('#all_checked_plan').prop('checked',false);
     }
 }
-var mapName;//图名
-var mapNum;//图号
-//获取施工依据的名字
-$("#maBasesItem").delegate("tbody tr","click",function (e) {
-    if($(e.target).hasClass("dataTables_empty")){
-        return;
-    }
-    var tableItem = $('#maBasesItem').DataTable();
-    $(this).addClass("selectmaBases").siblings().removeClass("selectmaBases");
-    selectData = tableItem.row(".selectmaBases").data();//获取选中行数据
-    console.log(selectData[1] +" ------图名");
-    console.log(selectData[2] +" ------图号");
-    // console.log(selectData);
-    mapName =selectData[1];
-    mapNum = selectData[2];
-});
+
 //单选
 function getSelectIdPlan(that) {
     getId(that);
