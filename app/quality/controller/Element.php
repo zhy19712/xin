@@ -508,6 +508,8 @@ class Element extends Permissions
                 $data=['type'=>1,'division_id'=>$unit_id,'ma_division_id'=>$v['procedureid'],'control_id'=>$v['id']];
                 Db::name('quality_division_controlpoint_relation')
                     ->insert($data);
+                dump($data);
+
             }
         }
     }
@@ -645,17 +647,14 @@ class Element extends Permissions
             }
             foreach ($form_data as $v) {
                 if ($v['Name'] == 'input_hgl_result') {
-                    $evaluation = $v['Value']==''? "无验评日期":$v['Value'];//验评结果
+                    $evaluation = $v['Value']==''? "无验评结果":$v['Value'];//验评结果
                     break;
                 }
             }
             switch ($evaluation)
             {
-                case "无验评日期":
+                case "无验评结果":
                     $evaluation=0;
-                    break;
-                case "不合格":
-                    $evaluation=1;
                     break;
                 case "合格":
                     $evaluation=2;
