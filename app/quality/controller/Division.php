@@ -865,12 +865,9 @@ class Division extends Permissions{
     //获取施工依据的信息
     public function getMabases()
     {
-        $unit = new DivisionUnitModel();
         $param = input('param.');
-        $id = $param['unit_id'];
-        $data = $unit->getOne($id);
         //从图纸表里拉取数据
-        $atlas_id=$data['ma_bases'];
+        $atlas_id=$param['atlas_id'];
         $atlas_id=explode(',',$atlas_id);
         foreach ($atlas_id as $id)
         {
@@ -881,7 +878,7 @@ class Division extends Permissions{
             $bases[]=$atlas['picture_name'].$atlas['picture_number'];
         }
         $ma_bases_name=implode(',',$bases);//取出图纸信息并转为字符串
-        return json(['code'=>1,'msg'=>'success','data'=>$data]);
+        return json(['code'=>1,'msg'=>'success','data'=>$ma_bases_name]);
 
     }
 
