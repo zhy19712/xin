@@ -62,6 +62,163 @@ $(function () {
             //calendarWeeks: true,
             autoclose: true
         });
+        //项目开始时间结束时间控制
+        $('.data_2 .input-group .dateStart').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime= $(".data_2 .input-group .dateStart").val();
+            $(".data_2 .input-group .dateEnd").datepicker('setStartDate',startTime);
+            $(".data_2 .input-group .dateStart").datepicker('hide');
+        });
+
+        $('.data_2 .input-group .dateEnd').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime = $(".data_2 .input-group .dateStart").val();
+            var endtime = $(".data_2 .input-group .dateEnd").val();
+            $(".data_2 .input-group .dateStart").datepicker('setEndDate',endtime);
+            $(".data_2 .input-group .dateEnd").datepicker('hide');
+        });
+        $('.data_2 .input-group .dateStart2').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime= $(".data_2 .input-group .dateStart").val();
+            $(".data_2 .input-group .dateEnd2").datepicker('setStartDate',startTime);
+            $(".data_2 .input-group .dateStart2").datepicker('hide');
+        });
+
+        $('.data_2 .input-group .dateEnd2').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime = $(".data_2 .input-group .dateStart2").val();
+            var endtime = $(".data_2 .input-group .dateEnd2").val();
+            $(".data_2 .input-group .dateStart2").datepicker('setEndDate',endtime);
+            $(".data_2 .input-group .dateEnd2").datepicker('hide');
+        });
+        $('.data_2 .input-group .dateStart3').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime= $(".data_2 .input-group .dateStart3").val();
+            $(".data_2 .input-group .dateEnd3").datepicker('setStartDate',startTime);
+            $(".data_2 .input-group .dateStart3").datepicker('hide');
+        });
+
+        $('.data_2 .input-group .dateEnd3').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime = $(".data_2 .input-group .dateStart3").val();
+            var endtime = $(".data_2 .input-group .dateEnd3").val();
+            $(".data_2 .input-group .dateStart3").datepicker('setEndDate',endtime);
+            $(".data_2 .input-group .dateEnd3").datepicker('hide');
+        });
+        $('.data_2 .input-group .dateStart4').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime= $(".data_2 .input-group .dateStart4").val();
+            $(".data_2 .input-group .dateEnd4").datepicker('setStartDate',startTime);
+            $(".data_2 .input-group .dateStart4").datepicker('hide');
+        });
+
+        $('.data_2 .input-group .dateEnd4').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime = $(".data_2 .input-group .dateStart4").val();
+            var endtime = $(".data_2 .input-group .dateEnd4").val();
+            $(".data_2 .input-group .dateStart4").datepicker('setEndDate',endtime);
+            $(".data_2 .input-group .dateEnd4").datepicker('hide');
+        });
+        $('.data_2 .input-group .dateStart5').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime= $(".data_2 .input-group .dateStart5").val();
+            $(".data_2 .input-group .dateEnd5").datepicker('setStartDate',startTime);
+            $(".data_2 .input-group .dateStart5").datepicker('hide');
+        });
+
+        $('.data_2 .input-group .dateEnd5').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime = $(".data_2 .input-group .dateStart5").val();
+            var endtime = $(".data_2 .input-group .dateEnd5").val();
+            $(".data_2 .input-group .dateStart5").datepicker('setEndDate',endtime);
+            $(".data_2 .input-group .dateEnd5").datepicker('hide');
+        });
+        $('.data_2 .input-group .dateStart6').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime= $(".data_2 .input-group .dateStart6").val();
+            $(".data_2 .input-group .dateEnd6").datepicker('setStartDate',startTime);
+            $(".data_2 .input-group .dateStart6").datepicker('hide');
+        });
+
+        $('.data_2 .input-group .dateEnd6').datepicker({
+            format: 'yyyy年mm月dd日',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            //calendarWeeks: true,
+            autoclose: true
+        }).on('changeDate',function(){
+            var startTime = $(".data_2 .input-group .dateStart6").val();
+            var endtime = $(".data_2 .input-group .dateEnd6").val();
+            $(".data_2 .input-group .dateStart6").datepicker('setEndDate',endtime);
+            $(".data_2 .input-group .dateEnd6").datepicker('hide');
+        });
     } else {
         $(".hearBtn").hide();
         var head = document.getElementsByTagName('head')[0];
