@@ -97,22 +97,24 @@
     .dataTables_scrollBody{
         overflow-x: hidden!important;
     }
-
-    #tableContent .dataTables_scroll,#unitWork .dataTables_scroll{
+    /*工程划分表格的滚动条*/
+    #unitWork .dataTables_scroll{
         height: 100% !important;
     }
-    #tableContent .dataTables_scrollBody,#unitWork .dataTables_scrollBody{
+    #unitWork .dataTables_scrollBody{
         max-height: none!important;
         width: 100%;
         height: calc(100% - 76px)!important;
         border-bottom: none!important;
     }
-    #tableItemControl_wrapper,#tableItem_wrapper{
+    #tableItem_wrapper{
         height: 100% !important;
     }
+
     .tbcontainer{
         display: none;
     }
+    /*下面表格的滚动条*/
     #tableContent .dataTables_scroll{
         height: 100% !important;
     }
@@ -128,6 +130,7 @@
     table.dataTable.no-footer {
         margin-top: 0px;
     }
+
     #tableContent table.dataTable thead .sorting_asc {
         background-image: none !important;
     }

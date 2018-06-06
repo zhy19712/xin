@@ -811,7 +811,7 @@ function selfidName(id) {
             // if($(".imgNone").attr("id") == 'img0'){
             //     $("#img0").css("display","none");
             // }
-            $("#tableContent .dataTables_scrollBody").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 66px)");
+            $("#tableContent #tableItemControl_wrapper .dataTables_scrollBody").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 66px)");
         }
     })
 }
