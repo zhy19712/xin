@@ -692,7 +692,7 @@ function checkforming(nodeUnitId) {
                 });
                 $("#date").attr({"disabled":false});
                 // setTimeout(function () {
-                    // $(".layui-input[readonly]").attr('style', 'background: #ffffff !important');
+                    $(".result .layui-input[readonly]").attr('style', 'background: #ffffff !important');
                     $(".result input[readonly]").addClass('disabledColor');
                 // },1000)
 
