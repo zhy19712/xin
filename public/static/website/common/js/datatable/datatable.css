@@ -2,7 +2,22 @@
     font-weight: bold;
 }
 table.table i.fa{
-    margin-left: 10px;
+    width: 40px;
+    height: 26px;
+    line-height: 26px;
+    background: #009688;
+    margin: 0 1px 1px 0;
+}
+table.table i.fa:first-child{
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+table.table i.fa:last-child{
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+table.table i.fa:before{
+    color: #FFF;
 }
 table.dataTable tbody tr.odd{
     background: #ececec;
@@ -10,16 +25,12 @@ table.dataTable tbody tr.odd{
 table.dataTable tbody tr:hover,table.dataTable tbody tr.active{
     background: #Fdd5b5;
 }
+table.dataTable.no-footer{
+    float: left;
+    border-top: 1px solid #cecece;
+}
 .table>tbody>tr.active>td {
     background-color: #Fdd5b5;
-}
-.dataTables_wrapper .dataTables_filter{
-    float: left;
-}
-.dataTables_wrapper .dataTables_filter input{
-    padding: 6px 12px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
 }
 .dataTables_length,.dataTables_info,.dataTables_paginate{
     display: inline-block;
@@ -28,4 +39,24 @@ table.dataTable tbody tr:hover,table.dataTable tbody tr.active{
 .dataTables_info{
     float: right;
     margin: 0 10px;
+}
+/* 表格搜索 */
+.dataTables_wrapper .dataTables_filter{
+    float: left;
+    line-height: 29px;
+}
+.dataTables_wrapper .dataTables_filter label{
+    padding: 7px 13px;
+    color: #FFF;
+    background: #009688;
+    cursor: pointer;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.dataTables_wrapper .dataTables_filter input{
+    float: left;
+    margin-right: -5px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }

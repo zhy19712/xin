@@ -1,28 +1,37 @@
 {include file="../../public/common_header"}
-    <style type="text/css">
-        body{
-            background: #fff;
-        }
-        .layui-layer-content{
-            padding: 0;
-        }
-        #admin_table_wrapper{
-            padding-top: 20px;
-        }
-        .dataTables_wrapper .dataTables_filter{
-            padding-bottom: 20px;
-            line-height: 32px;
-        }
-        #secTable table {
-            table-layout:fixed;
-        }
-        #secTable table td{
-            word-break:break-all;
-        }
-        #secTable{
-            padding-left: .5em;
-        }
-    </style>
+<style type="text/css">
+    body {
+        background: #fff;
+    }
+
+    .layui-layer-content {
+        padding: 0;
+    }
+
+    #admin_table_wrapper {
+        padding-top: 5px;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        padding-top: 2px;
+    }
+
+    #secTable table {
+        table-layout: fixed;
+    }
+
+    #secTable table td {
+        word-break: break-all;
+    }
+
+    #secTable {
+        padding: 0 .5em;
+    }
+
+    .dataTables_wrapper .layui-btn {
+        margin-bottom: 5px;
+    }
+</style>
 <!--<body class="easyui-layout" style="overflow-y:hidden;">-->
 <!--表格-->
 <div id="secTable" data-options="region:'center',split:true">
@@ -47,13 +56,13 @@
     </div>
 </div>
 <!--<div id="secTable" class="wrapper wrapper-content" style="width: 99.5%;vertical-align: top;padding: 0;margin-left: 4px;text-align: center">-->
-    <!--<div class="ibox float-e-margins">-->
-        <!--<div class="ibox-content">-->
-            <!--<div class="row">-->
-                <!---->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+<!--<div class="ibox float-e-margins">-->
+<!--<div class="ibox-content">-->
+<!--<div class="row">-->
+<!---->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 <!--</div>-->
 
 <!--</body>-->
@@ -64,10 +73,10 @@
         processing: true,
         serverSide: true,
         ajax: {
-            url:"{:url('contract/common/datatablesPre?tableName=section')}"
+            url: "{:url('contract/common/datatablesPre?tableName=section')}"
         },
         dom: 'lf<"mybtn layui-btn layui-btn-normal layui-btn-sm btn-right">tip',
-        columns:[
+        columns: [
             {
                 name: "code"
             },
@@ -98,12 +107,12 @@
                 searchable: false,
                 orderable: false,
                 targets: [7],
-                render :  function(data,type,row) {
-                    var html =  "<a class='tt' style='margin-left: 5px;' onclick='secEdit(this)'><i class='fa fa-pencil' title='编辑'></i></a >" ;
-                    html += "<a  class='' style='margin-left: 5px;' onclick='secDel(this)'><i class='fa fa-trash' title='删除'></i></a>" ;
+                render: function (data, type, row) {
+                    var html = "<i class='fa fa-pencil' title='编辑' onclick='secEdit(this)'></i>";
+                    html += "<i class='fa fa-trash' title='删除' onclick='secDel(this)'></i>";
                     return html;
                 }
-            },
+            }
         ],
         language: {
             "lengthMenu": "_MENU_ ",
@@ -111,26 +120,22 @@
             "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
             "infoEmpty": "无记录",
             "search": "搜索",
+            "sSearchPlaceholder": "请输入关键字",
             "infoFiltered": "(从 _MAX_ 条记录过滤)",
             "paginate": {
                 "sFirst": "<<",
-                "sPrevious": "<",
-                "sNext": ">",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
                 "sLast": ">>"
             }
-        },
-        "fnInitComplete": function (oSettings, json) {
-            $('#admin_table_length').insertBefore(".mark");
-            $('#admin_table_info').insertBefore(".mark");
-            $('#admin_table_paginate').insertBefore(".mark");
         }
     });
     $("div.mybtn").html('新增');
     //变色
-    $('#admin_table tbody').on( 'mouseover', 'td', function () {
-            $(this).parent("tr").addClass('highlight');
-        }).on( 'mouseleave', 'td', function () {
-            $(this).parent("tr").removeClass( 'highlight' );
+    $('#admin_table tbody').on('mouseover', 'td', function () {
+        $(this).parent("tr").addClass('highlight');
+    }).on('mouseleave', 'td', function () {
+        $(this).parent("tr").removeClass('highlight');
     });
     //新增
     $("#admin_table_wrapper .mybtn").click(function () {
@@ -142,8 +147,9 @@
             content: '{:url("add")}',
         });
     })
+
     //编辑
-    function secEdit(that){
+    function secEdit(that) {
         var id = admin_table.row(".highlight").data()[7];
         console.log(id);
         layer.open({
@@ -151,21 +157,22 @@
             title: '编辑标段',
             shadeClose: true,
             area: ['780px', '600px'],
-            content: '{:url("add")}?id='+id+'&time='+new Date()
+            content: '{:url("add")}?id=' + id + '&time=' + new Date()
         });
     }
+
     //删除
-    function secDel(that){
+    function secDel(that) {
         var id = admin_table.row(".highlight").data()[7];
-        layer.confirm('是否删除该标段?', function(index){
+        layer.confirm('是否删除该标段?', function (index) {
             $.ajax({
                 url: "{:url('./contract/section/del')}",
                 type: "post",
-                data: {id:id},
+                data: {id: id},
                 dataType: "json",
                 success: function (res) {
                     console.log(res);
-                    if(res.code == 1){
+                    if (res.code == 1) {
                         layer.msg("删除成功！");
                         admin_table.ajax.url("{:url('contract/common/datatablesPre?tableName=section')}").load();
                     }
