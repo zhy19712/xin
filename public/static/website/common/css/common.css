@@ -217,6 +217,7 @@ select.form-control {
     padding-right: 30px;
 }
 .layui-layer-content .layui-btn{
+    padding: 0 18px;
     height: 30px;
     line-height: 30px;
 }
@@ -292,9 +293,15 @@ select.form-control {
     border: 0;
     background: url("../images/checkbox.png") no-repeat center center;
 }
-/* 表格头部操作按钮 */
-.dataTables_wrapper .layui-btn{
+/* 按钮 */
+.layui-btn{
     padding: 0 21px;
     height: 32px;
     line-height: 32px;
+}
+i.layui-btn-xs{
+    padding: 0 8px;
+    height: 22px;
+    line-height: 22px;
+    font-style: normal;
 }

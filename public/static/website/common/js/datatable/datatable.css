@@ -43,13 +43,15 @@ table.dataTable.no-footer{
 /* 表格搜索 */
 .dataTables_wrapper .dataTables_filter{
     float: left;
-    line-height: 30px;
+    margin: 6px 0;
+    line-height: 29px;
 }
 .dataTables_wrapper .dataTables_filter label{
     padding: 7px 13px;
     color: #FFF;
-    background: #009688;
     cursor: pointer;
+    font-size: 12px;
+    background: #009688;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
@@ -59,4 +61,9 @@ table.dataTable.no-footer{
     padding: 6px 12px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    font-size: 12px;
+}
+/* 表头按钮外间距 */
+.btn-space{
+    margin: 5px 0 5px 30px;
 }
