@@ -93,7 +93,7 @@ layui.define(['jquery', 'element', 'nprogress', 'utils'], function(exports) {
                     '<ul class="layui-tab-title">',
                     '<li class="layui-this" lay-id="-1" data-url="' + _config.mainUrl + '"><i class="layui-icon layui-icon-home"></i></li>',
                     '</ul>',
-                    '<a href="/admin/api/index" class="kit-tab-tool" style="right: 40px;">Api</a>',
+                    '<a href="/admin/api/index" class="kit-tab-tool" target="_blank" style="right: 40px;">Api</a>',
                     '<i class="fa fa-chevron-down kit-tab-tool"></i>',
                     '<div class="kit-tab-tool-body layui-anim layui-anim-upbit" id="kuaijie">',
                     '<ul id="menudiv">',
