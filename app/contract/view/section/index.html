@@ -99,8 +99,8 @@
                 orderable: false,
                 targets: [7],
                 render :  function(data,type,row) {
-                    var html =  "<a class='tt' style='margin-left: 5px;' onclick='secEdit(this)'><i class='fa fa-pencil' title='编辑'></i></a >" ;
-                    html += "<a  class='' style='margin-left: 5px;' onclick='secDel(this)'><i class='fa fa-trash' title='删除'></i></a>" ;
+                    var html =  "<i class='fa fa-pencil' title='编辑' onclick='secEdit(this)'></i>" ;
+                    html += "<i class='fa fa-trash' title='删除' onclick='secDel(this)'></i>" ;
                     return html;
                 }
             },
