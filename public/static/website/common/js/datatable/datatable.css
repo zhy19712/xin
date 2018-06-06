@@ -2,7 +2,22 @@
     font-weight: bold;
 }
 table.table i.fa{
-    margin-left: 10px;
+    width: 40px;
+    height: 26px;
+    line-height: 26px;
+    background: #009688;
+    margin: 0 1px 1px 0;
+}
+table.table i.fa:first-child{
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+table.table i.fa:last-child{
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+table.table i.fa:before{
+    color: #FFF;
 }
 table.dataTable tbody tr.odd{
     background: #ececec;
