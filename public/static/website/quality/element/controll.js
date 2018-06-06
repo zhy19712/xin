@@ -313,9 +313,6 @@ function nodeClickUnit(e, treeId, node) {
     // console.log(flag)
 }
 
-function refreshTable() {
-    
-}
 //点击单元工创建工序name
 function selfidName(id) {
     $.ajax({
@@ -627,9 +624,19 @@ function resultInfo(nodeUnitId) {
                 $(".result form select").val(res.evaluateResult);
                 $(".result form #date").val(res.evaluateDate);
                 layui.form.render('select');
+                $(".result form select").prop("disabled",true);
+                layui.use(['form'], function(){
+                    var form = layui.form;
+                    $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
+                    $("#date").attr({"disabled":true});
+                    form.render("select");
+                });
                 if(res.evaluateDate == 0){
                     $("#date").val('');
                 }
+                setTimeout(function () {
+                    $(".result input[readonly]").removeClass('disabledColor');
+                },900)
             }
         }
     })
@@ -1255,6 +1262,7 @@ $("#unitWorkRightBottom").on("click",".mybtnAdd",function () {
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
             tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+            resultInfo(nodeUnitId);
         }
     });
 });
@@ -1284,6 +1292,7 @@ function editOnLine(id,step) {
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
             tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+            resultInfo(nodeUnitId);
         }
     });
 }

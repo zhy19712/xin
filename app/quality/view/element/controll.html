@@ -1,4 +1,5 @@
 {include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
 <style type="text/css">
     #division .ztree,#unitWork .ztree{
         height: 97.9%;
@@ -89,7 +90,7 @@
     #tableContent .imgList a img:nth-of-type(1){
         width: 32px;
         height: 32px;
-        margin: 0 14px 0 0;
+        margin: 6px 14px 0 0;
     }
     /*#tableContent .imgList a img:nth-of-type(2){*/
         /*margin: 0 0 0 5px;*/
@@ -120,7 +121,7 @@
         border-color:#cecece;
     }
     #tableContent #nameCon{
-        padding-left: 1.5%;
+        padding-left: .5%;
         /*margin-top: .5%;*/
         /*border-top: 1px dotted;*/
     }
@@ -139,17 +140,6 @@
     }
     #tableContent .listName span{
         font-weight: 800;
-    }
-    #tableContent .result{
-        margin-left: 50px;
-        margin-top: 13px;
-        position: relative;
-    }
-    #tableContent .result .layui-select-title,#tableContent #date{
-        width: 220px;
-    }
-    #tableContent .result .layui-form-label{
-        font-weight: bolder;
     }
     .dis{
         background: #FFFFFF !important;
@@ -183,9 +173,8 @@
         background-image: none !important;
     }
     #tableContent .result{
-        margin-left: 7%;
         margin-top: 13px;
-        position: relative;
+        text-align: center;
     }
     #tableContent .result .layui-select-title,#tableContent #date{
         width: 220px;
@@ -252,7 +241,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="layui-inline" style="margin-left: 5%">
+                            <div class="layui-inline" style="margin-left: 2%">
                                 <label class="layui-form-label">验评日期</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="date" id="date" lay-verify="date" disabled="disabled"  placeholder="-请选择-" autocomplete="off" class="layui-input">
@@ -261,8 +250,8 @@
                         </form>
                     </div>
                     <div class="listName" id="nameCon"><h3><i class='fa fa-dot-circle-o'></i> 控制点</h3></div>
-                    <div class="imgList">
-                        <span id="imgListLeft" style="margin-left: 15px;">
+                    <div class="imgList" style="padding-left: 15px;">
+                        <span id="imgListLeft">
                             <a id="homeWork" class="imgListStyle" href="javascript:;"><img src="__WEBSITE__/elementimg/task.png" alt="工作"><span style="vertical-align: middle;margin-left: -10px;">&nbsp; 作业</span></a>
                         </span>
                         <span id="imgListRight">
