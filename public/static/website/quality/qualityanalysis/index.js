@@ -52,7 +52,7 @@ optionBar = {
   },
   grid: {
     left: '3%',
-    right: '4%',
+    right: '1%',
     bottom: '3%',
     containLabel: true
   },
@@ -81,7 +81,8 @@ optionLine = {
   },
   legend: {
     data: [],
-    left:'right',
+    // left:'right',
+    right:'10px',
     top:40,
   },
   tooltip: {

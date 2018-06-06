@@ -209,34 +209,6 @@ select.form-control {
     background: none;
     box-shadow: none;
 }
-/* 表格 */
-.dataTables_wrapper,.tbcontainer{
-    /*display: none;*/
-}
-.dataTables_scroll,table.table{
-    /*margin-bottom: 20px;*/
-}
-table.dataTable.no-footer{
-    float: left;
-    /*margin: 5px 0 20px;*/
-    border-top: 1px solid #cecece;
-}
-/* 表格搜索 */
-.dataTables_wrapper .dataTables_filter{
-    line-height: 29px;
-}
-.dataTables_wrapper .dataTables_filter label{
-    padding: 7px 13px;
-    color: #FFF;
-    background: #009688;
-    cursor: pointer;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-}
-.dataTables_wrapper .dataTables_filter input{
-    float: left;
-    margin-right: -5px;
-}
 /* 弹层 */
 .layui-layer-content{
     padding-top: 20px;

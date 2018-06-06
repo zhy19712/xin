@@ -129,6 +129,26 @@
     input[type="number"]{
         -moz-appearance: textfield;
     }
+
+    table.table tbody tr td:nth-child(3) i.fa{
+        width: 0;
+        height: 0;
+        margin: 0;
+        line-height: 1;
+        margin-left: -6px;
+    }
+    table.table tbody tr td:nth-child(3) i.fa:before{
+        color:#00c0ef ;
+    }
+    .ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+        color: #009688;
+    }
+    .ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+        color: #d85c74;
+    }
+    .ztree-title i.fa-arrow-circle-down:before{
+        color: #dca107;
+    }
 </style>
 <div data-options="region:'west',title:'图册文件树',split:true" style="width:240px;">
     <div class="ztree-title">
@@ -370,9 +390,9 @@
                 "targets": [13],
                 "render" :  function(data,type,row) {
                     var a = data;
-                    var html =  "<a type='button' class='' style='margin-left: 5px;' onclick='conEdit("+row[13]+")'><i class='fa fa-pencil'></i></a>" ;
-                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDownAll("+row[13]+")'><i class='fa fa-download'></i></a>" ;
-                    html += "<a type='button' class='' style='margin-left: 5px;' onclick='conDel("+row[13]+")'><i class='fa fa-trash'></i></a>" ;
+                    var html =  "<a type='button' class=''  onclick='conEdit("+row[13]+")'><i class='fa fa-pencil'></i></a>" ;
+                    html += "<a type='button' class=''  onclick='conDownAll("+row[13]+")'><i class='fa fa-download'></i></a>" ;
+                    html += "<a type='button' class=''  onclick='conDel("+row[13]+")'><i class='fa fa-trash'></i></a>" ;
                     return html;
                 }
             },
@@ -440,8 +460,8 @@
         }
     });
     //新增图册 图纸
-    $(".mybtnAtlas").html('<i class="fa fa-plus"></i>&nbsp;添加图册');
-    $(".mybtnDrawing").html('<i class="fa fa-upload"></i>&nbsp;上传图纸');
+    $(".mybtnAtlas").html('添加图册');
+    $(".mybtnDrawing").html('上传图纸');
     //点击新增事件 添加图册
     $("#tableItem_wrapper .mybtnAtlas").click(function () {
         if(!selfid){
@@ -518,7 +538,7 @@
     };
     //添加折叠表格
     function loadDrawing(that,data) {
-        var html =  "<a type='button'  class='' style='margin-left: 2px;' onclick='conDown("+data[13]+")'><i class='fa fa-download'></i></a>" ;
+        var html =  "<a type='button'  class=''  onclick='conDown("+data[13]+")'><i class='fa fa-download'></i></a>" ;
         html += "<a type='button' class=''  onclick='conDel("+data[13]+")'><i class='fa fa-trash'></i></a>" ;
         html += "<a type='button' class=''  onclick='conPicshow("+data[13]+")'><i class='fa fa-search'></i></a>" ;
         var trDom = '<tr role="row" data-sid="'+data[13]+'" class="c'+data[14]+' drawing">' +
