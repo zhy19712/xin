@@ -624,9 +624,19 @@ function resultInfo(nodeUnitId) {
                 $(".result form select").val(res.evaluateResult);
                 $(".result form #date").val(res.evaluateDate);
                 layui.form.render('select');
+                // $(".result form select").prop("disabled",true);
+                // layui.use(['form'], function(){
+                //     var form = layui.form;
+                //     $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
+                //     $("#date").attr({"disabled":true});
+                //     form.render("select");
+                // });
                 if(res.evaluateDate == 0){
                     $("#date").val('');
                 }
+                // setTimeout(function () {
+                //     $(".result input[readonly]").removeClass('disabledColor');
+                // },900)
             }
         }
     })
@@ -1424,10 +1434,12 @@ function toVoidOnLine(id) {
                     layer.msg("该数据已作废了！")
                     $(".eleHide").css("display","none");
                     onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                    // checkforming(nodeUnitId); //判断是否手填
+                    resultInfo(nodeUnitId);//获取线上流程
                 }
             },
             error:function () {
-                alert("作废操作异常")
+                layer.msg("作废操作异常")
             }
         });
         layer.close(index);

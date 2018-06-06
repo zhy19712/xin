@@ -96,6 +96,7 @@ class Matchform extends Controller
                 'divisionId'=>$cp['division_id'],
                 'templateId'=>$cp['controlpoint']['qualitytemplateid'],
                 'qrcode'=>$code,
+                'hideSelect'=>'0',
                 'isInspect'=>$cp['type'],
                 'procedureId'=>$cp['ma_division_id'],
                 'formName'=>$cp['ControlPoint']['name'],

@@ -12,6 +12,7 @@ use app\admin\controller\Permissions;
 use app\admin\model\AdminGroup;
 use app\admin\model\Attachment;
 use app\quality\model\SendModel;
+use app\admin\model\MessageremindingModel;//消息记录
 use think\Db;
 use think\Session;
 use app\admin\model\JpushModel;
@@ -48,81 +49,44 @@ class Send extends Login
     }
 
     /**
-     * 发文 -- 新增或编辑
+     * 发文-签收或拒收
      * @return \think\response\Json
      * @author hutao
      */
-    public function send()
+    public function editSend()
     {
 //        if($this->request->isAjax()){
-
-            // 前台需要传递的参数有:
-            // file_name 文件名称 date 文件日期 income_id 收件人编号
-            // relevance_id 关联收文 file_ids 上传的所有附件编号集合
             // status 1未发送 编辑好了只保存 不发送 (收件人看不到)    2(未处理(收件人显示),已发送(发件人显示))    3已签收4已拒收
-            // 当编辑收发文时,传递 主键编号 major_key
-
-            $param = input('param.');
-            // 验证规则
-            $rule = [
-                ['file_name', 'require', '请填写文件名称'],
-                ['date', 'require', '请选择文件日期'],
-                ['income_id', 'require|number', '请选择收件人|收件人编号只能是数字'],
-                ['relevance_id', 'number', '请选择关联收文|关联收文编号只能是数字'],
-                ['status', 'require|between:1,4', '请传递文件状态|文件状态不能大于4']
-            ];
-            $validate = new \think\Validate($rule);
-            //验证部分数据合法性
-            if (!$validate->check($param)) {
-                return json(['code' => -1,'msg' => $validate->getError()]);
-            }
-
-            // 系统自动生成数据
-            $param['send_id'] = Session::has('admin') ? Session::get('admin') : 0; // 发件人编号
-            $file_ids = input('file_ids/a');
-            if(!empty($file_ids)){
-                $new_file_ids = '';
-                foreach($file_ids as $v){
-                    if(empty($new_file_ids)){
-                        $param['attchment_id'] = $v;
-                        $new_file_ids = $v;
-                    }else{
-                        $new_file_ids = $new_file_ids . ',' . $v;
-                    }
-                }
-                $param['file_ids'] = $new_file_ids;
-            }
+            // 当编辑收发文时,传递 主键编号 major_key,status状态值3已签收4已拒收
+            $param = input('post.');
 
             $send = new SendModel();
+
             $major_key = isset($param['major_key']) ? $param['major_key'] : 0;
 
-            // 为了更好查询和搜索，追加发件人收件人名称来文单位收文单位
-            $param['send_name'] = Session::has('current_nickname') ? Session::get('current_nickname') : 0;
-            $group = new AdminGroup();
-            $pid = $group->relationId();
-            $param['send_group_id'] = $pid;
-            $param['send_p_name'] = Db::name('admin_group')->where(['id'=>$pid])->value('name');
-            if($param['income_id']){
-                $param['income_name'] = Db::name('admin')->where(['id'=>$param['income_id']])->value('nickname');
-                $pid = $group->relationId($param['income_id']);
-                $param['income_group_id'] = $pid;
-                $param['income_p_name'] = Db::name('admin_group')->where(['id'=>$pid])->value('name');
-            }
+            if(!empty($major_key)){
 
-            if(empty($major_key)){
-                $flag = $send->insertTb($param);
-                $jpush = new JpushModel();
-                $id = $flag["data"];//前台传过来的发文的id
-//            $id = 33;
-                //获取当前的用户名
-                $admin_name = Db::name('admin')->where(['id'=>$param['income_id']])->value('name');
-                $alias = $admin_name;
-                $alert = "major_key:{$id},type:收文,see_type:2";
-                $jpush->push_a($alias,$alert);
-
-            }else{
                 $param['id'] = $major_key;
+
                 $flag = $send->editTb($param);
+
+                $uint_id = $major_key;
+
+                $type = 1;//1为收发文，2为单元管控
+                //获取当前的登录人的id
+                $admin_id = Session::has('admin') ? Session::get('admin') : 0;
+                //实例化模型类
+                $message = new MessageremindingModel();
+
+                $message_info = $message->getOne(["uint_id" => $uint_id, "current_approver_id" => $admin_id, "type" => $type]);
+
+                if ($message_info["status"] == 1) {
+                    $data = [
+                        "id" => $message_info["id"],
+                        "status" => 2
+                    ];
+                    $flag = $message->editTb($data);
+                }
             }
             return json($flag);
 //        }

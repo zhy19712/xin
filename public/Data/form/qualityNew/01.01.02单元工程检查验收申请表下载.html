@@ -61,6 +61,24 @@
         .textDescribe {
             padding-top: 5px;
         }
+        input{
+            outline: none!important;
+            border: none!important;
+            max-width: 120px;
+        }
+        .tabWidth {
+            margin: auto!important;
+            width: 210mm!important;
+        }
+        .tabTitle{
+            margin: auto!important;
+            width: 210mm!important;
+        }
+        textarea{
+            outline: none!important;
+            border: none!important;
+            resize:none!important;
+        }
     </style>
 </head>
 
@@ -122,7 +140,7 @@
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止桩号</span></p>
                     </td>
                     <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: middle">
-                        <p style="line-height: 10pt; margin: 0pt; orphans: 0; widows: 0"><span style="font-family: 仿宋; font-size: 9pt; font-style: normal; text-transform: none">{$PileNo}</span></p>
+                        <p style="text-align:center;line-height: 10pt; margin: 0pt; orphans: 0; widows: 0"><span style="font-family: 仿宋; font-size: 9pt; font-style: normal; text-transform: none">{$PileNo}</span></p>
                     </td>
                 </tr>
                 <tr style="height: 17pt">
@@ -568,9 +586,6 @@
                         <div class="qianming qianmingBlock" style="margin-left: 25mm;">
                             <img id="img_2" class="signBtoName" src="" step="1" form-required="签名必填。" />
 
-                            <button for="img_2" step="1" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i><span class="bold">签名</span>
-                            </button>
                         </div>
                         <p style="margin-top: -35px; margin-right: 3px; float: right;">
                             <span style="font-family: 仿宋; font-size: 10.5pt">时</span>

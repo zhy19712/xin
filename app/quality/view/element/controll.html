@@ -56,22 +56,14 @@
         background-color: #f9f9f9;
     }
     #tableContent .imgList {
-        /*border-top: 1px dotted;*/
-        /*width: 100%;*/
-        /*overflow-x:auto ;*/
         border-bottom: 1px dotted;
         padding: 5px 3px;
     }
-    #tableContent .imgList #homeWork {
-        /*margin-right:5px;*/
-    }
     #tableContent .imgList img {
         border-radius: 50%;
-        margin-top: -3px;
-        margin-right: 5px;
-    }
-    #tableContent .imgListStyle {
-        margin:5px 0px 3px 4px;
+        width: 32px;
+        height: 32px;
+        margin: 5px 10px;
     }
     #tableContent .imgList a{
         cursor: pointer;
@@ -79,26 +71,19 @@
         color: #00c0ef;
         color: gray;
         font-size: 13px;
-        /*font-weight: 600;*/
     }
-    /*#tableContent .imgList a:hover{*/
-        /*color: #00c0ef;*/
-    /*}*/
     #tableContent .imgList a span{
         font-size: 16px;
     }
-    #tableContent .imgList a img:nth-of-type(1){
-        width: 32px;
-        height: 32px;
-        margin: 0 14px 0 0;
-    }
-    /*#tableContent .imgList a img:nth-of-type(2){*/
-        /*margin: 0 0 0 5px;*/
+    /*#tableContent .imgList a img:nth-of-type(1){*/
+        /*margin: 6px 14px 0 0;*/
+    /*}*/
+    /*#tableContent .imgList a:hover{*/
+        /*color: #00c0ef;*/
     /*}*/
     #tableContent .listName{
         padding:  .5% 0;
         border-bottom: 1px dotted;
-        /*margin-bottom: 5px;*/
     }
     #tableContent .listName h3{
         font-weight: 800;
@@ -250,8 +235,8 @@
                         </form>
                     </div>
                     <div class="listName" id="nameCon"><h3><i class='fa fa-dot-circle-o'></i> 控制点</h3></div>
-                    <div class="imgList">
-                        <span id="imgListLeft" style="margin-left: 15px;">
+                    <div class="imgList" style="padding-left: 15px;">
+                        <span id="imgListLeft">
                             <a id="homeWork" class="imgListStyle" href="javascript:;"><img src="__WEBSITE__/elementimg/task.png" alt="工作"><span style="vertical-align: middle;margin-left: -10px;">&nbsp; 作业</span></a>
                         </span>
                         <span id="imgListRight">
