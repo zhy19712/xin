@@ -8,7 +8,7 @@ var completedTable = $('#completedTable').DataTable({
     ajax: {
         "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management"
     },
-    dom: 'lf<".addBtn layui-btn layui-btn-normal btn-right">rtip',
+    dom: 'lf<".addBtn layui-btn layui-btn-normal btn-right btn-space">rtip',
     columns: [
         {
             name: "id"
@@ -40,9 +40,9 @@ var completedTable = $('#completedTable').DataTable({
                 var rowId = row[0];     //序号（主键编号）
                 var status = row[6];    //启用状态  1为启用  0为禁用
                 var className = status==1?'fa-eye':'fa-eye-slash';
-                var html = "<a type='button' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-search'></i></a>";
-                html += "<a type='button' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
+                var html = "<i title='查看' class='fa fa-search' onclick='view(this,"+ rowId +")'></i>";
+                html += "<i title='删除' class='fa fa-trash' onclick='delFile(this,"+ rowId +")'></i>";
+                html += "<i title='禁用' class='fa "+ className +"' onclick='enable("+ rowId +")'></i>";
                 return html;
             }
         }
@@ -112,9 +112,9 @@ var constructionTable = $('#constructionTable').DataTable({
                 var rowId = row[0];     //序号（主键编号）
                 var status = row[6];   //启用状态  1为启用  0为禁用
                 var className = status==1?'fa-eye':'fa-eye-slash';
-                var html = "<a type='button' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-search'></i></a>";
-                html += "<a type='button' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
+                var html = "<i title='查看' class='fa fa-search' onclick='view(this,"+ rowId +")'></i>";
+                html += "<i title='删除' class='fa fa-trash' onclick='delFile(this,"+ rowId +")'></i>";
+                html += "<i title='禁用' class='fa "+ className +"' onclick='enable("+ rowId +")'></i>";
                 return html;
             }
         }
