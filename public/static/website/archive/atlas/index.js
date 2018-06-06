@@ -11,7 +11,7 @@ $.ajax({
     success:function (res) {
         if(res.code===1){
             for(var i =0; i<res.data.length;i++){
-                section += '<option value="'+res.data[i].name+'">'+res.data[i].name+'</option>';
+                section += '<option value="'+res.data[i].code+'">'+res.data[i].code+'</option>';
             }
         }else{
           layer.msg(res.msg);
@@ -738,3 +738,5 @@ function backMouths(data) {
   var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) ;
   return Y + M ;
 }
+
+
