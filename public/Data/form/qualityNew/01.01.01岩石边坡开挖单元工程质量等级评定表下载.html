@@ -52,24 +52,36 @@
             text-align: center;
         }
 
+        input{
+            outline: none!important;
+            border: none!important;
+            max-width: 120px;
+        }
         .tabWidth {
-            margin: auto;
-            width: 210mm;
+            margin: auto!important;
+            width: 210mm!important;
+        }
+        .tabTitle{
+            margin: auto!important;
+            width: 210mm!important;
         }
         textarea{
             outline: none!important;
             border: none!important;
             resize:none!important;
         }
+        select{
+            border: none;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
         .selType {
             display: inline-block;
             width: 70px;
         }
-        input{
-            outline: none!important;
-            border: none!important;
-            max-width: 120px;
-        }
+
     </style>
 </head>
 
@@ -85,6 +97,7 @@
     <input id="isView" type="hidden" value="{$isView}" />
     <input id="formData" type="hidden" value='{$formData}' />
     <input id="getQrcode" type="hidden" value='{$qrcode}' />
+    <input id="hideSelect" type="hidden" value='{$hideSelect}' />
     <div class="hr-line-dashed" style="margin: 5px 0px 0px;clear: both;"></div>
     <div class="A4">
         <div id="fileTitle">
