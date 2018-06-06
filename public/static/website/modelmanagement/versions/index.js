@@ -8,7 +8,7 @@ var completedTable = $('#completedTable').DataTable({
     ajax: {
         "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management"
     },
-    dom: 'lf<".addBtn layui-btn layui-btn-normal btn-right">rtip',
+    dom: 'lf<".addBtn layui-btn layui-btn-normal btn-right btn-space">rtip',
     columns: [
         {
             name: "id"
@@ -40,9 +40,9 @@ var completedTable = $('#completedTable').DataTable({
                 var rowId = row[0];     //序号（主键编号）
                 var status = row[6];    //启用状态  1为启用  0为禁用
                 var className = status==1?'fa-eye':'fa-eye-slash';
-                var html = "<a type='button' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-search'></i></a>";
-                html += "<a type='button' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
+                var html = "<i title='查看' class='fa fa-search' onclick='view(this,"+ rowId +")'></i>";
+                html += "<i title='删除' class='fa fa-trash' onclick='delFile(this,"+ rowId +")'></i>";
+                html += "<i title='禁用' class='fa "+ className +"' onclick='enable("+ rowId +")'></i>";
                 return html;
             }
         }
@@ -112,9 +112,9 @@ var constructionTable = $('#constructionTable').DataTable({
                 var rowId = row[0];     //序号（主键编号）
                 var status = row[6];   //启用状态  1为启用  0为禁用
                 var className = status==1?'fa-eye':'fa-eye-slash';
-                var html = "<a type='button' style='margin-left: 5px;' onclick='view(this,"+ rowId +")'><i title='查看' class='fa fa-search'></i></a>";
-                html += "<a type='button' style='margin-left: 5px;' onclick='delFile(this,"+ rowId +")'><i title='删除' class='fa fa-trash'></i></a>";
-                html += "<a type='button' style='margin-left: 5px;' onclick='enable("+ rowId +")'><i title='禁用' class='fa "+ className +"'></i></a>";
+                var html = "<i title='查看' class='fa fa-search' onclick='view(this,"+ rowId +")'></i>";
+                html += "<i title='删除' class='fa fa-trash' onclick='delFile(this,"+ rowId +")'></i>";
+                html += "<i title='禁用' class='fa "+ className +"' onclick='enable("+ rowId +")'></i>";
                 return html;
             }
         }
@@ -189,7 +189,7 @@ function uploadModel() {
     var uploader = WebUploader.create({
         auto: true,
         swf: '/static/public/webupload/Uploader.swf',
-        server: './uploadTest',      // 服务端地址
+        server: './upload',      // 服务端地址
         pick:'#picker',
         resize: false,
         chunked: true,            //开启分片上传
@@ -228,6 +228,7 @@ function uploadModel() {
 
     //模型上传成功
     uploader.on('uploadSuccess', function (file, response) {
+        $( '#'+file.id ).find('p.state').text('合并和解压中...');
         $.ajax({
             url: "./saveFile",
             type: "post",
@@ -240,12 +241,12 @@ function uploadModel() {
             dataType: "json",
             success: function (res) {
                 if(res.code==2){
-                    $( '#'+file.id ).find('p.state').text('已上传');
+                    $( '#'+file.id ).find('p.state').text('上传成功');
                     $('#resource_name').val(file.name);
                     attachment_id = res.id;
                     layer.msg(res.msg);
                 }else{
-                    $( '#'+file.id ).find('p.state').text('上传出错');
+                    $( '#'+file.id ).find('p.state').text('合并解压出错,请重新上传');
                 }
             }
         });

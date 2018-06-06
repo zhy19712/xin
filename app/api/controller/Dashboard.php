@@ -25,7 +25,7 @@ use app\admin\model\JpushTestModel;
 use think\Loader;
 vendor('JPush.autoload');
 
-class Dashboard extends Login
+class Dashboard extends Controller
 {
 
     /**

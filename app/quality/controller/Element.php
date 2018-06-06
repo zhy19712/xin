@@ -509,7 +509,6 @@ class Element extends Permissions
                 $data=['type'=>1,'division_id'=>$unit_id,'ma_division_id'=>$v['procedureid'],'control_id'=>$v['id']];
                 Db::name('quality_division_controlpoint_relation')
                     ->insert($data);
-                dump($data);
 
             }
         }
@@ -663,9 +662,9 @@ class Element extends Permissions
             }
             switch ($evaluation)
             {
-                //无验评结果暂时未合格
+                //无验评结果暂时为合格
                 case "无验评结果":
-                    $evaluation=0;
+                    $evaluation=2;
                     break;
                 case "合格":
                     $evaluation=2;

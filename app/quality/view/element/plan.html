@@ -97,29 +97,31 @@
     .dataTables_scrollBody{
         overflow-x: hidden!important;
     }
-
-    #tableContent .dataTables_scroll,#unitWork .dataTables_scroll{
+    /*工程划分表格的滚动条*/
+    #unitWork .dataTables_scroll{
         height: 100% !important;
     }
-    #tableContent .dataTables_scrollBody,#unitWork .dataTables_scrollBody{
+    #unitWork .dataTables_scrollBody{
         max-height: none!important;
         width: 100%;
         height: calc(100% - 76px)!important;
         border-bottom: none!important;
     }
-    #tableItemControl_wrapper,#tableItem_wrapper{
+    #tableItem_wrapper{
         height: 100% !important;
     }
+
     .tbcontainer{
         display: none;
     }
+    /*下面表格的滚动条*/
     #tableContent .dataTables_scroll{
         height: 100% !important;
     }
     #tableContent .dataTables_scrollBody{
         max-height: none!important;
         width: 100%;
-        height: calc(100% - 137px)!important;
+        /*height: calc(100% - 137px)!important;*/
         border-bottom: none!important;
     }
     #tableItemControl_wrapper{
@@ -128,6 +130,7 @@
     table.dataTable.no-footer {
         margin-top: 0px;
     }
+
     #tableContent table.dataTable thead .sorting_asc {
         background-image: none !important;
     }
@@ -161,6 +164,31 @@
     }
     .selectmaBases{
         background: #FDD5B5;
+    }
+
+    /*上面的没有对齐*/
+    div.icon {
+        margin-left: -44px;
+    }
+    div.icon i.fa-navicon::before {
+        padding: 11px;
+    }
+    i.fa-navicon:before {
+        color: #FFF;
+        padding: 12px;
+        background: #00a0e9;
+    }
+    /*控制label的宽*/
+    .layui-form-label {
+        width: 98px;
+    }
+    /*按钮对齐*/
+    .alignment{
+        padding-right: 76px !important;
+    }
+    /*最上面的间距*/
+    .layui-form-item {
+        margin-top: 15px;
     }
 </style>
 
@@ -217,12 +245,12 @@
 </div>
 <div id="form_container" style="display: none;"></div>
 <!-- 新增单元信息 -->
-<form action="" class="layui-form unit" id="unit" style="display: none">
+<form action="" class="layui-form unit" id="unit" style="display: none;text-align: center;">
     <input type="hidden" name="type_ztree">
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">单元工程流水号</label>
-            <div class="layui-input-inline">
+            <div class="layui-input-inline" style="width: 333px;">
                 <input type="text" name="serial_number_before" placeholder="编码" autocomplete="off" class="layui-input" readonly>
             </div>
             <div class="layui-input-inline">
@@ -284,20 +312,20 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">高程（起）</label>
+            <label class="layui-form-label">高程(起)</label>
             <div class="layui-form-mid layui-word-aux">
                 <span class="el-start">EL.</span>
             </div>
-            <div class="layui-input-inline">
+            <div class="layui-input-inline" style="width: 162px;">
                 <input type="text" name="el_start" placeholder="请输入高程（起）" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">高程（止）</label>
+            <label class="layui-form-label">高程(止)</label>
             <div class="layui-form-mid layui-word-aux" >
                 <span class="el-cease">EL.</span>
             </div>
-            <div class="layui-input-inline">
+            <div class="layui-input-inline" style="width: 162px;">
                 <input type="text" name="el_cease" placeholder="请输入高程（止）" autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -331,7 +359,7 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <div class="layui-input-block">
+        <div class="layui-input-block alignment">
             <button class="layui-btn" lay-submit lay-filter="save" id="saveUnit">保存</button>
             <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
         </div>

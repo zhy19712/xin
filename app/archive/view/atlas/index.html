@@ -333,6 +333,7 @@
         pagingType: "full_numbers",
         processing: true,
         serverSide: true,
+      "order": [[ 0, "asc" ]], //默认排序
         ordering: false, // 禁止排序
         ajax: {
             "url":"{:url('archive/common/datatablesPre?tableName=archive_atlas_cate&selfid=-1')}"
@@ -623,3 +624,44 @@
 </script>
 </body>
 </html>
+<script>
+  //添加数据用的
+  var datainfo = [
+    ['BJ401S-H5-5-2-1~3','岩壁吊车梁结构布置图','3','4','魏金帅','李刚','杜晓京','2017-5','FNP2/C3','A'],
+    ['BJ401S-H5-5-2-4 ','岩壁吊车梁锚固图','1','1','李刚','魏金帅','杜晓京','2017-5','FNP2/C3','B'],
+    ['BJ401S-H5-5-2-5','岩壁吊车梁钢筋图','1','1','梁爽','李刚','杜晓京','2017-5','FNP2/C3','B'],
+  ];
+
+  var iii = 0;
+  function addDatainfo() {
+    var  data = {
+      selfid: 179,
+      id:"",
+      picture_number: datainfo[iii][0],
+      picture_name: datainfo[iii][1],
+      picture_papaer_num: datainfo[iii][2],
+      a1_picture: datainfo[iii][3],
+      design_name: datainfo[iii][4],
+      check_name: datainfo[iii][5],
+      examination_name: datainfo[iii][6],
+      completion_date: datainfo[iii][7],
+      section: datainfo[iii][8],
+      paper_category:datainfo[iii][9]
+    }
+    $.ajax({
+      type: "post",
+      url:"./editAtlasCate",
+      data:data,
+      success: function (res) {
+        if(res.code==1){
+          console.log(iii);
+          iii++;
+          if(iii >= datainfo.length){
+            return;
+          }
+          addDatainfo()
+        }
+      }
+    });
+  }
+</script>

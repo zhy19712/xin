@@ -7,6 +7,7 @@
  */
 namespace app\api\controller;
 
+use app\admin\controller\Permissions;
 use app\api\controller\Login;
 use app\quality\model\DivisionModel;
 use think\Db;
@@ -14,7 +15,7 @@ use think\Session;
 use think\Controller;
 use think\Request;
 
-Class Division extends Login
+Class Division extends Permissions
 {
 
     //获取section表中数据

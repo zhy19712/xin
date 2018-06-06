@@ -13,17 +13,16 @@ use app\admin\model\AdminGroup;
 use app\admin\model\Attachment;
 use app\quality\model\SendModel;
 use app\admin\model\MessageremindingModel;//消息记录
+use think\Controller;
 use think\Db;
 use think\Session;
-use app\admin\model\JpushModel;
-vendor('JPush.autoload');
 
 /**
  * 发文
  * Class Income
  * @package app\participants\controller
  */
-class Send extends Login
+class Send extends Controller
 {
     public function index()
     {

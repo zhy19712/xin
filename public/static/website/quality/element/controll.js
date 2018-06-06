@@ -678,7 +678,8 @@ function checkforming(nodeUnitId) {
                 $(".result form select").prop("disabled",true);
                 layui.use(['form'], function(){
                     var form = layui.form;
-                    $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
+                    // $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
+                    $(".result input[readonly]").removeClass('disabledColor');
                     $("#date").attr({"disabled":true});
                     form.render("select");
                 });
@@ -690,10 +691,11 @@ function checkforming(nodeUnitId) {
                     form.render("select");
                 });
                 $("#date").attr({"disabled":false});
-                setTimeout(function () {
-                    $(".layui-input[readonly]").attr('style', 'background: #ffffff !important');
+                // setTimeout(function () {
+                    // $(".layui-input[readonly]").attr('style', 'background: #ffffff !important');
                     $(".result input[readonly]").addClass('disabledColor');
-                },1000)
+                // },1000)
+
                 // layer.msg(res.remark);
                 // $(".mybtnAdd").css("display","none");
                 // $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
@@ -816,7 +818,7 @@ function outerHeight() {
        pick: {
            multiple: false,
            id: "#file_upload_standards",
-           innerHTML: "<i class='fa fa-upload'></i>&nbsp;上传"
+           innerHTML: "上传"
        },
        resize: false,
        duplicate :true, //是否可以重复上传
