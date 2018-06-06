@@ -156,7 +156,7 @@ function tableInfo() {
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=quality_unit'
         },
-        dom: 'f<".current-path"<"#add.add layui-btn layui-btn-sm">>tr',
+        dom: 'f<".current-path"<"#add.add layui-btn layui-btn-normal layui-btn-sm">>tr',
         columns:[
             {
                 name: "serial_number"
