@@ -1434,7 +1434,8 @@ function toVoidOnLine(id) {
                     layer.msg("该数据已作废了！")
                     $(".eleHide").css("display","none");
                     onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
-                    checkforming(nodeUnitId); //判断是否手填
+                    // checkforming(nodeUnitId); //判断是否手填
+                    resultInfo(nodeUnitId);//获取线上流程
                 }
             },
             error:function () {
