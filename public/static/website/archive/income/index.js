@@ -96,8 +96,8 @@ function handle(that) {
                     var rowData = '';
                     for (var i=0;i<attachment.length;i++){
                         rowData +='<tr><td class="layui-col-xs9">'+attachment[i].name+'</td><td class="layui-col-xs3">';
-                        rowData +='<a href="javascript:;"  class="layui-btn layui-btn-xs" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
-                        rowData +='<a href="javascript:;" onclick="attachmentPreview(this)" class="layui-btn layui-btn-primary layui-btn-xs" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
+                        rowData +='<a href="javascript:;"  class="layui-btn layui-btn-xs seeStyle" onclick="fileDownload(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>下载</a>';
+                        rowData +='<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs" onclick="attachmentPreview(this)" uid='+ attachment[i].id +' name='+ attachment[i].name +'>查看</a></td></tr>';
                     }
                     $("#add_table_files tbody").empty().append(rowData);
                 }
