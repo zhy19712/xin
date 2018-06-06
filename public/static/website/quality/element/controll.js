@@ -816,7 +816,7 @@ function outerHeight() {
        pick: {
            multiple: false,
            id: "#file_upload_standards",
-           innerHTML: "<i class='fa fa-upload'></i>&nbsp;上传"
+           innerHTML: "上传"
        },
        resize: false,
        duplicate :true, //是否可以重复上传

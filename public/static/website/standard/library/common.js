@@ -76,7 +76,7 @@ var tableItem = $('#tableItem').DataTable({
 });
 
 //点击上传文件
-$(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>新增控制点</div>");
+$(".mybtn").html("<div id='test3'>新增控制点</div>");
 
 //
 layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
@@ -241,7 +241,7 @@ $('#closeNode').click(function () {
 
 //点击新增控制节点
 $(".mybtn #test3").click(function () {
-  if(sNodes.level == 0 || sNodes.level == 1){
+  if(!sNodes||sNodes.level == 0 || sNodes.level == 1){
     layer.msg('请选择合适的节点');
     return;
   }

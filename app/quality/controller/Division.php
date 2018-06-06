@@ -874,7 +874,10 @@ class Division extends Permissions{
                 ->where('id',$id)
                 ->find();
             //拼接信息：图名+图号
-            $bases[]=$atlas['picture_name'].$atlas['picture_number'];
+            if(count($atlas)>0)
+            {
+                $bases[] = $atlas['picture_name'] . $atlas['picture_number'];
+            }
         }
         $ma_bases_name=implode(',',$bases);//取出图纸信息并转为字符串
         return json(['code'=>1,'msg'=>'success','data'=>$ma_bases_name]);

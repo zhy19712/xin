@@ -170,7 +170,7 @@ class Atlas extends Permissions
      */
     public function getAllsecname()
     {
-        $data = Db::name("section")->field("name")->select();
+        $data = Db::name("section")->field("code")->select();
         return json(['code'=>1,'data'=>$data]);
     }
 

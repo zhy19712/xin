@@ -6,12 +6,12 @@
 }
 
 #tableContent .mybtn i.fa:before,#tableContent .assModel i.fa:before,#tableContent .move i.fa:before,#tableContent .file i.fa:before,#tableContent .oneKeyArchiv i.fa:before {
-    background: #00c0ef;
+    background: #0092ff;
     color: #ffffff;
 }
 #tableContent .mybtn,#tableContent .assModel,#tableContent .move,#tableContent .file,#tableContent .oneKeyArchiv{
     float: right;
-    background-color: #00c0ef;
+    background-color: #0092ff;
 }
 #tableContent .mybtn{
     margin-right: 0%;
@@ -88,4 +88,13 @@
 .ztree{
     margin-top: 30px;
     height: 94.5%;
+}
+.ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+    color: #009688;
+}
+.ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+    color: #d85c74;
+}
+.ztree-title i.fa-arrow-circle-down:before{
+    color: #dca107;
 }
