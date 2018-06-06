@@ -57,8 +57,9 @@ var tableItem = $('#tableItem').DataTable({
     "lengthMenu": "_MENU_",
     "zeroRecords": "没有找到记录",
     "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+    "sSearchPlaceholder":"请输入关键字",
     "infoEmpty": "无记录",
-    "search": "搜索：",
+    "search": "搜索",
     "infoFiltered": "(从 _MAX_ 条记录过滤)",
     "paginate": {
       "sFirst": "<<",
