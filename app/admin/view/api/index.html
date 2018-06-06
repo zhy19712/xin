@@ -18,10 +18,10 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="table" href="javascript:;">表格</a>
                 </li>
-                <li class="layui-nav-item">
+                <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;" class="form">表单</a>
                 </li>
-                <li class="layui-nav-item">
+                <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;" class="ztreeWrap">ztree</a>
                 </li>
             </ul>
@@ -357,7 +357,7 @@ $('#save').html('保存');
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
                             <div id="formLyout" style="display: none">
-                                <form action="" class="layui-form layui-layer-wrap" id="org" style="">
+                                <form action="" class="layui-form layui-layer-wrap">
                                     <div class="layui-form-item">
                                         <div class="layui-inline">
                                             <label class="layui-form-label">姓名</label>
@@ -507,6 +507,7 @@ function zTreeEyeOnCheck() {
 </div>
 {include file="../app/public/common_footer.html"}
 <script src="__WEBSITE__/api/api_datatables.js"></script>
+<script src="__WEBSITE__/api/api_form.js"></script>
 <script src="__WEBSITE__/api/api_ztree.js"></script>
 <script>
     layui.use(['code', 'element'], function () { //加载code模块
