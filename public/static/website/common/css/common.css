@@ -226,14 +226,16 @@ table.dataTable.no-footer{
     line-height: 29px;
 }
 .dataTables_wrapper .dataTables_filter label{
-    padding: 6px 13px;
+    padding: 7px 13px;
     color: #FFF;
     background: #009688;
     cursor: pointer;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 .dataTables_wrapper .dataTables_filter input{
     float: left;
-    margin-right: 20px;
+    margin-right: -5px;
 }
 /* 弹层 */
 .layui-layer-content{
@@ -317,4 +319,10 @@ table.dataTable.no-footer{
     height: 18px;
     border: 0;
     background: url("../images/checkbox.png") no-repeat center center;
+}
+/* 表格头部操作按钮 */
+.dataTables_wrapper .layui-btn{
+    padding: 0 21px;
+    height: 32px;
+    line-height: 32px;
 }

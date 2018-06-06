@@ -800,15 +800,17 @@ function selfidName(id) {
                 controlPointId = res[i].id;
                 controlPointName = res[i].name;
                 optionStrAfter +=
-                    "<a href=\"javascript:;\"  class=\"imgListStyle\" onclick=\"clickConName("+ res[i].id +")\">" +
-                    "<img class='imgNone' id='img"+i+"' src=\"/static/website/elementimg/next.png\" alt=\"箭头\">" +
-                    "<img src=\"/static/website/elementimg/procedure.png\" alt=\"工作\">&nbsp;"+res[i].name+"<span style='display: none;'>"+res[i].id+"</span>" +
-                    "</a>\n";
+                    '<a href="javascript:;"  class="imgListStyle" onclick="clickConName('+ res[i].id +')">' +
+                        '<img class="imgNone" id="img'+i+'" src="/static/website/elementimg/next.png" alt="箭头">' +
+                        '<img src="/static/website/elementimg/procedure.png" alt="工作">' +
+                        '<span style="vertical-align: middle">&nbsp; '+res[i].name+'</span>' +
+                        '<span style="display: none;">'+res[i].id+'</span>' +
+                    '</a>';
             };
             $("#imgListRight").append(optionStrAfter);
-            if($(".imgNone").attr("id") == 'img0'){
-                $("#img0").css("display","none");
-            }
+            // if($(".imgNone").attr("id") == 'img0'){
+            //     $("#img0").css("display","none");
+            // }
         }
     })
 }
