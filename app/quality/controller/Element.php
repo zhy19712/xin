@@ -664,7 +664,7 @@ class Element extends Permissions
             {
                 //无验评结果暂时未合格
                 case "无验评结果":
-                    $evaluation=2;
+                    $evaluation=0;
                     break;
                 case "合格":
                     $evaluation=2;
