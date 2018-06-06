@@ -189,7 +189,7 @@ function uploadModel() {
     var uploader = WebUploader.create({
         auto: true,
         swf: '/static/public/webupload/Uploader.swf',
-        server: './uploadTest',      // 服务端地址
+        server: './upload',      // 服务端地址
         pick:'#picker',
         resize: false,
         chunked: true,            //开启分片上传
@@ -228,6 +228,7 @@ function uploadModel() {
 
     //模型上传成功
     uploader.on('uploadSuccess', function (file, response) {
+        $( '#'+file.id ).find('p.state').text('合并和解压中...');
         $.ajax({
             url: "./saveFile",
             type: "post",
@@ -240,12 +241,12 @@ function uploadModel() {
             dataType: "json",
             success: function (res) {
                 if(res.code==2){
-                    $( '#'+file.id ).find('p.state').text('已上传');
+                    $( '#'+file.id ).find('p.state').text('上传成功');
                     $('#resource_name').val(file.name);
                     attachment_id = res.id;
                     layer.msg(res.msg);
                 }else{
-                    $( '#'+file.id ).find('p.state').text('上传出错');
+                    $( '#'+file.id ).find('p.state').text('合并解压出错,请重新上传');
                 }
             }
         });
