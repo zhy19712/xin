@@ -808,9 +808,9 @@ function selfidName(id) {
                     '</a>';
             };
             $("#imgListRight").append(optionStrAfter);
-            if($(".imgNone").attr("id") == 'img0'){
-                $("#img0").css("display","none");
-            }
+            // if($(".imgNone").attr("id") == 'img0'){
+            //     $("#img0").css("display","none");
+            // }
         }
     })
 }
