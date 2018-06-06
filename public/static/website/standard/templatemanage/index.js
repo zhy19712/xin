@@ -100,7 +100,7 @@ var tableItem = $('#tableItem').DataTable({
 });
 
 //点击上传文件
-$(".mybtn").html("<div id='test3'><i class='fa fa-plus'></i>新增模板</div>");
+$(".mybtn").html("<div id='test3'>新增模板</div>");
 
 var layer = layui.layer;
 var typeId;
