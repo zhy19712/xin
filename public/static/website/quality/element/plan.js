@@ -299,6 +299,7 @@ $('.maBasesBtn').click(function () {
         btn:['保存'],
         success:function () {
             maBasesTable();
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
         },
         yes:function () {
             // $('input[name="ma_bases_name"]').val(idArrName);
