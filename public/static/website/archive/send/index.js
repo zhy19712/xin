@@ -44,7 +44,7 @@ tableIncome = $("#tableIncome").DataTable({
             render: function (data, type, row,meta) {
                 if (row[6] == '1' && user_name == row[4]){
                     var strs = '';
-                    strs +='<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="edit_send(this)">编辑</a>';
+                    strs +='<a title="' + data + '" class="layui-btn layui-btn-sm seeStyle" href="javascript:void(0);" major_key="'+row[7]+'" onclick="edit_send(this)">编辑</a>';
                     strs +='<a title="' + data + '" class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="del(this)">删除</a>';
                     return strs;
                 }else {
