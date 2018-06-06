@@ -318,8 +318,9 @@ class Qualityform extends Permissions
            $cpr= Db::name('quality_division_controlpoint_relation')
                 ->where(['control_id' =>$data_res['ControlPointId'],'division_id' =>$data_res['DivisionId'],'type'=>1])
                 ->find();
+
            $copy_num=Db::name('quality_upload')
-               ->where(['contr_relation_id' =>$cpr['id']])
+               ->where(['contr_relation_id' =>$cpr['id'],'type'=>1])
                ->count();
            if($copy_num<1)
            {

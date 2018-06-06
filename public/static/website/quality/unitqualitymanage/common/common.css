@@ -20,7 +20,7 @@
 }
 #tableContent .dataTables_wrapper .dataTables_scroll {
     position: relative;
-    top: 6px;
+    top: 0px;
     border-top: none;
 }
 #tableContent .even {
@@ -104,5 +104,5 @@
     margin-bottom: 0;
 }
 .imgList #imgListRight img.imgNone{
-    margin: -1px 0 0 4px;
+    margin: -1px 0 0 10px;
 }

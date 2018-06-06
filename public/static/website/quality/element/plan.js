@@ -58,6 +58,7 @@ $('.typeZtreeBtn').click(function () {
                 $('input[name="en_type"]').val(typeTreeNode.name);
                 $('input[name="en_type"]').attr('id',typeTreeNode.id);
                 layer.close(layer.index);
+                $('#ztreeLayer').hide();
             }else{
                 layer.msg('请选择工作项！');
             }
@@ -301,9 +302,9 @@ $('.maBasesBtn').click(function () {
         },
         yes:function () {
             // $('input[name="ma_bases_name"]').val(idArrName);
-            console.log(dedupe(idArr)+"11");
-            $('input[name="ma_bases"]').val(dedupe(idArr));
-            getMaBasesName(dedupe(idArr));
+            console.log(idArr.dedupe()+" 11");
+            $('input[name="ma_bases"]').val(idArr.dedupe());
+            getMaBasesName(idArr.dedupe());
             layer.close(layer.index);
             $('#maBasesLayer').css("display","none")
         },
@@ -428,9 +429,19 @@ function getId(that) {
     }
 }
 
-function dedupe(array){
-    return Array.from(new Set(array));
+//去重
+Array.prototype.dedupe = function(){
+    var res = [];
+    var json = {};
+    for(var i = 0; i < this.length; i++){
+        if(!json[this[i]]){
+            res.push(this[i]);
+            json[this[i]] = 1;
+        }
+    }
+    return res;
 }
+
 Array.prototype.removalArray = function(){
     var newArr = [];
     for (var i = 0; i < this.length; i++) {
