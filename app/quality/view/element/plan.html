@@ -36,11 +36,12 @@
     #tableContent .select-color {
         background-color: #FDD5B5 !important;
     }
-    #tableContent .dataTables_wrapper .dataTables_scroll {
-        position: relative;
-        top: 6px;
-        border-top: 1px dotted #cecece;
-    }
+    /*会出现2条线*/
+    /*#tableContent .dataTables_wrapper .dataTables_scroll {*/
+        /*position: relative;*/
+        /*top: 6px;*/
+        /*border-top: 1px dotted #cecece;*/
+    /*}*/
     #tableContent .even {
         background-color: #ffffff;
     }
@@ -70,12 +71,13 @@
         font-weight: 600;
     }
     #tableContent .imgList a:hover{
-        color: #2213e9;
+        color: #00c0ef;
     }
     #tableContent .listName{
         padding: .5% 0;
         border-bottom: 1px dotted;
-        margin-bottom: 5px;
+        /*有这个下面会出现空余*/
+        /*margin-bottom: 5px;*/
     }
     #tableContent .listName h3{
         font-weight: 800;
@@ -183,10 +185,10 @@
                 </thead>
             </table>
         </div>
-        <div id="tableContent" data-options="region:'center',title:'控制点',split:true" style="width:1255px; position: relative;padding-top: 5px;">
+        <div id="tableContent" data-options="region:'center',title:'<i class=\'fa fa-dot-circle-o\'></i> 控制点',split:true" style="width:1255px; position: relative;padding-top:0px;">
             <div class="imgList">
                 <span id="imgListLeft">
-                    <a id="homeWork" class="imgListStyle" href="javascript:;"><img src="__WEBSITE__/elementimg/task.png" alt="工作">&nbsp;作业</a>
+                    <a id="homeWork" class="imgListStyle" href="javascript:;"><img src="__WEBSITE__/elementimg/task.png" alt="工作">&nbsp;<span style="vertical-align: middle">作业</span></a>
                 </span>
                 <span class="imgListStyle" id="imgListRight">
                 </span>

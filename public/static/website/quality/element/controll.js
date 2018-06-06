@@ -155,8 +155,8 @@ function nodeClick(e, treeId, node) {
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
-    console.log(controlRowId)
-    console.log(procedureId)
+    // console.log(controlRowId)
+    // console.log(procedureId)
 
     controlRowId ='';
     procedureId ='';
@@ -275,6 +275,27 @@ function nodeClickUnit(e, treeId, node) {
     }
     if(nodeUnitId != undefined || nodeUnitId != null){
         tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId).load();
+        implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
+        imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
+    }
+    if(controlRowId == '' || procedureId == '') {
+        $(".mybtnAdd").css("display", "none");
+        // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
+        $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+            '<thead>' +
+            '<tr style="text-align: center;border-bottom:2px solid #111;border-top: 1px solid #cecece;">' +
+            '<th style="padding:10px 18px;font-weight: bold;">填报人</th>' +
+            '<th style="padding:10px 18px;font-weight: bold;">填报日期</th>' +
+            '<th style="padding:10px 18px;font-weight: bold;">当前审批人</th>' +
+            '<th style="padding:10px 18px;font-weight: bold;">审批状态</th>' +
+            '<th style="padding:10px 18px;font-weight: bold;">操作</th>' +
+            '<th style="display: none;">当前审批人Id</th>' +
+            '</tr>' +
+            '<tr class="delElement" style="text-align: center">' +
+            '<td colspan="5" style="padding:10px 18px;">没有找到记录</td>' +
+            '</tr>' +
+            '</thead>' +
+            '</table>');
     }
     $("#tableContent .imgList").css('display','block');
     $("#homeWork").css("color","#00c0ef");
@@ -603,9 +624,19 @@ function resultInfo(nodeUnitId) {
                 $(".result form select").val(res.evaluateResult);
                 $(".result form #date").val(res.evaluateDate);
                 layui.form.render('select');
+                $(".result form select").prop("disabled",true);
+                layui.use(['form'], function(){
+                    var form = layui.form;
+                    $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
+                    $("#date").attr({"disabled":true});
+                    form.render("select");
+                });
                 if(res.evaluateDate == 0){
                     $("#date").val('');
                 }
+                setTimeout(function () {
+                    $(".result input[readonly]").removeClass('disabledColor');
+                },900)
             }
         }
     })
@@ -1231,6 +1262,7 @@ $("#unitWorkRightBottom").on("click",".mybtnAdd",function () {
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
             tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+            resultInfo(nodeUnitId);
         }
     });
 });
@@ -1260,6 +1292,7 @@ function editOnLine(id,step) {
         end:function () {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
             tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+            resultInfo(nodeUnitId);
         }
     });
 }

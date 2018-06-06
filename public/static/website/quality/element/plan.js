@@ -58,6 +58,7 @@ $('.typeZtreeBtn').click(function () {
                 $('input[name="en_type"]').val(typeTreeNode.name);
                 $('input[name="en_type"]').attr('id',typeTreeNode.id);
                 layer.close(layer.index);
+                $('#ztreeLayer').hide();
             }else{
                 layer.msg('请选择工作项！');
             }
@@ -155,7 +156,7 @@ function tableInfo() {
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=quality_unit'
         },
-        dom: 'f<".current-path"<"#add.add layui-btn layui-btn-normal layui-btn-sm">>tr',
+        dom: 'f<".current-path"<"#add.add layui-btn layui-btn-sm">>tr',
         columns:[
             {
                 name: "serial_number"
@@ -301,9 +302,9 @@ $('.maBasesBtn').click(function () {
         },
         yes:function () {
             // $('input[name="ma_bases_name"]').val(idArrName);
-            console.log(dedupe(idArr)+"11");
-            $('input[name="ma_bases"]').val(dedupe(idArr));
-            getMaBasesName(dedupe(idArr));
+            console.log(idArr.dedupe()+" 11");
+            $('input[name="ma_bases"]').val(idArr.dedupe());
+            getMaBasesName(idArr.dedupe());
             layer.close(layer.index);
             $('#maBasesLayer').css("display","none")
         },
@@ -428,9 +429,19 @@ function getId(that) {
     }
 }
 
-function dedupe(array){
-    return Array.from(new Set(array));
+//去重
+Array.prototype.dedupe = function(){
+    var res = [];
+    var json = {};
+    for(var i = 0; i < this.length; i++){
+        if(!json[this[i]]){
+            res.push(this[i]);
+            json[this[i]] = 1;
+        }
+    }
+    return res;
 }
+
 Array.prototype.removalArray = function(){
     var newArr = [];
     for (var i = 0; i < this.length; i++) {
@@ -771,7 +782,7 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".bitCodes").css("display","block");
     $(".listName").css("display","block");
     $("#tableContent .imgList").css('display','block');
-    $("#homeWork").css("color","#2213e9");
+    $("#homeWork").css("color","#00c0ef");
     // ischeckedBox()
 });
 
@@ -817,8 +828,8 @@ function insetData(eTypeId) {
 
 //点击置灰
 $(".imgList").on("click","a",function () {
-    $(this).css("color","#2213e9").siblings("a").css("color","#CDCDCD");
-    $("#homeWork").css("color","#CDCDCD");
+    $(this).css("color","#00c0ef").siblings("a").css("color","#333333");
+    $("#homeWork").css("color","#333333");
 });
 
 //点击作业
@@ -827,7 +838,7 @@ $(".imgList").on("click","#homeWork",function () {
     $(".bitCodes").css("display","block");
     $(".mybtn").css("display","none");
     $(".alldel").css("display","none");
-    $(this).css("color","#2213e9").parent("span").next("span").children("a").css("color","#CDCDCD");
+    $(this).css("color","#00c0ef").parent("span").next("span").children("a").css("color","#333333");
     // tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+selectRow).load();
     tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type="+eTypeId+"&unit_id="+selectRow+"&division_id="+division_id).load();
     ischeckedBox();
