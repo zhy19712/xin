@@ -131,7 +131,8 @@ var tableItem = $('#tableItem').DataTable( {
         "zeroRecords": "没有找到记录",
         "info": "( 共_TOTAL_ 项 )",
         "infoEmpty": "无记录",
-        "search": "搜索：",
+      "sSearchPlaceholder":"请输入关键字",
+      "search": "搜索",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
