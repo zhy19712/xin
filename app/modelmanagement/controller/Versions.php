@@ -55,77 +55,82 @@ class Versions extends Permissions
      * 压缩包上传
      * @author hutao
      */
+//    public function upload()
+//    {
+//        // model_type 1 竣工模型 2 施工模型
+//        $model_type = input('model_type');
+//        if(empty($model_type)){
+//            return json(['code'=>1,'msg'=>'缺少类型']);
+//        }
+//        if($this->request->file('file')){
+//            $file = $this->request->file('file');
+//        }else{
+//            return json(['code'=>1,'msg'=>'没有上传文件']);
+//        }
+//        $web_config = Db::name('admin_webconfig')->where('web','web')->find();
+//
+//        $path = 'E:\WebServer\Resources\jungong'; //文件路径
+//        if($model_type == 2){
+//            $path = 'E:\WebServer\Resources\shigong';
+//        }
+//
+//        if(!is_dir($path)){
+//            mkdir($path, 0777, true);
+//        }
+//
+//        $info = $file->validate(['size'=>$web_config['file_size']*1024,'ext'=>$web_config['file_type']])->rule('date')->move($path);
+//
+//        if($info) {
+//            //写入到附件表
+//            $data = [];
+//            $data['module'] = 'modelmanagement';
+//            $data['use'] = 'versions';
+//            $data['name'] = $info->getInfo('name');//原文件名
+//            $data['filename'] = $info->getFilename();//文件名
+//            $data['filepath'] = $path . DS . $info->getSaveName();//文件路径
+//
+//            // 资源包名称不能重复
+//            $is_exist = Db::name('attachment')->where('name',$data['name'])->value('id');
+//            if($is_exist){
+//                return json(['code'=>'-1','msg'=>'资源包名称不能重复']);
+//            }
+//
+//            $data['fileext'] = $info->getExtension();//文件后缀
+//            $data['filesize'] = $info->getSize();//文件大小
+//            $data['create_time'] = time();//时间
+//            $data['uploadip'] = $this->request->ip();//IP
+//            $data['user_id'] = Session::has('admin') ? Session::get('admin') : 0;
+//            if($data['module'] == 'admin') {
+//                //通过后台上传的文件直接审核通过
+//                $data['status'] = 1;
+//                $data['admin_id'] = $data['user_id'];
+//                $data['audit_time'] = time();
+//            }
+//            $res['src'] = $path . DS . $info->getSaveName();
+//            $res['code'] = 2;
+//            // 记得打开php.ini里的com.allow_dcom = true
+//            $obj = new \COM('WScript.Shell');
+//            //执行doc解压命令
+//            $file_path = $res['src'];
+//            $flag = $obj->run("winrar x $file_path $path",1,true);
+//            if($flag == 1){ // 0 是成功 1是失败
+//                return json(['code'=>-1,'msg'=>'解压文件失败']);
+//            }
+//            $res['id'] = Db::name('attachment')->insertGetId($data);
+//            return json($res);
+//        } else {
+//            // 上传失败获取错误信息
+//            $msg = '上传失败：'.$file->getError();
+//            return json(['code'=>'-1','msg'=>$msg]);
+//        }
+//    }
+
+    /**
+     * 压缩包上传
+     * @return \think\response\Json
+     * @author hutao
+     */
     public function upload()
-    {
-        // model_type 1 竣工模型 2 施工模型
-        $model_type = input('model_type');
-        if(empty($model_type)){
-            return json(['code'=>1,'msg'=>'缺少类型']);
-        }
-        if($this->request->file('file')){
-            $file = $this->request->file('file');
-        }else{
-            return json(['code'=>1,'msg'=>'没有上传文件']);
-        }
-        $web_config = Db::name('admin_webconfig')->where('web','web')->find();
-
-        $path = 'E:\WebServer\Resources\jungong'; //文件路径
-        if($model_type == 2){
-            $path = 'E:\WebServer\Resources\shigong';
-        }
-
-        if(!is_dir($path)){
-            mkdir($path, 0777, true);
-        }
-
-        $info = $file->validate(['size'=>$web_config['file_size']*1024,'ext'=>$web_config['file_type']])->rule('date')->move($path);
-
-        if($info) {
-            //写入到附件表
-            $data = [];
-            $data['module'] = 'modelmanagement';
-            $data['use'] = 'versions';
-            $data['name'] = $info->getInfo('name');//原文件名
-            $data['filename'] = $info->getFilename();//文件名
-            $data['filepath'] = $path . DS . $info->getSaveName();//文件路径
-
-            // 资源包名称不能重复
-            $is_exist = Db::name('attachment')->where('name',$data['name'])->value('id');
-            if($is_exist){
-                return json(['code'=>'-1','msg'=>'资源包名称不能重复']);
-            }
-
-            $data['fileext'] = $info->getExtension();//文件后缀
-            $data['filesize'] = $info->getSize();//文件大小
-            $data['create_time'] = time();//时间
-            $data['uploadip'] = $this->request->ip();//IP
-            $data['user_id'] = Session::has('admin') ? Session::get('admin') : 0;
-            if($data['module'] == 'admin') {
-                //通过后台上传的文件直接审核通过
-                $data['status'] = 1;
-                $data['admin_id'] = $data['user_id'];
-                $data['audit_time'] = time();
-            }
-            $res['src'] = $path . DS . $info->getSaveName();
-            $res['code'] = 2;
-            // 记得打开php.ini里的com.allow_dcom = true
-            $obj = new \COM('WScript.Shell');
-            //执行doc解压命令
-            $file_path = $res['src'];
-            $flag = $obj->run("winrar x $file_path $path",1,true);
-            if($flag == 1){ // 0 是成功 1是失败
-                return json(['code'=>-1,'msg'=>'解压文件失败']);
-            }
-            $res['id'] = Db::name('attachment')->insertGetId($data);
-            return json($res);
-        } else {
-            // 上传失败获取错误信息
-            $msg = '上传失败：'.$file->getError();
-            return json(['code'=>'-1','msg'=>$msg]);
-        }
-    }
-
-    public function uploadTest()
     {
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -141,14 +146,7 @@ class Versions extends Permissions
             }
         }
         @set_time_limit(30 * 60);
-        $model_type = input('model_type');
-        if(empty($model_type)){
-            return json(['code'=>1,'msg'=>'缺少类型']);
-        }
-        $path = 'E:\WebServer\Resources\jungong'; //文件路径
-        if($model_type == 2){
-            $path = 'E:\WebServer\Resources\shigong';
-        }
+        $path = 'E:\WebServer\Resources'; //文件路径
         $date_dir = date('Ymd');
         $targetDir = $path . '\\' . 'file_material_tmp' . '\\' . $date_dir;
         $uploadDir = $path . '\\' . 'file_material' . '\\' . $date_dir;
@@ -190,7 +188,6 @@ class Versions extends Permissions
             }
             closedir($dir);
         }
-
         // Open temp file
         if (!$out = @fopen("{$filePath}_{$chunk}.parttmp", "wb")) {
             die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
@@ -255,7 +252,11 @@ class Versions extends Permissions
         die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
     }
 
-
+    /**
+     * 保存上传的压缩包并解压
+     * @return \think\response\Json
+     * @author hutao
+     */
     public function saveFile()
     {
         $param = input('post.');
@@ -269,7 +270,8 @@ class Versions extends Permissions
         $data['use'] = 'versions';
         $data['name'] = $oldName;//原文件名
         $arr = explode('\\',$uploadPath);
-        $data['filename'] = $arr[6];//文件名
+        $num = sizeof($arr) - 1;
+        $data['filename'] = $arr[$num];//文件名
         $data['filepath'] = $uploadPath;//文件路径
         $data['fileext'] = $extension;//文件后缀
         $data['filesize'] = abs(filesize($uploadPath));//文件大小
@@ -320,7 +322,6 @@ class Versions extends Permissions
             if (!$validate->check($param)) {
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
-
             $send = new VersionsModel();
             $major_key = isset($param['major_key']) ? $param['major_key'] : 0;
 
@@ -332,9 +333,10 @@ class Versions extends Permissions
             $version_number = $send->versionNumber($param['model_type']);
             $param['version_number'] = $version_number;
             $param['version_date'] = date('Y-m-d H:i:s');
-
+            // 资源包名称不带后缀
+            $resource_name = explode('.',$param['resource_name']);
+            $param['resource_name'] = $resource_name[0];
             if(empty($major_key)){
-
                 /**
                  * 1 竣工模型 -- 全景3D模型 操作的表是 model_complete
                  * 当新增时，首先解压缩，存在2个txt文件
@@ -367,18 +369,18 @@ class Versions extends Permissions
                 $file_name = explode('.',$attachment);
                 $attr = new Attachment();
                 if($param['model_type'] == 1){
-                    $flag = $this->completeGolIdTable('E:\WebServer\Resources\jungong' . DS . $file_name[0] . DS . 'GolIdTable.txt');
+                    $flag = $this->completeGolIdTable('E:\WebServer\Resources' . DS . $file_name[0] . DS . 'GolIdTable.txt');
                     if($flag['code'] == -1){
                         $attr->deleteTb($param['attachment_id']);
                         return json(['code'=>-1,'msg'=>'竣工模型GolIdTable.txt'.$flag['msg']]);
                     }
-                    $flag = $this->completeGroupProperties('E:\WebServer\Resources\jungong' . DS . $file_name[0] . DS . 'GroupProperties.txt');
+                    $flag = $this->completeGroupProperties('E:\WebServer\Resources' . DS . $file_name[0] . DS . 'GroupProperties.txt');
                     if($flag['code'] == -1){
                         $attr->deleteTb($param['attachment_id']);
                         return json(['code'=>-1,'msg'=>'竣工模型GroupProperties.txt'.$flag['msg']]);
                     }
                 }else{
-                    $flag = $this->qualityInsertTxtContent('E:\WebServer\Resources\shigong' . DS . $file_name[0] . DS . 'GolIdTable.txt');
+                    $flag = $this->qualityInsertTxtContent('E:\WebServer\Resources' . DS . $file_name[0] . DS . 'GolIdTable.txt');
                     if($flag['code'] == -1){
                         $attr->deleteTb($param['attachment_id']);
                         return json(['code'=>-1,'msg'=>'施工模型GolIdTable.txt'.$flag['msg']]);
