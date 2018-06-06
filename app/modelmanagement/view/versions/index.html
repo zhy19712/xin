@@ -43,13 +43,23 @@
                 <input type="text" name="resource_name" id="resource_name" required  lay-verify="required" placeholder="上传后资源包名称会显示在这里" autocomplete="off" class="layui-input" readonly>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">上传模型</label>
-            <div class="layui-input-inline" style="width: 65px;">
-                <div id="addModel"></div>
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">上传模型</label>-->
+            <!--<div class="layui-input-inline" style="width: 65px;">-->
+                <!--<div id="addModel"></div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-mid layui-word-aux">注意：资源包名称不能重复</div>-->
+        <!--</div>-->
+
+        <div id="uploader" class="wu-example">
+            <!--用来存放文件信息-->
+            <div id="thelist" class="uploader-list"></div>
+            <div class="btns">
+                <div id="picker">选择文件</div>
+                <button id="ctlBtn" class="btn btn-default">开始上传</button>
             </div>
-            <div class="layui-form-mid layui-word-aux">注意：资源包名称不能重复</div>
         </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">

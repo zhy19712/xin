@@ -179,14 +179,90 @@ $('.addBtn').click(function () {
     });
 });
 
-//上传模型
+layui.use('element', function(){
+    element = layui.element;
+});
+
+
 function uploadModel() {
+    // 创建上传
+    var uploader = WebUploader.create({
+        auto: true,
+        swf: '/static/public/webupload/Uploader.swf',
+        server: './uploadTest',      // 服务端地址
+        pick:'#picker',
+        resize: false,
+        chunked: true,            //开启分片上传
+        chunkSize: 1024*1024*100,   //每一片的大小
+        chunkRetry: 5,          // 如果遇到网络错误,重新上传次数
+        threads: 1,               // [默认值：3] 上传并发数。允许同时最大上传进程数。
+        fileNumLimit:500,
+        fileSizeLimit:1024*1024*1024*10,
+        fileSingleSizeLimit:1024*1024*1024*10,
+        formData: {model_type:model_type}
+    });
+    // 当有文件被添加进队列的时候
+    uploader.on( 'fileQueued', function( file ) {
+        var $list = $('#thelist');
+        $list.html('');
+        $list.append( '<div id="' + file.id + '" class="item">' +
+            '<h4 class="info">' + file.name + '</h4>' +
+            '<p class="state">等待上传...</p>' +
+            '</div>' );
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on( 'uploadProgress', function( file, percentage ) {
+        var $li = $( '#'+file.id ),
+            $percent = $li.find('.layui-progress .layui-progress-bar');
+        // 避免重复创建
+        if ( !$percent.length ) {
+            $percent = $('<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">' +
+                '<div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>'+
+                '</div>').appendTo( $li ).find('.layui-progress-bar');
+        }
+        $li.find('p.state').text('上传中');
+        element.progress('demo', percentage * 100 + '%');
+        /*$percent.css( 'width', percentage * 100 + '%' );
+        $percent.css( 'lay-percent', percentage * 100 + '%' );*/
+    });
+
+    //模型上传成功
+    uploader.on('uploadSuccess', function (file, response) {
+        $.ajax({
+            url: "./saveFile",
+            type: "post",
+            data: {
+                oldName:response.oldName,
+                uploadPath:response.filePaht,
+                extension:response.fileSuffixes,
+                path:response.path
+            },
+            dataType: "json",
+            success: function (res) {
+                if(res.code==2){
+                    $( '#'+file.id ).find('p.state').text('已上传');
+                    $('#resource_name').val(file.name);
+                    attachment_id = res.id;
+                    layer.msg(res.msg);
+                }else{
+                    $( '#'+file.id ).find('p.state').text('上传出错');
+                }
+            }
+        });
+    });
+
+    uploader.on( 'uploadError', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传出错');
+    });
+}
+
+//上传模型
+/*function uploadModel() {
     uploader = WebUploader.create({
         // 选完文件后，是否自动上传。
         auto: true,
         // swf文件路径
         swf: '/static/public/webupload/Uploader.swf',
-
         // 文件接收服务端。
         //server: applicationPath + '/ModelFile/UpLoadProcess?modelTypeId=' + $("#hidModeFileTypeId").val() + "&flag=" + flag,
         server: './upload',
@@ -198,8 +274,8 @@ function uploadModel() {
             innerHTML: '上传'
         },
         formData: {}
-
     });
+
     //模型上传成功
     uploader.on('uploadSuccess', function (file, response) {
         $('#resource_name').val(file.name);
@@ -210,7 +286,7 @@ function uploadModel() {
     uploader.on("uploadStart",function () {
         uploader.options.formData.model_type = model_type;
     });
-}
+}*/
 
 //保存模型
 layui.use('form', function(){
