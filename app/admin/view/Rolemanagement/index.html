@@ -1,4 +1,5 @@
 {include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/zTreeStyle/zTreeStyle.css">
 <style>
     body .panel-title{
         font-size: 14px;
@@ -91,6 +92,15 @@
     }
     .fa.fa-save:before ,.fa.fa-close:before,.fa.fa-save:hover:before,.fa.fa-close:hover:before{
         color: white;
+    }
+    .ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+        color: #009688;
+    }
+    .ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+        color: #d85c74;
+    }
+    .ztree-title i.fa-arrow-circle-down:before{
+        color: #dca107;
     }
 </style>
 <div data-options="region:'west',title:'角色分类树',split:true" style="width:240px;">

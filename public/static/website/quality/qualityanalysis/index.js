@@ -52,7 +52,7 @@ optionBar = {
   },
   grid: {
     left: '3%',
-    right: '4%',
+    right: '1%',
     bottom: '3%',
     containLabel: true
   },

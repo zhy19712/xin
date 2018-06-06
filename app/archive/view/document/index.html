@@ -1,5 +1,6 @@
 {include file="../../public/common_header"}
 <script src="__PUBLIC__/jquery/jquery.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/ztree/css/zTreeStyle/zTreeStyle.css">
 <style>
 
     #nodeZtree .ztree-title i.fa {
@@ -109,6 +110,23 @@
     }
     .webuploader-pick{
         display: inline-block;
+    }
+    table.table tbody tr td:first-child i.fa{
+        width: 0;
+        height: 0;
+
+    }
+    table.table tbody tr td:first-child i.fa:before{
+        color:#00c0ef ;
+    }
+    .ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+        color: #009688;
+    }
+    .ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+        color: #d85c74;
+    }
+    .ztree-title i.fa-arrow-circle-down:before{
+        color: #dca107;
     }
 </style>
 
