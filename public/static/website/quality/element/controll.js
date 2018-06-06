@@ -691,10 +691,10 @@ function checkforming(nodeUnitId) {
                     form.render("select");
                 });
                 $("#date").attr({"disabled":false});
-                // setTimeout(function () {
+                setTimeout(function () {
                     $(".result .layui-input[readonly]").attr('style', 'background: #ffffff !important');
                     $(".result input[readonly]").addClass('disabledColor');
-                // },1000)
+                },800)
 
                 // layer.msg(res.remark);
                 // $(".mybtnAdd").css("display","none");
