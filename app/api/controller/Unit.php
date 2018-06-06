@@ -7,6 +7,7 @@
  */
 namespace app\api\controller;
 
+use app\admin\controller\Permissions;
 use app\api\controller\Login;
 use app\quality\model\DivisionUnitModel;
 use app\admin\model\Admin;
@@ -16,7 +17,7 @@ use think\Session;
 use think\Controller;
 use think\Request;
 
-Class Unit extends Login
+Class Unit extends Permissions
 {
     //获取单元划分段号的信息
     public function getUnit()
