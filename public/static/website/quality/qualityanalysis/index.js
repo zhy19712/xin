@@ -81,7 +81,8 @@ optionLine = {
   },
   legend: {
     data: [],
-    left:'right',
+    // left:'right',
+    right:'10px',
     top:40,
   },
   tooltip: {
