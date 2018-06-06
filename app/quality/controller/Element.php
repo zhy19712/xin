@@ -243,6 +243,7 @@ class Element extends Permissions
                     'templateId'=>'',
                     'isInspect'=>'',
                     'procedureId'=>'',
+                    'hideSelect'=>'1',
                     'formName'=>'',
                     'currentStep'=>'',
                     'controlPointId'=>'',
