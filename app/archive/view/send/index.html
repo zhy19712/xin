@@ -3,8 +3,21 @@
     .dataTables_wrapper, .tbcontainer {
         display: block;
     }
+    #tableIncome thead tr{
+        height: 40px !important;
+    }
     #tableIncome thead tr th{
         text-align: center;
+        font-size: 14px;
+        color: #333333;
+        height: 40px !important;
+    }
+    #add_table_files tr td,#add_table_files tr th{
+        text-align: center;
+        font-size: 14px;
+        color: #333333;
+        height: 40px;
+        padding: 9px;
     }
     #file_modal,#add_file_modal{
         display: none;
@@ -57,9 +70,13 @@
         text-align: center!important;
     }
     #add_file_modal .layui-btn-xs{
-        height: 17px!important;
-        line-height: 17px!important;
+        width: 40px!important;
+        height: 22px!important;
+        line-height: 22px!important;
         font-size: 10px;
+    }
+    .layui-btn+.layui-btn {
+        margin-left: 30px;
     }
     .dataTables_scrollBody{
         overflow-x: hidden!important;
@@ -68,6 +85,45 @@
         height: 30px;
         position: absolute;
         bottom: 0;
+    }
+    /*修改了查看的input 的长度*/
+    .layui-form-item .layui-input-inline {
+        width: 253px;
+        margin-right: 0px;
+    }
+    /*修改了字体颜色与大小*/
+    .layui-form-item .layui-form-label {
+        font-size: 14px;
+        color: #333333;
+    }
+    .layui-form-item .layui-inline input {
+        font-size: 14px;
+        color: #666666;
+    }
+    .layui-layer-content {
+        padding-top: 30px;
+    }
+    #back{
+        width: 80px !important;
+        height: 36px !important;
+        background: #ff5722;
+        color: #FFFFFF;
+    }
+    #back:hover{
+        background: #ff5722;
+        border: none;
+    }
+    /*上传按钮向左移动了距离*/
+    .webuploader-pick {
+        margin-left: -4px;
+    }
+    /*出现两个表头*/
+    #tableIncome thead{
+        display: none;
+    }
+    /*搜索和那个input不对齐*/
+    .dataTables_wrapper .dataTables_filter {
+        line-height: 33px;
     }
 </style>
 <div class="layui-fluid" style="height: 100%;">
@@ -96,29 +152,33 @@
 <div id="add_file_modal" style="padding-right: 20px">
     <form action="" class="layui-form">
         <div class="layui-form-item">
-            <label class="layui-form-label">文件名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="file_name" id="file_name" required lay-verify="required" class="layui-input">
-                <input type="hidden" name="major_key" id="major_key">
+            <div class="layui-inline">
+                <label class="layui-form-label">文件名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="file_name" id="file_name" required lay-verify="required" class="layui-input">
+                    <input type="hidden" name="major_key" id="major_key">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">文件日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="date" id="date" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
+                </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">文件日期</label>
-            <div class="layui-input-block">
-                <input type="text" name="date" id="date" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
+            <div class="layui-inline">
+                <label class="layui-form-label">收件人</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
+                    <input type="hidden" name="income_id" id="income_id">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">收件人</label>
-            <div class="layui-input-block">
-                <input type="text" name="income_name" id="income_name" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
-                <input type="hidden" name="income_id" id="income_id">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">收文单位</label>
-            <div class="layui-input-block">
-                <input type="text" name="unit_name" id="unit_name" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
+            <div class="layui-inline">
+                <label class="layui-form-label">收文单位</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="unit_name" id="unit_name" required lay-verify="required" class="layui-input" readonly="readonly" style="cursor: pointer">
+                </div>
             </div>
         </div>
         <div class="layui-form-item">

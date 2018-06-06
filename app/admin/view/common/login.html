@@ -132,6 +132,17 @@
         .layui-form-checked:hover i {
             color: #5FB878;
         }
+        #downloadexe{
+            background: url('__WEBSITE__/common/images/download.png') left 0px no-repeat;
+            -webkit-background-size: 16px;
+            background-size: 16px;
+            font-size: 16px;
+            line-height: 15px;
+            padding-left: 35px;
+        }
+        #downloadexe:hover{
+            color: green;
+        }
     </style>
 </head>
 <body class="layui-layout-body">
@@ -174,6 +185,9 @@
                     </div>
                     <div class="layui-form-item">
                         <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="login">登 录</button>
+                    </div>
+                    <div class="layui-form-item">
+                        <p id="downloadexe">点击下载控件管理程序&gt;&gt;</p>
                     </div>
                     {:token('__token__', 'sha1')}
                 </form>
