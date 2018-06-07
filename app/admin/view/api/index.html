@@ -376,9 +376,10 @@ $('#save').html('保存');
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">电子签名</label>
+                                        <label class="layui-form-label">文件上传</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="signature" placeholder="请上传电子签名" autocomplete="off" class="layui-input" readonly>
+                                            <input type="text" name="signature" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
+                                            <div id="uploadList" class="upload-list"></div>
                                             <div class="layui-form-mid layui-word-aux">
                                                 <div id="upload" class="upload layui-btn">上传</div>
                                             </div>
@@ -521,6 +522,7 @@ function zTreeEyeOnCheck() {
 <script src="__WEBSITE__/api/api_datatables.js"></script>
 <script src="__WEBSITE__/api/api_form.js"></script>
 <script src="__WEBSITE__/api/api_ztree.js"></script>
+<script src="__WEBSITE__/api/api_upload.js"></script>
 <script>
     layui.use(['code', 'element'], function () { //加载code模块
         layui.code({

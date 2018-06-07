@@ -1,42 +1,71 @@
-.layui-layout-admin .layui-logo{
+.layui-layout-admin .layui-logo {
     background-color: #23262E;
 }
-.layui-bg-black{
+
+.layui-bg-black {
     background-color: #20222A !important;
 }
-.layui-nav-tree{
+
+.layui-nav-tree {
     width: 100%;
 }
-.ztree-title i.fa{
+
+.ztree-title i.fa {
     width: 13%;
 }
-.ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+
+.ztree-title i.fa-sitemap:before, .ztree-title i.fa-arrow-circle-up:before {
     color: #009688;
 }
-.ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+
+.ztree-title i.fa-pencil:before, .ztree-title i.fa-plus-square:before {
     color: #d85c74;
 }
-.ztree-title i.fa-arrow-circle-down:before{
+
+.ztree-title i.fa-arrow-circle-down:before {
     color: #dca107;
 }
-.easyui-layout{
+
+.easyui-layout {
     width: 100%;
     height: 400px;
 }
-.west{
+
+.west {
     width: 300px;
 }
-.center{
+
+.center {
     padding: 10px;
 }
-.center-head{
+
+.center-head {
     padding: 3px 0 13px 3px;
     border-bottom: 1px solid #cecece;
 }
-.center-head h3{
+
+.center-head h3 {
     font-size: 14px;
 }
-.layui-layer{
+
+.layui-layer {
     box-shadow: none;
     border: 1px solid #e6e6e6;
+}
+
+.layui-input-block {
+    margin-right: 35px;
+}
+
+.layui-progress-big, .layui-progress-big .layui-progress-bar {
+    padding-right: 10px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 0;
+}
+.upload-list{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }

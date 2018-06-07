@@ -7,7 +7,7 @@ $('.form').click(function(){
         title:'表单',
         id:'1',
         type:'1',
-        area:['700px','420px'],
+        area:['660px','420px'],
         offset: ['75px', '25px'],
         closeBtn: 0,
         shade: 0,
