@@ -162,6 +162,14 @@ var tableItem = $('#tableItem').DataTable( {
       }
     ],
     columnDefs: [
+      {
+        "targets": [0],
+        width:"20%",
+      },
+      {
+        "targets": [1],
+        width:"60%",
+      },
         {
             "searchable": false,
             "orderable": false,
@@ -185,6 +193,13 @@ var tableItem = $('#tableItem').DataTable( {
     language: {
         "zeroRecords": "没有找到记录"
     },
+  fnInitComplete:function () {
+    //表头固定的滚动条
+    $('#tableContent2 .dataTables_scroll').on('scroll',function(){
+      console.log($(this).scrollTop())
+      $("#tableContent2 .dataTables_scrollHead").css("top",$(this).scrollTop())
+    });
+  },
     "fnDrawCallback":function () {
     if(list_id === ""){
       return ;
@@ -271,6 +286,12 @@ var tableSituation = $('#tableSituation').DataTable( {
         $('#tableSituation_info').insertBefore(".markSituation");
         $('#tableSituation_paginate').insertBefore(".markSituation");
         $('.dataTables_wrapper,.tbcontainer').css("display","block");
+      //表头固定的滚动条
+
+      $('#unitWorkRightBottom .dataTables_scroll').on('scroll',function(){
+        console.log($(this).scrollTop())
+        $("#unitWorkRightBottom .dataTables_scrollHead").css("top",$(this).scrollTop())
+      });
     }
 });//初始化表格
 //删除控制点
@@ -458,3 +479,4 @@ function resultChange() {
     }
   })
 }
+

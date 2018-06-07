@@ -145,9 +145,6 @@ table{
 .dataTables_scrollHeadInner,#tableItem_wrapper table{
     width: 100% !important;
 }
-#tableItem_wrapper{
-    height: 90% !important;
-}
 #tableContent .dataTables_scroll{
     height: 99%;
 }
@@ -156,4 +153,20 @@ table{
     width: 100%;
     height: calc(100% - 125px)!important;
     border-bottom: none!important;
+}
+
+/*加滚动条 表头和表格对齐*/
+.dataTables_scrollHead{
+    position: absolute!important;
+    top: 0;
+    height: 38px;
+    z-index: 555;
+}
+.dataTables_scrollBody{
+    position: absolute!important;
+    top:38px;
+    overflow: visible!important;
+}
+.dataTables_scroll{
+    overflow: auto;
 }

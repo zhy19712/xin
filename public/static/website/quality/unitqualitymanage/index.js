@@ -142,6 +142,10 @@ var tableItem = $('#tableItem').DataTable( {
   "fnInitComplete": function (oSettings, json) {
     $('#tableItem_info').insertBefore(".mark");
     $('.dataTables_wrapper,.tbcontainer').css("display","block");
+    //表头固定的滚动条
+    $('#tableContent .dataTables_scroll').on('scroll',function(){
+      $("#tableContent .dataTables_scrollHead").css("top",$(this).scrollTop())
+    });
   },
   "fnDrawCallback":function () {
     var lock = 1;
