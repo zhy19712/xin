@@ -956,8 +956,8 @@ implementation = $('#implementation').DataTable({
     },
     "fnInitComplete": function (oSettings, json) {
         //表头固定的滚动条
-        $('#unitTab .dataTables_scroll').on('scroll',function(){
-            $("#unitTab .dataTables_scrollHead").css("top",$(this).scrollTop())
+        $('#implementationParent .dataTables_scroll').on('scroll',function(){
+            $("#implementationParent .dataTables_scrollHead").css("top",$(this).scrollTop())
         });
     },
 });
@@ -1099,8 +1099,8 @@ imageData = $('#imageData').DataTable({
     },
     "fnInitComplete": function (oSettings, json) {
         //表头固定的滚动条
-        $('#unitTab .dataTables_scroll').on('scroll',function(){
-            $("#unitTab .dataTables_scrollHead").css("top",$(this).scrollTop())
+        $('#imageDataParent .dataTables_scroll').on('scroll',function(){
+            $("#imageDataParent .dataTables_scrollHead").css("top",$(this).scrollTop())
         });
     },
 });
@@ -1270,8 +1270,8 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
         },
         "fnInitComplete": function (oSettings, json) {
             //表头固定的滚动条
-            $('#unitTab .dataTables_scroll').on('scroll',function(){
-                $("#unitTab .dataTables_scrollHead").css("top",$(this).scrollTop())
+            $('#onlineFillParent .dataTables_scroll').on('scroll',function(){
+                $("#onlineFillParent .dataTables_scrollHead").css("top",$(this).scrollTop())
             });
         },
     });
