@@ -240,9 +240,17 @@ class Versions extends Permissions
                 flock($out, LOCK_UN);
             }
             @fclose($out);
+            // 记得打开php.ini里的com.allow_dcom = true
+            $obj = new \COM('WScript.Shell');
+            // 重命名压缩包里的第一个文件夹的名称,避免名称一致时导致文件被覆盖
+            // 但是无法解决压缩名称和压缩包里的文件夹名称不一致的情况,例如: 压缩包名称是 res_shigong.zip 里面的第一个文件夹名称是 shiGong
+            $n_name = explode('.',$oldName);
+            $one_name = $n_name[0];
+            $new_name = $one_name.date('YmdHis');
+            $obj->run("winrar rn $uploadPath $one_name $new_name");
             $response = [
                 'success'=>true,
-                'oldName'=>$oldName,
+                'oldName'=>$new_name,
                 'filePaht'=>$uploadPath,
                 'fileSuffixes'=>$pathInfo['extension'],
                 'path'=>$path
@@ -334,8 +342,9 @@ class Versions extends Permissions
             $param['version_number'] = $version_number;
             $param['version_date'] = date('Y-m-d H:i:s');
             // 资源包名称不带后缀
-            $resource_name = explode('.',$param['resource_name']);
-            $param['resource_name'] = $resource_name[0];
+//            $resource_name = explode('.',$param['resource_name']);
+//            $param['resource_name'] = $resource_name[0];
+            $param['resource_name'] = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('name');
             if(empty($major_key)){
                 /**
                  * 1 竣工模型 -- 全景3D模型 操作的表是 model_complete

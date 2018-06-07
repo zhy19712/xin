@@ -48,6 +48,9 @@ $('#admin_table').DataTable({
             }
         }
     ],
+    fnCreatedRow:function (nRow, aData, iDataIndex){
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    },
     language: {
         "lengthMenu": "_MENU_ ",
         "zeroRecords": "没有找到记录",

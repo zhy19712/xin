@@ -73,17 +73,31 @@ class SectionModel extends Model
         return $this->hasOne('app\admin\model\Admin', 'id', 'eveluateUserId');
     }
 
+
     /**
      * 标段——新增或修改
      * @param $mod
-     * @return array
+     * @return bool
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function AddOrEdit($mod)
     {
         if (empty($mod['id'])) {
             $res = SectionModel::allowField(true)->insert($mod);
         } else {
-            $res = SectionModel::allowField(true)->save($mod, ['id' => $mod['id']]);
+            $res = true;
+            $data = $this->find($mod['id']);
+            foreach ($mod as $k=>$v){
+                if($v != $data[$k]){
+                    $res = false;
+                    break;
+                }
+            }
+            if(!$res){
+                $res = SectionModel::allowField(true)->save($mod, ['id' => $mod['id']]);
+            }
         }
         return $res ? true : false;
     }

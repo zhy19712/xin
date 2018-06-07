@@ -92,7 +92,9 @@ i.fa:hover:before{
     }
 }
 /* layui表单 */
-
+.layui-input, .layui-select, .layui-textarea{
+    height: 36px;
+}
 .layui-input[disabled],.layui-textarea[disabled],.layui-disabled,.layui-input[readonly],.layui-textarea[readonly],.layui-readonly{
     cursor: not-allowed;
     background: #e0e0e0 !important;
@@ -112,7 +114,20 @@ i.fa:hover:before{
     margin-right: 0;
     width: 70%;
 }
-
+.layui-form-mid.layui-word-aux{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0 !important;
+}
+.layui-form-mid.layui-word-aux .layui-btn{
+    padding: 0;
+    height: 36px;
+    line-height: 36px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 /* 分页 */
 .tbcontainer:before,.tbcontainer:after {
     content: " ";
@@ -212,9 +227,6 @@ select.form-control {
 /* 弹层 */
 .layui-layer-content{
     padding-top: 20px;
-}
-.layui-layer-content .layui-form .layui-input-block{
-    padding-right: 30px;
 }
 .layui-layer-content .layui-btn{
     padding: 0 18px;

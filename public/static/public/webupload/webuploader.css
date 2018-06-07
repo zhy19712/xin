@@ -7,15 +7,7 @@
     clip: rect(1px,1px,1px,1px);
 }
 .webuploader-pick {
-	position: relative;
-	display: inline-block;
-	cursor: pointer;
-	background: #009688;
-	border-radius: 4px;
-	padding: 9px 15px;
-	color: #fff;
-	text-align: center;
-	overflow: hidden;
+	padding: 0 16px;
 }
 .webuploader-pick-hover {
 	background: #31a99d;

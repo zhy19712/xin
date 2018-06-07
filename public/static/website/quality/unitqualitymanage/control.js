@@ -186,6 +186,12 @@ var tableItem = $('#tableItem').DataTable( {
   language: {
     "zeroRecords": "没有找到记录"
   },
+  fnInitComplete:function () {
+    //表头固定的滚动条
+    $('#tableContent2 .dataTables_scroll').on('scroll',function(){
+      $("#tableContent2 .dataTables_scrollHead").css("top",$(this).scrollTop())
+    });
+  },
   "fnDrawCallback":function () {
     if(list_id === ""){
       return ;
@@ -272,6 +278,10 @@ var tableSituation = $('#tableSituation').DataTable( {
     $('#tableSituation_info').insertBefore(".markSituation");
     $('#tableSituation_paginate').insertBefore(".markSituation");
     $('.dataTables_wrapper,.tbcontainer').css("display","block");
+    //表头固定的滚动条
+    $('#unitWorkRightBottom .dataTables_scroll').on('scroll',function(){
+      $("#unitWorkRightBottom .dataTables_scrollHead").css("top",$(this).scrollTop())
+    });
   }
 });//初始化表格
 //删除控制点
