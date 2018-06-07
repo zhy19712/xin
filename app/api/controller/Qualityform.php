@@ -7,6 +7,7 @@
  */
 namespace app\api\controller;
 
+use app\admin\controller\Permissions;
 use app\api\controller\Login;
 use think\Db;
 use think\Session;
@@ -14,7 +15,7 @@ use think\Controller;
 use think\Request;
 
 
-class Qualityform extends Login
+class Qualityform extends Permissions
 {
     //获取某个表单的信息
     public function getFormInfo()

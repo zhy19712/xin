@@ -73,6 +73,7 @@ var tableItem = $('#tableItem').DataTable({
                 var html = "<span class='' style='margin-left: 5px;' onclick='editFile("+row[4]+")'><i title='编辑' class='fa fa-pencil'></i></span>";
                 html += "<span class='' style='margin-left: 5px;' onclick='delFile("+row[4]+")'><i title='删除' class='fa fa-trash'></i></span>";
                 html += "<span class='' style='margin-left: 5px;' onclick='downloadFile("+row[4]+")'><i title='下载' class='fa fa-download'></i></span>";
+                // html += "<span class='' style='margin-left: 5px;' onclick='seatemplate("+row[4]+")'><i title='查看' class='fa fa-search'></i></span>";
                 return html;
             }
         }
@@ -229,3 +230,24 @@ function downloadFile(id) {
 //     }
 //   })
 // }
+
+//TODO 修改模板样式专用 以后要删除
+function seatemplate(id){
+    $.ajax({
+        type: "post",
+        url: "/standard/templatemanage/preview",
+        data: {id: id},
+        success: function (res) {
+
+            // console.log(res.url)
+            // window.open('file:///E:/phpStudy/WWW/xin/public/Data/form/qualityNew/01.02.04%E5%B2%A9%E7%9F%B3%E5%9C%B0%E5%9F%BA%E5%BC%80%E6%8C%96%E5%9C%B0%E8%B4%A8%E7%BC%BA%E9%99%B7%E5%A4%84%E7%90%86%E5%B7%A5%E5%BA%8F%E8%B4%A8%E9%87%8F%E7%AD%89%E7%BA%A7%E8%AF%84%E5%AE%9A%E8%A1%A8%E4%B8%8B%E8%BD%BD.html')
+            layer.open({
+                type: 2,
+                title: '查看',
+                shadeClose: true,
+                area: ['780px', '550px'],
+                content: 'file:///E:/phpStudy/WWW/xin/public/Data/form/qualityNew/01.01.01%E5%B2%A9%E7%9F%B3%E8%BE%B9%E5%9D%A1%E5%BC%80%E6%8C%96%E5%8D%95%E5%85%83%E5%B7%A5%E7%A8%8B%E8%B4%A8%E9%87%8F%E7%AD%89%E7%BA%A7%E8%AF%84%E5%AE%9A%E8%A1%A8%E4%B8%8B%E8%BD%BD.html'
+            });
+        }
+    })
+}

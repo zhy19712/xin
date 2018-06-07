@@ -1,0 +1,537 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/api/common.css">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">后台示例代码</div>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test" lay-shrink="all">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="layout" href="javascript:;">布局</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="btn" href="javascript:;">按钮</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="table" href="javascript:;">表格</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;" class="form">表单</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;" class="ztreeWrap">ztree</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <!-- 布局 -->
+            <div id="layout">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">效果</li>
+                        <li>html</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="easyui-layout">
+                                <div class="west" data-options="region:'west',title:'左侧',split:true">
+                                </div>
+                                <div class="center" data-options="region:'center'">
+                                    <div class="center-head">
+                                        <h3>当前路径：<span>河北丰宁抽水蓄能有限公司</span></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+<div class="west" data-options="region:'west',title:'左侧',split:true">
+    <!-- 左侧内容 -->
+</div>
+<div class="center" data-options="region:'center'">
+    <div class="center-head">
+        <h3>当前路径：<span>河北丰宁抽水蓄能有限公司</span></h3>
+    </div>
+</div>
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 按钮 -->
+            <div id="btn" style="display: none">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">效果</li>
+                        <li>html</li>
+                        <li>css</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-card">
+                                <div class="layui-card-header">树节点操作图标</div>
+                                <div class="layui-card-body">
+                                    <div class="ztree-title" style="position: initial; width: 300px;border: none;">
+                                        <i title="新增节点" class="fa fa-lg fa-sitemap" id="addNode"></i>
+                                        <i title="编辑节点" class="fa fa-lg fa-pencil" id="editNode"></i>
+                                        <i title="删除节点" class="fa fa-lg fa-trash" id="delNode"></i>
+                                        <i title="下移" class="fa fa-lg fa-arrow-circle-down" id="downMoveNode"></i>
+                                        <i title="上移" class="fa fa-lg fa-arrow-circle-up" id="upMoveNode"></i>
+                                        <i title="展开所有" class="fa fa-lg fa-plus-square" id="openNode"></i>
+                                        <i title="收起所有" class="fa fa-lg fa-minus-square" id="closeNode"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-card">
+                                <div class="layui-card-header">弹层底部默认自带按钮（注：该类按钮属于控制弹层按钮，该类按钮非btn属性生成）</div>
+                                <div class="layui-card-body">
+                                    <div class="layui-layer-content">
+                                        <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="saveAndCreat">保存并新建</button>
+                                        <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="save">保存</button>
+                                        <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-card">
+                                <div class="layui-card-header">常规互斥按钮—不能在弹层上使用</div>
+                                <div class="layui-card-body">
+                                    <button class="layui-btn layui-btn-normal layui-btn-sm">按钮</button>
+                                    <button class="layui-btn layui-btn-warm layui-btn-sm">按钮</button>
+                                </div>
+                            </div>
+                            <div class="layui-card">
+                                <div class="layui-card-header">弹层底部互斥按钮—只能在弹层里面使用（注：该类按钮属于弹层业务类按钮，详见收发文页面弹层）</div>
+                                <div class="layui-card-body">
+                                    <button class="layui-btn layui-btn-sm">按钮</button>
+                                    <button class="layui-btn layui-btn-danger layui-btn-sm">按钮</button>
+                                </div>
+                            </div>
+                            <div class="layui-card">
+                                <div class="layui-card-header">表格操作按钮—多个按钮时按此写法</div>
+                                <div class="layui-card-body">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-search" title="查看"></i><i class="fa fa-pencil" title="编辑"></i><i class="fa fa-download" title="下载"></i><i class="fa fa-trash" title="删除"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="layui-card">
+                                <div class="layui-card-header">表格操作按钮—单个按钮时按此写法</div>
+                                <div class="layui-card-body">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <i class="layui-btn layui-btn-xs">编辑</i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+<!--/* 树节点操作图标 */-->
+<div class="ztree-title">
+    <i title="新增节点" class="fa fa-lg fa-sitemap" id="addNode"></i>
+    <i title="编辑节点" class="fa fa-lg fa-pencil" id="editNode"></i>
+    <i title="删除节点" class="fa fa-lg fa-trash" id="delNode"></i>
+    <i title="下移" class="fa fa-lg fa-arrow-circle-down" id="downMoveNode"></i>
+    <i title="上移" class="fa fa-lg fa-arrow-circle-up" id="upMoveNode"></i>
+    <i title="展开所有" class="fa fa-lg fa-plus-square" id="openNode"></i>
+    <i title="收起所有" class="fa fa-lg fa-minus-square" id="closeNode"></i>
+</div>
+<!--/* 弹层底部默认自带按钮 */-->
+<button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="saveAndCreat">保存并新建</button>
+<button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="save">保存</button>
+<button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+<!--/* 常规互斥按钮 */-->
+<button class="layui-btn layui-btn-normal layui-btn-sm">按钮</button>
+<button class="layui-btn layui-btn-warm layui-btn-sm">按钮</button>
+<!--/* 弹层上的互斥按钮 */-->
+<button class="layui-btn layui-btn-sm">按钮</button>
+<button class="layui-btn layui-btn-danger layui-btn-sm">按钮</button>
+<!--/* 表格操作按钮—多个按钮时按此写法 */-->
+<i class="fa fa-search" title="查看"></i><i class="fa fa-pencil" title="编辑"></i><i class="fa fa-download" title="下载"></i><i class="fa fa-trash" title="删除"></i>
+<!--/* 表格操作按钮—单个按钮时按此写法 */-->
+<i class="layui-btn layui-btn-xs">编辑</i>
+                            </pre>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+/* 树节点操作图标 */
+.ztree-title i.fa{
+    width: 13%;
+}
+.ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+    color: #009688;
+}
+.ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+    color: #d85c74;
+}
+.ztree-title i.fa-arrow-circle-down:before{
+    color: #dca107;
+}
+/* 弹层底部默认自带按钮 */
+.layui-layer-content .layui-btn{
+    padding: 0 18px;
+    height: 30px;
+    line-height: 30px;
+}
+/* 常规按钮 */
+.layui-btn{
+    padding: 0 21px;
+    height: 32px;
+    line-height: 32px;
+}
+/* 表格操作按钮—多个按钮时按此写法 */
+table.table i.fa{
+    width: 40px;
+    height: 26px;
+    line-height: 26px;
+    background: #009688;
+    margin: 0 1px 1px 0;
+}
+table.table i.fa:first-child{
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+table.table i.fa:last-child{
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+table.table i.fa:before{
+    color: #FFF;
+}
+/* 表格操作按钮—单个按钮时按此写法 */
+i.layui-btn-xs{
+    padding: 0 8px;
+    height: 22px;
+    line-height: 22px;
+    font-style: normal;
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 表格 -->
+            <div id="table" style="display: none">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">效果</li>
+                        <li>html</li>
+                        <li>js</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <table id="admin_table" width="100%" class="table cell-border">
+                                <thead>
+                                    <tr>
+                                        <th>标段编码</th>
+                                        <th>标段名称</th>
+                                        <th>合同金额（万元）</th>
+                                        <th>业主单位</th>
+                                        <th>施工单位</th>
+                                        <th>设计单位</th>
+                                        <th>监理单位</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+<table id="admin_table" width="100%" class="table cell-border">
+    <thead>
+        <tr>
+            <th>标段编码</th>
+            <th>标段名称</th>
+            <th>合同金额（万元）</th>
+            <th>业主单位</th>
+            <th>施工单位</th>
+            <th>设计单位</th>
+            <th>监理单位</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+</table>
+                            </pre>
+                        </div>
+                        <div class="layui-tab-item">
+<pre class="layui-code" lay-encode="true">
+$('#admin_table').DataTable({
+    pagingType: "full_numbers",
+    processing: true,
+    serverSide: true,
+    "scrollX": true,        //开启横向滚动条
+    "scrollY": "520px",     //开启纵向滚动条后表格的高度，根据实际场景自行设置
+    "scrollCollapse": "true",
+    "paging": "false",
+    ajax: {
+        url: "/contract/common/datatablesPre?tableName=section"
+    },
+    dom: 'lf<"#save.layui-btn layui-btn-warm layui-btn-sm btn-right btn-space"><"#add.layui-btn layui-btn-normal layui-btn-sm btn-right btn-space">tip',   //btn-right：让按钮靠右显示，btn-space：设置按钮上下外边距
+    columns: [
+        {
+            name: "code"
+        },
+        {
+            name: "name"
+        },
+        {
+            name: "money"
+        },
+        {
+            name: "builder"
+        },
+        {
+            name: "constructor"
+        },
+        {
+            name: "designer"
+        },
+        {
+            name: "supervisor"
+        },
+        {
+            name: "id"
+        }
+    ],
+    columnDefs: [
+        {
+            searchable: false,
+            orderable: false,
+            targets: [7],
+            render: function (data, type, row) {
+                var html = "<i class='fa fa-pencil' title='编辑' onclick='secEdit(this)'></i>";
+                html += "<i class='fa fa-trash' title='删除' onclick='secDel(this)'></i>";
+                return html;
+            }
+        }
+    ],
+    language: {
+        "lengthMenu": "_MENU_ ",
+        "zeroRecords": "没有找到记录",
+        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+        "infoEmpty": "无记录",
+        "search": "搜索",
+        "sSearchPlaceholder": "请输入关键字",
+        "infoFiltered": "(从 _MAX_ 条记录过滤)",
+        "paginate": {
+            "sFirst": "<<",
+            "sPrevious": "上一页",
+            "sNext": "下一页",
+            "sLast": ">>"
+        }
+    }
+});
+$('#add').html('新增');
+$('#save').html('保存');
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 表单 -->
+            <div id="form" style="display: none">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">效果</li>
+                        <li>html</li>
+                        <li>css</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div id="formLyout" style="display: none">
+                                <form action="" class="layui-form layui-layer-wrap">
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">姓名</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="nickname" placeholder="请输入姓名" lay-verify="required|username" maxlength="12" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">排序号</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="order" placeholder="请输入排序号" lay-verify="number" maxlength="4" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">备注</label>
+                                        <div class="layui-input-block">
+                                            <textarea name="remark" placeholder="请输入内容" class="layui-textarea" maxlength="500"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="saveAndCreat">保存并新建</button>
+                                            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="save">保存</button>
+                                            <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item"></div>
+                        <div class="layui-tab-item"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- ztree -->
+            <div id="ztreeWrap" style="display: none">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">效果</li>
+                        <li>html</li>
+                        <li>js</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show layui-clear">
+                            <div class="layui-card" style="float: left;width: 550px;">
+                                <div class="layui-card-header">常规zTree</div>
+                                <div class="layui-card-body">
+                                    <ul id="ztree" class="ztree"></ul>
+                                </div>
+                            </div>
+                            <div class="layui-card" style="float: left;width: 550px;">
+                                <div class="layui-card-header">带眼镜的zTree👀</div>
+                                <div class="layui-card-body">
+                                    <ul id="ztreeEye" class="ztree eye"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+<!-- 常规zTree -->
+<ul id="ztree" class="ztree"></ul>
+<!-- 带眼镜的zTree👀 -->
+<ul id="ztreeEye" class="ztree eye"></ul>
+                            </pre>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+/* 常规zTree */
+var setting = {
+    async: {
+        enable : true,
+        type : 'post',
+        url : '/admin/admin/index',
+        dataType :'json'
+    },
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "pId"
+        }
+    },
+    view:{
+        selectedMulti: false
+    },
+    callback:{
+        onClick: zTreeOnClick
+    }
+};
+zTreeObj = $.fn.zTree.init($("#ztree"), setting,null);
+
+//点击树节点
+function zTreeOnClick() {
+
+}
+
+/* 带眼镜的zTree👀 */
+var setting = {
+    async: {
+        enable : true,
+        type : 'post',
+        url : '/admin/admin/index',
+        dataType :'json'
+    },
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "pId"
+        }
+    },
+    check:{
+        enable: true
+    },
+    view:{
+        selectedMulti: false,
+        showIcon: false
+    },
+    callback:{
+        onClick: zTreeEyeOnClick,
+        onCheck: zTreeEyeOnCheck
+    }
+};
+zTreeObj = $.fn.zTree.init($("#ztreeEye"), setting,null);
+
+//点击树节点
+function zTreeEyeOnClick() {
+
+}
+
+//勾选树节点
+function zTreeEyeOnCheck() {
+
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/api/api_datatables.js"></script>
+<script src="__WEBSITE__/api/api_form.js"></script>
+<script src="__WEBSITE__/api/api_ztree.js"></script>
+<script>
+    layui.use(['code', 'element'], function () { //加载code模块
+        layui.code({
+            title: '代码'
+        });
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        /*element.on('nav(test)', function (elem) {
+            layer.msg(elem.text());
+        });*/
+    });
+
+    $(function () {
+        $('.layui-nav-item').click(function () {
+            $(this).addClass('layui-nav-itemed').siblings().removeClass('layui-nav-itemed');
+        });
+        $('.layui-nav a').click(function(){
+            var id = $(this).attr('class');
+            $('#'+id).show().siblings().hide();
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+        })
+    });
+</script>
+</body>
+</html>

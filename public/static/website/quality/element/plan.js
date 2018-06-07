@@ -156,7 +156,7 @@ function tableInfo() {
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=quality_unit'
         },
-        dom: 'f<".current-path"<"#add.add layui-btn layui-btn-sm">>tr',
+        dom: 'f<".current-path"<"#add.add layui-btn layui-btn-normal layui-btn-sm">>tr',
         columns:[
             {
                 name: "serial_number"
@@ -299,6 +299,7 @@ $('.maBasesBtn').click(function () {
         btn:['保存'],
         success:function () {
             maBasesTable();
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
         },
         yes:function () {
             // $('input[name="ma_bases_name"]').val(idArrName);
@@ -811,6 +812,7 @@ function selfidName(id) {
             // if($(".imgNone").attr("id") == 'img0'){
             //     $("#img0").css("display","none");
             // }
+            $("#tableContent #tableItemControl_wrapper .dataTables_scrollBody").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 66px)");
         }
     })
 }

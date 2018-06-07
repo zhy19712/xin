@@ -293,7 +293,7 @@ class Element extends Permissions
                 echo fread($file, filesize($filePath));
                 fclose($file);
                 //删除临时文件
-                unlink($tempHtml);
+                #unlink($tempHtml);
                 unlink($tempPdf);
 
             }

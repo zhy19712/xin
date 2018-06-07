@@ -68,6 +68,7 @@
         input{
             outline: none!important;
             border: none!important;
+            background-color: #ffffff;
         }
         .tabWidth {
             margin: auto;
@@ -77,6 +78,7 @@
             outline: none!important;
             border: none!important;
             resize:none!important;
+            background-color: #ffffff;
         }
     </style>
 </head>
@@ -148,7 +150,7 @@
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
-                    <p class="zhuangSpanP" style="line-height: 16pt; margin: 0pt; widows: 0"><span class="zhuangSpan" style="font-family: 仿宋;">{$PileNo}</span></p>
+                    <p class="zhuangSpanP" style="line-height: 16pt; margin: 0pt; widows: 0;text-align: center"><span class="zhuangSpan" style="font-family: 仿宋;">{$PileNo}</span></p>
                 </td>
             </tr>
             <tr style="height: 17pt">
@@ -217,7 +219,6 @@
                         <img id="img_1" class="upLoadPic" src="" />
                     </div>
                     <div class="btnList">
-                        <button for="img_1" step="0" onclick="fileSelect(this)" class="btn btn-warning" type="button"><i class="fa fa-upload"></i>&nbsp;&nbsp;<span class="bold">上传</span></button>
 
                     </div>
                 </td>
@@ -438,9 +439,7 @@
                     -->
                     <div class="qianming">
                         <img id="img_2" class="signName" src="" step="2" form-required="签名必填。" />
-                        <button for="img_2" step="2" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+
                     </div>
                     <p style="margin: 0pt; orphans: 0; widows: 0">
                         <span style="font-family: 仿宋; font-size: 10.5pt">审核人：
@@ -449,9 +448,7 @@
                     </p>
                     <div class="qianming">
                         <img id="img_3" class="signName" src="" step="1" form-required="签名必填。" />
-                        <button for="img_3" step="1" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+
                     </div>
                     <p style="margin: 0pt; orphans: 0; widows: 0">
                         <span style="font-family: 仿宋; font-size: 10.5pt">计算人：
@@ -460,9 +457,7 @@
                     </p>
                     <div class="qianming">
                         <img id="img_4" class="signName" src="" step="0" form-required="签名必填。" />
-                        <button for="img_4" step="0" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+
                     </div>
                     <div class="dateBtom" style="orphans: 0; text-align: right; widows: 0">
                         <div class="form-group div-inline data_2" style="margin-top: 5px;">
@@ -481,9 +476,7 @@
                     </p>
                     <div class="qianming">
                         <img id="img_5" class="signName" src="" step="4" form-required="签名必填。" />
-                        <button for="img_5" step="4" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+
                     </div>
                     <p style="margin: 0pt; orphans: 0; widows: 0">
                         <span style="font-family: 仿宋; font-size: 10.5pt">现场监理：
@@ -492,9 +485,7 @@
                     </p>
                     <div class="qianming">
                         <img id="img_6" class="signName" src="" step="3" form-required="签名必填。" />
-                        <button for="img_6" step="3" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+
                     </div>
                     <div class="dateBtom" style="orphans: 0; text-align: right; widows: 0">
                         <div class="form-group div-inline data_2" style="margin-top: 30mm;">
@@ -513,9 +504,7 @@
                     </p>
                     <div class="qianming">
                         <img id="img_7" class="signName" src="" step="5" form-required="签名必填。" />
-                        <button for="img_7" step="5" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+
                     </div>
                     <div class="dateBtom" style="orphans: 0; text-align: right; text-indent: 15.75pt; widows: 0">
                         <div class="form-group div-inline data_2" style="margin-top: 59mm;">
@@ -536,9 +525,7 @@
                         <img id="img_8" class="signName" src="" step="6" form-required="签名必填。" />
                     </div>
                     <div class="qianming">
-                        <button for="img_8" step="6" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+
                     </div>
                     <div class="dateBtom" style="margin-left: 25px; orphans: 0; text-align: right; widows: 0">
                         <div class="form-group div-inline data_2" style="margin-top: 59mm;">
@@ -581,45 +568,45 @@
         <!--        <p class="tabWidth" style="width: 190mm;line-height:12pt; margin: auto; orphans:0;padding-left:21pt; text-align:justify; text-indent:-20pt; widows:0"><span style="font-family:仿宋; font-size:10.5pt">；2.适用范围：土石方开挖工程因地质原因产生的工程量签证。</span></p>-->
     </div>
     <script type="text/javascript" src="formEdit.js"></script>
-    <script>
-        $('.shigong_num').change(function () {
-            var a = 0;
-            $(".shigong_num").each(function (i) {
-                if (!isNaN($(this).val())) {
-                    a = a + Number($(this).val());
-                }
-            })
-            $('#input_shigong_hgl').val(a);
-        });
-        $('.jianli_num').change(function () {
-            var a = 0;
-            $(".jianli_num").each(function (i) {
-                if (!isNaN($(this).val())) {
-                    a = a + Number($(this).val());
-                }
-            })
-            $('#input_jianli_hgl').val(a);
-        });
-        $('.sheji_num').change(function () {
-            var a = 0;
-            $(".sheji_num").each(function (i) {
-                if (!isNaN($(this).val())) {
-                    a = a + Number($(this).val());
-                }
-            })
-            $('#input_sheji_hgl').val(a);
-        });
-        $('.jianshe_num').change(function () {
-            var a = 0;
-            $(".jianshe_num").each(function (i) {
-                if (!isNaN($(this).val())) {
-                    a = a + Number($(this).val());
-                }
-            })
-            $('#input_jianshe_hgl').val(a);
-        });
-        getQrcode();
-    </script>
-</body>
 
+</body>
+<script>
+    $('.shigong_num').change(function () {
+        var a = 0;
+        $(".shigong_num").each(function (i) {
+            if (!isNaN($(this).val())) {
+                a = a + Number($(this).val());
+            }
+        })
+        $('#input_shigong_hgl').val(a);
+    });
+    $('.jianli_num').change(function () {
+        var a = 0;
+        $(".jianli_num").each(function (i) {
+            if (!isNaN($(this).val())) {
+                a = a + Number($(this).val());
+            }
+        })
+        $('#input_jianli_hgl').val(a);
+    });
+    $('.sheji_num').change(function () {
+        var a = 0;
+        $(".sheji_num").each(function (i) {
+            if (!isNaN($(this).val())) {
+                a = a + Number($(this).val());
+            }
+        })
+        $('#input_sheji_hgl').val(a);
+    });
+    $('.jianshe_num').change(function () {
+        var a = 0;
+        $(".jianshe_num").each(function (i) {
+            if (!isNaN($(this).val())) {
+                a = a + Number($(this).val());
+            }
+        })
+        $('#input_jianshe_hgl').val(a);
+    });
+    getQrcode();
+</script>
 </html>

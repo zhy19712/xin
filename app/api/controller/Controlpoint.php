@@ -7,13 +7,14 @@
  */
 namespace app\api\controller;
 
+use app\admin\controller\Permissions;
 use app\api\controller\Login;
 use think\Db;
 use think\Session;
 use think\Controller;
 use think\Request;
 
-class Controlpoint extends Login
+class Controlpoint extends Permissions
 {
 
 

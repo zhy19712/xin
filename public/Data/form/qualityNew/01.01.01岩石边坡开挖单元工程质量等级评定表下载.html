@@ -52,11 +52,7 @@
             text-align: center;
         }
 
-        input{
-            outline: none!important;
-            border: none!important;
-            max-width: 120px;
-        }
+
         .tabWidth {
             margin: auto!important;
             width: 210mm!important;
@@ -70,13 +66,20 @@
             border: none!important;
             resize:none!important;
         }
+        input{
+            outline: none!important;
+            border: none!important;
+            max-width: 120px;
+            background-color: #ffffff;
+        }
         select{
-            border: none;
-            outline: none;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
+            border: none!important;
+            outline: none!important;
+            appearance: none!important;
+            -webkit-appearance: none!important;
+            -moz-appearance: none!important;
             background-color: #ffffff!important;
+            display: none;
         }
         .selType {
             display: inline-block;
@@ -508,7 +511,6 @@
         });
         //生成二维码
         getQrcode();
-        hideSelect();
     </script>
 </body>
 
