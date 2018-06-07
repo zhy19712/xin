@@ -157,6 +157,33 @@ class Templatemanage extends Permissions
      * 模板查看，暂时功能，用完废弃
      * @return \think\response\Json
      */
+//    public function preview()
+//    {
+//        $param = input('param.');
+//
+//        $file_id = isset($param['id']) ? $param['id'] : 0;
+//
+//        if ($file_id == 0) {
+//            return json(['code' => '-1', 'msg' => '编号有误']);
+//        }
+//        $file_obj = Db::name('norm_template')->where('id', $file_id)->field('code,name')->find();
+//
+//        $formPath = ROOT_PATH . 'public' . DS . "Data\\form\\qualityNew\\" . $file_obj['code'] . $file_obj['name'] . "下载.html";
+//
+//        return json(["code"=>1,"url"=>$formPath]);
+//    }
+
+    /**
+     * 编辑质量表单
+     * @param $cpr_id 控制点
+     * @param $currentStep 当前审批步骤
+     * @param bool $isView 是否查看
+     * @param null $id 表单id
+     * @return bool|mixed|string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function preview()
     {
         $param = input('param.');
@@ -166,10 +193,47 @@ class Templatemanage extends Permissions
         if ($file_id == 0) {
             return json(['code' => '-1', 'msg' => '编号有误']);
         }
+
         $file_obj = Db::name('norm_template')->where('id', $file_id)->field('code,name')->find();
 
-        $formPath = ROOT_PATH . 'public' . DS . "Data\\form\\qualityNew\\" . $file_obj['code'] . $file_obj['name'] . "下载.html";
-
-        return json(["code"=>1,"url"=>$formPath]);
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $file_obj['code'] . $file_obj['name'] . ".html";
+        $formPath = iconv('UTF-8', 'GB2312', $formPath);
+        if (!file_exists($formPath)) {
+            return "模板文件不存在";
+        }
+        $htmlContent=    $this->fetch($formPath,
+            [   'id'=>"",
+                'divisionId'=>"",
+                'templateId'=>"",
+                'qrcode'=>"",
+                'isInspect'=>true,
+                'procedureId'=>"",
+                'formName'=>"",
+                'currentStep'=>"",
+                'controlPointId'=>"",
+                'isView'=>true,
+                'formData'=>"",
+                'JYPName'=>"",
+                'JYPCode'=>"",
+                'Quantity'=>"",
+                'PileNo'=>"",
+                'Altitude'=>"",
+                'BuildBase'=>"",
+                'DYName'=>"",
+                'DYCode'=>"",
+                'Constructor'=>"",
+                'Supervisor'=>"",
+                'SectionCode'=>"",
+                'SectionName'=>"",
+                'ContractCode'=>"",
+                'FBName'=>"",
+                'FBCode'=>"",
+                'DWName'=>"",
+                'DWCode'=>""
+            ]);
+        //输出模板内容
+        //获取表单基本信息
+        $htmlContent .= "<input type='hidden' id='cpr' value=''>";
+        return $htmlContent;
     }
 }
