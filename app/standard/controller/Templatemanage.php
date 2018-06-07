@@ -189,7 +189,6 @@ class Templatemanage extends Permissions
         $param = input('param.');
 
         $file_id = isset($param['id']) ? $param['id'] : 0;
-        $file_id = 98;
 
         if ($file_id == 0) {
             return json(['code' => '-1', 'msg' => '编号有误']);
