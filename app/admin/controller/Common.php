@@ -438,4 +438,26 @@ class Common extends Controller
         }
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
+
+    // ht 点击下载控件管理程序
+    public function download()
+    {
+        $realname = "./uploads/3Dapp/3DAPPsetup.exe";
+        $filename = "3DAPPsetup.exe";
+        $encoded_filename = urlencode($filename);
+        $encoded_filename = str_replace("+", "%20", $encoded_filename);
+        $ua = $_SERVER["HTTP_USER_AGENT"];
+        if(preg_match("/MSIE/", $ua) || preg_match("/Trident\/7.0/", $ua)){
+            header('Content-Disposition: attachment; filename="' . $encoded_filename . '"');
+        } else if (preg_match("/Firefox/", $ua)) {
+            header('Content-Disposition: attachment; filename*="utf8\'\'' . $filename . '"');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+        }
+        Header("Content-type: application/octet-stream");
+        header("Content-Transfer-Encoding: binary");
+        header('Content-Length:'.filesize($realname));
+        readfile($realname);
+        exit;
+    }
 }
