@@ -56,14 +56,16 @@ class Section extends Permissions
         if ($this->request->isAjax()) {
             try {
                 $mod = input('post.');
-                $mod['otherId'] = implode(',',$mod['otherIdArr']);
-                unset($mod['otherIdArr']);
+                if(isset($mod['otherIdArr'])){
+                    $mod['otherId'] = implode(',',$mod['otherIdArr']);
+                    unset($mod['otherIdArr']);
+                }
                 $m = new SectionModel();
                 $res = $m->AddOrEdit($mod);
                 if ($res) {
-                    return ['code' => 1];
+                    return ['code' => 1,'msg' => '操作成功'];
                 } else {
-                    return ['code' => -1];
+                    return ['code' => -1,'msg' => '操作失败'];
                 }
             } catch (Exception $e) {
                 return ['code' => -1, 'msg' => $e->getMessage()];
