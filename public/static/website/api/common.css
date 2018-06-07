@@ -1,5 +1,11 @@
-.layui-layout-admin .layui-header{
+.layui-layout-admin .layui-logo{
     background-color: #23262E;
+}
+.layui-bg-black{
+    background-color: #20222A !important;
+}
+.layui-nav-tree{
+    width: 100%;
 }
 .ztree-title i.fa{
     width: 13%;
