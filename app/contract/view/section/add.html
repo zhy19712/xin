@@ -233,10 +233,6 @@
         formSelects.render({
             name: 'selectOther',         //xm-select的值
             type: 3,                 //等效xm-select-type, 选择样式
-            on: function (data, arr) { //监听数据变化
-                console.log(data);   //layui.form.on的data
-                console.table(arr);  //已选择数据的数组
-            },
             data: {
                 arr: otherNames
             }
