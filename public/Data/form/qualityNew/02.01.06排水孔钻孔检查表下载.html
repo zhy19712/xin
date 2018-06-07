@@ -54,7 +54,8 @@
         }
         
         .tabWidth {
-            width: 210mm;
+            width: 375mm!important;
+            margin: auto;
         }
         
         .dateMargin {
@@ -65,14 +66,13 @@
             border: none!important;
             max-width: 120px;
         }
-        .tabTitle {
-            margin: auto;
-            width: 210mm;
-        }
         textarea{
             outline: none!important;
             border: none!important;
             resize:none!important;
+        }
+        table td{
+            overflow: hidden;
         }
     </style>
 </head>
@@ -142,7 +142,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <p style="line-height:10pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; font-weight:normal; text-transform:none">{$PileNo}</span></p>
+                    <p style="line-height:10pt; margin:0pt; orphans:0; widows:0;text-align: center;"><span style="font-family:仿宋; font-size:9pt; font-style:normal; font-weight:normal; text-transform:none">{$PileNo}</span></p>
                 </td>
 
             </tr>
@@ -997,7 +997,7 @@
         <p style="line-height:1pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">&#xa0;</span></p>
     </div>
 
-    <div class="A4">
+    <div class="A4" style="margin-top: 250mm">
         <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:16pt; font-weight:bold">河北丰宁抽水蓄能电站</span></p>
         <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:16pt; font-weight:bold">排 水 孔 钻 孔 检 查 表</span></p>
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
@@ -1041,7 +1041,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <p style="line-height:10pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; font-weight:normal; text-transform:none">{$PileNo}</span></p>
+                    <p style="line-height:10pt; margin:0pt; orphans:0; widows:0;text-align: center"><span style="font-family:仿宋; font-size:9pt; font-style:normal; font-weight:normal; text-transform:none">{$PileNo}</span></p>
                 </td>
 
             </tr>
@@ -1824,9 +1824,6 @@
                     <div class="qianming">
                         <img id="img_1_1" class="signName img_1" src="" step="0" form-required="签名必填。" />
 
-                        <button for="img_1_1" step="0" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                     </div>
                     <div class="form-group div-inline data_2" style="width: 34mm;margin-left: 10px;">
                         <div class="input-group date" style="width:100%;">
@@ -1839,9 +1836,6 @@
                     <div class="qianming">
                         <img id="img_2_1" class="signName img_2" src="" step="1" form-required="签名必填。" />
 
-                        <button for="img_2_1" step="1" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                     </div>
                     <div class="form-group div-inline data_2" style="width: 34mm;margin-left: 10px;">
                         <div class="input-group date" style="width:100%;">
@@ -1854,9 +1848,6 @@
                     <div class="qianming">
                         <img id="img_3_1" class="signName img_3" src="" step="2" form-required="签名必填。" />
 
-                        <button for="img_3_1" step="2" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                     </div>
                     <div class="form-group div-inline data_2" style="width: 34mm;">
                         <div class="input-group date" style="width:100%;">
@@ -1870,9 +1861,7 @@
                         <img id="img_4_1" class="signName img_4" src="" step="3" form-required="签名必填。" />
                     </div>
                     <div class="qianming">
-                        <button for="img_4_1" step="3" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
+
                     </div>
                     <div class="form-group div-inline data_2" style="width: 34mm; margin-left: 28mm;">
                         <div class="input-group date">
@@ -1906,7 +1895,7 @@
         </table>
         <p style="line-height:1pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">&#xa0;</span></p>
     </div>
-    <div class="A4">
+    <div class="A4" style="margin-top: 250mm">
         <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:16pt; font-weight:bold">河北丰宁抽水蓄能电站</span></p>
         <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:16pt; font-weight:bold">排 水 孔 钻 孔 检 查 表</span></p>
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
@@ -1950,7 +1939,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <p style="line-height:10pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; font-weight:normal; text-transform:none">{$PileNo}</span></p>
+                    <p style="line-height:10pt; margin:0pt; orphans:0; widows:0;text-align: center;"><span style="font-family:仿宋; font-size:9pt; font-style:normal; font-weight:normal; text-transform:none">{$PileNo}</span></p>
                 </td>
 
             </tr>
@@ -2733,9 +2722,6 @@
                     <div class="qianming">
                         <img id="img_1_2" class="signName img_1" src="" step="0" form-required="签名必填。" />
 
-                        <button for="img_1_2" step="0" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                     </div>
                     <div class="form-group div-inline data_2" style="width: 34mm;margin-left: 10px;">
                         <div class="input-group date" style="width:100%;">
@@ -2748,9 +2734,6 @@
                     <div class="qianming">
                         <img id="img_2_2" class="signName img_2" src="" step="1" form-required="签名必填。" />
 
-                        <button for="img_2_2" step="1" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                     </div>
                     <div class="form-group div-inline data_2" style="width: 34mm;margin-left: 10px;">
                         <div class="input-group date" style="width:100%;">
@@ -2763,9 +2746,6 @@
                     <div class="qianming">
                         <img id="img_3_2" class="signName img_3" src="" step="2" form-required="签名必填。" />
 
-                        <button for="img_3_2" step="2" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                     </div>
                     <div class="form-group div-inline data_2" style="width: 34mm;">
                         <div class="input-group date" style="width:100%;">
@@ -2779,9 +2759,7 @@
                         <img id="img_4_2" class="signName img_4" src="" step="3" form-required="签名必填。" />
                     </div>
                     <div class="qianming">
-                        <button for="img_4_2" step="3" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
+
                     </div>
                     <div class="form-group div-inline data_2" style="width: 34mm; margin-left: 28mm;">
                         <div class="input-group date">

@@ -46,7 +46,11 @@
         }
         .tabTitle {
             margin: auto;
-            width: 210mm;
+            width: 260mm;
+        }
+        .tabWidth {
+            margin: auto;
+            width: 260mm;
         }
         textarea{
             outline: none!important;
@@ -79,7 +83,7 @@
             </div>
         </div>
 
-        <table class="tabWidth tabTitle" style="width: 190mm;">
+        <table class="tabWidth tabTitle" >
             <tr>
                 <td colspan="2"><span style="font-family: 仿宋; font-size: 10.5pt; font-weight: normal">项目名称：<span class="spanHeard">{$SectionName}</span></span>
                 </td>
@@ -105,8 +109,8 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单元工程量</span></p>
                 </td>
-                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
-                    <p style="width: 46mm; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">{$Quantity}</span></p>
+                <td colspan="2" style="text-align: center;border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">{$Quantity}</span></p>
                 </td>
             </tr>
             <tr style="height: 17pt">
@@ -123,7 +127,7 @@
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
-                    <p style="line-height: 12pt; margin: 0pt; orphans: 0; text-align: left; widows: 0"><span class="zhuangSpan" style="font-family: 仿宋;">{$PileNo}</span></p>
+                    <p style="line-height: 12pt; margin: 0pt; orphans: 0; text-align: left; widows: 0;text-align: center"><span class="zhuangSpan" style="font-family: 仿宋;">{$PileNo}</span></p>
                 </td>
             </tr>
             <tr style="height: 17pt">
@@ -168,7 +172,7 @@
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">施工依据</span></p>
                 </td>
                 <td colspan="6" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
-                    <p style="margin: 0pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">{$BuildBase}</span></p>
+                    <p style="margin: 0pt; orphans: 0; text-align: justify; widows: 0;text-align: center;"><span style="font-family: 仿宋; font-size: 10.5pt">{$BuildBase}</span></p>
                 </td>
             </tr>
             <tr style="height: 85.15pt">
@@ -296,7 +300,7 @@
                         <span style="font-family: 仿宋; font-size: 10.5pt; letter-spacing: 0.05pt">监理工程师：
                         </span>
                     </p>
-                    <div class="qianming qianmingBlock">
+                    <div class="qianming qianmingBlock" style="margin-left: 85mm">
                         <img id="img_5" class="signName" src="" step="4" form-required="签名必填。" />
                     </div>
 
@@ -342,7 +346,7 @@
                 <td style="width: 121.45pt; border: none"></td>
             </tr>
         </table>
-        <p class="tabWidth" style="margin: auto; orphans: 0; text-align: justify; widows: 0; width: 190mm;"><span style="font-family: 仿宋; font-size: 10.5pt; font-weight: normal">注：本表填写一式二份，施工单位一份，监理单位一份</span></p>
+        <p class="tabWidth" style="margin: auto; orphans: 0; text-align: justify; widows: 0; width: 230mm;"><span style="font-family: 仿宋; font-size: 10.5pt; font-weight: normal">注：本表填写一式二份，施工单位一份，监理单位一份</span></p>
         <p style="line-height: 18pt; margin: 0pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">&#xa0;</span></p>
     </div>
     <script>

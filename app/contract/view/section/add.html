@@ -137,7 +137,7 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">合同金额</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="money" placeholder="合同金额" id="money" lay-verify="required"
+                                    <input type="number" name="money" placeholder="合同金额 只能填数字" id="money"
                                            autocomplete="off" class="layui-input">
                                 </div>
                             </div>
@@ -145,13 +145,13 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">标段名称</label>
                             <div class="layui-input-block" class="inpLength">
-                                <input type="text" name="name" id="name" lay-verify="title" autocomplete="off"
+                                <input type="text" name="name" id="name"  autocomplete="off" lay-verify="required"
                                        placeholder="请输入标段名称" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">所属合同</label>
-                            <select name="contractId" id="contractId">
+                            <select name="contractId" id="contractId" lay-verify="required">
                                 <option value="">请选择</option>
                             </select>
                         </div>
@@ -161,25 +161,25 @@
                         <span class="bgSpan">管理配置</span>
                         <div class="layui-form-item">
                             <label class="layui-form-label">业主现场管理机构</label>
-                            <select name="builderId" id="builderId" lay-filter="aihao">
+                            <select name="builderId" id="builderId" lay-filter="aihao" lay-verify="required">
                                 <option value="">请选择</option>
                             </select>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">监理现场管理机构</label>
-                            <select name="supervisorId" id="supervisorId">
+                            <select name="supervisorId" id="supervisorId" lay-verify="required">
                                 <option value="">请选择</option>
                             </select>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">设计现场管理机构</label>
-                            <select name="designerId" id="designerId">
+                            <select name="designerId" id="designerId" lay-verify="required">
                                 <option value="">请选择</option>
                             </select>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">施工现场管理机构</label>
-                            <select name="constructorId" id="constructorId">
+                            <select name="constructorId" id="constructorId" lay-verify="required">
                                 <option value="">请选择</option>
                             </select>
                         </div>
@@ -287,7 +287,12 @@
                 dataType: "json",
                 success: function (res) {
                     var otherIds = res.otherId;
-                    var otherIdsArr = otherIds.split(',');
+                    var otherIdsArr;
+                    if(otherIds == null){
+                        otherIdsArr = "";
+                    }else{
+                        otherIdsArr = otherIds.split(',');
+                    }
                     $('#addId').val(res.id);
                     $('#code').val(res.code);
                     $('#shortName').val(res.shortName);
@@ -326,6 +331,11 @@
         });
         laydate.render({
             elem: '#date2'
+        });
+        $('input[type=number]').keypress(function(e) {
+            if (!String.fromCharCode(e.keyCode).match(/[0-9\.]/)) {
+                return false;
+            }
         });
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
