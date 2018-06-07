@@ -583,9 +583,7 @@ function zTreeEyeOnCheck() {
                             <div class="layui-card">
                                 <div class="layui-card-header">直接显示图片</div>
                                 <div class="layui-card-body">
-                                    <div style="position: relative;">
-                                        <div id="uploadImgDemo" class="upload upload-img layui-btn">上传</div>
-                                    </div>
+                                    <div id="uploadImgDemo" class="upload upload-img layui-btn">上传</div>
                                 </div>
                             </div>
                             <div class="layui-card">
@@ -602,13 +600,128 @@ function zTreeEyeOnCheck() {
                             </div>
                         </div>
                         <div class="layui-tab-item">
-                            <pre class="layui-code" lay-encode="true">
-
-                            </pre>
+<pre class="layui-code" lay-encode="true">
+<!--
+    以下上传类型的ID可以改变，但是class值不能改变，否则会样式混乱
+-->
+<!-- 单个按钮 -->
+<div id="uploadBtnDemo" class="upload layui-btn">上传</div>
+<!-- 直接显示图片 -->
+<div id="uploadImgDemo" class="upload upload-img layui-btn">上传</div>
+<!-- 输入框带按钮—外面需要包一个带position: relative属性的层 -->
+<input type="text" name="signature" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
+<div id="uploadListDemo" class="upload-list"></div>
+<div class="layui-form-mid layui-word-aux">
+    <div id="uploadDemo" class="upload layui-btn">上传</div>
+</div>
+</pre>
                         </div>
                         <div class="layui-tab-item">
                             <pre class="layui-code" lay-encode="true">
+/**********************************************************
+ *********************** 单个按钮 **************************
+ **********************************************************/
+uploadBtnDemo = WebUploader.create({
+    auto: true,
+    swf: '/static/public/webupload/Uploader.swf',
+    server: "/admin/common/upload",
+    pick: {
+        multiple: false,
+        id: "#uploadBtnDemo",
+        innerHTML: "上传"
+    },
+    accept: {
+        title: '',
+        extensions: '',
+        mimeTypes: ''
+    },
+    resize: false,
+    duplicate: true
+});
 
+//上传成功
+uploadBtnDemo.on('uploadSuccess', function (file, res) {
+    layer.msg('上传成功');
+});
+/***********************************************************
+ ********************** 直接显示图片 *************************
+ *** 注：上传开始和上传成功方法内的代码不要删除，否则样式会混乱*******
+ ***********************************************************/
+uploadImgDemo = WebUploader.create({
+    auto: true,
+    swf: '/static/public/webupload/Uploader.swf',
+    server: "/admin/common/upload",
+    pick: {
+        multiple: false,
+        id: "#uploadImgDemo",
+        innerHTML: "图像上传"
+    },
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/jpg,image/jpeg,image/png'
+    },
+    resize: false,
+    duplicate: true
+});
+
+//上传开始
+uploadImgDemo.on("uploadStart",function (file) {
+    $(uploadImgDemo.options.pick.id).find('#thumbnail').remove();
+    $(uploadImgDemo.options.pick.id).prepend('<img src="" alt="" class="thumbnail" id="thumbnail">');
+});
+
+//上传成功
+uploadImgDemo.on('uploadSuccess', function (file, res) {
+    $('#thumbnail').attr('src',res.src);
+});
+/******************************************************************************
+ ********************************** 输入框带按钮 ********************************
+ *** 不需要进度条的话可以把fileQueued、uploadProgress、uploadSuccess中的代码删掉******
+ *******************************************************************************/
+uploader = WebUploader.create({
+    auto: true,
+    swf: '/static/public/webupload/Uploader.swf',
+    server: "/admin/common/upload",
+    pick: {
+        multiple: false,
+        id: "#uploadDemo",
+        innerHTML: "上传"
+    },
+    accept: {
+        title: '',
+        extensions: '',
+        mimeTypes: ''
+    },
+    resize: false,
+    duplicate: true
+});
+// 当有文件被添加进队列的时候
+uploader.on('fileQueued', function (file) {
+    var $list = $('#uploadListDemo');
+    $list.html('');
+    $list.append('<div id="' + file.id + '" class="item"></div>');
+});
+// 文件上传过程中创建进度条实时显示。
+uploader.on('uploadProgress', function (file, percentage) {
+    var $li = $('#' + file.id),
+        $percent = $li.find('.layui-progress .layui-progress-bar');
+    // 避免重复创建
+    if (!$percent.length) {
+        $('<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="upload">' +
+            '<div class="layui-progress-bar layui-bg-red" id="haha" lay-percent="0%"></div>' +
+            '</div>').appendTo($li).find('.layui-progress-bar');
+    }
+    layui.use('element', function () {
+        element = layui.element;
+        element.progress('upload', percentage * 100 + '%');
+    });
+    $('.layui-progress-bar').html(Math.round(percentage * 100) + '%');
+});
+//上传成功
+uploader.on('uploadSuccess', function (file, response) {
+    $('#uploadList').css('opacity',0);
+});
                             </pre>
                         </div>
                     </div>
