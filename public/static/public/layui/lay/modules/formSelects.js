@@ -1,7 +1,14 @@
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+/**
+ * Javascript中没有自带startsWith方法，所以要自己写，插件的作者很坑爹啊
+ * */
+if (typeof String.prototype.startsWith != 'function') {
+    String.prototype.startsWith = function (prefix){
+        return this.slice(0, prefix.length) === prefix;
+    };
+}
 /**
  * name: formSelects
  * 基于Layui Select多选
@@ -330,7 +337,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				commons.methods.showPlaceholder(options);
 			},
 			on: function on(options, filter) {
-				form.on('select(' + filter + ')', function (data) {
+                form.on('select(' + filter + ')', function (data) {
 					if (options.radio) {
 						commons.methods.getDiv(options).find('dl').removeClass('xm-select-show').addClass('xm-select-hidn').css('display', 'none');
 						var selected = void 0,
