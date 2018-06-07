@@ -277,14 +277,14 @@ $('#admin_table').DataTable({
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
-    "scrollX": true,        //开启横向滚动条
-    "scrollY": "520px",     //开启纵向滚动条后表格的高度，根据实际场景自行设置
+    "scrollX": true,
+    "scrollY": "520px",
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {
         url: "/contract/common/datatablesPre?tableName=section"
     },
-    dom: 'lf<"#save.layui-btn layui-btn-warm layui-btn-sm btn-right btn-space"><"#add.layui-btn layui-btn-normal layui-btn-sm btn-right btn-space">tip',   //btn-right：让按钮靠右显示，btn-space：设置按钮上下外边距
+    dom: 'lf<"#save.layui-btn layui-btn-warm layui-btn-sm btn-right btn-space"><"#add.layui-btn layui-btn-normal layui-btn-sm btn-right btn-space">tip',
     columns: [
         {
             name: "code"
@@ -323,6 +323,9 @@ $('#admin_table').DataTable({
             }
         }
     ],
+    fnCreatedRow:function (nRow, aData, iDataIndex){
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    },
     language: {
         "lengthMenu": "_MENU_ ",
         "zeroRecords": "没有找到记录",
@@ -369,6 +372,15 @@ $('#save').html('保存');
                                             <label class="layui-form-label">排序号</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="order" placeholder="请输入排序号" lay-verify="number" maxlength="4" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">电子签名</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="signature" placeholder="请上传电子签名" autocomplete="off" class="layui-input" readonly>
+                                            <div class="layui-form-mid layui-word-aux">
+                                                <div id="upload" class="upload layui-btn">上传</div>
                                             </div>
                                         </div>
                                     </div>
