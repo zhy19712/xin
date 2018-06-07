@@ -152,4 +152,24 @@ class Templatemanage extends Permissions
                 exit;
             }
     }
+
+    /**
+     * 模板查看，暂时功能，用完废弃
+     * @return \think\response\Json
+     */
+    public function preview()
+    {
+        $param = input('param.');
+
+        $file_id = isset($param['id']) ? $param['id'] : 0;
+
+        if ($file_id == 0) {
+            return json(['code' => '-1', 'msg' => '编号有误']);
+        }
+        $file_obj = Db::name('norm_template')->where('id', $file_id)->field('code,name')->find();
+
+        $formPath = ROOT_PATH . 'public' . DS . "Data\\form\\qualityNew\\" . $file_obj['code'] . $file_obj['name'] . "下载.html";
+
+        return json(["code"=>1,"url"=>$formPath]);
+    }
 }
