@@ -475,8 +475,8 @@ function getQrcode() {
     var link = $("#getQrcode").val();
     $('#qrcode').qrcode({
         render: "canvas", //也可以替换为table
-        width: 100,
-        height: 100,
+        width: 90,
+        height: 90,
         text: link
     });
 }
