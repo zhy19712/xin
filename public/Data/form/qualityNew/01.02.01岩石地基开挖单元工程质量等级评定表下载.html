@@ -53,16 +53,26 @@
             text-align: center;
         }
 
-        .tabTitle {
+        .tabWidth {
             margin: auto;
-            width: 210mm;
+            width: 260mm!important;
         }
         textarea{
+            width: 100%;
+            overflow: hidden;
             outline: none!important;
             border: none!important;
             resize:none!important;
         }
-        
+        select{
+            border: none!important;
+            outline: none!important;
+            appearance: none!important;
+            -webkit-appearance: none!important;
+            -moz-appearance: none!important;
+            background-color: #ffffff!important;
+            display: none;
+        }
         .selType {
             display: inline-block;
             width: 70px;
@@ -71,6 +81,7 @@
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            background-color: #ffffff;
         }
     </style>
 </head>
@@ -139,7 +150,7 @@
                         <p style="line-height:16pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                     </td>
                     <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:2.48pt; padding-right:2.1pt; vertical-align:middle">
-                        <p style="line-height:16pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
+                        <p style="line-height:16pt; margin:0pt; orphans:0; widows:0;text-align: center"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
                     </td>
                 </tr>
                 <tr style="height:17pt">
@@ -359,9 +370,6 @@
                         <div class="qianming">
                             <img id="img_1" class="signName" src="" step="0" form-required="签名必填。"/>
 
-                            <button for="img_1" step="0" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                         </div>
                         <div class="form-group div-inline data_2" style="width: 34mm;margin-left: 10px;">
                             <div class="input-group date" style="width:100%;">
@@ -374,9 +382,6 @@
                         <div class="qianming">
                             <img id="img_2" class="signName" src="" step="1" form-required="签名必填。"/>
 
-                            <button for="img_2" step="1" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                         </div>
                         <div class="form-group div-inline data_2" style="width: 34mm;margin-left: 10px;">
                             <div class="input-group date" style="width:100%;">
@@ -389,9 +394,6 @@
                         <div class="qianming">
                             <img id="img_3" class="signName" src="" step="2" form-required="签名必填。"/>
 
-                            <button for="img_3" step="2" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
                         </div>
                         <div class="form-group div-inline data_2" style="width: 34mm;">
                             <div class="input-group date" style="width:100%;">
@@ -405,9 +407,7 @@
                             <img id="img_4" class="signName" src="" step="3" form-required="签名必填。"/>
                         </div>
                         <div class="qianming">
-                            <button for="img_4" step="3" class="btn btn-info" type="button" onclick="signature(this)">
-                                <i class="fa fa-check"></i> <span class="bold">签名</span>
-                            </button>
+
                         </div>
                         <div class="form-group div-inline data_2" style="width: 34mm; margin-left: 24mm;">
                             <div class="input-group date">
