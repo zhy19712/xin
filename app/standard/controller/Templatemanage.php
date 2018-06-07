@@ -168,7 +168,7 @@ class Templatemanage extends Permissions
         }
         $file_obj = Db::name('norm_template')->where('id', $file_id)->field('code,name')->find();
 
-        $formPath = ROOT_PATH . 'public' . DS . "Data/form/qualityNew/" . $file_obj['code'] . $file_obj['name'] . "下载.html";
+        $formPath = ROOT_PATH . 'public' . DS . "Data\\form\\qualityNew\\" . $file_obj['code'] . $file_obj['name'] . "下载.html";
 
         return json(["code"=>1,"url"=>$formPath]);
     }
