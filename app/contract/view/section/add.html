@@ -137,7 +137,7 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">合同金额</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="money" placeholder="合同金额" id="money"
+                                    <input type="number" name="money" placeholder="合同金额 只能填数字" id="money"
                                            autocomplete="off" class="layui-input">
                                 </div>
                             </div>
@@ -331,6 +331,11 @@
         });
         laydate.render({
             elem: '#date2'
+        });
+        $('input[type=number]').keypress(function(e) {
+            if (!String.fromCharCode(e.keyCode).match(/[0-9\.]/)) {
+                return false;
+            }
         });
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
