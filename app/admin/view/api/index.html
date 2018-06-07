@@ -22,7 +22,10 @@
                     <a href="javascript:;" class="form">表单</a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;" class="ztreeWrap">ztree</a>
+                    <a href="javascript:;" class="ztreeWrap">zTree</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;" class="webUpload">webUpload</a>
                 </li>
             </ul>
         </div>
@@ -379,9 +382,9 @@ $('#save').html('保存');
                                         <label class="layui-form-label">文件上传</label>
                                         <div class="layui-input-block">
                                             <input type="text" name="signature" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
-                                            <div id="uploadList" class="upload-list"></div>
+                                            <div id="uploadListLay" class="upload-list"></div>
                                             <div class="layui-form-mid layui-word-aux">
-                                                <div id="upload" class="upload layui-btn">上传</div>
+                                                <div id="uploadLay" class="upload layui-btn">上传</div>
                                             </div>
                                         </div>
                                     </div>
@@ -401,8 +404,58 @@ $('#save').html('保存');
                                 </form>
                             </div>
                         </div>
-                        <div class="layui-tab-item"></div>
-                        <div class="layui-tab-item"></div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+<!-- ⚠❗注❗⚠： 当layui-input-inline和layui-input-block共存时，layui-input-block会占据一整行，处理方法是设置layui-input-block的margin-right值，具体值视弹层宽度，只要能够和layui-input-inline右对齐即可。详情见css面板-->
+<form action="" class="layui-form layui-layer-wrap">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="nickname" placeholder="请输入姓名" lay-verify="required|username" maxlength="12" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">排序号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="order" placeholder="请输入排序号" lay-verify="number" maxlength="4" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">文件上传</label>
+        <div class="layui-input-block">
+            <input type="text" name="signature" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
+            <div id="uploadList" class="upload-list"></div>
+            <div class="layui-form-mid layui-word-aux">
+                <div id="upload" class="upload layui-btn">上传</div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea name="remark" placeholder="请输入内容" class="layui-textarea" maxlength="500"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="saveAndCreat">保存并新建</button>
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="save">保存</button>
+            <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+        </div>
+    </div>
+</form>
+                            </pre>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+/* 示例中弹层的宽高为area:['660px','420px'],这里设置layui-input-block 的 margin-right值为35px ,实现右对齐 */
+.layui-input-block {
+    margin-right: 35px;
+}
+                            </pre>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -506,6 +559,56 @@ function zTreeEyeOnClick() {
 function zTreeEyeOnCheck() {
 
 }
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- webUpload -->
+            <div id="webUpload" style="display: none">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">效果</li>
+                        <li>html</li>
+                        <li>js</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-card">
+                                <div class="layui-card-header">单个按钮</div>
+                                <div class="layui-card-body">
+                                    <div id="uploadBtnDemo" class="upload layui-btn">上传</div>
+                                </div>
+                            </div>
+                            <div class="layui-card">
+                                <div class="layui-card-header">直接显示图片</div>
+                                <div class="layui-card-body">
+                                    <div style="position: relative;">
+                                        <div id="uploadImgDemo" class="upload upload-img layui-btn">上传</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-card">
+                                <div class="layui-card-header">输入框带按钮</div>
+                                <div class="layui-card-body">
+                                    <div style="position: relative;width: 300px">
+                                        <input type="text" name="signature" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
+                                        <div id="uploadListDemo" class="upload-list"></div>
+                                        <div class="layui-form-mid layui-word-aux">
+                                            <div id="uploadDemo" class="upload layui-btn">上传</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+
+                            </pre>
+                        </div>
+                        <div class="layui-tab-item">
+                            <pre class="layui-code" lay-encode="true">
+
                             </pre>
                         </div>
                     </div>
