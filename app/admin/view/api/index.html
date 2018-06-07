@@ -590,7 +590,7 @@ function zTreeEyeOnCheck() {
                                 <div class="layui-card-header">输入框带按钮</div>
                                 <div class="layui-card-body">
                                     <div style="position: relative;width: 300px">
-                                        <input type="text" name="signature" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
+                                        <input type="text" name="file" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
                                         <div id="uploadListDemo" class="upload-list"></div>
                                         <div class="layui-form-mid layui-word-aux">
                                             <div id="uploadDemo" class="upload layui-btn">上传</div>
@@ -609,7 +609,7 @@ function zTreeEyeOnCheck() {
 <!-- 直接显示图片 -->
 <div id="uploadImgDemo" class="upload upload-img layui-btn">上传</div>
 <!-- 输入框带按钮—外面需要包一个带position: relative属性的层 -->
-<input type="text" name="signature" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
+<input type="text" name="file" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly>
 <div id="uploadListDemo" class="upload-list"></div>
 <div class="layui-form-mid layui-word-aux">
     <div id="uploadDemo" class="upload layui-btn">上传</div>
@@ -720,7 +720,7 @@ uploader.on('uploadProgress', function (file, percentage) {
 });
 //上传成功
 uploader.on('uploadSuccess', function (file, response) {
-    $('#uploadList').css('opacity',0);
+    $('#uploadListDemo').css('opacity',0);
 });
                             </pre>
                         </div>
