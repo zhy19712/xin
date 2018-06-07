@@ -163,7 +163,7 @@ function nodeClick(e, treeId, node) {
     if(controlRowId == '' || procedureId == '') {
         $(".mybtnAdd").css("display", "none");
         // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
-        $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+        $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered cell-border" cellspacing="0" width="100%">' +
             '<thead>' +
                 '<tr style="text-align: center;border-bottom:2px solid #111;border-top: 1px solid #cecece;">' +
                     '<th style="padding:10px 18px;font-weight: bold;">填报人</th>' +
@@ -281,7 +281,7 @@ function nodeClickUnit(e, treeId, node) {
     if(controlRowId == '' || procedureId == '') {
         $(".mybtnAdd").css("display", "none");
         // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
-        $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+        $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered cell-border" cellspacing="0" width="100%">' +
             '<thead>' +
             '<tr style="text-align: center;border-bottom:2px solid #111;border-top: 1px solid #cecece;">' +
             '<th style="padding:10px 18px;font-weight: bold;">填报人</th>' +
@@ -387,7 +387,7 @@ function clickConName(id) {
         implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
         imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
         // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);// 报错可能是这个原因
-        $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+        $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered cell-border" cellspacing="0" width="100%">' +
             '<thead>' +
                 '<tr style="text-align: center;border-bottom:2px solid #111;border-top: 1px solid #cecece;">' +
                     '<th style="padding:10px 18px;font-weight: bold;">填报人</th>' +
@@ -660,7 +660,7 @@ function checkforming(nodeUnitId) {
             // console.log(res);
             if(res.msg == "fail"){//线上结果
                 // onlineFill = $("#onlineFill").dataTable().fnDestroy(true);
-                // $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                // $('#onlineFillParent').html('<table id="onlineFill" class="table table-striped table-bordered cell-border" cellspacing="0" width="100%">' +
                 //     '<thead>' +
                 //     '<tr style="text-align: center">' +
                 //     '<th>填报人</th>' +
@@ -807,6 +807,7 @@ function outerHeight() {
     autoHeight = parseInt($("#unitWorkRight").height() - $("#tableContent").height() - 49);
     $("#implementation_wrapper").css("height",autoHeight+"px");
 }
+
 
 /*回传件上传*/
    var uploader;

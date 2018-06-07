@@ -1,5 +1,5 @@
 {include file="../app/public/common_header.html"}
-<link rel="stylesheet" href="__WEBSITE__/api/ztree_icon.css">
+<link rel="stylesheet" href="__WEBSITE__/api/common.css">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo">后台示例代码</div>
@@ -238,7 +238,7 @@ i.layui-btn-xs{
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
-                            <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                            <table id="admin_table" width="100%" class="table cell-border">
                                 <thead>
                                     <tr>
                                         <th>标段编码</th>
@@ -255,7 +255,7 @@ i.layui-btn-xs{
                         </div>
                         <div class="layui-tab-item">
                             <pre class="layui-code" lay-encode="true">
-<table id="admin_table" width="100%" class="table table-striped table-bordered">
+<table id="admin_table" width="100%" class="table cell-border">
     <thead>
         <tr>
             <th>标段编码</th>
@@ -403,13 +403,13 @@ $('#save').html('保存');
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show layui-clear">
-                            <div class="layui-card" style="float: left;width: 300px;">
+                            <div class="layui-card" style="float: left;width: 550px;">
                                 <div class="layui-card-header">常规zTree</div>
                                 <div class="layui-card-body">
                                     <ul id="ztree" class="ztree"></ul>
                                 </div>
                             </div>
-                            <div class="layui-card" style="float: left;width: 300px;">
+                            <div class="layui-card" style="float: left;width: 550px;">
                                 <div class="layui-card-header">带眼镜的zTree👀</div>
                                 <div class="layui-card-body">
                                     <ul id="ztreeEye" class="ztree eye"></ul>
@@ -517,9 +517,9 @@ function zTreeEyeOnCheck() {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 
         //监听导航点击
-        element.on('nav(demo)', function (elem) {
+        /*element.on('nav(test)', function (elem) {
             layer.msg(elem.text());
-        });
+        });*/
     });
 
     $(function () {

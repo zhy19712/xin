@@ -21,7 +21,8 @@
             <!-- 初始化 -->
             <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
                 var modelPath = "http://192.168.1.2:8008/default.aspx?dir=url_res02&path=";
-                $.ajax({
+                RealBimOcx.SwitchBIMSceneSimple(modelPath, "res_test");
+                /*$.ajax({
                     url: "/modelmanagement/qualitymass/resourcePagName",
                     type: "post",
                     dataType: "json",
@@ -33,7 +34,7 @@
                         var modelName = res.pag_name;
                         RealBimOcx.SwitchBIMSceneSimple(modelPath, modelName);
                     }
-                });
+                });*/
                 RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
                 RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
                 RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
@@ -59,7 +60,7 @@
                         <input type="radio" name="nodeRelationTab" id="allTab">
                         <label for="noteverTab">全部</label>
                     </div>
-                    <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                    <table id="tableItem" class="table cell-border" cellspacing="0"  width="100%">
                         <thead>
                             <tr>
                                 <th>
@@ -86,7 +87,7 @@
                     </table>
                 </div>
                 <div title="已关联模型" style="display:none;">
-                    <table id="alreadyRelationModelTable" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                    <table id="alreadyRelationModelTable" class="table cell-border" cellspacing="0"  width="100%">
                         <thead>
                             <tr>
                                 <th>序号</th>

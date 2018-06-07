@@ -3,7 +3,7 @@ var setting = {
     async: {
         enable : true,
         type : 'post',
-        url : '/admin/admin/index',
+        url : '/modelmanagement/qualitymass/index?node_type=2',
         dataType :'json'
     },
     data: {
@@ -32,7 +32,7 @@ var setting = {
     async: {
         enable : true,
         type : 'post',
-        url : '/admin/admin/index',
+        url : '/modelmanagement/qualitymass/index?node_type=2',
         dataType :'json'
     },
     data: {
