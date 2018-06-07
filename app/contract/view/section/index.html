@@ -8,14 +8,6 @@
         padding: 0;
     }
 
-    #admin_table_wrapper {
-        padding-top: 5px;
-    }
-
-    .dataTables_wrapper .dataTables_filter {
-        padding-top: 2px;
-    }
-
     #secTable table {
         table-layout: fixed;
     }
@@ -26,10 +18,6 @@
 
     #secTable {
         padding: 0 .5em;
-    }
-
-    .dataTables_wrapper .layui-btn {
-        margin-bottom: 5px;
     }
 </style>
 <!--<body class="easyui-layout" style="overflow-y:hidden;">-->
@@ -75,7 +63,7 @@
         ajax: {
             url: "{:url('contract/common/datatablesPre?tableName=section')}"
         },
-        dom: 'lf<"mybtn layui-btn layui-btn-normal layui-btn-sm btn-right">tip',
+        dom: 'lf<"mybtn layui-btn layui-btn-normal layui-btn-sm btn-right btn-space">tip',
         columns: [
             {
                 name: "code"
