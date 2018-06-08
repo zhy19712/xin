@@ -145,14 +145,18 @@ $('#save').click(function () {
     });
 });
 
+var tableItem;
 //table数据
 function tableInfo() {
-    $.datatable({
-        tableId:'tableItem',
-        iDisplayLengths:1000,
-        scrollYs: true,
-        scrollCollapses: true,
-        pagings: false,
+    tableItem = $('#tableItem').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        retrieve: true,
+        iDisplayLength:1000,
+        "scrollY": "200px",
+        "scrollCollapse": "true",
+        "paging": "false",
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=quality_unit'
         },
@@ -227,9 +231,106 @@ function tableInfo() {
                 "orderable": false
             }
         ],
+        language: {
+            "zeroRecords": "没有找到记录",
+            "lengthMenu": "_MENU_ ",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索",
+            "sSearchPlaceholder": "请输入关键字",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+        },
+        "fnInitComplete": function (oSettings, json) {
+            //表头固定的滚动条
+            $('#unitWork .dataTables_scroll').on('scroll',function(){
+                $("#unitWork .dataTables_scrollHead").css("top",$(this).scrollTop())
+            });
+        },
     });
-    $('.tbcontainer:last-child').remove();
-    $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
+
+    // $.datatable({
+    //     tableId:'tableItem',
+    //     iDisplayLengths:1000,
+    //     scrollYs: true,
+    //     scrollCollapses: true,
+    //     pagings: false,
+    //     ajax:{
+    //         'url':'/quality/common/datatablesPre?tableName=quality_unit'
+    //     },
+    //     dom: 'f<".current-path"<"#add.add layui-btn layui-btn-normal layui-btn-sm">>tr',
+    //     columns:[
+    //         {
+    //             name: "serial_number"
+    //         },
+    //         {
+    //             name: "site"
+    //         },
+    //         {
+    //             name: "coding"
+    //         },
+    //         {
+    //             name: "hinge"
+    //         },
+    //         {
+    //             name: "pile_number"
+    //         },
+    //         {
+    //             name: "el_start"
+    //         },
+    //         {
+    //             name: "el_cease"
+    //         },
+    //         {
+    //             name: "start_date"
+    //         },
+    //         {
+    //             name: "completion_date"
+    //         },
+    //         {
+    //             name: "id"
+    //         },
+    //         {
+    //             name: "en_type"
+    //         }
+    //     ],
+    //     columnDefs:[
+    //         {
+    //             "searchable": false,
+    //             "orderable": false,
+    //             "targets": [3],
+    //             "render" :  function(data,type,row) {
+    //                 if(data == 0){
+    //                     return '否'
+    //                 }
+    //                 return '是'
+    //             }
+    //         },
+    //         {
+    //             "searchable": false,
+    //             "orderable": false,
+    //             "targets": [9],
+    //             "render" :  function(data,type,row) {
+    //                 var html = "<i class='fa fa-pencil' uid="+ data +" title='编辑' onclick='edit(this)'></i>" ;
+    //                 html += "<i class='fa fa-trash' uid="+ data +" title='删除' onclick='del(this)'></i>" ;
+    //                 return html;
+    //             }
+    //         },
+    //         {
+    //             "searchable": false,
+    //             "orderable": false,
+    //             "targets": [10],
+    //             "visible": false
+    //         },
+    //         {
+    //             "targets": [2],
+    //             "visible": false,
+    //             "searchable": false,
+    //             "orderable": false
+    //         }
+    //     ],
+    // });
+    // $('.tbcontainer:last-child').remove();
+    // $('.dataTables_scrollBody #tableItem').next(".tbcontainer").nextAll().remove();
 }
 tableInfo();
 // setTimeout(function () {
@@ -375,7 +476,7 @@ function maBasesTable() {
     $('#maBasesLayer').show().find('.tbcontainer').remove();
 
     //翻页事件
-    tableItem.on('draw',function () {
+    maBasesItem.on('draw',function () {
         $('input[type="checkbox"][name="checkList"]').prop("checked",false);
         $('#all_checked').prop('checked',false);
         idArr.length=0;
@@ -538,7 +639,7 @@ function edit(that) {
         area:['800px','700px'],
         others:function (res) {
             $('input[name="coding"]').val(res.coding);
-            $('input[name="completion_date"]').val(res.completion_time);
+            $('input[name="completion_date"]').val(res.completion_date);
             $('input[name="create_time"]').val(res.create_time);
             $('input[name="el_cease"]').val(res.el_cease);
             $('input[name="el_start"]').val(res.el_start);
@@ -679,7 +780,13 @@ function tpyeTable() {
         ],
         language: {
             "zeroRecords": "没有找到记录",
-        }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            //表头固定的滚动条
+            $('#tableContent .dataTables_scroll').on('scroll',function(){
+                $("#tableContent .dataTables_scrollHead").css("top",$(this).scrollTop())
+            });
+        },
     });
 }
 
@@ -812,7 +919,7 @@ function selfidName(id) {
             // if($(".imgNone").attr("id") == 'img0'){
             //     $("#img0").css("display","none");
             // }
-            $("#tableContent #tableItemControl_wrapper .dataTables_scrollBody").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 66px)");
+            $("#tableItemControl_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 39px)");
         }
     })
 }

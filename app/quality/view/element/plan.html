@@ -18,21 +18,7 @@
     .dataTables_wrapper, .tbcontainer {
         display: block;
     }
-    #tableContent .mybtn i.fa:before,#tableContent .bitCodes i.fa:before,#tableContent .alldel i.fa:before{
-        background: #00c0ef;
-        color: #ffffff;
-    }
-    #tableContent .mybtn,#tableContent .bitCodes,#tableContent .alldel{
-        float: right;
-        background-color: #00c0ef;
-    }
-    #tableContent .mybtn,#tableContent .bitCodes,#tableContent .alldel{
-        margin-right: 0.5%;
-    }
-    #tableContent #tableItem_filter {
-        float: left;
-        margin-left: 1%;
-    }
+
     #tableContent .select-color {
         background-color: #FDD5B5 !important;
     }
@@ -83,10 +69,6 @@
         margin-bottom:15px;
         padding-top: 0px;
     }
-    .mybtn,.bitCodes{
-        display: none;
-    }
-
     .select-color {
         background-color: #FDD5B5 !important;
     }
@@ -105,10 +87,11 @@
         max-height: none!important;
         width: 100%;
         height: calc(100% - 76px)!important;
+        /*width: calc(100% - 0.7rem) !important;*/
         border-bottom: none!important;
     }
     #tableItem_wrapper{
-        height: 100% !important;
+        height: calc(100% - 55px)!important;
     }
 
     .tbcontainer{
@@ -124,9 +107,9 @@
         /*height: calc(100% - 137px)!important;*/
         border-bottom: none!important;
     }
-    #tableItemControl_wrapper{
-        height: 100% !important;
-    }
+    /*#tableItemControl_wrapper{*/
+        /*height: 100% !important;*/
+    /*}*/
     table.dataTable.no-footer {
         margin-top: 0px;
     }
@@ -136,6 +119,7 @@
     }
     .dataTables_scrollHeadInner,#tableItem_wrapper table,#imageData_wrapper table, #implementation_wrapper table, #onlineFill_wrapper table{
         width: 100% !important;
+        /*width: calc(100% - 0.28rem) !important;*/
     }
     .dataTables_filter{
         padding: 5px;
@@ -190,6 +174,27 @@
     .layui-form-item {
         margin-top: 15px;
     }
+
+    /*!*加滚动条 表头和表格对齐*!*/
+    #unitWork .dataTables_scrollHead,#tableContent .dataTables_scrollHead{
+        position: absolute!important;
+        top: 0;
+        height: 38px;
+        z-index: 555;
+    }
+    #unitWork .dataTables_scrollBody,#tableContent .dataTables_scrollBody{
+        position: absolute!important;
+        top:38px;
+        overflow: visible!important;
+    }
+    #unitWork .dataTables_scroll,#tableContent .dataTables_scroll{
+        overflow: auto;
+        position: relative;
+    }
+
+    /*#tableItemControl{*/
+        /*table-layout: fixed;*/
+    /*}*/
 </style>
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">

@@ -9,10 +9,6 @@
 .webuploader-pick {
 	padding: 0 16px;
 }
-.webuploader-pick-hover {
-	background: #31a99d;
-}
-
 .webuploader-pick-disable {
 	opacity: 0.6;
 	pointer-events:none;
