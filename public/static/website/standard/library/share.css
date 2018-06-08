@@ -98,3 +98,7 @@
 .ztree-title i.fa-arrow-circle-down:before{
     color: #dca107;
 }
+
+table.dataTable.no-footer {
+    border-bottom: 1px solid #ddd;
+}

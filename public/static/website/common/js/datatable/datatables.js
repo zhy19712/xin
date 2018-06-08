@@ -14,11 +14,9 @@
             tableId:'tableItem',
             tbcontainer:'tbcontainer',
             isPage:true,
-
             iDisplayLength: 'iDisplayLengths',
             scrollY: 'scrollYs',
-            scrollCollapse: 'scrollCollapses',
-            paging: 'pagings',
+            scrollCollapse: true
         }
 
         $.extend(option,options);
@@ -39,7 +37,6 @@
             iDisplayLength: options.iDisplayLength,
             scrollY: options.scrollY,
             scrollCollapse: options.scrollCollapse,
-            paging: options.paging,
             dom: option.dom,
             ajax: option.ajax,
             columns: options.columns,
