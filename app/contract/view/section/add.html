@@ -368,13 +368,16 @@
                     }
                 })
             } else if ($("#addId").val() != '') {
-                data.field.otherIdArr = formSelects.value('selectOther', 'val');
+                if(formSelects.value('selectOther', 'val')==''){
+                    data.field.otherIdArr = '-1';
+                }else{
+                    data.field.otherIdArr = formSelects.value('selectOther', 'val');
+                }
                 $.ajax({
                     type: "Post",
                     url: "{:url('addoredit')}",
                     data: data.field,
                     success: function (res) {
-                        console.log(res)
                         if (res.code == 1) {
                             refreshSub();
                             parent.layer.msg('编辑成功！');

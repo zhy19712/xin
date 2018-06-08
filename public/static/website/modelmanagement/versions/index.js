@@ -206,7 +206,6 @@ function uploadModel() {
         var $list = $('#thelist');
         $list.html('');
         $list.append( '<div id="' + file.id + '" class="item">' +
-            '<h4 class="info">' + file.name + '</h4>' +
             '<p class="state">等待上传...</p>' +
             '</div>' );
     });

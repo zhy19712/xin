@@ -16,10 +16,12 @@
                         model_type:1
                     },
                     success: function (res) {
+                        console.log(res);
+                        serverVarsion = res.new_version_number;
                         //模型名称
                         var modelName = res.pag_name;
                         if(modelName==null){
-                            layer.confirm('未注册控件,请前往注册?', {icon: 3, title: '提示', anim: 2}, function (index) {
+                            layer.alert('未注册控件,请前往注册!', {icon: 2, title: '提示', anim: 2}, function (index) {
                                 $.ajax({
                                     url: "{:url('admin/common/logout')}"
                                     , success: function (res) {
@@ -45,7 +47,19 @@
                 if(CompleteEvent == "LoadMainScene" && retError==0 ){
                     RealBimOcx.SetAllHugeObjSubValidState(1);
                     RealBimOcx.SetSceHugeObjVisible(true);
-                    console.log(RealBimOcx.GetVersion());
+                    /*$.ajax({
+                        url: "",
+                        type: "post",
+                        data: {},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            var currentVarsion = RealBimOcx.GetVersion();
+                            if(currentVarsion==serverVarsion){
+
+                            }
+                        }
+                    });*/
                 }
                 RealBimOcx.SetSuitableCam();
                 //TODO get请求
@@ -205,6 +219,7 @@
     isCtrlDown = false;
     modelColor='';
     modelTrans='';
+    serverVarsion = '';     //服务器版本（最新版本）
     //键盘事件
     $(document).keydown(function (event) {
         var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
