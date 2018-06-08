@@ -7,6 +7,7 @@ use \think\Controller;
 use think\Loader;
 use think\Db;
 use \think\Session;
+use think\Cookie;
 class Permissions extends Controller
 {
 
@@ -38,13 +39,15 @@ class Permissions extends Controller
         
         //检查是否登录
         
-        if(!Session::has('admin')) {
-            
+        if(!Session::has('admin') && !Cookie::has("admin")) {
+
             $this->redirect('admin/common/login');
         }
 
+        $user_id = Session::get('admin')?Session::get('admin'):Cookie::get("admin");
+
         //检查当前用户是否被禁
-        $black_id = Db::name('admin')->where('id',Session::get('admin'))->value('status');
+        $black_id = Db::name('admin')->where('id',$user_id)->value('status');
 
         if($black_id == 0) {
             Session::delete('admin');
