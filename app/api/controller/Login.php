@@ -50,8 +50,10 @@ class Login extends Controller
                         Session::set("current_id",$name['id']); //保存新的
                         Session::set("current_nickname",$name['nickname']); //保存新的
                         Session::set("admin_cate_id",$name['admin_cate_id']); //保存新的
+                        //加token验证app端登陆状态
+                        $token=md5(md5($name['id']));
                         //记录登录时间和ip
-                        Db::name('admin')->where('id',$name['id'])->update(['login_ip' =>$_SERVER["REMOTE_ADDR"],'login_time' => time()]);
+                        Db::name('admin')->where('id',$name['id'])->update(['login_ip' =>$_SERVER["REMOTE_ADDR"],'login_time' => time(),'token'=>$token]);
 
                         return json(['code'=>'1','msg'=>'登录成功','id'=>$name['id']]);
                   }

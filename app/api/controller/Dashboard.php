@@ -284,11 +284,12 @@ class Dashboard extends Controller
                     $cpr_id = Db::name("quality_division_controlpoint_relation")
                         ->field("id")
                         ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
+                        ->where("type = 1")//0单位,分部工程编号 1检验批
                         ->find();
 
-                    $form_data["cpr_id"] = $cpr_id["id"];
-                    $form_data["id"] = $form_info["id"];
-                    $form_data["CurrentStep"] = $form_info["CurrentStep"];
+                    $form_data["cpr_id"] = $cpr_id["id"]?$cpr_id["id"]:"";
+                    $form_data["id"] = $form_info["id"]?$form_info["id"]:"";
+                    $form_data["CurrentStep"] = $form_info["CurrentStep"]?$form_info["CurrentStep"]:"";
 
                     $message_list[$key]["form_info"] = $form_data;
                 }else

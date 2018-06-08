@@ -115,7 +115,6 @@ class Send extends Permissions
 
 //                $jpush = new JpushModel();
 //                $id = $flag["data"];//前台传过来的发文的id
-////            $id = 33;
 //                //获取当前的用户名
 //                $admin_name = Db::name('admin')->where(['id'=>$param['income_id']])->value('name');
 //                $alias = $admin_name;
