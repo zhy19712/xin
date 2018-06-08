@@ -476,7 +476,7 @@ function maBasesTable() {
     $('#maBasesLayer').show().find('.tbcontainer').remove();
 
     //翻页事件
-    maBasesItem.on('draw',function () {
+    tableItem.on('draw',function () {
         $('input[type="checkbox"][name="checkList"]').prop("checked",false);
         $('#all_checked').prop('checked',false);
         idArr.length=0;
