@@ -57,8 +57,12 @@ class Section extends Permissions
             try {
                 $mod = input('post.');
                 if(isset($mod['otherIdArr'])){
-                    $mod['otherId'] = implode(',',$mod['otherIdArr']);
-                    unset($mod['otherIdArr']);
+                    if($mod['otherIdArr'][0] == -1){
+                        $mod['otherId'] = '';
+                    }else{
+                        $mod['otherId'] = implode(',',$mod['otherIdArr']);
+                        unset($mod['otherIdArr']);
+                    }
                 }
                 $m = new SectionModel();
                 $res = $m->AddOrEdit($mod);
