@@ -18,6 +18,21 @@
                     success: function (res) {
                         //模型名称
                         var modelName = res.pag_name;
+                        if(modelName==null){
+                            layer.confirm('未注册控件,请前往注册?', {icon: 3, title: '提示', anim: 2}, function (index) {
+                                $.ajax({
+                                    url: "{:url('admin/common/logout')}"
+                                    , success: function (res) {
+                                        if (res.code == 1) {
+                                            setTimeout(function () {
+                                                parent.location.reload();
+                                            }, 2000);
+                                        }
+                                    }
+                                })
+                            });
+                            return false;
+                        }
                         RealBimOcx.SwitchBIMSceneSimple(modelPath,modelName);
                     }
                 });
@@ -30,6 +45,7 @@
                 if(CompleteEvent == "LoadMainScene" && retError==0 ){
                     RealBimOcx.SetAllHugeObjSubValidState(1);
                     RealBimOcx.SetSceHugeObjVisible(true);
+                    console.log(RealBimOcx.GetVersion());
                 }
                 RealBimOcx.SetSuitableCam();
                 //TODO get请求
