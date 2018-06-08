@@ -2,6 +2,9 @@ $('#admin_table').DataTable({
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
+    scrollX: true,
+    scrollY: "520px",
+    scrollCollapse: true,
     ajax: {
         url: "/contract/common/datatablesPre?tableName=section"
     },
@@ -34,6 +37,19 @@ $('#admin_table').DataTable({
     ],
     columnDefs: [
         {
+            sWidth:"10%",
+            targets: [0]
+        },
+        {
+            sWidth:"10%",
+            targets: [1]
+        },
+        {
+            sWidth:"10%",
+            targets: [2]
+        },
+        {
+            sWidth:"7%",
             searchable: false,
             orderable: false,
             targets: [7],

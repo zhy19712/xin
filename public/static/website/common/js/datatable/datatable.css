@@ -1,6 +1,10 @@
 .dataTables_filter{
     font-weight: bold;
 }
+/* 开启滚动条宽度自适应 */
+table.table,.dataTables_scrollHeadInner{
+    width: 100% !important;
+}
 table.table i.fa{
     width: 40px;
     height: 26px;
@@ -28,7 +32,7 @@ table.dataTable tbody tr:hover,table.dataTable tbody tr.active{
 table.dataTable.no-footer{
     float: left;
     border-top: 1px solid #ddd;
-    border-bottom: none;
+    border-bottom: 1px solid #ddd;
 }
 .table>tbody>tr.active>td {
     background-color: #Fdd5b5;

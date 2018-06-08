@@ -406,6 +406,7 @@
         },
         dom:'lf<"#add.add layui-btn layui-btn-normal btn-right">rtip',
         isPage:false,
+        scrollY:'600px',
         columns:[
             {
                 name: "g_order"
