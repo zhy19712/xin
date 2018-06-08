@@ -449,7 +449,7 @@ function fileSelect(htmlElement) {
 function fileChange(){
     layui.upload.render({
         elem: '#file',// 文件上传控件的id属性
-        url: "/admin/common/upload?use=qualityform",
+        url: "/admin/common/upload?module=quality&use=element",
         accept:"file",
         before: function(obj){
             obj.preview(function(index, file, result){
