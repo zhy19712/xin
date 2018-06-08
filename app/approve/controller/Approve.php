@@ -115,21 +115,22 @@ class Approve extends Permissions
             //判断当前的下一个审批人的是否已经登录
                 $admin_model = new Admin();
                 $admin_info = $admin_model->getOne($next_approverid);
-                if(!empty($admin_info["token"]))
-                {
-                    //查询关联表quality_division_controlpoint_relation的信息
-                    $form_info = Db::name("quality_form_info")->where("id",$par['dataId'])->find();
-                    $relation_info = Db::name("quality_division_controlpoint_relation")
-                        ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
-                        ->find();
-//                极光推送给下一个审批人消息
-                    $jpush = new JpushModel();
-//                获取当前的用户名
-                    $admin_name = Session::has('current_name') ? Session::get('current_name') : 0; //收件人姓名
-                    $alias = $admin_name;
-                    $alert = "id:{$par['dataId']},type:单元工程,CurrentApproverId:{$next_approverid},CurrentStep:{$form_info["CurrentStep"]},cpr_id:{$relation_info["id"]}";
-                    $jpush->push_a($alias,$alert);
-                }
+
+//                if(!empty($admin_info["token"]))
+//                {
+//                    //查询关联表quality_division_controlpoint_relation的信息
+//                    $form_info = Db::name("quality_form_info")->where("id",$par['dataId'])->find();
+//                    $relation_info = Db::name("quality_division_controlpoint_relation")
+//                        ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
+//                        ->find();
+////                极光推送给下一个审批人消息
+//                    $jpush = new JpushModel();
+////                获取当前的用户名
+//                    $admin_name = Session::has('current_name') ? Session::get('current_name') : 0; //收件人姓名
+//                    $alias = $admin_name;
+//                    $alert = "id:{$par['dataId']},type:单元工程,CurrentApproverId:{$next_approverid},CurrentStep:{$form_info["CurrentStep"]},cpr_id:{$relation_info["id"]}";
+//                    $jpush->push_a($alias,$alert);
+//                }
                 return json(['code' => 1]);
             } else {
                 return json(['code' => -1]);
@@ -185,10 +186,13 @@ class Approve extends Permissions
             $_u = array();
             $_u = [
                 'id' => $u['id'],
-                'nickname' => $u['nickname']
+                'nickname' => $u['nickname'],
+                'thumb' => ''
             ];
-            if (is_null($u['Thumb']))
+            if (!is_null($u['Thumb']))
+                {
                 $_u['thumb'] = $u['Thumb']['filepath'];
+                }
             $userlist[] = $_u;
         }
         //foreach ($_userlist as $user) {
