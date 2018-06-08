@@ -253,6 +253,8 @@ class Element extends Permissions
                     'JYPName'=>$output['JYPName'],
                     'JYPCode'=>$output['JYPCode'],
                     'JJCode'=>$output['JJCode'],
+                    'start_date'=>$output['start_date'],
+                    'completion_date'=>$output['completion_date'],
                     'Quantity'=>$output['Quantity'],
                     'PileNo'=>$output['PileNo'],
                     'Altitude'=>$output['Altitude'],

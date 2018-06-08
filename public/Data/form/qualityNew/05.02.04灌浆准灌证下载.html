@@ -67,6 +67,7 @@
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            font-size: 12px!important;
         }
         .tabTitle {
             margin: auto;
@@ -76,6 +77,15 @@
             outline: none!important;
             border: none!important;
             resize:none!important;
+            width: 100%!important;
+            height: 100%!important;
+            font-size: 12px!important;
+        }
+        table{
+            width: 260mm!important;
+        }
+        input{
+            /*width: 100%!important;*/
         }
     </style>
 </head>
@@ -143,7 +153,7 @@
                     <p style="line-height:14pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <p style="margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
+                    <p style="margin:0pt; orphans:0; widows:0;text-align: center;"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
                 </td>
             </tr>
             <tr style="height:17pt">
@@ -534,7 +544,7 @@
                 <td colspan="22" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt 0pt 0pt 5.25pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt; letter-spacing:0.05pt; vertical-align:-0.5pt">特殊情</span><span style="font-family:仿宋; font-size:10.5pt; vertical-align:-0.5pt">况记</span><span style="font-family:仿宋; font-size:10.5pt; letter-spacing:0.05pt; vertical-align:-0.5pt">录：</span></p>
                     <div class="contentDiv">
-                        <textarea id="input_47" default="/" step="0" style="height: 100px;" placeholder="" class="comment texBorder"></textarea>
+                        <textarea id="input_47" default="/" step="0" style="height: 100%!important;" placeholder="" class="comment texBorder"></textarea>
                     </div>
                 </td>
             </tr>

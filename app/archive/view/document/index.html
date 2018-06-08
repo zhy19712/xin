@@ -2,7 +2,9 @@
 <script src="__PUBLIC__/jquery/jquery.min.js"></script>
 <link rel="stylesheet" href="__PUBLIC__/ztree/css/zTreeStyle/zTreeStyle.css">
 <style>
-
+    .layui-btn{
+        padding: 0;
+    }
     #nodeZtree .ztree-title i.fa {
         width: 18%;
     }
@@ -101,7 +103,13 @@
     .fa.fa-plus:hover:before {
         color: #fff;
     }
-    #testList div:last-child,#testList label,#testList input{
+    #testList{
+        padding: 0;
+        height: 36px;
+        line-height: 36px;
+        border-radius: 3px;
+    }
+    #testList div:last-child{
         width: 86px!important;
         height: 36px!important;
     }
@@ -190,7 +198,7 @@
                 </thead>
             </table>
             <div style="float: right;margin-right: 50px;">
-                <a  id="testList" style="margin-left: 5px;float:left;width: 86px;height: 42.2px;">增加文件</a>
+                <a  type="button" class="layui-btn btn" id="testList">增加文件</a>
                 <button type="button"  id="testListAction" style="width: 86px;height:36px;background: #009688;cursor: pointer;color:#fff;border-radius: 4px;margin-left: 30px;">开始上传</button>
             </div>
         </div>

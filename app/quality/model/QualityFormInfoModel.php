@@ -70,6 +70,8 @@ class QualityFormInfoModel extends Model implements IApprove
         $output['Altitude'] = $mod['el_start'] . $mod['el_cease'];
         $output['DYName'] = $mod['Division']['d_name'];
         $output['DYCode'] = $mod['Division']['d_code'];
+        $output['start_date'] = $unit['start_date'];
+        $output['completion_date'] = $unit['completion_date'];
 
         $atlas_id=$unit['ma_bases'];
         $atlas_id=explode(',',$atlas_id);
