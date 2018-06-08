@@ -185,10 +185,13 @@ class Approve extends Permissions
             $_u = array();
             $_u = [
                 'id' => $u['id'],
-                'nickname' => $u['nickname']
+                'nickname' => $u['nickname'],
+                'thumb' => ''
             ];
-            if (is_null($u['Thumb']))
+            if (!is_null($u['Thumb']))
+                {
                 $_u['thumb'] = $u['Thumb']['filepath'];
+                }
             $userlist[] = $_u;
         }
         //foreach ($_userlist as $user) {
