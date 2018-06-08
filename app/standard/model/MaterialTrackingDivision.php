@@ -57,4 +57,13 @@ class MaterialTrackingDivision extends Model
             return ['code' => 0, 'msg' => $e->getMessage()];
         }
     }
+
+    /**
+     * 根据cat的值获取所有的数据
+     */
+    public function getAllData($cat)
+    {
+        $data = $this->where("cat",$cat)->order("sort_id asc")->select();
+        return $data;
+    }
 }
