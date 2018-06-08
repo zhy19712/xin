@@ -51,31 +51,26 @@
             text-align: center;
         }
 
+
         .tabWidth {
             margin: auto;
-            width: 360mm!important;
+            width: 360mm;
         }
         textarea{
             outline: none!important;
             border: none!important;
             resize:none!important;
+            background-color: #ffffff;
         }
         .sign_date{
             border: none!important;
             outline: none!important;
         }
-        #fileTitle{
-            width: 210mm;
-            height: 80px;
-            margin: 0 auto;
-            position: relative;
-        }
-        #qrcode{
-            position: absolute;
-            right: 0px;
-            top: 0px;
-            width: 80px;
-            height: 80px;
+        input{
+            outline: none!important;
+            border: none!important;
+            max-width: 120px;
+            background-color: #ffffff;
         }
     </style>
 </head>
@@ -114,7 +109,7 @@
                 </td>
             </tr>
         </table>
-        <div style="text-align:center">
+        <div>
             <table cellspacing="0" cellpadding="0" class="tabWidth tabHeight" style="border-collapse:collapse; margin: auto;">
                 <tr style="height:34pt">
                     <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:1.5pt; padding-left:0.65pt; padding-right:1.02pt; vertical-align:middle">
@@ -142,7 +137,7 @@
                         <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                     </td>
                     <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                        <p style="margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
+                        <p style="margin:0pt; orphans:0; widows:0;text-align: center"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
                     </td>
                 </tr>
                 <tr style="height:17pt">
@@ -163,7 +158,7 @@
                     <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
                         <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">评定日期</span></p>
                     </td>
-                    <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
+                    <td colspan="4" style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
                         <div class="form-group div-inline data_2">
                             <div class="input-group date" style="width:100%;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>

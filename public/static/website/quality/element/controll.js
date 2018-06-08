@@ -79,7 +79,13 @@ tableItem = $('#tableItem').DataTable({
     ],
     language: {
         "zeroRecords": "没有找到记录"
-    }
+    },
+    "fnInitComplete": function (oSettings, json) {
+        //表头固定的滚动条
+        $('#tableContent .dataTables_scroll').on('scroll',function(){
+            $("#tableContent .dataTables_scrollHead").css("top",$(this).scrollTop())
+        });
+    },
 });
 
 //查询提交
@@ -338,7 +344,7 @@ function selfidName(id) {
             //     $("#img0").css("display","none");
             // }
 
-            $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 64px)");
+            $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 85px)");
 
             // }else if(res.code==0){
             //     layer.msg(res.msg);
@@ -947,7 +953,13 @@ implementation = $('#implementation').DataTable({
     },
     "fnDrawCallback":function(obj){
         // outerHeight();
-    }
+    },
+    "fnInitComplete": function (oSettings, json) {
+        //表头固定的滚动条
+        $('#implementationParent .dataTables_scroll').on('scroll',function(){
+            $("#implementationParent .dataTables_scrollHead").css("top",$(this).scrollTop())
+        });
+    },
 });
 
 //附件资料上传点击
@@ -1084,7 +1096,13 @@ imageData = $('#imageData').DataTable({
     ],
     language: {
         "zeroRecords": "没有找到记录"
-    }
+    },
+    "fnInitComplete": function (oSettings, json) {
+        //表头固定的滚动条
+        $('#imageDataParent .dataTables_scroll').on('scroll',function(){
+            $("#imageDataParent .dataTables_scrollHead").css("top",$(this).scrollTop())
+        });
+    },
 });
 /*============图像资料结束==============*/
 
@@ -1249,7 +1267,13 @@ function funOnLine(nodeUnitId,procedureId,controlRowId){
         ],
         language: {
             "zeroRecords": "没有找到记录"
-        }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            //表头固定的滚动条
+            $('#onlineFillParent .dataTables_scroll').on('scroll',function(){
+                $("#onlineFillParent .dataTables_scrollHead").css("top",$(this).scrollTop())
+            });
+        },
     });
 }
 

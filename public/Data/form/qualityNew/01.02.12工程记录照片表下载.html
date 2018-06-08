@@ -13,6 +13,7 @@
     <link href="/Content/css/form.css" rel="stylesheet">
     <script src="/Content/js/jquery-2.1.4.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.qrcode.min.js"></script>
+
     <script src="/Content/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script src="/Areas/Quality/Views/QualityForm/QualityForm.js"></script>
     <script src="/Content/js/ajaxfileupload.js"></script>
@@ -100,9 +101,19 @@
         .btomSpan {
             display: none;
         }
+        input{
+            outline: none!important;
+            border: none!important;
+            max-width: 120px;
+            background-color: #ffffff!important;
+        }
         .tabTitle {
             margin: auto;
             width: 210mm;
+        }
+        .tabWidth {
+            margin: auto;
+            width: 260mm;
         }
         textarea{
             outline: none!important;
@@ -167,7 +178,7 @@
                         <p style="width: 20mm; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止桩号</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
-                        <p class="zhuangSpanP" style="margin: 0pt; orphans: 0; widows: 0"><span class="zhuangSpan" style="font-family: 仿宋;">{$PileNo}</span></p>
+                        <p class="zhuangSpanP" style="margin: 0pt; orphans: 0; widows: 0;text-align: center;"><span class="zhuangSpan" style="font-family: 仿宋;">{$PileNo}</span></p>
                     </td>
                 </tr>
                 <tr style="height: 34pt">
@@ -222,9 +233,7 @@
                         <div class="div_img">
                             <img id="img_1" class="upLoadPic" src="" />
                         </div>
-                        <div class="btnList">
-
-                        </div>
+                        <div class="btnList"></div>
                         <div class="divTex">
                             <textarea id="input_1" default="/" step="0" style="height: 70px;" placeholder="描述" class="comment texBorder"></textarea>
                         </div>
@@ -259,9 +268,7 @@
                         <div class="div_img">
                             <img id="img_3" class="upLoadPic" src="" />
                         </div>
-                        <div class="btnList">
-
-                        </div>
+                        <div class="btnList"></div>
                         <div class="divTex">
                             <textarea id="input_3" default="/" step="0" style="height: 70px;" placeholder="描述" class="comment texBorder"></textarea>
                         </div>
@@ -360,8 +367,8 @@
                 </tr>
             </table>
         </div>
-        <p class="tabWidth" style="margin: auto; orphans: 0; padding-left: 31.5pt; text-align: justify; text-indent: -32pt; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">说明：照片要求从不同角度具有代表性的拍摄4张，分别张贴上述表内，一式二份，施工单位一份，监理</span></p>
-        <p class="tabWidth" style="margin: auto; orphans: 0; padding-left: 31.5pt; text-align: justify; text-indent: 0pt; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单位一份。</span></p>
+        <p class="tabWidth" style="margin: auto; orphans: 0; text-align: justify; text-indent: 12pt; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">说明：照片要求从不同角度具有代表性的拍摄4张，分别张贴上述表内，一式二份，施工单位一份，监理</span></p>
+        <p class="tabWidth" style="margin: auto; orphans: 0; text-align: justify; text-indent: 0pt; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单位一份。</span></p>
         <p style="line-height: 18pt; margin: 0pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">&#xa0;</span></p>
     </div>
 
