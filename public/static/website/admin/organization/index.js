@@ -406,10 +406,6 @@
         },
         dom:'lf<"#add.add layui-btn layui-btn-normal btn-right">rtip',
         isPage:false,
-        "scrollX": true,
-        "scrollY": "600px",
-        "scrollCollapse": "true",
-        "paging": "false",
         columns:[
             {
                 name: "g_order"
