@@ -280,10 +280,10 @@ $('#admin_table').DataTable({
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
-    "scrollX": true,
-    "scrollY": "520px",
-    "scrollCollapse": "true",
-    "paging": "false",
+    bAutoWidth: false,  //是否自动宽度
+    scrollX: true,
+    scrollY: "520px",   //表格容器高度
+    scrollCollapse: true,
     ajax: {
         url: "/contract/common/datatablesPre?tableName=section"
     },
@@ -316,6 +316,7 @@ $('#admin_table').DataTable({
     ],
     columnDefs: [
         {
+            sWidth:"10%",       //根据按钮个数设置适当的宽度，支持px单位【注：该属性需要和bAutoWidth: false搭配使用】
             searchable: false,
             orderable: false,
             targets: [7],

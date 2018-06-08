@@ -424,11 +424,6 @@ function maBasesTable() {
         ajax:{
             'url':'/quality/common/datatablesPre?tableName=archive_atlas_cate'
         },
-        // iDisplayLength:1000,
-        // "scrollY": "200px",
-        // "scrollCollapse": "true",
-        // "paging": "false",
-        // isPage:false,
         columns:[
             {
                 name: "id",

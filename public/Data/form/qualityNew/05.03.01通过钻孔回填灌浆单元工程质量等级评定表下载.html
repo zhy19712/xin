@@ -53,7 +53,7 @@
         }
 
         .tabWidth {
-            width: 210mm;
+            width: 260mm;
         }
         .inputSel{
 /*            min-width: 30px*/
@@ -70,12 +70,19 @@
         }
         .tabTitle {
             margin: auto;
-            width: 210mm;
+            width: 260mm;
         }
         textarea{
             outline: none!important;
             border: none!important;
             resize:none!important;
+            width: 100%!important;
+        }
+        table{
+            width: 260mm!important;
+        }
+        input{
+            width: 100%!important;
         }
     </style>
 </head>
@@ -143,7 +150,7 @@
                     <p style="line-height:12pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                    <p style="line-height:12pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
+                    <p style="line-height:12pt; margin:0pt; orphans:0; widows:0;text-align: center;"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
                 </td>
             </tr>
             <tr style="height:17pt">
@@ -759,7 +766,7 @@
                     个，其中优良回填灌浆孔
                     <input id="input_hgl_2" step="0" default="/" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     个，优良率为
-                    <input id="input_hgl_3" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_3" default="/"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     %。</span></p>
                 </td>
             </tr>
@@ -802,7 +809,7 @@
                     点，其中合格
                     <input id="input_hgl_5" step="0" default="/" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     点，合格率
-                    <input id="input_hgl_6" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_6" default="/"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     %。</span></p>
                 </td>
             </tr>
@@ -842,19 +849,19 @@
             <tr style="height:17pt">
                 <td colspan="10" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:0.65pt; padding-right:1.02pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">单元工程灌浆效果检查符合要求，灌浆孔全部合格，其中优良孔占
-                    <input id="input_hgl_7" disabled default="/" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_7"  default="/" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
                 <td colspan="3" style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
-                    <input id="input_hgl_9" disabled default="/" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_9"  default="/" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                 </td>
                 <td colspan="10" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:10.5pt">单元工程灌浆效果检查符合要求，灌浆孔全部合格，其中优良孔占
-                    <input id="input_hgl_8" disabled default="/" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_8"  default="/" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
                 <td colspan="4" style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                    <input id="input_hgl_result" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_result" default="/"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                 </td>
             </tr>
             <tr style="height:18.05pt">

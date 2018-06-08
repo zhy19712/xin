@@ -78,7 +78,7 @@
     }
 
     #tableItem{
-        padding-top: 10px           ;
+        padding-top: 0px           ;
     }
     #tableItem_paginate ul li{
         line-height: 18px;
@@ -148,6 +148,13 @@
     }
     .ztree-title i.fa-arrow-circle-down:before{
         color: #dca107;
+    }
+
+    .layui-form-mid.layui-word-aux .layui-btn{
+        padding: 0 18px;
+    }
+    .layui-form-mid.layui-word-aux{
+        position: relative;
     }
 </style>
 <div data-options="region:'west',title:'图册文件树',split:true" style="width:240px;">
@@ -629,24 +636,13 @@
 </script>
 </body>
 </html>
+
 <script>
   //添加数据用的
   var datainfo = [
-    ['BJ401S-H4-6-4-4','高压管道7#上弯管展开图'],
-    ['BJ401S-H4-6-4-5','高压管道8#、9#上弯管展开图'],
-    ['BJ401S-H4-6-4-6','高压管道7#、8#下弯管展开图'],
-    ['BJ401S-H4-6-4-7','高压管道9#下弯管展开图'],
-    ['BJ401S-H4-6-4-8','高压管道10#~12#上弯管展开图'],
-    ['BJ401S-H4-6-4-9','高压管道10#~12#下弯管展开图'],
-    ['BJ401S-H4-6-4-10','高压管道19#弯管展开图'],
-    ['BJ401S-H4-6-4-11','高压管道20#弯管展开图'],
-    ['BJ401S-H4-6-4-12','高压管道21#弯管展开图'],
-    ['BJ401S-H4-6-4-13','高压管道22#~24#弯管展开图（1/2）'],
-    ['BJ401S-H4-6-4-14','高压管道22#~24#弯管展开图（2/2）'],
-    ['BJ401S-H4-6-4-1','高压管道13#~15#渐缩管展开图'],
-    ['BJ401S-H4-6-4-2','高压管道16#、17#渐缩管展开图'],
-    ['BJ401S-H4-6-4-3','高压管道18#渐缩管展开图'],
-    ['BJ401S-H4-6-4-4','高压管道19#～24#渐缩管展开图'],
+    ['BJ401S-H4-6-6-8~15','引水系统钢衬段贴壁排水布置图'],
+    ['BJ401S-H4-6-6-1~7','高压管道岩壁排水布置图'],
+    ['BJ401S-H4-6-6-16','高压支管穿厂包封图'],
   ];
 
   var iii = 0;
@@ -655,7 +651,7 @@
       selfid: 255,
       picture_number: datainfo[iii][0],
       picture_name: datainfo[iii][1],
-      id:348,
+      id:396,
       path: "",
       attachmentId: '',
       filename_1: '',
