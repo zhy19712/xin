@@ -85,7 +85,7 @@ uploader.on('uploadProgress', function (file, percentage) {
 //上传成功
 uploader.on('uploadSuccess', function (file, response) {
     $('#uploadListDemo').css('opacity',0);
-    $('input[name="file"][type="text"]').val(file.name);
+    $('input[name="file"][type="text"]~').val(file.name);
 });
 
 

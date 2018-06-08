@@ -423,6 +423,7 @@ class Common extends Controller
                 $cpr_id = Db::name("quality_division_controlpoint_relation")
                     ->field("id")
                     ->where(["division_id"=>$form_info["DivisionId"],"ma_division_id"=>$form_info["ProcedureId"],"control_id"=>$form_info["ControlPointId"]])
+                    ->where("type = 1")
                     ->find();
 
                 $form_data["cpr_id"] = $cpr_id["id"];
