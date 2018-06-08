@@ -54,9 +54,6 @@
     margin-left: 10px;
     margin-bottom: 5px;
 }
-#tableContent table.dataTable.no-footer {
-    border-top: 1px dotted;
-}
 #tableContent #funKuai{
     width: 100%;
     position: absolute;
