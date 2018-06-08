@@ -298,6 +298,8 @@ class Atlas extends Permissions
                     'picture_name' => $param['picture_name'],//图名
                     'picture_papaer_num' => 1,//图纸张数(输入数字),默认1
                     'paper_category' => $info['paper_category'],//图纸类别
+                    'owner' => Session::get('current_nickname'),//上传人
+                    'create_time' => strtotime(date("Y-m-d"))//上传日期
                 ];
                 $flag = $model->insertCate($data);
                 return json($flag);

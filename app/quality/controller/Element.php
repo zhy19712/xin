@@ -252,6 +252,7 @@ class Element extends Permissions
                     'formData'=>'',
                     'JYPName'=>$output['JYPName'],
                     'JYPCode'=>$output['JYPCode'],
+                    'JJCode'=>$output['JJCode'],
                     'Quantity'=>$output['Quantity'],
                     'PileNo'=>$output['PileNo'],
                     'Altitude'=>$output['Altitude'],

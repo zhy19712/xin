@@ -115,29 +115,32 @@ class Library extends Permissions
      */
     public function GetDivsionTree($cat)
     {
+            //实例化模型类
+            $model = new MaterialTrackingDivision();
             //查询所有的数据
-            $data = MaterialTrackingDivision::all(['cat' => $cat]);
+//            $data = MaterialTrackingDivision::all(['cat' => $cat]);
+            $data = $model->getAllData($cat);
             //定义一个空数组
             $sortArr = [];
             //定义空字符串
             $str = "";
             if(!empty($data))
             {
-                foreach ($data as $v){
-                    $sortArr[] = $v['sort_id'];
-                }
+//                foreach ($data as $v){
+//                    $sortArr[] = $v['sort_id'];
+//                }
                 //按照排序sort_id进行排序
 
-                asort($sortArr);
-
-                foreach ($sortArr as $v){
+//                asort($sortArr);
+//                halt($sortArr);
+//                foreach ($sortArr as $v){
                     foreach($data as $key=>$vo){
-                        if($v == $vo['sort_id']){
+//                        if($v == $vo['sort_id']){
                             $str .= '{ "id": "' . $vo['id'] . '", "pid":"' . $vo['pid'] . '", "name":"' . $vo['name'].'"'.',"sort_id":"'.$vo['sort_id'].'","type":"'.$vo['type'].'","cat":"'.$vo['cat'].'"';
                             $str .= '},';
-                        }
+//                        }
                     }
-                }
+//                }
             }
             return "[" . substr($str, 0, -1) . "]";
     }
