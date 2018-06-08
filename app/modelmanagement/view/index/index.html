@@ -16,7 +16,6 @@
                         model_type:1
                     },
                     success: function (res) {
-                        console.log(res);
                         serverVarsion = res.new_version_number;
                         //模型名称
                         var modelName = res.pag_name;
@@ -47,19 +46,22 @@
                 if(CompleteEvent == "LoadMainScene" && retError==0 ){
                     RealBimOcx.SetAllHugeObjSubValidState(1);
                     RealBimOcx.SetSceHugeObjVisible(true);
-                    /*$.ajax({
-                        url: "",
-                        type: "post",
-                        data: {},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            var currentVarsion = RealBimOcx.GetVersion();
-                            if(currentVarsion==serverVarsion){
-
-                            }
-                        }
-                    });*/
+                    var currentVarsion = RealBimOcx.GetVersion();
+                    if(serverVarsion!=currentVarsion){
+                        layer.alert('控件版本太低,请前往更新!', {icon: 2, title: '提示', anim: 2}, function (index) {
+                            $.ajax({
+                                url: "{:url('admin/common/logout')}"
+                                , success: function (res) {
+                                    if (res.code == 1) {
+                                        setTimeout(function () {
+                                            parent.location.reload();
+                                        }, 2000);
+                                    }
+                                }
+                            })
+                        });
+                        return false;
+                    }
                 }
                 RealBimOcx.SetSuitableCam();
                 //TODO get请求

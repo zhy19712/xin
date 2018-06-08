@@ -29,8 +29,24 @@
                         model_type: 2
                     },
                     success: function (res) {
+                        serverVarsion = res.new_version_number;
                         //模型名称
                         var modelName = res.pag_name;
+                        if(modelName==null){
+                            layer.alert('未注册控件,请前往注册!', {icon: 2, title: '提示', anim: 2}, function (index) {
+                                $.ajax({
+                                    url: "{:url('admin/common/logout')}"
+                                    , success: function (res) {
+                                        if (res.code == 1) {
+                                            setTimeout(function () {
+                                                parent.location.reload();
+                                            }, 2000);
+                                        }
+                                    }
+                                })
+                            });
+                            return false;
+                        }
                         RealBimOcx.SwitchBIMSceneSimple(modelPath, modelName);
                     }
                 });
@@ -44,6 +60,22 @@
                     RealBimOcx.SetAllHugeObjSubValidState(1);
                     RealBimOcx.SetSceHugeObjVisible(true);
                     RealBimOcx.SetSysUIRgnVisible("lt",0);
+                    var currentVarsion = RealBimOcx.GetVersion();
+                    if(serverVarsion!=currentVarsion){
+                        layer.alert('控件版本太低,请前往更新!', {icon: 2, title: '提示', anim: 2}, function (index) {
+                            $.ajax({
+                                url: "{:url('admin/common/logout')}"
+                                , success: function (res) {
+                                    if (res.code == 1) {
+                                        setTimeout(function () {
+                                            parent.location.reload();
+                                        }, 2000);
+                                    }
+                                }
+                            })
+                        });
+                        return false;
+                    }
                 }
                 RealBimOcx.SetSuitableCam();
             </script>
@@ -119,6 +151,7 @@
 <script type="text/javascript">
     var opacityState; //模型显隐状态
     var modelIds; //模型是否选中
+    serverVarsion = '';     //服务器版本（最新版本）
     //选中模型
     window.operateModel = function (data) {
         if(data.model_id!=''){
