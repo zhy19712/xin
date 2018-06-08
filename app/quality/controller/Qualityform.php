@@ -100,6 +100,7 @@ class Qualityform extends Permissions
                 'isView'=>$isView,
                 'formData'=>$formdata,
                 'JYPName'=>$output['JYPName'],
+                'JJCode'=>$output['JJCode'],
                 'JYPCode'=>$output['JYPCode'],
                 'Quantity'=>$output['Quantity'],
                 'PileNo'=>$output['PileNo'],
