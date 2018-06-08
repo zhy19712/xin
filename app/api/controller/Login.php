@@ -68,6 +68,9 @@ class Login extends Controller
      */
     public function logout()
     {
+        //退出登录时候删除数据库中的token
+        $user_id = Session::get('admin')?Session::get('admin'):Cookie::get("admin");
+        Db::name('admin')->where('id',$user_id)->update(['token'=>""]);
         Session::delete('admin');
         Session::delete('admin_cate_id');
         if(Session::has('admin') or Session::has('admin_cate_id')) {
