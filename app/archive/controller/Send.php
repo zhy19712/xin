@@ -103,26 +103,28 @@ class Send extends Permissions
             $param['send_group_id'] = $pid;
             $param['send_p_name'] = Db::name('admin_group')->where(['id'=>$pid])->value('name');
             if($param['income_id']){
-                $param['income_name'] = Db::name('admin')->where(['id'=>$param['income_id']])->value('nickname');
+                $admin_info = Db::name('admin')->where(['id'=>$param['income_id']])->find();
+                $param['income_name'] = $admin_info["nickname"];
                 $pid = $group->relationId($param['income_id']);
                 $param['income_group_id'] = $pid;
                 $param['income_p_name'] = Db::name('admin_group')->where(['id'=>$pid])->value('name');
             }
 
             if(empty($major_key)){
+
                 $flag = $send->insertTb($param);
 
-
-//                $jpush = new JpushModel();
-//                $id = $flag["data"];//前台传过来的发文的id
-//                //获取当前的用户名
-//                $admin_name = Db::name('admin')->where(['id'=>$param['income_id']])->value('name');
-//                $alias = $admin_name;
-//                $alert = "major_key:{$id},type:收文,see_type:1";
-//                $jpush->push_a($alias,$alert);
-
-
-
+                if(!empty($admin_info["token"]))
+                {
+                    //判断当前的发文用户是否登录
+                    $jpush = new JpushModel();
+                    $id = $flag["data"];//前台传过来的发文的id
+                    //获取当前的用户名
+                    $admin_name = Db::name('admin')->where(['id'=>$param['income_id']])->value('name');
+                    $alias = $admin_name;
+                    $alert = "major_key:{$id},type:收文,see_type:1";
+                    $jpush->push_a($alias,$alert);
+                }
             }else{
                 $param['id'] = $major_key;
                 $flag = $send->editTb($param);

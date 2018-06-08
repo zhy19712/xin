@@ -9,6 +9,7 @@
 namespace app\quality\controller;
 
 use app\admin\controller\Permissions;
+use app\modelmanagement\model\QualitymassModel;
 use app\quality\model\DivisionControlPointModel;
 use app\quality\model\DivisionModel;
 use app\quality\model\DivisionUnitModel;
@@ -237,7 +238,7 @@ class Division extends Permissions{
             // 批量删除 包含的 单元工程段号(单元划分) 与 模型图的关联记录
             $idArr = Db::name('quality_unit')->where('division_id',$id)->column('id');
             if(sizeof($idArr)){
-                $picture = new PictureRelationModel();
+                $picture = new QualitymassModel();
                 $picture->deleteRelation($idArr);
                 // 批量删除 包含的 单元工程段号(单元划分)
                 $unit = new DivisionUnitModel();
@@ -900,7 +901,7 @@ class Division extends Permissions{
             $con->delRelation($id,'1');
 
             // 关联删除 此 单元工程段号 与 模型图的关联记录
-            $picture = new PictureRelationModel();
+            $picture = new QualitymassModel();
             $picture->deleteRelation([$id]);
             $unit = new DivisionUnitModel();
             $flag = $unit->deleteTb($id);

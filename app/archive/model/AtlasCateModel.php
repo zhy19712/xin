@@ -101,9 +101,9 @@ class AtlasCateModel extends Model
         $children = array();
 
         $data = Db::name("archive_atlas_cate")->alias("a")
-            ->join('attachment m', 'm.id = a.attachmentId', 'left')
-            ->join('admin n', 'n.id = m.user_id', 'left')
-            ->field('a.picture_number,a.picture_name,a.picture_papaer_num,a.create_time,a.paper_category,m.create_time,n.nickname as owner,a.id,a.pid')
+//            ->join('attachment m', 'm.id = a.attachmentId', 'left')
+//            ->join('admin n', 'n.id = m.user_id', 'left')
+            ->field('a.picture_number,a.picture_name,a.picture_papaer_num,a.create_time,a.paper_category,a.create_time,a.owner,a.id,a.pid')
             ->where('pid', $id)
             ->select();
         if(!empty($data))
