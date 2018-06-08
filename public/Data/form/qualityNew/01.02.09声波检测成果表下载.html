@@ -13,7 +13,6 @@
     <link href="/Content/css/edit.css" rel="stylesheet">
     <script src="/Content/js/jquery-2.1.4.js" type="text/javascript"></script>
     <script src="/Content/js/jquery.qrcode.min.js"></script>
-
     <script src="/Content/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script src="/Areas/Quality/Views/QualityForm/QualityForm.js"></script>
     <title></title>
@@ -72,7 +71,7 @@
         .div_img {
             text-align: center;
             width: 100%;
-            height: 50mm;
+            height: 30mm;
         }
 
         .btnList {
@@ -86,15 +85,24 @@
             max-height: 100%;
         }
         textarea{
+            width: 100%;
+            max-height: 35px!important;
             outline: none!important;
             border: none!important;
             resize:none!important;
+            background-color: #ffffff;
+        }
+        .tabWidth{
+            width: 260mm!important;
+            margin: auto;
         }
         input{
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            background-color: #ffffff;
         }
+
     </style>
 </head>
 
@@ -120,7 +128,6 @@
 
             </div>
         </div>
-
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
         <p style="line-height:10pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:10.5pt">合同编号：{ContractCode}                    </span><span style="font-family:仿宋; font-size:10.5pt">    </span><span style="font-family:仿宋; font-size:10.5pt">编号：{JYPCode}</span></p>-->
         <table class="tabWidth tabTitle">
@@ -135,7 +142,7 @@
                 </td>
             </tr>
         </table>
-        <table cellspacing="0" cellpadding="0" class="tabWidth tabHeight" style="border-collapse:collapse; margin: auto;">
+        <table class="tabWidth" style="border-collapse:collapse;">
             <tr style="height:34pt">
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:1.5pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">单位工程名称及编号</span></p>
@@ -161,7 +168,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <p style="line-height:10pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; font-weight:normal; text-transform:none">{$PileNo}</span></p>
+                    <p style="line-height:10pt; margin:0pt; orphans:0; widows:0;text-align: center"><span style="font-family:仿宋; font-size:9pt; font-style:normal; font-weight:normal; text-transform:none">{$PileNo}</span></p>
                 </td>
             </tr>
             <tr style="height:17pt">
@@ -202,7 +209,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">施工依据</span></p>
                 </td>
                 <td colspan="12" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:8pt">{BuildBase}</span></p>
+                    <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:8pt">{$BuildBase}</span></p>
                 </td>
             </tr>
             <tr style="height:13.65pt">
@@ -937,15 +944,12 @@
                     </p>
                     <div class="qianming qianmingBlock" style="margin-left: 5mm;">
                         <img id="img_1" class="signBtoName" src="" step="0" form-required="签名必填。" />
-
-
                     </div>
                     <p style="line-height: 20pt; margin: 0pt 5.25pt; orphans: 0; text-align: justify; text-indent: 205.25pt; widows: 0;margin-top: -45px;">
                         <span style="font-family: 仿宋; font-size: 10.5pt; letter-spacing: 0.05pt">校核：</span>
                     </p>
                     <div class="qianming qianmingBlock" style="margin-left: 80mm;">
                         <img id="img_2" class="signBtoName" src="" step="1" form-required="签名必填。" />
-
                     </div>
                     <div class="form-group div-inline data_2" style="float: right; margin-top: -45px; margin-right: 10px; width: 40mm;">
                         <div class="input-group date" style="width: 100%;">
@@ -967,7 +971,6 @@
                         <img id="img_3" class="signName" src="" step="2" form-required="签名必填。" />
                     </div>
                     <div class="qianming">
-
                     </div>
                     <p style="line-height: 16pt; margin: 0pt 0pt 0pt 5pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">&#xa0;</span></p>
 
@@ -988,7 +991,6 @@
                         <img id="img_4" class="signName" src="" step="3" form-required="签名必填。" />
                     </div>
                     <div class="qianming">
-
                     </div>
                     <p style="line-height: 16pt; margin: 0pt 0pt 0pt 5pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">&#xa0;</span></p>
 
