@@ -107,6 +107,8 @@ class Matchform extends Controller
                 'JYPName'=>$output['JYPName'],
                 'JYPCode'=>$output['JYPCode'],
                 'JJCode'=>$output['JJCode'],
+                'start_date'=>'',
+                'completion_date'=>'',
                 'Quantity'=>$output['Quantity'],
                 'PileNo'=>$output['PileNo'],
                 'Altitude'=>$output['Altitude'],
