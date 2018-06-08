@@ -401,12 +401,18 @@ function formSaveAndApprove() {
 
 // 保存成功后处理逻辑
 function handleAfterSave(dataId) {
-    if (saveStyle === 1) {
-        parent.submitOnLine(dataId);
-    } else {
+    if (IsPC() == true) {
+        if (saveStyle === 1) {
+            parent.submitOnLine(dataId);
+        } else {
+            var user = parent.$("#current_user").text().trim().replace("欢迎, ", "");
+            parent.approve(dataId, user, $("#currentStep").val());
+        }
+    }else{
         var user = parent.$("#current_user").text().trim().replace("欢迎, ", "");
-        parent.approve(dataId, user, $("#currentStep").val());
+        approve(dataId, user, $("#currentStep").val());
     }
+
 };
 // 选择文件按钮事件
 // htmlElement参数为当前选择文件按钮dom对象
@@ -479,4 +485,45 @@ function getQrcode() {
         height: 90,
         text: link
     });
+}
+
+//手机端-在线填报-流程审批
+function approve(id,app,step) {
+    $.ajax({
+        url: "/approve/Approve/CheckBeforeSubmitOrApprove",
+        type: "post",
+        data: {
+            dataId:id,
+            dataType:"app\\quality\\model\\QualityFormInfoModel",
+            currentStep:step
+        },
+        success: function (res) {
+            console.log(res);
+            if(res == ""){
+                layer.open({
+                    type: 2,
+                    title: '流程处理',
+                    shadeClose: true,
+                    area: ['980px', '90%'],
+                    content: '/approve/approve/Approve?dataId='+ id + '&dataType=app\\quality\\model\\QualityFormInfoModel',
+                    success: function(layero, index){
+                        var body = layer.getChildFrame('body', index);
+                        body.find("#conCode").val(app);
+                        body.find("#dataId").val(id);
+                        body.find("#dataType").val('app\\quality\\model\\QualityFormInfoModel');
+                    },
+                    end:function () {
+                        funOnLine(nodeUnitId,procedureId,controlRowId);
+                        onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                    }
+                });
+            }else if(res != ''){
+                layer.alert(res);
+            }
+        },
+        error:function () {
+            alert("获取数据完整性检测异常")
+        }
+    });
+    console.log(id);
 }
