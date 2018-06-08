@@ -52,11 +52,11 @@ class Login extends Controller
                         Session::set("admin_cate_id",$name['admin_cate_id']); //保存新的
                         //记录登录时间和ip
                         Db::name('admin')->where('id',$name['id'])->update(['login_ip' =>$_SERVER["REMOTE_ADDR"],'login_time' => time()]);
-                        return json(['code'=>'1','msg'=>'登陆成功']);
+
+                        return json(['code'=>'1','msg'=>'登录成功','id'=>$name['id']]);
                   }
-        }
-        else{
-            return json(['code'=>'1','msg'=>'您已经登陆','cookiekey'=>$_COOKIE['PHPSESSID']]);
+        } else{
+            return json(['code'=>'1','msg'=>'您已经登录','cookiekey'=>$_COOKIE['PHPSESSID'],"id"=>Session::get('admin')]);
         }
      }
 
@@ -71,7 +71,7 @@ class Login extends Controller
         if(Session::has('admin') or Session::has('admin_cate_id')) {
             return json(["code"=>-1,"msg"=>"退出失败！"]);
         }else{
-            return json(["code"=>-1,"msg"=>"正在退出..."]);
+            return json(["code"=>1,"msg"=>"退出成功！"]);
         }
     }
 
@@ -83,7 +83,7 @@ class Login extends Controller
     public function personal()
     {
         //获取管理员id
-        $admin_id = Session::has('current_id') ? Session::get('current_id') : 0;
+        $admin_id = input("post.id");
         $model = new admin();
         //定义一个空的数组
         $admin_info = array();
