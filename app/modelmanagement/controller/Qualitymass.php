@@ -268,7 +268,20 @@ class Qualitymass extends Permissions
 
             $version = new VersionsModel();
             $pag_name = $version->getPagName($model_type);
-            return json(['code'=>1,'pag_name'=>$pag_name,'msg'=>'资源包名称']);
+
+            // 最新版本号
+            $filePath = './uploads/3Dapp/version.json';
+            if(!file_exists($filePath)){
+                return ['code' => '-1','msg' => '最新版本号文件不存在'];
+            }
+            $files = file_get_contents($filePath);
+            $txt = str_replace("{",'',$files);
+            $txt = str_replace("}",'',$txt);
+            $txt = str_replace(array("\r\n", "\r", "\n"),'',$txt);
+            $txt = str_replace(" ",'',$txt);
+            $txt = explode(':',$txt);
+            $new_version_number = $txt[1];
+            return json(['code'=>1,'pag_name'=>$pag_name,'new_version_number'=>$new_version_number,'msg'=>'资源包名称和最新版本号']);
         }
     }
 
