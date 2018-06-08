@@ -53,7 +53,7 @@
         }
 
         .tabWidth {
-            width: 220mm;
+            width: 260mm;
         }
         .selType {
             display: inline-block;
@@ -63,15 +63,26 @@
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            font-size: 12px!important;
         }
         .tabTitle {
             margin: auto;
-            width: 210mm;
+            width: 260mm;
         }
         textarea{
             outline: none!important;
             border: none!important;
             resize:none!important;
+            font-size: 12px!important;
+        }
+        select{
+            border: none!important;
+            outline: none!important;
+            appearance: none!important;
+            -webkit-appearance: none!important;
+            -moz-appearance: none!important;
+            background-color: #ffffff!important;
+            display: none;
         }
     </style>
 </head>
@@ -140,7 +151,7 @@
                         <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                     </td>
                     <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                        <p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
+                        <p style="margin:0pt; orphans:0; text-align:justify; widows:0;text-align: center;"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
                     </td>
                 </tr>
                 <tr style="height:17pt">
@@ -611,7 +622,7 @@
                         项</span><span style="font-family:仿宋; font-size:10.5pt">，其中优良</span><span style="font-family:仿宋; font-size:10.5pt">
                         <input id="input_hgl_4" step="0" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         项，</span><span style="font-family:仿宋; font-size:10.5pt">优良率</span><span style="font-family:仿宋; font-size:10.5pt">
-                        <input id="input_hgl_5" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                        <input id="input_hgl_5"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         %。</span></p>
                     </td>
                 </tr>
