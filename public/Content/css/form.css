@@ -4,14 +4,9 @@
 
 .tabWidth {
     margin: auto!important;
-    width: 260mm!important;
+    width: 210mm!important;
 
 }
-.tabTitle{
-    margin: auto!important;
-    width: 260mm!important;
-}
-
 .A4 {
     /*    margin: 10mm 15mm 15mm 17mm;*/
     margin: 0mm 15mm 15mm 17mm;
