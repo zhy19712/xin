@@ -53,7 +53,7 @@
         }
 
         .tabWidth {
-            width: 210mm;
+            width: 260mm;
         }
         .contentDiv {
             padding: 5px;
@@ -63,15 +63,21 @@
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            font-size: 12px!important;
         }
         .tabTitle {
             margin: auto;
-            width: 210mm;
+            width: 260mm;
         }
         textarea{
             outline: none!important;
             border: none!important;
             resize:none!important;
+            width: 96% !important;
+            font-size: 12px!important;
+        }
+        table{
+            width: 260mm!important;
         }
     </style>
 </head>
@@ -137,7 +143,7 @@
                     <p style="line-height:12pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                    <p style="line-height:12pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
+                    <p style="line-height:12pt; margin:0pt; orphans:0; widows:0;text-align: center;"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
                 </td>
             </tr>
             <tr style="height:17pt">
@@ -254,7 +260,7 @@
                     <textarea id="input_5" default="/" step="0" placeholder="" class="comment">齐全、准确、清晰</textarea>
                 </td>
             </tr>
-            <tr style="height:22.7pt">
+            <tr style="height:49.7pt">
                 <td rowspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:0.65pt; padding-right:1.02pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">一般项目</span></p>
                 </td>
@@ -268,7 +274,7 @@
                     <p style="line-height:12pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">应无中断或虽有中断，但处理及时，措施合理，经检查分析尚不影响灌浆质量</span></p>
                 </td>
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                    <textarea id="input_6" default="/" step="0" placeholder="" class="comment">无中断或虽有中断，但处理及时，措施合理，经检查分析尚不影响灌浆质量</textarea>
+                    <textarea id="input_6" default="/" step="0" placeholder="" style="height: 50px" class="comment">无中断或虽有中断，但处理及时，措施合理，经检查分析尚不影响灌浆质量</textarea>
                 </td>
             </tr>
             <tr style="height:22.7pt">
@@ -307,7 +313,7 @@
                 <td colspan="14" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">检查孔注浆试验结果：</span></p>
                     <div class="contentDiv">
-                        <textarea id="input_9" default="/" step="0" style="height: 100px;" placeholder="" class="comment texBorder"></textarea>
+                        <textarea id="input_9" default="/" step="0" style="height: 40px;" placeholder="" class="comment texBorder"></textarea>
                     </div>
                 </td>
             </tr>
@@ -315,7 +321,7 @@
                 <td colspan="14" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">检查孔岩芯和浆液结石充填情况：</span></p>
                     <div class="contentDiv">
-                        <textarea id="input_10" default="/" step="0" style="height: 100px;" placeholder="" class="comment texBorder"></textarea>
+                        <textarea id="input_10" default="/" step="0" style="height: 40px;" placeholder="" class="comment texBorder"></textarea>
                     </div>
                 </td>
             </tr>
@@ -341,7 +347,7 @@
                     点，其中合格
                     <input id="input_hgl_2" step="0" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     点，合格率
-                    <input id="input_hgl_3" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_3"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     %。</span></p>
                 </td>
             </tr>
@@ -382,19 +388,19 @@
             <tr style="height:17pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:0.65pt; padding-right:1.02pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">单元工程灌浆效果检查符合要求，灌浆孔全部合格，其中优良孔占
-                    <input id="input_hgl_4" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_4"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
                 <td colspan="3" style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
-                    <input id="input_hgl_6" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_6"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                 </td>
                 <td colspan="5" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:10.5pt">单元工程灌浆效果检查符合要求，灌浆孔全部合格，其中优良孔占
-                    <input id="input_hgl_5" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_5"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
                 <td style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                    <input id="input_hgl_result" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_result" default="/"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                 </td>
             </tr>
             <tr style="height:17pt">
