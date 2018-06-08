@@ -277,4 +277,13 @@ class QualitymassModel extends Model
         return $processinfo;
     }
 
+    // 删除单元工程节点时 --- 批量删除 该节点包含的单元工程段号(检验批)所对应的关联关系
+    public function deleteRelation($unit_id_arr)
+    {
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
+        $this->where(['unit_id'=>['in',$unit_id_arr],'version_number'=>$version_number])->update(['unit_id'=>0]);
+        return ['code'=>1,'msg'=>'解除成功'];
+    }
+
 }
