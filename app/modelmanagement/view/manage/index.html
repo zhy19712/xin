@@ -85,6 +85,8 @@
                     RealBimOcx.SetAllHugeObjSubValidState(1);
                     RealBimOcx.SetSceHugeObjVisible(true);
                     var currentVarsion = RealBimOcx.GetVersion();
+                    console.log('当前版本：'+currentVarsion);
+                    console.log('最新版本：'+serverVarsion);
                     if(serverVarsion!=currentVarsion){
                         layer.alert('控件版本太低,请前往更新!', {icon: 2, title: '提示', anim: 2}, function (index) {
                             $.ajax({
