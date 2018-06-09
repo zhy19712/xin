@@ -204,7 +204,9 @@
             $('#date').text(res.date);
             $('#temperature').text(data.temperature);
             $('#weather').text(data.weather);
-            console.table([{'日期':data.date,'温度':data.temperature,'天气':data.weather,'风向':data.wind}]);
+            if(console.table){
+                console.table([{'日期':data.date,'温度':data.temperature,'天气':data.weather,'风向':data.wind}]);
+            }
         }
     })
 </script>
