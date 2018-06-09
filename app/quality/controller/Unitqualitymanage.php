@@ -251,15 +251,15 @@ class Unitqualitymanage extends Permissions
         }else if(request()->isAjax()){
             return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
         }else{
-            $fileName = $file_obj['filename'];
+            $fileName = $file_obj['data_name'];
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
             Header("Content-type:application/octet-stream ");
             Header("Accept-Ranges:bytes ");
             Header("Accept-Length:   " . filesize($filePath));
-            Header('Content-Disposition: attachment; filename='.$file_obj['data_name']);
-            Header('Content-Type: application/octet-stream; name='.$file_obj['data_name']);
+            Header('Content-Disposition: attachment; filename='.$fileName);
+            Header('Content-Type: application/octet-stream; name='.$fileName);
             //   输出文件内容
             echo fread($file, filesize($filePath));
             fclose($file);
