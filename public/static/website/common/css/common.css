@@ -122,7 +122,7 @@ i.fa:hover:before{
     padding: 0 !important;
 }
 .layui-form-mid.layui-word-aux.no-position{
-    position: initial;
+    position: static;
     padding: 9px 0!important;
     margin-right: 10px;
 }
