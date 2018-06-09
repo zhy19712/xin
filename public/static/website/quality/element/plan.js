@@ -691,6 +691,9 @@ function del(that) {
             $(".imgList").css("display","none");
             tpyeTable();
             tableItemControl.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked=0&en_type=&unit_id=&division_id=").load();
+            setTimeout(function () {
+                $("#all_checked_plan").prop("checked",false);
+            },700)
         }
     });
 }
