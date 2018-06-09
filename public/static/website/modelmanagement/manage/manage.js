@@ -3,7 +3,7 @@ modelTrans = '';        //透明度
 modelColor = '';        //选择集颜色
 choiceness_pigment = '';       //优良色值
 qualified_pigment = '';      //合格色值
-un_evaluation_pigment = '';  //不合格色值
+un_evaluation_pigment = '';  //未验评色值
 modeGroupIds = '';  //模型组ID
 controlpoint_id = ''    //控制点Id
 currentStep = ''; //审批步骤
@@ -27,8 +27,8 @@ $.ajax({
         var unQualified = res.configureInfo.quality.un_evaluation_pigment.substr(4, 6);
         $('#excellent').css('background', '#' + excellent);
         $('#qualified').css('background', '#' + qualified);
-        $('#unQualified').css('background', '#' + unQualified);
-        $('#unReview').css('background', '#529df8');
+        $('#unQualified').css('background', '#529df8');
+        $('#unReview').css('background', '#666');
     }
 });
 
