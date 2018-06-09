@@ -99,6 +99,7 @@
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            font-size: 12px!important;
         }
         table td p{
             line-height: 60px!important;
@@ -189,17 +190,17 @@
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">施工时段</span></p>
                 </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
+                <td style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
                      <div class="form-group div-inline data_2">
                         <div class="input-group date dateMargin" style="width: 100%;">
                             <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                            <input id="input_date_1" step="0" type="text" class="form-control" value="">
+                            <input id="input_date_1" step="0" type="text" class="form-control" value="{$start_date}">
                         </div>
                     </div>
                     <div class="form-group div-inline data_2 dateMargin">
                         <div class="input-group date" style="width: 100%;">
                             <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                            <input id="input_date_2" step="0" type="text" class="form-control" value="">
+                            <input id="input_date_2" step="0" type="text" class="form-control" value="{$completion_date}">
                         </div>
                     </div>
                 </td>

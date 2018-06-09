@@ -51,13 +51,14 @@
             <!--<div class="layui-form-mid layui-word-aux">注意：资源包名称不能重复</div>-->
         <!--</div>-->
 
-        <div id="uploader" class="wu-example">
-            <!--用来存放文件信息-->
-            <div id="thelist" class="uploader-list"></div>
-            <div class="btns">
-                <label class="layui-form-label">上传文件</label>
-                <div id="picker" class="layui-btn">选择文件</div>
-                <button id="ctlBtn" class="layui-btn">开始上传</button>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上传文件</label>
+            <div class="layui-input-block">
+                <input type="text" name="file" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly="">
+                <div id="thelist" class="upload-list"></div>
+                <div class="layui-form-mid layui-word-aux">
+                    <div id="picker" class="upload layui-btn">上传</div>
+                </div>
             </div>
         </div>
 
