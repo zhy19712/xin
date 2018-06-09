@@ -424,47 +424,73 @@ function fileSelect(htmlElement) {
 // 文件选择完毕后触发
 // 首先进行选择的文件上传操作
 // 文件上传完成后，根据“附件上传后要更新的目标html元素Id”的类型，进行操作，如img就设置目标元素的src进行图片显示
-// function fileChange() {
-//     $.ajaxFileUpload({
-//         url: "/admin/common/upload?use=qualityform", // 用于文件上传的服务器端请求地址,其folderName代表附件存放的文件夹名称
-//         type: "post",
-//         secureuri: false, // 一般设置为false
-//         fileElementId: "file", // 文件上传控件的id属性
-//         dataType: "jsonp",
-//         success: function (data, status) {
-//             // if (fileTargetHtmlElementId.split("_")[0] === "img")
-//             data = (new Function("return " + data))();
-//             if (data.code == 2)
-//                 $("#" + fileTargetHtmlElementId).attr("src", data.src);
-//         },
-//         error: function (data, status, e) {
-//             layer.confirm('上传失败。', function(index){
-//                 layer.close(index);
-//             });
-//         }
-//     });
-// };
+function fileChange() {
+    $.ajaxFileUpload({
+        url: "/admin/common/autographUpload?use=qualityform", // 用于文件上传的服务器端请求地址,其folderName代表附件存放的文件夹名称
+        type: "post",
+        secureuri: false, // 一般设置为false
+        fileElementId: "file", // 文件上传控件的id属性
+        dataType: "xml",
+        data:{
+            uploadType:1
+        },
+        processData:false,
+        success: function (data, status) {
+            var res = data.documentElement.innerText;
+            var reg = res.replace(/\\/g, "\\\\");
+            var dataObj = $.parseJSON(reg);
+            console.log(dataObj);
+            // if (fileTargetHtmlElementId.split("_")[0] === "img")
+            // data = (new Function("return " + data))();
+            $("#" + fileTargetHtmlElementId).attr("src", dataObj.src);
+        },
+        error: function (data, status, e) {
+            console.log(data);
+            console.log(e);
+            /*var reg = /<pre.+?>(.+)<\/pre>/g;
+            var result = data.match(reg);
+            data = RegExp.$1;
+            console.log(data)
+            if (data.code == 2)
+                $("#" + fileTargetHtmlElementId).attr("src", data.src);*/
+            layer.confirm('上传失败。', function(index){
+                layer.close(index);
+            });
+        }
+    });
+};
 
 //附件资料上传点击
-function fileChange(){
-    layui.upload.render({
-        elem: '#file',// 文件上传控件的id属性
-        url: "/admin/common/upload?module=quality&use=element",
-        accept:"file",
-        before: function(obj){
-            obj.preview(function(index, file, result){
-                uploadName = file.name;
-                console.log(file.name);//获取文件名，result就是base64
-            })
-        },
-        done: function(res){
-            console.log(res)
-            if (res.code == 2)
-            $("#" + fileTargetHtmlElementId).attr("src", res.src);
-
-        },
-    });
-}
+// function fileChange(){
+//     var uploadName;
+//     layui.use(['element', "layer", 'form', 'upload'], function () {
+//         var $ = layui.jquery
+//             , element = layui.element
+//             , upload = layui.upload;
+//
+//         var form = layui.form
+//             , layer = layui.layer
+//             , layedit = layui.layedit
+//             , laydate = layui.laydate;
+//     upload.render({
+//         elem: '#file',// 文件上传控件的id属性
+//         url: "/admin/common/upload?module=quality&use=element",
+//         accept:"file",
+//         before: function(obj){
+//             console.log(obj)
+//             obj.preview(function(index, file, result){
+//                 uploadName = file.name;
+//                 console.log(file.name);//获取文件名，result就是base64
+//             })
+//             return false;
+//         },
+//         done: function(res){
+//             if (res.code == 2)
+//             $("#" + fileTargetHtmlElementId).attr("src", res.src);
+//         },
+//     });
+//     });
+// }
 
 
 // 电子签名
