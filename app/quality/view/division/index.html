@@ -262,9 +262,9 @@
             <label class="layui-form-label">施工依据</label>
             <div class="layui-input-inline">
                 <input type="text" name="ma_bases" placeholder="请选择施工依据" lay-verify="required" autocomplete="off" class="layui-input maBasesBtn" readonly>
-            </div>
-            <div class="layui-form-mid layui-word-aux icon maBasesBtn">
-                <i class="fa fa-navicon"></i>
+                <div class="layui-form-mid layui-word-aux icon maBasesBtn">
+                    <i class="fa fa-navicon"></i>
+                </div>
             </div>
         </div>
         <div class="layui-inline">
@@ -288,28 +288,28 @@
             <label class="layui-form-label">工程类型</label>
             <div class="layui-input-inline">
                 <input type="text" name="en_type" placeholder="请选择工程类型" lay-verify="required" autocomplete="off" class="layui-input typeZtreeBtn" readonly>
-            </div>
-            <div class="layui-form-mid layui-word-aux icon typeZtreeBtn">
-                <i class="fa fa-navicon"></i>
+                <div class="layui-form-mid layui-word-aux icon typeZtreeBtn">
+                    <i class="fa fa-navicon"></i>
+                </div>
             </div>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">高程（起）</label>
-            <div class="layui-form-mid layui-word-aux">
+            <div class="layui-form-mid layui-word-aux no-position">
                 <span class="el-start">EL.</span>
             </div>
-            <div class="layui-input-inline">
+            <div class="layui-input-inline" style="width: 162px">
                 <input type="text" name="el_start" placeholder="请输入高程（起）" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">高程（止）</label>
-            <div class="layui-form-mid layui-word-aux" >
+            <div class="layui-form-mid layui-word-aux no-position" >
                 <span class="el-cease">EL.</span>
             </div>
-            <div class="layui-input-inline">
+            <div class="layui-input-inline" style="width: 162px">
                 <input type="text" name="el_cease" placeholder="请输入高程（止）" autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -344,7 +344,7 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="save" id="saveUnit">保存</button>
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save" id="saveUnit">保存</button>
             <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
         </div>
     </div>

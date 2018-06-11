@@ -309,7 +309,7 @@ $('#add').click(function () {
     //新增弹层
     $.add({
         formId:'unit',
-        area:['800px','700px'],
+        area:['700px','550px'],
         success:function () {
             //单元工程流水号编码
             $('input[name="serial_number_before"]').val(window.treeNode.d_code);
@@ -494,7 +494,7 @@ function edit(that) {
         that:that,
         formId:'unit',
         ajaxUrl:'./editUnit',
-        area:['800px','700px'],
+        area:['700px','550px'],
         others:function (res) {
             $('input[name="coding"]').val(res.coding);
             $('input[name="completion_date"]').val(res.completion_time);

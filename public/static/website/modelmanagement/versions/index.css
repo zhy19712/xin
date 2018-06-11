@@ -7,3 +7,6 @@
 .layui-form{
     padding-top: 20px;
 }
+.layui-layer-content .layui-input-block{
+    margin-right: 25px;
+}

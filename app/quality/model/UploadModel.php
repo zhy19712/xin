@@ -82,9 +82,18 @@ class UploadModel extends Model
     /**
      * 根据分部策划列表id查询表中是否还有数据
      */
-    public function judge($list_id)
+    public function judge_branch($list_id)
     {
         $data = $this->where(["contr_relation_id"=>$list_id,"type"=>3])->find();
+        return $data;
+    }
+
+    /**
+     * 根据单位策划列表id查询表中是否还有数据
+     */
+    public function judge_unit($list_id)
+    {
+        $data = $this->where(["contr_relation_id"=>$list_id,"type"=>2])->find();
         return $data;
     }
 }

@@ -57,7 +57,7 @@ class Section extends Permissions
             try {
                 $mod = input('post.');
                 if(isset($mod['otherIdArr'])){
-                    if($mod['otherIdArr'][0] == -1){
+                    if($mod['otherIdArr'] == '-1'){
                         $mod['otherId'] = '';
                     }else{
                         $mod['otherId'] = implode(',',$mod['otherIdArr']);

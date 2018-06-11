@@ -171,6 +171,7 @@ $('.addBtn').click(function () {
         content:$('#addModelLayer'),
         success:function () {
             uploadModel();
+            $('#save').removeClass('layui-btn-disabled').attr('lay-submit');
         },
         cancel: function(index){
             $('#addModelLayer').hide();
@@ -190,7 +191,11 @@ function uploadModel() {
         auto: true,
         swf: '/static/public/webupload/Uploader.swf',
         server: './upload',      // 服务端地址
-        pick:'#picker',
+        pick: {
+            multiple: false,
+            id: "#picker",
+            innerHTML: "上传"
+        },
         resize: false,
         chunked: true,            //开启分片上传
         chunkSize: 1024*1024*100,   //每一片的大小
@@ -206,24 +211,23 @@ function uploadModel() {
         var $list = $('#thelist');
         $list.html('');
         $list.append( '<div id="' + file.id + '" class="item">' +
-            '<h4 class="info">' + file.name + '</h4>' +
-            '<p class="state">等待上传...</p>' +
             '</div>' );
     });
     // 文件上传过程中创建进度条实时显示。
-    uploader.on( 'uploadProgress', function( file, percentage ) {
-        var $li = $( '#'+file.id ),
+    uploader.on('uploadProgress', function (file, percentage) {
+        var $li = $('#' + file.id),
             $percent = $li.find('.layui-progress .layui-progress-bar');
         // 避免重复创建
-        if ( !$percent.length ) {
-            $percent = $('<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">' +
-                '<div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>'+
-                '</div>').appendTo( $li ).find('.layui-progress-bar');
+        if (!$percent.length) {
+            $('<div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="upload">' +
+                '<div class="layui-progress-bar layui-bg-red" id="haha" lay-percent="0%" style="width: 0%;"></div>' +
+                '</div>').appendTo($li).find('.layui-progress-bar');
         }
-        $li.find('p.state').text('上传中');
-        element.progress('demo', percentage * 100 + '%');
-        /*$percent.css( 'width', percentage * 100 + '%' );
-        $percent.css( 'lay-percent', percentage * 100 + '%' );*/
+        layui.use('element', function () {
+            element = layui.element;
+            element.progress('upload', percentage * 100 + '%');
+        });
+        $('.layui-progress-bar').html(Math.round(percentage * 100) + '%');
     });
 
     //模型上传成功
@@ -256,6 +260,11 @@ function uploadModel() {
         $( '#'+file.id ).find('p.state').text('上传出错');
     });
 }
+
+$('#save').on('click',function () {
+    $(this).addClass('layui-btn-disabled').removeAttr('lay-submit');
+    return false;
+});
 
 //上传模型
 /*function uploadModel() {
