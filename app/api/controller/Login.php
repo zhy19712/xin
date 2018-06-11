@@ -58,7 +58,8 @@ class Login extends Controller
                         return json(['code'=>'1','msg'=>'登录成功','id'=>$name['id']]);
                   }
         } else{
-            return json(['code'=>'1','msg'=>'您已经登录',"id"=>Session::get('admin')]);
+            $token=md5(md5($_SESSION['think']['current_id']));
+            return json(['code'=>'1','msg'=>'您已经登录',"id"=>Session::get('admin'),'token'=>$token]);
         }
      }
 
