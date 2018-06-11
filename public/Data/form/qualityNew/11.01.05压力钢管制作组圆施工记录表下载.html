@@ -26,6 +26,7 @@
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            font-size: 12px!important;
         }
         .spanList {
             margin: 5px 0;
@@ -58,16 +59,21 @@
         }
 
         .tabWidth {
-            width: 210mm;
+            width: 260mm;
         }
         .tabTitle {
             margin: auto;
-            width: 210mm;
+            width: 260mm;
         }
         textarea{
             outline: none!important;
             border: none!important;
             resize:none!important;
+            font-size: 12px!important;
+            width: 100%!important;
+        }
+        table{
+            width: 260mm!important;
         }
     </style>
 </head>
@@ -104,7 +110,7 @@
             </tr>
         </table>
         <table cellspacing="0" cellpadding="0" class="tabWidth tabHeight" style="border-collapse:collapse; margin: auto;">
-            <tr style="height:24.95pt">
+            <tr style="height:14.95pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:1.5pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">单位工程名称</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -120,7 +126,7 @@
                     <textarea id="input_gcl" default="/" step="0" placeholder="" class="comment editInput"></textarea>
                 </td>
             </tr>
-            <tr style="height:37.5pt">
+            <tr style="height:17.5pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">分部工程名称</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -135,7 +141,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:仿宋; font-size:10.5pt">{$Constructor}</span></p>
                 </td>
             </tr>
-            <tr style="height:25.8pt">
+            <tr style="height:15.8pt">
                 <td colspan="3" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">单元工程名称、部位</span></p>
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -156,7 +162,7 @@
                     <textarea id="input_2" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">板厚（</span><span style="font-family:'Times New Roman'; font-size:10.5pt">mm</span><span style="font-family:宋体; font-size:10.5pt">）</span></p>
                 </td>
@@ -164,7 +170,7 @@
                     <textarea id="input_3" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:27.3pt">
+            <tr style="height:17.3pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">施工依据</span></p>
                 </td>
@@ -172,7 +178,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:8pt">{$BuildBase}</span></p>
                 </td>
             </tr>
-            <tr style="height:20.1pt">
+            <tr style="height:10.1pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">项</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">次</span></p>
@@ -190,7 +196,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">检 验 记 录</span></p>
                 </td>
             </tr>
-            <tr style="height:20.1pt">
+            <tr style="height:10.1pt">
                 <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">合  格</span></p>
                 </td>
@@ -198,7 +204,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">优  良</span></p>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">钢管内径D（m）</span></p>
                 </td>
@@ -215,7 +221,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">合 格率％</span></p>
                 </td>
             </tr>
-            <tr style="height:20.75pt">
+            <tr style="height:10.75pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">D≤2</span></p>
                 </td>
@@ -259,7 +265,7 @@
                     <textarea id="input_7" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">0.5D</span></p>
                 </td>
@@ -279,7 +285,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">1.5m</span></p>
                 </td>
             </tr>
-            <tr style="height:20.75pt">
+            <tr style="height:10.75pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">1.5</span></p>
                 </td>
@@ -299,7 +305,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
             </tr>
-            <tr style="height:35.2pt">
+            <tr style="height:15.2pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2</span></p>
                 </td>
@@ -363,7 +369,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">8</span></p>
                 </td>
             </tr>
-            <tr style="height:34.8pt">
+            <tr style="height:14.8pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">4</span></p>
                 </td>
@@ -389,7 +395,7 @@
                     <textarea id="input_19" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:59.75pt">
+            <tr style="height:19.75pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">5</span></p>
                 </td>
@@ -419,7 +425,7 @@
                     <textarea id="input_23" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:22.55pt">
+            <tr style="height:12.55pt">
                 <td rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">6</span></p>
                 </td>
@@ -452,7 +458,7 @@
                     <textarea id="input_27" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:22.55pt">
+            <tr style="height:12.55pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
@@ -466,7 +472,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
             </tr>
-            <tr style="height:27.6pt">
+            <tr style="height:17.6pt">
                 <td rowspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">7</span></p>
                 </td>
@@ -489,7 +495,7 @@
                     <textarea id="input_31" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:28pt">
+            <tr style="height:18pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">500</span></p>
                 </td>
@@ -509,7 +515,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">D/10</span></p>
                 </td>
             </tr>
-            <tr style="height:41.9pt">
+            <tr style="height:11.9pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">4.0</span></p>
                 </td>
@@ -529,7 +535,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">4.0</span></p>
                 </td>
             </tr>
-            <tr style="height:48.95pt">
+            <tr style="height:18.95pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">8</span></p>
                 </td>
@@ -555,7 +561,7 @@
                     <textarea id="input_35" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:32.6pt">
+            <tr style="height:12.6pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">9.1</span></p>
                 </td>
@@ -578,7 +584,7 @@
                     <textarea id="input_39" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:28.55pt">
+            <tr style="height:18.55pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a</span><span style="font-family:新宋体; font-size:9pt"> ≤</span><span style="font-family:宋体; font-size:9pt">0.01H，且≤3</span></p>
                 </td>
@@ -586,7 +592,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a</span><span style="font-family:新宋体; font-size:9pt"> ≤</span><span style="font-family:宋体; font-size:9pt">0.01H，且≤2</span></p>
                 </td>
             </tr>
-            <tr style="height:34.9pt">
+            <tr style="height:14.9pt">
                 <td colspan="15" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">加劲环、止推环、阻水环</span></p>
                 </td>
@@ -600,7 +606,7 @@
                     <textarea id="input_42" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.25pt">
+            <tr style="height:15.25pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a ≤0.02H，且≤5</span></p>
                 </td>
@@ -608,7 +614,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a ≤0.02H，且≤3</span></p>
                 </td>
             </tr>
-            <tr style="height:35.25pt">
+            <tr style="height:15.25pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">9.2</span></p>
                 </td>
@@ -631,7 +637,7 @@
                     <textarea id="input_46" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.05pt">
+            <tr style="height:15.05pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤2D/1000，且≤6</span></p>
                 </td>
@@ -639,7 +645,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤2D/1000，且≤4</span></p>
                 </td>
             </tr>
-            <tr style="height:42pt">
+            <tr style="height:12pt">
                 <td colspan="15" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">加劲环、止推环、阻水环</span></p>
                 </td>
@@ -653,7 +659,7 @@
                     <textarea id="input_49" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.3pt">
+            <tr style="height:15.3pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤4D/1000，且≤12</span></p>
                 </td>
@@ -661,7 +667,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤4D/1000，且≤10</span></p>
                 </td>
             </tr>
-            <tr style="height:35.1pt">
+            <tr style="height:15.1pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">9.3</span></p>
                 </td>
@@ -684,7 +690,7 @@
                     <textarea id="input_53" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:27.85pt">
+            <tr style="height:17.85pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±10</span></p>
                 </td>
@@ -692,7 +698,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±8</span></p>
                 </td>
             </tr>
-            <tr style="height:41.75pt">
+            <tr style="height:11.75pt">
                 <td rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_54" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -709,7 +715,7 @@
                     <textarea id="input_57" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.2pt">
+            <tr style="height:15.2pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±30</span></p>
                 </td>
@@ -717,7 +723,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±25</span></p>
                 </td>
             </tr>
-            <tr style="height:33.15pt">
+            <tr style="height:13.15pt">
                 <td colspan="4" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">检验结果</span></p>
                 </td>
@@ -727,22 +733,22 @@
                     <span style="font-family:宋体; font-size:9pt">点，合格</span>
                     <input id="input_hgl_2" default="/" step="0" type="text" value="" class="form-control wait num_2" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格率
-                    <input id="input_hgl_3" default="/" disabled type="text" value="" class="form-control wait num_jg_1" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_3" default="/"  type="text" value="" class="form-control wait num_jg_1" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
             </tr>
-            <tr style="height:34.35pt">
+            <tr style="height:14.35pt">
                 <td colspan="18" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:4.65pt; vertical-align:middle">
                     <p style="margin:0pt"><span style="font-family:宋体; font-size:9pt">一般项目共测</span>
                     <input id="input_hgl_4" default="/" step="0" type="text" value="" class="form-control wait num_3" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格</span>
                     <input id="input_hgl_5" default="/" step="0" type="text" value="" class="form-control wait num_4" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格率
-                    <input id="input_hgl_6" default="/" disabled type="text" value="" class="form-control wait num_jg_2" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_hgl_6" default="/"  type="text" value="" class="form-control wait num_jg_2" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
             </tr>
-            <tr style="height:25.5pt">
+            <tr style="height:15.5pt">
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">验收意见</span></p>
                 </td>
@@ -753,7 +759,7 @@
                     </div>
                 </td>
             </tr>
-            <tr style="height:42.2pt">
+            <tr style="height:12.2pt">
                 <td colspan="2" rowspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">施工单位</span></p>
                 </td>
@@ -793,7 +799,7 @@
                         </div>
                 </td>
             </tr>
-            <tr style="height:47.25pt">
+            <tr style="height:17.25pt">
                 <td colspan="10" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; widows:0"><span style="font-family:宋体; font-size:10.5pt">复检：</span></p>
                     <div class="qianming">
@@ -809,7 +815,7 @@
                         </div>
                 </td>
             </tr>
-            <tr style="height:47.25pt">
+            <tr style="height:17.25pt">
                 <td colspan="10" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; widows:0"><span style="font-family:宋体; font-size:10.5pt">终检：</span></p>
                     <div class="qianming">
@@ -850,7 +856,7 @@
                 <td style="width:28.35pt; border:none"></td>
             </tr>
         </table>
-        <p style="line-height:1pt; margin:0pt; text-align:justify"><span style="font-family:仿宋; font-size:10.5pt">&#xa0;</span></p>
+        <p style="line-height:1pt; margin: 36pt; text-align:justify"><span style="font-family:仿宋; font-size:10.5pt">&#xa0;</span></p>
         <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:黑体; font-size:14pt">河北丰宁抽水蓄能电站工程</span></p>
         <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:黑体; font-size:14pt">压力钢管制作组圆施工记录表</span></p>
         <table class="tabWidth tabTitle">
@@ -862,7 +868,7 @@
             </tr>
         </table>
         <table cellspacing="0" cellpadding="0" class="tabWidth tabHeight" style="border-collapse:collapse; margin: auto;">
-            <tr style="height:24.95pt">
+            <tr style="height:14.95pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:1.5pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">单位工程名称</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -878,7 +884,7 @@
                     <textarea id="input_2_gcl" default="/" step="0" placeholder="" class="comment editInput"></textarea>
                 </td>
             </tr>
-            <tr style="height:37.5pt">
+            <tr style="height:17.5pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">分部工程名称</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -893,7 +899,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:仿宋; font-size:10.5pt">{$Constructor}</span></p>
                 </td>
             </tr>
-            <tr style="height:25.8pt">
+            <tr style="height:15.8pt">
                 <td colspan="3" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">单元工程名称、部位</span></p>
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -914,7 +920,7 @@
                     <textarea id="input_2_2" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">板厚（</span><span style="font-family:'Times New Roman'; font-size:10.5pt">mm</span><span style="font-family:宋体; font-size:10.5pt">）</span></p>
                 </td>
@@ -922,7 +928,7 @@
                     <textarea id="input_2_3" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:27.3pt">
+            <tr style="height:17.3pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">施工依据</span></p>
                 </td>
@@ -930,7 +936,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:8pt">{$BuildBase}</span></p>
                 </td>
             </tr>
-            <tr style="height:20.1pt">
+            <tr style="height:10.1pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">项</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">次</span></p>
@@ -948,7 +954,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">检 验 记 录</span></p>
                 </td>
             </tr>
-            <tr style="height:20.1pt">
+            <tr style="height:10.1pt">
                 <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">合  格</span></p>
                 </td>
@@ -956,7 +962,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">优  良</span></p>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">钢管内径D（m）</span></p>
                 </td>
@@ -973,7 +979,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">合 格率％</span></p>
                 </td>
             </tr>
-            <tr style="height:20.75pt">
+            <tr style="height:10.75pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">D≤2</span></p>
                 </td>
@@ -1017,7 +1023,7 @@
                     <textarea id="input_2_7" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">0.5D</span></p>
                 </td>
@@ -1037,7 +1043,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">1.5m</span></p>
                 </td>
             </tr>
-            <tr style="height:20.75pt">
+            <tr style="height:10.75pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">1.5</span></p>
                 </td>
@@ -1057,7 +1063,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
             </tr>
-            <tr style="height:35.2pt">
+            <tr style="height:15.2pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2</span></p>
                 </td>
@@ -1121,7 +1127,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">8</span></p>
                 </td>
             </tr>
-            <tr style="height:34.8pt">
+            <tr style="height:14.8pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">4</span></p>
                 </td>
@@ -1147,7 +1153,7 @@
                     <textarea id="input_2_19" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:59.75pt">
+            <tr style="height:19.75pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">5</span></p>
                 </td>
@@ -1177,7 +1183,7 @@
                     <textarea id="input_2_23" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:22.55pt">
+            <tr style="height:12.55pt">
                 <td rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">6</span></p>
                 </td>
@@ -1210,7 +1216,7 @@
                     <textarea id="input_2_27" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:22.55pt">
+            <tr style="height:12.55pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
@@ -1224,7 +1230,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
             </tr>
-            <tr style="height:27.6pt">
+            <tr style="height:17.6pt">
                 <td rowspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">7</span></p>
                 </td>
@@ -1247,7 +1253,7 @@
                     <textarea id="input_2_31" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:28pt">
+            <tr style="height:18pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">500</span></p>
                 </td>
@@ -1267,7 +1273,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">D/10</span></p>
                 </td>
             </tr>
-            <tr style="height:41.9pt">
+            <tr style="height:11.9pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">4.0</span></p>
                 </td>
@@ -1287,7 +1293,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">4.0</span></p>
                 </td>
             </tr>
-            <tr style="height:48.95pt">
+            <tr style="height:18.95pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">8</span></p>
                 </td>
@@ -1313,7 +1319,7 @@
                     <textarea id="input_2_35" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:32.6pt">
+            <tr style="height:12.6pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">9.1</span></p>
                 </td>
@@ -1336,7 +1342,7 @@
                     <textarea id="input_2_39" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:28.55pt">
+            <tr style="height:18.55pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a</span><span style="font-family:新宋体; font-size:9pt"> ≤</span><span style="font-family:宋体; font-size:9pt">0.01H，且≤3</span></p>
                 </td>
@@ -1344,7 +1350,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a</span><span style="font-family:新宋体; font-size:9pt"> ≤</span><span style="font-family:宋体; font-size:9pt">0.01H，且≤2</span></p>
                 </td>
             </tr>
-            <tr style="height:34.9pt">
+            <tr style="height:14.9pt">
                 <td colspan="15" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">加劲环、止推环、阻水环</span></p>
                 </td>
@@ -1358,7 +1364,7 @@
                     <textarea id="input_2_42" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.25pt">
+            <tr style="height:15.25pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a ≤0.02H，且≤5</span></p>
                 </td>
@@ -1366,7 +1372,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a ≤0.02H，且≤3</span></p>
                 </td>
             </tr>
-            <tr style="height:35.25pt">
+            <tr style="height:15.25pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">9.2</span></p>
                 </td>
@@ -1389,7 +1395,7 @@
                     <textarea id="input_2_46" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.05pt">
+            <tr style="height:15.05pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤2D/1000，且≤6</span></p>
                 </td>
@@ -1397,7 +1403,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤2D/1000，且≤4</span></p>
                 </td>
             </tr>
-            <tr style="height:42pt">
+            <tr style="height:12pt">
                 <td colspan="15" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">加劲环、止推环、阻水环</span></p>
                 </td>
@@ -1411,7 +1417,7 @@
                     <textarea id="input_2_49" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.3pt">
+            <tr style="height:15.3pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤4D/1000，且≤12</span></p>
                 </td>
@@ -1419,7 +1425,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤4D/1000，且≤10</span></p>
                 </td>
             </tr>
-            <tr style="height:35.1pt">
+            <tr style="height:15.1pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">9.3</span></p>
                 </td>
@@ -1442,7 +1448,7 @@
                     <textarea id="input_2_53" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:27.85pt">
+            <tr style="height:17.85pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±10</span></p>
                 </td>
@@ -1450,7 +1456,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±8</span></p>
                 </td>
             </tr>
-            <tr style="height:41.75pt">
+            <tr style="height:11.75pt">
                 <td rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_2_54" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -1467,7 +1473,7 @@
                     <textarea id="input_2_57" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.2pt">
+            <tr style="height:15.2pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±30</span></p>
                 </td>
@@ -1475,7 +1481,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±25</span></p>
                 </td>
             </tr>
-            <tr style="height:33.15pt">
+            <tr style="height:13.15pt">
                 <td colspan="4" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">检验结果</span></p>
                 </td>
@@ -1485,22 +1491,22 @@
                     <span style="font-family:宋体; font-size:9pt">点，合格</span>
                     <input id="input_2_hgl_2" default="/" step="0" type="text" value="" class="form-control wait num_6" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格率
-                    <input id="input_2_hgl_3" default="/" disabled type="text" value="" class="form-control wait num_jg_3" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_2_hgl_3" default="/"  type="text" value="" class="form-control wait num_jg_3" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
             </tr>
-            <tr style="height:34.35pt">
+            <tr style="height:14.35pt">
                 <td colspan="18" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:4.65pt; vertical-align:middle">
                     <p style="margin:0pt"><span style="font-family:宋体; font-size:9pt">一般项目共测</span>
                     <input id="input_2_hgl_4" default="/" step="0" type="text" value="" class="form-control wait num_7" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格</span>
                     <input id="input_2_hgl_5" default="/" step="0" type="text" value="" class="form-control wait num_8" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格率
-                    <input id="input_2_hgl_6" default="/" disabled type="text" value="" class="form-control wait num_jg_4" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_2_hgl_6" default="/"  type="text" value="" class="form-control wait num_jg_4" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
             </tr>
-            <tr style="height:25.5pt">
+            <tr style="height:15.5pt">
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">验收意见</span></p>
                 </td>
@@ -1511,7 +1517,7 @@
                     </div>
                 </td>
             </tr>
-            <tr style="height:42.2pt">
+            <tr style="height:12.2pt">
                 <td colspan="2" rowspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">施工单位</span></p>
                 </td>
@@ -1551,7 +1557,7 @@
                         </div>
                 </td>
             </tr>
-            <tr style="height:47.25pt">
+            <tr style="height:17.25pt">
                 <td colspan="10" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; widows:0"><span style="font-family:宋体; font-size:10.5pt">复检：</span></p>
                     <div class="qianming">
@@ -1567,7 +1573,7 @@
                         </div>
                 </td>
             </tr>
-            <tr style="height:47.25pt">
+            <tr style="height:17.25pt">
                 <td colspan="10" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; widows:0"><span style="font-family:宋体; font-size:10.5pt">终检：</span></p>
                     <div class="qianming">
@@ -1608,7 +1614,7 @@
                 <td style="width:28.35pt; border:none"></td>
             </tr>
         </table>
-        <p style="line-height:1pt; margin:0pt; text-align:justify"><span style="font-family:仿宋; font-size:10.5pt">&#xa0;</span></p>
+        <p style="line-height:1pt; margin:30pt; text-align:justify"><span style="font-family:仿宋; font-size:10.5pt">&#xa0;</span></p>
         <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:黑体; font-size:14pt">河北丰宁抽水蓄能电站工程</span></p>
         <p style="line-height:20pt; margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:黑体; font-size:14pt">压力钢管制作组圆施工记录表</span></p>
         <table class="tabWidth tabTitle">
@@ -1620,7 +1626,7 @@
             </tr>
         </table>
         <table cellspacing="0" cellpadding="0" class="tabWidth tabHeight" style="border-collapse:collapse; margin: auto;">
-            <tr style="height:24.95pt">
+            <tr style="height:14.95pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:1.5pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">单位工程名称</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -1636,7 +1642,7 @@
                     <textarea id="input_3_gcl" default="/" step="0" placeholder="" class="comment editInput"></textarea>
                 </td>
             </tr>
-            <tr style="height:37.5pt">
+            <tr style="height:17.5pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">分部工程名称</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -1651,7 +1657,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:仿宋; font-size:10.5pt">{$Constructor}</span></p>
                 </td>
             </tr>
-            <tr style="height:25.8pt">
+            <tr style="height:15.8pt">
                 <td colspan="3" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">单元工程名称、部位</span></p>
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">(及编码)</span></p>
@@ -1672,7 +1678,7 @@
                     <textarea id="input_3_2" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">板厚（</span><span style="font-family:'Times New Roman'; font-size:10.5pt">mm</span><span style="font-family:宋体; font-size:10.5pt">）</span></p>
                 </td>
@@ -1680,7 +1686,7 @@
                     <textarea id="input_3_3" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:27.3pt">
+            <tr style="height:17.3pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:10.5pt">施工依据</span></p>
                 </td>
@@ -1688,7 +1694,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:8pt">{$BuildBase}</span></p>
                 </td>
             </tr>
-            <tr style="height:20.1pt">
+            <tr style="height:10.1pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">项</span></p>
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">次</span></p>
@@ -1706,7 +1712,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">检 验 记 录</span></p>
                 </td>
             </tr>
-            <tr style="height:20.1pt">
+            <tr style="height:10.1pt">
                 <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">合  格</span></p>
                 </td>
@@ -1714,7 +1720,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">优  良</span></p>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="6" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">钢管内径D（m）</span></p>
                 </td>
@@ -1731,7 +1737,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">合 格率％</span></p>
                 </td>
             </tr>
-            <tr style="height:20.75pt">
+            <tr style="height:10.75pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">D≤2</span></p>
                 </td>
@@ -1775,7 +1781,7 @@
                     <textarea id="input_3_7" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:20.4pt">
+            <tr style="height:10.4pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">0.5D</span></p>
                 </td>
@@ -1795,7 +1801,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">1.5m</span></p>
                 </td>
             </tr>
-            <tr style="height:20.75pt">
+            <tr style="height:10.75pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">1.5</span></p>
                 </td>
@@ -1815,7 +1821,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
             </tr>
-            <tr style="height:35.2pt">
+            <tr style="height:15.2pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2</span></p>
                 </td>
@@ -1879,7 +1885,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">8</span></p>
                 </td>
             </tr>
-            <tr style="height:34.8pt">
+            <tr style="height:14.8pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">4</span></p>
                 </td>
@@ -1905,7 +1911,7 @@
                     <textarea id="input_3_19" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:59.75pt">
+            <tr style="height:19.75pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">5</span></p>
                 </td>
@@ -1935,7 +1941,7 @@
                     <textarea id="input_3_23" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:22.55pt">
+            <tr style="height:12.55pt">
                 <td rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">6</span></p>
                 </td>
@@ -1968,7 +1974,7 @@
                     <textarea id="input_3_27" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:22.55pt">
+            <tr style="height:12.55pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
@@ -1982,7 +1988,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">2.0</span></p>
                 </td>
             </tr>
-            <tr style="height:27.6pt">
+            <tr style="height:17.6pt">
                 <td rowspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">7</span></p>
                 </td>
@@ -2005,7 +2011,7 @@
                     <textarea id="input_3_31" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:28pt">
+            <tr style="height:18pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">500</span></p>
                 </td>
@@ -2025,7 +2031,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">D/10</span></p>
                 </td>
             </tr>
-            <tr style="height:41.9pt">
+            <tr style="height:11.9pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">4.0</span></p>
                 </td>
@@ -2045,7 +2051,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">4.0</span></p>
                 </td>
             </tr>
-            <tr style="height:48.95pt">
+            <tr style="height:18.95pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">8</span></p>
                 </td>
@@ -2071,7 +2077,7 @@
                     <textarea id="input_3_35" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:32.6pt">
+            <tr style="height:12.6pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">9.1</span></p>
                 </td>
@@ -2094,7 +2100,7 @@
                     <textarea id="input_3_39" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:28.55pt">
+            <tr style="height:18.55pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a</span><span style="font-family:新宋体; font-size:9pt"> ≤</span><span style="font-family:宋体; font-size:9pt">0.01H，且≤3</span></p>
                 </td>
@@ -2102,7 +2108,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a</span><span style="font-family:新宋体; font-size:9pt"> ≤</span><span style="font-family:宋体; font-size:9pt">0.01H，且≤2</span></p>
                 </td>
             </tr>
-            <tr style="height:34.9pt">
+            <tr style="height:14.9pt">
                 <td colspan="15" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">加劲环、止推环、阻水环</span></p>
                 </td>
@@ -2116,7 +2122,7 @@
                     <textarea id="input_3_42" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.25pt">
+            <tr style="height:15.25pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a ≤0.02H，且≤5</span></p>
                 </td>
@@ -2124,7 +2130,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">a ≤0.02H，且≤3</span></p>
                 </td>
             </tr>
-            <tr style="height:35.25pt">
+            <tr style="height:15.25pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">9.2</span></p>
                 </td>
@@ -2147,7 +2153,7 @@
                     <textarea id="input_3_46" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.05pt">
+            <tr style="height:15.05pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤2D/1000，且≤6</span></p>
                 </td>
@@ -2155,7 +2161,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤2D/1000，且≤4</span></p>
                 </td>
             </tr>
-            <tr style="height:42pt">
+            <tr style="height:12pt">
                 <td colspan="15" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">加劲环、止推环、阻水环</span></p>
                 </td>
@@ -2169,7 +2175,7 @@
                     <textarea id="input_3_49" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.3pt">
+            <tr style="height:15.3pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤4D/1000，且≤12</span></p>
                 </td>
@@ -2177,7 +2183,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">b ≤4D/1000，且≤10</span></p>
                 </td>
             </tr>
-            <tr style="height:35.1pt">
+            <tr style="height:15.1pt">
                 <td rowspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">9.3</span></p>
                 </td>
@@ -2200,7 +2206,7 @@
                     <textarea id="input_3_53" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:27.85pt">
+            <tr style="height:17.85pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±10</span></p>
                 </td>
@@ -2208,7 +2214,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±8</span></p>
                 </td>
             </tr>
-            <tr style="height:41.75pt">
+            <tr style="height:11.75pt">
                 <td rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_3_54" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -2225,7 +2231,7 @@
                     <textarea id="input_3_57" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:35.2pt">
+            <tr style="height:15.2pt">
                 <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±30</span></p>
                 </td>
@@ -2233,7 +2239,7 @@
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">±25</span></p>
                 </td>
             </tr>
-            <tr style="height:33.15pt">
+            <tr style="height:13.15pt">
                 <td colspan="4" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:9pt">检验结果</span></p>
                 </td>
@@ -2243,22 +2249,22 @@
                     <span style="font-family:宋体; font-size:9pt">点，合格</span>
                     <input id="input_3_hgl_2" default="/" step="0" type="text" value="" class="form-control wait num_10" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格率
-                    <input id="input_3_hgl_3" default="/" disabled type="text" value="" class="form-control wait num_jg_5" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_3_hgl_3" default="/"  type="text" value="" class="form-control wait num_jg_5" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
             </tr>
-            <tr style="height:34.35pt">
+            <tr style="height:14.35pt">
                 <td colspan="18" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:4.65pt; vertical-align:middle">
                     <p style="margin:0pt"><span style="font-family:宋体; font-size:9pt">一般项目共测</span>
                     <input id="input_3_hgl_4" default="/" step="0" type="text" value="" class="form-control wait num_11" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格</span>
                     <input id="input_3_hgl_5" default="/" step="0" type="text" value="" class="form-control wait num_12" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     <span style="font-family:宋体; font-size:9pt">点，合格率
-                    <input id="input_3_hgl_6" default="/" disabled type="text" value="" class="form-control wait num_jg_6" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                    <input id="input_3_hgl_6" default="/"  type="text" value="" class="form-control wait num_jg_6" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                     ％。</span></p>
                 </td>
             </tr>
-            <tr style="height:25.5pt">
+            <tr style="height:15.5pt">
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:宋体; font-size:9pt">验收意见</span></p>
                 </td>
@@ -2269,7 +2275,7 @@
                     </div>
                 </td>
             </tr>
-            <tr style="height:42.2pt">
+            <tr style="height:12.2pt">
                 <td colspan="2" rowspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; text-align:center"><span style="font-family:宋体; font-size:10.5pt">施工单位</span></p>
                 </td>
@@ -2309,7 +2315,7 @@
                         </div>
                 </td>
             </tr>
-            <tr style="height:47.25pt">
+            <tr style="height:17.25pt">
                 <td colspan="10" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; widows:0"><span style="font-family:宋体; font-size:10.5pt">复检：</span></p>
                     <div class="qianming">
@@ -2325,7 +2331,7 @@
                         </div>
                 </td>
             </tr>
-            <tr style="height:47.25pt">
+            <tr style="height:17.25pt">
                 <td colspan="10" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; widows:0"><span style="font-family:宋体; font-size:10.5pt">终检：</span></p>
                     <div class="qianming">

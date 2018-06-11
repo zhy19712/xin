@@ -44,29 +44,29 @@ tableIncome = $("#tableIncome").DataTable({
             render: function (data, type, row,meta) {
                 if (row[6] == '1' && user_name == row[4]){
                     var strs = '';
-                    strs +='<a title="' + data + '" class="layui-btn layui-btn-sm seeStyle" href="javascript:void(0);" major_key="'+row[7]+'" onclick="edit_send(this)">编辑</a>';
-                    strs +='<a title="' + data + '" class="layui-btn layui-btn-danger layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="del(this)">删除</a>';
+                    strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="edit_send(this)" >编辑</i>';
+                    strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="del(this)" >删除</i>';
                     return strs;
                 }else {
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)" style="border-radius: 4px;">查看</a>';
+                    return  '<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="preview(this)" >查看</i>';
                 }
             }
         }
         ],
-    dom: 'fr<"#addSend.mybtn layui-btn layui-btn-md">t<"#showItme"l><"#pagenations"p>',
+    dom: 'lf<"#addSend.layui-btn layui-btn-md btn-right btn-space">tip',
     language: {
         "sProcessing":"数据加载中...",
         "lengthMenu": "_MENU_",
         "zeroRecords": "没有找到记录",
         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
         "infoEmpty": "无记录",
-        "search": "搜索：",
+        "search": "搜索",
         "sSearchPlaceholder":"请输入关键字",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
-            "sPrevious": "<",
-            "sNext": ">",
+            "sPrevious": "上一页",
+            "sNext": "下一页",
             "sLast": ">>"
         }
     }

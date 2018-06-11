@@ -32,6 +32,13 @@ table.dataTable tbody tr:hover,table.dataTable tbody tr.active{
 table.dataTable.no-footer{
     float: left;
     border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+.dataTables_scrollHead .dataTable.no-footer{
+    border-bottom: none;
+}
+.dataTables_scrollHead .dataTable.no-footer thead th{
+    border-bottom: none;
 }
 .table>tbody>tr.active>td {
     background-color: #Fdd5b5;
@@ -92,12 +99,10 @@ table.table thead tr{
 /* 边框 */
 table.dataTable thead th{
     border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 table.dataTable thead th:first-child{
     border-left: 1px solid #ddd;
-}
-table.dataTable thead th, table.dataTable thead td{
-    border-bottom: none;
 }
 .dataTables_wrapper.no-footer .dataTables_scrollBody{
     border-bottom: none;
