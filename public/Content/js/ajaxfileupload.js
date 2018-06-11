@@ -168,17 +168,17 @@
             jQuery.globalEval(data);
         // Get the JavaScript object, if JSON is used.
         if (type == "json")
-            data = r.responseText;
-        var start = data.indexOf(">");
-        if (start != -1) {
-            var end = data.indexOf("<", start + 1);
+            //data = r.responseText;
+        //var start = r.responseText.indexOf(">");
+        if (r.responseText.indexOf(">") != -1) {
+            var end = data.indexOf("<", r.responseText.indexOf(">") + 1);
             if (end != -1) {
-                data = data.substring(start + 1, end);
+                data = data.substring(r.responseText.indexOf(">") + 1, end);
             }
         }
-        eval("data = " + data);
-        // eval("data = \"" + data + "\"");
-        // data = jQuery.parseJSON(data);
+        //eval("data = " + data);
+         //eval("data = \"" + data + "\"");
+         //data = jQuery.parseJSON(data);
         // evaluate scripts within html
         if (type == "html")
             jQuery("<div>").html(data).evalScripts();

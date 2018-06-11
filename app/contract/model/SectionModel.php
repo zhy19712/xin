@@ -87,17 +87,22 @@ class SectionModel extends Model
         if (empty($mod['id'])) {
             $res = SectionModel::allowField(true)->insert($mod);
         } else {
-            $res = true;
-            $data = $this->find($mod['id']);
-            foreach ($mod as $k=>$v){
-                if($v != $data[$k]){
-                    $res = false;
-                    break;
-                }
-            }
-            if(!$res){
-                $res = SectionModel::allowField(true)->save($mod, ['id' => $mod['id']]);
-            }
+//            $res = true;
+//            $data = $this->find($mod['id']);
+//
+//            foreach ($mod as $k=>$v){
+//
+//                if($v != $data[$k]){
+//
+//                    $res = false;
+//                    break;
+//                }
+//            }
+
+            $res = SectionModel::allowField(true)->save($mod, ['id' => $mod['id']]);
+//            if(!$res){
+//
+//            }
         }
         return $res ? true : false;
     }

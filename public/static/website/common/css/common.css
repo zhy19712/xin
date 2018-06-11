@@ -107,7 +107,7 @@ i.fa:hover:before{
     padding: 0 !important;
     margin: 0 !important;
 }
-.layui-form-item .autograph .webuploader-pick{~
+.layui-form-item .autograph .webuploader-pick{
     padding: 9px 15px;
 }
 .layui-form-item .autograph .layui-input-inline{
@@ -120,6 +120,11 @@ i.fa:hover:before{
     right: 0;
     margin: 0;
     padding: 0 !important;
+}
+.layui-form-mid.layui-word-aux.no-position{
+    position: static;
+    padding: 9px 0!important;
+    margin-right: 10px;
 }
 .layui-form-mid.layui-word-aux .layui-btn{
     padding: 0;

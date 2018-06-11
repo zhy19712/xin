@@ -190,6 +190,18 @@ function nodeClick(e, treeId, node) {
     $(".mybtnAdd").css("display","none");
 
     initData(nodeId);//调用单元工
+    /*验评置灰*/
+    $(".result form select").prop("disabled",true);
+    layui.use(['form'], function(){
+        var form = layui.form;
+        $(".result input[readonly]").removeClass('disabledColor');
+        $("#date").attr({"disabled":true});
+        form.render("select");
+    });
+    /*结果初始化*/
+    $(".result form select").val("");
+    $(".result form #date").val("");
+    layui.form.render('select');
 }
 
 //全部展开
@@ -1320,6 +1332,7 @@ function editOnLine(id,step) {
             onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
             tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
             resultInfo(nodeUnitId);
+            checkforming(nodeUnitId);
         }
     });
 }
