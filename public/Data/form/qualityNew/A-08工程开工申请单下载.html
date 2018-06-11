@@ -70,13 +70,22 @@
             border: 1px solid #e5e6e7
         }
         select{
-            display: inline-block!important
+            border: none!important;
+            outline: none!important;
+            appearance: none!important;
+            -webkit-appearance: none!important;
+            -moz-appearance: none!important;
+            background-color: #ffffff!important;
+            display: none;
         }
         .qianmingBlock {
             display: block;
             width: 130mm;
-            margin-left: 45mm;
+            margin-left: 85mm;
             margin-top: -10mm;
+        }
+        .tabWidth{
+            width: 260mm;
         }
         input{
             outline: none!important;
@@ -85,7 +94,7 @@
         }
         .tabTitle {
             margin: auto;
-            width: 210mm;
+            width: 255mm;
         }
         textarea{
             outline: none!important;
@@ -311,7 +320,7 @@
                         </span>
                     </p>
                     <div class="qianming qianmingBlock">
-                        <img id="img_4" class="signName" src="" form-required="签名必填。"/>
+                        <img id="img_4" class="signName" style="margin-left: 8mm" src="" form-required="签名必填。"/>
 
                     </div>
 

@@ -118,6 +118,7 @@
     <input id="isView" type="hidden" value="{$isView}" />
     <input id="formData" type="hidden" value='{$formData}' />
     <input id="currentStep" type="hidden" value="{$currentStep}" />
+    <input id="hideSelect" type="hidden" value='{$hideSelect}' />
     <input id="getQrcode" type="hidden" value='{$qrcode}' />
 
     <div class="hr-line-dashed" style="margin: 5px 0px 0px; clear: both;"></div>
@@ -131,22 +132,22 @@
             </div>
         </div>
 
-        <p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:center; widows:0">
-            <span style="font-family:宋体; font-size:10.5pt">工程名称：</span>
-            <span style="font-family:宋体; font-size:10.5pt">铜仁市松桃至玉屏城际快速道路建设项目</span>
-            <span style="font-family:宋体; font-size:10.5pt;margin-left: 36pt;">编号：</span>
+        <p style="font-size:10.5pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:center; widows:0;">
+            <span style="font-family:宋体; font-size:10.5pt;">工程名称：</span>
+            <span style="font-family:宋体; font-size:10.5pt;">铜仁市松桃至玉屏城际快速道路建设项目</span>
+            <span style="font-family:宋体; font-size:10.5pt;margin-left: 395pt;">编号：</span>
             <input id="input_1" type="text" step="0" style="width: 30pt;border:1px solid #e5e6e7;" class="editInput" />
             <span style="font-family:宋体; font-size:10.5pt;">号</span>
         </p>
 
-        <table cellspacing="0" cellpadding="0" style="border-collapse:collapse; margin:0 auto; width:426.85pt;">
+        <table cellspacing="0" cellpadding="0" style="margin:0 auto; width:260mm;">
             <tr style="height:30.25pt">
                 <td colspan="2" style="border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.4pt; vertical-align:top; width:80pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span style="font-family:宋体; font-size:12pt; vertical-align:baseline">致：</span></p>
                 </td>
                 <td colspan="3" style="border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:top; width:380.5pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_2" default="/" step="0" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                        <textarea id="input_2" default="/" step="0" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                     </p>
                 </td>
             </tr>
@@ -165,7 +166,7 @@
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0"><span style="font-family:宋体; font-size:12pt; vertical-align:baseline">内容：</span></p>
                 </td>
                 <td colspan="3" style="border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:top; width:371.5pt">
-                    <textarea id="input_4" default="/" step="0" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                    <textarea id="input_4" default="/" step="0" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                 </td>
             </tr>
             <tr>
@@ -208,7 +209,7 @@
                 </td>
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.4pt; padding-right:5.03pt; vertical-align:top; width:371.5pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_6" default="/" step="0" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                        <textarea id="input_6" default="/" step="0" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                     </p>
                 </td>
             </tr>
@@ -220,7 +221,7 @@
             <tr style="height:31.6pt">
                 <td colspan="5" style="border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:415.3pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_7" default="/" step="1" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                        <textarea id="input_7" default="/" step="1" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                     </p>
                 </td>
             </tr>
@@ -244,7 +245,7 @@
             <tr style="height:30.6pt">
                 <td colspan="5" style="border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:415.3pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_8" default="/" step="2" style="height: 60px;width:100%;" class="comment texBorder editInput" onclick="return input_8_onclick()"></textarea>
+                        <textarea id="input_8" default="/" step="2" style="height: 20px;width:100%;" class="comment texBorder editInput" onclick="return input_8_onclick()"></textarea>
                     </p>
                 </td>
             </tr>
@@ -268,7 +269,7 @@
             <tr style="height:31.6pt">
                 <td colspan="5" style="border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:415.3pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_9" default="/" step="3" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                        <textarea id="input_9" default="/" step="3" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                     </p>
                 </td>
             </tr>
@@ -292,7 +293,7 @@
             <tr style="height:30.1pt">
                 <td colspan="5" style="border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:415.3pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_10" default="/" step="4" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                        <textarea id="input_10" default="/" step="4" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                     </p>
                 </td>
             </tr>
@@ -316,7 +317,7 @@
             <tr style="height:31pt">
                 <td colspan="5" style="border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:415.3pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_11" default="/" step="5" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                        <textarea id="input_11" default="/" step="5" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                     </p>
                 </td>
             </tr>
@@ -340,7 +341,7 @@
             <tr style="height:32.5pt">
                 <td colspan="5" style="border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:415.3pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_12" default="/" step="6" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                        <textarea id="input_12" default="/" step="6" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                     </p>
                 </td>
             </tr>
@@ -364,7 +365,7 @@
             <tr style="height:30.2pt">
                 <td colspan="5" style="border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:top; width:415.3pt">
                     <p style="font-size:12pt; line-height:115%; margin:0pt 0pt 10pt; orphans:0; text-align:justify; widows:0">
-                        <textarea id="input_13" default="/" step="7" style="height: 60px;width:100%;" class="comment texBorder editInput"></textarea>
+                        <textarea id="input_13" default="/" step="7" style="height: 20px;width:100%;" class="comment texBorder editInput"></textarea>
                     </p>
                 </td>
             </tr>

@@ -71,19 +71,23 @@
             border: 1px solid #e5e6e7
         }
 
-        select {
-            display: inline-block !important
+        select{
+            border: none!important;
+            outline: none!important;
+            appearance: none!important;
+            -webkit-appearance: none!important;
+            -moz-appearance: none!important;
+            background-color: #ffffff!important;
+            display: none;
         }
-
         .qianmingBlock {
             display: block;
             width: 130mm;
-            margin-left: 45mm;
+            margin-left: 85mm;
             margin-top: -10mm;
         }
-
-        .contentDiv {
-            padding: 5px;
+        .tabWidth{
+            width: 260mm;
         }
         input{
             outline: none!important;
@@ -92,7 +96,7 @@
         }
         .tabTitle {
             margin: auto;
-            width: 210mm;
+            width: 255mm;
         }
         textarea{
             outline: none!important;
@@ -221,11 +225,7 @@
                         </span>
                     </p>
                     <div class="qianming qianmingBlock" style="margin-top: -40px;">
-                        <img id="img_1" step="0"  class="signName" src="" form-required="签名必填。"/>
-
-                        <button for="img_1" step="0" class="btn btn-info" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+                        <img id="img_1" step="0"  class="signName" style="margin-bottom:1.5mm;" src="" form-required="签名必填。"/>
                     </div>
 
                     <div class="form-group div-inline data_2" style="float: right; margin-top: -38px; margin-right: 10px; width: 40mm;">
@@ -268,11 +268,6 @@
                     <div class="qianming">
                         <img id="img_2" step="3"  class="signName" src="" form-required="签名必填。"/>
                     </div>
-                    <div class="qianming">
-                        <button for="img_2" step="3" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
-                    </div>
                     <p style="line-height: 16pt; margin: 0pt 0pt 0pt 5pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 宋体; font-size: 10.5pt">&#xa0;</span></p>
 
                     <div class="form-group div-inline data_2" style="width: 50mm; float: right; margin: -20px 5px 5px 5px;">
@@ -293,11 +288,6 @@
                     <div class="qianming">
                         <img id="img_3" step="2" class="signName" src=""  form-required="签名必填。"/>
                     </div>
-                    <div class="qianming">
-                        <button for="img_3" step="2" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
-                    </div>
                     <p style="line-height: 16pt; margin: 0pt 0pt 0pt 5pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 宋体; font-size: 10.5pt">&#xa0;</span></p>
 
                     <div class="form-group div-inline data_2" style="width: 50mm; float: right; margin: -20px 30px 0 5px;">
@@ -317,11 +307,6 @@
                     </p>
                     <div class="qianming">
                         <img id="img_4"  step="1"class="signName" src=""  form-required="签名必填。"/>
-                    </div>
-                    <div class="qianming">
-                        <button for="img_4" step="1" class="btn btn-info btnt" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
                     </div>
                     <p style="line-height: 16pt; margin: 0pt 0pt 0pt 5pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 宋体; font-size: 10.5pt">&#xa0;</span></p>
 
@@ -357,11 +342,7 @@
                         </span>
                     </p>
                     <div class="qianming qianmingBlock">
-                        <img id="img_5" step="4"  class="signName" src=""  form-required="签名必填。"/>
-
-                        <button for="img_5" step="4" class="btn btn-info" type="button" onclick="signature(this)">
-                            <i class="fa fa-check"></i><span class="bold">签名</span>
-                        </button>
+                        <img id="img_5" step="4"  class="signName" style="margin-bottom:1.5mm;" src=""  form-required="签名必填。"/>
                     </div>
 
                     <div class="form-group div-inline data_2" style="float: right; margin-top: -38px; margin-right: 10px; width: 40mm;">
