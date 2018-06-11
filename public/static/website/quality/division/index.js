@@ -65,7 +65,7 @@ $('#delNode').click(function () {
             data: {
                 id:id
             },
-            success: function (res) {
+            success: function (res) {~
                 if(res.code==1){
                     for (var i = 0, l = nodes.length; i < l; i++) {
                         treeObj.removeNode(nodes[i]);
