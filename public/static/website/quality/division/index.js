@@ -48,7 +48,34 @@ $('#closeNode').click(function(){
 
 //删除节点
 $('#delNode').click(function () {
-    $.delnode();
+    var treeObj = $.fn.zTree.getZTreeObj('ztree');
+    var nodes = treeObj.getSelectedNodes();
+    var id = nodes[0].id;
+    if (nodes[0].level < 2) {
+        return false;
+    }
+    layer.confirm('该操作会将关联用户同步删除，是否确认删除？', {
+        icon: 3,
+        title: '提示'
+    }, function (index) {
+        $.ajax({
+            url: './delNode',
+            dataType: 'JSON',
+            type: 'POST',
+            data: {
+                id:id
+            },
+            success: function (res) {
+                if(res.code==1){
+                    for (var i = 0, l = nodes.length; i < l; i++) {
+                        treeObj.removeNode(nodes[i]);
+                    }
+                }
+                layer.msg(res.msg);
+            }
+        });
+        layer.close(index);
+    });
 });
 
 //新增节点弹层

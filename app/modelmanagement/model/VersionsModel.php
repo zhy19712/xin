@@ -62,12 +62,11 @@ class VersionsModel extends Model
                 }
 
                 // 删除解压的文件夹 和 文件
-                $attachment = Db::name('attachment')->where(['id'=>$data['attachment_id']])->value('name');
-                $file_name = explode('.',$attachment);
+                $file_name = $data['resource_name'];
                 if($data['model_type'] == 1){ // 1竣工模型 2施工模型
-                    $path = 'E:\WebServer\Resources\jungong' . DS . $file_name[0] . DS;
+                    $path = 'E:\WebServer\Resources' . '\\' . $file_name . '\\';
                 }else{
-                    $path = 'E:\WebServer\Resources\shigong' . DS . $file_name[0] .DS;
+                    $path = 'E:\WebServer\Resources' . '\\' . $file_name .'\\';
                 }
                 $this->deldir($path);
                 @rmdir($path);
