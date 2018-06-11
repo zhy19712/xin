@@ -40,27 +40,27 @@ tableItem = $("#tableIncome").DataTable({
             targets: [7],
             render: function (data, type, row,meta) {
                 if (row[6] == '2' && user_name == row[5]){
-                    return  '<a title="' + data + '" class="layui-btn layui-btn-sm" href="javascript:void(0);" major_key="'+row[7]+'" onclick="handle(this)">处理</a>';
+                    return  '<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="handle(this)" >处理</i>';
                 }else {
-                    return  '<a title="' + data + '" class="layui-btn  layui-btn-sm"  href="javascript:void(0);" major_key="'+row[7]+'" onclick="preview(this)" style="border-radius: 4px;">查看</a>';
+                    return  '<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="preview(this)" >查看</i>';
                 }
             }
         }
     ],
-    dom: 'frt<"#showItme"l><"#pagenations"p>',
+    dom: 'lftip',
     language: {
         "sProcessing":"数据加载中...",
         "lengthMenu": "_MENU_",
         "zeroRecords": "没有找到记录",
         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
         "infoEmpty": "无记录",
-        "search": "搜索：",
+        "search": "搜索",
         "sSearchPlaceholder":"请输入关键字",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
-            "sPrevious": "<",
-            "sNext": ">",
+            "sPrevious": "上一页",
+            "sNext": "下一页",
             "sLast": ">>"
         }
     }

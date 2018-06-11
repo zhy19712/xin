@@ -1,24 +1,5 @@
 {include file="../../public/common_header"}
 <style>
-    .dataTables_wrapper, .tbcontainer {
-        display: block;
-    }
-    #tableIncome thead tr{
-        height: 40px !important;
-    }
-    #tableIncome thead tr th{
-        text-align: center;
-        font-size: 14px;
-        color: #333333;
-        height: 40px !important;
-    }
-    #add_table_files tr td,#add_table_files tr th{
-        text-align: center;
-        font-size: 14px;
-        color: #333333;
-        height: 40px;
-        padding: 9px;
-    }
     #file_modal{
         display: none;
     }
@@ -35,25 +16,6 @@
     }
     textarea{
         cursor: pointer!important;
-    }
-    #tableIncome_wrapper{
-        height: 100%;
-    }
-    #pagenations{
-        position: absolute;
-        left: 55px;
-        bottom: 0;
-    }
-    #tableIncome_filter{
-        margin: 15px 0 10px;
-    }
-    #tableFileList_paginate{
-        width: 100%;
-        text-align: center;
-        padding-top: 20px;
-    }
-    table thead tr th{
-        text-align: center!important;
     }
     #file_modal .layui-btn-xs{
         width: 40px!important;
@@ -102,18 +64,13 @@
         background: #ff5722;
         border: none;
     }
-    /*出现两个表头*/
-    #tableIncome thead{
-        display: none;
-    }
-    /*搜索和那个input不对齐*/
-    .dataTables_wrapper .dataTables_filter {
-        line-height: 33px;
+    .layui-layer-content .layui-input-block{
+        margin-right: 39px;
     }
 </style>
 <div class="layui-fluid" style="height: 100%;">
     <div class="layui-row" style="height: 100%">
-        <table id="tableIncome"  cellspacing="0"  width="100%">
+        <table id="tableIncome" class="table cell-border"  cellspacing="0"  width="100%">
             <thead>
             <tr>
                 <th>创建时间</th>
@@ -195,8 +152,8 @@
         </div>
         <div class="layui-form-item" id="addSubmit">
             <div class="layui-input-block" style="text-align: center;margin-top: 50px;">
-                <button class="layui-btn" lay-submit lay-filter="save" view-filter id="save" style="margin-right: 80px">签收</button>
-                <button class="layui-btn layui-btn-primary" lay-submit lay-filter="cancel" view-filter id="cancel">拒收</button>
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="save" view-filter id="save" style="margin-right: 80px">签收</button>
+                <button class="layui-btn layui-btn-danger layui-btn-sm" lay-submit lay-filter="cancel" view-filter id="cancel">拒收</button>
             </div>
         </div>
     </form>
