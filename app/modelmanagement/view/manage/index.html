@@ -25,18 +25,18 @@
                     <i id="qualified"></i>
                 </li>
                 <li>
-                    <span>不合格：</span>
-                    <i id="unQualified"></i>
-                </li>
-                <li>
                     <span>未验评：</span>
                     <i id="unReview"></i>
+                </li>
+                <li>
+                    <span>未施工：</span>
+                    <i id="unQualified"></i>
                 </li>
             </ul>
             <ul class="layer-model-nav">
                 <li>优良：<a id="excellent_number"></a>个（<a id="excellent_rate"></a>）</li>
                 <li>合格：<a id="qualified_number"></a>个（<a id="qualified_rate"></a>）</li>
-                <li>不合格：<a id="unchecked_number"></a>个（<a id="unchecked_rate"></a>）</li>
+                <li>未施工：<a id="unchecked_number"></a>个（<a id="unchecked_rate"></a>）</li>
             </ul>
         </div>
         <div data-options="region:'center'" class="layer-center">
@@ -55,6 +55,21 @@
                     success: function (res) {
                         //模型名称
                         var modelName = res.pag_name;
+                        if(modelName==null){
+                            layer.alert('未注册控件,请前往注册!', {icon: 2, title: '提示', anim: 2}, function (index) {
+                                $.ajax({
+                                    url: "{:url('admin/common/logout')}"
+                                    , success: function (res) {
+                                        if (res.code == 1) {
+                                            setTimeout(function () {
+                                                parent.location.reload();
+                                            }, 2000);
+                                        }
+                                    }
+                                })
+                            });
+                            return false;
+                        }
                         RealBimOcx.SwitchBIMSceneSimple(modelPath, modelName);
                     }
                 });
@@ -68,6 +83,43 @@
                 if (CompleteEvent == "LoadMainScene" && retError == 0) {
                     RealBimOcx.SetAllHugeObjSubValidState(1);
                     RealBimOcx.SetSceHugeObjVisible(true);
+                    var currentVarsion = RealBimOcx.GetVersion();
+                    $.ajax({
+                        url: "/modelmanagement/qualitymass/resourcePagName",
+                        type: "post",
+                        data: {
+                            model_type: 2
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            var modelName = res.pag_name;
+                            if(modelName==null){
+                                return false;
+                            }
+                            if(res.code==1){
+                                var serverVarsion = res.new_version_number;
+                                console.log('当前版本：'+currentVarsion);
+                                console.log('最新版本：'+serverVarsion);
+                                if(serverVarsion!=currentVarsion){
+                                    layer.alert('控件版本太低,请前往更新!', {icon: 2, title: '提示', anim: 2}, function (index) {
+                                        $.ajax({
+                                            url: "{:url('admin/common/logout')}"
+                                            , success: function (res) {
+                                                if (res.code == 1) {
+                                                    setTimeout(function () {
+                                                        parent.location.reload();
+                                                    }, 2000);
+                                                }
+                                            }
+                                        })
+                                    });
+                                    return false;
+                                }
+                            }else{
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
                 }
                 RealBimOcx.SetSuitableCam();
                 //TODO get请求
@@ -110,7 +162,7 @@
                         success: function (res) {
                             var data = res.data;
                             //透明掉全部
-                            RealBimOcx.SetAllSubClrInfos(20, 255, 0xff529df8);
+                            RealBimOcx.SetAllSubClrInfos(20, 255, 0xff529df8);//0xff529df8
                             //优良 excellent
                             RealBimOcx.BatchAddSubClrInfoBegin();
                             for (var i = 0; i < data.excellent.length; i++) {
@@ -122,10 +174,10 @@
                                 var quUObjSubID = data.qualified[j];
                                 RealBimOcx.AddSubClrPercent(quUObjSubID, 1, qualified_pigment);    //第二个参数为透明度
                             }
-                            // 不合格 unqualified
+                            // 未施工 unqualified
                             for (var l = 0; l < data.unqualified.length; l++) {
                                 var unQuUObjSubID = data.unqualified[l];
-                                RealBimOcx.AddSubClrPercent(unQuUObjSubID, 1, un_evaluation_pigment);    //第二个参数为透明度
+                                RealBimOcx.AddSubClrPercent(unQuUObjSubID, 1, 0xff);    //第二个参数为透明度
                             }
                             RealBimOcx.BatchAddSubClrInfoEnd();
                         }
@@ -155,6 +207,7 @@
                     },
                     dataType: "json",
                     success: function (res) {
+                        console.log(res.data);
                         operateModel(res.data);
                         selectedModeGroupIds = res.data.model_id;
                         nodeId = res.data.unit_id;
@@ -218,7 +271,7 @@
                                     var quUObjSubID = data.qualified[j];
                                     RealBimOcx.SetHugeObjSubValidStateInfo(quUObjSubID, 1);
                                 }
-                                // 不合格 unqualified
+                                // 未施工 unqualified
                                 for (var l = 0; l < data.unqualified.length; l++) {
                                     var unQuUObjSubID = data.unqualified[l];
                                     RealBimOcx.SetHugeObjSubValidStateInfo(unQuUObjSubID, 1);
@@ -337,25 +390,31 @@
         var prevModelId = $('#modelId').val();
         var newPrevModelId = prevModelId.split(',');
         if (prevModelType == 1) {
-            var prevModelColor = un_evaluation_pigment;
-        }
-        if (prevModelType == 2) {
-            var prevModelColor = qualified_pigment;
-        }
-        if (prevModelType == 3) {
-            var prevModelColor = choiceness_pigment;
-        }
-        if (data.model_id != '') {
-            selectedModeGroupIds = data.model_id;
-            RealBimOcx.SetGroupInLogCamPos(data.model_id); //镜头
+            //var prevModelColor = un_evaluation_pigment;
             RealBimOcx.BatchAddSubClrInfoBegin();
-            for (var j = 0; j < newPrevModelId.length; j++) {
-                RealBimOcx.AddSubClrPercent(+newPrevModelId[j], 1, prevModelColor);
-            }
-            for (var i = 0; i < data.model_id.length; i++) {
-                RealBimOcx.AddSubClrPercent(data.model_id[i], 1, modelColor); //上颜色
+            for (var k = 0; k < newPrevModelId.length; k++) {
+                RealBimOcx.AddSubClrPercent(+newPrevModelId[k], 1, 0xff);
             }
             RealBimOcx.BatchAddSubClrInfoEnd();
+        }else{
+            if (prevModelType == 2) {
+                var prevModelColor = qualified_pigment;
+            }
+            if (prevModelType == 3) {
+                var prevModelColor = choiceness_pigment;
+            }
+            if (data.model_id != '') {
+                selectedModeGroupIds = data.model_id;
+                RealBimOcx.SetGroupInLogCamPos(data.model_id); //镜头
+                RealBimOcx.BatchAddSubClrInfoBegin();
+                for (var j = 0; j < newPrevModelId.length; j++) {
+                    RealBimOcx.AddSubClrPercent(+newPrevModelId[j], 1, prevModelColor);
+                }
+                for (var i = 0; i < data.model_id.length; i++) {
+                    RealBimOcx.AddSubClrPercent(data.model_id[i], 1, modelColor); //上颜色
+                }
+                RealBimOcx.BatchAddSubClrInfoEnd();
+            }
         }
         $('#modelType').val(data.model_type);
         $('#modelId').val(data.model_id);

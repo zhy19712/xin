@@ -119,3 +119,11 @@ i.fa-download:before,i.fa-plus:before,i.fa-download:hover:before,i.fa-plus:hover
 .tbcontainer{
     display: none;
 }
+
+.unit .icon i.fa{
+    height: 36px;
+    line-height: 36px;
+}
+.unit .layui-input-block{
+    margin-right: 36px;
+}
