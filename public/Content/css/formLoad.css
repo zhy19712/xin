@@ -1,0 +1,96 @@
+.tabHeight {
+    height: 890px
+}
+/*img {
+    width: 30mm;
+    position: absolute;
+    right: 0mm;
+    top: 0mm
+}*/
+
+.textVertical {
+    writing-mode: tb-lr;
+    letter-spacing: 5px;
+	display: inline-block;
+}
+
+
+.titleTwo {
+    margin-top: 3mm
+}
+
+.tdOne {
+    width: 82mm
+}
+
+.spanHeard {
+    font-family: 仿宋;
+}
+
+canvas {
+    width: 30mm;
+    position: absolute;
+    right: 0mm;
+    top: 0mm
+}
+.paging {
+    page-break-before: always;
+}
+
+.zhuangSpan {
+    font-size: 9pt;
+    line-height: 10pt;
+}
+
+.zhuangSpanP {
+    width: 48mm;
+    text-align: left;
+}
+
+.tcP {
+    margin: 0pt;
+    text-align: center;
+}
+
+.td4 {
+    width: 80mm
+}
+
+/*.btn {
+    line-height: 1.02857;
+    border-radius: 60px;
+    margin-top: 0px;
+    font-size: 12px;
+    margin: 5px
+}*/
+.hr-line-dashed{
+    border: none;
+    margin-top: 10px!important
+}
+.hearBtn {
+    text-align: right;
+    position: fixed!important;
+    right: 5px!important;
+    border-bottom: 1px dashed #e7eaec!important;
+    width: 100%!important;
+    z-index: 2147483647!important;
+    background-color: white!important;
+}
+.sign_date{
+    border: none!important;
+    outline: none!important;
+}
+
+#fileTitle{
+    width: 260mm!important;
+    height: 100px;
+    margin: 0 auto;
+    position: relative;
+}
+#qrcode{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 80px;
+    height: 80px;
+}
