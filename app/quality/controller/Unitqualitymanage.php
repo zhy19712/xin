@@ -391,7 +391,8 @@ class Unitqualitymanage extends Permissions
             //只有执行点执行情况文件删除时进行以下的操作
             //如果控制点执行情况的文件全部删除，修改分部策划表中的状态到未执行，也就是0
             //首先查询控制点文件、图像上传表中是否还存在当前的分部策划表的上传文件记录
-            $result = $model->judge($param["list_id"]);
+            $result = $model->judge_unit($param["list_id"]);
+
             if(empty($result))//为空为真表示已经没有文件,修改status的值
             {
                 $info = $Division->getOne($param["list_id"]);
