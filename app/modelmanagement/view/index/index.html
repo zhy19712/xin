@@ -133,12 +133,12 @@
                             RealBimOcx.BatchAddSubClrInfoEnd();
                             $('#modelIdArr').val(modelIdArr);
                             for(var j = 0;j<attribute.length;j++){
-                                test += '\n\n\ \1cf[4286644223]'+ attribute[j].attribute_name + '\n\n\1cf[4294934592]' + attribute[j].attribute_val;
+                                test += '\n\n\ \1cf[4286644223]'+ attribute[j].attribute_name + '\n\n \1cf[4294934592]' + attribute[j].attribute_val;
                             }
                             if(test==undefined){
                                 return false;
                             }
-                            RealBimOcx.SetInfoBox(test,-150,170,170,-150,-160,180,180,-180);
+                            RealBimOcx.SetInfoBox(test,-250,170,-20,-150,-260,180,-10,-180);
                         }
                     });
                 }else{
