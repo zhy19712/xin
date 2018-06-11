@@ -36,6 +36,13 @@ class Permissions extends Controller
                 return $this->error('你已被封禁！','admin/common/login');
             }
         }
+        //检查是否有app端传来的token值
+        if(isset($_POST['appToken'])&&($_POST['appToken']!=''))
+        {
+            $appToken=$_POST['appToken'];
+            //调取验证和赋值方法
+            $this->checkToken($appToken);
+        }
         
         //检查是否登录
         
@@ -140,5 +147,21 @@ class Permissions extends Controller
                 }
             }  
         }
+    }
+    //验证app权限
+    protected function checkToken($appToken)
+    {
+        $info=Db::name('admin')
+            ->where(['token'=>$appToken])
+            ->find();
+        if($appToken==$info['token'])
+         {
+             Session::set("admin",$info['id']); //保存新的
+             Session::set("current_name",$info['name']); //保存新的
+             Session::set("current_id",$info['id']); //保存新的
+             Session::set("current_nickname",$info['nickname']); //保存新的
+             Session::set("admin_cate_id",$info['admin_cate_id']);//保存新的
+
+         }
     }
 }
