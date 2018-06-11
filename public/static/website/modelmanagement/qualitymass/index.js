@@ -251,6 +251,7 @@ function tableItemFun(model_type) {
             },
             dataType: "json",
             success: function (res) {
+                idArr.length=0;
                 tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
                 layer.msg(res.msg);
                 $('#all_checked').prop("checked",false);
@@ -269,6 +270,7 @@ function tableItemFun(model_type) {
                 },
                 dataType: "json",
                 success: function (res) {
+                    idArr.length=0;
                     alreadyRelationModelTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&id='+nodeId+'&model_type=0').load();
                     layer.msg(res.msg);
                 }
