@@ -56,18 +56,18 @@ class Matchform extends Controller
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function matchForm($cpr_id)
+    public function matchForm()
     {
         //获取模板路径
         //获取控制点信息，组合模板路径
-
+        $cpr_id=14950;
         $norm_template=Db::name('norm_template')->alias('t')
             ->join('norm_controlpoint c', 't.id = c.qualitytemplateid', 'left')
             ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
             ->where(['r.id'=>$cpr_id])
             ->find();
         $template=Db::name('quality_form_info')
-            ->where(['DivisionId'=>$norm_template['division_id'],'ControlPointId'=>$norm_template['control_id']])
+            ->where(['DivisionId'=>$norm_template['division_id'],'ControlPointId'=>$norm_template['control_id'],'ApproveStatus'=>2])
             ->find();
         $id= $template['id'];
         $qualitytemplateid = $norm_template['qualitytemplateid'];
