@@ -848,6 +848,14 @@ class Division extends Permissions{
                 $flag = $unit->insertTb($param);
                 return json($flag);
             }else{
+                // 解决前台在新增的时候报编辑成功(原因就是多传了一个id编号)
+                $is_add = Db::name('quality_unit')->where([ 'id' => ['eq',$param['id']]])->value('id');
+                if(empty($is_add)){
+                    unset($param['id']);
+                    $flag = $unit->insertTb($param);
+                    return json($flag);
+                }
+
                 // 同一个归属工程下的 单元工程段号(单元划分)流水号 和 系统编码 必须 是 唯一的
                 $is_unique_number = Db::name('quality_unit')->where([ 'id' => ['neq',$param['id']],'serial_number' => $param['serial_number'],'division_id' => $param['division_id'] ])->value('id');
                 if(!empty($is_unique_number)){
