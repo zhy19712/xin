@@ -1,34 +1,5 @@
 {include file="../../public/common_header"}
 <style>
-    .dataTables_wrapper, .tbcontainer {
-        display: block;
-    }
-    #tableIncome thead tr{
-        height: 40px !important;
-    }
-    #tableIncome thead tr th{
-        text-align: center;
-        font-size: 14px;
-        color: #333333;
-        height: 40px !important;
-    }
-    #add_table_files tr td,#add_table_files tr th{
-        text-align: center;
-        font-size: 14px;
-        color: #333333;
-        height: 40px;
-        padding: 9px;
-    }
-    #file_modal,#add_file_modal{
-        display: none;
-    }
-    .mybtn{
-        float: right;
-        margin-top: 10px;
-    }
-    #tableIncome_filter{
-        margin-top: 10px;
-    }
     input:disabled{
         cursor: pointer!important;
     }
@@ -38,36 +9,8 @@
     input:read-only{
         cursor: pointer!important;
     }
-    #tableIncome_wrapper{
-        height: 100%;
-    }
-    #tableItem_wrapper{
-        height: 100%;
-    }
-    #tableFileList_wrapper{
-        height: 100%;
-    }
-    #pagenations_name{
-        position: absolute;
-        bottom: 0;
-    }
-    #pagenations{
-        position: absolute;
-        left: 55px;
-        bottom: 0;
-    }
-    #filePagnation{
-        position: absolute;
-        bottom: 0;
-    }
-    #tableIncome_filter{
-        margin: 15px 0 10px;
-    }
     #treeOption{
         width: 750px!important;
-    }
-    table thead tr th{
-        text-align: center!important;
     }
     #add_file_modal .layui-btn-xs{
         width: 40px!important;
@@ -103,32 +46,13 @@
     .layui-layer-content {
         padding-top: 30px;
     }
-    #back{
-        width: 80px !important;
-        height: 36px !important;
-        background: #ff5722;
-        color: #FFFFFF;
-    }
-    #back:hover{
-        background: #ff5722;
-        border: none;
-    }
-    /*上传按钮向左移动了距离*/
-    .webuploader-pick {
-        margin-left: -4px;
-    }
-    /*出现两个表头*/
-    #tableIncome thead{
-        display: none;
-    }
-    /*搜索和那个input不对齐*/
-    .dataTables_wrapper .dataTables_filter {
-        line-height: 33px;
+    .layui-layer-content .layui-input-block{
+        margin-right: 39px;
     }
 </style>
 <div class="layui-fluid" style="height: 100%;">
     <div class="layui-row" id="table_content" style="height: 100%;">
-        <table id="tableIncome" cellspacing="0"  width="100%">
+        <table id="tableIncome" class="table cell-border" cellspacing="0"  width="100%">
             <thead>
             <tr>
                 <th>创建日期</th>
@@ -220,8 +144,8 @@
         </div>
         <div class="layui-form-item" id="addSubmit">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="save" view-filter id="save">保存</button>
-                <button class="layui-btn" lay-submit lay-filter="saveAndSend" view-filter id="saveAndSend">保存并发送</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save" view-filter id="save">保存</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveAndSend" view-filter id="saveAndSend">保存并发送</button>
                 <button type="reset" class="layui-btn layui-btn-primary" id="back">返回</button>
             </div>
         </div>

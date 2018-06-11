@@ -47,7 +47,7 @@ tableItem = $("#tableIncome").DataTable({
             }
         }
     ],
-    dom: 'frit<"#showItme"l><"#pagenations"p>',
+    dom: 'lftip',
     language: {
         "sProcessing":"数据加载中...",
         "lengthMenu": "_MENU_",
