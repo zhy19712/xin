@@ -294,6 +294,7 @@ class Versions extends Permissions
         }
         $res['src'] = $uploadPath;
         $res['code'] = 2;
+        $res['msg'] = '上传成功';
         // 记得打开php.ini里的com.allow_dcom = true
         $obj = new \COM('WScript.Shell');
         //执行doc解压命令
