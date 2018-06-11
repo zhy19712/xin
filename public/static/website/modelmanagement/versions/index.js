@@ -55,6 +55,7 @@ var completedTable = $('#completedTable').DataTable({
         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
         "infoEmpty": "无记录",
         "search": "搜索",
+        "sSearchPlaceholder":"请输入关键字",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
@@ -127,6 +128,7 @@ var constructionTable = $('#constructionTable').DataTable({
         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
         "infoEmpty": "无记录",
         "search": "搜索",
+        "sSearchPlaceholder":"请输入关键字",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
@@ -235,11 +237,16 @@ function uploadModel() {
             element.progress('upload', percentage * 100 + '%');
         });
         $('.layui-progress-bar').html(Math.round(percentage * 100) + '%');
+        if(percentage * 100 == 100){
+            loading = layer.load(1,{
+                shade: [0.5,'#000'],
+                content:'合并和解压中...请稍后'
+            });
+        }
     });
 
     //模型上传成功
     uploader.on('uploadSuccess', function (file, response) {
-        $( '#'+file.id ).find('p.state').text('合并和解压中...');
         $.ajax({
             url: "./saveFile",
             type: "post",
@@ -253,20 +260,20 @@ function uploadModel() {
             success: function (res) {
                 if(res.code==2){
                     $('.upload-list').empty();
-                    $( '#'+file.id ).find('p.state').text('上传成功');
                     $('#resource_name').val(file.name);
                     $('#save').show();
                     attachment_id = res.id;
+                    layer.close(loading);
                     layer.msg(res.msg);
                 }else{
-                    $( '#'+file.id ).find('p.state').text('合并解压出错,请重新上传');
+                    layer.msg('合并解压出错,请重新上传');
                 }
             }
         });
     });
 
     uploader.on( 'uploadError', function( file ) {
-        $( '#'+file.id ).find('p.state').text('上传出错');
+        layer.msg('上传出错');
     });
 }
 
@@ -277,7 +284,8 @@ layui.use('form', function(){
         data.field.model_type = model_type;
         data.field.attachment_id = attachment_id;
         var load = layer.load(1, {
-            shade: [0.1,'#fff'] //0.1透明度的白色背景
+            shade: [0.5,'#000'],
+            content:'保存中...请稍后'
         });
         $.ajax({
             url: "./add",

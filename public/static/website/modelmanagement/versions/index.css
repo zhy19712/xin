@@ -10,3 +10,11 @@
 .layui-layer-content .layui-input-block{
     margin-right: 25px;
 }
+.layui-layer-loading .layui-layer-loading1{
+    width: 200px;
+    height: 65px;
+    line-height: 105px;
+    text-align: center;
+    background-position: center top;
+    color: #FFF;
+}

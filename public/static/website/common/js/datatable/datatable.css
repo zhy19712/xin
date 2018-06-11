@@ -59,6 +59,7 @@ table.dataTable.no-footer{
 }
 .dataTables_wrapper .dataTables_filter label{
     padding: 7px 13px;
+    line-height: 1.42857143;
     color: #FFF;
     cursor: pointer;
     font-size: 12px;
