@@ -187,7 +187,7 @@ layui.use('element', function(){
 
 function uploadModel() {
     // 创建上传
-    var uploader = WebUploader.create({
+    uploader = WebUploader.create({
         auto: true,
         swf: '/static/public/webupload/Uploader.swf',
         server: './upload',      // 服务端地址
@@ -197,6 +197,7 @@ function uploadModel() {
             innerHTML: "上传"
         },
         resize: false,
+        duplicate:true,
         chunked: true,            //开启分片上传
         chunkSize: 1024*1024*100,   //每一片的大小
         chunkRetry: 5,          // 如果遇到网络错误,重新上传次数
@@ -204,7 +205,12 @@ function uploadModel() {
         fileNumLimit:500,
         fileSizeLimit:1024*1024*1024*10,
         fileSingleSizeLimit:1024*1024*1024*10,
-        formData: {model_type:model_type}
+        formData: {model_type:model_type},
+        accept: {
+            title: 'Rar,Zip',
+            extensions: 'rar,zip',
+            mimeTypes: '.rar,.zip'
+        },
     });
     // 当有文件被添加进队列的时候
     uploader.on( 'fileQueued', function( file ) {
@@ -215,6 +221,7 @@ function uploadModel() {
     });
     // 文件上传过程中创建进度条实时显示。
     uploader.on('uploadProgress', function (file, percentage) {
+        $('#save').hide();
         var $li = $('#' + file.id),
             $percent = $li.find('.layui-progress .layui-progress-bar');
         // 避免重复创建
@@ -245,8 +252,10 @@ function uploadModel() {
             dataType: "json",
             success: function (res) {
                 if(res.code==2){
+                    $('.upload-list').empty();
                     $( '#'+file.id ).find('p.state').text('上传成功');
                     $('#resource_name').val(file.name);
+                    $('#save').show();
                     attachment_id = res.id;
                     layer.msg(res.msg);
                 }else{
@@ -261,49 +270,15 @@ function uploadModel() {
     });
 }
 
-$('#save').on('click',function () {
-    $(this).addClass('layui-btn-disabled').removeAttr('lay-submit');
-    return false;
-});
-
-//上传模型
-/*function uploadModel() {
-    uploader = WebUploader.create({
-        // 选完文件后，是否自动上传。
-        auto: true,
-        // swf文件路径
-        swf: '/static/public/webupload/Uploader.swf',
-        // 文件接收服务端。
-        //server: applicationPath + '/ModelFile/UpLoadProcess?modelTypeId=' + $("#hidModeFileTypeId").val() + "&flag=" + flag,
-        server: './upload',
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: {
-            multiple: false,
-            id: '#addModel',
-            innerHTML: '上传'
-        },
-        formData: {}
-    });
-
-    //模型上传成功
-    uploader.on('uploadSuccess', function (file, response) {
-        $('#resource_name').val(file.name);
-        attachment_id = response.id;
-        layer.msg(response.msg);
-    });
-    //准备上传
-    uploader.on("uploadStart",function () {
-        uploader.options.formData.model_type = model_type;
-    });
-}*/
-
 //保存模型
 layui.use('form', function(){
     var form = layui.form;
     form.on('submit(save)', function(data){
         data.field.model_type = model_type;
         data.field.attachment_id = attachment_id;
+        var load = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
         $.ajax({
             url: "./add",
             type: "post",
@@ -316,8 +291,12 @@ layui.use('form', function(){
                 if(model_type==2){
                     constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
                 }
+                $('.upload-list').empty();
+                $('#resource_name').val('');
                 layer.msg(res.msg);
                 layer.close(index);
+                layer.close(load);
+                uploader.reset();
             }
         })
         return false;
@@ -327,7 +306,10 @@ layui.use('form', function(){
 //关闭新增模型弹层
 $('#close').click(function(){
     $('#addModelLayer').hide();
+    $('#resource_name').val('');
     layer.close(index);
+    $('.upload-list').empty();
+    uploader.reset();
 });
 
 //查看版本
