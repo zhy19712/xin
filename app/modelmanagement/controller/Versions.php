@@ -145,13 +145,13 @@ class Versions extends Permissions
                 exit;
             }
         }
-        @set_time_limit(30 * 60);
+        @set_time_limit(3600);
         $path = 'E:\WebServer\Resources'; //文件路径
         $date_dir = date('Ymd');
         $targetDir = $path . '\\' . 'file_material_tmp' . '\\' . $date_dir;
         $uploadDir = $path . '\\' . 'file_material' . '\\' . $date_dir;
         $cleanupTargetDir = true; // Remove old files
-        $maxFileAge = 10 * 3600; // Temp file age in seconds
+        $maxFileAge = 20 * 3600; // Temp file age in seconds
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0777, true);
         }
@@ -221,6 +221,10 @@ class Versions extends Permissions
         if ( $done ) {
             $pathInfo = pathinfo($fileName);
             $hashStr = substr(md5($pathInfo['basename']),8,16);
+            if(!isset($pathInfo['extension'])){
+                $arr = explode('.',$pathInfo['basename']);
+                $pathInfo['extension'] = $arr[1];
+            }
             $hashName = time() . $hashStr . '.' .$pathInfo['extension'];
             $uploadPath = $uploadDir . DIRECTORY_SEPARATOR .$hashName;
             if (!$out = @fopen($uploadPath, "wb")) {
