@@ -125,6 +125,24 @@ class Versions extends Permissions
 //        }
 //    }
 
+
+   // 上传压缩包之前判断是否已经上传过
+   public function checkUpload()
+   {
+       if($this->request->isAjax()){
+           $param = input('param.');
+           $file_name = isset($param['file_name']) ? $param['file_name'] : '';
+           if(empty($file_name)){
+               return json(['code'=>-1,'msg'=>'缺少文件名']);
+           }
+           $data = Db::name('attachment')->where(['name'=>['eq',$file_name]])->value('id');
+           if(empty($data)){
+               return json(['code'=>1,'msg'=>'验证通过']);
+           }
+           return json(['code'=>-1,'msg'=>'文件已经上传过']);
+       }
+   }
+
     /**
      * 压缩包上传
      * @return \think\response\Json
@@ -220,13 +238,10 @@ class Versions extends Permissions
         }
         if ( $done ) {
             $pathInfo = pathinfo($fileName);
-            $hashStr = substr(md5($pathInfo['basename']),8,16);
-            if(!isset($pathInfo['extension'])){
-                $arr = explode('.',$pathInfo['basename']);
-                $pathInfo['extension'] = $arr[1];
-            }
-            $hashName = time() . $hashStr . '.' .$pathInfo['extension'];
-            $uploadPath = $uploadDir . DIRECTORY_SEPARATOR .$hashName;
+//            $hashStr = substr(md5($pathInfo['basename']),8,16);
+//            $hashName = time() . $hashStr . '.' .$pathInfo['extension'];
+//            $uploadPath = $uploadDir . DIRECTORY_SEPARATOR .$hashName;
+            $uploadPath = $uploadDir . DIRECTORY_SEPARATOR .$oldName;
             if (!$out = @fopen($uploadPath, "wb")) {
                 die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
             }
@@ -244,17 +259,9 @@ class Versions extends Permissions
                 flock($out, LOCK_UN);
             }
             @fclose($out);
-            // 记得打开php.ini里的com.allow_dcom = true
-            $obj = new \COM('WScript.Shell');
-            // 重命名压缩包里的第一个文件夹的名称,避免名称一致时导致文件被覆盖
-            // 但是无法解决压缩名称和压缩包里的文件夹名称不一致的情况,例如: 压缩包名称是 res_shigong.zip 里面的第一个文件夹名称是 shiGong
-            $n_name = explode('.',$oldName);
-            $one_name = $n_name[0];
-            $new_name = $one_name.date('YmdHis');
-            $obj->run("winrar rn $uploadPath $one_name $new_name");
             $response = [
                 'success'=>true,
-                'oldName'=>$new_name,
+                'oldName'=>$oldName,
                 'filePaht'=>$uploadPath,
                 'fileSuffixes'=>$pathInfo['extension'],
                 'path'=>$path
@@ -303,7 +310,7 @@ class Versions extends Permissions
         $obj = new \COM('WScript.Shell');
         //执行doc解压命令
         $file_path = $res['src'];
-        $flag = $obj->run("winrar x $file_path $path",1,true);
+        $flag = $obj->run("winrar e -y -c- $file_path -ad $path",1,true);
         if($flag == 1){ // 0 是成功 1是失败
             return json(['code'=>-1,'msg'=>'解压文件失败']);
         }
@@ -347,9 +354,9 @@ class Versions extends Permissions
             $param['version_number'] = $version_number;
             $param['version_date'] = date('Y-m-d H:i:s');
             // 资源包名称不带后缀
-//            $resource_name = explode('.',$param['resource_name']);
-//            $param['resource_name'] = $resource_name[0];
-            $param['resource_name'] = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('name');
+            $resource_name = explode('.',$param['resource_name']);
+            $param['resource_name'] = $resource_name[0];
+//            $param['resource_name'] = Db::name('attachment')->where(['id'=>$param['attachment_id']])->value('name');
             if(empty($major_key)){
                 /**
                  * 1 竣工模型 -- 全景3D模型 操作的表是 model_complete
