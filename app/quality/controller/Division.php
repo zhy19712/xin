@@ -801,6 +801,15 @@ class Division extends Permissions{
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
 
+            // 完工日期要大于开工日期
+            if(isset($param['start_date']) && !empty($param['start_date']) && isset($param['completion_date']) && !empty($param['completion_date'])){
+                $start_date = strtotime($param['start_date']);
+                $completion_date = strtotime($param['completion_date']);
+                if($start_date > $completion_date){
+                    return json(['code' => -1,'msg' => '完工日期要大于开工日期']);
+                }
+            }
+
             /**
              * type= 2 时新增 单元工程段号(单元划分)
              * 提示 请先给分部工程选择 工程分类 或者 继续保存 分部工程的工程分类默认与当前单元工程段号(单元划分) 一致
