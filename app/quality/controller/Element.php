@@ -673,7 +673,7 @@ class Element extends Permissions
                     $evaluation=2;
                     break;
                 case "合格":
-                    $evaluation=0;
+                    $evaluation=2;
                     break;
                 case "1":
                     $evaluation=3;
