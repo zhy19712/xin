@@ -49,6 +49,7 @@
         .signBtoName {
             width: 26mm;
             height: 15mm;
+            margin-bottom: 5px;
         }
 
         .qianmingBlock {
@@ -67,11 +68,14 @@
             border: none!important;
             max-width: 120px;
             font-size: 12px!important;
+            background-color: #ffffff!important;
         }
         textarea{
+            width: 90% !important;
             outline: none!important;
             border: none!important;
             resize:none!important;
+            background-color: #ffffff!important;
         }
         select{
             border: none!important;
@@ -85,6 +89,9 @@
         .tabWidth {
             margin: auto;
             width: 260mm;
+        }
+        table td p{
+            line-height: 32px!important;
         }
     </style>
 </head>
@@ -171,7 +178,7 @@
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单元工程量</span></p>
                     </td>
                     <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: middle">
-                        <textarea id="input_gcl" default="/" step="0" placeholder="" class="comment editInput"></textarea>
+                        <textarea id="input_gcl" default="/" step="0" placeholder="" class="comment editInput" style="text-align: center;line-height: 50px"></textarea>
                     </td>
                 </tr>
                 <tr style="height: 22.7pt">
@@ -482,7 +489,7 @@
                         <p style="line-height: 20pt; margin: 0pt 5.25pt; orphans: 0; text-align: justify; text-indent: 15.25pt; widows: 0">
                             <span style="font-family: 仿宋; font-size: 10.5pt; letter-spacing: 0.05pt">监理人员签字：</span>
                         </p>
-                        <div class="qianming qianmingBlock" style="margin-left: 35mm;">
+                        <div class="qianming qianmingBlock" style="margin-left: 35mm;margin-top: 1mm">
                             <img id="img_2" class="signBtoName" src="" step="1" form-required="签名必填。" />
 
                         </div>
