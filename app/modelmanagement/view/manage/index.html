@@ -174,9 +174,9 @@
                                 var quUObjSubID = data.qualified[j];
                                 RealBimOcx.AddSubClrPercent(quUObjSubID, 1, qualified_pigment);    //第二个参数为透明度
                             }
-                            // 未施工 unqualified
-                            for (var l = 0; l < data.unqualified.length; l++) {
-                                var unQuUObjSubID = data.unqualified[l];
+                            // 未验评 unqualified
+                            for (var l = 0; l < data.un_evaluation.length; l++) {
+                                var unQuUObjSubID = data.un_evaluation[l];
                                 RealBimOcx.AddSubClrPercent(unQuUObjSubID, 1, 0xff);    //第二个参数为透明度
                             }
                             RealBimOcx.BatchAddSubClrInfoEnd();
