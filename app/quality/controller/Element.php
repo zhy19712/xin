@@ -669,8 +669,14 @@ class Element extends Permissions
                 case "无验评结果":
                     $evaluation=2;
                     break;
-                case "合格":
+                case "0":
                     $evaluation=2;
+                    break;
+                case "合格":
+                    $evaluation=0;
+                    break;
+                case "1":
+                    $evaluation=3;
                     break;
                 case "优良":
                     $evaluation=3;
