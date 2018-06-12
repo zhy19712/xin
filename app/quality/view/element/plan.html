@@ -1,12 +1,11 @@
 {include file="../app/public/common_header.html"}
-<!--<link rel="stylesheet" href="__WEBSITE__/quality/division/index.css">-->
 <link rel="stylesheet" href="__PUBLIC__/ztree/css/ztreequality/css/engineering.css">
 <style>
     #unitWorkParent{
         width: 100%;
     }
     #division .ztree,#unitWork .ztree{
-        height: 100%;
+        height: 98%;
         padding-bottom: 5px;
     }
     #division #ztree,#unitWork #ztreeUnit{
@@ -18,16 +17,9 @@
     .dataTables_wrapper, .tbcontainer {
         display: block;
     }
-
     #tableContent .select-color {
         background-color: #FDD5B5 !important;
     }
-    /*会出现2条线*/
-    /*#tableContent .dataTables_wrapper .dataTables_scroll {*/
-        /*position: relative;*/
-        /*top: 6px;*/
-        /*border-top: 1px dotted #cecece;*/
-    /*}*/
     #tableContent .even {
         background-color: #ffffff;
     }
@@ -57,8 +49,6 @@
     #tableContent .listName{
         padding: .5% 0;
         border-bottom: 1px dotted;
-        /*有这个下面会出现空余*/
-        /*margin-bottom: 5px;*/
     }
     #tableContent .listName h3{
         font-weight: 800;
@@ -87,7 +77,6 @@
         max-height: none!important;
         width: 100%;
         height: calc(100% - 76px)!important;
-        /*width: calc(100% - 0.7rem) !important;*/
         border-bottom: none!important;
     }
     #tableItem_wrapper{
@@ -104,7 +93,6 @@
     #tableContent .dataTables_scrollBody{
         max-height: none!important;
         width: 100%;
-        /*height: calc(100% - 137px)!important;*/
         border-bottom: none!important;
     }
     /*#tableItemControl_wrapper{*/
@@ -119,19 +107,10 @@
     }
     .dataTables_scrollHeadInner,#tableItem_wrapper table,#imageData_wrapper table, #implementation_wrapper table, #onlineFill_wrapper table{
         width: 100% !important;
-        /*width: calc(100% - 0.28rem) !important;*/
     }
     .dataTables_filter{
         padding: 5px;
     }
-    /*.add {*/
-        /*margin-top: 5px;*/
-        /*margin-right: 5px;*/
-        /*width: 58px;*/
-        /*height: 26px;*/
-        /*line-height: 26px;*/
-    /*}*/
-    /*上面是之前的样式*/
     .add {
         margin-top: 11px;
         margin-right: 10px;
@@ -149,8 +128,6 @@
     .selectmaBases{
         background: #FDD5B5;
     }
-
-    /*上面的没有对齐*/
     div.icon {
         margin-left: -44px;
     }
@@ -191,14 +168,9 @@
         overflow: auto;
         position: relative;
     }
-
-    /*#tableItemControl{*/
-        /*table-layout: fixed;*/
-    /*}*/
 </style>
 
 <div id="division" data-options="region:'west',title:'工程划分',split:true" style="width:240px;">
-    <!--<i title="展开所有" class="fa fa-lg fa-plus-square" id="openNode"></i>-->
     <ul class="ztree" id="ztree"></ul>
 </div>
 <div id="unitWorkParent" data-options="region:'center'" style="background:#fff;">
