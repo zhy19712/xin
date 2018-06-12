@@ -214,6 +214,26 @@ function uploadModel() {
             mimeTypes: '.rar,.zip'
         },
     });
+
+    uploader.on( 'uploadStart', function( file ) {
+        console.log(file);
+        $.ajax({
+            url: "./checkUpload",
+            type: "post",
+            data: {
+                file_name:file.name
+            },
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code == -1){
+                    uploader.reset();
+                    layer.msg(res.msg);
+                }
+            }
+        });
+    });
+
     // 当有文件被添加进队列的时候
     uploader.on( 'fileQueued', function( file ) {
         var $list = $('#thelist');
