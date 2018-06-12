@@ -16,7 +16,6 @@ tableItem = $('#tableItem').DataTable({
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {
-        // "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=" //老的
         "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id="
     },
     dom: 'rt',
@@ -141,8 +140,6 @@ function nodeClick(e, treeId, node) {
     nodePid = zTreeObj.getSelectedNodes()[0].pId;//当前pid
     console.log(sNodes);
     console.log(nodeId + '---id');
-    // console.log(nodeName + '---name');
-    // console.log(nodePid + '---pid');
     var path = sNodes.name; //选中节点的名字
     node = sNodes.getParentNode();//获取父节点
     groupId = sNodes.pId ;//父节点的id
@@ -157,12 +154,9 @@ function nodeClick(e, treeId, node) {
     }
 
     $(".imgList").css("display","none");
-    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
-    // console.log(controlRowId)
-    // console.log(procedureId)
 
     controlRowId ='';
     procedureId ='';
@@ -223,7 +217,6 @@ var nodeUnitId ,        //单元工程段号 id
     nodeNameUnit ,      //单元工程名字
     nodePidUnit ,       //单元工程名字 pid
     zTreeObjUnit ,      //单元工程树对象
-    groupIdUnit ,       //单元工程蒂点击节点的父节点id
     sNodesUnit ,        //选中节点对象的数据
     eTypeId ,           //工程划分里面的工程类型里面的 单元id (这个id 下面包含着所以的工序id以及下面的控制点id)
     procedureId = '',   //点击工序id
@@ -285,8 +278,6 @@ function nodeClickUnit(e, treeId, node) {
     eTypeId = sNodesUnit.en_type;//当前en_type
     console.log(sNodesUnit);
     console.log(nodeUnitId + '---nodeUnitId');
-    // console.log(nodeNameUnit + '---name');
-    // console.log(nodePidUnit + '---pid');
     console.log(eTypeId+"---eTypeId")
     if(eTypeId){
         selfidName(eTypeId);
@@ -328,7 +319,6 @@ function nodeClickUnit(e, treeId, node) {
         controlRowId ='';
         procedureId ='';
     // }
-    // console.log(flag)
 }
 
 //点击单元工创建工序name
@@ -338,8 +328,6 @@ function selfidName(id) {
         url: "/quality/element/getProcedures",
         data: {id: id},
         success: function (res) {
-            // if(res.code == 1){
-            // console.log(res);
             var optionStrAfter = '';
             for(var i = 0;i<res.length;i++) {
                 $("#imgListRight").html('');
@@ -357,10 +345,6 @@ function selfidName(id) {
             // }
 
             $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 85px)");
-
-            // }else if(res.code==0){
-            //     layer.msg(res.msg);
-            // }
         }
     })
 }
@@ -556,8 +540,6 @@ function delData(id,url) {
                     layer.msg("删除成功！");
                     checkforming(nodeUnitId);
                     resultInfo(nodeUnitId)
-                    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id="+nodeUnitId+"&nm_id="+procedureId).load();
-                    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                     if(procedureId !=''){
                         tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                     }else if(procedureId == ''){
@@ -605,23 +587,15 @@ $("#tableItem").delegate("tbody tr","click",function (e) {
     $(".bitCodes").css("display","none");
     $(".mybtn").css("display","none");
     $(".mybtnAdd").css("display","none");
-    // console.log(flag)
-    // if(flag != true){
-        if($(".tabs-selected a span:first-child").html() === "扫描件回传"){
-            $(".mybtn").css("display","block");
-        }else if($(".tabs-selected a span:first-child").html() === "附件资料"){
-            $(".bitCodes").css("display","block");
-            $(".mybtn").css("display","none");
-        }else if($(".tabs-selected a span:first-child").html() === "在线填报"){
-            $(".mybtnAdd").css("display", "block");
-            $(".mybtn").css("display", "none");
-        }
-    // }else if(flag == true){
-    //     $(".mybtn").css("display", "none");
-    //     $(".bitCodes").css("display","none");
-    //     $(".mybtnAdd").css("display","none");
-    // }
-
+    if($(".tabs-selected a span:first-child").html() === "扫描件回传"){
+        $(".mybtn").css("display","block");
+    }else if($(".tabs-selected a span:first-child").html() === "附件资料"){
+        $(".bitCodes").css("display","block");
+        $(".mybtn").css("display","none");
+    }else if($(".tabs-selected a span:first-child").html() === "在线填报"){
+        $(".mybtnAdd").css("display", "block");
+        $(".mybtn").css("display", "none");
+    }
     //向提交页面之前放置值
     $("#resVal").val(resources);
 
@@ -642,19 +616,9 @@ function resultInfo(nodeUnitId) {
                 $(".result form select").val(res.evaluateResult);
                 $(".result form #date").val(res.evaluateDate);
                 layui.form.render('select');
-                // $(".result form select").prop("disabled",true);
-                // layui.use(['form'], function(){
-                //     var form = layui.form;
-                //     $(".layui-input[readonly]").attr('style', 'background: #e0e0e0');
-                //     $("#date").attr({"disabled":true});
-                //     form.render("select");
-                // });
                 if(res.evaluateDate == 0){
                     $("#date").val('');
                 }
-                // setTimeout(function () {
-                //     $(".result input[readonly]").removeClass('disabledColor');
-                // },900)
             }
         }
     })
@@ -669,9 +633,6 @@ function checkforming(nodeUnitId) {
         url: "/quality/element/checkform",
         type: "post",
         data: {
-            // division_id:nodeUnit_id,
-            // cpr_id:controlRowId,
-            // cp_id:controlId,
             unit_id:nodeUnitId,
         },
         success: function (res) {
@@ -713,10 +674,6 @@ function checkforming(nodeUnitId) {
                     $(".result .layui-input[readonly]").attr('style', 'background: #ffffff !important');
                     // $(".result input[readonly]").addClass('disabledColor');
                 },900)
-
-                // layer.msg(res.remark);
-                // $(".mybtnAdd").css("display","none");
-                // $('#onlineFillParent').html('<p style="text-align: center;width: 100%;margin-top: 20px;">在线填报没有该模板！请移步到扫描件回传上传相关资料！</p>');
             }
         }
     });
