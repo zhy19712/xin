@@ -16,7 +16,6 @@ tableItem = $('#tableItem').DataTable({
     "scrollCollapse": "true",
     "paging": "false",
     ajax: {
-        // "url": "/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=" //老的
         "url": "/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id="
     },
     dom: 'rt',
@@ -141,8 +140,6 @@ function nodeClick(e, treeId, node) {
     nodePid = zTreeObj.getSelectedNodes()[0].pId;//当前pid
     console.log(sNodes);
     console.log(nodeId + '---id');
-    // console.log(nodeName + '---name');
-    // console.log(nodePid + '---pid');
     var path = sNodes.name; //选中节点的名字
     node = sNodes.getParentNode();//获取父节点
     groupId = sNodes.pId ;//父节点的id
@@ -157,12 +154,9 @@ function nodeClick(e, treeId, node) {
     }
 
     $(".imgList").css("display","none");
-    // tableItem.ajax.url("/quality/common/datatablesPre?tableName=quality_division_controlpoint_relation&division_id=").load();
     tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type=&unit_id=&division_id=").load();
     implementation.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=1&cpr_id=").load();
     imageData.ajax.url("/quality/common/datatablesPre?tableName=quality_upload&type=4&cpr_id=").load();
-    // console.log(controlRowId)
-    // console.log(procedureId)
 
     controlRowId ='';
     procedureId ='';
@@ -284,8 +278,6 @@ function nodeClickUnit(e, treeId, node) {
     eTypeId = sNodesUnit.en_type;//当前en_type
     console.log(sNodesUnit);
     console.log(nodeUnitId + '---nodeUnitId');
-    // console.log(nodeNameUnit + '---name');
-    // console.log(nodePidUnit + '---pid');
     console.log(eTypeId+"---eTypeId")
     if(eTypeId){
         selfidName(eTypeId);
@@ -336,8 +328,6 @@ function selfidName(id) {
         url: "/quality/element/getProcedures",
         data: {id: id},
         success: function (res) {
-            // if(res.code == 1){
-            // console.log(res);
             var optionStrAfter = '';
             for(var i = 0;i<res.length;i++) {
                 $("#imgListRight").html('');
@@ -355,10 +345,6 @@ function selfidName(id) {
             // }
 
             $("#tableItem_wrapper").css("height","calc(100% - "+$(".imgList").outerHeight()+"px - 85px)");
-
-            // }else if(res.code==0){
-            //     layer.msg(res.msg);
-            // }
         }
     })
 }
