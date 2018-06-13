@@ -98,6 +98,9 @@
     .layui-form-item .layui-input-inline {
         width: 240px;
     }
+    #nextStep{
+        display: none;
+    }
 </style>
 
 <div id="tableContent" data-options="region:'center'" style="padding:5px;background:#ffffff;">
@@ -149,9 +152,6 @@
                     </div>
                     <div class="layui-input-inline">
                         <input type="text" name="subPeople" id="subPeople" readonly lay-verify="required" autocomplete="off" class="layui-input">
-                        <!--<select name="isneedtemplate" id="itNeed" lay-filter="aihao">-->
-                            <!--<option value="">返回提交人：管理员</option>-->
-                        <!--</select>-->
                     </div>
                 </div>
             </div>
@@ -265,27 +265,26 @@
     $(".move").html("<div id='test3' class='layui-btn layui-btn-sm'>保存</div>");
 
     $(document).ready(function () {
+        $.ajax({
+            url:"/quality/qualityform/getStep",
+            type:"post",
+            data:{
+                form_id:$("#dataId").val()
+            },
+            success:function (res) {
+                //返回成功可以选下一个人 fail不能
+                if(res.msg == "fail"){
+                    $("#nextStep").hide();
+                    $("#nextStepPeople").text("审批完成");
+                    $("#subPeople").val("退回起草人  "+res.creater);
+                }else if(res.msg == "success"){
+                    $("#nextStep").show();
+                    $("#subPeople").val("退回起草人  "+res.creater);
+                }
+            }
+        });
         setTimeout(function () {
             $("#conCode").val($(top.document).find("#current_user").text().trim());
-
-            $.ajax({
-                url:"/quality/qualityform/getStep",
-                type:"post",
-                data:{
-                    form_id:$("#dataId").val()
-                },
-                success:function (res) {
-                    //返回成功可以选下一个人 fail不能
-                    if(res.msg == "fail"){
-                        $("#nextStep").hide();
-                        $("#nextStepPeople").text("审批完成");
-                        $("#subPeople").val("退回起草人  "+res.creater);
-                    }else if(res.msg == "success"){
-                        $("#nextStep").show();
-                        $("#subPeople").val("退回起草人  "+res.creater);
-                    }
-                }
-            });
         },300)
         getTime();
 
