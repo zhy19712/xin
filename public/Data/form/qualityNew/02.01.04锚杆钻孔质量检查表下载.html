@@ -44,6 +44,7 @@
         .signName {
             width: 26mm;
             height: 14mm;
+            margin-top: 5px;
         }
 
         .btn {
@@ -98,8 +99,9 @@
             outline: none!important;
             border: none!important;
             max-width: 120px;
-            background-color: #ffffff;
+            background-color: #ffffff!important;
             font-size: 12px!important;
+            margin-bottom: 5px!important;
         }
         .tabWidth {
             margin: auto;
@@ -110,8 +112,11 @@
             outline: none!important;
             border: none!important;
             resize:none!important;
+            background-color: #ffffff!important;
         }
         select{
+            margin-top: 1px!important;
+            margin-bottom: 1px!important;
             border: none!important;
             outline: none!important;
             appearance: none!important;
@@ -128,7 +133,7 @@
         $(function() {
             $(".test1").ligerComboBox({
                 isShowCheckBox: true,
-                isMultiSelect: true,
+                isselect: true,
                 data: [{
                         text: 'I类',
                         id: 'I类'
@@ -269,7 +274,7 @@
                 </td>
                 <td colspan="7" style="text-align: center; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <div class="sltsex input-group wait" style="width: 100%;">
-                        <select id="multiSelect_1" step="0" class="form-control m-b chosen-select moreSel" multiple name="account" style="width: 100%;" form-required="围岩类别必填。">
+                        <select id="select_1" step="0" class="form-control m-b chosen-select moreSel"  name="account" style="width: 100%;" form-required="围岩类别必填。">
                             <option value="I类">I类</option>
                             <option value="II类">II类</option>
                             <option value="III类">III类</option>
@@ -409,7 +414,7 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">10</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">11</span></p>
                 </td>
                 <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
@@ -953,7 +958,7 @@
         <p class="tabWidth" style="text-indent: 21pt; line-height: 12pt; margin: auto; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10pt">3.当一个单元锚杆类型不同或数量超过30根时，续页填写。</span></p>
     </div>
 
-    <div class="A4" style="margin-top: 160px">
+    <div class="A4" style="margin-top: 220px">
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">河北丰宁抽水蓄能电站</span></p>
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">锚 杆 钻 孔 质 量 检 查 表</span></p>
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
@@ -1046,7 +1051,7 @@
                 </td>
                 <td colspan="7" style="text-align: center; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <div class="sltsex input-group wait" style="width: 100%;">
-                        <select id="multiSelect_1_1" step="0" class="form-control m-b chosen-select moreSel" multiple name="account" style="width: 100%;" form-required="围岩类别必填。">
+                        <select id="select_1_1" step="0" class="form-control m-b chosen-select moreSel"  name="account" style="width: 100%;" form-required="围岩类别必填。">
                             <option value="I类">I类</option>
                             <option value="II类">II类</option>
                             <option value="III类">III类</option>
@@ -1186,10 +1191,10 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">40</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">41</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">42</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
@@ -1729,7 +1734,7 @@
         <p class="tabWidth" style="text-indent: 21pt; line-height: 12pt; margin: auto; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10pt">3.当一个单元锚杆类型不同或数量超过30根时，续页填写。</span></p>
     </div>
 
-    <div class="A4" style="margin-top: 160px">
+    <div class="A4" style="margin-top: 220px">
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">河北丰宁抽水蓄能电站</span></p>
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">锚 杆 钻 孔 质 量 检 查 表</span></p>
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
@@ -1822,7 +1827,7 @@
                 </td>
                 <td colspan="7" style="text-align: center; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <div class="sltsex input-group wait" style="width: 100%;">
-                        <select id="multiSelect_1_2" step="0" class="form-control m-b chosen-select moreSel" multiple name="account" style="width: 100%;" form-required="围岩类别必填。">
+                        <select id="select_1_2" step="0" class="form-control m-b chosen-select moreSel" name="account" style="width: 100%;" form-required="围岩类别必填。">
                             <option value="I类">I类</option>
                             <option value="II类">II类</option>
                             <option value="III类">III类</option>
@@ -1962,10 +1967,10 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">70</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">71</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">72</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
@@ -2506,7 +2511,7 @@
         <p class="tabWidth" style="text-indent: 21pt; line-height: 12pt; margin: auto; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10pt">3.当一个单元锚杆类型不同或数量超过30根时，续页填写。</span></p>
     </div>
 
-    <div class="A4" style="margin-top: 160px">
+    <div class="A4" style="margin-top: 220px">
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">河北丰宁抽水蓄能电站</span></p>
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">锚 杆 钻 孔 质 量 检 查 表</span></p>
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
@@ -2599,7 +2604,7 @@
                 </td>
                 <td colspan="7" style="text-align: center; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <div class="sltsex input-group wait" style="width: 100%;">
-                        <select id="multiSelect_1_3" step="0" class="form-control m-b chosen-select moreSel" multiple name="account" style="width: 100%;" form-required="围岩类别必填。">
+                        <select id="select_1_3" step="0" class="form-control m-b chosen-select moreSel" name="account" style="width: 100%;" form-required="围岩类别必填。">
                             <option value="I类">I类</option>
                             <option value="II类">II类</option>
                             <option value="III类">III类</option>
@@ -2739,10 +2744,10 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">100</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">101</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">102</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
@@ -3282,7 +3287,7 @@
         <p class="tabWidth" style="text-indent: 21pt; line-height: 12pt; margin: auto; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10pt">3.当一个单元锚杆类型不同或数量超过30根时，续页填写。</span></p>
     </div>
 
-    <div class="A4" style="margin-top: 160px">
+    <div class="A4" style="margin-top: 220px">
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">河北丰宁抽水蓄能电站</span></p>
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">锚 杆 钻 孔 质 量 检 查 表</span></p>
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
@@ -3375,7 +3380,7 @@
                 </td>
                 <td colspan="7" style="text-align: center; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <div class="sltsex input-group wait" style="width: 100%;">
-                        <select id="multiSelect_1_4" step="0" class="form-control m-b chosen-select moreSel" multiple name="account" style="width: 100%;" form-required="围岩类别必填。">
+                        <select id="select_1_4" step="0" class="form-control m-b chosen-select moreSel" name="account" style="width: 100%;" form-required="围岩类别必填。">
                             <option value="I类">I类</option>
                             <option value="II类">II类</option>
                             <option value="III类">III类</option>
@@ -3515,10 +3520,10 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">130</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">131</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">132</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
@@ -4060,7 +4065,7 @@
         <p class="tabWidth" style="text-indent: 21pt; line-height: 12pt; margin: auto; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10pt">3.当一个单元锚杆类型不同或数量超过30根时，续页填写。</span></p>
     </div>
 
-    <div class="A4" style="margin-top: 160px">
+    <div class="A4" style="margin-top: 220px">
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">河北丰宁抽水蓄能电站</span></p>
         <p style="line-height: 20pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 宋体; font-size: 16pt; font-weight: bold">锚 杆 钻 孔 质 量 检 查 表</span></p>
         <!--<p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">项目名称：{SectionName}</span></p>
@@ -4153,7 +4158,7 @@
                 </td>
                 <td colspan="7" style="text-align: center; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <div class="sltsex input-group wait" style="width: 100%;">
-                        <select id="multiSelect_1_5" step="0" class="form-control m-b chosen-select moreSel" multiple name="account" style="width: 100%;" form-required="围岩类别必填。">
+                        <select id="select_1_5" step="0" class="form-control m-b chosen-select moreSel" name="account" style="width: 100%;" form-required="围岩类别必填。">
                             <option value="I类">I类</option>
                             <option value="II类">II类</option>
                             <option value="III类">III类</option>
@@ -4293,10 +4298,10 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">160</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">161</span></p>
                 </td>
-                <td style="width: 50mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
+                <td style=" border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">162</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1.02pt; padding-right: 1.02pt; vertical-align: middle">
@@ -5017,7 +5022,7 @@
             })
         });
         function beforeSave() {
-            if($('#multiSelect_1').val()==null){
+            if($('#select_1').val()==null){
                 alert('围岩类别必填!');
                 return false;
             }
