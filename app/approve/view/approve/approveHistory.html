@@ -221,9 +221,11 @@
                 html += "<div style='display: inline-block;margin-left:10px;'>";
                 html += " <img alt='image' class='img-circle' src='" + item.thumb + "' title='' style='width:50px;height:50px;'>";
                 if (i < step)
-                    html += "  <p style='color:#008000;text-align: center;margin-top: 5px;'>" + item.nickname + "</p>";
+                    html += "  <p style='text-align: center;margin-top: 5px;'>" + item.nickname + "</p>";
+                    // html += "  <p style='color:#008000;text-align: center;margin-top: 5px;'>" + item.nickname + "</p>";
                 else
-                    html += "  <p style='color:#CDCDCD;text-align: center;margin-top: 5px;'>" + item.nickname + "</p>";
+                    html += "  <p style='text-align: center;margin-top: 5px;'>" + item.nickname + "</p>";
+                    // html += "  <p style='color:#CDCDCD;text-align: center;margin-top: 5px;'>" + item.nickname + "</p>";
                 html += "</div>";
                 if (i < users.length - 1) {
                     if (i < step)
