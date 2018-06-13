@@ -41,6 +41,7 @@ ztree(0);
 
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
+    currentNode = treeNode;
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
     console.log(treeNode);
@@ -240,6 +241,10 @@ function tableItemFun(model_type) {
     //关联构件
     $('.alreadyBtn').click(function(){
         if(!nodeId){
+            layer.msg('请选择单元工程');
+            return false;
+        }
+        if(currentNode.level!=5){
             layer.msg('请选择单元工程');
             return false;
         }

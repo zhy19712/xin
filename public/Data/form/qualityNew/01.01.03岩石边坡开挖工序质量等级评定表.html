@@ -146,7 +146,7 @@
                         <div class="form-group div-inline data_2">
                             <div class="input-group date" style="width:100%;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_1" step="0" type="text" class="form-control" value="">
+                                <input id="input_date_1" step="0" type="text" class="form-control"  value="" form-required="日期必填。"/>
                             </div>
                         </div>
                     </td>
@@ -279,7 +279,7 @@
                         <textarea id="input_8" default="/" step="0" placeholder="" class="comment num_b num_2"></textarea>
                     </td>
                     <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                        <textarea id="input_9" default="/" disabled placeholder="" class="comment num_jg_1"></textarea>
+                        <textarea id="input_9" default="/" step="0" placeholder="" class="comment num_jg_1"></textarea>
                     </td>
                 </tr>
                 <tr style="height:17pt">
@@ -308,7 +308,7 @@
                         <textarea id="input_14" default="/" step="0" placeholder="" class="comment num_b num_4"></textarea>
                     </td>
                     <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                        <textarea id="input_15" default="/" disabled placeholder="" class="comment num_jg_2"></textarea>
+                        <textarea id="input_15" default="/" step="0" placeholder="" class="comment num_jg_2"></textarea>
                     </td>
                 </tr>
                 <tr style="height:17pt">
@@ -370,11 +370,11 @@
                     </td>
                     <td colspan="15" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
                         <p style="margin:0pt; orphans:0; text-align:justify; text-indent:5.25pt; widows:0"><span style="font-family:仿宋; font-size:10.5pt">共检测
-                        <input id="input_hgl_1" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                        <input id="input_hgl_1" default="/" step="0" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         点，其中合格
-                        <input id="input_hgl_2" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                        <input id="input_hgl_2" default="/" step="0" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         点，合格率
-                        <input id="input_hgl_3" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                        <input id="input_hgl_3" default="/" step="0" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         %。</span></p>
                     </td>
                 </tr>
@@ -420,11 +420,14 @@
                         <p style="line-height:21pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">一般项目：
                         <input id="input_hgl_5" step="0" type="text" value="符合" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         质量标准，检查项目实测点合格率
-                        <input id="input_hgl_6" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                        <input id="input_hgl_6" default="/" step="0" type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         %。</span></p>
                     </td>
                     <td colspan="3" style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
-                        <input id="input_hgl_10" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                        <select class="form-control m-b chosen-select" name="account" style="height: 24px; padding: 0;" id="input_hgl_10" step="0">
+                            <option value="1">优良</option>
+                            <option value="2">合格</option>
+                        </select>
                     </td>
                     <td colspan="7" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:1.02pt; vertical-align:middle">
                         <p style="line-height:18pt; margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">主控项目：
@@ -433,11 +436,14 @@
                         <p style="line-height:21pt; margin:0pt; orphans:0; widows:0"><span style="font-family:仿宋; font-size:10.5pt">一般项目：
                         <input id="input_hgl_8" step="3" type="text" value="符合" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         质量标准，检查项目实测点的合格率
-                        <input id="input_hgl_9" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                        <input id="input_hgl_9" step="3"  type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
                         %。</span></p>
                     </td>
                     <td colspan="2" style="text-align: center;border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:1.02pt; padding-right:0.65pt; vertical-align:middle">
-                        <input id="input_hgl_result" default="/" disabled type="text" value="" class="form-control wait" style="display: inline;width: 65px;height:20px;padding:0px;text-align:center">
+                        <select class="form-control m-b chosen-select" name="account" style="height: 24px; padding: 0;" id="input_hgl_result" step="3">
+                            <option value="1">优良</option>
+                            <option value="2">合格</option>
+                        </select>
                     </td>
                 </tr>
                 <tr style="height:28.35pt">

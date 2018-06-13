@@ -322,7 +322,7 @@ class Common extends Controller
                 $validate = new \think\Validate([
                     ['name', 'require|alphaDash', '用户名不能为空|用户名格式只能是字母、数字、——或_'],
                     ['password', 'require', '密码不能为空'],
-                    ['captcha','require|captcha','验证码不能为空|验证码不正确'],
+//                    ['captcha','require|captcha','验证码不能为空|验证码不正确'],
                 ]);
 //                $validate = new \think\Validate([
 //                    ['name', 'require|alphaDash', '用户名不能为空|用户名格式只能是字母、数字、——或_'],
