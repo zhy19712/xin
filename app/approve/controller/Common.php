@@ -130,7 +130,8 @@ class Common extends Controller
         }
         //加上待处理人的信息，有下一步审批人的时候才加入
         $form=Db::name('quality_form_info')
-             ->where(['id'=>$par['data_id'],'ApproveStatus'=>1])
+             ->where(['id'=>$par['data_id']])
+             ->where('ApproveStatus','in','-1,1')
              ->find();
         if(($form['CurrentApproverId']!='NULL')&&($form['CurrentApproverId']!='')&&count($form)>0)
         {
@@ -138,9 +139,16 @@ class Common extends Controller
                       ->where(['id'=>$form['CurrentApproverId']])
                       ->value('nickname');
             //如果审批人存在
-            if($approver!='')
+            //审批状态
+            if($approver!=''&&$form['ApproveStatus']==1)
             {
                 $approver=array($approver,'','待审批','');
+                array_unshift($infos,$approver);
+            }
+            //退回状态
+            if($approver!=''&&$form['ApproveStatus']==-1)
+            {
+                $approver=array($approver,'','待提交','');
                 array_unshift($infos,$approver);
             }
 
