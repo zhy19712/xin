@@ -211,40 +211,6 @@ class Dashboard extends Controller
     }
 
     /**
-     * 别名推送
-     */
-    public function test()
-    {
-        $jpush = new JpushModel();
-        $alias = "admin";
-        $alert = "id:1,pid:2,cid:3";
-        $jpush->push_a($alias,$alert);
-    }
-
-    /**
-     * 推送给指定的设备
-     * 最新测试极光推送
-     * @return \think\response\Json
-     */
-    public function test5()
-    {
-        $model = new JpushTestModel();
-        //向特定用户进行推送—单播
-        //$regid可以是一个单个regid组成的字符串，也可以是多个regid组成的数组
-        //$data['content']是你所需要推送的内容
-        $regid = "140fe1da9ef8282cb5c";
-        $data["content"] = "333333";
-        $result_s = $model->sendNotifySpecial($regid,$data['content']);
-        return json(["code"=>1,"data"=>$result_s]);
-        //想所有用户进行推送—广播
-//        $result_a = sendNotifyAll($data['content']);
-
-        //获取统计用户是否获取推送消息的信息(或者有多少用户收到了推送消息)
-        //$msgids是你推送消息的消息id
-//        $result_r = reportNotify($msgIds);
-    }
-
-    /**
      * app端获取所有的消息列表
      * @return \think\response\Json
      * @throws \think\exception\DbException
