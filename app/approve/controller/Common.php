@@ -128,6 +128,24 @@ class Common extends Controller
             $infos[] = $temp;
             $temp = [];
         }
+        //加上待处理人的信息，有下一步审批人的时候才加入
+        $form=Db::name('quality_form_info')
+             ->where(['id'=>$par['data_id'],'ApproveStatus'=>1])
+             ->find();
+        if(($form['CurrentApproverId']!='NULL')&&($form['CurrentApproverId']!='')&&count($form)>0)
+        {
+            $approver=Db::name('admin')
+                      ->where(['id'=>$form['CurrentApproverId']])
+                      ->value('nickname');
+            //如果审批人存在
+            if($approver!='')
+            {
+                $approver=array($approver,'','待审批','');
+                array_unshift($infos,$approver);
+            }
+
+        }
+
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 }
