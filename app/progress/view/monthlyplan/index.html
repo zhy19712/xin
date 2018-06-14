@@ -2,9 +2,314 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>施工总进度计划</title>
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/modules/layer/default/layer.css" media="all">
+    <link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="__PUBLIC__/jquery/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="__PUBLIC__/layui/layui.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <link href="__PUBLIC__/gantts/scripts/miniui/themes/icons.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/gantts/scripts/miniui/themes/blue/skin.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .myitem{
+            background:#9ccc5e;border:solid 1px #6e845c;
+            position:absolute;overflow:hidden;display:block;
+            z-index:100;
+        }
+        .myitem2 {
+            background:#9ccc5e;border:solid 1px #0c3f5f;
+            position:absolute;overflow:hidden;
+        }
+        .percentcomplete {
+            margin-top:1px;
+            height:10px;overflow:hidden;background:#0d55a4;
+        }
+        .layui-form-label{
+            width: 26px;
+        }
+        .layuiRight{
+            float: right;
+        }
+    </style>
 </head>
 <body>
-月计划管理
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div style="padding: 10px 0 0 0">
+            <form class="layui-form" action="">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="padding-left: 0px">标段</label>
+                    <div class="layui-input-inline">
+                        <select id="seleBids" name="bidsType" lay-filter="bids">
+                            <option value="">-请选择-</option>
+                            <option value="0">未验评</option>
+                            <option value="2">合格</option>
+                            <option value="3">优良</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">年度</label>
+                    <div class="layui-input-inline">
+                        <select id="seleYear" name="yearType" lay-filter="year">
+                            <option value="">-请选择-</option>
+                            <option value="0">未验评</option>
+                            <option value="2">合格</option>
+                            <option value="3">优良</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">月度</label>
+                    <div class="layui-input-inline">
+                        <select id="seleMonthly" name="monthType" lay-filter="month">
+                            <option value="">-请选择-</option>
+                            <option value="0">未验评</option>
+                            <option value="2">合格</option>
+                            <option value="3">优良</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline layuiRight">
+                    <label class="layui-form-label"> </label>
+                    <button class="layui-btn layui-btn-normal"  onclick="addTask()">新增月计划</button>
+                    <button class="layui-btn layui-btn-normal"  onclick="addTask()">月计划列表</button>
+                </div>
+            </form>
+        </div>
+        <div style="padding: 10px 0">
+            <button class="layui-btn layui-btn-normal" onclick="save()">保存</button>
+            <button class="layui-btn layui-btn-normal"  onclick="printGantt()">打印</button>
+            <button class="layui-btn layui-btn-normal"  onclick="addTask()">增加</button>
+            <button class="layui-btn layui-btn-danger"  onclick="removeTask()">删除</button>
+            <button class="layui-btn layui-btn-warm"  onclick="updateTask()">修改</button>
+            <button class="layui-btn layui-btn-warm"  onclick="upgradeTask()">升级</button>
+            <button class="layui-btn layui-btn-warm" onclick="downgradeTask()">降级</button>
+            <div class="layui-inline layuiRight">
+                <button class="layui-btn layui-btn-warm" onclick="downgradeTask()">显示关键路径</button>
+                <button class="layui-btn layui-btn-warm" onclick="zoomIn()">放大</button>
+                <button class="layui-btn layui-btn-warm" onclick="zoomOut()">缩小</button>
+            </div>
+        </div>
+    </div>
+    <div id="viewCt">
+    </div>
+</div>
+
+<script src="__PUBLIC__/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/miniui/miniui.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/miniui/locale/zh_CN.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/plusproject/js/CalendarWindow.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectMenu.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/plusproject/js/StatusColumn.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/plusproject/js/TaskWindow.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
+<script src="__PUBLIC__/gantts/scripts/ThirdLibs/swfobject/swfobject.js" type="text/javascript"></script>
 </body>
+<script type="text/javascript">
+
+    layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,laydate = layui.laydate;
+    });
+
+
+
+    /*实例化甘特图
+-----------------------------------------------------------------------------*/
+    var project = new PlusProject();
+    project.setStyle("width:100%;height:800px");
+    project.setColumns([
+        new PlusProject.IDColumn(),
+        new PlusProject.StatusColumn(),
+        new PlusProject.NameColumn(),
+        new PlusProject.PredecessorLinkColumn(),
+        new PlusProject.PercentCompleteColumn(),
+        new PlusProject.DurationColumn(),
+        new PlusProject.StartColumn(),
+        new PlusProject.FinishColumn(),
+        new PlusProject.WorkColumn(),
+        new PlusProject.DepartmentColumn(),
+        new PlusProject.PrincipalColumn(),
+        new PlusProject.AssignmentsColumn()
+    ]);
+    project.setRowHeight(30);
+    project.setShowLinkLines(false);
+    project.render(document.getElementById("viewCt"));
+    //创建右键菜单
+    var menu = new ProjectMenu();
+    project.setContextMenu(menu);
+    menu.edit.on("click", function (e) {
+        ShowTaskWindow(project);
+    });
+
+    //获取数据
+    LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
+        var projectStart = mini.get("projectStart");
+
+        project.setStartDate(new Date(2017,1,1));
+    });
+
+    /* 业务代码
+-----------------------------------------------------------------------------*/
+
+    //1)自定义条形图外观显示
+    project.on("drawitem", function (e) {
+        var item = e.item;
+        var left = e.itemBox.left,
+            top = e.itemBox.top,
+            width = e.itemBox.width,
+            height = e.itemBox.height;
+
+        if (!item.Summary && !item.Milestone) {
+            var percentWidth = width * (item.PercentComplete / 100);
+
+            e.itemHtml = '<div id="' + item._id + '" class="myitem" style="left:' + left + 'px;top:' + top + 'px;width:' + width + 'px;height:' + (height) + 'px;">';
+            e.itemHtml += '<div style="width:' + (percentWidth) + 'px;" class="percentcomplete"></div>';
+
+            //根据你自己逻辑，把任务分成几块，注意坐标和宽度
+            // e.itemHtml += '<div style="position:absolute;left:0px;top:0;height:100%;width:20px;background:red;"></div>';
+
+            e.itemHtml += '</div>';
+
+            // e.ItemHtml = '<a href="http://www.baidu.com" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+(height-2)+'px;" class="myitem">111</a>';
+        }
+    });
+
+
+    project.on("drawcell", function (e) {
+        var task = e.record, column = e.column, field = e.field;
+
+        //新增
+        if (task._state == "added") {
+            e.rowCls = "row_added";
+        }
+        //删除
+        if (task.Deleted == true) {
+            e.rowCls = "row_deleted";
+        }
+
+    });
+    //2)保存
+    function save() {
+        var newTask = project.newTask();
+        newTask.Name = '<新增任务>';    //初始化任务属性
+
+        var selectedTask = project.getSelected();
+        if (selectedTask) {
+            project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
+            //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
+        } else {
+            project.addTask(newTask);
+        }
+        //使用jQuery的ajax，把任务数据，发送到服务端进行处理
+        //    $.ajax({
+        //        url: 'savegant.aspx',
+        //        type: "POST",
+        //        data: params,
+        //        success: function (text) {
+        //            alert("保存成功");
+        //        }
+        //    });
+    }
+    //3)加载数据 点击重新加载数据
+    function load() {
+        gantt.loading();
+        $.ajax({
+            url: "data/taskList.txt",
+            cache: false,
+            success: function (text) {
+                var data = mini.decode(text);
+
+                //列表转树形
+                data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
+
+                gantt.loadTasks(data);
+
+                gantt.unmask();
+            }
+        });
+    }
+    // load();
+    //4)更改顶部时间刻度
+    function changeTopTimeScale(value) {
+        project.setTopTimeScale(value)
+    }
+    //5)更改低部时间刻度
+    function changeBottomTimeScale(value) {
+        project.setBottomTimeScale(value)
+    }
+    //6)放大
+    function zoomIn() {
+        project.zoomIn();
+    }
+    //7)缩小
+    function zoomOut() {
+        project.zoomOut();
+    }
+    //8)添加
+    function addTask() {
+        var newTask = project.newTask();
+        newTask.Name = '<新增任务>';    //初始化任务属性
+
+        var selectedTask = project.getSelected();
+        if (selectedTask) {
+            project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
+            //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
+        } else {
+            project.addTask(newTask);
+        }
+    }
+    //9)删除
+    function removeTask() {
+        var task = project.getSelected();
+        if (task) {
+            if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
+                project.removeTask(task);
+            }
+        } else {
+            alert("请选中任务");
+        }
+    }
+    //10)更新
+    function updateTask() {
+        var selectedTask = project.getSelected();
+        alert("编辑选中任务:" + selectedTask.Name);
+    }
+    //11)升级
+    function upgradeTask() {
+        var task = project.getSelected();
+        if (task) {
+            project.upgradeTask(task);
+        } else {
+            alert("请选选中任务");
+        }
+    }
+    //12)降级
+    function downgradeTask() {
+        var task = project.getSelected();
+        if (task) {
+            project.downgradeTask(task);
+        } else {
+            alert("请选选中任务");
+        }
+    }
+
+    //13)锁定列
+    function frozenColumn() {
+        project.frozenColumn(0, 1);
+    }
+    //14)打印
+    function printGantt() {
+        project.printServer = bootPATH + "plusproject/services/snapshot/snapshot.aspx";
+        project.printCSS = bootPATH + "miniui/themes/default/miniui.css";
+        project.print();
+    }
+
+</script>
 </html>
