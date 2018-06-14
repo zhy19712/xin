@@ -81,16 +81,16 @@
 </head>
 
 <body>
-    <input id="id" type="hidden" value="{id}" />
-    <input id="templateId" type="hidden" value="{templateId}" />
-    <input id="isInspect" type="hidden" value="{isInspect}" />
-    <input id="divisionId" type="hidden" value="{divisionId}" />
-    <input id="procedureId" type="hidden" value="{procedureId}" />
-    <input id="controlPointId" type="hidden" value="{controlPointId}" />
-    <input id="formName" type="hidden" value="{formName}" />
-    <input id="currentStep" type="hidden" value="{currentStep}" />
-    <input id="isView" type="hidden" value="{isView}" />
-    <input id="formData" type="hidden" value='{formData}' />
+    <input id="id" type="hidden" value="{$id}" />
+    <input id="templateId" type="hidden" value="{$templateId}" />
+    <input id="isInspect" type="hidden" value="{$isInspect}" />
+    <input id="divisionId" type="hidden" value="{$divisionId}" />
+    <input id="procedureId" type="hidden" value="{$procedureId}" />
+    <input id="controlPointId" type="hidden" value="{$controlPointId}" />
+    <input id="formName" type="hidden" value="{$formName}" />
+    <input id="currentStep" type="hidden" value="{$currentStep}" />
+    <input id="isView" type="hidden" value="{$isView}" />
+    <input id="formData" type="hidden" value='{$formData}' />
     <input id="file" name="file" type="file" style="display: none;" onchange="fileChange()" />
     <div class="hearBtn">
         <button class="btn btn-success btns" type="button" onclick="formAttachments()">
