@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-实时进度填报
+{include file="../app/public/common_header.html"}
+<style>
+    i.fa:before, i.fa:hover:before {
+        color: #333;
+    }
+</style>
+<div class="layui-progress" lay-showPercent="yes" lay-showpercent="true" lay-filter="demo" style="margin-top: 50px;">
+    <div class="layui-progress-bar layui-bg-cyan" lay-percent="0%"></div>
+</div>
+<i class="fa fa-fast-backward"></i>
+<i class="fa fa-play" id="play"></i>
+<i class="fa fa-stop" id="stop"></i>
+<i class="fa fa-fast-forward"></i>
+{include file="../app/public/common_footer.html"}
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+        var timer;
+        active = {
+            play: function () {
+                var n = 0;
+                timer = setInterval(function () {
+                    n++;
+                    if (n > 100) {
+                        n = 100;
+                        clearInterval(timer);
+                    }
+                    element.progress('demo', n + '%');
+                }, 100);
+            },
+            stop: function () {
+                clearInterval(timer);
+            }
+        }
+    });
+
+    $('#play').click(function () {
+        active.play();
+    });
+    $('#stop').click(function () {
+        active.stop();
+    })
+</script>
 </body>
 </html>
