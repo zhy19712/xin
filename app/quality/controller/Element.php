@@ -210,14 +210,18 @@ class Element extends Permissions
             ->where(['r.id'=>$cpr_id])
             ->find();
         $qualitytemplateid = $norm_template['qualitytemplateid'];
+
         if ($qualitytemplateid == 0) {
             return json(['code' => -1, 'msg' => '控制点未进行模板关联!']);
         }
         else
          {
-            $template_name=$norm_template['name'];
+             $template_name=Db::name('norm_template')
+                            ->where('id',$qualitytemplateid)
+                            ->value('name');
             $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $cp['ControlPoint']['code'] . $template_name . "下载.html";
             $formPath = iconv('UTF-8', 'GB2312', $formPath);
+
             $flag = file_exists($formPath);
            if ($this->request->isAjax())
            {
@@ -334,7 +338,9 @@ class Element extends Permissions
             ->where(['r.id'=>$relation['id']])
             ->find();
         $cpr_id=$relation['id'];
-        $template_name=$norm_template['name'];
+        $template_name=Db::name('norm_template')
+            ->where('id',$norm_template['qualitytemplateid'])
+            ->value('name');
 
         $host="http://".$_SERVER['HTTP_HOST'];
         $html=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
