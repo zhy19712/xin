@@ -455,4 +455,18 @@ class Qualityform extends Permissions
         $_mod['DW'] = DivisionModel::get($_mod['FB']['pid']);
         return $_mod;
     }
+
+    //获取机构下的人员信息
+    function getAdminInfo()
+    {
+        //获取admin_group_id
+        $par=input('param.');
+        $id=$par['id'];
+        $infos=Db::name('admin')->alias('a')
+            ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
+            ->where(['g.id'=>$id])
+            ->field('a.nickname,g.name,g.p_name')
+            ->select();
+        return json(['code'=>'1','msg'=>'success','data'=>$infos]);
+    }
 }
