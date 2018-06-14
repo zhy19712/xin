@@ -156,11 +156,10 @@ class Approve extends Permissions
         //如果有审批串，就将起草人也算进去
         $approverArr=explode(',', $res['ApproveIds']);
 
-        //每个审批历史中将起草人放在第一位，并去掉审批串的待审批人
+        //每个审批历史中将起草人放在第一位，不去掉审批串的待审批人
         if(count($approverArr)>=0&&($res['CurrentApproverId']!='null'&&$res['CurrentApproverId']!=0))
         {
             array_unshift($approverArr,$res['user_id']);
-            array_pop($approverArr);
         }
         //如果是已完成或者已经作废，加入创建者，不去掉最终审批人
         if($res['ApproveStatus']==2||$res['ApproveStatus']==-2)
