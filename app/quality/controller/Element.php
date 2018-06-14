@@ -642,12 +642,15 @@ class Element extends Permissions
     public function saveEvaluation($form_id)
     {
         //判定是否是等级评定表
-        $fm_name = '单元工程质量等级评定表';
+
         $fm = Db::name('quality_form_info')
             ->where(['id' => $form_id])
-            ->where('form_name', 'like', '%'.$fm_name .'%')
             ->find();
-        if (count($fm) > 0)
+        //通过判断是否是重要控制点来确定是否获取数据
+        $count=Db::name('norm_controlpoint')
+            ->where(['qualitytemplateid'=>$fm['TemplateId'],'isimportant'=>1])
+            ->count();
+        if ($count > 0)
         {
             $form_data = unserialize($fm['form_data']);//反序列化
             foreach ($form_data as $v) {
