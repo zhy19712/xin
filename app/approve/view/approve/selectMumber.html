@@ -22,7 +22,9 @@
     .boder {
         border: 1px solid #bed5f3;
     }
-
+    .sub{
+        margin: 0 20px;
+    }
     .sub i.fa:before {
         color: #ffffff;
     }
@@ -49,7 +51,7 @@
     }
 
     .rted {
-        color: #CDCDCD;
+        color: #999999;
     }
 
     .select {
@@ -84,12 +86,12 @@
             <div class="hr-line-dashed" style="margin:0px;"></div>
         </div>
         <div class="col-md-5" id="frequentlyUsedDiv">
-            <div class="boder" style="text-align: left; height:408px;">
+            <div class="boder" style="text-align: left; height:364px;">
                 <ul id="treeFrequentlyUsed" class="ztree" style="overflow: auto; height: 100%; width: 100%;"></ul>
             </div>
         </div>
         <div class="col-md-5" id="selectDiv">
-            <div class="boder">
+            <div class="boder" style="text-align: left; height:364px;">
                 <div style="margin-top: 15px;">
                     <div class="input-group input-group-sm" style="width: 300px;margin-top: -8px;margin-left: 10px;">
                         <input class="layui-input" type="text" placeholder="请输人员名称" id="keywords" accept="middle">
@@ -112,8 +114,8 @@
                 <input id="selectMobile" type="hidden" />
                 <span>已选择人员：<b style="color:#56ABE4" id="selectedUserName"></b></span>
             </div>
-            <div style="text-align: right;margin-top: 5px;margin-right: 5px;">
-                <button id="btnSave" type="button" style="margin-right: 5px;" class="layui-btn">保存</button>
+            <div style="text-align: right;margin-top: 5px;margin-right: 5px;bottom: 15px;right: 8px;position: absolute;">
+                <button id="btnSave" type="button" style="margin-right: 5px;background: #009688;" class="layui-btn">保存</button>
                 <button id="btnClose" type="reset" style="margin-right: 10px;" class="layui-btn layui-btn-danger">返回</button>
             </div>
 
