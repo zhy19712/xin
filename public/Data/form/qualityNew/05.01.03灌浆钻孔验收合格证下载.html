@@ -53,30 +53,32 @@
         }
 
         .tabWidth {
-            width: 210mm;
+            width: 260mm!important;
+            margin: auto;
         }
         .dateMargin {
             margin: 5px 0;
         }
-        .selWidth{
-            width: 50mm
+        textarea{
+            width: 80%!important;
+            outline: none!important;
+            border: none!important;
+            resize:none!important;
+            background-color: #ffffff!important;
+            height: 40px!important;
+            line-height: 13px!important;
+            font-size: 12px!important;
+            margin-left: 1px!important;
+
         }
         input{
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            background-color: #ffffff!important;
             font-size: 12px!important;
-        }
-        .tabTitle {
-            margin: auto;
-            width: 210mm;
-        }
-        textarea{
-            outline: none!important;
-            border: none!important;
-            resize:none!important;
-            width: 97%!important;
-            font-size: 12px!important;
+            margin-bottom: 5px!important;
+            margin-top:1px !important;
         }
         table{
             width: 260mm!important;
@@ -178,7 +180,7 @@
                         <div class="form-group div-inline data_2 dateMargin">
                             <div class="input-group date" style="width:100%;text-align: center;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_2" step="0" type="text" class="form-control" value="{$compleation_date}"  form-required="日期必填。">
+                                <input id="input_date_2" step="0" type="text" class="form-control" value="{$completion_date}"  form-required="日期必填。">
                             </div>
                         </div>
                 </td>
