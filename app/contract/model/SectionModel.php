@@ -9,6 +9,7 @@
 namespace app\contract\model;
 
 use app\admin\model\AdminGroup;
+use think\Db;
 use think\Model;
 
 class SectionModel extends Model
@@ -106,4 +107,26 @@ class SectionModel extends Model
         }
         return $res ? true : false;
     }
+
+
+    /**
+     * 根据当前登陆人的权限获取对应的 -- 标段列表
+     * @return array
+     * @author hutao
+     */
+    public function sectionList()
+    {
+        // 获取当前登陆人的组织机构
+        $group = new AdminGroup();
+        $relation_id = $group->relationId();
+        if($relation_id == 1){ // 管理员可以看所有的标段
+            $section = $this->order('id asc')->column('id,name'); // 标段列表
+        }else if($relation_id > 1){
+            $section = $this->where('builderId|supervisorId|constructorId|designerId|otherId',$relation_id)->order('id asc')->column('id,name'); // 标段列表
+        }else{
+            $section = [];
+        }
+        return $section;
+    }
+
 }
