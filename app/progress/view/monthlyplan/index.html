@@ -151,7 +151,9 @@
     project.setShowLinkLines(true);             //设置是否显示箭头连线
     // project.setShowCritical(true);              //设置是否显示关键路径
     project.getCalendars();              //设置是否显示关键路径
-    console.log(project.getCalendars())
+    console.log(project.getCalendars()[0].WeekDays[0]);
+    var set = project.getCalendars()[0].WeekDays[0]
+    set.setCalendars(WeekDays)
 
     project.render(document.getElementById("viewCt"));
     //创建右键菜单

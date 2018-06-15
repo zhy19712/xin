@@ -328,22 +328,22 @@
                         console.log(res);
                         if(res.code == 1){
                             parent.layer.msg("保存成功!");
-                            parent.layer.closeAll();
-                            // $.ajax({
-                            //     url:"/admin/Dashboard/changeStatus",
-                            //     type:"POST",
-                            //     data:{
-                            //         uint_id :$("#dataId").val(),
-                            //         type:2
-                            //     },
-                            //     dataType:"JSON",
-                            //     success:function () {
-                            //         layer.msg("保存成功!");
-                            //         close();
-                            //
-                            //         testFlag = true;
-                            //     }
-                            // });
+
+                            $.ajax({
+                                url:"/admin/Dashboard/changeStatus",
+                                type:"POST",
+                                data:{
+                                    uint_id :$("#dataId").val(),
+                                    type:2
+                                },
+                                dataType:"JSON",
+                                success:function () {
+                                    layer.msg("保存成功!");
+                                    close();
+                                    parent.layer.closeAll();
+                                    testFlag = true;
+                                }
+                            });
 
                         }else  if(res.code != 1){
                             parent.layer.msg("处理保存失败,请稍后再试!");
