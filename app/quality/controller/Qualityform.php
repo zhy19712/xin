@@ -260,12 +260,6 @@ class Qualityform extends Permissions
         return $this->fetch();
     }
 
-    //外层退回页面
-    public function approveRefund()
-    {
-        return $this->fetch();
-    }
-
     /**
      * 删除表单信息 TODO 后续审批相关信息也要删除，目前没有明确逻辑需求
      * @param $id
