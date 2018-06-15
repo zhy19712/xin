@@ -113,7 +113,7 @@
                 <table id="tableItem" class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>选择</th>
+                        <th>序号</th>
                         <th>用户</th>
                         <th>所在单位</th>
                         <th>所在部门</th>
@@ -145,59 +145,59 @@
     var conutNum = 0;
     var tableItem;
     //常用联系人表格
-        frequentlyUseTable = $("#frequentlyUseTable").DataTable({
-        processing: false,
-        serverSide: true,
-        ordering: true,
-        scrollY: "295px",
-        scrollCollapse: true,
-        ajax: {
-            "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
-        },
-        columns: [
-            { name: "nick_name" },
-            { name: "p_name" },
-            { name: "name" },
-        ],
-        columnDefs: [
-            {
-                targets: [1],
-                render: function (data, type, row,meta) {
-
-                }
-            },
-            {
-                targets: [7],
-                render: function (data, type, row,meta) {
-                    if (row[6] == '1' && user_name == row[4]){
-                        var strs = '';
-                        strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="edit_send(this)" >编辑</i>';
-                        strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="del(this)" >删除</i>';
-                        return strs;
-                    }else {
-                        return  '<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="preview(this)" >查看</i>';
-                    }
-                }
-            }
-        ],
-        dom: 'lf<"#addSend.layui-btn layui-btn-md btn-right btn-space">tip',
-        language: {
-            "sProcessing":"数据加载中...",
-            "lengthMenu": "_MENU_",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "search": "搜索",
-            "sSearchPlaceholder":"请输入关键字",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-            "paginate": {
-                "sFirst": "<<",
-                "sPrevious": "上一页",
-                "sNext": "下一页",
-                "sLast": ">>"
-            }
-        }
-    });
+    //     frequentlyUseTable = $("#frequentlyUseTable").DataTable({
+    //     processing: false,
+    //     serverSide: true,
+    //     ordering: true,
+    //     scrollY: "295px",
+    //     scrollCollapse: true,
+    //     ajax: {
+    //         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
+    //     },
+    //     columns: [
+    //         { name: "nick_name" },
+    //         { name: "p_name" },
+    //         { name: "name" },
+    //     ],
+    //     columnDefs: [
+    //         {
+    //             targets: [1],
+    //             render: function (data, type, row,meta) {
+    //
+    //             }
+    //         },
+    //         {
+    //             targets: [7],
+    //             render: function (data, type, row,meta) {
+    //                 if (row[6] == '1' && user_name == row[4]){
+    //                     var strs = '';
+    //                     strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="edit_send(this)" >编辑</i>';
+    //                     strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="del(this)" >删除</i>';
+    //                     return strs;
+    //                 }else {
+    //                     return  '<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="preview(this)" >查看</i>';
+    //                 }
+    //             }
+    //         }
+    //     ],
+    //     dom: 'lf<"#addSend.layui-btn layui-btn-md btn-right btn-space">tip',
+    //     language: {
+    //         "sProcessing":"数据加载中...",
+    //         "lengthMenu": "_MENU_",
+    //         "zeroRecords": "没有找到记录",
+    //         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+    //         "infoEmpty": "无记录",
+    //         "search": "搜索",
+    //         "sSearchPlaceholder":"请输入关键字",
+    //         "infoFiltered": "(从 _MAX_ 条记录过滤)",
+    //         "paginate": {
+    //             "sFirst": "<<",
+    //             "sPrevious": "上一页",
+    //             "sNext": "下一页",
+    //             "sLast": ">>"
+    //         }
+    //     }
+    // });
     $("#btnSave").click(function () { $("#btnSave").attr("disabled", "disabled"); save(); });
     $("#btnClose").click(function () { close(); });
 
@@ -437,7 +437,7 @@
 
     //收件人信息
     function incomeInfo() {
-         tableItem = $('#tableItem').DataTable({
+        tableItem = $('#tableItem').DataTable({
             pagingType: "full_numbers",
             processing: true,
             serverSide: true,
@@ -451,12 +451,7 @@
             dom: 'frtp',
             columns:[
                 {
-                    name: "id",
-                    "render": function(data, type, full, meta) {
-                        console.log(full);
-                        var ipt = "<input type='radio' name='checkList' idv="+ data +" unit="+ full[1] +" nickname="+ full[2] +" onclick='getSelectId(this)'>";
-                        return ipt;
-                    },
+                    name: "id"
                 },
                 {
                     name: "nickname"
@@ -471,6 +466,7 @@
             fnCreatedRow:function (nRow, aData, iDataIndex){
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
             },
+            "destroy": true,
             language: {
                 "lengthMenu": "_MENU_ ",
                 "zeroRecords": "没有找到记录",
