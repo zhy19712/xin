@@ -250,11 +250,14 @@ $(function () {
 function initOperateButton() {
     var saveAndSubmitButtonDom = "<button class='btn btn-success btns' type='button' onclick='formSaveAndSubmit()'><i class='fa fa-check-square-o' ></i > <span class='bold'>保存并提交</span></button >";
     var saveAndApproveButtionDom = "<button class='btn btn-success btns' type='button' onclick='formSaveAndApprove()'><i class='fa fa-pencil-square-o' ></i > <span class='bold'>保存并处理</span></button >";
-    if ($("#currentStep").val() === "0")
+    var saveAndReturnButtionDom = "<button class='btn btn-success btns saveData' type='button' onclick='formSaveAndReturn()'><i class='fa fa-reply' ></i > <span class='bold'>退回</span></button >";
+    if ($("#currentStep").val() === "0"){
         // $(".hearBtn").append(saveAndSubmitButtonDom);
         $(".hearBtn").append(saveAndApproveButtionDom);
-    else
+    } else {
         $(".hearBtn").append(saveAndApproveButtionDom);
+        $(".hearBtn").append(saveAndReturnButtionDom);
+    }
 };
 
 //检测设备：true为PC端，false为手机端
@@ -460,39 +463,6 @@ function fileChange() {
     });
 };
 
-//附件资料上传点击
-// function fileChange(){
-//     var uploadName;
-//     layui.use(['element', "layer", 'form', 'upload'], function () {
-//         var $ = layui.jquery
-//             , element = layui.element
-//             , upload = layui.upload;
-//
-//         var form = layui.form
-//             , layer = layui.layer
-//             , layedit = layui.layedit
-//             , laydate = layui.laydate;
-//     upload.render({
-//         elem: '#file',// 文件上传控件的id属性
-//         url: "/admin/common/upload?module=quality&use=element",
-//         accept:"file",
-//         before: function(obj){
-//             console.log(obj)
-//             obj.preview(function(index, file, result){
-//                 uploadName = file.name;
-//                 console.log(file.name);//获取文件名，result就是base64
-//             })
-//             return false;
-//         },
-//         done: function(res){
-//             if (res.code == 2)
-//             $("#" + fileTargetHtmlElementId).attr("src", res.src);
-//         },
-//     });
-//     });
-// }
-
-
 // 电子签名
 function signature(htmlElement) {
     var targetId = $(htmlElement).attr("for");
@@ -575,4 +545,16 @@ function approve(id,app,step) {
         }
     });
     console.log(id);
+}
+
+//pc 点击退回
+function formSaveAndReturn() {
+    var cpr = $("#cpr").val();
+    var formId = $("#id").val();
+    top.layer.open({
+        type: 2,
+        title: "表单退回",
+        area: ['980px', '70%'],
+        content: 'approve/approve/approveRefund?formId=' + formId,
+    });
 }

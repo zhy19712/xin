@@ -146,8 +146,13 @@
         new PlusProject.AssignmentsColumn()     //资源名称。
 
     ]);
-    project.setRowHeight(30);
-    project.setShowLinkLines(false);
+    project.setRowHeight(30);                   //设置行高
+    project.setAllowDragDrop(true);             //设置是否允许任务行拖拽
+    project.setShowLinkLines(true);             //设置是否显示箭头连线
+    // project.setShowCritical(true);              //设置是否显示关键路径
+    project.getCalendars();              //设置是否显示关键路径
+    console.log(project.getCalendars())
+
     project.render(document.getElementById("viewCt"));
     //创建右键菜单
     var menu = new ProjectMenu();
