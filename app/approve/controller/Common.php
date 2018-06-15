@@ -162,6 +162,7 @@ class Common extends Controller
         //查询前置条件
         $par=array();
         $id=$this->request->param('id');
+        $columnString = "a.id|a.nickname|g.name|g.p_name";
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
@@ -177,6 +178,8 @@ class Common extends Controller
                     ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
                     ->where(['g.id'=>$id])
                     ->field('a.id,a.nickname,g.name,g.p_name')
+                    ->where($columnString, 'like', '%' . $search . '%')
+                    ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -187,6 +190,8 @@ class Common extends Controller
                     ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
                     ->where(['g.id'=>$id])
                     ->field('a.id,a.nickname,g.name,g.p_name')
+                    ->order('a.id')
+                    ->limit(intval($start), intval($length))
                     ->select();
                 $recordsFiltered = $recordsTotal;
             }
