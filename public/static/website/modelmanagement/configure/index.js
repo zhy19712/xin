@@ -37,10 +37,10 @@ $(function () {
         });
         //质量
         form.on('submit(qualityApply)', function(data){
+            console.log(data);
             data.field.pigment = joinPrefix(data.field.pigment);
             data.field.choiceness_pigment = joinPrefix(data.field.choiceness_pigment);
             data.field.qualified_pigment = joinPrefix(data.field.qualified_pigment);
-            data.field.un_evaluation_pigment = joinPrefix(data.field.un_evaluation_pigment);
             data.field.model_type = '2';
             formSubmit(data);
             return false;
@@ -64,17 +64,19 @@ $(function () {
 
     }
     function joinPrefix(val) {
+        console.log(val);
         val = "0x64"+ val.substr(val.length-6);
         return val;
     }
     // 透明度输入控制
-    function opcityControl(that) {
-        var val = $(that).val();
-        var arr = ['0','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1'];
-        if (arr.indexOf(val) == '-1'){
-            $(that).val('');
-        }else{
-            $(that).val(val);
-        }
-    }
+
 })
+function opcityControl(that) {
+    var val = $(that).val();
+    var arr = ['0','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1'];
+    if (arr.indexOf(val) == '-1'){
+        $(that).val('');
+    }else{
+        $(that).val(val);
+    }
+}
