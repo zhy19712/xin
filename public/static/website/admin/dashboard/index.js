@@ -465,3 +465,18 @@ function saveInter(status) {
     }
   });
 }
+
+//点击退回
+function returnOnLine(formId) {
+    layer.open({
+        type: 2,
+        title: "表单退回",
+        area: ['980px', '70%'],
+        content: '/approve/approve/approveRefund?formId=' + formId,
+        end:function () {
+            tableItem.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=1").load();
+            tableItemDone.ajax.url("/admin/common/datatablesPre?tableName=admin_message_reminding&status=2").load();
+            layer.closeAll();
+        }
+    });
+}

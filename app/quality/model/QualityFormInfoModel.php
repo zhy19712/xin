@@ -184,6 +184,7 @@ class QualityFormInfoModel extends Model implements IApprove
             $adminService = new Admin();
             $users = $adminService->whereIn('id', $ids)->field('id,nickname')->select();
         }
+
         return $users;
     }
 

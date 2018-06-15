@@ -85,7 +85,7 @@
         color: #337ab7;
     }
     .layui-form-item .layui-input-inline {
-        margin-right: 22px;
+        margin-right: 32px;
     }
     /*保存按钮的宽高*/
     .layui-btn-sm {
@@ -138,18 +138,12 @@
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">处理结果</label>
-                    <div class="layui-input-inline" style="width: 92px;margin-right: 0px">
-                        <input id="adopt" type="radio" name="sex" value="1" title="通过，" checked lay-filter="not">
-                    </div>
-                    <div class="layui-input-inline">
-                        <p id="complete"><a href="javascript:;" id="nextStep">请选择下一步执行人：</a><span id="nextStepPeople"></span></p>
-                    </div>
-
-                </div>
-                <div class="layui-inline">
                     <div class="layui-input-inline" style="width: 92px;">
-                        <input id="not" type="radio" name="sex" value="-1" title="不通过" lay-filter="not">
+                        <input id="not" type="radio" name="sex" value="-1" title="不通过" checked lay-filter="not">
                     </div>
+                </div>
+                <div class="layui-inline" style="margin-left: 241px;">
+                    <label class="layui-form-label" style="text-align: left;padding-right: 28px;padding-left: 3px;">退回起草人</label>
                     <div class="layui-input-inline">
                         <input type="text" name="subPeople" id="subPeople" readonly lay-verify="required" autocomplete="off" class="layui-input">
                     </div>
@@ -276,10 +270,10 @@
                 if(res.msg == "fail"){
                     $("#nextStep").hide();
                     $("#nextStepPeople").text("审批完成");
-                    $("#subPeople").val("退回起草人  "+res.creater);
+                    $("#subPeople").val(res.creater);
                 }else if(res.msg == "success"){
                     $("#nextStep").show();
-                    $("#subPeople").val("退回起草人  "+res.creater);
+                    $("#subPeople").val(res.creater);
                 }
             }
         });
@@ -300,19 +294,8 @@
         $("input[name='contractName']").val(subtime);
     }
 
-    //点击下一步执行人
-    $("#nextStep").click(function () {
-        layer.open({
-            type: 2,
-            title: '选择处理人',
-            shadeClose: true,
-            area: ['850px', '500px'],
-            content: '{:url("approve/approve/selectMumber")}?dataType=app\\quality\\model\\QualityFormInfoModel'
-        });
-    });
-
     var layer = layui.layer;
-    var typeId = 1;
+    var typeId = -1;
     var form;
     //查询提交
     layui.use(['form', 'layedit', 'laydate','layer'], function(){
@@ -321,28 +304,6 @@
 
         form.on('radio(not)', function(data){
             typeId = data.value;
-            if(typeId == -1){
-                $("#nextStepPeople").text("");
-            }else if(typeId == 1){
-                $.ajax({
-                    url:"/quality/qualityform/getStep",
-                    type:"post",
-                    data:{
-                        form_id:$("#dataId").val()
-                    },
-                    success:function (res) {
-                        //返回成功可以选下一个人 fail不能
-                        if(res.msg == "fail"){
-                            $("#nextStep").hide();
-                            $("#nextStepPeople").text("审批完成");
-                            $("#subPeople").val("退回起草人  "+res.creater);
-                        }else if(res.msg == "success"){
-                            $("#nextStep").show();
-                            $("#subPeople").val("退回起草人  "+res.creater);
-                        }
-                    }
-                });
-            }
         });
     });
 
@@ -358,8 +319,8 @@
                     type: "post",
                     data:{
                         dataId:$("#dataId").val(),
-                        dataType:$("#dataType").val(),
-                        res:(typeId == -1)?"-1":"1",
+                        dataType:$("#valType").val(),
+                        res:-1,
                         mark:$("#txtArea").val(),
                         next_approverid:(typeId == -1)?"":subId,
                     },
@@ -377,7 +338,6 @@
                                 },
                                 dataType:"JSON",
                                 success:function () {
-                                    console.log(12331);
                                     layer.msg("保存成功!");
                                     close();
                                     parent.layer.closeAll();
@@ -391,71 +351,8 @@
                         }
                     }
                 });
-            }else if(typeId == 1){
-                if($("#nextStepPeople").text() != ""){
-                    var dataArr = [];
-                    var subId ;
-                    var dataNextId = $("#valTypestepId").val();
-                    if(dataNextId >= 10000){
-                        dataArr.push(dataNextId-10000)
-                    }else{
-                        dataArr.push(dataNextId)
-                    }
-                    subId = dataArr.join(",");
-
-                    $.ajax({
-                        url: "{:url('approve/approve/Approve')}",
-                        type: "post",
-                        data:{
-                            dataId:$("#dataId").val(),
-                            dataType:$("#dataType").val(),
-                            res:(typeId == -1)?"-1":"1",
-                            mark:$("#txtArea").val(),
-                            next_approverid:(typeId == -1)?"":subId,
-                        },
-                        success: function (res) {
-                            console.log(res);
-                            if(res.code == 1){
-                                parent.layer.msg("保存成功!");
-
-                                $.ajax({
-                                    url:"/admin/Dashboard/changeStatus",
-                                    type:"POST",
-                                    data:{
-                                        uint_id :$("#dataId").val(),
-                                        type:2
-                                    },
-                                    dataType:"JSON",
-                                    success:function () {
-                                        console.log(12331);
-                                        layer.msg("保存成功!");
-                                        close();
-                                        parent.layer.closeAll();
-                                        testFlag = true;
-                                        // parent.parent.refsh();
-                                    }
-                                });
-
-                            }else  if(res.code != 1){
-                                parent.layer.msg("处理保存失败,请稍后再试!");
-                                testFlag = true;
-                            }
-                        }
-                    });
-                }else if($("#nextStepPeople").text() == ""){
-                    layer.msg("请填写下一步执行人信息！")
-                    testFlag = true;
-                }
             }
         }
-
-
-
     });
-
-
-
-
-
 </script>
 </html>

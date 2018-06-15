@@ -1413,10 +1413,18 @@ function historyOnLine(id,curStep) {
 }
 
 //在线填报-点击退回
-function returnOnLine(id,curStep) {
-    console.log(curStep);
-    console.log(controlRowId);
-    layer.msg("退回");
+function returnOnLine(formId) {
+    layer.open({
+        type: 2,
+        title: "表单退回",
+        area: ['980px', '70%'],
+        content: '/approve/approve/approveRefund?formId=' + formId,
+        end:function () {
+            funOnLine(nodeUnitId,procedureId,controlRowId);
+            onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+            tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
+        }
+    });
 }
 
 //在线填报-点击作废
@@ -1432,6 +1440,7 @@ function toVoidOnLine(id) {
                     layer.msg("该数据已作废了！")
                     $(".eleHide").css("display","none");
                     onlineFill.ajax.url("/quality/common/datatablesPre?tableName=quality_form_info&DivisionId="+nodeUnitId+"&ProcedureId="+procedureId+"&cpr_id="+controlRowId).load();
+                    tableItem.ajax.url("/quality/common/datatablesPre?tableName=norm_materialtrackingdivision&checked_gk=0&en_type="+eTypeId+"&unit_id="+nodeUnitId+"&division_id="+nodeId+"&nm_id="+procedureId).load();
                     // checkforming(nodeUnitId); //判断是否手填
                     resultInfo(nodeUnitId);//获取线上流程
                 }
