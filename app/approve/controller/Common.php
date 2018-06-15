@@ -168,7 +168,6 @@ class Common extends Controller
         $recordsFiltered = 0;
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsTotal = Db::name($table)->where($par) ->count(0);
         $recordsFilteredResult = array();
         if (strlen($search) > 0) {
             //有搜索条件的情况
@@ -196,6 +195,8 @@ class Common extends Controller
                 $recordsFiltered = $recordsTotal;
             }
         }
+        $recordsTotal=count($recordsFilteredResult);
+        $recordsFiltered = $recordsTotal;
         $temp = array();
         $infos = array();
         foreach ($recordsFilteredResult as $key => $value) {
@@ -210,4 +211,5 @@ class Common extends Controller
 
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
+    
 }
