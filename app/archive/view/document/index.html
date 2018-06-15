@@ -1,6 +1,21 @@
 {include file="../../public/common_header"}
 <script src="__PUBLIC__/jquery/jquery.min.js"></script>
-<link rel="stylesheet" href="__PUBLIC__/ztree/css/zTreeStyle/zTreeStyle.css">
+<!--<link rel="stylesheet" href="__PUBLIC__/ztree/css/zTreeStyle/zTreeStyle.css">-->
+<style>
+    #ztree .level0 a .button{
+    background:url('/static/public/ztree/css/ztreestandard/img/1_open.png') 0 0 no-repeat;
+    }
+    #ztree .level0 a .button.ico_close{
+    background:url('/static/public/ztree/css/ztreestandard/img/1_close.png') 0 0 no-repeat;
+    }
+    #ztree .level1 a .button , #ztree .level1 a .button.ico_close{
+    background:url('/static/public/ztree/css/ztreeadmin/img/jigou.png') 0 0 no-repeat;
+    }
+    #ztree .level2 a .button, #ztree .level2 a .button.ico_close{
+        background: url("/static/public/ztree/css/metroStyle/img/metro.png");
+        background-position: -147px -42px;
+    }
+</style>
 <style>
     .layui-btn{
         padding: 0;
@@ -10,6 +25,9 @@
     }
     #nodeZtree .ztree-title #add {
         margin-left: 6px;
+    }
+    .ztree *{
+        font-size: 14px;
     }
     .ztree{
         margin-top: 0;
