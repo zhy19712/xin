@@ -307,5 +307,23 @@ class Approve extends Permissions
 
         }
     }
+    //外层退回页面的数据
+    public function approveRefund()
+    {
+        $formId=input('post.formId');
+        $infos=Db::name('quality_form_info')
+            ->where(['id'=>$formId])
+            ->find();
+        $refundUser=Db::name('admin')
+            ->where(['id'=>$infos['CurrentApproverId']])
+            ->value('nickname');
+        $createUser=Db::name('admin')
+                   ->where(['id'=>$infos['user_id']])
+                   ->value('nickname');
+        $time=date("Y-m-d H:i:s");
+        $data=array('refundUser'=>$refundUser,'createUser'=>$createUser,'time'=>$time);
+        $this->assign('RefundInfo', json_encode($infos));
+        return $this->fetch();
+    }
 
 }
