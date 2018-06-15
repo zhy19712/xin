@@ -209,9 +209,7 @@ class Qualityanalysis extends Permissions
             $ToStartMonth = strtotime( $NewMonth );
             $i = true;
             $timeline[] = $NewMonth;//时间
-
         }
-
         array_pop($timeline);//去除掉多余的月份
 
         foreach ($timeline as $key=>$val)
@@ -279,7 +277,6 @@ class Qualityanalysis extends Permissions
 
         foreach ($section as $aaaa=>$bbbb)
         {
-
             foreach ($timeline as $cc => $dd) {
 
                 //开始日期
@@ -303,39 +300,42 @@ class Qualityanalysis extends Permissions
             }
         }
 
+
         //定义一个空的数组
         //验评结果：0未验评2合格，3优良
         $form_result_result = array();
 
         foreach ($section_form_data as $qq => $rr) {
-                $count = array_count_values(array_column($rr, "EvaluateResult"));//统计优良、合格
-                if (isset($count["3"]) && isset($count["2"])) {
+
+            $count = array_count_values(array_column($rr, "EvaluateResult"));//统计优良、合格
+
+            if (isset($count["3"]) && isset($count["2"])) {
 
                 $count["3"] = $count["3"] ? $count["3"] : 0;
                 $count["2"] = $count["2"] ? $count["2"] : 0;
 
-                //计算优良率，合格率不合格率
+                //计算优良率，合格率
                 $form_result_result[$qq] = round($count["3"] / ($count["3"] + $count["2"]) * 100);//优良率
 
-
-                } else if (!isset($count["3"]) && isset($count["2"])) {
+            } else if (!isset($count["3"]) && isset($count["2"])) {
 
                 $count["2"] = $count["2"] ? $count["2"] : 0;
 
-                    //计算优良率，合格率
-                    $form_result_result[$qq] = 0;//优良率
 
-                } else if (isset($count["3"]) && !isset($count["2"])) {
+                //计算优良率，合格率
+                $form_result_result[$qq] = 0;//优良率
+
+            } else if (isset($count["3"]) && !isset($count["2"])) {
 
                 $count["3"] = $count["3"] ? $count["3"] : 0;
 
-                    //计算优良率，合格率
-                    $form_result_result[$qq] = round($count["3"] / ($count["3"] + 0) * 100);//优良率
+                //计算优良率，合格率
+                $form_result_result[$qq] = round($count["3"] / ($count["3"] + 0) * 100);//优良率
 
-                } else {
-                    //计算优良率，合格率不合格率
+            } else {
 
-                    $form_result_result[$qq]= 0;//优良率
+                //计算优良率，合格率不合格率
+                $form_result_result[$qq] = 0;//优良率
 
             }
         }
