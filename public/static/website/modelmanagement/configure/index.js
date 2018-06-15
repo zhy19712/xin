@@ -70,6 +70,7 @@ $(function () {
     }
     // 透明度输入控制
 
+
 })
 function opcityControl(that) {
     var val = $(that).val();
