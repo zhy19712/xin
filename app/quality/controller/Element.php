@@ -469,8 +469,14 @@ class Element extends Permissions
     {
         $mod = input('post.');
         $_mod = DivisionUnitModel::get($mod['Unit_id']);
-        $_mod['EvaluateResult'] = $mod['EvaluateResult'];
-        $_mod['EvaluateDate'] = strtotime($mod['EvaluateDate']);
+        if(isset($mod['EvaluateResult']))
+        {
+            $_mod['EvaluateResult'] = $mod['EvaluateResult'];
+        }
+        if(isset($mod['EvaluateDate']))
+        {
+            $_mod['EvaluateDate'] = strtotime($mod['EvaluateDate']);
+        }
         $res = $_mod->save();
         if ($res) {
             return json(['code' => 1]);
