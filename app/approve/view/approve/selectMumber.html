@@ -6,7 +6,11 @@
     }
 </style>
 <style>
-
+    .tbcontainer{
+        bottom: 20px!important;
+        left: 250px;
+        border: none!important;
+    }
     #tableContent .select-color {
         background-color: #FDD5B5 !important;
     }
@@ -78,30 +82,44 @@
     <div class="sub">
         <div class="col-md-5">
             <div style="text-align: left;">
-                <h4 class="hui rted" style="margin: 10px;font-size: 13px" id="tgd">
+                <h4 class="hui rted" style="margin: 10px;font-size: 13px;text-align: center;" id="tgd">
                     <a style="margin-right: 3px;" onclick="frequentlyUsedDivShow()" class="rted select">常用联系人</a>|
                     <a style="margin-right: 3px;margin-left: 3px;" onclick="selectDivShow()" class="rted">人员选择</a>
                 </h4>
             </div>
             <div class="hr-line-dashed" style="margin:0px;"></div>
         </div>
-        <div class="col-md-5" id="frequentlyUsedDiv">
+        <div class="col-md-12" id="frequentlyUsedDiv">
+
             <div class="boder" style="text-align: left; height:364px;">
-                <ul id="treeFrequentlyUsed" class="ztree" style="overflow: auto; height: 100%; width: 100%;"></ul>
+                <table class="table table-bordered" id="frequentlyUseTable">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>用户</th>
+                            <th>所在单位</th>
+                            <th>所在部门</th>
+                        </tr>
+                    </thead>
+
+                </table>
             </div>
         </div>
-        <div class="col-md-5" id="selectDiv">
-            <div class="boder" style="text-align: left; height:364px;">
-                <div style="margin-top: 15px;">
-                    <div class="input-group input-group-sm" style="width: 300px;margin-top: -8px;margin-left: 10px;">
-                        <input class="layui-input" type="text" placeholder="请输人员名称" id="keywords" accept="middle">
-                        </span>
-                    </div>
-                </div>
-                <div class="hr-line-dashed" style="margin:10px;margin-bottom: 0px"></div>
-                <div class="ligtop" style="text-align: left;margin-top: 0px">
-                    <ul id="treeDemo" class="ztree" style="overflow: auto; height: 100%; width: 100%;padding-top: 0px"></ul>
-                </div>
+        <div class="row" id="selectDiv">
+            <div data-options="region:'west',title:'组织结构',split:true" style="width: 200px;overflow-x: scroll;float: left;height: 350px" >
+                <ul id="ztree" class="ztree"></ul>
+            </div>
+            <div data-options="region:'center',title:'收件人'"  style="width: 580px;overflow: scroll;float: right;height: 300px">
+                <table id="tableItem" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>用户</th>
+                        <th>所在单位</th>
+                        <th>所在部门</th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
         </div>
 
@@ -112,7 +130,7 @@
                 <input id="selectOrganizationName" type="hidden" />
                 <input id="selectPost" type="hidden" />
                 <input id="selectMobile" type="hidden" />
-                <span>已选择人员：<b style="color:#56ABE4" id="selectedUserName"></b></span>
+                <span style="display: none">已选择人员：<b style="color:#56ABE4" id="selectedUserName"></b></span>
             </div>
             <div style="text-align: right;margin-top: 5px;margin-right: 5px;bottom: 15px;right: 8px;position: absolute;">
                 <button id="btnSave" type="button" style="margin-right: 5px;background: #009688;" class="layui-btn">保存</button>
@@ -124,7 +142,62 @@
 </div>
 {include file="../app/public/common_footer.html"}
 <script>
-
+    var conutNum = 0;
+    var tableItem;
+    //常用联系人表格
+    //     frequentlyUseTable = $("#frequentlyUseTable").DataTable({
+    //     processing: false,
+    //     serverSide: true,
+    //     ordering: true,
+    //     scrollY: "295px",
+    //     scrollCollapse: true,
+    //     ajax: {
+    //         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
+    //     },
+    //     columns: [
+    //         { name: "nick_name" },
+    //         { name: "p_name" },
+    //         { name: "name" },
+    //     ],
+    //     columnDefs: [
+    //         {
+    //             targets: [1],
+    //             render: function (data, type, row,meta) {
+    //
+    //             }
+    //         },
+    //         {
+    //             targets: [7],
+    //             render: function (data, type, row,meta) {
+    //                 if (row[6] == '1' && user_name == row[4]){
+    //                     var strs = '';
+    //                     strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="edit_send(this)" >编辑</i>';
+    //                     strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="del(this)" >删除</i>';
+    //                     return strs;
+    //                 }else {
+    //                     return  '<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="preview(this)" >查看</i>';
+    //                 }
+    //             }
+    //         }
+    //     ],
+    //     dom: 'lf<"#addSend.layui-btn layui-btn-md btn-right btn-space">tip',
+    //     language: {
+    //         "sProcessing":"数据加载中...",
+    //         "lengthMenu": "_MENU_",
+    //         "zeroRecords": "没有找到记录",
+    //         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+    //         "infoEmpty": "无记录",
+    //         "search": "搜索",
+    //         "sSearchPlaceholder":"请输入关键字",
+    //         "infoFiltered": "(从 _MAX_ 条记录过滤)",
+    //         "paginate": {
+    //             "sFirst": "<<",
+    //             "sPrevious": "上一页",
+    //             "sNext": "下一页",
+    //             "sLast": ">>"
+    //         }
+    //     }
+    // });
     $("#btnSave").click(function () { $("#btnSave").attr("disabled", "disabled"); save(); });
     $("#btnClose").click(function () { close(); });
 
@@ -241,6 +314,7 @@
     };
     // 人员选择
     function selectDivShow() {
+        incomeZtree();
         $("#frequentlyUsedDiv").hide();
         $("#selectDiv").show();
     };
@@ -350,5 +424,65 @@
         $("#selectPost").val(treeNode.post);
         $("#selectMobile").val(treeNode.dataExt);
     };
+    function incomeZtree() {
+        $.ztree({
+            ajaxUrl:'/admin/admin/index',
+            zTreeOnClick:function (event, treeId, treeNode) {
+                incomeInfo();
+                console.log(treeNode.id);
+                tableItem.ajax.url("/approve/Common/datatablesPre?tableName=admin_group&id="+ treeNode.id).load();
+            }
+        });
+    }
+
+    //收件人信息
+    function incomeInfo() {
+        tableItem = $('#tableItem').DataTable({
+            pagingType: "full_numbers",
+            processing: true,
+            serverSide: true,
+            bAutoWidth: false,  //是否自动宽度
+            scrollX: true,
+            scrollY: "520px",   //表格容器高度
+            scrollCollapse: true,
+            ajax: {
+                "url":"/approve/Common/datatablesPre?tableName=admin_group"
+            },
+            dom: 'frtp',
+            columns:[
+                {
+                    name: "id"
+                },
+                {
+                    name: "nickname"
+                },
+                {
+                    name: "name"
+                },
+                {
+                    name: "p_name"
+                }
+            ],
+            fnCreatedRow:function (nRow, aData, iDataIndex){
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            },
+            "destroy": true,
+            language: {
+                "lengthMenu": "_MENU_ ",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索",
+                "sSearchPlaceholder": "请输入关键字",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "sFirst": "<<",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": ">>"
+                }
+            }
+        });
+    }
 </script>
 </html>
