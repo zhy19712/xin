@@ -1,5 +1,16 @@
 {include file="../app/public/common_header.html"}
-<link rel="stylesheet" href="__PUBLIC__/ztree/css/zTreeStyle/zTreeStyle.css">
+<!--<link rel="stylesheet" href="__PUBLIC__/ztree/css/zTreeStyle/zTreeStyle.css">-->
+<style>
+    #ztree .level0 a .button{
+        background:url('/static/public/ztree/css/ztreestandard/img/1_open.png') 0 0 no-repeat;
+    }
+    #ztree .level0 a .button.ico_close{
+        background:url('/static/public/ztree/css/ztreestandard/img/1_close.png') 0 0 no-repeat;
+    }
+    #ztree .level1 a .button , #ztree .level1 a .button.ico_close{
+        background:url('/static/public/ztree/css/ztreeadmin/img/jigou.png') 0 0 no-repeat;
+    }
+</style>
 <style>
     body .panel-title{
         font-size: 14px;

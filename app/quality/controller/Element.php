@@ -467,21 +467,21 @@ class Element extends Permissions
     //手动填写验评结果的保存
     public function Evaluate()
     {
-        $mod = input('post.');
-        $_mod = DivisionUnitModel::get($mod['Unit_id']);
-        if(isset($mod['EvaluateResult']))
+        if(request()->isAjax())
         {
-            $_mod['EvaluateResult'] = $mod['EvaluateResult'];
-        }
-        if(isset($mod['EvaluateDate']))
-        {
-            $_mod['EvaluateDate'] = strtotime($mod['EvaluateDate']);
-        }
-        $res = $_mod->save();
-        if ($res) {
-            return json(['code' => 1]);
-        } else {
-            return json(['code' => -1]);
+            //实例化模型类
+            $Unit = new DivisionUnitModel();
+            $unit_id = input("post.Unit_id");//工程策划id
+            $EvaluateResult = input("post.EvaluateResult");//验评结果
+            $EvaluateDate = input("post.EvaluateDate");//验评时间
+
+            $data = [
+                "id"=>$unit_id,
+                "EvaluateResult"=>$EvaluateResult,
+                "EvaluateDate"=>strtotime($EvaluateDate)
+            ];
+            $flag = $Unit->editTb($data);
+            return json($flag);
         }
     }
 

@@ -33,9 +33,9 @@ class Qualityanalysis extends Permissions
     public function getAllMonth()
     {
         //查询数据库中的最小时间
-        $min_time = Db::name("quality_form_info")->where("create_time > 0")->min("create_time");
+        $min_time = Db::name("quality_unit")->where("EvaluateDate > 0")->min("EvaluateDate");
         //查询数据库中的最大的时间
-        $max_time = Db::name("quality_form_info")->where("create_time > 0")->max("create_time");
+        $max_time = Db::name("quality_unit")->where("EvaluateDate > 0")->max("EvaluateDate");
 
         //定义一个空的数组
         $timeline = array();
@@ -82,7 +82,13 @@ class Qualityanalysis extends Permissions
     {
 
             $search_time = input('post.time_slot');
-//            $search_time = "2018.03.26-2018.04.25";
+
+//            $search_time = "2018.05.26-2018.06.25";
+
+            if(empty($search_time))
+            {
+                return json(["code" => -1,"msg" =>"查询时间错误！"]);
+            }
             //截取开始时间和结束时间
             $time = explode("-",$search_time);
             //处理下时间用"-"，代替"."
@@ -98,6 +104,7 @@ class Qualityanalysis extends Permissions
             $section_form_data = array();
 
             //柱状图
+            //标段
             $section = Db::name("section")->order("id asc")->column("shortName,id");//标段名
             foreach ($section as $aa => $bb) {
                 $section_name[] = strval($aa);
@@ -105,14 +112,12 @@ class Qualityanalysis extends Permissions
 
             foreach ($section as $cc => $dd) {
 
-                $temp_data = Db::name('quality_form_info')->alias('r')
-                    ->join('quality_unit u', 'u.id = r.DivisionId', 'left')
-                    ->join('quality_division c', 'c.id=u.division_id', 'left')
+                $temp_data = Db::name('quality_unit')->alias('r')
+                    ->join('quality_division c', 'c.id = r.division_id', 'left')
                     ->join('section s', 'c.section_id = s.id', 'left')
                     ->where('s.id', $dd)
-                    ->where("r.form_name like '%等级评定表%'")
-                    ->where("r.create_time >= ".$start_time. " AND r.create_time <= ".$end_time)
-                    ->field("r.form_data,r.id,r.create_time,s.id as section_id")->order("s.id asc")->select();
+                    ->where("r.EvaluateDate >= ".$start_time. " AND r.EvaluateDate <= ".$end_time)
+                    ->field("r.EvaluateResult,r.id,r.EvaluateDate,s.id as section_id")->order("s.id asc")->select();
 
                 if ($temp_data) {
                     $section_form_data[] = $temp_data;
@@ -121,65 +126,47 @@ class Qualityanalysis extends Permissions
                 }
             }
 
-            foreach ($section_form_data as $ee => $ff) {
-                foreach ($ff as $gg => $hh) {
-                    $section_form_data[$ee][$gg] = (unserialize($hh["form_data"]));
-                }
-            }
-
-            foreach ($section_form_data as $ii => $jj) {
-                foreach ($jj as $kk => $ll) {
-                    $section_form_data[$ii][$kk] = ($ll[count($ll) - 9]);
-                }
-
-            }
-
-            foreach ($section_form_data as $mm => $nn) {
-                foreach ($nn as $oo => $pp) {
-                    if ($pp["Step"] != 3)//去掉不是Step = 3的数据
-                    {
-                        unset($section_form_data[$mm][$oo]);
-                    }
-                }
-            }
-
             //定义一个空的数组
             $form_result_result = array();
             $section_rate_number = array();
+
+            //验评结果：0未验评2合格，3优良
             foreach ($section_form_data as $qq => $rr) {
-                $count = array_count_values(array_column($rr, "Value"));//统计优良、合格、不合格的数量
-                if (isset($count["优良"]) && isset($count["合格"])) {
-                    $section_rate_number["excellent_number"] = $count["优良"];
-                    $section_rate_number["qualified_number"] = $count["合格"];
-                    $count["优良"] = $count["优良"] ? $count["优良"] : 0;
-                    $count["合格"] = $count["合格"] ? $count["合格"] : 0;
-                    $section_rate_number["total"] = $count["优良"] + $count["合格"];
+
+                $count = array_count_values(array_column($rr, "EvaluateResult"));//统计优良、合格
+
+                if (isset($count["3"]) && isset($count["2"])) {
+                    $section_rate_number["excellent_number"] = $count["3"];
+                    $section_rate_number["qualified_number"] = $count["2"];
+                    $count["3"] = $count["3"] ? $count["3"] : 0;
+                    $count["2"] = $count["2"] ? $count["2"] : 0;
+                    $section_rate_number["total"] = $count["3"] + $count["2"];
 
                     $form_result_result[$qq]["section_rate_number"] = $section_rate_number;
 
-                    //计算优良率，合格率不合格率
-                    $form_result_result[$qq]['excellent'] = round($count["优良"] / ($count["优良"] + $count["合格"]) * 100);//优良率
+                    //计算优良率，合格率
+                    $form_result_result[$qq]['excellent'] = round($count["3"] / ($count["3"] + $count["2"]) * 100);//优良率
 
-                } else if (!isset($count["优良"]) && isset($count["合格"])) {
+                } else if (!isset($count["3"]) && isset($count["2"])) {
                     $section_rate_number["excellent_number"] = 0;
-                    $section_rate_number["qualified_number"] = $count["合格"];
-                    $count["合格"] = $count["合格"] ? $count["合格"] : 0;
-                    $section_rate_number["total"] = 0 + $count["合格"];
+                    $section_rate_number["qualified_number"] = $count["2"];
+                    $count["2"] = $count["2"] ? $count["2"] : 0;
+                    $section_rate_number["total"] = 0 + $count["2"];
 
                     $form_result_result[$qq]["section_rate_number"] = $section_rate_number;
 
-                    //计算优良率，合格率不合格率
+                    //计算优良率，合格率
                     $form_result_result[$qq]['excellent'] = 0;//优良率
-                } else if (isset($count["优良"]) && !isset($count["合格"])) {
-                    $section_rate_number["excellent_number"] = $count["优良"];
+                } else if (isset($count["3"]) && !isset($count["2"])) {
+                    $section_rate_number["excellent_number"] = $count["3"];
                     $section_rate_number["qualified_number"] = 0;
-                    $count["优良"] = $count["优良"] ? $count["优良"] : 0;
-                    $section_rate_number["total"] = $count["优良"] + 0;
+                    $count["3"] = $count["3"] ? $count["3"] : 0;
+                    $section_rate_number["total"] = $count["3"] + 0;
 
                     $form_result_result[$qq]["section_rate_number"] = $section_rate_number;
 
-                    //计算优良率，合格率不合格率
-                    $form_result_result[$qq]['excellent'] = round($count["优良"] / ($count["优良"] + 0) * 100);//优良率
+                    //计算优良率，合格率
+                    $form_result_result[$qq]['excellent'] = round($count["3"] / ($count["3"] + 0) * 100);//优良率
 
                 } else {
                     $section_rate_number["excellent_number"] = 0;
@@ -194,6 +181,7 @@ class Qualityanalysis extends Permissions
                 }
             }
             $result = ["section" => $section_name, "form_result_result" => $form_result_result];//柱状图表格
+
             return json(["code" => 1, "data" => $result]);
 
     }
@@ -205,13 +193,12 @@ class Qualityanalysis extends Permissions
     public function getAllYear()
     {
         //查询数据库中的最小时间
-        $min_time = Db::name("quality_form_info")->where("create_time > 0")->min("create_time");
+        $min_time = Db::name("quality_unit")->where("EvaluateDate > 0")->min("EvaluateDate");
         //查询数据库中的最大的时间
-        $max_time = Db::name("quality_form_info")->where("create_time > 0")->max("create_time");
+        $max_time = Db::name("quality_unit")->where("EvaluateDate > 0")->max("EvaluateDate");
 
         //定义一个空的数组
         $timeline = array();
-        $month = array();
         $StartMonth = date("Y-m-d",$min_time); //开始日期
         $EndMonth = date("Y-m-d",$max_time); //结束日期
         $ToStartMonth = strtotime( $StartMonth ); //转换一下
@@ -279,7 +266,6 @@ class Qualityanalysis extends Permissions
 
         array_pop($timeline);//去除掉多余的月份
 
-
         //定义空数组
         $section_form_data = array();
 
@@ -291,10 +277,6 @@ class Qualityanalysis extends Permissions
             $section_id[] = $bb;
         }
 
-        //定义一个空的数组作为搜索条件
-        $where = array();
-
-        $where["s.id"] = array('in',$section_id);
         foreach ($section as $aaaa=>$bbbb)
         {
 
@@ -306,15 +288,12 @@ class Qualityanalysis extends Permissions
                 //结束日期
                 $end = mktime(23,59,59,date('m',strtotime($dd)),date('t',strtotime($dd)),date('Y',strtotime($dd)));
 
-                $temp_data = Db::name('quality_form_info')->alias('r')
-                    ->join('quality_unit u', 'u.id = r.DivisionId', 'left')
-                    ->join('quality_division c', 'c.id=u.division_id', 'left')
+                $temp_data = Db::name('quality_unit')->alias('r')
+                    ->join('quality_division c', 'c.id = r.division_id', 'left')
                     ->join('section s', 'c.section_id = s.id', 'left')
-//                    ->where($where)
                     ->where("s.id",$bbbb)
-                    ->where("r.form_name like '%等级评定表%'")
-                    ->where("r.create_time >= ".$start. " AND r.create_time <= ".$end)
-                    ->field("r.form_data,r.id,r.create_time,s.id as section_id,s.shortName as section_name")->order("s.id asc")->select();
+                    ->where("r.EvaluateDate >= ".$start. " AND r.EvaluateDate <= ".$end)
+                    ->field("r.EvaluateResult,r.id,r.EvaluateDate,s.id as section_id")->order("s.id asc")->select();
 
                 if ($temp_data) {
                     $section_form_data[] = $temp_data;
@@ -324,72 +303,45 @@ class Qualityanalysis extends Permissions
             }
         }
 
-
-        foreach ($section_form_data as $ee => $ff) {
-            foreach ($ff as $gg => $hh) {
-                $section_form_data[$ee][$gg] = (unserialize($hh["form_data"]));
-
-            }
-        }
-
-        foreach ($section_form_data as $ii => $jj) {
-
-            foreach ($jj as $kk => $ll) {
-
-                $section_form_data[$ii][$kk] = ($ll[count($ll) - 9]);
-            }
-
-        }
-
-        foreach ($section_form_data as $mm => $nn) {
-            foreach ($nn as $oo => $pp) {
-                if ($pp["Step"] != 3)//去掉不是Step = 3的数据
-                {
-                    unset($section_form_data[$mm][$oo]);
-                }
-            }
-
-        }
-//        halt($section_form_data['1']);
         //定义一个空的数组
+        //验评结果：0未验评2合格，3优良
         $form_result_result = array();
-        $section_rate_number = array();
+
         foreach ($section_form_data as $qq => $rr) {
-                $count = array_count_values(array_column($rr, "Value"));//统计优良、合格、不合格的数量
-                if (isset($count["优良"]) && isset($count["合格"])) {
+                $count = array_count_values(array_column($rr, "EvaluateResult"));//统计优良、合格
+                if (isset($count["3"]) && isset($count["2"])) {
 
-                $count["优良"] = $count["优良"] ? $count["优良"] : 0;
-                $count["合格"] = $count["合格"] ? $count["合格"] : 0;
+                $count["3"] = $count["3"] ? $count["3"] : 0;
+                $count["2"] = $count["2"] ? $count["2"] : 0;
+
+                //计算优良率，合格率不合格率
+                $form_result_result[$qq] = round($count["3"] / ($count["3"] + $count["2"]) * 100);//优良率
 
 
-                    //计算优良率，合格率不合格率
-                    $form_result_result[$qq] = round($count["优良"] / ($count["优良"] + $count["合格"]) * 100);//优良率
+                } else if (!isset($count["3"]) && isset($count["2"])) {
 
+                $count["2"] = $count["2"] ? $count["2"] : 0;
 
-                } else if (!isset($count["优良"]) && isset($count["合格"])) {
-
-                $count["合格"] = $count["合格"] ? $count["合格"] : 0;
-
-                    //计算优良率，合格率不合格率
+                    //计算优良率，合格率
                     $form_result_result[$qq] = 0;//优良率
 
-                } else if (isset($count["优良"]) && !isset($count["合格"])) {
+                } else if (isset($count["3"]) && !isset($count["2"])) {
 
-                $count["优良"] = $count["优良"] ? $count["优良"] : 0;
+                $count["3"] = $count["3"] ? $count["3"] : 0;
 
-                    //计算优良率，合格率不合格率
-                    $form_result_result[$qq] = round($count["优良"] / ($count["优良"] + 0) * 100);//优良率
+                    //计算优良率，合格率
+                    $form_result_result[$qq] = round($count["3"] / ($count["3"] + 0) * 100);//优良率
 
                 } else {
-
                     //计算优良率，合格率不合格率
+
                     $form_result_result[$qq]= 0;//优良率
 
             }
         }
+
         $result = ["section" => $section_name, "form_result_result" => $form_result_result];//柱状图表格
 
         return json(["code" => 1, "data" => $result]);
-
     }
 }
