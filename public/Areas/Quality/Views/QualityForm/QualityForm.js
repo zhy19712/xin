@@ -549,12 +549,6 @@ function approve(id,app,step) {
 
 //pc 点击退回
 function formSaveAndReturn() {
-    var cpr = $("#cpr").val();
     var formId = $("#id").val();
-    top.layer.open({
-        type: 2,
-        title: "表单退回",
-        area: ['980px', '70%'],
-        content: '/approve/approve/approveRefund?formId=' + formId,
-    });
+    parent.returnOnLine(formId);
 }
