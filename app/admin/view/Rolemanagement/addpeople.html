@@ -97,12 +97,7 @@
             background:none;
             color: white;
         }
-        .layui-btn{
-            width: 20px;
-            height: 20px;
-            border-radius: 100%;
-            padding: 0;
-        }
+
         .layui-btn i.fa{
             position: relative;
             transform: translateY(-66%);
@@ -143,12 +138,12 @@
                     </div>
                     <div class="hr-line-dashed" style="margin:10px;"></div>
                     <div class="peopleResult" id="selectedUserDiv"></div>
-                    <div id="guanlian" style="text-align: right;margin-top: 20px;margin-right: 5px;overflow: auto;">
+                    <div id="guanlian" style="text-align: right;margin-top: 6px;margin-right: 5px;overflow: auto;">
                         <button id="btnSaveRoleUser" class="layui-btn" type="button" style="margin-right: 15px;">
-                        <i class="fa fa-check" title="保存"></i>
+                        <i class="fa fa-check" title="保存" style="line-height: 2px"></i>
                         </button>
                         <button id="btnCloseRoleUser" class="layui-btn layui-btn-warm" type="button" style="margin-right: 15px;">
-                        <i class="fa fa-times" style="color:#ffffff" ; title="关闭"></i>
+                        <i class="fa fa-times" style="color:#ffffff;line-height: 2px" ; title="关闭"></i>
                         </button>
                     </div>
                 </div>
@@ -163,7 +158,10 @@
 <script src="__PUBLIC__/datatables/js/jquery.dataTables.min.js"></script>
 <script src="__PUBLIC__/datatables/js/dataTables.buttons.min.js"></script>
 <script src="__PUBLIC__/datatables/js/dataTables.bootstrap.js"></script>
+<!--<script src="__WEBSITE__/archive/atlas/index.js"></script>-->
+
 <script>
+    var userList=[];//
     layui.use("layer");
 
 //获取参数
@@ -189,7 +187,7 @@
 
     $(function () {
         $("#btnSaveRoleUser").click(function () { saveRoleUser(); });
-        $("#btnCloseRoleUser").click(function () { window.close(); });
+        $("#btnCloseRoleUser").click(function () { parent.layer.closeAll(); });
 
         initRoleUserData();
     });
@@ -347,9 +345,8 @@ $('#username_key').bind('input propertychange', function() {
             data: sendData,
             success: function (res) {
                 if(res.code===1){
-                    window.opener.getAdminname(roleId);
                     layer.msg("成功");
-                    window.close();
+                    parent.layer.closeAll();
                 }else{
                     layer.msg(res.msg)
                 }
