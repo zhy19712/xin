@@ -156,4 +156,53 @@ class Common extends Controller
 
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
+
+    public function getAdminInfo($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    {
+        //查询前置条件
+        $par=array();
+        $id=$this->request->param('id');
+        //查询
+        //条件过滤后记录数 必要
+        $recordsFiltered = 0;
+        //表的总记录数 必要
+        $recordsTotal = 0;
+        $recordsTotal = Db::name($table)->where($par) ->count(0);
+        $recordsFilteredResult = array();
+        if (strlen($search) > 0) {
+            //有搜索条件的情况
+            if ($limitFlag) {
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name('admin')->alias('a')
+                    ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
+                    ->where(['g.id'=>$id])
+                    ->field('a.nickname,g.name,g.p_name')
+                    ->select();
+                $recordsFiltered = sizeof($recordsFilteredResult);
+            }
+        } else {
+            //没有搜索条件的情况
+            if ($limitFlag) {
+                $recordsFilteredResult = Db::name('admin')->alias('a')
+                    ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
+                    ->where(['g.id'=>$id])
+                    ->field('a.nickname,g.name,g.p_name')
+                    ->select();
+                $recordsFiltered = $recordsTotal;
+            }
+        }
+        $temp = array();
+        $infos = array();
+        foreach ($recordsFilteredResult as $key => $value) {
+            //计算列长度
+            $length = sizeof($columns);
+            for ($i = 0; $i < $length; $i++) {
+                array_push($temp, $value[$columns[$i]['name']]);
+            }
+            $infos[] = $temp;
+            $temp = [];
+        }
+
+        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+    }
 }
