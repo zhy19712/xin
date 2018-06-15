@@ -2,17 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: sir
- * Date: 2018/5/22
- * Time: 13:36
+ * Date: 2018/6/14
+ * Time: 15:52
  */
-namespace app\modelmanagement\model;
 
+namespace app\progress\model;
+
+
+use app\admin\model\Attachment;
+use app\modelmanagement\model\QualitymassModel;
+use think\Db;
 use think\exception\PDOException;
 use think\Model;
-class ConfigureModel extends Model
-{
-    protected $name = 'model_configure';
 
+class ActualModel extends Model
+{
+    protected $name = 'progress_actual';
 
     public function insertTb($param)
     {
@@ -45,6 +50,18 @@ class ConfigureModel extends Model
     public function deleteTb($id)
     {
         try {
+            // 关联删除上传的附件
+            $data = $this->getOne($id);
+            $att = new Attachment();
+            $att->deleteTb($data['attachment_id']);
+            if(file_exists($data['path'])){
+                unlink($data['path']); //删除文件
+            }
+
+            // 关联删除 --- 模型关联记录
+            $model = new QualitymassModel();
+            $model->deleteRelationById($id,1);
+
             $this->where('id', $id)->delete();
             return ['code' => 1, 'msg' => '删除成功'];
         } catch (PDOException $e) {
@@ -58,25 +75,19 @@ class ConfigureModel extends Model
         return $data;
     }
 
-    public function configureId($model_type)
+    public function dateScope($section_id)
     {
-        $id = $this->where('model_type',$model_type)->value('id');
-        return $id;
+        $data = $this->where(['section_id'=>$section_id])->field('min(actual_date) as date_start,max(actual_date) as date_end')->find();
+        return $data;
     }
 
-    // type 1 全景3D模型 和 质量3D模型 2 进度模拟 和 进度对比 3 实时进度展示
-    public function getConfigure($type)
+    // 当选择了区间时间后,前台传递,选择的标段编号 section_id 和 开始时间 date_start  结束时间 date_end
+    // 会多返回最左侧的[未建，在建，完建]的数据
+    public function actualInfo($section_id,$date_start,$date_end)
     {
-        // model_type 1 全景3D模型 2 质量3D模型 3 进度模拟 4 进度对比 5 实时进度展示
-        if($type == 1){
-            $data['panorama'] = $this->where(['model_type'=>1])->find(); // 全景3D模型
-            $data['quality'] = $this->where(['model_type'=>2])->find(); // 质量3D模型
-        }else if($type == 2){
-            $data['imitate'] = $this->where(['model_type'=>3])->find(); // 进度模拟
-            $data['contrast'] = $this->where(['model_type'=>4])->find(); // 进度对比
-        }else{
-            $data['actual'] = $this->where(['model_type'=>5])->find(); // 实时进度展示
-        }
+        $data = Db::name('progress_actual')->alias('a')
+            ->join('admin u','u.id=a.user_id','left')
+            ->where(['a.section_id'=>$section_id,'a.actual_date'=>['between',[$date_start,$date_end]]])->field('a.actual_date,u.name')->select();
         return $data;
     }
 }

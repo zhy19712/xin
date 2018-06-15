@@ -52,6 +52,23 @@ class Qualitymass extends Permissions
     }
 
     /**
+     * 切换标段的时候，返回该标段下所有的模型编号[不只是有关联关系的模型]
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function sectionChange()
+    {
+        if($this->request->isAjax()){
+            // 前台 传递 选中标段的编号 section_id
+            $param = input('post.');
+            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+            $quality = new QualitymassModel();
+            $data = $quality->sectionChange($section_id);
+            return json(['code'=>1,'data'=>$data,'msg'=>'切换标段的时候,返回该标段下所有的模型编号[不只是有关联关系的模型]']);
+        }
+    }
+
+    /**
      * 标段下拉数据
      * @return \think\response\Json
      * @author hutao
@@ -153,13 +170,37 @@ class Qualitymass extends Permissions
     {
         if(request()->isAjax()){
             // 传递 选中节点的 add_id 和 选中的构件 编号数组 id_arr
-            $id = input('add_id');
+            $param = input('param.');
+            $id = isset($param['add_id']) ? $param['add_id'] : 0;
+            if(empty($id)){
+                return json(['code'=>-1,'msg'=>'缺少单元工程的编号']);
+            }
             $id_arr = input('id_arr/a');
             if(!sizeof($id_arr)){
                 return json(['code'=>-1,'msg'=>'缺少构件的编号']);
             }
+
+            /**
+             * 关联模型时，要验证，选择的检验批所属的标段和模型的标段是否一致，
+             * 不一致的时候给出，标段不符提示，并取消本次关联
+             */
+            $check_result = false;
+            $unit = new DivisionUnitModel();
+            $code = $unit->sectionCode($id); // 获取单元工厂(检验批)归属的标段
             $node = new QualitymassModel();
-            $flag = $node->relevance($id,$id_arr);
+            $code_arr = $node->sectionCode($id_arr); // 获取所有选中的构件的标段
+            foreach ($code_arr as $v){
+                if($code != $v){
+                    $check_result = true;
+                    break;
+                }
+            }
+            if($check_result){
+                return json(['code'=>-1,'msg'=>'所选择的构件中存在其他标段下的构件,与当前关联的单元工程所属标段不符,此次关联无效']);
+            }
+
+            // 执行关联操作
+            $flag = $node->relevance($id,$id_arr,0); // 0 表示检验批关联 1 表示是实时进度关联 2 表示月进度关联
             return json($flag);
         }
     }
@@ -178,7 +219,7 @@ class Qualitymass extends Permissions
                 return json(['code'=>-1,'msg'=>'缺少构件的编号']);
             }
             $node = new QualitymassModel();
-            $flag = $node->removeRelevance($id_arr);
+            $flag = $node->removeRelevance($id_arr,0); // 0 表示检验批关联 1 表示是实时进度关联 2 表示月进度关联
             return json($flag);
         }
     }
@@ -290,7 +331,7 @@ class Qualitymass extends Permissions
     {
         if($this->request->isAjax()){
             $version = new ConfigureModel();
-            $configureInfo = $version->getConfigure();
+            $configureInfo = $version->getConfigure(1);// 1 全景3D模型 和 质量3D模型 2 进度模拟 和 进度对比 3 实时进度展示
             return json(['code'=>1,'configureInfo'=>$configureInfo,'msg'=>'模型效果配置信息']);
         }
     }

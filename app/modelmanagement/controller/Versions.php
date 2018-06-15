@@ -638,12 +638,22 @@ class Versions extends Permissions
         $version = new VersionsModel();
         $version_number = $version->versionNumber(2); // 1全景3D模型 2质量3D模型
 
+        // 'SGZD'施工支洞,'ZD'支洞,'DZTD'地质探洞,'TD'探洞,'SFDW'石方洞挖,'SFMW'石方明挖
+        $style_arr = ['SGZD','ZD','DZTD','TD','SFDW','SFMW'];
+
         foreach ($new_contents as $k=>$val){
             $data[$k]['version_number'] = $version_number;
             $data[$k]['section'] = $val[0];
             $data[$k]['unit'] = trim(next($val));
             $data[$k]['parcel'] = trim(next($val));
             $data[$k]['cell'] = trim(next($val));
+
+            if(in_array($style_arr,$data[$k]['cell'])){
+                $data[$k]['display_style'] = '2'; // 显示样式:[1从无到有,2从有到无]
+            }else{
+                $data[$k]['display_style'] = '1';
+            }
+
             $arr_1 = explode('+',trim(next($val)));
             $data[$k]['pile_number_1'] = $arr_1[0];
             $data[$k]['pile_val_1'] = $arr_1[1];
@@ -677,6 +687,8 @@ class Versions extends Permissions
                 foreach ($data as $e_k=>$every_v){
                     if($every_v['model_name'] == $prev_v['model_name']){
                         $data[$e_k]['unit_id'] = $prev_v['unit_id'];
+                        $data[$e_k]['actual_id'] = $prev_v['actual_id'];
+                        $data[$e_k]['mon_progress_id'] = $prev_v['mon_progress_id'];
                     }
                 }
             }

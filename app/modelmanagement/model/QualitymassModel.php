@@ -110,20 +110,40 @@ class QualitymassModel extends Model
     }
 
     // 解除关联
-    public function removeRelevance($id_arr)
+    public function removeRelevance($id_arr,$type=0)
     {
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
-        $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->update(['unit_id'=>0]);
+        if($type==0){
+            $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->update(['unit_id'=>0]);
+        }else{
+            $actual_id = $this->where(['id'=>['eq',$id_arr[0]],'version_number'=>$version_number])->value('actual_id');
+            $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->update(['actual_id'=>0]);
+            return ['code'=>1,'actual_id'=>$actual_id,'msg'=>'解除成功'];
+        }
         return ['code'=>1,'msg'=>'解除成功'];
     }
 
-    // 关联
-    public function relevance($id,$id_arr)
+    // ht 获取所有选中的构件的标段
+    public function sectionCode($id_arr)
     {
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
-        $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->update(['unit_id'=>$id]);
+        $section = $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->column('section');
+        return $section;
+    }
+
+
+    // 关联
+    public function relevance($id,$id_arr,$type=0)
+    {
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
+        if($type==0){
+            $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->update(['unit_id'=>$id]);
+        }else{
+            $this->where(['id'=>['in',$id_arr],'version_number'=>$version_number])->update(['actual_id'=>$id]);
+        }
         return ['code'=>1,'msg'=>'关联成功'];
     }
 
@@ -277,13 +297,54 @@ class QualitymassModel extends Model
         return $processinfo;
     }
 
-    // 删除单元工程节点时 --- 批量删除 该节点包含的单元工程段号(检验批)所对应的关联关系
+    // ht 删除单元工程节点时 --- 批量删除 该节点包含的单元工程段号(检验批)所对应的关联关系
     public function deleteRelation($unit_id_arr)
     {
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
         $this->where(['unit_id'=>['in',$unit_id_arr],'version_number'=>$version_number])->update(['unit_id'=>0]);
         return ['code'=>1,'msg'=>'解除成功'];
+    }
+
+    // ht 解除与此编号有关联的关联关系 --- [实时进度,月进度]
+    public function deleteRelationById($relation_id,$type)
+    {
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
+        if($type==1){ // type 1 表示是实时进度关联 2 表示月进度关联
+            $this->where(['actual_id'=>['eq',$relation_id],'version_number'=>$version_number])->update(['actual_id'=>0]);
+        }else{
+            $this->where(['mon_progress_id'=>['eq',$relation_id],'version_number'=>$version_number])->update(['mon_progress_id'=>0]);
+        }
+        return ['code'=>1,'msg'=>'解除成功'];
+    }
+
+    // ht 切换标段的时候，返回该标段下所有的模型编号[不只是有关联关系的模型]
+    public function sectionChange($section_id)
+    {
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
+        if($section_id == -1){ // 全部标段
+           $data = $this->where(['version_number'=>$version_number])->column('model_id');
+        }else{
+            $section = Db::name('section')->where('id',$section_id)->value('code');
+            $data = $this->where(['section'=>['eq',$section],'version_number'=>$version_number])->column('model_id');
+        }
+        return $data;
+    }
+
+    // ht 获取所有模型编号和显示样式
+    public function modelData($type,$section=0)
+    {
+        // type 1 所有 2 标段所有 3 最近日期
+        if($type == 1){
+            $data = $this->field('model_id,display_style')->select();
+        }else if($type == 2){
+            $data = $this->where(['section'=>$section])->field('model_id,display_style')->select();
+        }else{
+            $data = $this->where(['section'=>$section,'actual_date'=>['elt',date('Y-m-d')]])->field('model_id,display_style')->select();
+        }
+        return $data;
     }
 
 }

@@ -9,6 +9,7 @@
 namespace app\quality\model;
 
 
+use think\Db;
 use think\exception\PDOException;
 use think\Model;
 
@@ -103,6 +104,16 @@ class DivisionUnitModel extends Model
         $data['excellent_percent'] = round($data['excellent']/$total,2); // 优良
 
         return $data;
+    }
+
+    // ht 获取单元工厂(检验批)归属的标段
+    public function sectionCode($id)
+    {
+        $code = Db::name('quality_unit')->alias('u')
+            ->join('quality_division d','d.id = u.division_id','left')
+            ->join('section s','s.id = d.section_id','left')
+            ->where(['u.id'=>$id])->value('code');
+        return $code;
     }
 
 }
