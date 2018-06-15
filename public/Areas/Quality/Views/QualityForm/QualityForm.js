@@ -555,6 +555,6 @@ function formSaveAndReturn() {
         type: 2,
         title: "表单退回",
         area: ['980px', '70%'],
-        content: 'approve/approve/approveRefund?formId=' + formId,
+        content: '/approve/approve/approveRefund?formId=' + formId,
     });
 }
