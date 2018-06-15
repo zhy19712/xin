@@ -24,10 +24,10 @@ $.ajax({
         un_evaluation_pigment = +res.configureInfo.quality.un_evaluation_pigment;
         var excellent = res.configureInfo.quality.choiceness_pigment.substr(4, 6);
         var qualified = res.configureInfo.quality.qualified_pigment.substr(4, 6);
-        var unQualified = res.configureInfo.quality.un_evaluation_pigment.substr(4, 6);
+        var unEvaluation = res.configureInfo.quality.un_evaluation_pigment.substr(4, 6);
         $('#excellent').css('background', '#' + excellent);
         $('#qualified').css('background', '#' + qualified);
-        $('#unQualified').css('background', '#529df8');
+        $('#unEvaluation').css('background', '#529df8');
         $('#unReview').css('background', '#666');
     }
 });

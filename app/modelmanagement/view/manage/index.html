@@ -30,13 +30,13 @@
                 </li>
                 <li>
                     <span>未施工：</span>
-                    <i id="unQualified"></i>
+                    <i id="unEvaluation"></i>
                 </li>
             </ul>
             <ul class="layer-model-nav">
                 <li>优良：<a id="excellent_number"></a>个（<a id="excellent_rate"></a>）</li>
                 <li>合格：<a id="qualified_number"></a>个（<a id="qualified_rate"></a>）</li>
-                <li>未施工：<a id="unchecked_number"></a>个（<a id="unchecked_rate"></a>）</li>
+                <li>未验评：<a id="unchecked_number"></a>个（<a id="unchecked_rate"></a>）</li>
             </ul>
         </div>
         <div data-options="region:'center'" class="layer-center">
@@ -141,7 +141,7 @@
                 //根据所选标段展示对应模型
                 selectedSectionShowModel = function (res) {
                     var data = res.data;
-                    var newData = data.excellent.concat(data.qualified, data.unqualified);
+                    var newData = data.excellent.concat(data.qualified, data.un_evaluation);
                     //隐藏掉所有模型
                     RealBimOcx.SetAllHugeObjSubValidState(0);
                     //根据所选标段拿到对应的模型数据
@@ -162,7 +162,7 @@
                         success: function (res) {
                             var data = res.data;
                             //透明掉全部
-                            RealBimOcx.SetAllSubClrInfos(20, 255, 0xff529df8);//0xff529df8
+                            RealBimOcx.SetAllSubClrInfos(0, 255, 0xff529df8);//0xff529df8
                             //优良 excellent
                             RealBimOcx.BatchAddSubClrInfoBegin();
                             for (var i = 0; i < data.excellent.length; i++) {
@@ -174,7 +174,7 @@
                                 var quUObjSubID = data.qualified[j];
                                 RealBimOcx.AddSubClrPercent(quUObjSubID, 1, qualified_pigment);    //第二个参数为透明度
                             }
-                            // 未验评 unqualified
+                            // 未验评 un_evaluation
                             for (var l = 0; l < data.un_evaluation.length; l++) {
                                 var unQuUObjSubID = data.un_evaluation[l];
                                 RealBimOcx.AddSubClrPercent(unQuUObjSubID, 1, 0xff);    //第二个参数为透明度
@@ -235,7 +235,7 @@
                 switch (eType) {
                     case "DO_HIDE":         //显示隐藏
                         if (selectedModeGroupIds == '') {
-                            return false;
+                            break;
                         }
                         console.log(selectedTreeNode);
                         RealBimOcx.SetHugeObjSubValidStateBegin();
@@ -249,7 +249,7 @@
                         break;
                     case "CANCEL_HIDE":     //取消隐藏
                         if (selectedModeGroupIds == '') {
-                            return false;
+                            break;
                         }
                         $.ajax({
                             //TODO get请求
@@ -271,9 +271,9 @@
                                     var quUObjSubID = data.qualified[j];
                                     RealBimOcx.SetHugeObjSubValidStateInfo(quUObjSubID, 1);
                                 }
-                                // 未施工 unqualified
-                                for (var l = 0; l < data.unqualified.length; l++) {
-                                    var unQuUObjSubID = data.unqualified[l];
+                                // 未施工 un_evaluation
+                                for (var l = 0; l < data.un_evaluation.length; l++) {
+                                    var unQuUObjSubID = data.un_evaluation[l];
                                     RealBimOcx.SetHugeObjSubValidStateInfo(unQuUObjSubID, 1);
                                 }
                                 RealBimOcx.SetHugeObjSubValidStateEnd();
