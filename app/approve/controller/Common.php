@@ -10,7 +10,6 @@ namespace app\approve\controller;
 use app\archive\model\DocumentTypeModel;
 use app\archive\model\AtlasCateTypeModel;
 use app\archive\model\AtlasCateModel;
-use app\quality\model\QualityFormInfoModel;
 use \think\Controller;
 use think\Db;
 use think\Request;
