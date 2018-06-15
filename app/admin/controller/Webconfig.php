@@ -28,12 +28,6 @@ class Webconfig extends Permissions
                 $this->error('提交失败：' . $validate->getError());
             }
 
-            if(empty($post['is_log'])) {
-                $post['is_log'] = 0;
-            } else {
-                $post['is_log'] = $post['is_log'];
-            }
-
             if(false == Db::name('admin_webconfig')->where('web','web')->update($post)) {
                 return $this->error('提交失败');
             } else {
