@@ -157,7 +157,7 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
-    public function getAdminInfo($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    public function admin_group($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //查询前置条件
         $par=array();
@@ -176,7 +176,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name('admin')->alias('a')
                     ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
                     ->where(['g.id'=>$id])
-                    ->field('a.nickname,g.name,g.p_name')
+                    ->field('a.id,a.nickname,g.name,g.p_name')
                     ->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
             }
@@ -186,7 +186,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name('admin')->alias('a')
                     ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
                     ->where(['g.id'=>$id])
-                    ->field('a.nickname,g.name,g.p_name')
+                    ->field('a.id,a.nickname,g.name,g.p_name')
                     ->select();
                 $recordsFiltered = $recordsTotal;
             }
