@@ -322,6 +322,8 @@ class Approve extends Permissions
                    ->value('nickname');
         $time=date("Y-m-d H:i:s");
         $data=array('refundUser'=>$refundUser,'createUser'=>$createUser,'time'=>$time);
+        $this->assign('dataId', $formId);
+        $this->assign('dataType', "app\quality\model\QualityFormInfoModel");
         $this->assign('RefundInfo', json_encode($infos));
         return $this->fetch();
     }
