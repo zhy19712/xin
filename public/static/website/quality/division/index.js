@@ -277,6 +277,12 @@ function tableInfo() {
                 name: "pile_number"
             },
             {
+                name: "el_start"
+            },
+            {
+                name: "el_cease"
+            },
+            {
                 name: "start_date"
             },
             {
@@ -305,8 +311,8 @@ function tableInfo() {
             {
                 "searchable": false,
                 "orderable": false,
-                "width":'240px',
-                "targets": [7],
+                "width":'180px',
+                "targets": [9],
                 "render" :  function(data,type,row) {
                     var html = "<i class='fa fa-pencil' uid="+ data +" title='编辑' onclick='edit(this)'></i>" ;
                     html += "<i class='fa fa-trash' uid="+ data +" title='删除' onclick='del(this)'></i>" ;

@@ -11,6 +11,7 @@ namespace app\progress\controller;
 
 use app\admin\controller\Permissions;
 use app\admin\model\Attachment;
+use app\contract\model\SectionModel;
 use app\progress\model\MonthlyplanModel;
 use think\Db;
 
@@ -28,7 +29,56 @@ class Monthlyplan extends Permissions
      */
     public function index()
     {
+        if($this->request->isAjax()){
+            // 根据当前登陆人的权限获取对应的 -- 标段列表选项
+            $section = new SectionModel();
+            $data = $section->sectionList();
+            return json(['code'=>1,'sectionArr'=>$data,'msg'=>'标段列表选项']);
+        }
         return $this->fetch();
+    }
+
+    /**
+     * 倒序获取
+     * 根据选择的标段获取年度
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function planYear()
+    {
+        if($this->request->isAjax()){
+            // 前台需要 传递 标段编号 section_id
+            $param = input('param.');
+            $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+            if(empty($section_id)){
+                return json(['code' => '-1','msg' => '缺少参数']);
+            }
+            $section = new MonthlyplanModel();
+            $data = $section->planYearList($section_id);
+            return json(['code'=>1,'data'=>$data,'msg'=>'年度下拉选项']);
+        }
+    }
+
+    /**
+     * 倒序获取
+     * 根据选择的标段获取月度
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function planMonthly()
+    {
+        if($this->request->isAjax()){
+            // 前台需要 传递 标段编号 section_id 年度编号 plan_year
+            $param = input('param.');
+            $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+            $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+            if(empty($section_id) || empty($plan_year)){
+                return json(['code' => '-1','msg' => '缺少参数']);
+            }
+            $section = new MonthlyplanModel();
+            $data = $section->planMonthlyList($section_id,$plan_year);
+            return json(['code'=>1,'data'=>$data,'msg'=>'月度下拉选项']);
+        }
     }
 
     /**
@@ -132,7 +182,7 @@ class Monthlyplan extends Permissions
         if($this->request->isAjax()){
             // 前台传递本条记录的编号 plan_id
             $param = input('param.');
-            $plan_id = isset($param['plan_id']) ? $param['plan_id'] : 1;
+            $plan_id = isset($param['plan_id']) ? $param['plan_id'] : 0;
             if(empty($plan_id)){
                 return json(['code'=>-1,'msg'=>'缺少参数']);
             }
@@ -195,7 +245,7 @@ class Monthlyplan extends Permissions
         if($this->request->isAjax()){
             // 前台需要 传递 文件编号 file_id
             $param = input('param.');
-            $file_id = isset($param['file_id']) ? $param['file_id'] : 6;
+            $file_id = isset($param['file_id']) ? $param['file_id'] : 0;
             if(empty($file_id)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }

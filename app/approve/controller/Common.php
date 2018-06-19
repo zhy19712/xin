@@ -157,6 +157,7 @@ class Common extends Controller
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
 
+    //人员选择表单接口
     public function admin_group($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         //查询前置条件
@@ -168,14 +169,39 @@ class Common extends Controller
         $recordsFiltered = 0;
         //表的总记录数 必要
         $recordsTotal = 0;
-        $recordsFilteredResult = array();
+        //区分机构还是部门，机构的话查询机构下的所有部门，部门下只查询该部门
+        $groupInfos=Db::name('admin_group')
+            ->where('id',$id)
+            ->find();
+        //如果pid为0则不限制查询条件条件
+        if($groupInfos['pid']==0)
+        {
+            $wherestr="";
+        }
+        if($groupInfos['category']==1&&$groupInfos['pid']>0)
+        {
+            $ids=Db::name('admin_group')
+                ->where('pid',$id)
+                ->column('id');
+            $wherestr['g.id']=array('in',$ids);
+        }
+        if($groupInfos['category']==2)
+        {
+            $wherestr['g.id']=$id;
+        }
+
+        $recordsTotal = Db::name('admin')->alias('a')
+            ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
+            ->where($wherestr)
+            ->count();
+
         if (strlen($search) > 0) {
             //有搜索条件的情况
             if ($limitFlag) {
                 //*****多表查询join改这里******
                 $recordsFilteredResult = Db::name('admin')->alias('a')
                     ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
-                    ->where(['g.id'=>$id])
+                    ->where($wherestr)
                     ->field('a.id,a.nickname,g.name,g.p_name')
                     ->where($columnString, 'like', '%' . $search . '%')
                     ->limit(intval($start), intval($length))
@@ -187,7 +213,7 @@ class Common extends Controller
             if ($limitFlag) {
                 $recordsFilteredResult = Db::name('admin')->alias('a')
                     ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
-                    ->where(['g.id'=>$id])
+                    ->where($wherestr)
                     ->field('a.id,a.nickname,g.name,g.p_name')
                     ->order('a.id')
                     ->limit(intval($start), intval($length))
@@ -195,8 +221,6 @@ class Common extends Controller
                 $recordsFiltered = $recordsTotal;
             }
         }
-        $recordsTotal=count($recordsFilteredResult);
-        $recordsFiltered = $recordsTotal;
         $temp = array();
         $infos = array();
         foreach ($recordsFilteredResult as $key => $value) {
