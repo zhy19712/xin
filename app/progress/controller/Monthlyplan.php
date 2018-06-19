@@ -11,6 +11,7 @@ namespace app\progress\controller;
 
 use app\admin\controller\Permissions;
 use app\admin\model\Attachment;
+use app\contract\model\SectionModel;
 use app\progress\model\MonthlyplanModel;
 use think\Db;
 
@@ -28,7 +29,25 @@ class Monthlyplan extends Permissions
      */
     public function index()
     {
+        if($this->request->isAjax()){
+            // 根据当前登陆人的权限获取对应的 -- 标段列表选项
+            $section = new SectionModel();
+            $data = $section->sectionList();
+            return json(['code'=>1,'sectionArr'=>$data,'msg'=>'标段列表选项']);
+        }
         return $this->fetch();
+    }
+
+    // TODO 根据选择的标段获取年度
+    public function planYear()
+    {
+
+    }
+
+    // TODO 根据选择的标段获取月度
+    public function plan_monthly()
+    {
+
     }
 
     /**
