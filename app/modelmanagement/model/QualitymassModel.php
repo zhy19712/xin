@@ -244,6 +244,7 @@ class QualitymassModel extends Model
         $data['qualified'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$qualified]])->column('model_id'); // 合格
         $data['excellent'] = $this->where(['version_number'=>$version_number,'unit_id'=>['in',$excellent]])->column('model_id'); // 优良
         $data['all']= $this->where(['version_number'=>$version_number])->column('model_id'); // 所有
+        $data['section_all'] = $this->sectionChange($section_id);
         return $data;
     }
 

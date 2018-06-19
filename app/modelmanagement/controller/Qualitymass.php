@@ -52,23 +52,6 @@ class Qualitymass extends Permissions
     }
 
     /**
-     * 切换标段的时候，返回该标段下所有的模型编号[不只是有关联关系的模型]
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function sectionChange()
-    {
-        if($this->request->isAjax()){
-            // 前台 传递 选中标段的编号 section_id
-            $param = input('post.');
-            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
-            $quality = new QualitymassModel();
-            $data = $quality->sectionChange($section_id);
-            return json(['code'=>1,'data'=>$data,'msg'=>'切换标段的时候,返回该标段下所有的模型编号[不只是有关联关系的模型]']);
-        }
-    }
-
-    /**
      * 标段下拉数据
      * @return \think\response\Json
      * @author hutao
@@ -228,6 +211,8 @@ class Qualitymass extends Permissions
      * 页面第一次进来不用传递参数 默认返回所有模型
      * 根据所选标段 返回 与该标段下的所有单元工程节点有关联关系的模型编号
      * 并且 按照 [优良，合格，不合格，未验评] 分组
+     * and
+     * 返回该标段下所有的模型编号[不只是有关联关系的模型]
      * @return \think\response\Json
      * @author hutao
      */
@@ -236,7 +221,7 @@ class Qualitymass extends Permissions
         if($this->request->isAjax()){
             // 第一次进来不用传递参数 默认返回所有
             // 前台 传递 选中标段的编号 section_id
-            $param = input('post.');
+            $param = input('param.');
             $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
             $quality = new QualitymassModel();
             $data = $quality->sectionModelInfo($section_id);
