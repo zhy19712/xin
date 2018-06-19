@@ -42,6 +42,27 @@ class Monthlyplan extends Permissions
     }
 
     /**
+     * 是否存在计划
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function existPlan()
+    {
+        $param = input('param.');
+        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
+        if(empty($plan_year) || empty($plan_monthly)){
+            return json(['code'=>'-1','msg'=>'缺少参数']);
+        }
+        $monthly = new MonthlyplanModel();
+        $is_exist = $monthly->monthlyExist($plan_year,$plan_monthly);
+        if($is_exist){
+            return json(['code'=>'2','msg'=>'存在计划']);
+        }
+        return json(['code'=>'1','msg'=>'不存在计划']);
+    }
+
+    /**
      * 新增月计划
      * @return \think\response\Json
      * @author hutao
@@ -77,12 +98,14 @@ class Monthlyplan extends Permissions
 
             // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
             $monthly = new MonthlyplanModel();
-            $is_exist = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
-            if($is_exist){
+            $is_exist_id = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
+            if($is_exist_id){
                 $cover = isset($param['cover']) ? $param['cover'] : 0;
                 if($cover){
-                    // TODO 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
+                    // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
+                    $monthly->deleteTb($is_exist_id);
                 }
+                return json(['code'=>-1,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
             }
 
             $id = isset($param['mid']) ? $param['mid'] : 0;
@@ -115,8 +138,8 @@ class Monthlyplan extends Permissions
             }
             //TODO 删除该月计划下的所有甘特图数据
 
-            $actual = new MonthlyplanModel();
-            $flag = $actual->deleteTb($plan_id);
+            $monthly = new MonthlyplanModel();
+            $flag = $monthly->deleteTb($plan_id);
             return json($flag);
         }
     }
