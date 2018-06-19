@@ -70,6 +70,17 @@ class Qualityform extends Permissions
             return  '控制点未进行模板关联!';
         }
 
+        //如果是重要控制点,判断是否之前的控制点表单是否都执行
+        if($norm_template['isimportant']==1)
+        {
+            $flag=$this->importantFlag($cpr_id);
+            if($flag!=1)
+            {
+                return '有其余控制点未执行，无法进行该控制点的在线填报操作！';
+            }
+
+        }
+
         $template_name=Db::name('norm_template')
             ->where('id',$qualitytemplateid)
             ->value('name');
@@ -335,9 +346,7 @@ class Qualityform extends Permissions
                    ->where(['id'=>$cpr['division_id']])
                    ->update(['EvaluateResult'=>0,'EvaluateDate'=>0]);
 
-
            }
-
             //将表内填的数据全部情况
             $form_data=$data_res['form_data'];
             $se_data=unserialize($form_data);
@@ -394,7 +403,6 @@ class Qualityform extends Permissions
         //如果当前步骤不是最后一步
         if ($res['CurrentStep']<$maxstep)
         {
-
             return json(['msg'=>'success','creater'=>$user['nickname']]);
         }
         else
@@ -456,17 +464,47 @@ class Qualityform extends Permissions
         return $_mod;
     }
 
-    //获取机构下的人员信息
-    function getAdminInfo()
+    //判断重要控制点前的所有工序是否已经执行（单元质量等级评定表）
+    function importantFlag($cpr_id)
     {
-        //获取admin_group_id
-        $par=input('param.');
-        $id=$par['id'];
-        $infos=Db::name('admin')->alias('a')
-            ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
-            ->where(['g.id'=>$id])
-            ->field('a.nickname,g.name,g.p_name')
-            ->select();
-        return json(['code'=>'1','msg'=>'success','data'=>$infos]);
+       //找工序->找工程类型->去relation表里找对应验评前的是否都已经执行
+       $relation=Db::name('quality_division_controlpoint_relation')
+                 ->where('id',$cpr_id)
+                 ->find();
+       $procedureid=$relation['ma_division_id'];
+       $material=Db::name('norm_materialtrackingdivision')
+               ->where('id',$procedureid)
+               ->find();
+       $entype=$material['pid'];
+       //工程类型下所有工序
+       $materialArray=Db::name('norm_materialtrackingdivision')
+                     ->where(['pid'=>$entype])
+                     ->column('id');
+       $control_id=$relation['control_id'];
+       //工序下所有除重要控制点之外的控制点
+       $pointArray=Db::name('norm_controlpoint')
+            ->where('procedureid','in',$materialArray)
+            ->where('id','neq',$control_id)
+            ->column('id');
+
+       foreach($pointArray as $value)
+       {
+           $count=Db::name('quality_division_controlpoint_relation')
+                   ->where(['division_id'=>$relation['division_id'],'control_id'=>$value,'type'=>1,'status'=>1])
+                   ->count();
+           if($count>0)
+           {
+               $flag=1;
+           }
+           else
+           {
+               $flag=0;
+               break;
+           }
+       }
+
+     return $flag;
+
     }
+
 }

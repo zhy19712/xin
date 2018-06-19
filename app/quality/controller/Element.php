@@ -741,6 +741,21 @@ class Element extends Permissions
     {
         if ($this->request->isAjax()) {
             $cpr_id=input('param.')['cpr_id'];
+            //如果是重要控制点先判断之前的控制点是否都已经执行
+            $isimportant=Db::name('norm_controlpoint')->alias('c')
+                ->join('quality_division_controlpoint_relation r','r.control_id = c.id','left')
+                ->where('r.id',$cpr_id)
+                ->value('isimportant');
+            if($isimportant==1)
+            {
+                $quality = new Qualityform();
+                $flag = $quality->importantFlag($cpr_id);
+                if ($flag != 1)
+                {
+                    return json(['msg' =>'fail', 'remark' => '有其余控制点未执行，无法进行该控制点的扫描件上传']);
+                }
+            }
+
             $res = Db::name('quality_upload')
                 ->where(['contr_relation_id'=>$cpr_id,'type'=>1])
                 ->find();
