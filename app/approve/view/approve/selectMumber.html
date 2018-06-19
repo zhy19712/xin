@@ -65,7 +65,9 @@
     #selectDiv {
         display: none;
     }
-
+    .row_select{
+        background-color: #FDD5B5!important;
+    }
     .ztree{
         margin-top: 0;
     }
@@ -94,12 +96,12 @@
             <div class="boder" style="text-align: left; height:364px;">
                 <table class="table table-bordered" id="frequentlyUseTable">
                     <thead>
-                        <tr>
-                            <th>序号</th>
-                            <th>用户</th>
-                            <th>所在单位</th>
-                            <th>所在部门</th>
-                        </tr>
+                    <tr>
+                        <th>序号</th>
+                        <th>用户</th>
+                        <th>所在单位</th>
+                        <th>所在部门</th>
+                    </tr>
                     </thead>
 
                 </table>
@@ -110,7 +112,7 @@
                 <ul id="ztree" class="ztree"></ul>
             </div>
             <div data-options="region:'center',title:'收件人'"  style="width: 580px;overflow: scroll;float: right;height: 300px">
-                <table id="tableItem" class="table table-bordered">
+                <table id="selectDivTable" class="table table-bordered">
                     <thead>
                     <tr>
                         <th>序号</th>
@@ -143,61 +145,67 @@
 {include file="../app/public/common_footer.html"}
 <script>
     var conutNum = 0;
-    var tableItem;
+    var selectDivTable;
+    var frequentlyUseTable;
     //常用联系人表格
-    //     frequentlyUseTable = $("#frequentlyUseTable").DataTable({
-    //     processing: false,
-    //     serverSide: true,
-    //     ordering: true,
-    //     scrollY: "295px",
-    //     scrollCollapse: true,
-    //     ajax: {
-    //         "url": "/archive/common/datatablesPre?tableName=archive_income_send&table_type=2",
-    //     },
-    //     columns: [
-    //         { name: "nick_name" },
-    //         { name: "p_name" },
-    //         { name: "name" },
-    //     ],
-    //     columnDefs: [
-    //         {
-    //             targets: [1],
-    //             render: function (data, type, row,meta) {
-    //
-    //             }
-    //         },
-    //         {
-    //             targets: [7],
-    //             render: function (data, type, row,meta) {
-    //                 if (row[6] == '1' && user_name == row[4]){
-    //                     var strs = '';
-    //                     strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="edit_send(this)" >编辑</i>';
-    //                     strs +='<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="del(this)" >删除</i>';
-    //                     return strs;
-    //                 }else {
-    //                     return  '<i title="' + data + '" class="layui-btn layui-btn-xs" major_key="'+row[7]+'" onclick="preview(this)" >查看</i>';
-    //                 }
-    //             }
-    //         }
-    //     ],
-    //     dom: 'lf<"#addSend.layui-btn layui-btn-md btn-right btn-space">tip',
-    //     language: {
-    //         "sProcessing":"数据加载中...",
-    //         "lengthMenu": "_MENU_",
-    //         "zeroRecords": "没有找到记录",
-    //         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-    //         "infoEmpty": "无记录",
-    //         "search": "搜索",
-    //         "sSearchPlaceholder":"请输入关键字",
-    //         "infoFiltered": "(从 _MAX_ 条记录过滤)",
-    //         "paginate": {
-    //             "sFirst": "<<",
-    //             "sPrevious": "上一页",
-    //             "sNext": "下一页",
-    //             "sLast": ">>"
-    //         }
-    //     }
-    // });
+    frequentlyUseTable = $('#frequentlyUseTable').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        bAutoWidth: false,  //是否自动宽度
+        scrollX: true,
+        scrollY: "520px",   //表格容器高度
+        scrollCollapse: true,
+        ajax: {
+            "url":"/approve/common/datatablesPre?tableName=admin"
+        },
+        dom: 'frtp',
+        columns:[
+            {
+                name: "id"
+            },
+            {
+                name: "nickname"
+            },
+            {
+                name: "p_name"
+            },
+            {
+                name: "name"
+            }
+        ],
+        fnCreatedRow:function (nRow, aData, iDataIndex){
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+        },
+        "destroy": true,
+        language: {
+            "lengthMenu": "_MENU_ ",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索",
+            "sSearchPlaceholder": "请输入关键字",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
+                "sLast": ">>"
+            }
+        }
+    });
+    //常用联系人点击方法
+    $('#frequentlyUseTable').on( 'click', 'tr', function () {
+        $(this).addClass('row_select').siblings().removeClass('row_select');
+        console.log( frequentlyUseTable.row( this ).data() );
+        var rowData = frequentlyUseTable.row( this ).data();
+        $("#selectedUserId").val(rowData[0]);
+        $("#selectedUserName").html(rowData[1]);
+        // $("#selectedUserImage").val(treeNode.data);
+        $("#selectOrganizationName").val(rowData[2]);
+        // $("#selectPost").val(treeNode.post);
+        // $("#selectMobile").val(treeNode.dataExt);
+    } );
     $("#btnSave").click(function () { $("#btnSave").attr("disabled", "disabled"); save(); });
     $("#btnClose").click(function () { close(); });
 
@@ -261,42 +269,42 @@
         //   });
     };
 
-    // 初始化常用联系人树
-    function initFrequentlyUsedTree() {
-        var setting = {
-            view: {
-                selectedMulti: false
-            },
-            data: {
-                simpleData: {
-                    enable: true
-                }
-            },
-            callback: {
-                onClick: onFrequentlyUsedTreeClick
-            }
-        };
-        $.ajax({
-            type: "Get",
-            url: "{:url('approve/Approve/FrequentlyUsedApprover')}?dataType=app\\quality\\model\\QualityFormInfoModel\n",
-            success: function (res) {
-                // console.log(res);
-                var initArr =[];
-                for(var i=0;i<res.length;i++){
-                    var initObj = {
-                        id:'',
-                        name:''
-                    };
-                    initObj.id = res[i].id;
-                    initObj.name = res[i].nickname;
-                    initArr.push(initObj)
-                }
-                // $.fn.zTree.init($("#treeFrequentlyUsed"), setting, [{"name":"王建伟",id:123},{"name":"丁志超",id:456}]);
-                $.fn.zTree.init($("#treeFrequentlyUsed"), setting, initArr);
-            }
-        });
-    };
-    initFrequentlyUsedTree()
+    // 初始化常用联系人树 chang
+    // function initFrequentlyUsedTree() {
+    //     var setting = {
+    //         view: {
+    //             selectedMulti: false
+    //         },
+    //         data: {
+    //             simpleData: {
+    //                 enable: true
+    //             }
+    //         },
+    //         // callback: {
+    //         //     onClick: onFrequentlyUsedTreeClick
+    //         // }
+    //     };
+    //     $.ajax({
+    //         type: "Get",
+    //         url: "{:url('approve/Approve/FrequentlyUsedApprover')}?dataType=app\\quality\\model\\QualityFormInfoModel\n",
+    //         success: function (res) {
+    //             // console.log(res);
+    //             var initArr =[];
+    //             for(var i=0;i<res.length;i++){
+    //                 var initObj = {
+    //                     id:'',
+    //                     name:''
+    //                 };
+    //                 initObj.id = res[i].id;
+    //                 initObj.name = res[i].nickname;
+    //                 initArr.push(initObj)
+    //             }
+    //             // $.fn.zTree.init($("#treeFrequentlyUsed"), setting, [{"name":"王建伟",id:123},{"name":"丁志超",id:456}]);
+    //             $.fn.zTree.init($("#treeFrequentlyUsed"), setting, initArr);
+    //         }
+    //     });
+    // };
+    // initFrequentlyUsedTree()
     // 关闭窗体
     function close() {
         var index = parent.layer.getFrameIndex(window.name);
@@ -325,31 +333,31 @@
             for(var i =0; i < responseData.length; i++) {
                 responseData[i] = JSON.parse(responseData[i]);
                 responseData[i].name = decodeURIComponent(responseData[i].name);
-              ztreeIcon(responseData[i]);
+                ztreeIcon(responseData[i]);
             }
         }
         return responseData;
     }
     //处理结构树图标
     function ztreeIcon(data) {
-      if (!data.level){
-        data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/people.png";
-        return ;
-      }
-      switch (Number(data.level)) {
-        case 1 :
-          data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/top.png";
-          break;
-        case 2 :
-          data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/jigou.png";
-          break;
-        case 3 :
-          data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/bumen.png";
-          break;
-        default:
-          data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/bumen.png";
-          break;
-      }
+        if (!data.level){
+            data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/people.png";
+            return ;
+        }
+        switch (Number(data.level)) {
+            case 1 :
+                data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/top.png";
+                break;
+            case 2 :
+                data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/jigou.png";
+                break;
+            case 3 :
+                data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/bumen.png";
+                break;
+            default:
+                data.icon =  "__PUBLIC__/ztree/css/ztreeadmin/img/bumen.png";
+                break;
+        }
     }
     //组织结构树
     var setting = {
@@ -404,40 +412,51 @@
         }
     });
     //左侧组织机构树双击事件处理
-    function onClick(event, treeId, treeNode) {
-        var html = "";
-        if (treeNode.id < 10000) //选择的是单位信息
-            return;
-        else  //选择的是人员信息
-            setSelectedInfo(treeNode);
-    };
+    // function onClick(event, treeId, treeNode) {
+    //     var html = "";
+    //     if (treeNode.id < 10000) //选择的是单位信息
+    //         return;
+    //     else  //选择的是人员信息
+    //         setSelectedInfo(treeNode);
+    // };
     // 常用联系人树单击事件
-    function onFrequentlyUsedTreeClick(event, treeId, treeNode) {
-        setSelectedInfo(treeNode);
-    };
+    // function onFrequentlyUsedTreeClick(event, treeId, treeNode) {
+    //     setSelectedInfo(treeNode);
+    // };
     // 设置选中的人员信息
-    function setSelectedInfo(treeNode) {
-        $("#selectedUserId").val(treeNode.id);
-        $("#selectedUserName").html(treeNode.name);
-        $("#selectedUserImage").val(treeNode.data);
-        $("#selectOrganizationName").val(treeNode.viewPoint);
-        $("#selectPost").val(treeNode.post);
-        $("#selectMobile").val(treeNode.dataExt);
-    };
+    // function setSelectedInfo(treeNode) {
+    //     $("#selectedUserId").val(treeNode.id);
+    //     $("#selectedUserName").html(treeNode.name);
+    //     $("#selectedUserImage").val(treeNode.data);
+    //     $("#selectOrganizationName").val(treeNode.viewPoint);
+    //     $("#selectPost").val(treeNode.post);
+    //     $("#selectMobile").val(treeNode.dataExt);
+    // };
+
+    $('#selectDivTable').on( 'click', 'tr', function () {
+        $(this).addClass('row_select').siblings().removeClass('row_select');
+        console.log( selectDivTable.row( this ).data() );
+        var rowData = selectDivTable.row( this ).data();
+        $("#selectedUserId").val(rowData[0]);
+        $("#selectedUserName").html(rowData[1]);
+        // $("#selectedUserImage").val(treeNode.data);
+        $("#selectOrganizationName").val(rowData[2]);
+        // $("#selectPost").val(treeNode.post);
+        // $("#selectMobile").val(treeNode.dataExt);
+    } );
     function incomeZtree() {
         $.ztree({
             ajaxUrl:'/admin/admin/index',
             zTreeOnClick:function (event, treeId, treeNode) {
                 incomeInfo();
-                console.log(treeNode.id);
-                tableItem.ajax.url("/approve/Common/datatablesPre?tableName=admin_group&id="+ treeNode.id).load();
+                selectDivTable.ajax.url("/approve/Common/datatablesPre?tableName=admin_group&id="+ treeNode.id).load();
             }
         });
     }
 
     //收件人信息
     function incomeInfo() {
-        tableItem = $('#tableItem').DataTable({
+        selectDivTable = $('#selectDivTable').DataTable({
             pagingType: "full_numbers",
             processing: true,
             serverSide: true,
@@ -457,10 +476,10 @@
                     name: "nickname"
                 },
                 {
-                    name: "name"
+                    name: "p_name"
                 },
                 {
-                    name: "p_name"
+                    name: "name"
                 }
             ],
             fnCreatedRow:function (nRow, aData, iDataIndex){

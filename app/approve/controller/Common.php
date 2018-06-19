@@ -211,5 +211,78 @@ class Common extends Controller
 
         return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
     }
-    
+
+    //常用联系人表单接口
+    public function admin($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    {
+        //查询前置条件
+
+        $par=array();
+        //获取常用人id
+        $user_id=Session::get('current_id');
+        $userlist = Db::name('quality_form_info')
+                    ->where(['user_id' => $user_id])
+                    ->whereNotNull('ApproveIds', 'and')
+                    ->field('ApproveIds')
+                    ->select();
+        $ids = array();
+        foreach ($userlist as $item) {
+            $_ids = explode(",", $item['ApproveIds']);
+            foreach ($_ids as $_id) {
+                if (!in_array($_id, $ids)) {
+                    $ids[] = $_id;
+                }
+            }
+        }
+
+
+        $columnString = "a.id|a.nickname|g.name|g.p_name";
+        //查询
+        //条件过滤后记录数 必要
+        $recordsFiltered = 0;
+        //表的总记录数 必要
+        $recordsTotal = 0;
+        $recordsFilteredResult = array();
+        if (strlen($search) > 0) {
+            //有搜索条件的情况
+            if ($limitFlag) {
+                //*****多表查询join改这里******
+                $recordsFilteredResult = Db::name('admin')->alias('a')
+                    ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
+                    ->where('a.id','in',$ids)
+                    ->field('a.id,a.nickname,g.name,g.p_name')
+                    ->where($columnString, 'like', '%' . $search . '%')
+                    ->limit(intval($start), intval($length))
+                    ->select();
+                $recordsFiltered = sizeof($recordsFilteredResult);
+            }
+        } else {
+            //没有搜索条件的情况
+            if ($limitFlag) {
+                $recordsFilteredResult = Db::name('admin')->alias('a')
+                    ->join('admin_group g', 'a.admin_group_id = g.id', 'left')
+                    ->where('a.id','in',$ids)
+                    ->field('a.id,a.nickname,g.name,g.p_name')
+                    ->order('a.id')
+                    ->limit(intval($start), intval($length))
+                    ->select();
+                $recordsFiltered = $recordsTotal;
+            }
+        }
+        $recordsTotal=count($recordsFilteredResult);
+        $recordsFiltered = $recordsTotal;
+        $temp = array();
+        $infos = array();
+        foreach ($recordsFilteredResult as $key => $value) {
+            //计算列长度
+            $length = sizeof($columns);
+            for ($i = 0; $i < $length; $i++) {
+                array_push($temp, $value[$columns[$i]['name']]);
+            }
+            $infos[] = $temp;
+            $temp = [];
+        }
+
+        return json(['draw' => intval($draw), 'recordsTotal' => intval($recordsTotal), 'recordsFiltered' => $recordsFiltered, 'data' => $infos]);
+    }
 }
