@@ -7,6 +7,7 @@
  */
 namespace app\modelmanagement\model;
 
+use app\admin\model\AdminGroup;
 use app\quality\model\DivisionModel;
 use think\Db;
 use think\exception\PDOException;
@@ -326,7 +327,19 @@ class QualitymassModel extends Model
         $version = new VersionsModel();
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
         if($section_id == -1){ // 全部标段
-           $data = $this->where(['version_number'=>$version_number])->column('model_id');
+            // 获取当前登陆人的组织机构
+            $group = new AdminGroup();
+            $relation_id = $group->relationId();
+            if($relation_id == 1){ // 管理员可以看所有的标段
+                $section = Db::name('section')->order('id asc')->column('code'); // 标段列表
+            }else if($relation_id > 1){
+                $section = Db::name('section')->where('builderId',$relation_id)->whereOr('supervisorId',$relation_id)
+                    ->whereOr('constructorId',$relation_id)->whereOr('designerId',$relation_id)->whereOr('otherId',$relation_id)
+                    ->order('id asc')->column('code'); // 标段列表
+            }else{
+                $section = [];
+            }
+           $data = $this->where(['section'=>['in',$section],'version_number'=>$version_number])->column('model_id');
         }else{
             $section = Db::name('section')->where('id',$section_id)->value('code');
             $data = $this->where(['section'=>['eq',$section],'version_number'=>$version_number])->column('model_id');

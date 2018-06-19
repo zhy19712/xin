@@ -99,10 +99,28 @@ class DivisionUnitModel extends Model
         $data['qualified'] = $this->where(['EvaluateResult'=>2,'id'=>['in',$unit_arr]])->count(); // 合格
         $data['excellent'] = $this->where(['EvaluateResult'=>3,'id'=>['in',$unit_arr]])->count(); // 优良
         // 百分率
-        $data['un_evaluation_percent'] = round($data['un_evaluation']/$total,2); // 未验评
+        if($total){
+            if($data['un_evaluation']){
+                $data['un_evaluation_percent'] = round($data['un_evaluation']/$total,2); // 未验评
+            }else{
+                $data['un_evaluation_percent'] = 0; // 未验评
+            }
 //        $data['unqualified_percent'] = round($data['unqualified']/$total,2); // 不合格
-        $data['qualified_percent'] = round($data['qualified']/$total,2); // 合格
-        $data['excellent_percent'] = round($data['excellent']/$total,2); // 优良
+            if($data['qualified']){
+                $data['qualified_percent'] = round($data['qualified']/$total,2); // 合格
+            }else{
+                $data['qualified_percent'] = 0; // 合格
+            }
+            if($data['excellent']){
+                $data['excellent_percent'] = round($data['excellent']/$total,2); // 优良
+            }else{
+                $data['excellent_percent'] = 0; // 优良
+            }
+        }else{
+            $data['un_evaluation_percent'] = 0; // 未验评
+            $data['qualified_percent'] = 0; // 合格
+            $data['excellent_percent'] = 0; // 优良
+        }
         return $data;
     }
 
