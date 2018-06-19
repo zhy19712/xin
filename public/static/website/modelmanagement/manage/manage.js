@@ -103,24 +103,20 @@ layui.use('form', function () {
                 ztree('', val);
             }
         });
-        if (val == -1) {
-            allModel();
-        } else {
-            //加载模型
-            //TODO get请求
-            $.ajax({
-                url: "/modelmanagement/qualitymass/sectionModel",
-                type: "get",
-                data: {
-                    section_id: val
-                },
-                dataType: "json",
-                success: function (res) {
-                    selectedSectionShowModel(res);
-                }
-            });
-            percentOfPass(val);
-        }
+        //加载模型
+        //TODO get请求
+        $.ajax({
+            url: "/modelmanagement/qualitymass/sectionModel",
+            type: "get",
+            data: {
+                section_id: val
+            },
+            dataType: "json",
+            success: function (res) {
+                selectedSectionShowModel(res);
+            }
+        });
+        percentOfPass(val);
     });
 });
 

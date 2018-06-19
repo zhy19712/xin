@@ -128,16 +128,9 @@
                     type: "get",
                     dataType: "json",
                     success: function (res) {
-                        allModel();
+                        selectedSectionShowModel(res);
                     }
                 });
-
-                //全部模型
-                allModel = function () {
-                    RealBimOcx.SetAllHugeObjSubValidState(1);
-                    review();
-                }
-
                 //根据所选标段展示对应模型
                 selectedSectionShowModel = function (res) {
                     var data = res.data;
