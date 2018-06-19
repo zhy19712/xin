@@ -305,6 +305,7 @@ function tableInfo() {
             {
                 "searchable": false,
                 "orderable": false,
+                "width":'240px',
                 "targets": [7],
                 "render" :  function(data,type,row) {
                     var html = "<i class='fa fa-pencil' uid="+ data +" title='编辑' onclick='edit(this)'></i>" ;

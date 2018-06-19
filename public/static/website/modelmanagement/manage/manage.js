@@ -268,7 +268,7 @@ layui.use('element', function () {
             var id = $(data.title).attr('id');      //控制点ID
             var procedureid = $(data.title).attr('procedureid');
             var unit_id = $(data.title).attr('unit_id');
-            controlpoint_id = id;
+
             $.ajax({
                 url: "/modelmanagement/Manage/getLineReport",
                 type: "post",
@@ -282,6 +282,8 @@ layui.use('element', function () {
                     //在线填报
                     var tbody = [];
                     var admin_id = res.admin_id;    //当前登录用户ID
+                    controlpoint_id = res.relation_form.id;
+                    console.log(controlpoint_id);
                     tbody.push('<tr><th class="table-title" colspan="4">在线填报</th></tr>');
                     tbody.push('<tr>');
                     tbody.push('<th><span class="filename">填报人</span></th>');
