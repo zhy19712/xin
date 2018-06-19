@@ -105,10 +105,11 @@ class Actual extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
             $actual = new ActualModel();
-            if(empty($param['actual_id'])){
+            $actual_id = isset($param['actual_id']) ? $param['actual_id'] : 0;
+            if(empty($actual_id)){
                 $flag = $actual->insertTb($param);
             }else{
-                $param['id'] = $param['actual_id'];
+                $param['id'] = $actual_id;
                 $flag = $actual->editTb($param);
             }
             return json($flag);
@@ -127,7 +128,7 @@ class Actual extends Permissions
         if($this->request->isAjax()){
             // 前台传递本条记录的编号 actual_id
             $param = input('param.');
-            $actual_id = isset($param['actual_id']) ? $param['section_id'] : 0;
+            $actual_id = isset($param['actual_id']) ? $param['actual_id'] : 0;
             if(empty($actual_id)){
                 return json(['code'=>-1,'msg'=>'缺少参数']);
             }
@@ -147,7 +148,7 @@ class Actual extends Permissions
         if($this->request->isAjax()){
             // 前台传递本条记录的编号 actual_id
             $param = input('param.');
-            $actual_id = isset($param['actual_id']) ? $param['section_id'] : 0;
+            $actual_id = isset($param['actual_id']) ? $param['actual_id'] : 0;
             if(empty($actual_id)){
                 return json(['code'=>-1,'msg'=>'缺少参数']);
             }

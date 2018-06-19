@@ -85,24 +85,24 @@ class DivisionUnitModel extends Model
         return $new_data;
     }
 
-    public function examineFruit()
+    public function examineFruit($section_id)
     {
+        // 根据标段编号,获取对应的检验批
+        $division = new DivisionModel();
+        $unit_arr = $division->unitArr($section_id);
         //顶部 --  优良，合格，不合格 个数和百分率
         // 0未验评，1不合格，2合格，3优良
-        $total = $this->count(); // 总数据条数
-
+        $total = $this->where(['id'=>['in',$unit_arr]])->count(); // 总数据条数
         // 数量
-//        $data['un_evaluation'] = $this->where(['EvaluateResult'=>0])->count(); // 未验评
-        $data['unqualified'] = $this->where(['EvaluateResult'=>1])->count(); // 不合格
-        $data['qualified'] = $this->where(['EvaluateResult'=>2])->count(); // 合格
-        $data['excellent'] = $this->where(['EvaluateResult'=>3])->count(); // 优良
-
+        $data['un_evaluation'] = $this->where(['EvaluateResult'=>0,'id'=>['in',$unit_arr]])->count(); // 未验评
+//        $data['unqualified'] = $this->where(['EvaluateResult'=>1,'id'=>['in',$unit_arr]])->count(); // 不合格
+        $data['qualified'] = $this->where(['EvaluateResult'=>2,'id'=>['in',$unit_arr]])->count(); // 合格
+        $data['excellent'] = $this->where(['EvaluateResult'=>3,'id'=>['in',$unit_arr]])->count(); // 优良
         // 百分率
-//        $data['un_evaluation_percent'] = round($data['un_evaluation']/$total,2); // 未验评
-        $data['unqualified_percent'] = round($data['unqualified']/$total,2); // 不合格
+        $data['un_evaluation_percent'] = round($data['un_evaluation']/$total,2); // 未验评
+//        $data['unqualified_percent'] = round($data['unqualified']/$total,2); // 不合格
         $data['qualified_percent'] = round($data['qualified']/$total,2); // 合格
         $data['excellent_percent'] = round($data['excellent']/$total,2); // 优良
-
         return $data;
     }
 
