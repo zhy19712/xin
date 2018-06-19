@@ -32,22 +32,6 @@ $.ajax({
     }
 });
 
-//合格率
-//TODO get请求
-$.ajax({
-    url: "/modelmanagement/qualitymass/examineFruit",
-    type: "get",
-    dataType: "json",
-    success: function (res) {
-        $('#excellent_number').text(res.data.excellent);
-        $('#excellent_rate').text(res.data.excellent_percent + '%');
-        $('#qualified_number').text(res.data.qualified);
-        $('#qualified_rate').text(res.data.qualified_percent + '%');
-        $('#unchecked_number').text(res.data.unqualified);
-        $('#unchecked_rate').text(res.data.unqualified_percent + '%');
-    }
-});
-
 //折叠面板
 function easyUiPanelToggle() {
     var number = $("#easyuiLayout").layout("panel", "east")[0].clientWidth;
@@ -61,6 +45,27 @@ layui.use('element', function () {
     var element = layui.element;
 });
 
+//合格率
+//TODO get请求
+function percentOfPass(val) {
+    $.ajax({
+        url: "/modelmanagement/qualitymass/examineFruit",
+        type: "get",
+        dataType: "json",
+        data:{
+            section_id: val
+        },
+        success: function (res) {
+            $('#excellent_number').text(res.data.excellent);
+            $('#excellent_rate').text(res.data.excellent_percent + '%');
+            $('#qualified_number').text(res.data.qualified);
+            $('#qualified_rate').text(res.data.qualified_percent + '%');
+            $('#unchecked_number').text(res.data.un_evaluation);
+            $('#unchecked_rate').text(res.data.un_evaluation_percent + '%');
+        }
+    });
+}
+percentOfPass();
 //初始化标段
 //TODO get请求
 $.ajax({
@@ -114,6 +119,7 @@ layui.use('form', function () {
                     selectedSectionShowModel(res);
                 }
             });
+            percentOfPass(val);
         }
     });
 });
