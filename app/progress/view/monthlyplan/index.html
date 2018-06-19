@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>施工总进度计划</title>
+    <title>月度进度计划管理</title>
     <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="__PUBLIC__/layui/css/modules/layer/default/layer.css" media="all">
     <link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="__PUBLIC__/webupload/webuploader.css" media="all" />
     <script type="text/javascript" charset="utf8" src="__PUBLIC__/jquery/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="__PUBLIC__/layui/layui.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
-
+    <script src="__PUBLIC__/webupload/webuploader.min.js"></script>
     <style type="text/css">
         .myitem{
             background:#9ccc5e;border:solid 1px #6e845c;
@@ -82,17 +83,13 @@
                     <label class="layui-form-label">月度</label>
                     <div class="layui-input-inline">
                         <select id="seleMonthly" name="monthType" lay-filter="month">
-                            <option value="">-请选择-</option>
-                            <option value="0">未验评</option>
-                            <option value="2">合格</option>
-                            <option value="3">优良</option>
                         </select>
                     </div>
                 </div>
             </form>
             <div class="layui-inline" style="float: right;margin-top: -37px">
                 <button class="layui-btn layui-btn-normal" id="addPlanTask">新增月计划</button>
-                <button class="layui-btn layui-btn-normal"  onclick="addTask()">月计划列表</button>
+                <button class="layui-btn layui-btn-normal" onclick="monthlyPlanList()">月计划列表</button>
             </div>
         </div>
         <div style="padding: 10px 0">
@@ -133,8 +130,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">所属标段</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="section_id" id="sec" readonly disabled autocomplete="off" class="layui-input">
-                    <!--<input type="text"  id="secName" readonly disabled autocomplete="off" class="layui-input">-->
+                    <input type="text"  id="secName" readonly disabled="true" autocomplete="off" class="layui-input">
+                    <input type="hidden" name="section_id" id="sec_id" readonly disabled autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
@@ -158,12 +155,13 @@
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
                 <textarea name="remake" placeholder="请输入内容" class="layui-textarea" maxlength="500" style="width:97%;"></textarea>
+                <input type="hidden" name="cover" id="coverId">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">上传计划报告</label>
             <div class="layui-input-block">
-                <input type="text" name="plan_report_id" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly="">
+                <input type="text" id="report_id" name="plan_report_id" readonly="" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input">
                 <div id="uploadList" class="upload-list"></div>
                 <div class="layui-form-mid layui-word-aux">
                     <div id="upload" class="upload layui-btn">上传</div>
@@ -192,7 +190,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block" style="text-align: center;">
-                <button class="layui-btn" lay-submit lay-filter="save" id="saveUnit" style="margin-right: 30px">保存</button>
+                <button class="layui-btn" lay-submit lay-filter="save" id="saveMonthPlan" style="margin-right: 30px">保存</button>
                 <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
             </div>
         </div>
@@ -201,7 +199,11 @@
 
 </div>
 
+<link href="__PUBLIC__/gantts/scripts/miniui/themes/blue/skin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/gantts/scripts/miniui/themes/icons.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css" rel="stylesheet" type="text/css" />
 <script src="__PUBLIC__/jquery/jquery.min.js" type="text/javascript"></script>
+
 <script src="__PUBLIC__/gantts/scripts/miniui/miniui.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/miniui/locale/zh_CN.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/CalendarWindow.js" type="text/javascript"></script>
@@ -211,18 +213,18 @@
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/ThirdLibs/swfobject/swfobject.js" type="text/javascript"></script>
-<link href="__PUBLIC__/gantts/scripts/miniui/themes/blue/skin.css" rel="stylesheet" type="text/css" />
-<link href="__PUBLIC__/gantts/scripts/miniui/themes/icons.css" rel="stylesheet" type="text/css" />
-<link href="__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css" rel="stylesheet" type="text/css" />
+
 </body>
 <script src="__WEBSITE__/progress/monthlyplan/index.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+    /*标段*/
     layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
         var form = layui.form
             ,layer = layui.layer
             ,laydate = layui.laydate;
         $.ajax({
+            // async : false,
             url: "/progress/monthlyplan/index",
             type: "get",
             success: function (res) {
@@ -232,35 +234,59 @@
                         $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
                     }
                     layui.form.render();
+                    yearFun($("#seleBids").val())
                 }
                 //TODO 问问后台res.code ！= 1是怎么提示的
 
             }
         });
-        if($("#seleBids").val() != ''){
-            $.ajax({
-                url: "/progress/monthlyplan/planYear",
-                type: "post",
-                data: {section_id: $("#seleBids").val()},
-                dataType: "json",
-                success: function (res) {
-                    if(res.code == 1){
-                        console.log(res);
-                        var orgs = res.sectionArr;
-                        for (var indexId in orgs) {
-                            $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
-                        }
-                        layui.form.render();
-                    }if(res.code != 1){
-                        layer.msg(res.msg)
-                    }
-                }
-            });
-        }else {
-            layer.msg("请选择标段！")
-        }
-    });
 
+    });
+    /*年度*/
+    function yearFun(id) {
+        $.ajax({
+            // async : false,
+            url: "/progress/monthlyplan/planYear",
+            type: "post",
+            data: {section_id: id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code == 1){
+                    var orgs = res.data;
+                    for (var indexId in orgs) {
+                        $("#seleYear").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
+                    }
+                    layui.form.render();
+                    // monthFun($("#seleBids").val(),$("#testYear").val());
+                }if(res.code != 1){
+                    layer.msg(res.msg)
+                }
+            }
+        });
+    }
+    /*月度*/
+    function monthFun(set_id,year_id) {
+        $.ajax({
+            async : false,
+            url: "/progress/monthlyplan/planMonthly",
+            type: "post",
+            data: {section_id:set_id,plan_year:year_id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code == 1){
+                    console.log(res);
+                    var orgs = res.data;
+                    for (var indexId in orgs) {
+                        $("#seleMonthly").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
+                    }
+                    layui.form.render();
+
+                }if(res.code != 1){
+                    layer.msg(res.msg)
+                }
+            }
+        });
+    }
 
     /*实例化甘特图
 -----------------------------------------------------------------------------*/
