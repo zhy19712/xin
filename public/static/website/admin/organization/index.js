@@ -435,6 +435,16 @@
         ],
         columnDefs:[
             {
+                "targets": [6],
+                "render" :  function(data,type,row) {
+                   if (data=='1'){
+                       return '是';
+                   }else{
+                       return '否';
+                   }
+                }
+            },
+            {
                 "searchable": false,
                 "orderable": false,
                 "targets": [7],
