@@ -7,7 +7,7 @@
 
     "Calendars": [{
         "WeekDays": [{
-            "DayWorking": 0,
+            "DayWorking": 1,
             "DayType": 1
         },
         {
@@ -71,7 +71,7 @@
             }]
         },
         {
-            "DayWorking": 0,
+            "DayWorking": 1,
             "DayType": 7
         }],
         "Name": "标准",
