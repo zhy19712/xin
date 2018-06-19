@@ -155,7 +155,7 @@ class Monthlyplan extends Permissions
                     // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
                     $monthly->deleteTb($is_exist_id);
                 }
-                return json(['code'=>-1,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
+                return json(['code'=>2,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
             }
 
             $id = isset($param['mid']) ? $param['mid'] : 0;

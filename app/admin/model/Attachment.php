@@ -17,8 +17,10 @@ class Attachment extends Model
     {
         try {
             $data = $this->find($id);
-            if(file_exists('.'.$data['filepath'])){
-                unlink('.'.$data['filepath']); //删除文件
+            if($data['filepath']){
+                if(file_exists('.'.$data['filepath'])){
+                    unlink('.'.$data['filepath']); //删除文件
+                }
             }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'msg' => '删除成功'];
