@@ -55,6 +55,77 @@ class Qualityform extends Permissions
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    public function formPreview($cpr_id, $currentStep="", $isView = false, $id = null)
+    {
+        //获取模板路径
+        //获取控制点信息，组合模板路径
+        $norm_template=Db::name('norm_template')->alias('t')
+            ->join('norm_controlpoint c', 't.id = c.qualitytemplateid', 'left')
+            ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+            ->where(['r.id'=>$cpr_id])
+            ->find();
+        $qualitytemplateid = $norm_template['qualitytemplateid'];
+
+        if ($qualitytemplateid == 0) {
+            return  '控制点未进行模板关联!';
+        }
+
+
+        $template_name=Db::name('norm_template')
+            ->where('id',$qualitytemplateid)
+            ->value('name');
+        $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $cp['controlpoint']['code'] . $template_name . "下载.html";
+        $formPath = iconv('UTF-8', 'GB2312', $formPath);
+        if (!file_exists($formPath)) {
+            return "模板文件不存在";
+        }
+
+        $output = $this->qualityFormInfoService->getFormBaseInfo($cp['division_id']);
+        $formdata = "";
+        if (!is_null($id)) {
+            $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
+            $formdata = json_encode(unserialize($_formdata));
+        }
+        $htmlContent=    $this->fetch($formPath,
+            [   'id'=>$id,
+                'divisionId'=>$cp['division_id'],
+                'templateId'=>$cp['controlpoint']['qualitytemplateid'],
+                'qrcode'=>"",
+                'isInspect'=>$cp['type'] ? 'true' : 'false',
+                'procedureId'=>$cp['ma_division_id'],
+                'formName'=>$cp['ControlPoint']['name'],
+                'currentStep'=>$currentStep,
+                'controlPointId'=>$cp['control_id'],
+                'isView'=>$isView,
+                'formData'=>"",
+                'JYPName'=>$output['JYPName'],
+                'JJCode'=>$output['JJCode'],
+                'JYPCode'=>$output['JYPCode'],
+                'Quantity'=>$output['Quantity'],
+                'PileNo'=>$output['PileNo'],
+                'Altitude'=>$output['Altitude'],
+                'BuildBase'=>$output['BuildBase'],
+                'DYName'=>$output['DYName'],
+                'DYCode'=>$output['DYCode'],
+                'Constructor'=>$output['Constructor'],
+                'Supervisor'=>$output['Supervisor'],
+                'SectionCode'=>$output['SectionCode'],
+                'SectionName'=>$output['SectionName'],
+                'ContractCode'=>$output['ContractCode'],
+                'FBName'=>$output['FBName'],
+                'FBCode'=>$output['FBCode'],
+                'DWName'=>$output['DWName'],
+                'DWCode'=>$output['DWCode']
+            ]);
+        //输出模板内容
+        //获取表单基本信息
+        $htmlContent .= "<input type='hidden' id='cpr' value='{$cpr_id}'>";
+        return $htmlContent;
+    }
+
+
+
     public function edit($cpr_id, $currentStep, $isView = false, $id = null)
     {
         //获取模板路径

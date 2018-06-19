@@ -66,6 +66,7 @@ function zTreeOnCheck(event, treeId, treeNode) {
         //隐藏关联构件
         window.hideModel(data);
     }else {
+        console.log(data);
         window.showModel(data);
     }
 }

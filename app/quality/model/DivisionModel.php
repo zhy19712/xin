@@ -425,4 +425,18 @@ class DivisionModel extends Model
         return ['code'=>1,'msg'=>'解除成功'];
     }
 
+    // 根据标段编号,获取对应的检验批
+    public function unitArr($section_id)
+    {
+        // 获取该标段下的单元工程
+        if($section_id){
+            $division = $this->where('section_id',$section_id)->column('id');
+        }else{
+            $division = $this->column('id');
+        }
+        // 获取单元工程下的检验批
+        $unit = Db::name('quality_unit')->where(['division_id'=>['in',$division]])->column('id');
+        return $unit;
+    }
+
 }
