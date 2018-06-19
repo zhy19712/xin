@@ -370,7 +370,7 @@ class Rolemanagement extends Permissions
                     foreach ($menus as $key=>$val)
                     {
                         $judge = Db::name("admin_menu")->where("pid",$val["id"])->find();
-                        if($val["is_display"] == 2 && $val["type"] == 2 && empty($judge))
+                        if($val["type"] == 2 && empty($judge))
                         {
                            unset($menus[$key]);
                         }
