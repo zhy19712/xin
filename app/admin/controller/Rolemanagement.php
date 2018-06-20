@@ -366,11 +366,11 @@ class Rolemanagement extends Permissions
                     //查询所有的菜单选项
                     $menus = Db::name('admin_menu')->field("id,name,pid,is_display,type")->select();
 
-                    //去除掉只作为节点，普通节点，且节点下没有子节点的
+                    //去除掉只作为节点，普通节点，且节点下没有子节点的，目前去掉的只是最下级的
                     foreach ($menus as $key=>$val)
                     {
                         $judge = Db::name("admin_menu")->where("pid",$val["id"])->find();
-                        if($val["is_display"] == 2 && $val["type"] == 2 && empty($judge))
+                        if($val["type"] == 2 && empty($judge))
                         {
                            unset($menus[$key]);
                         }

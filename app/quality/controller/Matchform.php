@@ -56,6 +56,99 @@ class Matchform extends Controller
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    public function templateForm($cpr_id)
+    {
+        //获取模板路径
+        //获取控制点信息，组合模板路径
+        $norm_template=Db::name('norm_template')->alias('t')
+            ->join('norm_controlpoint c', 't.id = c.qualitytemplateid', 'left')
+            ->join('quality_division_controlpoint_relation r', 'r.control_id = c.id', 'left')
+            ->where(['r.id'=>$cpr_id])
+            ->find();
+        $template=Db::name('quality_form_info')
+            ->where(['DivisionId'=>$norm_template['division_id'],'ControlPointId'=>$norm_template['control_id'],'ApproveStatus'=>2])
+            ->find();
+        $id= $template['id'];
+        $qualitytemplateid = $norm_template['qualitytemplateid'];
+
+        if ($qualitytemplateid == 0) {
+            return  '控制点未进行模板关联!';
+        }
+
+        $template_name=Db::name('norm_template')
+            ->where('id',$qualitytemplateid)
+            ->value('name');
+
+        $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $cp['controlpoint']['code'] . $template_name . "下载.html";
+        $formPath = iconv('UTF-8', 'GB2312', $formPath);
+        if (!file_exists($formPath)) {
+            return "模板文件不存在";
+        }
+        if (!is_null($id)) {
+            $_formdata = $this->qualityFormInfoService->where(['id' => $id])->find()['form_data'];
+            $formdata = json_encode(unserialize($_formdata));
+        }
+        $output = $this->getFormBaseInfo($norm_template['division_id']);
+        $htmlContent = file_get_contents($formPath);
+
+//        $host="http://".$_SERVER['HTTP_HOST'];
+//        $code=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
+        //当该控制点有已经填写的表单时
+        if($id>0&&!is_null($id))
+        {
+           $dataId=$id;
+           $type=1;//1表示是表单id
+        }
+        //当没有已填写表单时
+        else
+        {
+            $dataId=$cpr_id;
+            $type=2;//2表示是cpr_id
+        }
+
+        //app接口地址
+        $host="http://".$_SERVER['HTTP_HOST'];
+        $code = $host."/api/qualityform/getforminfo?dataId=".$dataId."&type=".$type;
+
+        $htmlContent=    $this->fetch($formPath,
+            [   'id'=>$id,
+                'divisionId'=>$cp['division_id'],
+                'templateId'=>$cp['controlpoint']['qualitytemplateid'],
+                'qrcode'=>$code,
+                'hideSelect'=>'0',
+                'isInspect'=>$cp['type'],
+                'procedureId'=>$cp['ma_division_id'],
+                'formName'=>$cp['ControlPoint']['name'],
+                'currentStep'=>'',
+                'controlPointId'=>$cp['control_id'],
+                'isView'=>'null',
+                'formData'=>"",
+                'JYPName'=>$output['JYPName'],
+                'JYPCode'=>$output['JYPCode'],
+                'JJCode'=>$output['JJCode'],
+                'start_date'=>'',
+                'completion_date'=>'',
+                'Quantity'=>$output['Quantity'],
+                'PileNo'=>$output['PileNo'],
+                'Altitude'=>$output['Altitude'],
+                'BuildBase'=>$output['BuildBase'],
+                'DYName'=>$output['DYName'],
+                'DYCode'=>$output['DYCode'],
+                'Constructor'=>$output['Constructor'],
+                'Supervisor'=>$output['Supervisor'],
+                'SectionCode'=>$output['ContractCode'],
+                'SectionName'=>$output['SectionName'],
+                'ContractCode'=>$output['ContractCode'],
+                'FBName'=>$output['FBName'],
+                'FBCode'=>$output['FBCode'],
+                'DWName'=>$output['DWName'],
+                'DWCode'=>$output['DWCode']
+            ]);
+        //返回模板内容
+        return $htmlContent;
+    }
+    //在线填报的表单
     public function matchForm($cpr_id)
     {
         //获取模板路径
@@ -92,8 +185,19 @@ class Matchform extends Controller
         $output = $this->getFormBaseInfo($norm_template['division_id']);
         $htmlContent = file_get_contents($formPath);
 
+        if($id>0&&!is_null($id))
+        {
+            $dataId=$id;
+            $type=1;//1表示是表单id
+        }
+        //当没有已填写表单时
+        else
+        {
+            $dataId=$cpr_id;
+            $type=2;//2表示是cpr_id
+        }
         $host="http://".$_SERVER['HTTP_HOST'];
-        $code=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
+        $code = $host."/api/qualityform/getforminfo?dataId=".$dataId."&type=".$type;
         $htmlContent=    $this->fetch($formPath,
             [   'id'=>$id,
                 'divisionId'=>$cp['division_id'],

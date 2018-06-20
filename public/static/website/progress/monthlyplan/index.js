@@ -8,23 +8,34 @@ $("#addPlanTask").click(function () {
             area:['760px','650px'],
             content:$('#addPlan'),
             success:function () {
-                $("#sec").val($("#seleBids").val());
-
+                $("#secName").val($("#seleBids option:selected").text());
+                $("#sec_id").val($("#seleBids").val());
             },
             yes:function () {
 
             },
             cancel: function(index, layero){
                 layer.close(layer.index);
+                $("#addPlan input[name='plan_name']").val("");
+                $("#addPlan input[name='plan_report_id']").val("");
+                $("textarea").val("");
+                $("#coverId").val(0);
+                $("#saveMonthPlan").text("保存");
             }
         });
     }else {
         layer.msg("请选择标段！")
     }
 });
+
 /*关闭弹层*/
 $('.close').click(function () {
     layer.closeAll('page');
+    $("#addPlan input[name='plan_name']").val("");
+    $("#addPlan input[name='plan_report_id']").val("");
+    $("textarea").val("");
+    $("#coverId").val(0);
+    $("#saveMonthPlan").text("保存");
 });
 
 var form;
@@ -36,19 +47,24 @@ layui.use(['form', 'layedit', 'laydate'], function () {
     laydate.render({
         elem: '#testYear'
         ,type: 'year'
+        ,value: new Date().getFullYear() //必须遵循format参数设定的格式
     });
 
     //年月选择器
     laydate.render({
         elem: '#testMonth'
         ,type: 'month'
+        ,value: ""+new Date().getFullYear()+ "-" + (new Date().getMonth()+1)+""
     });
+    /*显隐上传*/
     form.on('radio(aihao)', function(data){
         console.log(data.value)
         if(data.value == 1){
-            $("#modelList").css("display",'none');
+            $("#modelListSelect").hide();
+            $("#modelList").hide();
         }else if(data.value == 2){
-            $("#modelList").css("display",'block');
+            $("#modelListSelect").show();
+            $("#modelList").show();
         }
     });
 });
@@ -60,13 +76,17 @@ uploader = WebUploader.create({
     server: "/admin/common/upload",
     pick: {
         multiple: false,
-        id: "#uploadDemo",
+        id: "#upload",
         innerHTML: "上传"
     },
     accept: {
         title: '',
         extensions: '',
         mimeTypes: ''
+    },
+    formData:{
+        module:'progress',
+        use:'monthlyplan'
     },
     resize: false,
     duplicate: true
@@ -94,11 +114,68 @@ uploader.on('uploadProgress', function (file, percentage) {
     $('.layui-progress-bar').html(Math.round(percentage * 100) + '%');
 });
 //上传成功
-uploader.on('uploadSuccess', function (file, response) {
+uploader.on('uploadSuccess', function (file, res) {
     $('#uploadListDemo').css('opacity',0);
+    $('#report_id').val(file.name);
+    if(res.code == 2){
+        $('#plan_report_id_hidden').val(res.id);
+    }else{
+        layer.msg("数据异常！")
+    }
 });
 
+/*点击保存*/
+$("#saveMonthPlan").click(function () {
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form;
+        var layer = layui.layer
 
+        //监听提交
+        form.on('submit(save)', function (data) {
+            $.ajax({
+                type: "Post",
+                url: "/progress/monthlyplan/add",
+                data: data.field,
+                success: function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg);
+                        layer.closeAll('page');
+                        $("#addPlan input[name='plan_name']").val("");
+                        $("#addPlan input[name='plan_report_id']").val("");
+                        $("#coverId").val(0);
+                        $("#saveMonthPlan").text("保存");
+                        $("textarea").val("");
+                    }else if (res.code == 2) {
+                        layer.confirm(res.msg, function(index){
+                            $("#coverId").val(1);
+                            $("#saveMonthPlan").text("确认覆盖");
+                            layer.close(index);
+                        });
+                    }else {
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+            return false;
+        });
+    });
+})
+
+/*点击月计划列表*/
+function monthlyPlanList() {
+    layer.open({
+        type: 2,
+        title: "标段"+$("#seleBids option:selected").text()+"-月进度计划",
+        area: ['100%', '100%'],
+        content: '/progress/monthlyplan/list_table?section_id='+$("#seleBids").val(),
+        success: function(layero, index){
+            // var body = layer.getChildFrame('script', index);
+            // // body.find("#selectId").val($("#seleBids").val());
+        },
+        end:function () {
+        }
+    });
+}
 
 
 
@@ -110,42 +187,7 @@ uploader.on('uploadSuccess', function (file, response) {
 
 //1)自定义条形图外观显示
 /*
-project.on("drawitem", function (e) {
-    var item = e.item;
-    var left = e.itemBox.left,
-        top = e.itemBox.top,
-        width = e.itemBox.width,
-        height = e.itemBox.height;
 
-    if (!item.Summary && !item.Milestone) {
-        var percentWidth = width * (item.PercentComplete / 100);
-
-        e.itemHtml = '<div id="' + item._id + '" class="myitem" style="left:' + left + 'px;top:' + top + 'px;width:' + width + 'px;height:' + (height) + 'px;">';
-        e.itemHtml += '<div style="width:' + (percentWidth) + 'px;" class="percentcomplete"></div>';
-
-        //根据你自己逻辑，把任务分成几块，注意坐标和宽度
-        // e.itemHtml += '<div style="position:absolute;left:0px;top:0;height:100%;width:20px;background:red;"></div>';
-
-        e.itemHtml += '</div>';
-
-        // e.ItemHtml = '<a href="http://www.baidu.com" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+(height-2)+'px;" class="myitem">111</a>';
-    }
-});
-
-
-project.on("drawcell", function (e) {
-    var task = e.record, column = e.column, field = e.field;
-
-    //新增
-    if (task._state == "added") {
-        e.rowCls = "row_added";
-    }
-    //删除
-    if (task.Deleted == true) {
-        e.rowCls = "row_deleted";
-    }
-
-});
 //2)保存
 function save() {
     var newTask = project.newTask();
@@ -227,37 +269,4 @@ function removeTask() {
         alert("请选中任务");
     }
 }
-//10)更新
-function updateTask() {
-    var selectedTask = project.getSelected();
-    alert("编辑选中任务:" + selectedTask.Name);
-}
-//11)升级
-function upgradeTask() {
-    var task = project.getSelected();
-    if (task) {
-        project.upgradeTask(task);
-    } else {
-        alert("请选选中任务");
-    }
-}
-//12)降级
-function downgradeTask() {
-    var task = project.getSelected();
-    if (task) {
-        project.downgradeTask(task);
-    } else {
-        alert("请选选中任务");
-    }
-}
-
-//13)锁定列
-function frozenColumn() {
-    project.frozenColumn(0, 1);
-}
-//14)打印
-function printGantt() {
-    project.printServer = "__PUBLIC__/gantts/scripts/plusproject/services/snapshot/snapshot.aspx";
-    project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
-    project.print();
-}*/
+*/
