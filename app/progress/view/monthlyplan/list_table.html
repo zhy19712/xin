@@ -1,4 +1,9 @@
 {include file="../app/public/common_header.html"}
+<style>
+    #monthList{
+        padding: 0 18px;
+    }
+</style>
 <div id="monthList">
     <input type="hidden" id="selectId" value="{$section_id}">
     <table id="monthList_table" width="100%" class="table cell-border">
@@ -40,7 +45,8 @@
                 name: "plan_name"
             },
             {
-                name: "user_id"
+                name: "name"
+               /*其实是user_id,只不过换了名字*/
             },
             {
                 name: "preparation_date"
@@ -58,10 +64,16 @@
                 orderable: false,
                 targets: [6],
                 render: function (data, type, row) {
-                    var html = '<i class="fa fa-pencil" title="查看" onclick="see(this)"></i>';
+                    console.log(row);
+                    var html = '<i class="fa fa-search" title="查看" onclick="see(this)"></i>';
                     html += '<i class="fa fa-trash" title="删除" onclick="secDel(this)"></i>';
-                    html += '<i class="fa fa-trash" title="下载报告" onclick="dowReport(this)"></i>';
-                    html += '<i class="fa fa-trash" title="删除报告" onclick="delReport(this)"></i>';
+                    if(row[4] == null){
+                        html += '<i class="fa fa-upload" title="上传报告" onclick="dowReport(this)"></i>';
+                    }
+                    if(row[4] != null){
+                        html += '<i class="fa fa-download" title="下载报告" onclick="dowReport(this)"></i>';
+                        html += '<i class="fa fa-remove" title="删除报告" onclick="delReport(this)"></i>';
+                    }
                     return html;
                 }
             }
