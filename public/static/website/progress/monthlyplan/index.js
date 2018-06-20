@@ -157,9 +157,13 @@ function monthlyPlanList() {
         type: 2,
         title: "标段"+$("#seleBids option:selected").text()+"-月进度计划",
         area: ['100%', '100%'],
-        content: '/progress/monthlyplan/list_table',
-        // end:function () {
-        // }
+        content: '/progress/monthlyplan/list_table?section_id='+$("#seleBids").val(),
+        success: function(layero, index){
+            var body = layer.getChildFrame('script', index);
+            // body.find("#selectId").val($("#seleBids").val());
+        },
+        end:function () {
+        }
     });
 }
 
