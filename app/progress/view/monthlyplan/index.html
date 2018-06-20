@@ -156,7 +156,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">上传计划报告</label>
             <div class="layui-input-block">
-                <input type="text" id="report_id" name="plan_report_id" readonly="" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input">
+                <input type="text" id="report_id" readonly="" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input">
+                <input type="hidden" name="plan_report_id" id="plan_report_id_hidden" value="">
                 <div id="uploadList" class="upload-list"></div>
                 <div class="layui-form-mid layui-word-aux">
                     <div id="upload" class="upload layui-btn">上传</div>

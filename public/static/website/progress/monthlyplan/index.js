@@ -16,6 +16,11 @@ $("#addPlanTask").click(function () {
             },
             cancel: function(index, layero){
                 layer.close(layer.index);
+                $("#addPlan input[name='plan_name']").val("");
+                $("#addPlan input[name='plan_report_id']").val("");
+                $("textarea").val("");
+                $("#coverId").val(0);
+                $("#saveMonthPlan").text("保存");
             }
         });
     }else {
@@ -28,7 +33,7 @@ $('.close').click(function () {
     layer.closeAll('page');
     $("#addPlan input[name='plan_name']").val("");
     $("#addPlan input[name='plan_report_id']").val("");
-    $("textarea").text("");
+    $("textarea").val("");
     $("#coverId").val(0);
     $("#saveMonthPlan").text("保存");
 });
@@ -112,6 +117,11 @@ uploader.on('uploadProgress', function (file, percentage) {
 uploader.on('uploadSuccess', function (file, res) {
     $('#uploadListDemo').css('opacity',0);
     $('#report_id').val(file.name);
+    if(res.code == 2){
+        $('#plan_report_id_hidden').val(res.id);
+    }else{
+        layer.msg("数据异常！")
+    }
 });
 
 /*点击保存*/
@@ -134,7 +144,7 @@ $("#saveMonthPlan").click(function () {
                         $("#addPlan input[name='plan_report_id']").val("");
                         $("#coverId").val(0);
                         $("#saveMonthPlan").text("保存");
-                        $("textarea").text("");
+                        $("textarea").val("");
                     }else if (res.code == 2) {
                         layer.confirm(res.msg, function(index){
                             $("#coverId").val(1);
@@ -159,8 +169,8 @@ function monthlyPlanList() {
         area: ['100%', '100%'],
         content: '/progress/monthlyplan/list_table?section_id='+$("#seleBids").val(),
         success: function(layero, index){
-            var body = layer.getChildFrame('script', index);
-            // body.find("#selectId").val($("#seleBids").val());
+            // var body = layer.getChildFrame('script', index);
+            // // body.find("#selectId").val($("#seleBids").val());
         },
         end:function () {
         }
