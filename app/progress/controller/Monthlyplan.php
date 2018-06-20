@@ -268,6 +268,29 @@ class Monthlyplan extends Permissions
         }
     }
 
+    /**
+     * 上传报告
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function saveFile()
+    {
+        if($this->request->isAjax()){
+            // 前台需要 传递本条记录的编号 plan_id  文件编号 file_id
+            $param = input('param.');
+            $plan_id = isset($param['plan_id']) ? $param['plan_id'] : 0;
+            $file_id = isset($param['file_id']) ? $param['file_id'] : 0;
+            if(empty($plan_id) || empty($file_id)){
+                return json(['code' => '-1','msg' => '缺少参数']);
+            }
+            $monthly = new MonthlyplanModel();
+            $data['id'] = $plan_id;
+            $data['plan_report_id'] = $file_id;
+            $flag = $monthly->editTb($data);
+            return json($flag);
+        }
+    }
+
 
 
     // ***************************** 甘特图 *****************************
