@@ -65,7 +65,7 @@
             <form class="layui-form formlable" action="" style="width: 60%;">
                 <div class="layui-inline">
                     <label class="layui-form-label" style="padding-left: 0px">标段</label>
-                    <div class="layui-input-inline">
+                    <div class="layui-input-inline" style="width: 320px;">
                         <select id="seleBids" name="bidsType" lay-filter="bids">
                             <!--<option value="">-请选择-</option>-->
                         </select>
@@ -178,6 +178,16 @@
                 <input type="radio" name="update_mode" lay-filter="aihao" value="2" title="导入全新计划版本">
             </div>
         </div>
+        <div class="layui-form-item" style="display: none" id="modelListSelect">
+            <label class="layui-form-label">文件格式</label>
+            <div class="layui-inline" style="width: 78.5%;">
+                <select id="fileFormat" name="fileFormat" lay-filter="format" style="width: 100%;">
+                    <option value="">-请选择-</option>
+                    <option value="">Project</option>
+                    <option value="">P6</option>
+                </select>
+            </div>
+        </div>
         <div class="layui-form-item" style="display: none" id="modelList">
             <label class="layui-form-label">上传计划文件</label>
             <div class="layui-input-block">
@@ -224,9 +234,9 @@
             ,layer = layui.layer
             ,laydate = layui.laydate;
         $.ajax({
-            // async : false,
             url: "/progress/monthlyplan/index",
             type: "get",
+            async : false,
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.sectionArr;
@@ -234,7 +244,7 @@
                         $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
                     }
                     layui.form.render();
-                    yearFun($("#seleBids").val())
+                    // yearFun($("#seleBids").val())
                 }
                 //TODO 问问后台res.code ！= 1是怎么提示的
 
@@ -245,11 +255,11 @@
     /*年度*/
     function yearFun(id) {
         $.ajax({
-            // async : false,
             url: "/progress/monthlyplan/planYear",
             type: "post",
             data: {section_id: id},
             dataType: "json",
+            async : false,
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;

@@ -8,19 +8,6 @@ $("#addPlanTask").click(function () {
             area:['760px','650px'],
             content:$('#addPlan'),
             success:function () {
-                layui.use(['form', 'layedit', 'laydate'], function () {
-                    form = layui.form;
-                    var laydate = layui.laydate;
-                    var layer = layui.layer;
-                    form.on('select(aihao)', function(data){
-                        console.log(data.value)
-                        if(data.value == 1){
-                            $("#modelList").css("display",'none');
-                        }else if(data.value == 2){
-                            $("#modelList").css("display",'block');
-                        }
-                    });
-                });
                 $("#secName").val($("#seleBids option:selected").text());
                 $("#sec_id").val($("#seleBids").val());
             },
@@ -38,6 +25,7 @@ $("#addPlanTask").click(function () {
 /*关闭弹层*/
 $('.close').click(function () {
     layer.closeAll('page');
+    $('#addPlan')[0].reset();
 });
 
 var form;
@@ -61,9 +49,11 @@ layui.use(['form', 'layedit', 'laydate'], function () {
     form.on('radio(aihao)', function(data){
         console.log(data.value)
         if(data.value == 1){
-            $("#modelList").css("display",'none');
+            $("#modelListSelect").hide();
+            $("#modelList").hide();
         }else if(data.value == 2){
-            $("#modelList").css("display",'block');
+            $("#modelListSelect").show();
+            $("#modelList").show();
         }
     });
 });
@@ -135,11 +125,16 @@ $("#saveMonthPlan").click(function () {
                         console.log(res);
                         layer.msg(res.msg);
                         layer.closeAll('page');
+                        $("#addPlan input[name='plan_name']").val("");
+                        $("#addPlan input[name='plan_report_id']").val("");
+                        $("textarea").text("");
                     }else  if (res.code == 2) {
                         $("#coverId").val(1);
                         $("#saveMonthPlan").text("确认覆盖");
-                        console.log(res);
                         layer.msg(res.msg);
+                        // $("#addPlan input[name='plan_name']").val("");
+                        // $("#addPlan input[name='plan_report_id']").val("");
+                        // $("textarea").text("");
                     }else {
                         layer.msg(res.msg);
                     }
