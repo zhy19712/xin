@@ -87,6 +87,18 @@ canvas {
     margin: 0 auto;
     position: relative;
 }
+textarea{
+    text-align: center!important;
+    background-color: #ffffff!important;
+}
+input{
+    outline: none!important;
+    border: none!important;
+    max-width: 120px;
+    font-size: 12px!important;
+    margin-top: 5px!important;
+    background-color: #ffffff!important;
+}
 #qrcode{
     position: absolute;
     right: 0px;
