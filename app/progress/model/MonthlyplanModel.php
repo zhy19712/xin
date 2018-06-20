@@ -45,7 +45,7 @@ class MonthlyplanModel extends Model
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
-                return ['code' => 1, 'msg' => '编辑成功'];
+                return ['code' => 1, 'msg' => '上传成功'];
             }
         } catch (PDOException $e) {
             return ['code' => 0, 'msg' => $e->getMessage()];
