@@ -3,6 +3,14 @@
     #monthList{
         padding: 0 18px;
     }
+    /*.webuploader-pick {*/
+        /*padding: 0;*/
+        /*top: 0px;*/
+        /*position: absolute;*/
+    /*}*/
+    .select-color{
+        background-color: #FDD5B5 !important;
+    }
 </style>
 <div id="monthList">
     <input type="hidden" id="selectId" value="{$section_id}">
@@ -24,6 +32,8 @@
 <div id="form_container_from" style="display: none;"></div>
 {include file="../app/public/common_footer.html"}
 <script>
+    var selectData;
+    var rowId;
     /*初始化*/
     var monthList_table =  $('#monthList_table').DataTable({
         pagingType: "full_numbers",
@@ -72,12 +82,13 @@
                 render: function (data, type, row) {
                     var html = '<i class="fa fa-search" title="查看" onclick="see(this)"></i>';
                     html += '<i class="fa fa-trash" title="删除" onclick="secDel('+row[6]+')"></i>';
-                    if(row[7] == 0){
-                        html += '<i class="fa fa-upload" title="上传报告" onclick="uploadReport(this)"></i>';
+                    if(row[7] == null || row[7] == 0){
+                        // html += '<i class="fa fa-upload" title="上传报告" onclick="uploadReport('+row[6]+')"></i>';
+                        html += '<i title="上传报告" class="upload uploadBtnDemo fa fa-upload"><span style="display: none">'+row[6]+'</span></i>';
                     }
-                    if(row[7] != 0){
+                    if(row[7] != null && row[7] != 0){
                         html += '<i class="fa fa-download" title="下载报告" onclick="dowReport('+row[7]+')"></i>';
-                        html += '<i class="fa fa-remove" title="删除报告" onclick="delReport('+row[7]+')"></i>';
+                        html += '<i class="fa fa-remove" title="删除报告" onclick="delReport('+row[6]+','+row[7]+')"></i>';
                     }
                     return html;
                 }
@@ -91,6 +102,48 @@
         ],
         fnCreatedRow:function (nRow, aData, iDataIndex){
             $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+        },
+        "fnDrawCallback":function(obj){
+            //点击行获取Id
+            $("#monthList_table").delegate("tbody tr","click",function (e) {
+                if($(e.target).hasClass("dataTables_empty")){
+                    return;
+                }
+                $(this).addClass("select-color").siblings().removeClass("select-color");
+                selectData = monthList_table.row(".select-color").data();//获取选中行数据
+                console.log(selectData[6] +" ------控制点 rowId");
+                rowId = selectData[6];
+            });
+            layui.use(['element', "layer", 'form', 'upload'], function () {
+                var $ = layui.jquery
+                    , element = layui.element
+                    , upload = layui.upload;
+
+                var form = layui.form
+                    , layer = layui.layer
+                var files;
+                upload.render({
+                    elem: '.uploadBtnDemo',
+                    url: "/admin/common/upload?module=progress&use=monthlyplan",
+                    accept:"file",
+                    // before: function(obj){
+                    //     obj.preview(function(index, file, result){
+                    //         uploadName = file.name;
+                    //     })
+                    // },
+                    choose: function (obj) {
+                        files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                    },
+                    done: function(res){
+                        if(res.code == 2){
+                            var uploadId = res.id;
+                            uploadReport(rowId,uploadId)
+                        }else{
+                            layer.msg(res.msg,{time:1500})
+                        }
+                    },
+                });
+            });
         },
         language: {
             "lengthMenu": "_MENU_ ",
@@ -131,10 +184,24 @@
             });
         });
     }
-    /*上传报告*/
-    function uploadReport(){
 
+    //上传的调用
+    function uploadReport(id,fileId){
+        $.ajax({
+            url: "/progress/monthlyplan/delOrSaveReport",
+            type: "post",
+            data: {plan_id: id,file_id:fileId,plan_type:1},
+            success: function (res) {
+                if (res.code === 1) {
+                    layer.msg(res.msg, {time: 1100, shade: 0.1});
+                    monthList_table.ajax.url('/progress/common/datatablesPre?tableName=progress_monthlyplan&section_id='+$("#selectId").val()).load();
+                }else{
+                    layer.msg(res.msg)
+                }
+            }
+        });
     }
+
     //下载封装的方法
     function downloadFrom(id,url) {
         $.ajax({
@@ -161,17 +228,19 @@
             }
         })
     }
+
     /*下载报告*/
     function dowReport(id){
         downloadFrom(id,"/progress/monthlyplan/download")
     }
+
     /*删除报告*/
-    function delReport(id){
+    function delReport(id,fileId){
         layer.confirm("你将删除该数据的月计划报告，是否确认删除？", function () {
             $.ajax({
-                url: "/progress/monthlyplan/delReport",
+                url: "/progress/monthlyplan/delOrSaveReport",
                 type: "post",
-                data: {file_id: id},
+                data: {plan_id: id,file_id:fileId,plan_type:2},
                 success: function (res) {
                     if (res.code === 1) {
                         layer.msg(res.msg, {time: 1100, shade: 0.1});
