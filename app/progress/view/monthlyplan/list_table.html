@@ -145,7 +145,6 @@
                 });
             });
         },
-
         language: {
             "lengthMenu": "_MENU_ ",
             "zeroRecords": "没有找到记录",
@@ -229,10 +228,12 @@
             }
         })
     }
+
     /*下载报告*/
     function dowReport(id){
         downloadFrom(id,"/progress/monthlyplan/download")
     }
+
     /*删除报告*/
     function delReport(id,fileId){
         layer.confirm("你将删除该数据的月计划报告，是否确认删除？", function () {
