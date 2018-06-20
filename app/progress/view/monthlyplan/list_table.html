@@ -1,10 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-月计划列表
-</body>
+{include file="../app/public/common_header.html"}
+<div id="monthList">
+    <table id="monthList_table" width="100%" class="table cell-border">
+        <thead>
+            <tr>
+                <th>年度</th>
+                <th>月度</th>
+                <th>计划名称</th>
+                <th>编制人</th>
+                <th>编制日期</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+{include file="../app/public/common_footer.html"}
+<script>
+    $('#monthList_table').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        serverSide: true,
+        bAutoWidth: false,  //是否自动宽度
+        scrollX: true,
+        scrollY: "520px",   //表格容器高度
+        scrollCollapse: true,
+        ajax: {
+            url: "/progress/common/datatablesPre?tableName=progress_monthlyplan"
+        },
+        dom: 'ltip',
+        columns: [
+            {
+                name: "plan_year"
+            },
+            {
+                name: "plan_monthly"
+            },
+            {
+                name: "plan_name"
+            },
+            {
+                name: "user_id"
+            },
+            {
+                name: "preparation_date"
+            },
+            {
+                name: "remake"
+            },
+            {
+                name: "id"
+            }
+        ],
+        columnDefs: [
+            {
+                searchable: false,
+                orderable: false,
+                targets: [6],
+                render: function (data, type, row) {
+                    var html = '<i class="fa fa-pencil" title="查看" onclick="see(this)"></i>';
+                    html += '<i class="fa fa-trash" title="删除" onclick="secDel(this)"></i>';
+                    html += '<i class="fa fa-trash" title="下载报告" onclick="dowReport(this)"></i>';
+                    html += '<i class="fa fa-trash" title="删除报告" onclick="delReport(this)"></i>';
+                    return html;
+                }
+            }
+        ],
+        fnCreatedRow:function (nRow, aData, iDataIndex){
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+        },
+        language: {
+            "lengthMenu": "_MENU_ ",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索",
+            "sSearchPlaceholder": "请输入关键字",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
+                "sLast": ">>"
+            }
+        }
+    });
+
+</script>
 </html>

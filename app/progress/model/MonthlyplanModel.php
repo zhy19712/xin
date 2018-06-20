@@ -102,4 +102,11 @@ class MonthlyplanModel extends Model
         return $data;
     }
 
+    // 月计划根据选择的标段，年度，月度获取甘特图数据
+    public function initialiseData($section_id,$plan_year,$plan_monthly)
+    {
+        $data = $this->where(['section_id'=>$section_id,'plan_year'=>$plan_year])->order('plan_monthly desc')->select();
+        return $data;
+    }
+
 }
