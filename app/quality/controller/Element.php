@@ -201,7 +201,6 @@ class Element extends Permissions
      * @throws \think\exception\DbException
      */
     public function download($cpr_id)
-
     {
         $cp = $this->divisionControlPointService->with('ControlPoint')->where('id', $cpr_id)->find();
         $norm_template=Db::name('norm_template')->alias('t')
@@ -236,62 +235,27 @@ class Element extends Permissions
 //            Settings::setTempDir('temp');
 //            $phpword = new PhpWord();
 //            $phpword = $phpword->loadTemplate($formPath);
-         $output = $this->qualityFormInfoService->getFormBaseInfo($cp['division_id']);
 //            foreach ($infos as $key => $value) {
 //                $phpword->setValue('{' . $key . '}', $value);
 //            }
-        //渲染指定文件
-        $htmlcontent=    $this->fetch($formPath,
-                [   'id'=>'',
-                    'divisionId'=>'',
-                    'templateId'=>'',
-                    'isInspect'=>'',
-                    'procedureId'=>'',
-                    'hideSelect'=>'1',
-                    'formName'=>'',
-                    'currentStep'=>'',
-                    'controlPointId'=>'',
-                    'qrcode'=>'',
-                    'isView'=>'',
-                    'formData'=>'',
-                    'JYPName'=>$output['JYPName'],
-                    'JYPCode'=>$output['JYPCode'],
-                    'JJCode'=>$output['JJCode'],
-                    'start_date'=>$output['start_date'],
-                    'completion_date'=>$output['completion_date'],
-                    'Quantity'=>$output['Quantity'],
-                    'PileNo'=>$output['PileNo'],
-                    'Altitude'=>$output['Altitude'],
-                    'BuildBase'=>$output['BuildBase'],
-                    'DYName'=>$output['DYName'],
-                    'DYCode'=>$output['DYCode'],
-                    'Constructor'=>$output['Constructor'],
-                    'Supervisor'=>$output['Supervisor'],
-                    'SectionCode'=>$output['SectionCode'],
-                    'SectionName'=>$output['SectionName'],
-                    'ContractCode'=>$output['ContractCode'],
-                    'FBName'=>$output['FBName'],
-                    'FBCode'=>$output['FBCode'],
-                    'DWName'=>$output['DWName'],
-                    'DWCode'=>$output['DWCode']
-                ]);
 
             $tempPath=ROOT_PATH . 'public' . DS . "data\\form\\temp\\";
             if (!file_exists($tempPath)){
                 mkdir ($tempPath,0777,true);
             }
-            $tempHtml=$tempPath.time().".html";
+
+            $host="http://".$_SERVER['HTTP_HOST'];
+            $tHtml=$host."/quality/matchform/templateform?cpr_id=".$cpr_id;
             $tempPdf=$tempPath.time().".pdf";
             //将渲染过的html代码填充到临时文件中
-            file_put_contents($tempHtml,$htmlcontent);
+
             //清空缓冲区
             ob_end_clean();
             //调用wkhtml工具将html文件生成pdf文件
-            shell_exec("wkhtmltopdf ".$tempHtml." ".$tempPdf);
+            shell_exec("wkhtmltopdf ".$tHtml." ".$tempPdf);
             $filePath = iconv("utf-8", "gb2312", $tempPdf);
             $fileName =$cp['ControlPoint']['code'] . $template_name.".pdf";
             $fileName =iconv("utf-8", "gb2312", $fileName);
-
 
             if(file_exists($filePath)){
                 header("Content-type:application/pdf");
@@ -300,9 +264,7 @@ class Element extends Permissions
                 echo fread($file, filesize($filePath));
                 fclose($file);
                 //删除临时文件
-                #unlink($tempHtml);
                 unlink($tempPdf);
-
             }
             else
             {
