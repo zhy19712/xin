@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>施工总进度计划</title>
+    <title>月度进度计划管理</title>
     <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="__PUBLIC__/layui/css/modules/layer/default/layer.css" media="all">
     <link rel="stylesheet" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="__PUBLIC__/webupload/webuploader.css" media="all" />
     <script type="text/javascript" charset="utf8" src="__PUBLIC__/jquery/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="__PUBLIC__/layui/layui.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
-
+    <script src="__PUBLIC__/webupload/webuploader.min.js"></script>
     <style type="text/css">
         .myitem{
             background:#9ccc5e;border:solid 1px #6e845c;
@@ -25,27 +26,48 @@
             margin-top:1px;
             height:10px;overflow:hidden;background:#0d55a4;
         }
-        .layui-form-label{
+        .formlable .layui-form-label{
             width: 26px;
         }
         .layuiRight{
             float: right;
         }
+
+        #addPlan .layui-form-label{
+            width: 95px;
+        }
+        .layui-input-block input{
+            width: 87%;
+        }
+        /*.layui-form-label{*/
+            /*width: 120px;*/
+        /*}*/
+        /*textarea{*/
+            /*width: 60%;*/
+        /*}*/
+        .layui-input-block {
+            margin-right: 35px;
+        }
+        .layui-form-mid {
+            float: right;
+            padding: 8px 0!important;
+            line-height: 20px;
+            margin-top: -46px;
+            margin-right: 2px;
+        }
+
     </style>
 </head>
 <body>
 <div class="layui-fluid">
     <div class="layui-row">
         <div style="padding: 10px 0 0 0">
-            <form class="layui-form" action="">
+            <form class="layui-form formlable" action="" style="width: 60%;">
                 <div class="layui-inline">
                     <label class="layui-form-label" style="padding-left: 0px">标段</label>
                     <div class="layui-input-inline">
                         <select id="seleBids" name="bidsType" lay-filter="bids">
-                            <option value="">-请选择-</option>
-                            <option value="0">未验评</option>
-                            <option value="2">合格</option>
-                            <option value="3">优良</option>
+                            <!--<option value="">-请选择-</option>-->
                         </select>
                     </div>
                 </div>
@@ -53,10 +75,7 @@
                     <label class="layui-form-label">年度</label>
                     <div class="layui-input-inline">
                         <select id="seleYear" name="yearType" lay-filter="year">
-                            <option value="">-请选择-</option>
-                            <option value="0">未验评</option>
-                            <option value="2">合格</option>
-                            <option value="3">优良</option>
+
                         </select>
                     </div>
                 </div>
@@ -64,19 +83,14 @@
                     <label class="layui-form-label">月度</label>
                     <div class="layui-input-inline">
                         <select id="seleMonthly" name="monthType" lay-filter="month">
-                            <option value="">-请选择-</option>
-                            <option value="0">未验评</option>
-                            <option value="2">合格</option>
-                            <option value="3">优良</option>
                         </select>
                     </div>
                 </div>
-                <div class="layui-inline layuiRight">
-                    <label class="layui-form-label"> </label>
-                    <button class="layui-btn layui-btn-normal"  onclick="addTask()">新增月计划</button>
-                    <button class="layui-btn layui-btn-normal"  onclick="addTask()">月计划列表</button>
-                </div>
             </form>
+            <div class="layui-inline" style="float: right;margin-top: -37px">
+                <button class="layui-btn layui-btn-normal" id="addPlanTask">新增月计划</button>
+                <button class="layui-btn layui-btn-normal" onclick="monthlyPlanList()">月计划列表</button>
+            </div>
         </div>
         <div style="padding: 10px 0">
             <button class="layui-btn layui-btn-normal" onclick="save()">保存</button>
@@ -87,7 +101,6 @@
             <button class="layui-btn layui-btn-warm"  onclick="upgradeTask()">升级</button>
             <button class="layui-btn layui-btn-warm" onclick="downgradeTask()">降级</button>
             <div class="layui-inline layuiRight">
-
                 <input type="checkbox" id="showCriticalPath" onclick="showCriticalPath(this.checked)" />
                 <label for="showCriticalPath">显示关键路径</label>
                 <button class="layui-btn layui-btn-warm" onclick="zoomIn()">放大</button>
@@ -103,9 +116,94 @@
     </form>
     <iframe id="exportIFrame" name="exportIFrame" style="display:none;"></iframe>
 
+    <!--新增月计划-->
+    <form action="" class="layui-form layui-layer-wrap" id="addPlan" style="display: none;">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">计划名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="plan_name" placeholder="请输入名称" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">所属标段</label>
+                <div class="layui-input-inline">
+                    <input type="text"  id="secName" readonly disabled="true" autocomplete="off" class="layui-input">
+                    <input type="hidden" name="section_id" id="sec_id" readonly disabled autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">年度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="plan_year" id="testYear" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">月度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="plan_monthly" id="testMonth" lay-verify="required" autocomplete="off" class="layui-input maBasesBtn">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remake" placeholder="请输入内容" class="layui-textarea" maxlength="500" style="width:97%;"></textarea>
+                <input type="hidden" name="cover" id="coverId">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上传计划报告</label>
+            <div class="layui-input-block">
+                <input type="text" id="report_id" name="plan_report_id" readonly="" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input">
+                <div id="uploadList" class="upload-list"></div>
+                <div class="layui-form-mid layui-word-aux">
+                    <div id="upload" class="upload layui-btn">上传</div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">请选择更新方式:</label>
+                <input type="radio" name="update_mode" lay-filter="aihao" value="1" title="系统内手动编辑" checked>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label"></label>
+                <input type="radio" name="update_mode" lay-filter="aihao" value="2" title="导入全新计划版本">
+            </div>
+        </div>
+        <div class="layui-form-item" style="display: none" id="modelList">
+            <label class="layui-form-label">上传计划文件</label>
+            <div class="layui-input-block">
+                <input type="text" name="plan_file_id" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" readonly="">
+                <div id="uploadListFile" class="upload-list"></div>
+                <div class="layui-form-mid layui-word-aux">
+                    <div id="uploadFile" class="upload layui-btn">上传</div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center;">
+                <button class="layui-btn" lay-submit lay-filter="save" id="saveMonthPlan" style="margin-right: 30px">保存</button>
+                <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+            </div>
+        </div>
+    </form>
+
+
 </div>
 
+<link href="__PUBLIC__/gantts/scripts/miniui/themes/blue/skin.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/gantts/scripts/miniui/themes/icons.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css" rel="stylesheet" type="text/css" />
 <script src="__PUBLIC__/jquery/jquery.min.js" type="text/javascript"></script>
+
 <script src="__PUBLIC__/gantts/scripts/miniui/miniui.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/miniui/locale/zh_CN.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/CalendarWindow.js" type="text/javascript"></script>
@@ -115,19 +213,80 @@
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/ThirdLibs/swfobject/swfobject.js" type="text/javascript"></script>
-<link href="__PUBLIC__/gantts/scripts/miniui/themes/icons.css" rel="stylesheet" type="text/css" />
-<link href="__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css" rel="stylesheet" type="text/css" />
-<link href="__PUBLIC__/gantts/scripts/miniui/themes/blue/skin.css" rel="stylesheet" type="text/css" />
+
 </body>
-<!--<script src="__WEBSITE__/progress/monthlyplan/index.js" type="text/javascript"></script>-->
+<script src="__WEBSITE__/progress/monthlyplan/index.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+    /*标段*/
     layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
         var form = layui.form
             ,layer = layui.layer
             ,laydate = layui.laydate;
-    });
+        $.ajax({
+            // async : false,
+            url: "/progress/monthlyplan/index",
+            type: "get",
+            success: function (res) {
+                if(res.code == 1){
+                    var orgs = res.sectionArr;
+                    for (var indexId in orgs) {
+                        $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
+                    }
+                    layui.form.render();
+                    yearFun($("#seleBids").val())
+                }
+                //TODO 问问后台res.code ！= 1是怎么提示的
 
+            }
+        });
+
+    });
+    /*年度*/
+    function yearFun(id) {
+        $.ajax({
+            // async : false,
+            url: "/progress/monthlyplan/planYear",
+            type: "post",
+            data: {section_id: id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code == 1){
+                    var orgs = res.data;
+                    for (var indexId in orgs) {
+                        $("#seleYear").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
+                    }
+                    layui.form.render();
+                    // monthFun($("#seleBids").val(),$("#testYear").val());
+                }if(res.code != 1){
+                    layer.msg(res.msg)
+                }
+            }
+        });
+    }
+    /*月度*/
+    function monthFun(set_id,year_id) {
+        $.ajax({
+            async : false,
+            url: "/progress/monthlyplan/planMonthly",
+            type: "post",
+            data: {section_id:set_id,plan_year:year_id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code == 1){
+                    console.log(res);
+                    var orgs = res.data;
+                    for (var indexId in orgs) {
+                        $("#seleMonthly").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
+                    }
+                    layui.form.render();
+
+                }if(res.code != 1){
+                    layer.msg(res.msg)
+                }
+            }
+        });
+    }
 
     /*实例化甘特图
 -----------------------------------------------------------------------------*/
@@ -149,15 +308,34 @@
         new PlusProject.AssignmentsColumn()     //资源名称。
 
     ]);
-    project.setRowHeight(30);                   //设置行高
-    project.setShowLinkLines(true);             //设置是否显示箭头连线
-    project.setAllowDragDrop(true);             //设置是否允许任务行拖拽
+    // project.setRowHeight(30);                   //设置行高
+    // project.setShowLinkLines(true);             //设置是否显示箭头连线
     // project.setShowCriticalPath(true);          //设置是否显示关键路径
-    // project.setShowGridLines(true);             //设置是否显示关键路径
-
-    // console.log(project.getCalendars()[0].WeekDays[0]);
+    //
+    // project.setAllowDragDrop(false);             //设置是否允许任务行拖拽
+    // // project.setShowGridLines(true);             //设置是否显示关键路径
+    //
+    console.log(project.getCalendars());
     // var set = project.getCalendars()[0].WeekDays[0]
 
+    // project.getCalendars()
+
+
+    // var calendarsArr = [{BaseCalendarUID:"-1",
+    // Exceptions:[],
+    // IsBaseCalendar:1,
+    // Name:"标准",
+    // UID:"1",
+    // WeekDays:[
+    //     {DayWorking: 1, DayType: 1},
+    //     {DayWorking: 1, DayType: 2},
+    //     {DayWorking: 1, DayType: 3},
+    //     {DayWorking: 1, DayType: 4},
+    //     {DayWorking: 1, DayType: 5},
+    //     {DayWorking: 1, DayType: 6},
+    //     {DayWorking: 1, DayType: 7},
+    //     ]}]
+    // project.setCalendars(calendarsArr);
 
     project.render(document.getElementById("viewCt"));
     //创建右键菜单
@@ -183,164 +361,167 @@
     /* 业务代码
 -----------------------------------------------------------------------------*/
 
-    //1)自定义条形图外观显示
-    project.on("drawitem", function (e) {
-        var item = e.item;
-        var left = e.itemBox.left,
-            top = e.itemBox.top,
-            width = e.itemBox.width,
-            height = e.itemBox.height;
-
-        if (!item.Summary && !item.Milestone) {
-            var percentWidth = width * (item.PercentComplete / 100);
-
-            e.itemHtml = '<div id="' + item._id + '" class="myitem" style="left:' + left + 'px;top:' + top + 'px;width:' + width + 'px;height:' + (height) + 'px;">';
-            e.itemHtml += '<div style="width:' + (percentWidth) + 'px;" class="percentcomplete"></div>';
-
-            //根据你自己逻辑，把任务分成几块，注意坐标和宽度
-            // e.itemHtml += '<div style="position:absolute;left:0px;top:0;height:100%;width:20px;background:red;"></div>';
-
-            e.itemHtml += '</div>';
-
-            // e.ItemHtml = '<a href="http://www.baidu.com" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+(height-2)+'px;" class="myitem">111</a>';
-        }
-    });
-
+    // //1)自定义条形图外观显示
+    // project.on("drawitem", function (e) {
+    //     var item = e.item;
+    //     var left = e.itemBox.left,
+    //         top = e.itemBox.top,
+    //         width = e.itemBox.width,
+    //         height = e.itemBox.height;
+    //
+    //     if (!item.Summary && !item.Milestone) {
+    //         var percentWidth = width * (item.PercentComplete / 100);
+    //
+    //         e.itemHtml = '<div id="' + item._id + '" class="myitem" style="left:' + left + 'px;top:' + top + 'px;width:' + width + 'px;height:' + (height) + 'px;">';
+    //         e.itemHtml += '<div style="width:' + (percentWidth) + 'px;" class="percentcomplete"></div>';
+    //
+    //         //根据你自己逻辑，把任务分成几块，注意坐标和宽度
+    //         // e.itemHtml += '<div style="position:absolute;left:0px;top:0;height:100%;width:20px;background:red;"></div>';
+    //
+    //         e.itemHtml += '</div>';
+    //
+    //         // e.ItemHtml = '<a href="http://www.baidu.com" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+(height-2)+'px;" class="myitem">111</a>';
+    //     }
+    // });
+    //
     // project.on('itemdragstart', function (e) {
-    //     console.log(e);
+    //     // console.log(e);
     //     // var project = e.source;
     //     // var task = e.task;
     // });
-
-    //加载数据 点击重新加载数据
-    function load() {
-        project.loading();
-        $.ajax({
-            url: "data/taskList.txt",
-            cache: false,
-            success: function (text) {
-                var data = mini.decode(text);
-
-                //列表转树形
-                data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
-
-                project.loadTasks(data);
-
-                project.unmask();
-            }
-        });
-    }
-    // load();
-
-    project.on("drawcell", function (e) {
-        var task = e.record, column = e.column, field = e.field;
-
-        //新增
-        if (task._state == "added") {
-            e.rowCls = "row_added";
-        }
-        //删除
-        if (task.Deleted == true) {
-            e.rowCls = "row_deleted";
-        }
-
-    });
-
-    //2)保存
-    function save() {
-        var newTask = project.newTask();
-        newTask.Name = '<新增任务>';    //初始化任务属性
-
-        var selectedTask = project.getSelected();
-        if (selectedTask) {
-            project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
-            //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
-        } else {
-            project.addTask(newTask);
-        }
-        //使用jQuery的ajax，把任务数据，发送到服务端进行处理
-        //    $.ajax({
-        //        url: 'savegant.aspx',
-        //        type: "POST",
-        //        data: params,
-        //        success: function (text) {
-        //            alert("保存成功");
-        //        }
-        //    });
-    }
-    //3)打印
-    function printGantt() {
-        project.printServer = "__PUBLIC__/gantts/scripts/plusproject/services/snapshot/snapshot.aspx";
-        project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
-        project.print();
-    }
-    //4)添加
-    function addTask() {
-        var newTask = project.newTask();
-        newTask.Name = '<新增任务>';    //初始化任务属性
-
-        var selectedTask = project.getSelected();
-        if (selectedTask) {
-            project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
-            //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
-        } else {
-            project.addTask(newTask);
-        }
-    }
-    //5)删除
-    function removeTask() {
-        var task = project.getSelected();
-        if (task) {
-            if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
-                project.removeTask(task);
-            }
-        } else {
-            alert("请选中任务");
-        }
-    }
-    //6)升级
-    function upgradeTask() {
-        var task = project.getSelected();
-        if (task) {
-            project.upgradeTask(task);
-        } else {
-            alert("请选选中任务");
-        }
-    }
-    //7)降级
-    function downgradeTask() {
-        var task = project.getSelected();
-        if (task) {
-            project.downgradeTask(task);
-        } else {
-            alert("请选选中任务");
-        }
-    }
+    //
+    // //加载数据 点击重新加载数据
+    // function load() {
+    //     project.loading();
+    //     $.ajax({
+    //         url: "data/taskList.txt",
+    //         cache: false,
+    //         success: function (text) {
+    //             var data = mini.decode(text);
+    //
+    //             //列表转树形
+    //             data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
+    //
+    //             project.loadTasks(data);
+    //
+    //             project.unmask();
+    //         }
+    //     });
+    // }
+    // // load();
+    //
+    // project.on("drawcell", function (e) {
+    //     var task = e.record, column = e.column, field = e.field;
+    //
+    //     //新增
+    //     if (task._state == "added") {
+    //         e.rowCls = "row_added";
+    //     }
+    //     //删除
+    //     if (task.Deleted == true) {
+    //         e.rowCls = "row_deleted";
+    //     }
+    //
+    // });
+    //
+    // //2)保存
+    // function save() {
+    //     var newTask = project.newTask();
+    //     newTask.Name = '<新增任务>';    //初始化任务属性
+    //
+    //     var selectedTask = project.getSelected();
+    //     if (selectedTask) {
+    //         project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
+    //         //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
+    //     } else {
+    //         project.addTask(newTask);
+    //     }
+    //     //使用jQuery的ajax，把任务数据，发送到服务端进行处理
+    //     //    $.ajax({
+    //     //        url: 'savegant.aspx',
+    //     //        type: "POST",
+    //     //        data: params,
+    //     //        success: function (text) {
+    //     //            alert("保存成功");
+    //     //        }
+    //     //    });
+    // }
+    // //3)打印
+    // function printGantt() {
+    //     project.printServer = "__PUBLIC__/gantts/scripts/plusproject/services/snapshot/snapshot.aspx";
+    //     project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
+    //     project.print();
+    // }
+    // //4)添加
+    // function addTask() {
+    //     var newTask = project.newTask();
+    //     newTask.Name = '<新增任务>';    //初始化任务属性
+    //
+    //     var selectedTask = project.getSelected();
+    //     if (selectedTask) {
+    //         project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
+    //         //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
+    //     } else {
+    //         project.addTask(newTask);
+    //     }
+    // }
+    // //5)删除
+    // function removeTask() {
+    //     var task = project.getSelected();
+    //     if (task) {
+    //         if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
+    //             project.removeTask(task);
+    //         }
+    //     } else {
+    //         alert("请选中任务");
+    //     }
+    // }
+    // //6)升级
+    // function upgradeTask() {
+    //     var task = project.getSelected();
+    //     if (task) {
+    //         project.upgradeTask(task);
+    //     } else {
+    //         alert("请选选中任务");
+    //     }
+    // }
+    // //7)降级
+    // function downgradeTask() {
+    //     var task = project.getSelected();
+    //     if (task) {
+    //         project.downgradeTask(task);
+    //     } else {
+    //         alert("请选选中任务");
+    //     }
+    // }
     //8)显示关键路径
-    function showCriticalPath(show) {
-        project.setShowCriticalPath(show);
+    function showCriticalPath(shows) {
+        project.setShowCriticalPath(shows);
     }
-    //9)放大
-    function zoomIn() {
-        project.zoomIn();
-    }
-    //10)缩小
-    function zoomOut() {
-        project.zoomOut();
-    }
-    //11)更新
-    function updateTask() {
-        var selectedTask = project.getSelected();
-        alert("编辑选中任务:" + selectedTask.Name);
-    }
-    //112)更改顶部时间刻度
-    function changeTopTimeScale(value) {
-        project.setTopTimeScale(value)
-    }
-    //13)更改低部时间刻度
-    function changeBottomTimeScale(value) {
-        project.setBottomTimeScale(value)
-    }
+    // //9)放大
+    // function zoomIn() {
+    //     project.zoomIn();
+    // }
+    // //10)缩小
+    // function zoomOut() {
+    //     project.zoomOut();
+    // }
+    //
+    // //11)更新
+    // function updateTask() {
+    //     var selectedTask = project.getSelected();
+    //     alert("编辑选中任务:" + selectedTask.Name);
+    // }
+    // //112)更改顶部时间刻度
+    // function changeTopTimeScale(value) {
+    //     project.setTopTimeScale(value)
+    // }
+    // //13)更改低部时间刻度
+    // function changeBottomTimeScale(value) {
+    //     project.setBottomTimeScale(value)
+    // }
+
+
 
 </script>
 </html>

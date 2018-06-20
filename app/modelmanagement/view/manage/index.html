@@ -445,6 +445,19 @@
             review();
         }
     }
+
+    //键盘事件
+    $(document).keyup(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        console.log(KeyCode);
+        if ( KeyCode == 27 ){
+            var treeObj = $.fn.zTree.getZTreeObj("ztree");
+            treeObj.checkAllNodes(false);
+            opacityState=false;
+            //根据所选标段展示对应模型
+            selectedSectionShowModel(selectedModeGroupIds);
+        }
+    });
 </script>
 </body>
 </html>

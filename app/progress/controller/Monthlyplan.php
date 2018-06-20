@@ -137,6 +137,22 @@ class Monthlyplan extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
 
+            // 格式化月度
+            $mon = explode('-',$param['plan_monthly']);
+            $param['plan_monthly'] = intval($mon[1]);
+
+            // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
+            $monthly = new MonthlyplanModel();
+            $is_exist_id = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
+            if($is_exist_id){
+                $cover = isset($param['cover']) ? $param['cover'] : 0;
+                if($cover == 1){
+                    // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
+                    $monthly->deleteTb($is_exist_id);
+                }
+                return json(['code'=>2,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
+            }
+
             // 更新方式是导入全新计划版本的话,就验证是否上传了Project或P6格式的文件
             if($param['update_mode'] == 2){ // 1手动 2导入
                 $plan_file_id = isset($param['plan_file_id']) ? $param['plan_file_id'] : 0;
@@ -144,18 +160,6 @@ class Monthlyplan extends Permissions
                     return json(['code' => -1,'msg' => '缺少Project或P6格式的导入文件']);
                 }
                 //TODO 导入文件
-            }
-
-            // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
-            $monthly = new MonthlyplanModel();
-            $is_exist_id = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
-            if($is_exist_id){
-                $cover = isset($param['cover']) ? $param['cover'] : 0;
-                if($cover){
-                    // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
-                    $monthly->deleteTb($is_exist_id);
-                }
-                return json(['code'=>-1,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
             }
 
             $id = isset($param['mid']) ? $param['mid'] : 0;
