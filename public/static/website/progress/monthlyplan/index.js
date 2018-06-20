@@ -8,8 +8,21 @@ $("#addPlanTask").click(function () {
             area:['760px','650px'],
             content:$('#addPlan'),
             success:function () {
-                $("#sec").val($("#seleBids").val());
-
+                layui.use(['form', 'layedit', 'laydate'], function () {
+                    form = layui.form;
+                    var laydate = layui.laydate;
+                    var layer = layui.layer;
+                    form.on('select(aihao)', function(data){
+                        console.log(data.value)
+                        if(data.value == 1){
+                            $("#modelList").css("display",'none');
+                        }else if(data.value == 2){
+                            $("#modelList").css("display",'block');
+                        }
+                    });
+                });
+                $("#secName").val($("#seleBids option:selected").text());
+                $("#sec_id").val($("#seleBids").val());
             },
             yes:function () {
 
@@ -36,12 +49,14 @@ layui.use(['form', 'layedit', 'laydate'], function () {
     laydate.render({
         elem: '#testYear'
         ,type: 'year'
+        ,value: new Date().getFullYear() //必须遵循format参数设定的格式
     });
 
     //年月选择器
     laydate.render({
         elem: '#testMonth'
         ,type: 'month'
+        ,value: ""+new Date().getFullYear()+ "-" + (new Date().getMonth()+1)+""
     });
     form.on('radio(aihao)', function(data){
         console.log(data.value)
@@ -60,13 +75,17 @@ uploader = WebUploader.create({
     server: "/admin/common/upload",
     pick: {
         multiple: false,
-        id: "#uploadDemo",
+        id: "#upload",
         innerHTML: "上传"
     },
     accept: {
         title: '',
         extensions: '',
         mimeTypes: ''
+    },
+    formData:{
+        module:'progress',
+        use:'monthlyplan'
     },
     resize: false,
     duplicate: true
@@ -94,11 +113,55 @@ uploader.on('uploadProgress', function (file, percentage) {
     $('.layui-progress-bar').html(Math.round(percentage * 100) + '%');
 });
 //上传成功
-uploader.on('uploadSuccess', function (file, response) {
+uploader.on('uploadSuccess', function (file, res) {
     $('#uploadListDemo').css('opacity',0);
+    $('#report_id').val(file.name);
 });
 
+/*点击保存*/
+$("#saveMonthPlan").click(function () {
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form;
+        var layer = layui.layer
 
+        //监听提交
+        form.on('submit(save)', function (data) {
+            $.ajax({
+                type: "Post",
+                url: "/progress/monthlyplan/add",
+                data: data.field,
+                success: function (res) {
+                    if (res.code == 1) {
+                        console.log(res);
+                        layer.msg(res.msg);
+                        layer.closeAll('page');
+                    }else  if (res.code == 2) {
+                        $("#coverId").val(1);
+                        $("#saveMonthPlan").text("确认覆盖");
+                        console.log(res);
+                        layer.msg(res.msg);
+                    }else {
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+            return false;
+        });
+    });
+})
+
+
+/*点击月计划列表*/
+function monthlyPlanList() {
+    layer.open({
+        type: 2,
+        title: "标段"+$("#seleBids option:selected").text()+"-月进度计划",
+        area: ['100%', '100%'],
+        content: '/progress/monthlyplan/list_table',
+        // end:function () {
+        // }
+    });
+}
 
 
 
