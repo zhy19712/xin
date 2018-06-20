@@ -17,7 +17,7 @@ $("#addPlanTask").click(function () {
             cancel: function(index, layero){
                 layer.close(layer.index);
                 $("#addPlan input[name='plan_name']").val("");
-                $("#addPlan input[name='plan_report_id']").val("");
+                $("#addPlan input[name='report_id']").val("");
                 $("textarea").val("");
                 $("#coverId").val(0);
                 $("#saveMonthPlan").text("保存");
@@ -32,7 +32,7 @@ $("#addPlanTask").click(function () {
 $('.close').click(function () {
     layer.closeAll('page');
     $("#addPlan input[name='plan_name']").val("");
-    $("#addPlan input[name='plan_report_id']").val("");
+    $("#addPlan input[name='report_id']").val("");
     $("textarea").val("");
     $("#coverId").val(0);
     $("#saveMonthPlan").text("保存");
@@ -141,7 +141,7 @@ $("#saveMonthPlan").click(function () {
                         layer.msg(res.msg);
                         layer.closeAll('page');
                         $("#addPlan input[name='plan_name']").val("");
-                        $("#addPlan input[name='plan_report_id']").val("");
+                        $("#addPlan input[name='report_id']").val("");
                         $("#coverId").val(0);
                         $("#saveMonthPlan").text("保存");
                         $("textarea").val("");
@@ -168,105 +168,6 @@ function monthlyPlanList() {
         title: "标段"+$("#seleBids option:selected").text()+"-月进度计划",
         area: ['100%', '100%'],
         content: '/progress/monthlyplan/list_table?section_id='+$("#seleBids").val(),
-        success: function(layero, index){
-            // var body = layer.getChildFrame('script', index);
-            // // body.find("#selectId").val($("#seleBids").val());
-        },
-        end:function () {
-        }
     });
 }
 
-
-
-
-
-
-/* 业务代码
------------------------------------------------------------------------------*/
-
-//1)自定义条形图外观显示
-/*
-
-//2)保存
-function save() {
-    var newTask = project.newTask();
-    newTask.Name = '<新增任务>';    //初始化任务属性
-
-    var selectedTask = project.getSelected();
-    if (selectedTask) {
-        project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
-        //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
-    } else {
-        project.addTask(newTask);
-    }
-    //使用jQuery的ajax，把任务数据，发送到服务端进行处理
-    //    $.ajax({
-    //        url: 'savegant.aspx',
-    //        type: "POST",
-    //        data: params,
-    //        success: function (text) {
-    //            alert("保存成功");
-    //        }
-    //    });
-}
-//3)加载数据 点击重新加载数据
-function load() {
-    gantt.loading();
-    $.ajax({
-        url: "data/taskList.txt",
-        cache: false,
-        success: function (text) {
-            var data = mini.decode(text);
-
-            //列表转树形
-            data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
-
-            gantt.loadTasks(data);
-
-            gantt.unmask();
-        }
-    });
-}
-// load();
-//4)更改顶部时间刻度
-function changeTopTimeScale(value) {
-    project.setTopTimeScale(value)
-}
-//5)更改低部时间刻度
-function changeBottomTimeScale(value) {
-    project.setBottomTimeScale(value)
-}
-//6)放大
-function zoomIn() {
-    project.zoomIn();
-}
-//7)缩小
-function zoomOut() {
-    project.zoomOut();
-}
-//8)添加
-function addTask() {
-    var newTask = project.newTask();
-    newTask.Name = '<新增任务>';    //初始化任务属性
-
-    var selectedTask = project.getSelected();
-    if (selectedTask) {
-        project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
-        //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
-    } else {
-        project.addTask(newTask);
-    }
-}
-//9)删除
-function removeTask() {
-    var task = project.getSelected();
-    if (task) {
-        if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
-            project.removeTask(task);
-        }
-    } else {
-        alert("请选中任务");
-    }
-}
-*/

@@ -286,6 +286,7 @@
                         $("#seleMonthly").append($("<option/>").text(orgs[i]));
                     }
                     layui.form.render();
+                    load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -349,12 +350,37 @@
         ShowTaskWindow(project);
     });
 
-    //获取数据
-    LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
-        var projectStart = mini.get("projectStart");
+    // //获取数据
+    // LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
+    //     var projectStart = mini.get("projectStart");
+    //
+    //     project.setStartDate(new Date(2017,1,1));
+    // });
+    //加载数据 点击重新加载数据
+    function load(sectionId,planYear,monthly) {
+        project.loading();
+        $.ajax({
+            url: "/progress/monthlyplan/monthlyInitialise",
+            data:{
+                section_id:sectionId,
+                plan_year:planYear,
+                plan_monthly:monthly,
+            },
+            cache: false,
+            success: function (res) {
+                var data = mini.decode(res);
 
-        project.setStartDate(new Date(2017,1,1));
-    });
+                //列表转树形
+                data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
+
+                project.loadTasks(data);
+
+                project.unmask();
+            }
+        });
+    }
+
+
 
     //锁定列
     function frozenColumn() {
@@ -394,25 +420,6 @@
         // var task = e.task;
     });
 
-    //加载数据 点击重新加载数据
-    function load() {
-        project.loading();
-        $.ajax({
-            url: "data/taskList.txt",
-            cache: false,
-            success: function (text) {
-                var data = mini.decode(text);
-
-                //列表转树形
-                data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
-
-                project.loadTasks(data);
-
-                project.unmask();
-            }
-        });
-    }
-    // load();
 
     project.on("drawcell", function (e) {
         var task = e.record, column = e.column, field = e.field;
