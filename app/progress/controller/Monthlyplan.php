@@ -13,6 +13,7 @@ use app\admin\controller\Permissions;
 use app\admin\model\Attachment;
 use app\contract\model\SectionModel;
 use app\progress\model\MonthlyplanModel;
+use app\progress\model\PlusProjectModel;
 use think\Db;
 
 /**
@@ -68,7 +69,7 @@ class Monthlyplan extends Permissions
     public function planMonthly()
     {
         if($this->request->isAjax()){
-            // 前台需要 传递 标段编号 section_id 年度编号 plan_year
+            // 前台需要 传递 标段编号 section_id 年度 plan_year
             $param = input('param.');
             $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
             $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
@@ -88,6 +89,13 @@ class Monthlyplan extends Permissions
      */
     public function list_table()
     {
+        // 前台需要 传递 标段编号 section_id  [作用::刷新列表时使用]
+        $param = input('param.');
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+        if(empty($section_id)){
+            return json(['code' => '-1','msg' => '缺少参数']);
+        }
+        $this->assign('section_id',$section_id);
         return $this->fetch();
     }
 
@@ -98,14 +106,16 @@ class Monthlyplan extends Permissions
      */
     public function existPlan()
     {
+        // 前台需要 传递 标段编号 section_id 年度 plan_year 月度 plan_monthly
         $param = input('param.');
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
         $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
         $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
-        if(empty($plan_year) || empty($plan_monthly)){
+        if(empty($section_id) || empty($plan_year) || empty($plan_monthly)){
             return json(['code'=>'-1','msg'=>'缺少参数']);
         }
         $monthly = new MonthlyplanModel();
-        $is_exist = $monthly->monthlyExist($plan_year,$plan_monthly);
+        $is_exist = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
         if($is_exist){
             return json(['code'=>'2','msg'=>'存在计划']);
         }
@@ -143,7 +153,7 @@ class Monthlyplan extends Permissions
 
             // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
             $monthly = new MonthlyplanModel();
-            $is_exist_id = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
+            $is_exist_id = $monthly->monthlyExist($param['section_id'],$param['plan_year'],$param['plan_monthly']);
             if($is_exist_id){
                 $cover = isset($param['cover']) ? $param['cover'] : 0;
                 if($cover == 0){
@@ -162,15 +172,7 @@ class Monthlyplan extends Permissions
                 }
                 //TODO 导入文件
             }
-
-            $id = isset($param['mid']) ? $param['mid'] : 0;
-
-            if(empty($id)){
-                $flag = $monthly->insertTb($param);
-            }else{
-                $param['id'] = $id;
-                $flag = $monthly->editTb($param);
-            }
+            $flag = $monthly->insertTb($param);
             return json($flag);
         }
     }
@@ -277,7 +279,9 @@ class Monthlyplan extends Permissions
             return json(['code' => -1,'msg' => '缺少参数']);
         }
         $monthly = new MonthlyplanModel();
-        $data = $monthly->initialiseData($section_id,$plan_year,$plan_monthly);
+        $id = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
+        $project = new PlusProjectModel();
+        $data = $project->initialiseData($id);
 
     }
 
