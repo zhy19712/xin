@@ -38,16 +38,47 @@ class Monthlyplan extends Permissions
         return $this->fetch();
     }
 
-    // TODO 根据选择的标段获取年度
+    /**
+     * 倒序获取
+     * 根据选择的标段获取年度
+     * @return \think\response\Json
+     * @author hutao
+     */
     public function planYear()
     {
-
+        if($this->request->isAjax()){
+            // 前台需要 传递 标段编号 section_id
+            $param = input('param.');
+            $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+            if(empty($section_id)){
+                return json(['code' => '-1','msg' => '缺少参数']);
+            }
+            $section = new MonthlyplanModel();
+            $data = $section->planYearList($section_id);
+            return json(['code'=>1,'data'=>$data,'msg'=>'年度下拉选项']);
+        }
     }
 
-    // TODO 根据选择的标段获取月度
-    public function plan_monthly()
+    /**
+     * 倒序获取
+     * 根据选择的标段获取月度
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function planMonthly()
     {
-
+        if($this->request->isAjax()){
+            // 前台需要 传递 标段编号 section_id 年度编号 plan_year
+            $param = input('param.');
+            $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+            $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+            if(empty($section_id) || empty($plan_year)){
+                return json(['code' => '-1','msg' => '缺少参数']);
+            }
+            $section = new MonthlyplanModel();
+            $data = $section->planMonthlyList($section_id,$plan_year);
+            return json(['code'=>1,'data'=>$data,'msg'=>'月度下拉选项']);
+        }
     }
 
     /**
@@ -106,6 +137,22 @@ class Monthlyplan extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
 
+            // 格式化月度
+            $mon = explode('-',$param['plan_monthly']);
+            $param['plan_monthly'] = intval($mon[1]);
+
+            // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
+            $monthly = new MonthlyplanModel();
+            $is_exist_id = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
+            if($is_exist_id){
+                $cover = isset($param['cover']) ? $param['cover'] : 0;
+                if($cover == 1){
+                    // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
+                    $monthly->deleteTb($is_exist_id);
+                }
+                return json(['code'=>2,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
+            }
+
             // 更新方式是导入全新计划版本的话,就验证是否上传了Project或P6格式的文件
             if($param['update_mode'] == 2){ // 1手动 2导入
                 $plan_file_id = isset($param['plan_file_id']) ? $param['plan_file_id'] : 0;
@@ -113,18 +160,6 @@ class Monthlyplan extends Permissions
                     return json(['code' => -1,'msg' => '缺少Project或P6格式的导入文件']);
                 }
                 //TODO 导入文件
-            }
-
-            // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
-            $monthly = new MonthlyplanModel();
-            $is_exist_id = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
-            if($is_exist_id){
-                $cover = isset($param['cover']) ? $param['cover'] : 0;
-                if($cover){
-                    // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
-                    $monthly->deleteTb($is_exist_id);
-                }
-                return json(['code'=>-1,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
             }
 
             $id = isset($param['mid']) ? $param['mid'] : 0;
@@ -151,7 +186,7 @@ class Monthlyplan extends Permissions
         if($this->request->isAjax()){
             // 前台传递本条记录的编号 plan_id
             $param = input('param.');
-            $plan_id = isset($param['plan_id']) ? $param['plan_id'] : 1;
+            $plan_id = isset($param['plan_id']) ? $param['plan_id'] : 0;
             if(empty($plan_id)){
                 return json(['code'=>-1,'msg'=>'缺少参数']);
             }
@@ -214,7 +249,7 @@ class Monthlyplan extends Permissions
         if($this->request->isAjax()){
             // 前台需要 传递 文件编号 file_id
             $param = input('param.');
-            $file_id = isset($param['file_id']) ? $param['file_id'] : 6;
+            $file_id = isset($param['file_id']) ? $param['file_id'] : 0;
             if(empty($file_id)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }

@@ -790,7 +790,6 @@ class Division extends Permissions{
                 ['serial_number', 'alphaDash', '流水号只能是字母、数字、下划线 _和破折号 - 的组合'],
                 ['site', 'require|max:100', '部位不能为空|部位不能超过100个字符'],
                 ['coding', 'require|alphaDash', '系统编码不能为空|系统编码只能是字母、数字、下划线 _和破折号 - 的组合'],
-                ['ma_bases', 'require', '请选择施工依据'],
                 ['hinge', 'require|number', '请选择是否是关键部位|关键部位只能是数字'],
                 ['en_type', 'require|number|gt:0', '请选择工程类型|工程类型只能是数字|请选择工程类型'],
                 ['start_date', 'date', '开工日期格式有误']
@@ -808,6 +807,10 @@ class Division extends Permissions{
                 if($start_date > $completion_date){
                     return json(['code' => -1,'msg' => '完工日期要大于开工日期']);
                 }
+            }
+            if(!isset($param['ma_bases'])&&!isset($param['ma_basic']))
+            {
+                return json(['code' => -1,'msg' => '施工依据和补充依据至少要填写一项']);
             }
 
             /**

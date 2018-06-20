@@ -55,8 +55,10 @@ class MonthlyplanModel extends Model
             $file_data = Db::name('attachment')->where(['id'=>['in',[$data['plan_report_id'],$data['plan_file_id']]]])->column('filepath');
             $att = new Attachment();
             foreach ($file_data as $v){
-                if(file_exists('.'.$v)){
-                    unlink('.'.$v); //删除文件
+                if($v){
+                    if(file_exists('.'.$v)){
+                        unlink('.'.$v); //删除文件
+                    }
                 }
             }
             $att->deleteTb($data['plan_report_id']);
@@ -83,6 +85,20 @@ class MonthlyplanModel extends Model
     public function monthlyExist($plan_year,$plan_monthly)
     {
         $data = $this->where(['plan_year'=>$plan_year,'plan_monthly'=>$plan_monthly])->value('id');
+        return $data;
+    }
+
+    // 根据选择的标段获取年度
+    public function planYearList($section_id)
+    {
+        $data = $this->where('section_id',$section_id)->order('plan_year desc')->column('plan_year');
+        return $data;
+    }
+
+    // 根据选择的标段获取月度
+    public function planMonthlyList($section_id,$plan_year)
+    {
+        $data = $this->where(['section_id'=>$section_id,'plan_year'=>$plan_year])->order('plan_monthly desc')->column('plan_monthly');
         return $data;
     }
 
