@@ -15,6 +15,7 @@ use app\contract\model\SectionModel;
 use app\progress\model\MonthlyplanModel;
 use app\progress\model\PlusProjectModel;
 use think\Db;
+use think\Session;
 
 /**
  * 月计划管理
@@ -150,6 +151,9 @@ class Monthlyplan extends Permissions
             // 格式化月度
             $mon = explode('-',$param['plan_monthly']);
             $param['plan_monthly'] = intval($mon[1]);
+            // 系统自动生成数据: 编制人 user_id  编制日期 preparation_date
+            $param['user_id'] = Session::has('admin') ? Session::get('admin') : 0;
+            $param['preparation_date'] = date('Y-m-d');
 
             // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
             $monthly = new MonthlyplanModel();
