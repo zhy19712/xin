@@ -249,44 +249,29 @@ class Monthlyplan extends Permissions
     }
 
     /**
-     * 删除报告
+     * 上传报告 和 删除报告 共用接口
      * @return \think\response\Json
      * @author hutao
      */
-    public function delReport()
+    public function delOrSaveReport()
     {
         if($this->request->isAjax()){
-            // 前台需要 传递 文件编号 file_id
-            $param = input('param.');
-            $file_id = isset($param['file_id']) ? $param['file_id'] : 0;
-            if(empty($file_id)){
-                return json(['code' => '-1','msg' => '缺少参数']);
-            }
-            $att = new Attachment();
-            $flag = $att->deleteTb($file_id);
-            return json($flag);
-        }
-    }
-
-    /**
-     * 上传报告
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function saveFile()
-    {
-        if($this->request->isAjax()){
-            // 前台需要 传递本条记录的编号 plan_id  文件编号 file_id
+            // 前台需要 传递本条记录的编号 plan_id  文件编号 file_id  操作类型 plan_type 1 上传 2 删除
             $param = input('param.');
             $plan_id = isset($param['plan_id']) ? $param['plan_id'] : 0;
             $file_id = isset($param['file_id']) ? $param['file_id'] : 0;
-            if(empty($plan_id) || empty($file_id)){
+            $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
+            if(empty($plan_id) || empty($file_id) || empty($plan_type)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
             $monthly = new MonthlyplanModel();
-            $data['id'] = $plan_id;
-            $data['plan_report_id'] = $file_id;
-            $flag = $monthly->editTb($data);
+            if($plan_type == 1){
+                $data['id'] = $plan_id;
+                $data['plan_report_id'] = $file_id;
+                $flag = $monthly->editTb($data);
+            }else{
+                $flag = $monthly->deleteFile($plan_id,$file_id);
+            }
             return json($flag);
         }
     }

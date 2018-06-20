@@ -83,6 +83,15 @@ class MonthlyplanModel extends Model
         }
     }
 
+    // 删除报告
+    public function deleteFile($plan_id,$file_id)
+    {
+        $this->where('id',$plan_id)->update(['plan_report_id'=>null]);
+        $att = new Attachment();
+        $flag = $att->deleteTb($file_id);
+        return $flag;
+    }
+
     public function getOne($id)
     {
         return $this->find($id);
