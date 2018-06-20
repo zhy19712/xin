@@ -235,7 +235,6 @@
             ,laydate = layui.laydate;
         $.ajax({
             url: "/progress/monthlyplan/index",
-            async : false,
             type: "get",
             success: function (res) {
                 if(res.code == 1){
@@ -264,12 +263,11 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
-
-                    for (var indexId in orgs) {
-                        $("#seleYear").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
+                    for(var i=0;i<orgs.length;i++){
+                        $("#seleYear").append($("<option/>").text(orgs[i]));
                     }
                     layui.form.render();
-                    // monthFun($("#seleBids").val(),$("#testYear").val());
+                    monthFun($("#seleBids").val(),$("#testYear").val());
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -288,11 +286,10 @@
                 if(res.code == 1){
                     console.log(res);
                     var orgs = res.data;
-                    for (var indexId in orgs) {
-                        $("#seleMonthly").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
+                    for(var i=0;i<orgs.length;i++){
+                        $("#seleMonthly").append($("<option/>").text(orgs[i]));
                     }
                     layui.form.render();
-
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -329,7 +326,6 @@
     //
     console.log(project.getCalendars());
     // var set = project.getCalendars()[0].WeekDays[0]
-
     // project.getCalendars()
 
 
@@ -373,7 +369,7 @@
     /* 业务代码
 -----------------------------------------------------------------------------*/
 
-    // //1)自定义条形图外观显示
+    //1)自定义条形图外观显示
     // project.on("drawitem", function (e) {
     //     var item = e.item;
     //     var left = e.itemBox.left,
@@ -395,117 +391,117 @@
     //         // e.ItemHtml = '<a href="http://www.baidu.com" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+(height-2)+'px;" class="myitem">111</a>';
     //     }
     // });
-    //
-    // project.on('itemdragstart', function (e) {
-    //     // console.log(e);
-    //     // var project = e.source;
-    //     // var task = e.task;
-    // });
-    //
-    // //加载数据 点击重新加载数据
-    // function load() {
-    //     project.loading();
-    //     $.ajax({
-    //         url: "data/taskList.txt",
-    //         cache: false,
-    //         success: function (text) {
-    //             var data = mini.decode(text);
-    //
-    //             //列表转树形
-    //             data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
-    //
-    //             project.loadTasks(data);
-    //
-    //             project.unmask();
-    //         }
-    //     });
-    // }
-    // // load();
-    //
-    // project.on("drawcell", function (e) {
-    //     var task = e.record, column = e.column, field = e.field;
-    //
-    //     //新增
-    //     if (task._state == "added") {
-    //         e.rowCls = "row_added";
-    //     }
-    //     //删除
-    //     if (task.Deleted == true) {
-    //         e.rowCls = "row_deleted";
-    //     }
-    //
-    // });
-    //
-    // //2)保存
-    // function save() {
-    //     var newTask = project.newTask();
-    //     newTask.Name = '<新增任务>';    //初始化任务属性
-    //
-    //     var selectedTask = project.getSelected();
-    //     if (selectedTask) {
-    //         project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
-    //         //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
-    //     } else {
-    //         project.addTask(newTask);
-    //     }
-    //     //使用jQuery的ajax，把任务数据，发送到服务端进行处理
-    //     //    $.ajax({
-    //     //        url: 'savegant.aspx',
-    //     //        type: "POST",
-    //     //        data: params,
-    //     //        success: function (text) {
-    //     //            alert("保存成功");
-    //     //        }
-    //     //    });
-    // }
-    // //3)打印
-    // function printGantt() {
-    //     project.printServer = "__PUBLIC__/gantts/scripts/plusproject/services/snapshot/snapshot.aspx";
-    //     project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
-    //     project.print();
-    // }
-    // //4)添加
-    // function addTask() {
-    //     var newTask = project.newTask();
-    //     newTask.Name = '<新增任务>';    //初始化任务属性
-    //
-    //     var selectedTask = project.getSelected();
-    //     if (selectedTask) {
-    //         project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
-    //         //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
-    //     } else {
-    //         project.addTask(newTask);
-    //     }
-    // }
-    // //5)删除
-    // function removeTask() {
-    //     var task = project.getSelected();
-    //     if (task) {
-    //         if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
-    //             project.removeTask(task);
-    //         }
-    //     } else {
-    //         alert("请选中任务");
-    //     }
-    // }
-    // //6)升级
-    // function upgradeTask() {
-    //     var task = project.getSelected();
-    //     if (task) {
-    //         project.upgradeTask(task);
-    //     } else {
-    //         alert("请选选中任务");
-    //     }
-    // }
-    // //7)降级
-    // function downgradeTask() {
-    //     var task = project.getSelected();
-    //     if (task) {
-    //         project.downgradeTask(task);
-    //     } else {
-    //         alert("请选选中任务");
-    //     }
-    // }
+
+    project.on('itemdragstart', function (e) {
+        // console.log(e);
+        // var project = e.source;
+        // var task = e.task;
+    });
+
+    //加载数据 点击重新加载数据
+    function load() {
+        project.loading();
+        $.ajax({
+            url: "data/taskList.txt",
+            cache: false,
+            success: function (text) {
+                var data = mini.decode(text);
+
+                //列表转树形
+                data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
+
+                project.loadTasks(data);
+
+                project.unmask();
+            }
+        });
+    }
+    // load();
+
+    project.on("drawcell", function (e) {
+        var task = e.record, column = e.column, field = e.field;
+
+        //新增
+        if (task._state == "added") {
+            e.rowCls = "row_added";
+        }
+        //删除
+        if (task.Deleted == true) {
+            e.rowCls = "row_deleted";
+        }
+
+    });
+
+    //2)保存
+    function save() {
+        var newTask = project.newTask();
+        newTask.Name = '<新增任务>';    //初始化任务属性
+
+        var selectedTask = project.getSelected();
+        if (selectedTask) {
+            project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
+            //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
+        } else {
+            project.addTask(newTask);
+        }
+        //使用jQuery的ajax，把任务数据，发送到服务端进行处理
+        //    $.ajax({
+        //        url: 'savegant.aspx',
+        //        type: "POST",
+        //        data: params,
+        //        success: function (text) {
+        //            alert("保存成功");
+        //        }
+        //    });
+    }
+    //3)打印
+    function printGantt() {
+        project.printServer = "__PUBLIC__/gantts/scripts/plusproject/services/snapshot/snapshot.aspx";
+        project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
+        project.print();
+    }
+    //4)添加
+    function addTask() {
+        var newTask = project.newTask();
+        newTask.Name = '<新增任务>';    //初始化任务属性
+
+        var selectedTask = project.getSelected();
+        if (selectedTask) {
+            project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
+            //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
+        } else {
+            project.addTask(newTask);
+        }
+    }
+    //5)删除
+    function removeTask() {
+        var task = project.getSelected();
+        if (task) {
+            if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
+                project.removeTask(task);
+            }
+        } else {
+            alert("请选中任务");
+        }
+    }
+    //6)升级
+    function upgradeTask() {
+        var task = project.getSelected();
+        if (task) {
+            project.upgradeTask(task);
+        } else {
+            alert("请选选中任务");
+        }
+    }
+    //7)降级
+    function downgradeTask() {
+        var task = project.getSelected();
+        if (task) {
+            project.downgradeTask(task);
+        } else {
+            alert("请选选中任务");
+        }
+    }
     //8)显示关键路径
     function showCriticalPath(shows) {
         project.setShowCriticalPath(shows);

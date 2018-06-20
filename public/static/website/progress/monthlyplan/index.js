@@ -22,6 +22,7 @@ $("#addPlanTask").click(function () {
         layer.msg("请选择标段！")
     }
 });
+
 /*关闭弹层*/
 $('.close').click(function () {
     layer.closeAll('page');
@@ -50,6 +51,7 @@ layui.use(['form', 'layedit', 'laydate'], function () {
         ,type: 'month'
         ,value: ""+new Date().getFullYear()+ "-" + (new Date().getMonth()+1)+""
     });
+    /*显隐上传*/
     form.on('radio(aihao)', function(data){
         console.log(data.value)
         if(data.value == 1){
@@ -148,7 +150,6 @@ $("#saveMonthPlan").click(function () {
         });
     });
 })
-
 
 /*点击月计划列表*/
 function monthlyPlanList() {
