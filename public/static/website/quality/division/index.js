@@ -517,21 +517,30 @@ $('#saveUnit').click(function () {
     var serial_number = serial_number_before + '-' + serial_number_val;
     var en_type = $('input[name="en_type"]').attr('id');
     var division_id = window.treeNode.add_id;
-    $.submit({
-        tableItem:tableItem,
-        tablePath:'/quality/common/datatablesPre?tableName=quality_unit',
-        formId:'unit',
-        ajaxUrl:'./editUnit',
-        data:{
-            serial_number:serial_number,
-            en_type:en_type,
-            division_id:division_id,
-            id:window.rowId
-        },
-        others:function () {
-            $('#unit').css("display","none");
-        }
-    });
+    var ma_bases = $('input[name="ma_bases"]').val();
+    var su_basis = $('input[name="su_basis"]').val();
+    console.log(ma_bases+','+su_basis);
+    if (ma_bases==''&&su_basis==''){
+        layer.msg('施工依据和补充依据二者必须填一个', {time: 3000});
+        return false;
+    }else {
+        $.submit({
+            tableItem:tableItem,
+            tablePath:'/quality/common/datatablesPre?tableName=quality_unit',
+            formId:'unit',
+            ajaxUrl:'./editUnit',
+            data:{
+                serial_number:serial_number,
+                en_type:en_type,
+                division_id:division_id,
+                id:window.rowId
+            },
+            others:function () {
+                $('#unit').css("display","none");
+            }
+        });
+    }
+
     setTimeout(function () {
         $("#tableItem_wrapper .tbcontainer").css("display","none");
     },300)
