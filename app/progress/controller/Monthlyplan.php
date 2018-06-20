@@ -146,11 +146,12 @@ class Monthlyplan extends Permissions
             $is_exist_id = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
             if($is_exist_id){
                 $cover = isset($param['cover']) ? $param['cover'] : 0;
-                if($cover == 1){
+                if($cover == 0){
+                    return json(['code'=>2,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
+                }else{
                     // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
                     $monthly->deleteTb($is_exist_id);
                 }
-                return json(['code'=>2,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
             }
 
             // 更新方式是导入全新计划版本的话,就验证是否上传了Project或P6格式的文件
@@ -163,6 +164,9 @@ class Monthlyplan extends Permissions
             }
 
             $id = isset($param['mid']) ? $param['mid'] : 0;
+
+            halt($param);
+
             if(empty($id)){
                 $flag = $monthly->insertTb($param);
             }else{
@@ -259,5 +263,24 @@ class Monthlyplan extends Permissions
         }
     }
 
+
+
+    // ***************************** 甘特图 *****************************
+
+    // 月计划根据选择的标段，年度，月度获取甘特图数据
+    public function monthlyInitialise()
+    {
+        // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly
+        $param = input('param.');
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
+        if(empty($section_id) || empty($plan_year) || empty($plan_monthly)){
+            return json(['code' => -1,'msg' => '缺少参数']);
+        }
+        $monthly = new MonthlyplanModel();
+        $data = $monthly->initialiseData($section_id,$plan_year,$plan_monthly);
+
+    }
 
 }
