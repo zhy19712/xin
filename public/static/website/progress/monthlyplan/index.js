@@ -25,7 +25,11 @@ $("#addPlanTask").click(function () {
 /*关闭弹层*/
 $('.close').click(function () {
     layer.closeAll('page');
-    $('#addPlan')[0].reset();
+    $("#addPlan input[name='plan_name']").val("");
+    $("#addPlan input[name='plan_report_id']").val("");
+    $("textarea").text("");
+    $("#coverId").val(0);
+    $("#saveMonthPlan").text("保存");
 });
 
 var form;
@@ -122,19 +126,19 @@ $("#saveMonthPlan").click(function () {
                 data: data.field,
                 success: function (res) {
                     if (res.code == 1) {
-                        console.log(res);
                         layer.msg(res.msg);
                         layer.closeAll('page');
                         $("#addPlan input[name='plan_name']").val("");
                         $("#addPlan input[name='plan_report_id']").val("");
+                        $("#coverId").val(0);
+                        $("#saveMonthPlan").text("保存");
                         $("textarea").text("");
-                    }else  if (res.code == 2) {
-                        $("#coverId").val(1);
-                        $("#saveMonthPlan").text("确认覆盖");
-                        layer.msg(res.msg);
-                        // $("#addPlan input[name='plan_name']").val("");
-                        // $("#addPlan input[name='plan_report_id']").val("");
-                        // $("textarea").text("");
+                    }else if (res.code == 2) {
+                        layer.confirm(res.msg, function(index){
+                            $("#coverId").val(1);
+                            $("#saveMonthPlan").text("确认覆盖");
+                            layer.close(index);
+                        });
                     }else {
                         layer.msg(res.msg);
                     }
