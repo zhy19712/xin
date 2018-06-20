@@ -55,8 +55,10 @@ class MonthlyplanModel extends Model
             $file_data = Db::name('attachment')->where(['id'=>['in',[$data['plan_report_id'],$data['plan_file_id']]]])->column('filepath');
             $att = new Attachment();
             foreach ($file_data as $v){
-                if(file_exists('.'.$v)){
-                    unlink('.'.$v); //删除文件
+                if($v){
+                    if(file_exists('.'.$v)){
+                        unlink('.'.$v); //删除文件
+                    }
                 }
             }
             $att->deleteTb($data['plan_report_id']);
