@@ -39,12 +39,6 @@
         .layui-input-block input{
             width: 87%;
         }
-        /*.layui-form-label{*/
-            /*width: 120px;*/
-        /*}*/
-        /*textarea{*/
-            /*width: 60%;*/
-        /*}*/
         .layui-input-block {
             margin-right: 35px;
         }
@@ -55,7 +49,9 @@
             margin-top: -46px;
             margin-right: 2px;
         }
-
+        .webuploader-pick {
+             padding: 0 ;
+        }
     </style>
 </head>
 <body>
@@ -121,7 +117,7 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">计划名称</label>
-                <div class="layui-input-inline">
+                <div class="layui-input-inline" style="width: 595px;">
                     <input type="text" name="plan_name" placeholder="请输入名称" lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -129,7 +125,7 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">所属标段</label>
-                <div class="layui-input-inline">
+                <div class="layui-input-inline" style="width: 595px;">
                     <input type="text"  id="secName" readonly disabled="true" autocomplete="off" class="layui-input">
                     <input type="hidden" name="section_id" id="sec_id" readonly disabled autocomplete="off" class="layui-input">
                 </div>
@@ -138,19 +134,18 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">年度</label>
-                <div class="layui-input-inline">
+                <div class="layui-input-inline" style="width: 224px;">
                     <input type="text" name="plan_year" id="testYear" lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
             </div>
-        </div>
-        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">月度</label>
-                <div class="layui-input-inline">
+                <div class="layui-input-inline" style="width: 224px;">
                     <input type="text" name="plan_monthly" id="testMonth" lay-verify="required" autocomplete="off" class="layui-input maBasesBtn">
                 </div>
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
@@ -199,7 +194,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <div class="layui-input-block" style="text-align: center;">
+            <div class="layui-input-block" style="text-align: right;">
                 <button class="layui-btn" lay-submit lay-filter="save" id="saveMonthPlan" style="margin-right: 30px">保存</button>
                 <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
             </div>
@@ -506,15 +501,15 @@
     function showCriticalPath(shows) {
         project.setShowCriticalPath(shows);
     }
-    // //9)放大
-    // function zoomIn() {
-    //     project.zoomIn();
-    // }
-    // //10)缩小
-    // function zoomOut() {
-    //     project.zoomOut();
-    // }
-    //
+    //9)放大
+    function zoomIn() {
+        project.zoomIn();
+    }
+    //10)缩小
+    function zoomOut() {
+        project.zoomOut();
+    }
+
     // //11)更新
     // function updateTask() {
     //     var selectedTask = project.getSelected();
