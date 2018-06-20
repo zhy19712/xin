@@ -55,6 +55,7 @@ class Qualityform extends Permissions
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //空模板预览，暂未启用
     public function formPreview($cpr_id, $currentStep="", $isView = false, $id = null)
     {
         //获取模板路径
@@ -75,7 +76,7 @@ class Qualityform extends Permissions
             ->where('id',$qualitytemplateid)
             ->value('name');
         $cp = $this->divisionControlPointService->with('controlpoint')->where('id', $cpr_id)->find();
-        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $cp['controlpoint']['code'] . $template_name . "下载.html";
+        $formPath = ROOT_PATH . 'public' . DS . "data\\form\\qualityNew\\" . $cp['controlpoint']['code'] . $template_name . ".html";
         $formPath = iconv('UTF-8', 'GB2312', $formPath);
         if (!file_exists($formPath)) {
             return "模板文件不存在";
