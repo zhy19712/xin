@@ -295,18 +295,17 @@ class Monthlyplan extends Permissions
         $uid = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
         $project = new PlusProjectModel();
         $project_data = $project->getOne(1,$uid); // project_type 1月计划2年计划3总计划
-        $data['UID'] = $project_data['uid'];
-        $data['Name'] = $project_data['name'];
-        $data['StartDate'] = $project_data['start_date'];
-        $data['FinishDate'] = $project_data['finish_date'];
-        $data['CalendarUID'] = $project_data['calendar_uid'];
-        $data['Calendars'] = $project_data['calendars'];
+        $data['UID'] = $project_data['uid']; // 计划的唯一标识符
+        $data['Name'] = $project_data['name']; // 计划名称
+        $data['StartDate'] = $project_data['start_date']; // 开始时间
+        $data['FinishDate'] = $project_data['finish_date']; // 完成日期
+        $data['CalendarUID'] = $project_data['calendar_uid']; // 日历数据
+        $data['Calendars'] = $project_data['calendars']; // 日历设置数据 json 格式的数据
         $tasks = new PlusTaskModel();
-        $tasks->tasksData(1,$uid); // project_type 1月计划2年计划3总计划
-        $data['Tasks'] = [];
-        $data['Principals'] = [];
-        $data['Departments'] = [];
-        $data['Resources'] = [];
+        $data['Tasks'] = $tasks->tasksData(1,$uid); // project_type 1月计划2年计划3总计划
+        $data['Principals'] = []; // 负责人集合
+        $data['Departments'] = []; // 部门集合
+        $data['Resources'] = []; // 资源集合
         return json($data);
     }
 
