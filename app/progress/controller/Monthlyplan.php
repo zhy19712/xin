@@ -165,8 +165,6 @@ class Monthlyplan extends Permissions
 
             $id = isset($param['mid']) ? $param['mid'] : 0;
 
-            halt($param);
-
             if(empty($id)){
                 $flag = $monthly->insertTb($param);
             }else{
