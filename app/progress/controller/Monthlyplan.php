@@ -285,9 +285,9 @@ class Monthlyplan extends Permissions
     {
         // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly
         $param = input('param.');
-        $section_id = isset($param['section_id']) ? $param['section_id'] : 2;
-        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 2018;
-        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 9;
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
         if(empty($section_id) || empty($plan_year) || empty($plan_monthly)){
             return json(['code' => -1,'msg' => '缺少参数']);
         }
