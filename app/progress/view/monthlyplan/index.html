@@ -235,8 +235,8 @@
             ,laydate = layui.laydate;
         $.ajax({
             url: "/progress/monthlyplan/index",
-            type: "get",
             async : false,
+            type: "get",
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.sectionArr;
@@ -244,10 +244,11 @@
                         $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
                     }
                     layui.form.render();
-                    // yearFun($("#seleBids").val())
+                    var idBid = $("#seleBids").val();
+                    console.log(idBid)
+                    yearFun(idBid);
                 }
                 //TODO 问问后台res.code ！= 1是怎么提示的
-
             }
         });
 
@@ -256,13 +257,14 @@
     function yearFun(id) {
         $.ajax({
             url: "/progress/monthlyplan/planYear",
+            async : false,
             type: "post",
             data: {section_id: id},
             dataType: "json",
-            async : false,
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
+
                     for (var indexId in orgs) {
                         $("#seleYear").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
                     }
