@@ -15,7 +15,6 @@
     <script src="/Content/js/jquery.qrcode.min.js"></script>
     <script src="/Content/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script src="/Areas/Quality/Views/QualityForm/QualityForm.js"></script>
-
     <title></title>
     <style>
         /*body{
@@ -53,9 +52,7 @@
             text-align: center;
         }
 
-        .tabWidth {
-            width: 260mm;
-        }
+
         .dateList{
             width: 36mm
         }
@@ -73,28 +70,37 @@
         .btmBtn{
             margin-left: 40px;
         }
+        .tabWidth {
+            margin: auto;
+            width: 260mm!important;
+        }
+        textarea{
+            width: 100%;
+            outline: none!important;
+            border: none!important;
+            resize:none!important;
+            background-color: #ffffff!important;
+            line-height: 13px!important;
+            font-size: 12px!important;
+            margin: 1px!important;
+        }
         input{
             outline: none!important;
             border: none!important;
             max-width: 120px;
+            background-color: #ffffff!important;
             font-size: 12px!important;
-        }
-        .tabTitle {
-            margin: auto;
-            width: 260mm;
-        }
-        textarea{
-            outline: none!important;
-            border: none!important;
-            resize:none!important;
-            width: 80%!important;
-            font-size: 12px!important;
+            margin-bottom: 5px!important;
+            margin-top:1px !important;
         }
         table{
             width: 260mm!important;
         }
-        input{
+        textarea,input{
             width: 100%!important;
+        }
+        table td p{
+            line-height: 16px!important;
         }
     </style>
 </head>
@@ -109,9 +115,9 @@
     <input id="formName" type="hidden" value="{$formName}" />
     <input id="currentStep" type="hidden" value="{$currentStep}" />
     <input id="isView" type="hidden" value="{$isView}" />
+    <input id="formData" type="hidden" value='{$formData}' />
     <input id="getQrcode" type="hidden" value='{$qrcode}' />
 
-    <input id="formData" type="hidden" value='{$formData}' />
     <div class="hr-line-dashed" style="margin: 5px 0px 0px;clear: both;"></div>
     <div class="A4">
         <div id="fileTitle">
@@ -149,7 +155,7 @@
                     <textarea id="input_gcl" default="/" step="0" placeholder="" class="comment editInput"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td colspan="6" rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">分部工程名称及编号</span></p>
                 </td>
@@ -163,7 +169,7 @@
                     <p style="margin:0pt; orphans:0; widows:0;text-align: center;"><span style="font-family:仿宋; font-size:9pt; font-style:normal; text-transform:none">{$PileNo}</span></p>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td colspan="4" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; padding-left:0.2pt; text-align:center; text-indent:-0.2pt; widows:0"><span style="font-family:仿宋; font-size:10.5pt">起止高程</span></p>
                 </td>
@@ -191,12 +197,12 @@
                     <div class="form-group div-inline data_2 dateMargin">
                         <div class="input-group date" style="width: 100%;text-align: center;">
                             <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                            <input id="input_date_2" step="0" type="text" class="form-control" value="{$compleation_date}"  form-required="日期必填。">
+                            <input id="input_date_2" step="0" type="text" class="form-control" value="{$completion_date}"  form-required="日期必填。">
                         </div>
                     </div>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">观测点编号</span></p>
                 </td>
@@ -216,7 +222,7 @@
                     <textarea id="input_3" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">仪器型号</span></p>
                 </td>
@@ -241,7 +247,7 @@
                         </div>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td rowspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="width: 10mm;margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">序号</span></p>
                 </td>
@@ -266,7 +272,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">备注</span></p>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">日期</span></p>
                 </td>
@@ -292,7 +298,7 @@
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">变化值</span></p>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_6" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -335,7 +341,7 @@
                     <textarea id="input_16" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_17" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -378,7 +384,7 @@
                     <textarea id="input_27" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_28" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -421,7 +427,7 @@
                     <textarea id="input_38" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_39" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -464,7 +470,7 @@
                     <textarea id="input_49" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_50" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -507,7 +513,7 @@
                     <textarea id="input_60" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_61" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -550,7 +556,7 @@
                     <textarea id="input_71" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_72" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -593,7 +599,7 @@
                     <textarea id="input_82" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_83" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -636,7 +642,7 @@
                     <textarea id="input_93" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_94" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -679,7 +685,7 @@
                     <textarea id="input_104" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_105" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -722,7 +728,7 @@
                     <textarea id="input_115" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_116" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -765,7 +771,7 @@
                     <textarea id="input_126" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_127" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -808,7 +814,7 @@
                     <textarea id="input_137" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_138" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -851,7 +857,7 @@
                     <textarea id="input_148" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_149" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -894,7 +900,7 @@
                     <textarea id="input_159" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_160" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -937,7 +943,7 @@
                     <textarea id="input_170" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_171" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -980,7 +986,7 @@
                     <textarea id="input_181" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
+            <tr style="height:15pt">
                 <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <textarea id="input_182" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
@@ -1023,221 +1029,6 @@
                     <textarea id="input_192" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
-            <tr style="height:17pt">
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_193" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <div class="form-group div-inline data_3 dateList">
-                            <div class="input-group date" style="width:100%;">
-                                <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_21" step="0" default="/" type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_194" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_195" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_196" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_197" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_198" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_199" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_200" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_201" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_202" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <textarea id="input_203" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-            </tr>
-            <tr style="height:17pt">
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_204" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <div class="form-group div-inline data_3 dateList">
-                            <div class="input-group date" style="width:100%;">
-                                <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_22" step="0" default="/" type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_205" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                   <textarea id="input_206" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_207" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_208" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_209" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_210" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_211" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_212" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_213" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <textarea id="input_214" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-            </tr>
-            <tr style="height:17pt">
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_215" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <div class="form-group div-inline data_3 dateList">
-                            <div class="input-group date" style="width:100%;">
-                                <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_23" step="0" default="/" type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_216" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_217" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_218" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_219" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_220" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_221" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_222" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_223" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_224" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <textarea id="input_225" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-            </tr>
-            <tr style="height:17pt">
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_226" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <div class="form-group div-inline data_3 dateList">
-                            <div class="input-group date" style="width:100%;">
-                                <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_24" step="0" default="/" type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_227" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_228" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_229" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_230" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_231" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_232" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_233" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_234" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_235" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <textarea id="input_236" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-            </tr>
-            <tr style="height:17pt">
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_237" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <div class="form-group div-inline data_3 dateList">
-                            <div class="input-group date" style="width:100%;">
-                                <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_25" step="0" default="/" type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_238" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_239" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_240" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_241" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_242" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                   <textarea id="input_243" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_244" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td colspan="3" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_245" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:5.03pt; vertical-align:middle">
-                    <textarea id="input_246" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-                <td style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:0.75pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
-                    <textarea id="input_247" default="/" step="0" placeholder="" class="comment"></textarea>
-                </td>
-            </tr>
             <tr style="height:57pt">
                 <td colspan="2" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:1.5pt; border-right-color:#000000; border-right-style:solid; border-right-width:0.75pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:4.65pt; padding-right:5.03pt; vertical-align:middle">
                     <p style="margin:0pt; orphans:0; text-align:center; widows:0"><span style="font-family:仿宋; font-size:10.5pt">观测情况记录</span></p>
@@ -1245,7 +1036,7 @@
                 <td colspan="19" style="border-bottom-color:#000000; border-bottom-style:solid; border-bottom-width:1.5pt; border-left-color:#000000; border-left-style:solid; border-left-width:0.75pt; border-right-color:#000000; border-right-style:solid; border-right-width:1.5pt; border-top-color:#000000; border-top-style:solid; border-top-width:0.75pt; padding-left:5.03pt; padding-right:4.65pt; vertical-align:middle">
                     <p style="line-height:12pt; margin:0pt 21pt 0pt 0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:仿宋; font-size:10.5pt">（重点描述观测过程中是否有异常变化及突变）</span></p>
                     <div class="contentDiv">
-                        <textarea id="input_248" default="/" step="0" style="height: 100px;" placeholder="" class="comment texBorder"></textarea>
+                        <textarea id="input_248" default="/" step="0" style="height: 40px;" placeholder="" class="comment texBorder"></textarea>
                     </div>
                     <p style="line-height: 20pt; margin: 18pt 5.25pt; orphans: 0; text-align: justify; text-indent: 125.25pt; widows: 0">
                         <span style="font-family: 仿宋; font-size: 10.5pt; letter-spacing: 0.05pt">技术员：
@@ -1264,29 +1055,6 @@
                     </div>
                     <!--<p style="line-height:12pt; margin:0pt; orphans:0; text-align:right; widows:0"><span style="font-family:仿宋; font-size:10.5pt">技术员：                    年   月   日</span></p>-->
                 </td>
-            </tr>
-            <tr style="height:0pt">
-                <td style="width:25.9pt; border:none"></td>
-                <td style="width:8.15pt; border:none"></td>
-                <td style="width:29.55pt; border:none"></td>
-                <td style="width:10.45pt; border:none"></td>
-                <td style="width:37.65pt; border:none"></td>
-                <td style="width:25.95pt; border:none"></td>
-                <td style="width:4.95pt; border:none"></td>
-                <td style="width:12.15pt; border:none"></td>
-                <td style="width:43.1pt; border:none"></td>
-                <td style="width:19.65pt; border:none"></td>
-                <td style="width:20.55pt; border:none"></td>
-                <td style="width:40.25pt; border:none"></td>
-                <td style="width:16.8pt; border:none"></td>
-                <td style="width:19.65pt; border:none"></td>
-                <td style="width:4pt; border:none"></td>
-                <td style="width:40.2pt; border:none"></td>
-                <td style="width:0.55pt; border:none"></td>
-                <td style="width:30.15pt; border:none"></td>
-                <td style="width:9.55pt; border:none"></td>
-                <td style="width:43.85pt; border:none"></td>
-                <td style="width:45.5pt; border:none"></td>
             </tr>
         </table>
         <!--<p style="margin:0pt; text-align:justify"><span style="font-family:仿宋; font-size:10.5pt">机(班)长：               记录：               质检：               现场监理：</span></p>-->
