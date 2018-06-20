@@ -26,24 +26,15 @@ class MonthlyplanModel extends Model
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
-                return ['code' => 1, 'data' => [], 'msg' => '添加成功'];
+                $data['project_type'] = 1; // 1月计划2年计划3总计划
+                $data['uid'] = $this->getLastInsID();
+                $data['name'] = $param['plan_name'];
+                $project = new PlusProjectModel();
+                $flag = $project->insertTb($data);
+                return $flag;
             }
         } catch (PDOException $e) {
             return ['code' => -1, 'msg' => $e->getMessage()];
-        }
-    }
-
-    public function editTb($param)
-    {
-        try {
-            $result = $this->allowField(true)->save($param, ['id' => $param['id']]);
-            if (false === $result) {
-                return ['code' => -1, 'msg' => $this->getError()];
-            } else {
-                return ['code' => 1, 'msg' => '编辑成功'];
-            }
-        } catch (PDOException $e) {
-            return ['code' => 0, 'msg' => $e->getMessage()];
         }
     }
 
@@ -66,6 +57,9 @@ class MonthlyplanModel extends Model
             // 关联删除 --- 模型关联记录
             $model = new QualitymassModel();
             $model->deleteRelationById($id,2); // type 1 表示是实时进度关联 2 表示月进度关联
+            // 删除月计划任务
+            $project = new PlusProjectModel();
+            $project->deleteTb(1,$id); // project_type 1月计划2年计划3总计划
             //TODO 删除该月计划下的所有甘特图数据
 
             $this->where('id', $id)->delete();
@@ -77,14 +71,13 @@ class MonthlyplanModel extends Model
 
     public function getOne($id)
     {
-        $data = $this->find($id);
-        return $data;
+        return $this->find($id);
     }
 
     // 当前月度是否已经存在计划
-    public function monthlyExist($plan_year,$plan_monthly)
+    public function monthlyExist($section_id,$plan_year,$plan_monthly)
     {
-        $data = $this->where(['plan_year'=>$plan_year,'plan_monthly'=>$plan_monthly])->value('id');
+        $data = $this->where(['section_id'=>$section_id,'plan_year'=>$plan_year,'plan_monthly'=>$plan_monthly])->value('id');
         return $data;
     }
 
@@ -95,17 +88,10 @@ class MonthlyplanModel extends Model
         return $data;
     }
 
-    // 根据选择的标段获取月度
+    // 根据选择的标段和年度获取月度
     public function planMonthlyList($section_id,$plan_year)
     {
         $data = $this->where(['section_id'=>$section_id,'plan_year'=>$plan_year])->order('plan_monthly desc')->column('plan_monthly');
-        return $data;
-    }
-
-    // 月计划根据选择的标段，年度，月度获取甘特图数据
-    public function initialiseData($section_id,$plan_year,$plan_monthly)
-    {
-        $data = $this->where(['section_id'=>$section_id,'plan_year'=>$plan_year])->order('plan_monthly desc')->select();
         return $data;
     }
 

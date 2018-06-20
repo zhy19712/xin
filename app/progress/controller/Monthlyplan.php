@@ -14,6 +14,7 @@ use app\admin\model\Attachment;
 use app\contract\model\SectionModel;
 use app\progress\model\MonthlyplanModel;
 use app\progress\model\PlusProjectModel;
+use app\progress\model\PlusTaskModel;
 use think\Db;
 use think\Session;
 
@@ -271,22 +272,34 @@ class Monthlyplan extends Permissions
 
     // ***************************** 甘特图 *****************************
 
-    // 月计划根据选择的标段，年度，月度获取甘特图数据
+    // 月计划根据选择的标段，年度，月度获取甘特图数据 测试 http://www.xin.com/progress/Monthlyplan/monthlyInitialise
     public function monthlyInitialise()
     {
         // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly
         $param = input('param.');
-        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
-        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 2;
+        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 2018;
+        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 9;
         if(empty($section_id) || empty($plan_year) || empty($plan_monthly)){
             return json(['code' => -1,'msg' => '缺少参数']);
         }
         $monthly = new MonthlyplanModel();
-        $id = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
+        $uid = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
         $project = new PlusProjectModel();
-        $data = $project->initialiseData($id);
-
+        $project_data = $project->getOne(1,$uid); // project_type 1月计划2年计划3总计划
+        $data['UID'] = $project_data['uid'];
+        $data['Name'] = $project_data['name'];
+        $data['StartDate'] = $project_data['start_date'];
+        $data['FinishDate'] = $project_data['finish_date'];
+        $data['CalendarUID'] = $project_data['calendar_uid'];
+        $data['Calendars'] = $project_data['calendars'];
+        $tasks = new PlusTaskModel();
+        $tasks->tasksData(1,$uid); // project_type 1月计划2年计划3总计划
+        $data['Tasks'] = [];
+        $data['Principals'] = [];
+        $data['Departments'] = [];
+        $data['Resources'] = [];
+        return json($data);
     }
 
 }
