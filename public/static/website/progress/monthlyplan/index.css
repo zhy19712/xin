@@ -1,0 +1,118 @@
+.myitem{
+    background:#9ccc5e;border:solid 1px #6e845c;
+    position:absolute;overflow:hidden;display:block;
+    z-index:100;
+}
+.myitem2 {
+    background:#9ccc5e;border:solid 1px #0c3f5f;
+    position:absolute;overflow:hidden;
+}
+.percentcomplete {
+    margin-top:1px;
+    height:10px;overflow:hidden;background:#0d55a4;
+}
+.formlable .layui-form-label{
+    width: 26px;
+}
+.layuiRight{
+    float: right;
+}
+
+#addPlan .layui-form-label{
+    width: 95px;
+}
+.layui-input-block input{
+    width: 87%;
+}
+.layui-input-block {
+    margin-right: 35px;
+}
+.layui-form-mid {
+    float: right;
+    padding: 8px 0!important;
+    line-height: 20px;
+    margin-top: -46px;
+    margin-right: 2px;
+}
+.webuploader-pick {
+    padding: 0 ;
+}
+#styleFa .layui-btn{
+    background: none;
+    color: #000;
+}
+#styleFa .layui-btn:hover{
+    color: #000;
+}
+#styleFa button:nth-of-type(1) i{
+    color: #d6ac00;
+}
+#styleFa button:nth-of-type(1) i:hover{
+    color: #ffcd00;
+}
+#styleFa button:nth-of-type(2) i{
+    color: #009688;
+}
+#styleFa button:nth-of-type(2) i:hover{
+    color: #00bcaa;
+}
+#styleFa button:nth-of-type(3) i{
+    color: #e76d60;
+}
+#styleFa button:nth-of-type(3) i:hover{
+    color: #ff8679;
+}
+#styleFa button:nth-of-type(4) i{
+    color: #1b85e7;
+}
+#styleFa button:nth-of-type(4) i:hover{
+    color: #2292f9;
+}
+#styleFa button:nth-of-type(5) i{
+    color: #11c4f0;
+}
+#styleFa button:nth-of-type(5) i:hover{
+    color: #30d4fc;
+}
+#styleFa button:nth-of-type(6) i{
+    color: #d85c74;
+}
+#styleFa button:nth-of-type(6) i:hover{
+    color: #ff7c95;
+}
+#styleFa button:nth-of-type(7) i{
+    color: #ffb800;
+}
+#styleFa button:nth-of-type(7) i:hover{
+    color: #ffd25f;
+}
+#styleFa button i{
+    font-size: 21px;
+    vertical-align: middle;
+}
+
+/*修改的样式*/
+.mini-panel{
+    height: 450px !important;
+}
+.mini-panel .mini-panel-viewport{
+    height: 421px !important;
+}
+.mini-panel .mini-panel-viewport .mini-panel-body{
+    height: 374px !important;
+}
+.mini-panel .mini-panel-viewport .mini-panel-body .mini-tabs-table .mini-tabs-bodys{
+    height: 348px !important;
+}
+
+.mini-panel .mini-panel-header {
+    background: #FFFFFF !important;
+}
+.mini-panel .mini-panel-footer {
+    background: #FFFFFF !important;
+}
+.mini-panel .mini-panel-footer .mini-button {
+    background: #009688 !important;
+    border: none;
+    color: #FFFFFF;
+}

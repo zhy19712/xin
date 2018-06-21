@@ -1,0 +1,40 @@
+.select-wrap{
+    width: 80%;
+}
+.select-wrap .layui-form{
+    float: left;
+    padding: 5px 0;
+}
+.select-wrap .layui-form-item {
+    margin-bottom: 0;
+}
+.select-wrap .layui-form-label{
+    padding: 6px 10px;
+    width: auto;
+}
+.select-wrap .layui-input{
+    height: 32px;
+    line-height: 32px;
+}
+.select-wrap input[readonly]{
+    background-color: #fff!important;
+}
+.select-wrap .layui-form-select dl{
+    top: 31px;
+}
+.select-wrap .layui-input-inline{
+    width: 140px;
+}
+.select-wrap .layui-form-label:first-child+.layui-input-inline{
+    margin-right: 70px;
+    width: 240px;
+}
+.select-wrap .layui-form-mid.layui-word-aux{
+    padding: 6px 0!important;
+}
+.layui-input-block {
+    margin: 0 20px 0 130px;
+}
+.layui-layer-page .layui-form-label{
+    width: 100px;
+}
