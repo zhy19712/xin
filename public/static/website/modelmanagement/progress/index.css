@@ -1,65 +1,80 @@
-.layui-form{
+.layui-form {
     float: left;
 }
-.operation-bar{
+
+.operation-bar {
     border-bottom: 1px solid #ebebeb;
     padding: 12px 0;
 }
+
 .operation-bar .layui-form-item {
     margin-bottom: 0;
 }
+
 .operation-bar .layui-form-label {
     padding: 8px 10px;
     width: auto;
 }
-.operation-bar .layui-form-label:first-child{
+
+.operation-bar .layui-form-label:first-child {
     margin-left: 20px;
 }
-.operation-bar .layui-input-inline{
+
+.operation-bar .layui-input-inline {
     width: 140px;
 }
-.operation-bar .layui-form-label:first-child+.layui-input-inline{
+
+.operation-bar .layui-form-label:first-child + .layui-input-inline {
     margin-right: 70px;
     width: 240px;
 }
-.operation-bar .layui-form-mid.layui-word-aux.no-position{
-    padding: 8px 0!important;
+
+.operation-bar .layui-form-mid.layui-word-aux.no-position {
+    padding: 8px 0 !important;
 }
-.layui-progress-tips{
+
+.layui-progress-tips {
     display: inline-block;
     position: relative;
-    top:15px;
+    top: 15px;
     width: 70px;
     text-align: left;
     color: #009688;
     font-size: 12px;
 }
-.play{
+
+.play {
     float: right;
     height: 36px;
     line-height: 36px;
 }
-.pause{
+
+.pause {
     display: none;
 }
-.speed{
+
+.speed {
     text-align: right;
 }
-.speed span{
+
+.speed span {
     margin-right: 50px;
     line-height: 1;
     font-size: 16px;
 }
-.speed em{
+
+.speed em {
     display: inline-block;
     width: 20px;
     font-style: normal;
     text-align: left;
 }
-.speed i.fa{
+
+.speed i.fa {
     margin-right: 30px;
 }
-i.fa-circle{
+
+i.fa-circle {
     position: absolute;
     top: -5px;
     right: -10px;
@@ -68,28 +83,40 @@ i.fa-circle{
     height: 20px;
     font-size: 20px;
 }
-i.fa:before, i.fa:hover:before{
+
+i.fa:before, i.fa:hover:before {
     color: #009688;
     cursor: pointer;
 }
-.layui-progress{
-    margin: 15px 10px 10px;
+
+.layui-progress {
+    margin: 15px 20px;
     height: 10px;
     background-color: #ebebeb;
 }
-.layui-bg-green{
+
+.layui-bg-green {
     height: 10px;
-    background-color: #43c5ae!important;
+    background-color: #43c5ae !important;
 }
-.model-wrap{
-    padding: 0 20px;
+
+.model-wrap {
+    top: 15px;
+    margin: 0 20px;
 }
-.panel-header, .panel-body{
+
+.panel-header, .panel-body {
     border-style: none;
 }
-.east{
+
+.east {
     width: 300px;
 }
-.layui-table-view{
+
+.north {
+    height: 50px;
+}
+
+.layui-table-view {
     margin: 0;
 }

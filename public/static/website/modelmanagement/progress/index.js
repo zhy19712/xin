@@ -24,6 +24,7 @@ layui.use(['layer','element','util','laydate','form','table'], function(){
 $('.layui-progress-bar').append('<span class="layui-progress-tips"></span><i class="fa fa-circle" id="circle"></i>');
 var timer;
 var sleepTimer;
+testID = 0;
 active = {
     initSpeed:1000,             //初始速度
     speed:1000,                 //变速度
@@ -139,6 +140,7 @@ active = {
             return false;
         }
         element.progress('demo', active.scale+'%');
+        test();
     },
     sleep:function(numberMillis){       //睡眠时间
         if(active.index == active.dayArr.length) {
