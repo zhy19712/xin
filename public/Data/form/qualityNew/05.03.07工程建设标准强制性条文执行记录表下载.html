@@ -21,6 +21,7 @@
         .signName {
             width: 26mm;
             height: 15mm;
+            margin-bottom: 5px;
         }
         
         .qianmingBlock {
@@ -42,17 +43,15 @@
             border: none!important;
             max-width: 120px;
             font-size: 12px!important;
-        }
-        .tabTitle {
-            margin: auto;
-            width: 210mm;
+            background-color: #ffffff!important;
         }
         textarea{
             outline: none!important;
             border: none!important;
             resize:none!important;
-            font-size: 12px!important;
             width: 100%!important;
+            font-size: 12px!important;
+            background-color: #ffffff!important;
         }
         .tabWidth{
             width: 260mm!important;
@@ -60,9 +59,7 @@
         table{
             width: 260mm!important;
         }
-        input{
-            width: 100%!important;
-        }
+
     </style>
 </head>
 
@@ -157,7 +154,7 @@
                         <div class="form-group div-inline data_2 dateMargin">
                             <div class="input-group date" style="width: 100%;text-align: center;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
-                                <input id="input_date_2" step="0" type="text" class="form-control" value="{$compleation_date}"  form-required="日期必填。">
+                                <input id="input_date_2" step="0" type="text" class="form-control" value="{$completion_date}"  form-required="日期必填。">
                             </div>
                         </div>
                     </td>

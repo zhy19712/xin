@@ -92,8 +92,25 @@ class Matchform extends Controller
         $output = $this->getFormBaseInfo($norm_template['division_id']);
         $htmlContent = file_get_contents($formPath);
 
+//        $host="http://".$_SERVER['HTTP_HOST'];
+//        $code=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
+        //当该控制点有已经填写的表单时
+        if($id>0&&!is_null($id))
+        {
+           $dataId=$id;
+           $type=1;//1表示是表单id
+        }
+        //当没有已填写表单时
+        else
+        {
+            $dataId=$cpr_id;
+            $type=2;//2表示是cpr_id
+        }
+
+        //app接口地址
         $host="http://".$_SERVER['HTTP_HOST'];
-        $code=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
+        $code = $host."/api/qualityform/getforminfo?dataId=".$dataId."&type=".$type;
+
         $htmlContent=    $this->fetch($formPath,
             [   'id'=>$id,
                 'divisionId'=>$cp['division_id'],
@@ -131,6 +148,7 @@ class Matchform extends Controller
         //返回模板内容
         return $htmlContent;
     }
+    //在线填报的表单
     public function matchForm($cpr_id)
     {
         //获取模板路径
@@ -167,8 +185,19 @@ class Matchform extends Controller
         $output = $this->getFormBaseInfo($norm_template['division_id']);
         $htmlContent = file_get_contents($formPath);
 
+        if($id>0&&!is_null($id))
+        {
+            $dataId=$id;
+            $type=1;//1表示是表单id
+        }
+        //当没有已填写表单时
+        else
+        {
+            $dataId=$cpr_id;
+            $type=2;//2表示是cpr_id
+        }
         $host="http://".$_SERVER['HTTP_HOST'];
-        $code=$host."/quality/matchform/matchform?cpr_id=".$cpr_id;
+        $code = $host."/api/qualityform/getforminfo?dataId=".$dataId."&type=".$type;
         $htmlContent=    $this->fetch($formPath,
             [   'id'=>$id,
                 'divisionId'=>$cp['division_id'],
