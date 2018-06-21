@@ -52,6 +52,60 @@
         .webuploader-pick {
              padding: 0 ;
         }
+        .layui-btn{
+            background: none;
+            color: #000;
+        }
+        .layui-btn:hover{
+              color: #000;
+        }
+        #styleFa button:nth-of-type(1) i{
+            color: #d6ac00;
+        }
+        #styleFa button:nth-of-type(1) i:hover{
+            color: #ffcd00;
+        }
+        #styleFa button:nth-of-type(2) i{
+            color: #009688;
+        }
+        #styleFa button:nth-of-type(2) i:hover{
+            color: #00bcaa;
+        }
+        #styleFa button:nth-of-type(3) i{
+            color: #e76d60;
+        }
+        #styleFa button:nth-of-type(3) i:hover{
+            color: #ff8679;
+        }
+        #styleFa button:nth-of-type(4) i{
+            color: #1b85e7;
+        }
+        #styleFa button:nth-of-type(4) i:hover{
+            color: #2292f9;
+        }
+        #styleFa button:nth-of-type(5) i{
+            color: #11c4f0;
+        }
+        #styleFa button:nth-of-type(5) i:hover{
+            color: #30d4fc;
+        }
+        #styleFa button:nth-of-type(6) i{
+            color: #d85c74;
+        }
+        #styleFa button:nth-of-type(6) i:hover{
+            color: #ff7c95;
+        }
+        #styleFa button:nth-of-type(7) i{
+            color: #ffb800;
+        }
+        #styleFa button:nth-of-type(7) i:hover{
+            color: #ffd25f;
+        }
+        #styleFa button i{
+            font-size: 21px;
+            vertical-align: middle;
+        }
+
     </style>
 </head>
 <body>
@@ -88,19 +142,19 @@
                 <button class="layui-btn layui-btn-normal" onclick="monthlyPlanList()">月计划列表</button>
             </div>
         </div>
-        <div style="padding: 10px 0">
-            <button class="layui-btn layui-btn-normal" onclick="save()">保存</button>
-            <button class="layui-btn layui-btn-normal"  onclick="printGantt()">打印</button>
-            <button class="layui-btn layui-btn-normal"  onclick="addTask()">增加</button>
-            <button class="layui-btn layui-btn-danger"  onclick="removeTask()">删除</button>
-            <button class="layui-btn layui-btn-warm"  onclick="updateTask()">修改</button>
-            <button class="layui-btn layui-btn-warm"  onclick="upgradeTask()">升级</button>
-            <button class="layui-btn layui-btn-warm" onclick="downgradeTask()">降级</button>
+        <div style="padding: 10px 0" id="styleFa">
+            <button class="layui-btn" onclick="save()"><i class="fa fa-save" title="保存"></i>&nbsp;&nbsp;保存</button>
+            <button class="layui-btn" onclick="printGantt()"><i class="fa fa-print" title="打印"></i>&nbsp;&nbsp;打印</button>
+            <button class="layui-btn" onclick="addTask()"><i class="fa fa-plus" title="增加"></i>&nbsp;&nbsp;增加</button>
+            <button class="layui-btn" onclick="removeTask()"><i class="fa fa-trash" title="删除"></i>&nbsp;&nbsp;删除</button>
+            <button class="layui-btn" onclick="updateTask()"><i class="fa fa-edit" title="修改"></i>&nbsp;&nbsp;修改</button>
+            <button class="layui-btn" onclick="upgradeTask()"><i class="fa fa-arrow-up" title="升级"></i>&nbsp;&nbsp;升级</button>
+            <button class="layui-btn" onclick="downgradeTask()"><i class="fa fa-arrow-down" title="降级"></i>&nbsp;&nbsp;降级</button>
             <div class="layui-inline layuiRight">
                 <input type="checkbox" id="showCriticalPath" onclick="showCriticalPath(this.checked)" />
                 <label for="showCriticalPath">显示关键路径</label>
-                <button class="layui-btn layui-btn-warm" onclick="zoomIn()">放大</button>
-                <button class="layui-btn layui-btn-warm" onclick="zoomOut()">缩小</button>
+                <button class="layui-btn" onclick="zoomIn()"><img src="__WEBSITE__/progress/monthlyplan/img/zoomin.png" alt="" title="放大">&nbsp;&nbsp;放大</button>
+                <button class="layui-btn" onclick="zoomOut()"><img src="__WEBSITE__/progress/monthlyplan/img/zoomout.png" alt="" title="缩小">&nbsp;&nbsp;缩小</button>
             </div>
         </div>
     </div>
