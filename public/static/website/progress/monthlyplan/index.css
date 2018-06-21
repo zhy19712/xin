@@ -92,7 +92,7 @@
 }
 
 /*!*修改的样式*!*/
-.mini-panel{
+.mini-window{
     /*height: 470px !important;*/
     width: 600px !important;
 }
@@ -120,7 +120,7 @@
 .mini-panel .mini-panel-title{
     margin-left: 10pt;
 }
-.mini-panel .mini-panel-header,.mini-panel .mini-panel-toolbar .mini-toolbar,.mini-panel .mini-panel-footer {
+.mini-panel .mini-panel-header,.mini-panel .mini-panel-toolbar,.mini-panel .mini-panel-toolbar .mini-toolbar,.mini-panel .mini-panel-footer {
     background: #FFFFFF !important;
 }
 .mini-panel .mini-panel-toolbar .mini-toolbar{
@@ -131,7 +131,27 @@
     border: none;
     color: #FFFFFF;
 }
-
+/*tab*/
+.mini-tab{
+    background: #FFFFFF !important;
+}
+.mini-panel-toolbar #twin_linkbar,.mini-panel-toolbar #twin_resbar{
+    float: right;
+    margin-right: 10px;
+}
+.mini-panel-toolbar #twin_linkbar .mini-button:nth-of-type(1),.mini-panel-toolbar #twin_resbar .mini-button:nth-of-type(1){
+    background: #1E9FFF !important;
+    color: white;
+    border: none !important;
+}
+.mini-panel-toolbar #twin_linkbar .mini-button:nth-of-type(2),.mini-panel-toolbar #twin_resbar .mini-button:nth-of-type(2){
+    background: #FFB800 !important;
+    color: white;
+    border: none !important;
+}
+.mini-grid-body{
+    height: 189px!important;
+}
 /*!*常规的内容*!*/
 
 .mini-panel .mini-tabs-bodys>div:first-child>table{
