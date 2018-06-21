@@ -130,7 +130,6 @@ class PlusTaskModel extends Model
     {
         // $plan_type 1月计划2年计划3总计划
         $data = $this->where(['plan_type'=>$plan_type,'project_uid'=>$uid])->field('min(start) as start_date,max(actual_finish) as finish_date')->find();
-        dump($this->getLastSql());
         return $data;
     }
 

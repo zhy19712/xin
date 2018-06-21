@@ -299,7 +299,7 @@ class Monthlyplan extends Permissions
         $uid = $monthly->monthlyExist($plan_type,$section_id,$plan_year,$plan_monthly);
         $project_data = $monthly->getOne($uid);
         $data['UID'] = $project_data['id']; // 计划的唯一标识符
-        $data['Name'] = $project_data['name']; // 计划名称
+        $data['Name'] = $project_data['plan_name']; // 计划名称
         $data['CalendarUID'] = 1; // 日历数据
         $calendars = '[{"WeekDays": [{"DayWorking": 1,"DayType": 1},{"DayWorking": 1,"DayType": 2,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
                               {"DayWorking": 1,"DayType": 3,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
