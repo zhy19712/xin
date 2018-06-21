@@ -79,7 +79,7 @@ class PlusTaskModel extends Model
                 $new_data[$k2]['ActualDuration'] = $v2['actual_duration']; // 实际工期
                 $new_data[$k2]['ActualFinish'] = $v2['actual_finish']; // 实际完成日期
                 $new_data[$k2]['ActualStart'] = $v2['actual_start']; // 实际开始日期
-                $new_data[$k2]['Assignments'] = $v2['assignments']; // 资源
+                $new_data[$k2]['Assignments'] = empty($v2['assignments']) ? [] : json_decode($v2['assignments']); // 资源
                 $new_data[$k2]['ConstraintDate'] = $v2['constraint_date']; // 任务限制日期
                 $new_data[$k2]['ConstraintType'] = $v2['constraint_type']; // 任务限制类型
                 $new_data[$k2]['Critical'] = $v2['critical']; // 关键任务
@@ -91,12 +91,12 @@ class PlusTaskModel extends Model
                 $new_data[$k2]['ID'] = $v2['order_number']; // 序号(是一个数字,体现任务的前后顺序)
                 $new_data[$k2]['Milestone'] = $v2['milestone']; // 里程碑
                 $new_data[$k2]['Name'] = $v2['name']; // 任务名称
-                $new_data[$k2]['Notes'] = $v2['notes']; // 备注
+                $new_data[$k2]['Notes'] = empty($v2['notes']) ? null : json_decode($v2['notes']); // 备注
                 $new_data[$k2]['OutlineLevel'] = 2;
                 $new_data[$k2]['OutlineNumber'] = $v2['wbs'];
                 $new_data[$k2]['ParentTaskUID'] = $v2['parent_task_uid']; // 父任务UID(体现树形结构)
                 $new_data[$k2]['PercentComplete'] = $v2['percent_complete']; // 完成百分比
-                $new_data[$k2]['PredecessorLink'] = $v2['predecessor_link']; // 前置任务（JSON字符串）。如"[{PredecessorUID: 2,Type: 1,LinkLag: 0}, ...]"
+                $new_data[$k2]['PredecessorLink'] = empty($v2['predecessor_link']) ? [] : json_decode($v2['predecessor_link']); // 前置任务（JSON字符串）。如"[{PredecessorUID: 2,Type: 1,LinkLag: 0}, ...]"
                 $new_data[$k2]['Principal'] = $v2['principal']; // 任务负责人
                 $new_data[$k2]['Priority'] = $v2['priority']; // 重要级别
                 $new_data[$k2]['ProjectUID'] = $v2['project_uid']; // 计划UID
