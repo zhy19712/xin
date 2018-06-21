@@ -49,20 +49,33 @@ class Dashboard extends Permissions
         $admin_id = Session::has('admin') ? Session::get('admin') : 0;
 
 
-        //查询单元工程审批人状态表
+        //查询单元工程审批人状态表,处于审批状态或者已完成状态
         $form_info = $qualityform->getAdminapproval($admin_id);
+        //查询单元工程的退回表单进行处理
+        $refund_info =$qualityform->getRefundapproval($admin_id);
+
+        if (!empty($refund_info))
+        {
+            $this->dealrefundMessage($refund_info);
+        }
+
 
         //定义两个空的数组用来存储值
         $data = array();
         $edit_data = array();
         if (!empty($form_info)) {
             foreach ($form_info as $key => $val) {
-                $result = $message->getOne(["uint_id" => $val["id"], "current_approver_id" => $val["CurrentApproverId"]]);
+                $result = $message->getOne(["uint_id" => $val["id"], "current_approver_id" => $val["CurrentApproverId"],'type'=>2]);
 
                 if (!empty($result)) {
                     $edit_data[$key]["id"] = $result["id"];
 
                     $edit_data[$key]["status"] = $val["ApproveStatus"];
+
+                    $edit_data[$key]["create_time"] = strtotime($val["update_time"]);;
+
+
+
 
                 } else {
                     $data[$key]["uint_id"] = $val["id"];
@@ -118,7 +131,7 @@ class Dashboard extends Permissions
         $edit_data = array();
         if (!empty($form_info)) {
             foreach ($form_info as $key => $val) {
-                $result = $message->getOne(["uint_id" => $val["id"], "current_approver_id" => $val["income_id"]]);
+                $result = $message->getOne(["uint_id" => $val["id"], "current_approver_id" => $val["income_id"],'type'=>1]);
 
                 if (!empty($result)) {
                     $edit_data[$key]["id"] = $result["id"];
@@ -213,6 +226,57 @@ class Dashboard extends Permissions
 
             return json(["code" => 1]);
         }
+    }
+    //表单退回后所有之前的审批人都会收到信息
+    public function dealrefundMessage($refund_info)
+    {
+        $message = new MessageremindingModel();
+        $admin_id = Session::has('admin') ? Session::get('admin') : 0;
+        if (!empty($refund_info)) {
+            foreach ($refund_info as $key => $val) {
+                $result = $message->getOne(["uint_id" => $val["id"], "current_approver_id" => $admin_id]);
+
+                if (!empty($result)) {
+                    $edit_data[$key]["id"] = $result["id"];
+
+                    $edit_data[$key]["status"] = 1;
+
+                    $edit_data[$key]["create_time"] = strtotime($val["update_time"]);
+
+                    $edit_data[$key]["type"] = 3;
+
+
+                } else {
+                    $data[$key]["uint_id"] = $val["id"];
+                    $data[$key]["task_name"] = $val["form_name"];
+
+                    $data[$key]["create_time"] = strtotime($val["update_time"]);
+
+                    if ($val["ApproveIds"]) {
+                        $ids = explode(",", $val["ApproveIds"]);
+
+                        $data[$key]["sender"] = $ids[count($ids) - 1];
+                    }
+
+                    $data[$key]["task_category"] = "单元质量验评";
+                    $data[$key]["status"] = 1;//未执行消息
+                    $data[$key]["current_approver_id"] = $admin_id;
+                    $data[$key]["type"] = 3;//表单退回
+                }
+            }
+
+            if (!empty($data)) {
+                foreach ($data as $a => $b) {
+                    $message->insertTb($b);
+                }
+
+            }
+            if (!empty($edit_data)) {
+                $message->saveTb($edit_data);
+            }
+
+        }
+
     }
 }
 
