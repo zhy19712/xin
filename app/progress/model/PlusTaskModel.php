@@ -38,7 +38,7 @@ class PlusTaskModel extends Model
                 $new_data[$k]['ID'] = $v['order_number']; // 序号(是一个数字,体现任务的前后顺序)
                 $new_data[$k]['Milestone'] = $v['milestone']; // 里程碑
                 $new_data[$k]['Name'] = $v['name']; // 任务名称
-                $new_data[$k]['Notes'] = $v['notes']; // 备注
+                $new_data[$k]['Notes'] = empty($v['notes']) ? null : json_decode($v['notes']); // 备注
                 // 不存在于数据表里的
                 $new_data[$k]['OutlineLevel'] = 1; // 行的等级 例如 父级是1 子集 是2
                 $new_data[$k]['OutlineNumber'] = $v['wbs']; // 行数  例如 父级是1 子集 是 1.1 1.2 1.3 ... 父级是2 子集 是 2.1 2.2 2.3 ...
@@ -70,6 +70,7 @@ class PlusTaskModel extends Model
         return $new_da;
     }
 
+    // ht 多层子任务
     public function assemblyData($data,$uid)
     {
         $new_data = [];
@@ -79,7 +80,9 @@ class PlusTaskModel extends Model
                 $new_data[$k2]['ActualDuration'] = $v2['actual_duration']; // 实际工期
                 $new_data[$k2]['ActualFinish'] = $v2['actual_finish']; // 实际完成日期
                 $new_data[$k2]['ActualStart'] = $v2['actual_start']; // 实际开始日期
-                $new_data[$k2]['Assignments'] = empty($v2['assignments']) ? [] : json_decode($v2['assignments']); // 资源
+                if(!empty($v2['assignments'])){
+                    $new_data[$k2]['Assignments'] = json_decode($v2['assignments']); // 资源名称
+                }
                 $new_data[$k2]['ConstraintDate'] = $v2['constraint_date']; // 任务限制日期
                 $new_data[$k2]['ConstraintType'] = $v2['constraint_type']; // 任务限制类型
                 $new_data[$k2]['Critical'] = $v2['critical']; // 关键任务
