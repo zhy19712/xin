@@ -286,7 +286,8 @@ class Dashboard extends Permissions
             ->find();
 
         //退回人和起草人信息
-        $refunderId=end(explode(",",$info["ApproveIds"]));
+        $approveArr=explode(",",$info["ApproveIds"]);
+        $refunderId=end($approveArr);
         $userId=$info['user_id'];
         $refunder=Db::name("admin")->where("id",$refunderId)->value("nickname");
         $creater=Db::name("admin")->where("id",$userId)->value("nickname");
