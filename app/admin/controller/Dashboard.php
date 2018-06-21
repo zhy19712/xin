@@ -278,5 +278,36 @@ class Dashboard extends Permissions
         }
 
     }
+
+    public function getrefundData($formId)
+    {
+        $info = Db::name('quality_form_info')
+            ->where(['id' => $formId])
+            ->find();
+
+        //退回人和起草人信息
+        $approveArr=explode(",",$info["ApproveIds"]);
+        $refunderId=end($approveArr);
+        $userId=$info['user_id'];
+        $refunder=Db::name("admin")->where("id",$refunderId)->value("nickname");
+        $creater=Db::name("admin")->where("id",$userId)->value("nickname");
+
+        //当前用户是否是起草人
+        $isCreater=Session::get("current_id")==$userId ? 1:0;
+
+        $qualityModel = new QualityFormInfoModel();
+        $output = $qualityModel->getFormBaseInfo($info['DivisionId']);
+        $baseData['taskName'] = $info['form_name'];//任务名称
+        $baseData['dwName'] = $output['DWName'] . $output['DWCode'];//单位名称.编号
+        $baseData['fbName'] = $output['FBName'] . $output['FBCode'];//分部名称.编号
+        $baseData['dyName'] = $output['DYName'] . $output['DYCode'];//单元名称.编号
+        $baseData['pileNo'] = $output['PileNo'];//起止桩号
+        $baseData['altitude'] = $output['Altitude'];//起止高程
+
+        $remark="{$baseData['taskName']}已经由{$refunder}退回至{$creater}";
+
+        return json(['code'=>1,'message'=>'success','basedata'=>$baseData,'remark'=>$remark, 'isCreater'=>$isCreater]);
+
+    }
 }
 
