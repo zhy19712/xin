@@ -144,6 +144,7 @@
         </div>
         <div style="padding: 10px 0" id="styleFa">
             <button class="layui-btn" onclick="save()"><i class="fa fa-save" title="保存"></i>&nbsp;&nbsp;保存</button>
+            <a class="mini-button" plain="true" onclick="track()" >调试</a>
             <button class="layui-btn" onclick="printGantt()"><i class="fa fa-print" title="打印"></i>&nbsp;&nbsp;打印</button>
             <button class="layui-btn" onclick="addTask()"><i class="fa fa-plus" title="增加"></i>&nbsp;&nbsp;增加</button>
             <button class="layui-btn" onclick="removeTask()"><i class="fa fa-trash" title="删除"></i>&nbsp;&nbsp;删除</button>
@@ -443,47 +444,14 @@
     /* 业务代码
 -----------------------------------------------------------------------------*/
 
-    //1)自定义条形图外观显示
-    // project.on("drawitem", function (e) {
-    //     var item = e.item;
-    //     var left = e.itemBox.left,
-    //         top = e.itemBox.top,
-    //         width = e.itemBox.width,
-    //         height = e.itemBox.height;
-    //
-    //     if (!item.Summary && !item.Milestone) {
-    //         var percentWidth = width * (item.PercentComplete / 100);
-    //
-    //         e.itemHtml = '<div id="' + item._id + '" class="myitem" style="left:' + left + 'px;top:' + top + 'px;width:' + width + 'px;height:' + (height) + 'px;">';
-    //         e.itemHtml += '<div style="width:' + (percentWidth) + 'px;" class="percentcomplete"></div>';
-    //
-    //         //根据你自己逻辑，把任务分成几块，注意坐标和宽度
-    //         // e.itemHtml += '<div style="position:absolute;left:0px;top:0;height:100%;width:20px;background:red;"></div>';
-    //
-    //         e.itemHtml += '</div>';
-    //
-    //         // e.ItemHtml = '<a href="http://www.baidu.com" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+(height-2)+'px;" class="myitem">111</a>';
-    //     }
-    // });
-
     project.on('itemdragstart', function (e) {
         // console.log(e);
         // var project = e.source;
         // var task = e.task;
     });
-    /*修改*/
-    function updateTask() {
-        ShowTaskWindow(project);
-        if($(".mini-tabs-header td:nth-of-type(8)").text() == "高级" || $(".mini-tabs-header td:nth-of-type(9)").text() == "备注" || $(".mini-tabs-header td:nth-of-type(10)").text() == "自定义Tab"){
-            $(".mini-tabs-header td:nth-of-type(8)").remove()
-            $(".mini-tabs-header td:nth-of-type(9)").remove()
-            $(".mini-tabs-header td:nth-of-type(10)").remove()
-        }
-    }
 
     project.on("drawcell", function (e) {
         var task = e.record, column = e.column, field = e.field;
-
         //新增
         if (task._state == "added") {
             e.rowCls = "row_added";
@@ -492,30 +460,14 @@
         if (task.Deleted == true) {
             e.rowCls = "row_deleted";
         }
-
     });
-
+    /*调试*/
+    function track() {
+        TrackProject(project);
+    }
     //2)保存
     function save() {
-        var newTask = project.newTask();
-        newTask.Name = '<新增任务>';    //初始化任务属性
-
-        var selectedTask = project.getSelected();
-        if (selectedTask) {
-            project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
-            //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
-        } else {
-            project.addTask(newTask);
-        }
-        //使用jQuery的ajax，把任务数据，发送到服务端进行处理
-        //    $.ajax({
-        //        url: 'savegant.aspx',
-        //        type: "POST",
-        //        data: params,
-        //        success: function (text) {
-        //            alert("保存成功");
-        //        }
-        //    });
+        SaveProject(project);
     }
     //3)打印
     function printGantt() {
@@ -523,7 +475,7 @@
         project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
         project.print();
     }
-    //4)添加
+    //4)/*新增*/
     function addTask() {
         var newTask = project.newTask();
         newTask.Name = '<新增任务>';    //初始化任务属性
@@ -535,6 +487,14 @@
         } else {
             project.addTask(newTask);
         }
+        // $.ajax({
+        //     url: 'savegant.aspx',
+        //     type: "POST",
+        //     data: params,
+        //     success: function (text) {
+        //         alert("保存成功");
+        //     }
+        // });
     }
     //5)删除
     function removeTask() {
@@ -545,6 +505,20 @@
             }
         } else {
             // layer.confirm("请选中任务");
+            alert("请选中任务");
+        }
+    }
+    /*修改*/
+    function updateTask() {
+        var task = project.getSelected();
+        if (task) {
+            ShowTaskWindow(project);
+            if($(".mini-tabs-header td:nth-of-type(8)").text() == "高级" || $(".mini-tabs-header td:nth-of-type(9)").text() == "备注" || $(".mini-tabs-header td:nth-of-type(10)").text() == "自定义Tab"){
+                $(".mini-tabs-header td:nth-of-type(8)").remove()
+                $(".mini-tabs-header td:nth-of-type(9)").remove()
+                $(".mini-tabs-header td:nth-of-type(10)").remove()
+            }
+        } else {
             alert("请选中任务");
         }
     }
