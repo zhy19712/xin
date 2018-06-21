@@ -9,7 +9,7 @@
     margin-bottom: 0;
 }
 .select-wrap .layui-form-label{
-    padding: 6px 15px;
+    padding: 6px 10px;
     width: auto;
 }
 .select-wrap .layui-input{
@@ -21,6 +21,13 @@
 }
 .select-wrap .layui-form-select dl{
     top: 31px;
+}
+.select-wrap .layui-input-inline{
+    width: 140px;
+}
+.select-wrap .layui-form-label:first-child+.layui-input-inline{
+    margin-right: 70px;
+    width: 240px;
 }
 .select-wrap .layui-form-mid.layui-word-aux{
     padding: 6px 0!important;

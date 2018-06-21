@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-进度模型
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/modelmanagement/progress/index.css">
+<div class="operation-bar layui-clear">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标段</label>
+            <div class="layui-input-inline">
+                <select>
+                    <option value="">标段1</option>
+                    <option value="">标段2</option>
+                </select>
+            </div>
+            <label class="layui-form-label">起止日期</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input date" id="startDate">
+            </div>
+            <div class="layui-form-mid layui-word-aux no-position">--</div>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input date" id="endDate">
+            </div>
+        </div>
+    </form>
+    <div class="play">
+        <div class="speed">
+            <span>倍速：<em id="speed">0</em></span>
+            <i class="fa fa-fast-backward" id="backward"></i>
+            <i class="fa fa-play" id="play"></i>
+            <i class="fa fa-pause pause" id="pause"></i>
+            <i class="fa fa-stop" id="stop"></i>
+            <i class="fa fa-fast-forward" id="forward"></i>
+        </div>
+    </div>
+</div>
+<div class="model-wrap layui-clear easyui-layout" style="width: 100%;height: 100%">
+    <div data-options="region:'north'," class="north">
+        <div class="layui-progress" lay-filter="demo" >
+            <div class="layui-progress-bar layui-bg-green" lay-percent=""></div>
+        </div>
+    </div>
+    <div data-options="region:'east'" class="east">
+        <table id="demo" lay-filter="test"></table>
+    </div>
+    <div data-options="region:'center'" class="center">
+
+    </div>
+</div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/modelmanagement/progress/index.js"></script>
 </body>
 </html>
