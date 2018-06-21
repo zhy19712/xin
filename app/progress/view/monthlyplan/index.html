@@ -201,10 +201,8 @@
                     var idBid = $("#seleBids").val();
                     yearFun(idBid);
                 }
-                //TODO 问问后台res.code ！= 1是怎么提示的
             }
         });
-
     });
     /*年度*/
     function yearFun(id) {
@@ -243,7 +241,8 @@
                         $("#seleMonthly").append($("<option/>").text(orgs[i]));
                     }
                     layui.form.render();
-                    // load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
+                    /*甘特图的获取数据*/
+                    load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -274,13 +273,10 @@
     // project.setRowHeight(30);                   //设置行高
     // project.setShowLinkLines(true);             //设置是否显示箭头连线
     // project.setShowCriticalPath(true);          //设置是否显示关键路径
-    //
     // project.setAllowDragDrop(false);             //设置是否允许任务行拖拽
-    // // project.setShowGridLines(true);             //设置是否显示关键路径
-    //
+    // project.setShowGridLines(true);             //设置是否显示关键路径
     // console.log(project.getCalendars());
-    // // var set = project.getCalendars()[0].WeekDays[0]
-    // // project.getCalendars()
+    // var set = project.getCalendars()[0].WeekDays[0]
     // var calendarsArr = [{BaseCalendarUID:"-1",
     // Exceptions:[],
     // IsBaseCalendar:1,
@@ -306,11 +302,11 @@
     });
 
     //获取数据
-    LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
-        var projectStart = mini.get("projectStart");
-
-        project.setStartDate(new Date(2017,1,1));
-    });
+    // LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
+    //     var projectStart = mini.get("projectStart");
+    //
+    //     project.setStartDate(new Date(2017,1,1));
+    // });
 
     //加载数据
     function load(sectionId,planYear,monthly) {
@@ -367,7 +363,7 @@
             e.rowCls = "row_deleted";
         }
     });
-    /*调试*/
+    //1)调试
     function track() {
         TrackProject(project);
     }
@@ -414,7 +410,7 @@
             alert("请选中任务");
         }
     }
-    /*修改*/
+    //5)修改
     function updateTask() {
         var task = project.getSelected();
         if (task) {
