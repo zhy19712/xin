@@ -145,11 +145,15 @@ $("#saveMonthPlan").click(function () {
                         $("#coverId").val(0);
                         $("#saveMonthPlan").text("保存");
                         $("textarea").val("");
+                        yearFun($("#seleBids").val());
+                        monthFun($("#seleBids").val(),$("#testYear").val());
                     }else if (res.code == 2) {
                         layer.confirm(res.msg, function(index){
                             $("#coverId").val(1);
                             $("#saveMonthPlan").text("确认覆盖");
                             layer.close(index);
+                            yearFun($("#seleBids").val());
+                            monthFun($("#seleBids").val(),$("#testYear").val());
                         });
                     }else {
                         layer.msg(res.msg);
@@ -167,7 +171,7 @@ function monthlyPlanList() {
         type: 2,
         title: "标段"+$("#seleBids option:selected").text()+"-月进度计划",
         area: ['100%', '100%'],
-        content: '/progress/monthlyplan/list_table?section_id='+$("#seleBids").val(),
+        content: '/progress/monthlyplan/list_table?plan_type=1&section_id='+$("#seleBids").val(),
     });
 }
 

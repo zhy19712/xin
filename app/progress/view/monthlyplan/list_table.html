@@ -14,6 +14,7 @@
 </style>
 <div id="monthList">
     <input type="hidden" id="selectId" value="{$section_id}">
+    <input type="hidden" id="plan_type" value="{$plan_type}">
     <table id="monthList_table" width="100%" class="table cell-border">
         <thead>
             <tr>
@@ -44,7 +45,7 @@
         scrollY: "520px",   //表格容器高度
         scrollCollapse: true,
         ajax: {
-            url: '/progress/common/datatablesPre?tableName=progress_monthlyplan&section_id='+$("#selectId").val()
+            url: '/progress/common/datatablesPre?tableName=progress_plan&plan_type='+$("#plan_type").val()+'&section_id='+$("#selectId").val()
         },
         dom: 'ltip',
         columns: [
@@ -176,7 +177,7 @@
                 success: function (res) {
                     if (res.code === 1) {
                         layer.msg(res.msg, {time: 1100, shade: 0.1});
-                        monthList_table.ajax.url('/progress/common/datatablesPre?tableName=progress_monthlyplan&section_id='+$("#selectId").val()).load();
+                        monthList_table.ajax.url('/progress/common/datatablesPre?tableName=progress_plan&plan_type='+$("#plan_type").val()+'&section_id='+$("#selectId").val()).load();
                     }else{
                         layer.msg(res.msg)
                     }
@@ -190,11 +191,11 @@
         $.ajax({
             url: "/progress/monthlyplan/delOrSaveReport",
             type: "post",
-            data: {plan_id: id,file_id:fileId,plan_type:1},
+            data: {plan_id: id,file_id:fileId,operate_type:1},
             success: function (res) {
                 if (res.code === 1) {
                     layer.msg(res.msg, {time: 1100, shade: 0.1});
-                    monthList_table.ajax.url('/progress/common/datatablesPre?tableName=progress_monthlyplan&section_id='+$("#selectId").val()).load();
+                    monthList_table.ajax.url('/progress/common/datatablesPre?tableName=progress_plan&plan_type='+$("#plan_type").val()+'&section_id='+$("#selectId").val()).load();
                 }else{
                     layer.msg(res.msg)
                 }
@@ -244,7 +245,7 @@
                 success: function (res) {
                     if (res.code === 1) {
                         layer.msg(res.msg, {time: 1100, shade: 0.1});
-                        monthList_table.ajax.url('/progress/common/datatablesPre?tableName=progress_monthlyplan&section_id='+$("#selectId").val()).load();
+                        monthList_table.ajax.url('/progress/common/datatablesPre?tableName=progress_plan&plan_type='+$("#plan_type").val()+'&section_id='+$("#selectId").val()).load();
                     }else{
                         layer.msg(res.msg)
                     }

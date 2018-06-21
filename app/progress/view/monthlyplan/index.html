@@ -199,7 +199,6 @@
                     }
                     layui.form.render();
                     var idBid = $("#seleBids").val();
-                    console.log(idBid)
                     yearFun(idBid);
                 }
                 //TODO 问问后台res.code ！= 1是怎么提示的
@@ -213,7 +212,7 @@
             url: "/progress/monthlyplan/planYear",
             async : false,
             type: "post",
-            data: {section_id: id},
+            data: {section_id: id,plan_type:1},
             dataType: "json",
             success: function (res) {
                 if(res.code == 1){
@@ -235,7 +234,7 @@
             async : false,
             url: "/progress/monthlyplan/planMonthly",
             type: "post",
-            data: {section_id:set_id,plan_year:year_id},
+            data: {section_id:set_id,plan_year:year_id,plan_type:1},
             dataType: "json",
             success: function (res) {
                 if(res.code == 1){
@@ -322,6 +321,7 @@
                 section_id:sectionId,
                 plan_year:planYear,
                 plan_monthly:monthly,
+                plan_type:1,
             },
             cache: false,
             success: function (text) {
