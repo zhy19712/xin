@@ -15,10 +15,10 @@ class PlusTaskModel extends Model
 {
     protected $name = 'progress_plus_task';
 
-    // ht $project_type 1月计划2年计划3总计划
-    public function tasksData($project_type,$uid)
+    // ht $plan_type 1月计划2年计划3总计划
+    public function tasksData($plan_type,$uid)
     {
-        $data = $this->where(['project_type'=>$project_type,'project_uid'=>$uid])->select();
+        $data = $this->where(['plan_type'=>$plan_type,'project_uid'=>$uid])->select();
         $new_data = [];
         foreach ($data as $k=>$v){
             // 父级任务
@@ -123,6 +123,14 @@ class PlusTaskModel extends Model
             $new_da[] = $v;
         }
         return $new_da;
+    }
+
+    // 获取项目的开始时间和完成时间
+    public function startFinishDate($plan_type,$uid)
+    {
+        // $plan_type 1月计划2年计划3总计划
+        $data = $this->where(['plan_type'=>$plan_type,'project_uid'=>$uid])->field('min(start) as start_date,max(actual_finish) as finish_date')->select();
+        return $data;
     }
 
 }

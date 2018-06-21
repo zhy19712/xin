@@ -15,9 +15,9 @@ use think\Db;
 use think\exception\PDOException;
 use think\Model;
 
-class MonthlyplanModel extends Model
+class PlanModel extends Model
 {
-    protected $name = 'progress_monthlyplan';
+    protected $name = 'progress_plan';
 
     public function insertTb($param)
     {
@@ -26,12 +26,7 @@ class MonthlyplanModel extends Model
             if (false === $result) {
                 return ['code' => -1, 'msg' => $this->getError()];
             } else {
-                $data['project_type'] = 1; // 1月计划2年计划3总计划
-                $data['uid'] = $this->getLastInsID();
-                $data['name'] = $param['plan_name'];
-                $project = new PlusProjectModel();
-                $flag = $project->insertTb($data);
-                return $flag;
+                return ['code' => 1, 'msg' => '添加成功'];
             }
         } catch (PDOException $e) {
             return ['code' => -1, 'msg' => $e->getMessage()];
@@ -68,13 +63,14 @@ class MonthlyplanModel extends Model
             }
             $att->deleteTb($data['plan_report_id']);
             $att->deleteTb($data['plan_file_id']);
-            // 关联删除 --- 模型关联记录
-            $model = new QualitymassModel();
-            $model->deleteRelationById($id,2); // type 1 表示是实时进度关联 2 表示月进度关联
-            // 删除月计划任务
-            $project = new PlusProjectModel();
-            $project->deleteTb(1,$id); // project_type 1月计划2年计划3总计划
-            //TODO 删除该月计划下的所有甘特图数据
+
+            if($data['plan_type'] == 1){ // 1月计划2年计划3总计划  只有月计划有模型关联关系
+                // 关联删除 --- 模型关联记录
+                $model = new QualitymassModel();
+                $model->deleteRelationById($id,2); // type 1 表示是实时进度关联 2 表示月进度关联
+            }
+
+            //TODO 删除该计划下的所有任务
 
             $this->where('id', $id)->delete();
             return ['code' => 1, 'msg' => '删除成功'];
@@ -98,23 +94,23 @@ class MonthlyplanModel extends Model
     }
 
     // 当前月度是否已经存在计划
-    public function monthlyExist($section_id,$plan_year,$plan_monthly)
+    public function monthlyExist($plan_type,$section_id,$plan_year,$plan_monthly)
     {
-        $data = $this->where(['section_id'=>$section_id,'plan_year'=>$plan_year,'plan_monthly'=>$plan_monthly])->value('id');
+        $data = $this->where(['plan_type'=>$plan_type,'section_id'=>$section_id,'plan_year'=>$plan_year,'plan_monthly'=>$plan_monthly])->value('id');
         return $data;
     }
 
     // 根据选择的标段获取年度
-    public function planYearList($section_id)
+    public function planYearList($plan_type,$section_id)
     {
-        $data = $this->where('section_id',$section_id)->order('plan_year desc')->column('plan_year');
+        $data = $this->where(['plan_type'=>$plan_type,'section_id'=>$section_id])->order('plan_year desc')->column('plan_year');
         return $data;
     }
 
     // 根据选择的标段和年度获取月度
-    public function planMonthlyList($section_id,$plan_year)
+    public function planMonthlyList($plan_type,$section_id,$plan_year)
     {
-        $data = $this->where(['section_id'=>$section_id,'plan_year'=>$plan_year])->order('plan_monthly desc')->column('plan_monthly');
+        $data = $this->where(['plan_type'=>$plan_type,'section_id'=>$section_id,'plan_year'=>$plan_year])->order('plan_monthly desc')->column('plan_monthly');
         return $data;
     }
 

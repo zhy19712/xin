@@ -12,7 +12,7 @@ namespace app\progress\controller;
 use app\admin\controller\Permissions;
 use app\admin\model\Attachment;
 use app\contract\model\SectionModel;
-use app\progress\model\MonthlyplanModel;
+use app\progress\model\PlanModel;
 use app\progress\model\PlusProjectModel;
 use app\progress\model\PlusTaskModel;
 use think\Db;
@@ -50,14 +50,15 @@ class Monthlyplan extends Permissions
     public function planYear()
     {
         if($this->request->isAjax()){
-            // 前台需要 传递 标段编号 section_id
+            // 前台需要 传递 标段编号 section_id  计划类型 plan_type 1月计划2年计划3总计划
             $param = input('param.');
+            $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
             $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-            if(empty($section_id)){
+            if(empty($plan_type) || empty($section_id)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
-            $section = new MonthlyplanModel();
-            $data = $section->planYearList($section_id);
+            $section = new PlanModel();
+            $data = $section->planYearList($plan_type,$section_id);
             return json(['code'=>1,'data'=>$data,'msg'=>'年度下拉选项']);
         }
     }
@@ -71,15 +72,16 @@ class Monthlyplan extends Permissions
     public function planMonthly()
     {
         if($this->request->isAjax()){
-            // 前台需要 传递 标段编号 section_id 年度 plan_year
+            // 前台需要 传递 标段编号 section_id 年度 plan_year  计划类型 plan_type 1月计划2年计划3总计划
             $param = input('param.');
+            $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
             $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
             $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
-            if(empty($section_id) || empty($plan_year)){
+            if(empty($plan_type) || empty($section_id) || empty($plan_year)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
-            $section = new MonthlyplanModel();
-            $data = $section->planMonthlyList($section_id,$plan_year);
+            $section = new PlanModel();
+            $data = $section->planMonthlyList($plan_type,$section_id,$plan_year);
             return json(['code'=>1,'data'=>$data,'msg'=>'月度下拉选项']);
         }
     }
@@ -91,13 +93,15 @@ class Monthlyplan extends Permissions
      */
     public function list_table()
     {
-        // 前台需要 传递 标段编号 section_id  [作用::刷新列表时使用]
+        // 前台需要 传递 标段编号 section_id  [作用::刷新列表时使用]  计划类型 plan_type 1月计划2年计划3总计划
         $param = input('param.');
+        $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
         $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-        if(empty($section_id)){
+        if(empty($plan_type) || empty($section_id)){
             return json(['code' => '-1','msg' => '缺少参数']);
         }
         $this->assign('section_id',$section_id);
+        $this->assign('plan_type',$plan_type);
         return $this->fetch();
     }
 
@@ -108,16 +112,17 @@ class Monthlyplan extends Permissions
      */
     public function existPlan()
     {
-        // 前台需要 传递 标段编号 section_id 年度 plan_year 月度 plan_monthly
+        // 前台需要 传递 标段编号 section_id 年度 plan_year 月度 plan_monthly 计划类型 plan_type 1月计划2年计划3总计划
         $param = input('param.');
+        $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
         $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
         $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
         $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
-        if(empty($section_id) || empty($plan_year) || empty($plan_monthly)){
+        if(empty($plan_type) || empty($section_id) || empty($plan_year) || empty($plan_monthly)){
             return json(['code'=>'-1','msg'=>'缺少参数']);
         }
-        $monthly = new MonthlyplanModel();
-        $is_exist = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
+        $monthly = new PlanModel();
+        $is_exist = $monthly->monthlyExist($plan_type,$section_id,$plan_year,$plan_monthly);
         if($is_exist){
             return json(['code'=>'2','msg'=>'存在计划']);
         }
@@ -152,13 +157,14 @@ class Monthlyplan extends Permissions
             // 格式化月度
             $mon = explode('-',$param['plan_monthly']);
             $param['plan_monthly'] = intval($mon[1]);
-            // 系统自动生成数据: 编制人 user_id  编制日期 preparation_date
+            // 系统自动生成数据: 计划类型 plan_type 1月计划2年计划3总计划 编制人 user_id  编制日期 preparation_date
+            $param['plan_type'] = 1;
             $param['user_id'] = Session::has('admin') ? Session::get('admin') : 0;
             $param['preparation_date'] = date('Y-m-d');
 
             // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
-            $monthly = new MonthlyplanModel();
-            $is_exist_id = $monthly->monthlyExist($param['section_id'],$param['plan_year'],$param['plan_monthly']);
+            $monthly = new PlanModel();
+            $is_exist_id = $monthly->monthlyExist(1,$param['section_id'],$param['plan_year'],$param['plan_monthly']);
             if($is_exist_id){
                 $cover = isset($param['cover']) ? $param['cover'] : 0;
                 if($cover == 0){
@@ -182,9 +188,6 @@ class Monthlyplan extends Permissions
         }
     }
 
-    // 查看
-    public function preview(){}
-
     /**
      * 删除月计划
      * @return \think\response\Json
@@ -199,9 +202,7 @@ class Monthlyplan extends Permissions
             if(empty($plan_id)){
                 return json(['code'=>-1,'msg'=>'缺少参数']);
             }
-            //TODO 删除该月计划下的所有甘特图数据
-
-            $monthly = new MonthlyplanModel();
+            $monthly = new PlanModel();
             $flag = $monthly->deleteTb($plan_id);
             return json($flag);
         }
@@ -256,21 +257,23 @@ class Monthlyplan extends Permissions
     public function delOrSaveReport()
     {
         if($this->request->isAjax()){
-            // 前台需要 传递本条记录的编号 plan_id  文件编号 file_id  操作类型 plan_type 1 上传 2 删除
+            // 前台需要 传递本条记录的编号 plan_id  文件编号 file_id  操作类型 operate_type 1 上传 2 删除
             $param = input('param.');
             $plan_id = isset($param['plan_id']) ? $param['plan_id'] : 0;
             $file_id = isset($param['file_id']) ? $param['file_id'] : 0;
-            $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
-            if(empty($plan_id) || empty($file_id) || empty($plan_type)){
+            $operate_type = isset($param['operate_type']) ? $param['operate_type'] : 0;
+            if(empty($plan_id) || empty($file_id) || empty($operate_type)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
-            $monthly = new MonthlyplanModel();
-            if($plan_type == 1){
+            $monthly = new PlanModel();
+            if($operate_type == 1){
                 $data['id'] = $plan_id;
                 $data['plan_report_id'] = $file_id;
                 $flag = $monthly->editTb($data);
-            }else{
+            }else if($operate_type == 2){
                 $flag = $monthly->deleteFile($plan_id,$file_id);
+            }else{
+                return json(['code' => '-1','msg' => '不存在的操作类型']);
             }
             return json($flag);
         }
@@ -283,30 +286,56 @@ class Monthlyplan extends Permissions
     // 月计划根据选择的标段，年度，月度获取甘特图数据 测试 http://www.xin.com/progress/Monthlyplan/monthlyInitialise
     public function monthlyInitialise()
     {
-        // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly
+        // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly 计划类型 plan_type 1月计划2年计划3总计划
         $param = input('param.');
         $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
         $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
         $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
-        if(empty($section_id) || empty($plan_year) || empty($plan_monthly)){
+        $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
+        if(empty($section_id) || empty($plan_year) || empty($plan_monthly) || empty($plan_type)){
             return json(['code' => -1,'msg' => '缺少参数']);
         }
-        $monthly = new MonthlyplanModel();
-        $uid = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
-        $project = new PlusProjectModel();
-        $project_data = $project->getOne(1,$uid); // project_type 1月计划2年计划3总计划
-        $data['UID'] = $project_data['uid']; // 计划的唯一标识符
+        $monthly = new PlanModel();
+        $uid = $monthly->monthlyExist($plan_type,$section_id,$plan_year,$plan_monthly);
+        $project_data = $monthly->getOne($uid);
+        $data['UID'] = $project_data['id']; // 计划的唯一标识符
         $data['Name'] = $project_data['name']; // 计划名称
-        $data['StartDate'] = $project_data['start_date']; // 开始时间
-        $data['FinishDate'] = $project_data['finish_date']; // 完成日期
-        $data['CalendarUID'] = $project_data['calendar_uid']; // 日历数据
-        $data['Calendars'] = empty($project_data['calendars']) ? [] : json_decode($project_data['calendars']); // 日历设置数据 json 格式的数据
+        $data['CalendarUID'] = 1; // 日历数据
+        $calendars = '[{"WeekDays": [{"DayWorking": 1,"DayType": 1},{"DayWorking": 1,"DayType": 2,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 3,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 4,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 5,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 6,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00" }]},
+                              {"DayWorking": 1,"DayType": 7}],"Name": "标准","UID": "1","BaseCalendarUID": "-1","IsBaseCalendar": 1,"Exceptions": []}]';
+        $data['Calendars'] = json_decode($calendars); // 日历设置数据 json 格式的数据 [主要作用:设置周六日为工作日]
         $tasks = new PlusTaskModel();
-        $data['Tasks'] = $tasks->tasksData(1,$uid); // project_type 1月计划2年计划3总计划
-        $data['Principals'] = empty($project_data['principals']) ? [] : json_decode($project_data['principals']); // 负责人集合
-        $data['Departments'] = empty($project_data['departments']) ? [] : json_decode($project_data['departments']); // 部门集合
-        $data['Resources'] = empty($project_data['resources']) ? [] : json_decode($project_data['resources']); // 资源集合
+        $data['Tasks'] = $tasks->tasksData($plan_type,$uid); // $plan_type 1月计划2年计划3总计划
+        // 存在任务,就获取任务里的时间
+        if(sizeof($data['Tasks'])){
+            $times = $tasks->startFinishDate($plan_type,$uid); // $plan_type 1月计划2年计划3总计划
+            $data['StartDate'] = $times['start_date']; // 开始时间
+            $data['FinishDate'] = $times['finish_date']; // 完成日期
+        }else{
+            $data['StartDate'] = date('Y-m-d').'T08:00:00'; // 开始时间
+            $data['FinishDate'] = date('Y-m-d').'T59:59:59'; // 完成日期
+        }
+        // todo 资源集合
+        $data['Resources'] = json_decode(''); // 资源集合
         return json($data);
+    }
+
+    // 新增
+    public function tasksAdd()
+    {
+        // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly 计划类型 plan_type 1月计划2年计划3总计划
+        $param = input('param.');
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
+        $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
+        if(empty($section_id) || empty($plan_year) || empty($plan_monthly) || empty($plan_type)){
+            return json(['code' => -1,'msg' => '缺少参数']);
+        }
     }
 
 }
