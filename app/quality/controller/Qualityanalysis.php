@@ -96,7 +96,7 @@ class Qualityanalysis extends Permissions
             $end = str_replace(".","-",$time["1"]);
 
             //开始时间
-            $start_time = $start = mktime(0,0,0,date('m',strtotime($start)),date('d',strtotime($start)),date('Y',strtotime($start)));
+            $start_time = mktime(0,0,0,date('m',strtotime($start)),date('d',strtotime($start)),date('Y',strtotime($start)));
             //结束时间
             $end_time = mktime(23,59,59,date("m",strtotime($end)),date('d',strtotime($end)),date("Y",strtotime($end)));
 
