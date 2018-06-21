@@ -387,11 +387,12 @@ class Common extends Controller
     }
 
     // ht 月计划列表
-    public function progress_monthlyplan($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
+    public function progress_plan($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         $param = input('param.');
+        $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0; // 计划类型 plan_type 1月计划2年计划3总计划
         $section_id = isset($param['section_id']) ? $param['section_id'] : 0; // 归属标段
-        $search_data = ['m.section_id'=>['eq',$section_id]];
+        $search_data = ['m.section_id'=>['eq',$section_id],'plan_type'=>$plan_type];
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;

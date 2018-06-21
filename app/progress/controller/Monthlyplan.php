@@ -313,11 +313,19 @@ class Monthlyplan extends Permissions
         // 存在任务,就获取任务里的时间
         if(sizeof($data['Tasks'])){
             $times = $tasks->startFinishDate($plan_type,$uid); // $plan_type 1月计划2年计划3总计划
-            $data['StartDate'] = $times['start_date']; // 开始时间
-            $data['FinishDate'] = $times['finish_date']; // 完成日期
+            if($times['start_date']){
+                $data['StartDate'] = $times['start_date']; // 开始时间
+            }else{
+                $data['StartDate'] = date('Y-m-d').'T08:00:00'; // 开始时间
+            }
+            if($times['finish_date']){
+                $data['FinishDate'] = $times['finish_date']; // 完成日期
+            }else{
+                $data['FinishDate'] = date('Y-m-d',strtotime("+1 year")).'T59:59:59'; // 完成日期
+            }
         }else{
             $data['StartDate'] = date('Y-m-d').'T08:00:00'; // 开始时间
-            $data['FinishDate'] = date('Y-m-d').'T59:59:59'; // 完成日期
+            $data['FinishDate'] = date('Y-m-d',strtotime("+1 year")).'T59:59:59'; // 完成日期
         }
         // todo 资源集合
         $data['Resources'] = json_decode(''); // 资源集合
