@@ -14,7 +14,13 @@
     #tableContent .select-color {
         background-color: #FDD5B5 !important;
     }
-
+    #selectDivTable_wrapper{
+        height: 98% !important;
+    }
+    #selectDivTable_wrapper  .dataTables_paginate{
+        position: absolute;
+        bottom: 0px;
+    }
     #tableContent .even {
         background-color: #ffffff;
     }
@@ -454,7 +460,7 @@
         });
     }
 
-    //收件人信息
+    //组织树结构（员工信息表）
     function incomeInfo() {
         selectDivTable = $('#selectDivTable').DataTable({
             pagingType: "full_numbers",
@@ -462,7 +468,7 @@
             serverSide: true,
             bAutoWidth: false,  //是否自动宽度
             scrollX: true,
-            scrollY: "520px",   //表格容器高度
+            scrollY: "220px",   //表格容器高度
             scrollCollapse: true,
             ajax: {
                 "url":"/approve/Common/datatablesPre?tableName=admin_group"

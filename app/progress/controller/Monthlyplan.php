@@ -13,7 +13,10 @@ use app\admin\controller\Permissions;
 use app\admin\model\Attachment;
 use app\contract\model\SectionModel;
 use app\progress\model\MonthlyplanModel;
+use app\progress\model\PlusProjectModel;
+use app\progress\model\PlusTaskModel;
 use think\Db;
+use think\Session;
 
 /**
  * 月计划管理
@@ -68,7 +71,7 @@ class Monthlyplan extends Permissions
     public function planMonthly()
     {
         if($this->request->isAjax()){
-            // 前台需要 传递 标段编号 section_id 年度编号 plan_year
+            // 前台需要 传递 标段编号 section_id 年度 plan_year
             $param = input('param.');
             $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
             $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
@@ -88,6 +91,13 @@ class Monthlyplan extends Permissions
      */
     public function list_table()
     {
+        // 前台需要 传递 标段编号 section_id  [作用::刷新列表时使用]
+        $param = input('param.');
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+        if(empty($section_id)){
+            return json(['code' => '-1','msg' => '缺少参数']);
+        }
+        $this->assign('section_id',$section_id);
         return $this->fetch();
     }
 
@@ -98,14 +108,16 @@ class Monthlyplan extends Permissions
      */
     public function existPlan()
     {
+        // 前台需要 传递 标段编号 section_id 年度 plan_year 月度 plan_monthly
         $param = input('param.');
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
         $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
         $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
-        if(empty($plan_year) || empty($plan_monthly)){
+        if(empty($section_id) || empty($plan_year) || empty($plan_monthly)){
             return json(['code'=>'-1','msg'=>'缺少参数']);
         }
         $monthly = new MonthlyplanModel();
-        $is_exist = $monthly->monthlyExist($plan_year,$plan_monthly);
+        $is_exist = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
         if($is_exist){
             return json(['code'=>'2','msg'=>'存在计划']);
         }
@@ -137,6 +149,26 @@ class Monthlyplan extends Permissions
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
 
+            // 格式化月度
+            $mon = explode('-',$param['plan_monthly']);
+            $param['plan_monthly'] = intval($mon[1]);
+            // 系统自动生成数据: 编制人 user_id  编制日期 preparation_date
+            $param['user_id'] = Session::has('admin') ? Session::get('admin') : 0;
+            $param['preparation_date'] = date('Y-m-d');
+
+            // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
+            $monthly = new MonthlyplanModel();
+            $is_exist_id = $monthly->monthlyExist($param['section_id'],$param['plan_year'],$param['plan_monthly']);
+            if($is_exist_id){
+                $cover = isset($param['cover']) ? $param['cover'] : 0;
+                if($cover == 0){
+                    return json(['code'=>2,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
+                }else{
+                    // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
+                    $monthly->deleteTb($is_exist_id);
+                }
+            }
+
             // 更新方式是导入全新计划版本的话,就验证是否上传了Project或P6格式的文件
             if($param['update_mode'] == 2){ // 1手动 2导入
                 $plan_file_id = isset($param['plan_file_id']) ? $param['plan_file_id'] : 0;
@@ -145,26 +177,7 @@ class Monthlyplan extends Permissions
                 }
                 //TODO 导入文件
             }
-
-            // 如果当前选择的年月已经存在月计划,确定后提示覆盖.覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
-            $monthly = new MonthlyplanModel();
-            $is_exist_id = $monthly->monthlyExist($param['plan_year'],$param['plan_monthly']);
-            if($is_exist_id){
-                $cover = isset($param['cover']) ? $param['cover'] : 0;
-                if($cover){
-                    // 覆盖则删除原有的计划和与之相关的数据,包括模型关联关系
-                    $monthly->deleteTb($is_exist_id);
-                }
-                return json(['code'=>-1,'msg'=>'当前选择的年月已经存在月计划,确定覆盖之前的计划吗?']);
-            }
-
-            $id = isset($param['mid']) ? $param['mid'] : 0;
-            if(empty($id)){
-                $flag = $monthly->insertTb($param);
-            }else{
-                $param['id'] = $id;
-                $flag = $monthly->editTb($param);
-            }
+            $flag = $monthly->insertTb($param);
             return json($flag);
         }
     }
@@ -236,24 +249,64 @@ class Monthlyplan extends Permissions
     }
 
     /**
-     * 删除报告
+     * 上传报告 和 删除报告 共用接口
      * @return \think\response\Json
      * @author hutao
      */
-    public function delReport()
+    public function delOrSaveReport()
     {
         if($this->request->isAjax()){
-            // 前台需要 传递 文件编号 file_id
+            // 前台需要 传递本条记录的编号 plan_id  文件编号 file_id  操作类型 plan_type 1 上传 2 删除
             $param = input('param.');
+            $plan_id = isset($param['plan_id']) ? $param['plan_id'] : 0;
             $file_id = isset($param['file_id']) ? $param['file_id'] : 0;
-            if(empty($file_id)){
+            $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
+            if(empty($plan_id) || empty($file_id) || empty($plan_type)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
-            $att = new Attachment();
-            $flag = $att->deleteTb($file_id);
+            $monthly = new MonthlyplanModel();
+            if($plan_type == 1){
+                $data['id'] = $plan_id;
+                $data['plan_report_id'] = $file_id;
+                $flag = $monthly->editTb($data);
+            }else{
+                $flag = $monthly->deleteFile($plan_id,$file_id);
+            }
             return json($flag);
         }
     }
 
+
+
+    // ***************************** 甘特图 *****************************
+
+    // 月计划根据选择的标段，年度，月度获取甘特图数据 测试 http://www.xin.com/progress/Monthlyplan/monthlyInitialise
+    public function monthlyInitialise()
+    {
+        // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly
+        $param = input('param.');
+        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
+        if(empty($section_id) || empty($plan_year) || empty($plan_monthly)){
+            return json(['code' => -1,'msg' => '缺少参数']);
+        }
+        $monthly = new MonthlyplanModel();
+        $uid = $monthly->monthlyExist($section_id,$plan_year,$plan_monthly);
+        $project = new PlusProjectModel();
+        $project_data = $project->getOne(1,$uid); // project_type 1月计划2年计划3总计划
+        $data['UID'] = $project_data['uid']; // 计划的唯一标识符
+        $data['Name'] = $project_data['name']; // 计划名称
+        $data['StartDate'] = $project_data['start_date']; // 开始时间
+        $data['FinishDate'] = $project_data['finish_date']; // 完成日期
+        $data['CalendarUID'] = $project_data['calendar_uid']; // 日历数据
+        $data['Calendars'] = empty($project_data['calendars']) ? [] : json_decode($project_data['calendars']); // 日历设置数据 json 格式的数据
+        $tasks = new PlusTaskModel();
+        $data['Tasks'] = $tasks->tasksData(1,$uid); // project_type 1月计划2年计划3总计划
+        $data['Principals'] = empty($project_data['principals']) ? [] : json_decode($project_data['principals']); // 负责人集合
+        $data['Departments'] = empty($project_data['departments']) ? [] : json_decode($project_data['departments']); // 部门集合
+        $data['Resources'] = empty($project_data['resources']) ? [] : json_decode($project_data['resources']); // 资源集合
+        return json($data);
+    }
 
 }
