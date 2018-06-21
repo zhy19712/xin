@@ -1,4 +1,4 @@
-layui.use(['layer','element','util','laydate','form','table'], function(){
+layui.use(['layer', 'element', 'util', 'laydate', 'form', 'table'], function () {
     laydate = layui.laydate;
     form = layui.form;
     table = layui.table;
@@ -13,11 +13,12 @@ layui.use(['layer','element','util','laydate','form','table'], function(){
         elem: '#endDate'
     });
     table.render({
-        elem: '#demo' //指定原始表格元素选择器（推荐id选择器）
-        ,cols: [[
-            {field: 'id', title: '日期'}
-            ,{field: 'username', title: '填报人'}
-        ]] //设置表头
+        elem: '#demo',
+        url: '/static/webSite/modelmanagement/progress/index.json',
+        cols: [[
+            {field: 'id', title: '日期', width: 140, unresize: true},
+            {field: 'username', title: '填报人', width: 140, unresize: true}
+        ]]
     });
 });
 
@@ -26,31 +27,31 @@ var timer;
 var sleepTimer;
 testID = 0;
 active = {
-    initSpeed:1000,             //初始速度
-    speed:1000,                 //变速度
-    speedMultiply:2,            //初始倍速
-    currentSpeed:1,             //当前倍速
-    scale:0,                    //每一帧的刻度
-    dayScale:0,                 //总刻度
-    startTime:'2018-03-01',    //开始日期
-    endTime:'2018-04-01',      //结束日期
-    dayArr:[],                  //日期的总长度(天数)
-    index:0,                    //当前日期索引
-    prevYear:'',                //上一年份(用来跨年)
-    nextYear:'',                //下一年份(用来跨年)
+    initSpeed: 1000,             //初始速度
+    speed: 1000,                 //变速度
+    speedMultiply: 2,            //初始倍速
+    currentSpeed: 1,             //当前倍速
+    scale: 0,                    //每一帧的刻度
+    dayScale: 0,                 //总刻度
+    startTime: '2018-03-01',    //开始日期
+    endTime: '2018-04-01',      //结束日期
+    dayArr: [],                  //日期的总长度(天数)
+    index: 0,                    //当前日期索引
+    prevYear: '',                //上一年份(用来跨年)
+    nextYear: '',                //下一年份(用来跨年)
     play: function () {         //播放
-        if(Math.round(active.scale)>=99){
+        if (Math.round(active.scale) >= 99) {
             active.stop();
         }
         $('#play').hide();
         $('#pause').show();
         clearInterval(timer);
-        active.prevYear = active.startTime.substr(0,4);
-        active.nextYear = active.endTime.substr(0,4);
+        active.prevYear = active.startTime.substr(0, 4);
+        active.nextYear = active.endTime.substr(0, 4);
         timer = setInterval('active.date()', active.speed);
         sleepTimer = setInterval('active.sleep()', active.speed);
     },
-    pause:function(){           //暂停
+    pause: function () {           //暂停
         $('#play').show();
         $('#pause').hide();
         clearInterval(timer);
@@ -69,18 +70,18 @@ active = {
         $('.layui-progress-text').html(active.startTime);
         $('#speed').text(0);
     },
-    forward:function(){         //快进
-        if($('#pause').is(':hidden')){  //暂停状态下禁止快进
+    forward: function () {         //快进
+        if ($('#pause').is(':hidden')) {  //暂停状态下禁止快进
             return false;
         }
-        if(active.speed<=100){
+        if (active.speed <= 100) {
             layer.msg('再快就超速啦^_^');
             return false;
         }
-        active.currentSpeed = active.speedMultiply*active.currentSpeed;
+        active.currentSpeed = active.speedMultiply * active.currentSpeed;
         $('#speed').text(active.currentSpeed);
         active.speed -= 200;
-        if (active.speed==200) {
+        if (active.speed == 200) {
             active.speed -= 100;
         }
         clearInterval(timer);
@@ -91,21 +92,21 @@ active = {
         }
         console.log(active.speed);
     },
-    backward:function(){        //快退
-        if($('#pause').is(':hidden')){
+    backward: function () {        //快退
+        if ($('#pause').is(':hidden')) {
             return false;
         }
-        if(active.speed>=1000){
+        if (active.speed >= 1000) {
             layer.msg('再慢就不会动啦^_^');
             return false;
         }
-        active.currentSpeed = active.currentSpeed/active.speedMultiply;
+        active.currentSpeed = active.currentSpeed / active.speedMultiply;
         $('#speed').text(active.currentSpeed);
-        if (active.currentSpeed<2) {
+        if (active.currentSpeed < 2) {
             $('#speed').text(0);
         }
         active.speed += 200;
-        if (active.speed==900) {
+        if (active.speed == 900) {
             active.speed += 100;
         }
         clearInterval(timer);
@@ -116,42 +117,42 @@ active = {
         }
         console.log(active.speed);
     },
-    date:function(){        //日期转换为刻度
+    date: function () {        //日期转换为刻度
         console.log(Math.round(active.scale));
 
         var bd = new Date(active.startTime);
         var be = new Date(active.endTime);
         //console.log(bd);
         //console.log(be);
-        var bdTime = bd.getTime(), beTime = be.getTime(),timeDiff = beTime - bdTime;
-        active.dayScale = timeDiff/((1000 * 60 * 60 * 24))+1;
-        for(var i=0; i<= timeDiff; i+=86400000){
-            var ds = new Date(bdTime+i);
-            var month = util.digit(ds.getMonth()+1,2);
-            var day = util.digit(ds.getDate(),2);
-            active.dayArr.push((ds.getFullYear()+'-'+month)+'-'+day);
+        var bdTime = bd.getTime(), beTime = be.getTime(), timeDiff = beTime - bdTime;
+        active.dayScale = timeDiff / ((1000 * 60 * 60 * 24)) + 1;
+        for (var i = 0; i <= timeDiff; i += 86400000) {
+            var ds = new Date(bdTime + i);
+            var month = util.digit(ds.getMonth() + 1, 2);
+            var day = util.digit(ds.getDate(), 2);
+            active.dayArr.push((ds.getFullYear() + '-' + month) + '-' + day);
         }
-        active.scale += 100/active.dayScale;
-        if(active.scale>100){
+        active.scale += 100 / active.dayScale;
+        if (active.scale > 100) {
             clearInterval(timer);
             clearInterval(sleepTimer);
             $('#play').show();
             $('#pause').hide();
             return false;
         }
-        element.progress('demo', active.scale+'%');
+        element.progress('demo', active.scale + '%');
         test();
     },
-    sleep:function(numberMillis){       //睡眠时间
-        if(active.index == active.dayArr.length) {
+    sleep: function (numberMillis) {       //睡眠时间
+        if (active.index == active.dayArr.length) {
             active.index = 0;
         }
 
         //跨年+1天
-        if (active.prevYear<active.nextYear) {
+        if (active.prevYear < active.nextYear) {
             $('.layui-progress-tips').html(active.dayArr[active.index]);
-        }else{
-            $('.layui-progress-tips').html(active.dayArr[active.index+1]);
+        } else {
+            $('.layui-progress-tips').html(active.dayArr[active.index + 1]);
         }
         active.index++;
     }
@@ -171,4 +172,24 @@ $('#forward').click(function () {
 });
 $('#backward').click(function () {
     active.backward();
+});
+
+//获取颜色
+$.ajax({
+    url: "/modelmanagement/qualitymass/configureInfo",
+    type: "get",
+    dataType: "json",
+    success: function (res) {
+        modelTrans = res.configureInfo.quality.pellucidity;
+        modelColor = +res.configureInfo.quality.pigment;
+        choiceness_pigment = +res.configureInfo.quality.choiceness_pigment;
+        qualified_pigment = +res.configureInfo.quality.qualified_pigment;
+        un_evaluation_pigment = +res.configureInfo.quality.un_evaluation_pigment;
+        var excellent = res.configureInfo.quality.choiceness_pigment.substr(4, 6);
+        var qualified = res.configureInfo.quality.qualified_pigment.substr(4, 6);
+        var endBuild = res.configureInfo.quality.un_evaluation_pigment.substr(4, 6);
+        $('#notBuild').css('background', '#' + excellent);
+        $('#nowBuild').css('background', '#' + qualified);
+        $('#endBuild').css('background', '#' + endBuild);
+    }
 });

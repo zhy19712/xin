@@ -36,6 +36,20 @@
 </div>
 <div class="model-wrap layui-clear easyui-layout" style="height: 100%">
     <div data-options="region:'east'" class="east">
+        <ul class="table-title">
+            <li>
+                <span>未建:</span>
+                <span id="notBuild"></span>
+            </li>
+            <li>
+                <span>在建:</span>
+                <span id="nowBuild"></span>
+            </li>
+            <li>
+                <span>完建:</span>
+                <span id="endBuild"></span>
+            </li>
+        </ul>
         <table id="demo" lay-filter="test"></table>
     </div>
     <div data-options="region:'center'" class="center">
