@@ -366,6 +366,33 @@
     //创建右键菜单
     var menu = new ProjectMenu();
     project.setContextMenu(menu);
+    menu.on("opening", function (e) {
+        var project = this.owner;       //PlusProject对象
+        var task = project.getSelected();
+        if (!task) {
+            e.cancel = true;
+            return;
+        }
+
+        //显示和可编辑所有菜单项
+
+        this.add.show();
+        this.edit.show();
+        this.remove.show();
+
+        this.upgrade.enable();
+        this.downgrade.enable();
+
+        if (task.Summary) {
+            this.edit.hide();
+            this.remove.hide();
+
+            this.upgrade.disable();
+            this.downgrade.disable();
+        } else {
+            this.add.hide();
+        }
+    });
     menu.edit.on("click", function (e) {
         ShowTaskWindow(project);
     });
@@ -404,7 +431,7 @@
                     project.unmask();
                 }else if(text.Tasks.length > 0){
                     var dataProject = mini.decode(text);
-                        console.log(dataProject);
+                        // console.log(dataProject);
                     doSetProjectData(project, dataProject);
 
                     project.unmask();
