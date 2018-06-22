@@ -15,7 +15,7 @@ var admin_table = $('#admin_table').DataTable({
     ajax: {
         url: "/progress/common/datatablesPre?tableName=progress_actual"
     },
-    dom: 'l<"#add.layui-btn layui-btn-normal layui-btn-sm btn-right btn-space"><"#selectWrap.select-wrap">tip',
+    dom: '<"#add.layui-btn layui-btn-normal layui-btn-sm btn-right btn-space"><"#selectWrap.select-wrap">tlip',
     columns: [
         {
             name: "section_name"
@@ -28,6 +28,9 @@ var admin_table = $('#admin_table').DataTable({
         },
         {
             name: "remark"
+        },
+        {
+            name: "id"
         }
     ],
     columnDefs: [
@@ -37,8 +40,9 @@ var admin_table = $('#admin_table').DataTable({
             orderable: false,
             targets: [4],
             render: function (data, type, row) {
-                var html = '<i class="fa fa-eye" title="查看" id="view" onclick="view(this)"></i>';
-                html += '<i class="fa fa-trash" title="删除" onclick="del(this)"></i>';
+                var rowId = row[4];
+                var html = '<i class="fa fa-eye" title="查看" id="view" onclick="view('+ rowId +')"></i>';
+                html += '<i class="fa fa-trash" title="删除" onclick="del('+ rowId +')"></i>';
                 return html;
             }
         }
@@ -47,6 +51,7 @@ var admin_table = $('#admin_table').DataTable({
         $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
     },
     fnInitComplete: function (oSettings) {
+        $('#add').html('新增');
         constructingQueryConditions();
     },
     language: {
@@ -65,8 +70,6 @@ var admin_table = $('#admin_table').DataTable({
         }
     }
 });
-$('#add').html('新增');
-$('#save').html('保存');
 
 //构建查询条件
 function constructingQueryConditions() {
@@ -101,9 +104,9 @@ function fillSearchSegment() {
                         $('#segment').append('<option value=' + i + '>' + res.sectionArr[i] + '</option>');
                     }
                 }
-                dateScope();
-                selectDate();
                 form.render();
+                selectDate();
+                dateScope();
             }
         }
     });
@@ -111,6 +114,8 @@ function fillSearchSegment() {
 
 //根据选择的标段获取对应的日期区间范围
 function dateScope() {
+    var section_id = $('dd.layui-this').attr('lay-value');
+    $('#startDate').attr('segmentId',section_id);
     form.on('select(searchSegment)', function(data){
         $('#startDate').attr('segmentId',data.value);
         $.ajax({
@@ -259,6 +264,9 @@ function save() {
                     admin_table.ajax.url('/progress/common/datatablesPre?tableName=progress_actual').load();
                 }
                 layer.msg(res.msg);
+                if(res.code==-1){
+                    return false;
+                }
                 layer.close(addIndex);
             }
         });
@@ -267,11 +275,44 @@ function save() {
 }
 
 //查看
-function view() {
-
+function view(actual_id) {
+    $.ajax({
+        url: "./preview",
+        type: "post",
+        data: {
+            actual_id:actual_id
+        },
+        dataType: "json",
+        success: function (res) {
+            layer.open({
+                    title:'旁站记录表照片',
+                    id:'1',
+                    type:'1',
+                    area: ['100%', '100%'],
+                    content:'<div style="margin-top: -20px;width: 100%;height: 100%;text-align: center;"><img src='+ res.path.path +'></div>'
+                });
+        }
+    });
 }
 
 //删除
-function del() {
+function del(actual_id) {
+    layer.confirm('确定删除该条填报数据么？', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: "./del",
+            type: "post",
+            data: {
+                actual_id:actual_id
+            },
+            dataType: "json",
+            success: function (res) {
+                if(res.code==1){
+                    admin_table.ajax.url('/progress/common/datatablesPre?tableName=progress_actual').load();
+                }
+                layer.msg(res.msg);
+            }
+        });
+        layer.close(index);
+    });
 
 }
