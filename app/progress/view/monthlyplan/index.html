@@ -59,8 +59,14 @@
             <button class="layui-btn" onclick="upgradeTask()"><i class="fa fa-arrow-up" title="升级"></i>&nbsp;&nbsp;升级</button>
             <button class="layui-btn" onclick="downgradeTask()"><i class="fa fa-arrow-down" title="降级"></i>&nbsp;&nbsp;降级</button>
             <div class="layui-inline layuiRight">
-                <input type="checkbox" id="showCriticalPath" onclick="showCriticalPath(this.checked)" />
-                <label for="showCriticalPath">显示关键路径</label>
+                <form class="layui-form" action="" style="width: 140px;display: inline-block">
+                    <div class="layui-inline">
+                        <input type="checkbox" id="showCriticalPath" name="yyy" lay-verify="filter" lay-skin="switch" lay-text="ON|OFF">
+                        <span style="vertical-align: middle;display:inline-block;vertical-align: middle;">&nbsp;&nbsp;显示关键路径</span>
+                    </div>
+                </form>
+                <!--<input type="checkbox" id="showCriticalPath" onclick="showCriticalPath(this.checked)" />-->
+                <!--<label for="showCriticalPath">显示关键路径</label>-->
                 <button class="layui-btn" onclick="zoomIn()"><img src="__WEBSITE__/progress/monthlyplan/img/zoomin.png" alt="" title="放大">&nbsp;&nbsp;放大</button>
                 <button class="layui-btn" onclick="zoomOut()"><img src="__WEBSITE__/progress/monthlyplan/img/zoomout.png" alt="" title="缩小">&nbsp;&nbsp;缩小</button>
             </div>
@@ -182,12 +188,37 @@
 
 <script src="__WEBSITE__/progress/monthlyplan/index.js" type="text/javascript"></script>
 <script type="text/javascript">
-
+    var bidsNum,
+        yearNum,
+        monthNum;
     /*标段*/
     layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
         var form = layui.form
             ,layer = layui.layer
             ,laydate = layui.laydate;
+        bids();
+        //8)显示关键路径
+        form.on('switch()', function(data){
+            project.setShowCriticalPath(data.elem.checked);
+        });
+        //点击切换标段
+        form.on('select(bids)', function(data){
+            bidsNum = data.value;
+            yearFun(bidsNum);
+        });
+        //点击切换年度
+        form.on('select(year)', function(data){
+            yearNum = data.value;
+            monthFun(bidsNum,yearNum);
+        });
+        //点击切换月度
+        form.on('select(month)', function(data){
+            monthNum = data.value;
+            load(bidsNum,yearNum,monthNum);
+        });
+    });
+    /*标段*/
+    function bids() {
         $.ajax({
             url: "/progress/monthlyplan/index",
             type: "get",
@@ -198,12 +229,12 @@
                         $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
                     }
                     layui.form.render();
-                    var idBid = $("#seleBids").val();
-                    yearFun(idBid);
+                    console.log($("#seleBids").val()+" 标段id ");
+                    yearFun($("#seleBids").val());
                 }
             }
         });
-    });
+    }
     /*年度*/
     function yearFun(id) {
         $.ajax({
@@ -215,11 +246,21 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
-                    for(var i=0;i<orgs.length;i++){
-                        $("#seleYear").append($("<option/>").text(orgs[i]));
+                    $("#seleYear").empty();
+                    if(orgs.length == 0){
+                        $("#seleYear").val(0);
+                        layui.form.render('select');
+                    }else if(orgs.length > 0){
+                        for(var i=0;i<orgs.length;i++){
+                            $("#seleYear").append($("<option/>").text(orgs[i]));
+                        }
                     }
-                    layui.form.render();
-                    monthFun($("#seleBids").val(),$("#testYear").val());
+                    layui.form.render('select');
+                    if($("#seleYear").val() == null){
+                        monthFun($("#seleBids").val(),0);
+                    }else if($("#seleYear").val() != null){
+                        monthFun($("#seleBids").val(),$("#seleYear").val());
+                    }
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -237,12 +278,26 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
-                    for(var i=0;i<orgs.length;i++){
-                        $("#seleMonthly").append($("<option/>").text(orgs[i]));
+                    $("#seleMonthly").empty();
+                    if(orgs.length == 0){
+                        $("#seleMonthly").val(0);
+                        layui.form.render('select');
+                    }else if(orgs.length > 0){
+                        for(var i=0;i<orgs.length;i++){
+                            $("#seleMonthly").append($("<option/>").text(orgs[i]));
+                        }
                     }
                     layui.form.render();
-                    /*甘特图的获取数据*/
-                    load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
+                    //甘特图的获取数据/
+                    if($("#seleBids").val() != null && $("#seleYear").val() != null && $("#seleMonthly").val() != null){
+                        // load($("#seleBids").val(),$("#seleYear").val(),$("#seleMonthly").val());
+                    }
+                    if($("#seleYear").val() == null && $("#seleMonthly").val() == null){
+                        load($("#seleBids").val(),0,0);
+                    }
+                    if($("#seleYear").val() != null && $("#seleMonthly").val() == null){
+                        load($("#seleBids").val(),$("#seleYear").val(),0);
+                    }
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -250,49 +305,69 @@
         });
     }
 
-    /*实例化甘特图
------------------------------------------------------------------------------*/
+/*实例化甘特图start-----------------------------------------------------------------------------*/
     var project = new PlusProject();
     project.setStyle("width:100%;height:727px");
-    project.setColumns([
-        new PlusProject.IDColumn(),             //任务序号。
-        // new PlusProject.WBSColumn(),            //WBS编码。
-        new PlusProject.StatusColumn(),         //状态。
-        new PlusProject.NameColumn(),           //任务名称。
-        new PlusProject.PredecessorLinkColumn(),//前置任务。
-        new PlusProject.PercentCompleteColumn(),//完成百分比。
-        new PlusProject.DurationColumn(),       //工期。
-        new PlusProject.StartColumn(),          //开始日期。
-        new PlusProject.FinishColumn(),         //完成日期。
-        new PlusProject.WorkColumn(),           //工时。
-        new PlusProject.DepartmentColumn(),     //部门。
-        new PlusProject.PrincipalColumn(),      //负责人。
-        new PlusProject.AssignmentsColumn()     //资源名称。
+    var columns = [];
+    var WbsColumn = {
+        name: "WBS",
+        header: "WBS<br/>String",
+        field: "WBS",                   //WBS
+        width: 50,
+        editor: {
+            type: "textbox"
+        }
+    };
+    var UnitColumn = {
+        name: "Unit",
+        header: "单位<br/>String",
+        field: "Unit",                  //Unit
+        width: 80,
+        editor: {
+            type: "textbox"
+        }
+    };
+    var stringColumn = {
+        name: "Quantities",
+        header: "工程量<br/>String",
+        field: "Quantities",            //Quantities
+        width: 90,
+        editor: {
+            type: "textbox"
+        }
+    };
+    columns.push(WbsColumn);
+    columns.push( new PlusProject.StatusColumn());
+    columns.push(new PlusProject.NameColumn());
+    columns.push(UnitColumn);
+    columns.push(stringColumn);
+    columns.push(new PlusProject.DurationColumn());
+    columns.push(new PlusProject.StartColumn());
+    columns.push(new PlusProject.FinishColumn());
+    project.setColumns(columns);
+    // project.setColumns([
+    //     // new PlusProject.IDColumn(),             //任务序号。
+    //     new PlusProject.WBSColumn(),            //WBS编码。
+    //     new PlusProject.StatusColumn(),         //状态。
+    //     new PlusProject.NameColumn(),           //任务名称。
+    //     new PlusProject.QuantitiesColumn(),     //工程量。
+    //     // new PlusProject.PredecessorLinkColumn(),//前置任务。
+    //     // new PlusProject.PercentCompleteColumn(),//完成百分比。
+    //     new PlusProject.DurationColumn(),       //工期。
+    //     new PlusProject.StartColumn(),          //开始日期。
+    //     new PlusProject.FinishColumn(),         //完成日期。
+    //     // new PlusProject.WorkColumn(),           //工时。
+    //     // new PlusProject.DepartmentColumn(),     //部门。
+    //     // new PlusProject.PrincipalColumn(),      //负责人。
+    //     // new PlusProject.AssignmentsColumn()     //资源名称。
+    //
+    // ]);
 
-    ]);
     // project.setRowHeight(30);                   //设置行高
     // project.setShowLinkLines(true);             //设置是否显示箭头连线
     // project.setShowCriticalPath(true);          //设置是否显示关键路径
     // project.setAllowDragDrop(false);             //设置是否允许任务行拖拽
     // project.setShowGridLines(true);             //设置是否显示关键路径
-    // console.log(project.getCalendars());
-    // var set = project.getCalendars()[0].WeekDays[0]
-    // var calendarsArr = [{BaseCalendarUID:"-1",
-    // Exceptions:[],
-    // IsBaseCalendar:1,
-    // Name:"标准",
-    // UID:"1",
-    // WeekDays:[
-    //     {DayWorking: 1, DayType: 1},
-    //     {DayWorking: 1, DayType: 2},
-    //     {DayWorking: 1, DayType: 3},
-    //     {DayWorking: 1, DayType: 4},
-    //     {DayWorking: 1, DayType: 5},
-    //     {DayWorking: 1, DayType: 6},
-    //     {DayWorking: 1, DayType: 7},
-    //     ]}]
-    // project.setCalendars(calendarsArr);
-
     project.render(document.getElementById("viewCt"));
     //创建右键菜单
     var menu = new ProjectMenu();
@@ -301,12 +376,12 @@
         ShowTaskWindow(project);
     });
 
-    //获取数据
-    // LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
-    //     var projectStart = mini.get("projectStart");
-    //
-    //     project.setStartDate(new Date(2017,1,1));
-    // });
+    // 获取数据
+    LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
+        var projectStart = mini.get("projectStart");
+
+        project.setStartDate(new Date(2017,1,1));
+    });
 
     //加载数据
     function load(sectionId,planYear,monthly) {
@@ -327,12 +402,18 @@
                 // var dataArr = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
                 // project.loadTasks(res);
                 // project.unmask();
+                // console.log(text);
+                if(text.code == -1){
+                    alert("数据为空！需要添加哟！  ")
+                    project.unmask();
+                }else{
+                    // $(".mini-supergrid-viewport").text("");
+                    var dataProject = mini.decode(text);
 
-                var dataProject = mini.decode(text);
+                    doSetProjectData(project, dataProject);
 
-                doSetProjectData(project, dataProject);
-
-                project.unmask();
+                    project.unmask();
+                }
             }
         });
     }
@@ -342,6 +423,8 @@
         project.frozenColumn(0, 2);
     }
     frozenColumn();
+/*实例化甘特图end-----------------------------------------------------------------------------*/
+
 
     /* 业务代码
 -----------------------------------------------------------------------------*/
@@ -377,7 +460,7 @@
         project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
         project.print();
     }
-    //4)/*新增*/
+    //4)新增
     function addTask() {
         var newTask = project.newTask();
         newTask.Name = '<新增任务>';    //初始化任务属性
@@ -415,6 +498,7 @@
         var task = project.getSelected();
         if (task) {
             ShowTaskWindow(project);
+            /*删除后面3个tab*/
             if($(".mini-tabs-header td:nth-of-type(8)").text() == "高级" || $(".mini-tabs-header td:nth-of-type(9)").text() == "备注" || $(".mini-tabs-header td:nth-of-type(10)").text() == "自定义Tab"){
                 $(".mini-tabs-header td:nth-of-type(1)").remove();
                 $(".mini-tabs-header td:nth-of-type(7)").remove();
@@ -422,6 +506,27 @@
                 $(".mini-tabs-header td:nth-of-type(9)").remove();
                 $("#fs_actualdate").remove();
             }
+            /*添加里程碑*/
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys fieldset").after(
+                '<div style="margin-top:8px;margin-left: 7px;">' +
+                '     <span class="mini-checkbox" id="twin_milestone" style="border-width: 0px; padding: 0px;"><input id="mini-86$check" name="mini-86" type="checkbox" class="mini-checkbox-check"><label for="mini-86$check" onclick="return false;">标记为里程碑</label></span>' +
+                '</div>')
+            /*修改内容*/
+            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(1)").css({"width":"86px","text-align":"right"});
+            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(3)").css({"width":"86px","text-align":"right"});
+
+            //第一行tr
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").text("计划工期（天）");
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
+            //第二行tr
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(2)>td:nth-of-type(1)").text("单位：");
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(2)>td:nth-of-type(3)").text("工程量：");
+            //第三行删除
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(3)").remove();
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body fieldset").css({"border":"none"});
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body fieldset>legend").remove();
+            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
+
         } else {
             alert("请选中任务");
         }
@@ -444,10 +549,10 @@
             alert("请先选中任务");
         }
     }
-    //8)显示关键路径
-    function showCriticalPath(shows) {
-        project.setShowCriticalPath(shows);
-    }
+    //8)显示关键路径 在上面
+    // function showCriticalPath(shows) {
+    //     project.setShowCriticalPath(shows);
+    // }
     //9)放大
     function zoomIn() {
         project.zoomIn();
