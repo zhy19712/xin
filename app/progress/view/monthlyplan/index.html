@@ -290,7 +290,7 @@
                     layui.form.render();
                     //甘特图的获取数据/
                     if($("#seleBids").val() != null && $("#seleYear").val() != null && $("#seleMonthly").val() != null){
-                        // load($("#seleBids").val(),$("#seleYear").val(),$("#seleMonthly").val());
+                        load($("#seleBids").val(),$("#seleYear").val(),$("#seleMonthly").val());
                     }
                     if($("#seleYear").val() == null && $("#seleMonthly").val() == null){
                         load($("#seleBids").val(),0,0);
@@ -377,11 +377,11 @@
     });
 
     // 获取数据
-    LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
-        var projectStart = mini.get("projectStart");
-
-        project.setStartDate(new Date(2017,1,1));
-    });
+    // LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
+    //     var projectStart = mini.get("projectStart");
+    //
+    //     project.setStartDate(new Date(2017,1,1));
+    // });
 
     //加载数据
     function load(sectionId,planYear,monthly) {
@@ -407,7 +407,6 @@
                     alert("数据为空！需要添加哟！  ")
                     project.unmask();
                 }else{
-                    // $(".mini-supergrid-viewport").text("");
                     var dataProject = mini.decode(text);
 
                     doSetProjectData(project, dataProject);
@@ -516,7 +515,7 @@
             // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(3)").css({"width":"86px","text-align":"right"});
 
             //第一行tr
-            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").text("计划工期（天）");
+            $(".mini-window>.mini-panel-border>.mini-panel-viewport>.mini-panel-body>.mini-tabs>.mini-tabs-table>tbody>tr:nth-of-type(1)>td:nth-of-type(2)>.mini-tabs-bodys>.mini-tabs-body>table>tbody>tr:nth-of-type(1)>td:nth-of-type(3)").text("计划工期（天）");
             $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
             //第二行tr
             $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(2)>td:nth-of-type(1)").text("单位：");

@@ -172,6 +172,9 @@
     margin: 10px 5px 0 5px;
 }
 .mini-panel .mini-tabs-bodys>div:first-child>table>tbody>tr>td{
+    padding: 8px 0px 0 0;
+}
+.mini-window>.mini-panel-border>.mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>div:first-child>table>tbody>tr>td{
     padding: 19px 0px 0 0;
 }
 /*!*修改弹层的样式end*!*/
