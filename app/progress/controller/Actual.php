@@ -34,8 +34,10 @@ class Actual extends Permissions
         if($this->request->isAjax()){
             // 根据当前登陆人的权限获取对应的 -- 标段列表选项
             $section = new SectionModel();
-            $data = $section->sectionList();
-            return json(['code'=>1,'sectionArr'=>$data,'msg'=>'标段列表选项']);
+            $data[0] = '全部';
+            $data1 = $section->sectionList();
+            $new_data = $data+$data1;
+            return json(['code'=>1,'sectionArr'=>$new_data,'msg'=>'标段列表选项']);
         }
         return $this->fetch();
     }

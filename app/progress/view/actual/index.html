@@ -41,14 +41,15 @@
     <div class="layui-form-item">
         <label class="layui-form-label">备注</label>
         <div class="layui-input-block">
-            <textarea name="remark" placeholder="请输入内容" class="layui-textarea" maxlength="500"></textarea>
+            <textarea name="remark" placeholder="请输入内容" class="layui-textarea" id="remark" maxlength="500"></textarea>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">旁站记录表照片</label>
         <div class="layui-input-block">
             <input type="hidden" name="path" id="path">
-            <input type="text" name="attachment_id" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" id="attachment_id" readonly="">
+            <input type="hidden" name="attachment_id" id="attachment_id">
+            <input type="text" name="attachment_name" placeholder="请选择要上传的照片" autocomplete="off" class="layui-input" id="attachment_name" readonly="">
             <div id="uploadList" class="upload-list"></div>
             <div class="layui-form-mid layui-word-aux">
                 <div id="upload" class="upload layui-btn">上传</div>
