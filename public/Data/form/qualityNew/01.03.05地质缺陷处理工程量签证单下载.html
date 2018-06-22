@@ -22,10 +22,6 @@
             display: none;
         }
 
-        .dateMargin {
-            margin: 5px 0;
-        }
-
         .upLoadPic {
             width: auto;
             height: auto;
@@ -36,7 +32,7 @@
         .div_img {
             text-align: center;
             width: 100%;
-            height: 50mm;
+            height: 40mm;
         }
 
         .btnList {
@@ -56,25 +52,18 @@
             height: 15mm;
         }
 
-        .dateDiv {
-            width: 50mm;
-            padding-left: 0px;
-        }
-
-        .dateBtom {
-            width: 40mm;
-            margin-bottom: 5px;
-        }
         input{
             outline: none!important;
             border: none!important;
             background-color: #ffffff!important;
             font-size: 12px!important;
+            max-width: 120px!important;
             margin-bottom: 8px!important;
+            margin: 2px!important;
         }
         .tabWidth {
             margin: auto;
-            width: 260mm!important;
+            width: 210mm!important;
         }
         textarea{
             width: 98% !important;
@@ -84,7 +73,10 @@
             background-color: #ffffff!important;
         }
         table td p{
-            line-height: 26px!important;
+            line-height: 18px!important;
+        }
+        table{
+            table-layout: fixed!important;
         }
     </style>
 </head>
@@ -112,7 +104,7 @@
 
             </div>
         </div>
-        <table class="tabWidth tabTitle" style="width: 190mm;">
+        <table class="tabWidth tabTitle" style="">
             <tr>
                 <td colspan="2"><span style="font-family: 仿宋; font-size: 10.5pt; font-weight: normal">项目名称：<span class="spanHeard">{$SectionName}</span></span>
                 </td>
@@ -124,9 +116,9 @@
                 </td>
             </tr>
         </table>
-        <table class="tabHeight tabWidth" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin: 0 auto">
+        <table class="tabWidth" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
             <tr style="height: 28.35pt">
-                <td colspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单位工程名称及编号</span></p>
                 </td>
                 <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -136,14 +128,14 @@
                     </p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
-                    <p style="width: 15mm; margin: 0pt; orphans: 0; text-align: center; margin-left: 3mm; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">工程量</span></p>
+                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">工程量</span></p>
                 </td>
-                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <textarea id="input_gcl" default="/" step="0" placeholder="" class="comment editInput"></textarea>
                 </td>
             </tr>
             <tr style="height: 17pt">
-                <td colspan="5" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="4" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">分部工程名称及编号</span></p>
                 </td>
                 <td colspan="4" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -155,7 +147,7 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止桩号</span></p>
                 </td>
-                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <p class="zhuangSpanP" style="line-height: 16pt; margin: 0pt; widows: 0;text-align: center"><span class="zhuangSpan" style="font-family: 仿宋;">{$PileNo}</span></p>
                 </td>
             </tr>
@@ -163,12 +155,12 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止高程</span></p>
                 </td>
-                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <p style="line-height: 12pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span class="zhuangSpan" style="font-family: 仿宋;">{$Altitude}</span></p>
                 </td>
             </tr>
             <tr style="height: 28.35pt">
-                <td colspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单元工程名称及部位与编号</span></p>
                 </td>
                 <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -181,7 +173,7 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">施工时段</span></p>
                 </td>
-                <td colspan="2" style="text-align: center;border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="4" style="text-align: center;border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <div class="dateDiv">
                         <div class="form-group div-inline data_2">
                             <div class="input-group date dateMargin" style="width: 100%;">
@@ -199,18 +191,18 @@
                 </td>
             </tr>
             <tr style="height: 28.35pt">
-                <td colspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">施工依据</span></p>
                 </td>
-                <td colspan="8" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="10" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <p style="margin: 0pt; text-align: center; orphans: 0; widows: 0"><span class="zhuangSpan" style="font-family: 仿宋;">{$BuildBase}</span></p>
                 </td>
             </tr>
-            <tr style="height: 80.8pt">
+            <tr style="height: 60pt">
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">地质缺陷描述</span></p>
                 </td>
-                <td colspan="11" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="12" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <textarea id="input_1" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
             </tr>
@@ -218,56 +210,54 @@
                 <td colspan="2" rowspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">简图</span></p>
                 </td>
-                <td colspan="11" rowspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: top">
+                <td colspan="12" rowspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: top">
                     <p style="margin: 0pt 21pt 0pt 0pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">素描简图（或施工照片）</span></p>
-                    <input id="input_hgl_1" default="/" step="0" type="text" value="" class="form-control wait beizhi_3" style="display: inline; width: 65px; height: 20px; padding: 0px; text-align: left">
                     <div class="div_img">
                         <img id="img_1" class="upLoadPic" src="" />
                     </div>
+                    <input id="input_hgl_1" default="/" step="0" type="text" value="" class="form-control wait beizhi_3" style="display: inline; width: 65px; height: 20px; padding: 0px; text-align: left">
                     <div class="btnList">
 
                     </div>
                 </td>
             </tr>
-            <tr style="height: 19.05pt">
-                <td style="border: none; height: 19.05pt; width: 0pt"></td>
+            <tr  style="height: 19.05pt">
             </tr>
             <tr style="height: 19.05pt">
-                <td style="border: none; height: 19.05pt; width: 0pt"></td>
             </tr>
             <tr style="height: 19.05pt">
-                <td style="border: none; height: 19.05pt; width: 0pt"></td>
             </tr>
             <tr style="height: 15.6pt">
-                <td style="border: none; height: 15.6pt; width: 0pt"></td>
             </tr>
             <tr style="height: 17pt">
                 <td rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">序号</span></p>
                 </td>
-                <td colspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: auto; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止桩号及高程</span></p>
                 </td>
                 <td rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单位</span></p>
                 </td>
-                <td rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
-                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0; width: 15mm;"><span style="font-family: 仿宋; font-size: 10.5pt">施工单位</span></p>
+                <td colspan="2" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0;"><span style="font-family: 仿宋; font-size: 10.5pt">施工单位</span></p>
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">申报量</span></p>
                 </td>
                 <td colspan="2" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
-                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">监理单位审核量</span></p>
+                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">监理单位</span></p>
+                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">审核量</span></p>
                 </td>
                 <td colspan="2" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
-                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">设计单位审查量</span></p>
+                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">设计单位</span></p>
+                    <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">审查量</span></p>
                 </td>
-                <td rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="2" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">建设单位</span></p>
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">审定量</span></p>
                 </td>
             </tr>
             <tr style="height: 17pt">
-                <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止桩号</span></p>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
@@ -278,7 +268,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_2" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_3" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -287,7 +277,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_5" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_6" default="/" step="0" placeholder="" class="comment shigong_num"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -296,7 +286,7 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_8" default="/" step="5" placeholder="" class="comment sheji_num"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <textarea id="input_9" default="/" step="6" placeholder="" class="comment jianshe_num"></textarea>
                 </td>
             </tr>
@@ -304,7 +294,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_10" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_11" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -313,7 +303,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_13" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_14" default="/" step="0" placeholder="" class="comment shigong_num"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -322,7 +312,7 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_16" default="/" step="5" placeholder="" class="comment sheji_num"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <textarea id="input_17" default="/" step="6" placeholder="" class="comment jianshe_num"></textarea>
                 </td>
             </tr>
@@ -330,7 +320,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_18" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_19" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -339,7 +329,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_21" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_22" default="/" step="0" placeholder="" class="comment shigong_num"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -348,7 +338,7 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_24" default="/" step="5" placeholder="" class="comment sheji_num"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <textarea id="input_25" default="/" step="6" placeholder="" class="comment jianshe_num"></textarea>
                 </td>
             </tr>
@@ -356,7 +346,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_26" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_27" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -365,7 +355,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_29" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_30" default="/" step="0" placeholder="" class="comment shigong_num"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -374,7 +364,7 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_32" default="/" step="5" placeholder="" class="comment sheji_num"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <textarea id="input_33" default="/" step="6" placeholder="" class="comment jianshe_num"></textarea>
                 </td>
             </tr>
@@ -382,7 +372,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_34" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_35" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -391,7 +381,7 @@
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_37" default="/" step="0" placeholder="" class="comment"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_38" default="/" step="0" placeholder="" class="comment shigong_num"></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -400,18 +390,18 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_40" default="/" step="5" placeholder="" class="comment sheji_num"></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <textarea id="input_41" default="/" step="6" placeholder="" class="comment jianshe_num"></textarea>
                 </td>
             </tr>
             <tr style="height: 22.7pt">
-                <td colspan="6" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">工程量合计</span></p>
                 </td>
                 <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">&#xa0;</span></p>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_shigong_hgl" placeholder="" class="comment" disabled></textarea>
                 </td>
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
@@ -420,7 +410,7 @@
                 <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <textarea id="input_sheji_hgl" placeholder="" class="comment" disabled></textarea>
                 </td>
-                <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <textarea id="input_jianshe_hgl" placeholder="" class="comment" disabled></textarea>
                 </td>
             </tr>
@@ -428,13 +418,13 @@
                 <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">施工单位</span></p>
                 </td>
-                <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">监理单位</span></p>
                 </td>
                 <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">设计单位</span></p>
                 </td>
-                <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="5" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">建设单位</span></p>
                 </td>
             </tr>
@@ -474,7 +464,7 @@
                         </div>
                     </div>
                 </td>
-                <td colspan="4" rowspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
+                <td colspan="3" rowspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 5.03pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; widows: 0">
                         <span style="font-family: 仿宋; font-size: 10.5pt">项目监理负责人：
                             <!--                    <img id="img_5" class="signName" src="../../img/2016-6-14 10-35-58.jpg" />-->
@@ -521,7 +511,7 @@
                         </div>
                     </div>
                 </td>
-                <td colspan="3" rowspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="5" rowspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 5.03pt; padding-right: 4.65pt; vertical-align: middle">
                     <p style="margin: 0pt; orphans: 0; widows: 0">
                         <span style="font-family: 仿宋; font-size: 10.5pt">建设单位代表：<br />
                             <!--                    <img id="img_8" class="signName" src="../../img/2016-6-14 10-35-58.jpg" />-->
@@ -543,34 +533,17 @@
                     </div>
                 </td>
             </tr>
-            <tr style="height: 19.05pt">
-                <td style="border: none; height: 19.05pt; width: 0pt"></td>
+            <tr style="height: 15pt">
             </tr>
-            <tr style="height: 38.45pt">
-                <td style="border: none; height: 38.45pt; width: 0pt"></td>
+            <tr style="height: 20pt">
             </tr>
             <tr style="height: 17pt">
-                <td colspan="13" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 1.5pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 4.65pt; vertical-align: middle">
+                <td colspan="14" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 1.5pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 4.65pt; padding-right: 4.65pt; vertical-align: middle">
                     <p style="margin: 0pt 21pt 0pt 0pt; orphans: 0; text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">备注：主要附计算表、测量断面图等</span></p>
                 </td>
             </tr>
-            <tr style="height: 0pt">
-                <td style="width: 18.2pt; border: none"></td>
-                <td style="width: 24.25pt; border: none"></td>
-                <td style="width: 68.85pt; border: none"></td>
-                <td style="width: 6.25pt; border: none"></td>
-                <td style="width: 24.1pt; border: none"></td>
-                <td style="width: 56.7pt; border: none"></td>
-                <td style="width: 27.95pt; border: none"></td>
-                <td style="width: 57.5pt; border: none"></td>
-                <td style="width: 6.7pt; border: none"></td>
-                <td style="width: 50.8pt; border: none"></td>
-                <td style="width: 6.9pt; border: none"></td>
-                <td style="width: 50.6pt; border: none"></td>
-                <td style="width: 83.15pt; border: none"></td>
-            </tr>
         </table>
-        <p class="tabWidth" style="width: 190mm; line-height: 12pt; margin: auto; orphans: 0; padding-left: 21pt; text-align: justify; text-indent: -20pt; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">注：1.本表填写一式四份，施工单位一份，监理单位一份，设计单位一份，建设单位一份，作为支付工程量结算依据；2.适用范围：土石方开挖工程因地质原因产生的工程量签证。</span></p>
+        <p class="tabWidth" style="line-height: 12pt; margin: auto; orphans: 0;  text-align: justify; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">注：1.本表填写一式四份，施工单位一份，监理单位一份，设计单位一份，建设单位一份，作为支付工程量结算依据；<br>2.适用范围：土石方开挖工程因地质原因产生的工程量签证。</span></p>
         <!--        <p class="tabWidth" style="width: 190mm;line-height:12pt; margin: auto; orphans:0;padding-left:21pt; text-align:justify; text-indent:-20pt; widows:0"><span style="font-family:仿宋; font-size:10.5pt">；2.适用范围：土石方开挖工程因地质原因产生的工程量签证。</span></p>-->
     </div>
     <script type="text/javascript" src="formEdit.js"></script>
