@@ -172,6 +172,8 @@ function addLayer() {
             uploader.reset();
             $('#remark').val('');
             $('#attachment_name').val('');
+            $('#attachment_id').val('');
+            $('#path').val('');
         }
     });
 }
