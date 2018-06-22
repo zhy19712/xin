@@ -81,12 +81,6 @@ canvas {
     outline: none!important;
 }
 
-#fileTitle{
-    width: 260mm!important;
-    height: 100px;
-    margin: 0 auto;
-    position: relative;
-}
 textarea{
     text-align: center!important;
     background-color: #ffffff!important;
@@ -98,6 +92,12 @@ input{
     font-size: 12px!important;
     margin-top: 5px!important;
     background-color: #ffffff!important;
+}
+#fileTitle{
+    width: 210mm!important;
+    height: 100px;
+    margin: 0 auto;
+    position: relative;
 }
 #qrcode{
     position: absolute;

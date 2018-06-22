@@ -250,49 +250,71 @@
         });
     }
 
-    /*实例化甘特图
------------------------------------------------------------------------------*/
+/*实例化甘特图start-----------------------------------------------------------------------------*/
     var project = new PlusProject();
     project.setStyle("width:100%;height:727px");
-    project.setColumns([
-        new PlusProject.IDColumn(),             //任务序号。
-        // new PlusProject.WBSColumn(),            //WBS编码。
-        new PlusProject.StatusColumn(),         //状态。
-        new PlusProject.NameColumn(),           //任务名称。
-        new PlusProject.PredecessorLinkColumn(),//前置任务。
-        new PlusProject.PercentCompleteColumn(),//完成百分比。
-        new PlusProject.DurationColumn(),       //工期。
-        new PlusProject.StartColumn(),          //开始日期。
-        new PlusProject.FinishColumn(),         //完成日期。
-        new PlusProject.WorkColumn(),           //工时。
-        new PlusProject.DepartmentColumn(),     //部门。
-        new PlusProject.PrincipalColumn(),      //负责人。
-        new PlusProject.AssignmentsColumn()     //资源名称。
+    var columns = [];
+    //number
+    var WbsColumn = {
+        name: "WBS",
+        header: "WBS<br/>String",
+        field: "WBS",                   //WBS
+        width: 50,
+        editor: {
+            type: "textbox"
+        }
+    };
+    //String
+    var UnitColumn = {
+        name: "Unit",
+        header: "单位<br/>String",
+        field: "Unit",                  //Unit
+        width: 80,
+        editor: {
+            type: "textbox"
+        }
+    };
+    var stringColumn = {
+        name: "Quantities",
+        header: "工程量<br/>String",
+        field: "Quantities",            //Quantities
+        width: 90,
+        editor: {
+            type: "textbox"
+        }
+    };
+    columns.push(WbsColumn);
+    columns.push( new PlusProject.StatusColumn());
+    columns.push(new PlusProject.NameColumn());
+    columns.push(UnitColumn);
+    columns.push(stringColumn);
+    columns.push(new PlusProject.DurationColumn());
+    columns.push(new PlusProject.StartColumn());
+    columns.push(new PlusProject.FinishColumn());
+    project.setColumns(columns);
+    // project.setColumns([
+    //     // new PlusProject.IDColumn(),             //任务序号。
+    //     new PlusProject.WBSColumn(),            //WBS编码。
+    //     new PlusProject.StatusColumn(),         //状态。
+    //     new PlusProject.NameColumn(),           //任务名称。
+    //     new PlusProject.QuantitiesColumn(),     //工程量。
+    //     // new PlusProject.PredecessorLinkColumn(),//前置任务。
+    //     // new PlusProject.PercentCompleteColumn(),//完成百分比。
+    //     new PlusProject.DurationColumn(),       //工期。
+    //     new PlusProject.StartColumn(),          //开始日期。
+    //     new PlusProject.FinishColumn(),         //完成日期。
+    //     // new PlusProject.WorkColumn(),           //工时。
+    //     // new PlusProject.DepartmentColumn(),     //部门。
+    //     // new PlusProject.PrincipalColumn(),      //负责人。
+    //     // new PlusProject.AssignmentsColumn()     //资源名称。
+    //
+    // ]);
 
-    ]);
     // project.setRowHeight(30);                   //设置行高
     // project.setShowLinkLines(true);             //设置是否显示箭头连线
     // project.setShowCriticalPath(true);          //设置是否显示关键路径
     // project.setAllowDragDrop(false);             //设置是否允许任务行拖拽
     // project.setShowGridLines(true);             //设置是否显示关键路径
-    // console.log(project.getCalendars());
-    // var set = project.getCalendars()[0].WeekDays[0]
-    // var calendarsArr = [{BaseCalendarUID:"-1",
-    // Exceptions:[],
-    // IsBaseCalendar:1,
-    // Name:"标准",
-    // UID:"1",
-    // WeekDays:[
-    //     {DayWorking: 1, DayType: 1},
-    //     {DayWorking: 1, DayType: 2},
-    //     {DayWorking: 1, DayType: 3},
-    //     {DayWorking: 1, DayType: 4},
-    //     {DayWorking: 1, DayType: 5},
-    //     {DayWorking: 1, DayType: 6},
-    //     {DayWorking: 1, DayType: 7},
-    //     ]}]
-    // project.setCalendars(calendarsArr);
-
     project.render(document.getElementById("viewCt"));
     //创建右键菜单
     var menu = new ProjectMenu();
@@ -342,6 +364,8 @@
         project.frozenColumn(0, 2);
     }
     frozenColumn();
+/*实例化甘特图end-----------------------------------------------------------------------------*/
+
 
     /* 业务代码
 -----------------------------------------------------------------------------*/
@@ -377,7 +401,7 @@
         project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
         project.print();
     }
-    //4)/*新增*/
+    //4)新增
     function addTask() {
         var newTask = project.newTask();
         newTask.Name = '<新增任务>';    //初始化任务属性
