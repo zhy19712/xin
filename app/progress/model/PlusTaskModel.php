@@ -39,6 +39,7 @@ class PlusTaskModel extends Model
                 $new_data[$k]['ID'] = $v['order_number']; // 序号(是一个数字,体现任务的前后顺序)
                 $new_data[$k]['ParentTaskUID'] = $v['parent_task_uid']; // 父任务UID(体现树形结构)
                 $new_data[$k]['Milestone'] = $v['milestone']; // 里程碑
+                // [{"TaskUID": "3","LinkLag": 0,"LagFormat": 7,"Type": 1,"PredecessorUID": "35"}]
                 $new_data[$k]['PredecessorLink'] = empty($v['predecessor_link']) ? [] : $v['predecessor_link']; // 前置任务（JSON字符串）。如"[{PredecessorUID: 2,Type: 1,LinkLag: 0}, ...]"
                 $new_data[$k]['ProjectUID'] = $v['project_uid']; // 计划UID
 
