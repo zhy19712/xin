@@ -53,7 +53,10 @@ class Monthlyplan extends Permissions
             // 前台需要 传递 标段编号 section_id  计划类型 plan_type 1月计划2年计划3总计划
             $param = input('param.');
             $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
-            $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+            if($section_id == 0){
+                return json(['code'=>1,'data'=>[],'msg'=>'年度下拉选项']);
+            }
             if(empty($plan_type) || empty($section_id)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
@@ -76,7 +79,10 @@ class Monthlyplan extends Permissions
             $param = input('param.');
             $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
             $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-            $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+            $plan_year = isset($param['plan_year']) ? $param['plan_year'] : -1;
+            if($plan_year == 0){
+                return json(['code'=>1,'data'=>[],'msg'=>'月度下拉选项']);
+            }
             if(empty($plan_type) || empty($section_id) || empty($plan_year)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
