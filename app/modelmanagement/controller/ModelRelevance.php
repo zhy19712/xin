@@ -1,16 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: admin
- * Date: 2018/4/13
- * Time: 11:26
- */
+
 /**
  * 质量管理-进度模型关联
  * Class Branch
  * @package app\quality\controller
  */
-namespace app\quality\controller;
+namespace app\modelmanagement\controller;
 use app\admin\controller\Permissions;
 
 class ModelRelevance extends Permissions
