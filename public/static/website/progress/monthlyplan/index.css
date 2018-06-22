@@ -91,7 +91,7 @@
     vertical-align: middle;
 }
 
-/*!*修改的样式*!*/
+/*!*修改弹层的样式start*!*/
 .mini-window{
     /*height: 470px !important;*/
     width: 600px !important;
@@ -163,10 +163,9 @@
 .mini-panel .mini-tabs-bodys>div:first-child>table>tbody>tr>td{
     padding: 8px 0px 0 0;
 }
+/*!*修改弹层的样式end*!*/
 
-
-/*.mini-tab {*/
-    /*background: none;*/
-    /*!* border: 1px solid #8CB2E2; *!*/
-    /*color: #333;*/
-/*}*/
+/*开关*/
+.layui-form-switch {
+    margin-top: 0 !important;
+}
