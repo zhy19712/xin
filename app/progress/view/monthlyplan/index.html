@@ -229,7 +229,7 @@
                         $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
                     }
                     layui.form.render();
-                    console.log($("#seleBids").val());
+                    console.log($("#seleBids").val()+" 标段id ");
                     yearFun($("#seleBids").val());
                 }
             }
@@ -246,10 +246,9 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
-                    console.log(orgs.length);
+                    $("#seleYear").empty();
                     if(orgs.length == 0){
-                        $("#seleYear").val("");
-                        $("#seleYear").empty();
+                        $("#seleYear").val(0);
                         layui.form.render('select');
                     }else if(orgs.length > 0){
                         for(var i=0;i<orgs.length;i++){
@@ -257,7 +256,11 @@
                         }
                     }
                     layui.form.render('select');
-                    monthFun($("#seleBids").val(),$("#testYear").val());
+                    if($("#seleYear").val() == null){
+                        monthFun($("#seleBids").val(),0);
+                    }else if($("#seleYear").val() != null){
+                        monthFun($("#seleBids").val(),$("#seleYear").val());
+                    }
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -275,19 +278,26 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
+                    $("#seleMonthly").empty();
                     if(orgs.length == 0){
-                        $("#seleMonthly").val("");
-                        $("#seleYear").empty();
+                        $("#seleMonthly").val(0);
                         layui.form.render('select');
                     }else if(orgs.length > 0){
-                        $("#seleYear").empty();
                         for(var i=0;i<orgs.length;i++){
                             $("#seleMonthly").append($("<option/>").text(orgs[i]));
                         }
                     }
                     layui.form.render();
                     //甘特图的获取数据/
-                    load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
+                    if($("#seleBids").val() != null && $("#seleYear").val() != null && $("#seleMonthly").val() != null){
+                        // load($("#seleBids").val(),$("#seleYear").val(),$("#seleMonthly").val());
+                    }
+                    if($("#seleYear").val() == null && $("#seleMonthly").val() == null){
+                        load($("#seleBids").val(),0,0);
+                    }
+                    if($("#seleYear").val() != null && $("#seleMonthly").val() == null){
+                        load($("#seleBids").val(),$("#seleYear").val(),0);
+                    }
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -366,12 +376,12 @@
         ShowTaskWindow(project);
     });
 
-    //获取数据
-    // LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
-    //     var projectStart = mini.get("projectStart");
-    //
-    //     project.setStartDate(new Date(2017,1,1));
-    // });
+    // 获取数据
+    LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
+        var projectStart = mini.get("projectStart");
+
+        project.setStartDate(new Date(2017,1,1));
+    });
 
     //加载数据
     function load(sectionId,planYear,monthly) {
@@ -392,12 +402,18 @@
                 // var dataArr = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
                 // project.loadTasks(res);
                 // project.unmask();
+                // console.log(text);
+                if(text.code == -1){
+                    alert("数据为空！需要添加哟！  ")
+                    project.unmask();
+                }else{
+                    // $(".mini-supergrid-viewport").text("");
+                    var dataProject = mini.decode(text);
 
-                var dataProject = mini.decode(text);
+                    doSetProjectData(project, dataProject);
 
-                doSetProjectData(project, dataProject);
-
-                project.unmask();
+                    project.unmask();
+                }
             }
         });
     }
@@ -482,6 +498,7 @@
         var task = project.getSelected();
         if (task) {
             ShowTaskWindow(project);
+            /*删除后面3个tab*/
             if($(".mini-tabs-header td:nth-of-type(8)").text() == "高级" || $(".mini-tabs-header td:nth-of-type(9)").text() == "备注" || $(".mini-tabs-header td:nth-of-type(10)").text() == "自定义Tab"){
                 $(".mini-tabs-header td:nth-of-type(1)").remove();
                 $(".mini-tabs-header td:nth-of-type(7)").remove();
@@ -489,6 +506,27 @@
                 $(".mini-tabs-header td:nth-of-type(9)").remove();
                 $("#fs_actualdate").remove();
             }
+            /*添加里程碑*/
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys fieldset").after(
+                '<div style="margin-top:8px;margin-left: 7px;">' +
+                '     <span class="mini-checkbox" id="twin_milestone" style="border-width: 0px; padding: 0px;"><input id="mini-86$check" name="mini-86" type="checkbox" class="mini-checkbox-check"><label for="mini-86$check" onclick="return false;">标记为里程碑</label></span>' +
+                '</div>')
+            /*修改内容*/
+            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(1)").css({"width":"86px","text-align":"right"});
+            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(3)").css({"width":"86px","text-align":"right"});
+
+            //第一行tr
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").text("计划工期（天）");
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
+            //第二行tr
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(2)>td:nth-of-type(1)").text("单位：");
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(2)>td:nth-of-type(3)").text("工程量：");
+            //第三行删除
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(3)").remove();
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body fieldset").css({"border":"none"});
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body fieldset>legend").remove();
+            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
+
         } else {
             alert("请选中任务");
         }

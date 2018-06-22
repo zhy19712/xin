@@ -53,7 +53,10 @@ class Monthlyplan extends Permissions
             // 前台需要 传递 标段编号 section_id  计划类型 plan_type 1月计划2年计划3总计划
             $param = input('param.');
             $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
-            $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+            if($section_id == 0){
+                return json(['code'=>1,'data'=>[],'msg'=>'年度下拉选项']);
+            }
             if(empty($plan_type) || empty($section_id)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
@@ -76,7 +79,10 @@ class Monthlyplan extends Permissions
             $param = input('param.');
             $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
             $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-            $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+            $plan_year = isset($param['plan_year']) ? $param['plan_year'] : -1;
+            if($plan_year == 0){
+                return json(['code'=>1,'data'=>[],'msg'=>'月度下拉选项']);
+            }
             if(empty($plan_type) || empty($section_id) || empty($plan_year)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
@@ -288,10 +294,29 @@ class Monthlyplan extends Permissions
     {
         // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly 计划类型 plan_type 1月计划2年计划3总计划
         $param = input('param.');
-        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
-        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
+        $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : -1;
+        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : -1;
         $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
+        if($section_id == 0 || $plan_year == 0 || $plan_monthly == 0){
+            $data['UID'] = ''; // 计划的唯一标识符
+            $data['Name'] = ''; // 计划名称
+            $data['CalendarUID'] = 1; // 日历数据
+            $calendars = '[{"WeekDays": [{"DayWorking": 1,"DayType": 1},{"DayWorking": 1,"DayType": 2,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 3,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 4,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 5,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 6,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00" }]},
+                              {"DayWorking": 1,"DayType": 7}],"Name": "标准","UID": "1","BaseCalendarUID": "-1","IsBaseCalendar": 1,"Exceptions": []}]';
+            $data['Calendars'] = json_decode($calendars); // 日历设置数据 json 格式的数据 [主要作用:设置周六日为工作日]
+            $data['Tasks'] = []; // $plan_type 1月计划2年计划3总计划
+            // 存在任务,就获取任务里的时间
+            $data['StartDate'] = date('Y-m-d').'T08:00:00'; // 开始时间
+            $data['FinishDate'] = date('Y-m-d',strtotime("+1 year")).'T59:59:59'; // 完成日期
+            // todo 资源集合
+            $data['Resources'] = ''; // 资源集合
+            return json($data);
+        }
         if(empty($section_id) || empty($plan_year) || empty($plan_monthly) || empty($plan_type)){
             return json(['code' => -1,'msg' => '缺少参数']);
         }
