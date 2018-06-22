@@ -15,7 +15,7 @@ var admin_table = $('#admin_table').DataTable({
     ajax: {
         url: "/progress/common/datatablesPre?tableName=progress_actual"
     },
-    dom: 'l<"#add.layui-btn layui-btn-normal layui-btn-sm btn-right btn-space"><"#selectWrap.select-wrap">tip',
+    dom: '<"#add.layui-btn layui-btn-normal layui-btn-sm btn-right btn-space"><"#selectWrap.select-wrap">tlip',
     columns: [
         {
             name: "section_name"
@@ -51,6 +51,7 @@ var admin_table = $('#admin_table').DataTable({
         $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
     },
     fnInitComplete: function (oSettings) {
+        $('#add').html('新增');
         constructingQueryConditions();
     },
     language: {
@@ -69,8 +70,6 @@ var admin_table = $('#admin_table').DataTable({
         }
     }
 });
-$('#add').html('新增');
-$('#save').html('保存');
 
 //构建查询条件
 function constructingQueryConditions() {
@@ -105,9 +104,9 @@ function fillSearchSegment() {
                         $('#segment').append('<option value=' + i + '>' + res.sectionArr[i] + '</option>');
                     }
                 }
-                dateScope();
-                selectDate();
                 form.render();
+                selectDate();
+                dateScope();
             }
         }
     });
@@ -115,6 +114,8 @@ function fillSearchSegment() {
 
 //根据选择的标段获取对应的日期区间范围
 function dateScope() {
+    var section_id = $('dd.layui-this').attr('lay-value');
+    $('#startDate').attr('segmentId',section_id);
     form.on('select(searchSegment)', function(data){
         $('#startDate').attr('segmentId',data.value);
         $.ajax({
