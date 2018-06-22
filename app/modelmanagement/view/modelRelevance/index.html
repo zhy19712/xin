@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-实时进度
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/progress/actual/index.css">
+<link rel="stylesheet" href="__WEBSITE__/modelmanagement/modelRelevance/index.css">
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',collapsible:false" style="height:45%;">
+        <table id="admin_table" width="100%" class="table cell-border">
+            <thead>
+            <tr>
+                <th>所属标段</th>
+                <th>日期</th>
+                <th>填报人</th>
+                <th>备注</th>
+                <th>是否关联模型</th>
+                <th>操作</th>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',title:'已关联模型'">
+        <div id="allRelieve" class="layui-btn layui-btn-normal layui-btn-sm btn-right btn-space">全部解除关联</div>
+        <table id="alreadyRelationModelTable" class="table cell-border" cellspacing="0"  width="100%">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>标段</th>
+                <th>单位</th>
+                <th>分部</th>
+                <th>单元</th>
+                <th>桩号1</th>
+                <th>桩号1</th>
+                <th>桩号2</th>
+                <th>桩号2</th>
+                <th>桩号3</th>
+                <th>桩号3</th>
+                <th>桩号4</th>
+                <th>桩号4</th>
+                <th>高程起</th>
+                <th>高程止</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/modelmanagement/modelRelevance/index.js"></script>
 </body>
 </html>
