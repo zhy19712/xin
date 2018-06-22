@@ -255,6 +255,19 @@ class QualityFormInfoModel extends Model implements IApprove
         }
     }
 
+    //获取表单退回时的审批信息
+    public function getRefundapproval($id)
+    {
+        try {
+            $where['ApproveStatus'] =array('=','-1');
+            //查询已退回
+            $data = $this->field("id,ApproveIds,ApproveStatus,form_name,CurrentApproverId,update_time")->where('find_in_set(:id,ApproveIds)',['id'=>$id])->where($where)->select();
+            return $data;
+        } catch (Exception $exception) {
+            return null;
+        }
+    }
+
     /**
      * 获取一条信息
      */

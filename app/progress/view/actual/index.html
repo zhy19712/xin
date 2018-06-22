@@ -1,45 +1,64 @@
 {include file="../app/public/common_header.html"}
-<style>
-    i.fa:before, i.fa:hover:before {
-        color: #333;
-    }
-</style>
-<div class="layui-progress" lay-showPercent="yes" lay-showpercent="true" lay-filter="demo" style="margin-top: 50px;">
-    <div class="layui-progress-bar layui-bg-cyan" lay-percent="0%"></div>
+<link rel="stylesheet" href="__WEBSITE__/progress/actual/index.css">
+<div style="padding: 0 5px 5px;">
+    <table id="admin_table" width="100%" class="table cell-border">
+        <thead>
+        <tr>
+            <th>所属标段</th>
+            <th>日期</th>
+            <th>填报人</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    </table>
 </div>
-<i class="fa fa-fast-backward"></i>
-<i class="fa fa-play" id="play"></i>
-<i class="fa fa-stop" id="stop"></i>
-<i class="fa fa-fast-forward"></i>
 {include file="../app/public/common_footer.html"}
-<script>
-    layui.use('element', function () {
-        var element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
-        var timer;
-        active = {
-            play: function () {
-                var n = 0;
-                timer = setInterval(function () {
-                    n++;
-                    if (n > 100) {
-                        n = 100;
-                        clearInterval(timer);
-                    }
-                    element.progress('demo', n + '%');
-                }, 100);
-            },
-            stop: function () {
-                clearInterval(timer);
-            }
-        }
-    });
-
-    $('#play').click(function () {
-        active.play();
-    });
-    $('#stop').click(function () {
-        active.stop();
-    })
-</script>
+<script src="__WEBSITE__/progress/actual/index.js"></script>
 </body>
 </html>
+<!-- 新增弹层 -->
+<form action="" id="addLayout" class="layui-form layui-layer-wrap" style="display: none">
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属标段</label>
+        <div class="layui-input-block">
+            <select name="section_id" id="section_id" lay-filter="segment"></select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">日期</label>
+        <div class="layui-input-block">
+            <input type="text" name="actual_date" placeholder="日期选择，默认本日" lay-verify="required" maxlength="4" autocomplete="off" class="layui-input" id="date">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">填报人</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="user_id" id="user_id">
+            <input type="text" id="user_name" placeholder="自动填充当前用户，不可编辑" readonly  maxlength="4" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea name="remark" placeholder="请输入内容" class="layui-textarea" maxlength="500"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">旁站记录表照片</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="path" id="path">
+            <input type="text" name="attachment_id" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input" id="attachment_id" readonly="">
+            <div id="uploadList" class="upload-list"></div>
+            <div class="layui-form-mid layui-word-aux">
+                <div id="upload" class="upload layui-btn">上传</div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal save" lay-submit="" lay-filter="save">保存</button>
+            <button type="button" class="layui-btn layui-btn-primary close" id="close">关闭</button>
+        </div>
+    </div>
+</form>

@@ -12,47 +12,8 @@
     <script type="text/javascript" charset="utf8" src="__PUBLIC__/layui/layui.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
     <script src="__PUBLIC__/webupload/webuploader.min.js"></script>
-    <style type="text/css">
-        .myitem{
-            background:#9ccc5e;border:solid 1px #6e845c;
-            position:absolute;overflow:hidden;display:block;
-            z-index:100;
-        }
-        .myitem2 {
-            background:#9ccc5e;border:solid 1px #0c3f5f;
-            position:absolute;overflow:hidden;
-        }
-        .percentcomplete {
-            margin-top:1px;
-            height:10px;overflow:hidden;background:#0d55a4;
-        }
-        .formlable .layui-form-label{
-            width: 26px;
-        }
-        .layuiRight{
-            float: right;
-        }
 
-        #addPlan .layui-form-label{
-            width: 95px;
-        }
-        .layui-input-block input{
-            width: 87%;
-        }
-        .layui-input-block {
-            margin-right: 35px;
-        }
-        .layui-form-mid {
-            float: right;
-            padding: 8px 0!important;
-            line-height: 20px;
-            margin-top: -46px;
-            margin-right: 2px;
-        }
-        .webuploader-pick {
-             padding: 0 ;
-        }
-    </style>
+    <link href="__WEBSITE__/progress/monthlyplan/index.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div class="layui-fluid">
@@ -84,23 +45,24 @@
                 </div>
             </form>
             <div class="layui-inline" style="float: right;margin-top: -37px">
-                <button class="layui-btn layui-btn-normal" id="addPlanTask">新增月计划</button>
-                <button class="layui-btn layui-btn-normal" onclick="monthlyPlanList()">月计划列表</button>
+                <button class="layui-btn layui-btn-normal" id="addPlanTask" style="font-size: 16px;">新增月计划</button>
+                <button class="layui-btn layui-btn-warm" onclick="monthlyPlanList()" style="font-size: 16px;">月计划列表</button>
             </div>
         </div>
-        <div style="padding: 10px 0">
-            <button class="layui-btn layui-btn-normal" onclick="save()">保存</button>
-            <button class="layui-btn layui-btn-normal"  onclick="printGantt()">打印</button>
-            <button class="layui-btn layui-btn-normal"  onclick="addTask()">增加</button>
-            <button class="layui-btn layui-btn-danger"  onclick="removeTask()">删除</button>
-            <button class="layui-btn layui-btn-warm"  onclick="updateTask()">修改</button>
-            <button class="layui-btn layui-btn-warm"  onclick="upgradeTask()">升级</button>
-            <button class="layui-btn layui-btn-warm" onclick="downgradeTask()">降级</button>
+        <div style="padding: 10px 0" id="styleFa">
+            <button class="layui-btn" onclick="save()"><i class="fa fa-save" title="保存"></i>&nbsp;&nbsp;保存</button>
+            <a class="mini-button" plain="true" onclick="track()" >调试</a>
+            <button class="layui-btn" onclick="printGantt()"><i class="fa fa-print" title="打印"></i>&nbsp;&nbsp;打印</button>
+            <button class="layui-btn" onclick="addTask()"><i class="fa fa-plus" title="增加"></i>&nbsp;&nbsp;增加</button>
+            <button class="layui-btn" onclick="removeTask()"><i class="fa fa-trash" title="删除"></i>&nbsp;&nbsp;删除</button>
+            <button class="layui-btn" onclick="updateTask()"><i class="fa fa-edit" title="修改"></i>&nbsp;&nbsp;修改</button>
+            <button class="layui-btn" onclick="upgradeTask()"><i class="fa fa-arrow-up" title="升级"></i>&nbsp;&nbsp;升级</button>
+            <button class="layui-btn" onclick="downgradeTask()"><i class="fa fa-arrow-down" title="降级"></i>&nbsp;&nbsp;降级</button>
             <div class="layui-inline layuiRight">
                 <input type="checkbox" id="showCriticalPath" onclick="showCriticalPath(this.checked)" />
                 <label for="showCriticalPath">显示关键路径</label>
-                <button class="layui-btn layui-btn-warm" onclick="zoomIn()">放大</button>
-                <button class="layui-btn layui-btn-warm" onclick="zoomOut()">缩小</button>
+                <button class="layui-btn" onclick="zoomIn()"><img src="__WEBSITE__/progress/monthlyplan/img/zoomin.png" alt="" title="放大">&nbsp;&nbsp;放大</button>
+                <button class="layui-btn" onclick="zoomOut()"><img src="__WEBSITE__/progress/monthlyplan/img/zoomout.png" alt="" title="缩小">&nbsp;&nbsp;缩小</button>
             </div>
         </div>
     </div>
@@ -156,7 +118,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">上传计划报告</label>
             <div class="layui-input-block">
-                <input type="text" id="report_id" readonly="" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input">
+                <input type="text" id="report_id" name="report_id" readonly="" placeholder="请选择要上传的文件" autocomplete="off" class="layui-input">
                 <input type="hidden" name="plan_report_id" id="plan_report_id_hidden" value="">
                 <div id="uploadList" class="upload-list"></div>
                 <div class="layui-form-mid layui-word-aux">
@@ -202,14 +164,13 @@
         </div>
     </form>
 
-
 </div>
 
+</body>
 <link href="__PUBLIC__/gantts/scripts/miniui/themes/blue/skin.css" rel="stylesheet" type="text/css" />
 <link href="__PUBLIC__/gantts/scripts/miniui/themes/icons.css" rel="stylesheet" type="text/css" />
 <link href="__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css" rel="stylesheet" type="text/css" />
 <script src="__PUBLIC__/jquery/jquery.min.js" type="text/javascript"></script>
-
 <script src="__PUBLIC__/gantts/scripts/miniui/miniui.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/miniui/locale/zh_CN.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/CalendarWindow.js" type="text/javascript"></script>
@@ -217,10 +178,8 @@
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/StatusColumn.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/TaskWindow.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
-<script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/ThirdLibs/swfobject/swfobject.js" type="text/javascript"></script>
 
-</body>
 <script src="__WEBSITE__/progress/monthlyplan/index.js" type="text/javascript"></script>
 <script type="text/javascript">
 
@@ -240,13 +199,10 @@
                     }
                     layui.form.render();
                     var idBid = $("#seleBids").val();
-                    console.log(idBid)
                     yearFun(idBid);
                 }
-                //TODO 问问后台res.code ！= 1是怎么提示的
             }
         });
-
     });
     /*年度*/
     function yearFun(id) {
@@ -254,7 +210,7 @@
             url: "/progress/monthlyplan/planYear",
             async : false,
             type: "post",
-            data: {section_id: id},
+            data: {section_id: id,plan_type:1},
             dataType: "json",
             success: function (res) {
                 if(res.code == 1){
@@ -276,16 +232,17 @@
             async : false,
             url: "/progress/monthlyplan/planMonthly",
             type: "post",
-            data: {section_id:set_id,plan_year:year_id},
+            data: {section_id:set_id,plan_year:year_id,plan_type:1},
             dataType: "json",
             success: function (res) {
                 if(res.code == 1){
-                    console.log(res);
                     var orgs = res.data;
                     for(var i=0;i<orgs.length;i++){
                         $("#seleMonthly").append($("<option/>").text(orgs[i]));
                     }
                     layui.form.render();
+                    /*甘特图的获取数据*/
+                    load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -316,15 +273,10 @@
     // project.setRowHeight(30);                   //设置行高
     // project.setShowLinkLines(true);             //设置是否显示箭头连线
     // project.setShowCriticalPath(true);          //设置是否显示关键路径
-    //
     // project.setAllowDragDrop(false);             //设置是否允许任务行拖拽
-    // // project.setShowGridLines(true);             //设置是否显示关键路径
-    //
-    console.log(project.getCalendars());
+    // project.setShowGridLines(true);             //设置是否显示关键路径
+    // console.log(project.getCalendars());
     // var set = project.getCalendars()[0].WeekDays[0]
-    // project.getCalendars()
-
-
     // var calendarsArr = [{BaseCalendarUID:"-1",
     // Exceptions:[],
     // IsBaseCalendar:1,
@@ -350,11 +302,40 @@
     });
 
     //获取数据
-    LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
-        var projectStart = mini.get("projectStart");
+    // LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
+    //     var projectStart = mini.get("projectStart");
+    //
+    //     project.setStartDate(new Date(2017,1,1));
+    // });
 
-        project.setStartDate(new Date(2017,1,1));
-    });
+    //加载数据
+    function load(sectionId,planYear,monthly) {
+        project.loading();
+        $.ajax({
+            url: "/progress/monthlyplan/monthlyInitialise",
+            data:{
+                section_id:sectionId,
+                plan_year:planYear,
+                plan_monthly:monthly,
+                plan_type:1,
+            },
+            cache: false,
+            success: function (text) {
+                // console.log(text)
+                // var data = mini.decode(res);
+                // //列表转树形
+                // var dataArr = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
+                // project.loadTasks(res);
+                // project.unmask();
+
+                var dataProject = mini.decode(text);
+
+                doSetProjectData(project, dataProject);
+
+                project.unmask();
+            }
+        });
+    }
 
     //锁定列
     function frozenColumn() {
@@ -365,58 +346,14 @@
     /* 业务代码
 -----------------------------------------------------------------------------*/
 
-    //1)自定义条形图外观显示
-    // project.on("drawitem", function (e) {
-    //     var item = e.item;
-    //     var left = e.itemBox.left,
-    //         top = e.itemBox.top,
-    //         width = e.itemBox.width,
-    //         height = e.itemBox.height;
-    //
-    //     if (!item.Summary && !item.Milestone) {
-    //         var percentWidth = width * (item.PercentComplete / 100);
-    //
-    //         e.itemHtml = '<div id="' + item._id + '" class="myitem" style="left:' + left + 'px;top:' + top + 'px;width:' + width + 'px;height:' + (height) + 'px;">';
-    //         e.itemHtml += '<div style="width:' + (percentWidth) + 'px;" class="percentcomplete"></div>';
-    //
-    //         //根据你自己逻辑，把任务分成几块，注意坐标和宽度
-    //         // e.itemHtml += '<div style="position:absolute;left:0px;top:0;height:100%;width:20px;background:red;"></div>';
-    //
-    //         e.itemHtml += '</div>';
-    //
-    //         // e.ItemHtml = '<a href="http://www.baidu.com" style="left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+(height-2)+'px;" class="myitem">111</a>';
-    //     }
-    // });
-
     project.on('itemdragstart', function (e) {
         // console.log(e);
         // var project = e.source;
         // var task = e.task;
     });
 
-    //加载数据 点击重新加载数据
-    function load() {
-        project.loading();
-        $.ajax({
-            url: "data/taskList.txt",
-            cache: false,
-            success: function (text) {
-                var data = mini.decode(text);
-
-                //列表转树形
-                data = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
-
-                project.loadTasks(data);
-
-                project.unmask();
-            }
-        });
-    }
-    // load();
-
     project.on("drawcell", function (e) {
         var task = e.record, column = e.column, field = e.field;
-
         //新增
         if (task._state == "added") {
             e.rowCls = "row_added";
@@ -425,30 +362,14 @@
         if (task.Deleted == true) {
             e.rowCls = "row_deleted";
         }
-
     });
-
+    //1)调试
+    function track() {
+        TrackProject(project);
+    }
     //2)保存
     function save() {
-        var newTask = project.newTask();
-        newTask.Name = '<新增任务>';    //初始化任务属性
-
-        var selectedTask = project.getSelected();
-        if (selectedTask) {
-            project.addTask(newTask, "before", selectedTask);   //插入到到选中任务之前
-            //project.addTask(newTask, "add", selectedTask);       //加入到选中任务之内
-        } else {
-            project.addTask(newTask);
-        }
-        //使用jQuery的ajax，把任务数据，发送到服务端进行处理
-        //    $.ajax({
-        //        url: 'savegant.aspx',
-        //        type: "POST",
-        //        data: params,
-        //        success: function (text) {
-        //            alert("保存成功");
-        //        }
-        //    });
+        SaveProject(project);
     }
     //3)打印
     function printGantt() {
@@ -456,7 +377,7 @@
         project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
         project.print();
     }
-    //4)添加
+    //4)/*新增*/
     function addTask() {
         var newTask = project.newTask();
         newTask.Name = '<新增任务>';    //初始化任务属性
@@ -468,6 +389,14 @@
         } else {
             project.addTask(newTask);
         }
+        // $.ajax({
+        //     url: 'savegant.aspx',
+        //     type: "POST",
+        //     data: params,
+        //     success: function (text) {
+        //         alert("保存成功");
+        //     }
+        // });
     }
     //5)删除
     function removeTask() {
@@ -475,6 +404,23 @@
         if (task) {
             if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
                 project.removeTask(task);
+            }
+        } else {
+            // layer.confirm("请选中任务");
+            alert("请选中任务");
+        }
+    }
+    //5)修改
+    function updateTask() {
+        var task = project.getSelected();
+        if (task) {
+            ShowTaskWindow(project);
+            if($(".mini-tabs-header td:nth-of-type(8)").text() == "高级" || $(".mini-tabs-header td:nth-of-type(9)").text() == "备注" || $(".mini-tabs-header td:nth-of-type(10)").text() == "自定义Tab"){
+                $(".mini-tabs-header td:nth-of-type(1)").remove();
+                $(".mini-tabs-header td:nth-of-type(7)").remove();
+                $(".mini-tabs-header td:nth-of-type(8)").remove();
+                $(".mini-tabs-header td:nth-of-type(9)").remove();
+                $("#fs_actualdate").remove();
             }
         } else {
             alert("请选中任务");
@@ -486,7 +432,7 @@
         if (task) {
             project.upgradeTask(task);
         } else {
-            alert("请选选中任务");
+            alert("请先选中任务");
         }
     }
     //7)降级
@@ -495,7 +441,7 @@
         if (task) {
             project.downgradeTask(task);
         } else {
-            alert("请选选中任务");
+            alert("请先选中任务");
         }
     }
     //8)显示关键路径

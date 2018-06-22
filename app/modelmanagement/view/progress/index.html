@@ -1,10 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-进度模型
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/modelmanagement/progress/index.css">
+<div class="operation-bar layui-clear">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标段</label>
+            <div class="layui-input-inline">
+                <select>
+                    <option value="">标段1</option>
+                    <option value="">标段2</option>
+                </select>
+            </div>
+            <label class="layui-form-label">起止日期</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input date" id="startDate">
+            </div>
+            <div class="layui-form-mid layui-word-aux no-position">--</div>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input date" id="endDate">
+            </div>
+        </div>
+    </form>
+    <div class="play">
+        <div class="speed">
+            <span>倍速：<em id="speed">0</em></span>
+            <i class="fa fa-fast-backward" id="backward"></i>
+            <i class="fa fa-play" id="play"></i>
+            <i class="fa fa-pause pause" id="pause"></i>
+            <i class="fa fa-stop" id="stop"></i>
+            <i class="fa fa-fast-forward" id="forward"></i>
+        </div>
+    </div>
+</div>
+<div class="layui-progress" lay-filter="demo" >
+    <div class="layui-progress-bar layui-bg-green" lay-percent=""></div>
+</div>
+<div class="model-wrap layui-clear easyui-layout" style="height: 100%">
+    <div data-options="region:'east'" class="east">
+        <ul class="table-title">
+            <li>
+                <span>未建:</span>
+                <span id="notBuild"></span>
+            </li>
+            <li>
+                <span>在建:</span>
+                <span id="nowBuild"></span>
+            </li>
+            <li>
+                <span>完建:</span>
+                <span id="endBuild"></span>
+            </li>
+        </ul>
+        <table id="demo" lay-filter="test"></table>
+    </div>
+    <div data-options="region:'center'" class="center">
+        <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="98.5%" height="90%"></object>
+        <!-- 初始化 -->
+        <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+            //获取模型版本
+            var modelPath = "http://zzbhidi.f3322.net:8008/default.aspx?dir=url_res02&path=";
+            $.ajax({
+                url: "/modelmanagement/qualitymass/resourcePagName",
+                type: "post",
+                dataType: "json",
+                data:{
+                    model_type:2
+                },
+                success: function (res) {
+                    //模型名称
+                    var modelName = res.pag_name;
+                    RealBimOcx.SwitchBIMSceneSimple(modelPath,modelName);
+                }
+            });
+            RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+            RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+            RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+        </script>
+        <!-- 初始化完成 -->
+        <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+            if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                RealBimOcx.SetAllHugeObjSubValidState(1);
+                RealBimOcx.SetSceHugeObjVisible(true);
+            }
+            test = function () {
+                RealBimOcx.BatchAddSubClrInfoBegin();
+                RealBimOcx.AddSubClrPercent(testID,0.1,0x6400ff00);
+                RealBimOcx.BatchAddSubClrInfoEnd();
+                testID = testID + 1;
+            }
+        </script>
+    </div>
+</div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/modelmanagement/progress/index.js"></script>
 </body>
 </html>
