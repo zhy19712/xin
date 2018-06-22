@@ -9,6 +9,7 @@
 namespace app\progress\controller;
 
 
+use app\contract\model\SectionModel;
 use think\Controller;
 use think\Db;
 
@@ -55,33 +56,43 @@ class Common extends Controller
     // 和 模型管理 --  实时进度关联 -- 列表页面 [多了一列是否关联模型]
     public function progress_actual($draw,$table,$search,$start,$length,$limitFlag,$order,$columns,$columnString)
     {
-        // 前台 不传递值默认查询全部的
+        // 前台 不传递值默认查询  当前用户权限下的全部标段对应的列表数据
         // 传递值就按照所传递的条件查询 --- 所选择的 标段编号 section_id 日期 actual_date
+        // 如果只传递了 标段编号 就 查询这个标段下所有的数据
+        // 传递了2个就按照它们的组合条件查询
         $param = input('param.');
         $section_id = isset($param['section_id']) ? $param['section_id'] : 0; // 标段编号
         $actual_date = isset($param['actual_date']) ? $param['actual_date'] : 0; // 日期
-
+        // 根据当前登陆人的权限获取对应的 -- 标段列表选项
+        $section = new SectionModel();
+        $data = $section->sectionList();
+        $whereVal = [];
+        if($section_id == 0 && $actual_date == 0){
+            if(sizeof($data)){
+                $section_id = array_keys($data);
+            }else{
+                $section_id = [0];
+            }
+            if($actual_date == 0){ // 全部
+                $whereVal = ['section_id'=>['in',$section_id]];
+            }else{ // 全部 和 日期
+                $whereVal = ['section_id'=>['in',$section_id],'actual_date'=>$actual_date];
+            }
+        }else if($section_id && $actual_date == 0) { // 标段
+            if($actual_date == 0) { // 标段
+                $whereVal = ['section_id'=>['in',[$section_id]]];
+            }else{  // 标段 和 日期
+                $whereVal = ['section_id'=>['in',[$section_id]],'actual_date'=>$actual_date];
+            }
+        }
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
-        $recordsTotal = Db::name($table)->count();
-        if($section_id && $actual_date){
-            $recordsTotal = Db::name($table)->where(['section_id'=>$section_id,'actual_date'=>$actual_date])->count();
-        }
+        $recordsTotal = Db::name($table)->where($whereVal)->count();
         $recordsFilteredResult = array();
         if(strlen($search)>0){
             //有搜索条件的情况
-            if($limitFlag){
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('p')
-                    ->join('section s', 's.id = p.section_id', 'left')
-                    ->join('admin a', 'a.id = p.user_id', 'left')
-                    ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.id,p.relevance')
-                    ->where(['section_id'=>$section_id,'actual_date'=>$actual_date])
-                    ->order($order)->limit(intval($start),intval($length))->select();
-                $recordsFiltered = sizeof($recordsFilteredResult);
-            }
         }else{
             //没有搜索条件的情况
             if($limitFlag){
@@ -89,8 +100,9 @@ class Common extends Controller
                     ->join('section s', 's.id = p.section_id', 'left')
                     ->join('admin a', 'a.id = p.user_id', 'left')
                     ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.id,p.relevance')
+                    ->where($whereVal)
                     ->order($order)->limit(intval($start),intval($length))->select();
-                $recordsFiltered = $recordsTotal;
+               $recordsFiltered = $recordsTotal;
             }
         }
         $temp = array();
@@ -168,7 +180,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
@@ -380,7 +394,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
@@ -430,7 +446,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
