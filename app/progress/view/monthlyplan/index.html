@@ -502,6 +502,11 @@
                 $(".mini-tabs-header td:nth-of-type(9)").remove();
                 $("#fs_actualdate").remove();
             }
+
+            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys fieldset").after(
+                '<div style="margin-top:8px;">' +
+                '     <span class="mini-checkbox" id="twin_milestone" style="border-width: 0px; padding: 0px;"><input id="mini-86$check" name="mini-86" type="checkbox" class="mini-checkbox-check"><label for="mini-86$check" onclick="return false;">标记为里程碑</label></span>' +
+                '</div>')
         } else {
             alert("请选中任务");
         }
