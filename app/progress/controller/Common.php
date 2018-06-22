@@ -77,7 +77,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)->alias('p')
                     ->join('section s', 's.id = p.section_id', 'left')
                     ->join('admin a', 'a.id = p.user_id', 'left')
-                    ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.relevance')
+                    ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.id,p.relevance')
                     ->where(['section_id'=>$section_id,'actual_date'=>$actual_date])
                     ->order($order)->limit(intval($start),intval($length))->select();
                 $recordsFiltered = sizeof($recordsFilteredResult);
@@ -88,7 +88,7 @@ class Common extends Controller
                 $recordsFilteredResult =  Db::name($table)->alias('p')
                     ->join('section s', 's.id = p.section_id', 'left')
                     ->join('admin a', 'a.id = p.user_id', 'left')
-                    ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.relevance')
+                    ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.id,p.relevance')
                     ->order($order)->limit(intval($start),intval($length))->select();
                 $recordsFiltered = $recordsTotal;
             }
