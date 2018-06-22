@@ -206,7 +206,7 @@ class Dashboard extends Permissions
         if ($this->request->isAjax()) {
             $uint_id = input("post.uint_id");
 
-            $type = input("post.type");//1为收发文，2为单元管控
+            $type = input("post.type");//1为收发文，2为单元管控,3为退回
 
             //获取当前的登录人的id
             $admin_id = Session::has('admin') ? Session::get('admin') : 0;
@@ -215,6 +215,17 @@ class Dashboard extends Permissions
 
             $message_info = $message->getOne(["uint_id" => $uint_id, "current_approver_id" => $admin_id, "type" => $type]);
 
+            if($type == 3)
+            {
+                if ($message_info["status"] == 1) {
+                    $data = [
+                        "id" => $message_info["id"],
+                        "status" => 1
+                    ];
+
+                    $flag = $message->editTb($data);
+                }
+            }
             if ($message_info["status"] == 1) {
                 $data = [
                     "id" => $message_info["id"],

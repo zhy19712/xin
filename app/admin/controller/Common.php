@@ -471,7 +471,7 @@ class Common extends Controller
                 array_push($temp, $value[$columns[$i]['name']]);
             }
 
-            if($temp["4"] == 2)
+            if($temp["4"] == 2 || $temp["4"] == 3)
             {
                 $form_info = $model->getOne($temp["6"]);
 
