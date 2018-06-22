@@ -180,7 +180,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
@@ -392,7 +394,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
@@ -442,7 +446,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
