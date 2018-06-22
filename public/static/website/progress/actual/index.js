@@ -3,7 +3,7 @@ layui.use(['laydate', 'form'], function () {
     form = layui.form;
 });
 
-//填报列表
+//构建填报列表
 var admin_table = $('#admin_table').DataTable({
     pagingType: "full_numbers",
     processing: true,
@@ -74,32 +74,125 @@ function constructingQueryConditions() {
         '<div class="layui-form-item">' +
         '<label class="layui-form-label">标段</label>' +
         '<div class="layui-input-inline">' +
-        '<select>' +
-        '<option value="">标段1</option>' +
-        '<option value="">标段2</option>' +
-        '</select>' +
+        '<select id="segment" lay-filter="searchSegment"></select>' +
         '</div>' +
-        '<label class="layui-form-label">起止日期</label>' +
+        '<label class="layui-form-label">选择日期</label>' +
         '<div class="layui-input-inline">' +
         '<input type="text" class="layui-input date" id="startDate">' +
-        '</div>' +
-        '<div class="layui-form-mid layui-word-aux no-position">--</div>' +
-        '<div class="layui-input-inline">' +
-        '<input type="text" class="layui-input date" id="endDate">' +
         '</div>' +
         '</div>' +
         '</form>';
     $('#selectWrap').append(selectEm);
-
-    laydate.render({
-        //构建开始时间
-        elem: '#startDate'
-    });
-    laydate.render({
-        //构建结束时间
-        elem: '#endDate'
-    });
+    fillSearchSegment();
     form.render();
+}
+
+//填充筛选标段
+function fillSearchSegment() {
+    $.ajax({
+        url: "./index",
+        type: "post",
+        dataType: "json",
+        success: function (res) {
+            $('#segment').empty();
+            if(res.code==1){
+                for (i in res.sectionArr) {
+                    if (res.sectionArr.hasOwnProperty(i)) {
+                        $('#segment').append('<option value=' + i + '>' + res.sectionArr[i] + '</option>');
+                    }
+                }
+                dateScope();
+                selectDate();
+                form.render();
+            }
+        }
+    });
+}
+
+//根据选择的标段获取对应的日期区间范围
+function dateScope() {
+    form.on('select(searchSegment)', function(data){
+        $('#startDate').attr('segmentId',data.value);
+        $.ajax({
+            url: "./dateScope",
+            type: "post",
+            data: {
+                section_id:data.value
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#startDate').val('');
+            }
+        });
+    });
+}
+
+//选择日期
+function selectDate() {
+    laydate.render({
+        //构建起止时间
+        elem: '#startDate',
+        done: function(value, date, endDate){
+            var section_id = $('#startDate').attr('segmentId');
+            admin_table.ajax.url('/progress/common/datatablesPre?tableName=progress_actual&section_id='+section_id+'&actual_date='+value).load();
+        }
+    });
+}
+
+//触发新增弹层
+$('#add').click(function () {
+    addLayer(true);
+});
+
+//新增弹层
+function addLayer(openType) {
+    addIndex = layer.open({
+        title: '新增实时进度',
+        id: '1',
+        type: '1',
+        area: ['600px', '460px'],
+        content: $('#addLayout'),
+        success: function () {
+            if (openType) {
+                laydate.render({
+                    elem: '#date',
+                    value: new Date()
+                });
+                save();
+                upload();
+                getSegmentAndUserInfo();
+            }
+            //关闭弹层
+            $('#close').click(function () {
+                layer.close(addIndex);
+            });
+        }
+    });
+}
+
+//获取标段及用户信息
+function getSegmentAndUserInfo() {
+    $.ajax({
+        url: "./addInitialise",
+        type: "post",
+        dataType: "json",
+        success: function (res) {
+            $('#section_id').empty();
+            var section = res.data.section;
+            var user_id = res.data.user.user_id;
+            var user_name = res.data.user.user_name;
+            if (res.code == 1) {
+                for (i in section) {
+                    if (section.hasOwnProperty(i)) {
+                        $('#section_id').append('<option value=' + i + '>' + section[i] + '</option>');
+                    }
+                }
+                $('#user_id').val(user_id);
+                $('#user_name').val(user_name);
+                form.render();
+            }
+        }
+    });
 }
 
 //上传
@@ -115,9 +208,9 @@ function upload() {
             innerHTML: "上传"
         },
         accept: {
-            title: '',
-            extensions: '',
-            mimeTypes: ''
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/jpg,image/jpeg,image/png'
         },
         resize: false,
         duplicate: true
@@ -147,63 +240,9 @@ function upload() {
     uploader.on('uploadSuccess', function (file, res) {
         //上传成功
         $('#attachment_id').val(res.id);
+        $('#attachment_name').val(file.name);
         $('#path').val(res.src);
         $('#uploadListDemo').css('opacity', 0);
-    });
-}
-
-//新增弹层
-function addLayer(openType) {
-    addIndex = layer.open({
-        title: '新增实时进度',
-        id: '1',
-        type: '1',
-        area: ['600px', '460px'],
-        content: $('#addLayout'),
-        success: function () {
-            if (openType) {
-                laydate.render({
-                    elem: '#date',
-                    value: new Date()
-                });
-                save();
-                upload();
-                buildSegmentInfo();
-                $('#addLayout').find('input,textarea').attr('disabled', false);
-                $('#upload,.save').show();
-            } else {
-                $('#addLayout').find('input,textarea').attr('disabled', true);
-                $('#upload,.save').hide();
-            }
-            //关闭弹层
-            $('#close').click(function () {
-                layer.close(addIndex);
-            });
-        }
-    });
-}
-
-//构建标段信息
-function buildSegmentInfo() {
-    $.ajax({
-        url: "./addInitialise",
-        type: "post",
-        dataType: "json",
-        success: function (res) {
-            var section = res.data.section;
-            var user_id = res.data.user.user_id;
-            var user_name = res.data.user.user_name;
-            if (res.code == 1) {
-                for (i in section) {
-                    if (section.hasOwnProperty(i)) {
-                        $('#section_id').append('<option value=' + i + '>' + section[i] + '</option>');
-                    }
-                }
-                $('#user_id').val(user_id);
-                $('#user_name').val(user_name);
-                form.render();
-            }
-        }
     });
 }
 
@@ -227,14 +266,12 @@ function save() {
     });
 }
 
-//触发弹层
-$('#add').click(function () {
-    addLayer(true);
-});
-
-//查看信息
+//查看
 function view() {
-    addLayer(false);
+
 }
 
+//删除
+function del() {
 
+}
