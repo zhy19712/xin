@@ -188,17 +188,37 @@
 
 <script src="__WEBSITE__/progress/monthlyplan/index.js" type="text/javascript"></script>
 <script type="text/javascript">
-
+    var bidsNum,
+        yearNum,
+        monthNum;
     /*标段*/
     layui.use(['form', 'layedit', 'laydate', 'element', 'layer'], function(){
         var form = layui.form
             ,layer = layui.layer
             ,laydate = layui.laydate;
+        bids();
         //8)显示关键路径
         form.on('switch()', function(data){
-            // console.log(data.elem.checked); //开关是否开启，true或者false
             project.setShowCriticalPath(data.elem.checked);
         });
+        //点击切换标段
+        form.on('select(bids)', function(data){
+            bidsNum = data.value;
+            yearFun(bidsNum);
+        });
+        //点击切换年度
+        form.on('select(year)', function(data){
+            yearNum = data.value;
+            monthFun(bidsNum,yearNum);
+        });
+        //点击切换月度
+        form.on('select(month)', function(data){
+            monthNum = data.value;
+            load(bidsNum,yearNum,monthNum);
+        });
+    });
+    /*标段*/
+    function bids() {
         $.ajax({
             url: "/progress/monthlyplan/index",
             type: "get",
@@ -209,12 +229,12 @@
                         $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
                     }
                     layui.form.render();
-                    var idBid = $("#seleBids").val();
-                    yearFun(idBid);
+                    console.log($("#seleBids").val());
+                    yearFun($("#seleBids").val());
                 }
             }
         });
-    });
+    }
     /*年度*/
     function yearFun(id) {
         $.ajax({
@@ -226,8 +246,15 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
-                    for(var i=0;i<orgs.length;i++){
-                        $("#seleYear").append($("<option/>").text(orgs[i]));
+                    console.log(orgs);
+                    if(orgs.length == 0){
+                        $("#seleYear").val("");
+                        $("#seleYear").append($("<option/>").text(""));
+                        layui.form.render('select');
+                    }else if(orgs.length > 0){
+                        for(var i=0;i<orgs.length;i++){
+                            $("#seleYear").append($("<option/>").text(orgs[i]));
+                        }
                     }
                     layui.form.render();
                     monthFun($("#seleBids").val(),$("#testYear").val());
@@ -248,11 +275,17 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
-                    for(var i=0;i<orgs.length;i++){
-                        $("#seleMonthly").append($("<option/>").text(orgs[i]));
+                    if(orgs.length == 0){
+                        $("#seleMonthly").val("");
+                        $("#seleMonthly").append($("<option/>").text(""));
+                        layui.form.render('select');
+                    }else if(orgs.length > 0){
+                        for(var i=0;i<orgs.length;i++){
+                            $("#seleMonthly").append($("<option/>").text(orgs[i]));
+                        }
                     }
                     layui.form.render();
-                    /*甘特图的获取数据*/
+                    //甘特图的获取数据/
                     load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
                 }if(res.code != 1){
                     layer.msg(res.msg)
