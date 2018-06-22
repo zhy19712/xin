@@ -229,7 +229,7 @@
                         $("#seleBids").append($("<option/>").text(orgs[indexId]).attr({"value": indexId}));
                     }
                     layui.form.render();
-                    console.log($("#seleBids").val());
+                    console.log($("#seleBids").val()+" 标段id ");
                     yearFun($("#seleBids").val());
                 }
             }
@@ -246,10 +246,9 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
-                    console.log(orgs.length);
+                    $("#seleYear").empty();
                     if(orgs.length == 0){
-                        $("#seleYear").val("");
-                        $("#seleYear").empty();
+                        $("#seleYear").val(0);
                         layui.form.render('select');
                     }else if(orgs.length > 0){
                         for(var i=0;i<orgs.length;i++){
@@ -257,7 +256,12 @@
                         }
                     }
                     layui.form.render('select');
-                    monthFun($("#seleBids").val(),$("#testYear").val());
+                    console.log($("#seleYear").val());
+                    if($("#seleYear").val() == null){
+                        monthFun($("#seleBids").val(),0);
+                    }else if($("#seleYear").val() != null){
+                        monthFun($("#seleBids").val(),$("#seleYear").val());
+                    }
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -275,19 +279,28 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
+                    $("#seleMonthly").empty();
                     if(orgs.length == 0){
-                        $("#seleMonthly").val("");
-                        $("#seleYear").empty();
+                        $("#seleMonthly").val(0);
                         layui.form.render('select');
                     }else if(orgs.length > 0){
-                        $("#seleYear").empty();
                         for(var i=0;i<orgs.length;i++){
                             $("#seleMonthly").append($("<option/>").text(orgs[i]));
                         }
                     }
                     layui.form.render();
+                    console.log($("#seleYear").val());
+                    console.log($("#seleMonthly").val());
                     //甘特图的获取数据/
-                    load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
+                    if($("#seleBids").val() != null && $("#seleYear").val() != null && $("#seleMonthly").val() != null){
+                        load($("#seleBids").val(),$("#seleYear").val(),$("#seleMonthly").val());
+                    }
+                    if($("#seleYear").val() == null && $("#seleMonthly").val() == null){
+                        load($("#seleBids").val(),0,0);
+                    }
+                    if($("#seleMonthly").val() == null){
+                        load($("#seleBids").val(),$("#seleYear").val(),0);
+                    }
                 }if(res.code != 1){
                     layer.msg(res.msg)
                 }
@@ -392,7 +405,7 @@
                 // var dataArr = mini.arrayToTree(data, "children", "UID", "ParentTaskUID");
                 // project.loadTasks(res);
                 // project.unmask();
-
+                console.log(text);
                 var dataProject = mini.decode(text);
 
                 doSetProjectData(project, dataProject);
