@@ -326,6 +326,7 @@ function backedit() {
     console.log(arguments);
     $('input[name="id"]').val(arguments[1]);
     $('input[name="cpr_id"]').val(arguments[2]);
+    $('input[name="currentStep"]').val(arguments[3]);
     $.ajax({
         type:'get',
         url:'/admin/dashboard/getrefundData?formId='+arguments[1],
@@ -443,10 +444,12 @@ function backOperation() {
         title: '在线填报',
         shadeClose: true,
         area: ['980px', '90%'],
-        content: '/quality/Qualityform/edit?cpr_id=' + cpr_id + '&id=' + id + '&currentStep=0&isView=True',
+        content: '/quality/Qualityform/edit?cpr_id='+ cpr_id + '&id='+ id +'&currentStep=' + currentStep,
+        // content: '/quality/Qualityform/edit?cpr_id=' + cpr_id + '&id=' + id + '&currentStep=0&isView=True',
         success: function (layero,index) {
             var body = layer.getChildFrame('body', index);
             body.contents().find(".date input").val('');
+
         }
     });
     layer.closeAll('page');
