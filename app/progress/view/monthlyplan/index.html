@@ -209,12 +209,23 @@
         //点击切换年度
         form.on('select(year)', function(data){
             yearNum = data.value;
-            monthFun(bidsNum,yearNum);
+            if($("#seleYear").val() == null){
+                monthFun($("#seleBids").val(),0);
+            }else if($("#seleYear").val() != null){
+                monthFun($("#seleBids").val(),yearNum);
+            }
+            // monthFun(bidsNum,yearNum);
         });
         //点击切换月度
         form.on('select(month)', function(data){
             monthNum = data.value;
-            load(bidsNum,yearNum,monthNum);
+            if($("#seleBids").val() != null && $("#seleYear").val() != null && $("#seleMonthly").val() != null){
+                load($("#seleBids").val(),$("#seleYear").val(),monthNum);
+            }
+            if($("#seleYear").val() != null && $("#seleMonthly").val() == null){
+                load($("#seleBids").val(),$("#seleYear").val(),0);
+            }
+            // load(bidsNum,yearNum,monthNum);
         });
     });
     /*标段*/
@@ -345,23 +356,6 @@
     columns.push(new PlusProject.StartColumn());
     columns.push(new PlusProject.FinishColumn());
     project.setColumns(columns);
-    // project.setColumns([
-    //     // new PlusProject.IDColumn(),             //任务序号。
-    //     new PlusProject.WBSColumn(),            //WBS编码。
-    //     new PlusProject.StatusColumn(),         //状态。
-    //     new PlusProject.NameColumn(),           //任务名称。
-    //     new PlusProject.QuantitiesColumn(),     //工程量。
-    //     // new PlusProject.PredecessorLinkColumn(),//前置任务。
-    //     // new PlusProject.PercentCompleteColumn(),//完成百分比。
-    //     new PlusProject.DurationColumn(),       //工期。
-    //     new PlusProject.StartColumn(),          //开始日期。
-    //     new PlusProject.FinishColumn(),         //完成日期。
-    //     // new PlusProject.WorkColumn(),           //工时。
-    //     // new PlusProject.DepartmentColumn(),     //部门。
-    //     // new PlusProject.PrincipalColumn(),      //负责人。
-    //     // new PlusProject.AssignmentsColumn()     //资源名称。
-    //
-    // ]);
 
     // project.setRowHeight(30);                   //设置行高
     // project.setShowLinkLines(true);             //设置是否显示箭头连线
@@ -403,12 +397,14 @@
                 // project.loadTasks(res);
                 // project.unmask();
                 // console.log(text);
-                if(text.code == -1){
-                    alert("数据为空！需要添加哟！  ")
-                    project.unmask();
-                }else{
+                if(text.Tasks.length == 0){
+                    alert("数据为空！需要添加哟!")
                     var dataProject = mini.decode(text);
-
+                    doSetProjectData(project, dataProject);
+                    project.unmask();
+                }else if(text.Tasks.length > 0){
+                    var dataProject = mini.decode(text);
+                        console.log(dataProject);
                     doSetProjectData(project, dataProject);
 
                     project.unmask();
