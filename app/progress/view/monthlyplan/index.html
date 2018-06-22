@@ -246,17 +246,17 @@
             success: function (res) {
                 if(res.code == 1){
                     var orgs = res.data;
-                    console.log(orgs);
+                    console.log(orgs.length);
                     if(orgs.length == 0){
                         $("#seleYear").val("");
-                        $("#seleYear").append($("<option/>").text(""));
+                        $("#seleYear").empty();
                         layui.form.render('select');
                     }else if(orgs.length > 0){
                         for(var i=0;i<orgs.length;i++){
                             $("#seleYear").append($("<option/>").text(orgs[i]));
                         }
                     }
-                    layui.form.render();
+                    layui.form.render('select');
                     monthFun($("#seleBids").val(),$("#testYear").val());
                 }if(res.code != 1){
                     layer.msg(res.msg)
@@ -277,9 +277,10 @@
                     var orgs = res.data;
                     if(orgs.length == 0){
                         $("#seleMonthly").val("");
-                        $("#seleMonthly").append($("<option/>").text(""));
+                        $("#seleYear").empty();
                         layui.form.render('select');
                     }else if(orgs.length > 0){
+                        $("#seleYear").empty();
                         for(var i=0;i<orgs.length;i++){
                             $("#seleMonthly").append($("<option/>").text(orgs[i]));
                         }
