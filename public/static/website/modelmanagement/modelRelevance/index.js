@@ -60,13 +60,6 @@ var admin_table = $('#admin_table').DataTable({
                 var rowId = row[5];
                 return '<i href="" title="关联模型" class="layui-btn layui-btn-xs" id="view" onclick="relation('+ rowId +')">关联模型</i>';
             }
-        },
-        {
-            sWidth: '10px',       //根据按钮个数设置适当的宽度，支持px单位【注：该属性需要和bAutoWidth: false搭配使用】
-            targets: [6],
-            render: function (data, type, row) {
-                return ' ';
-            }
         }
     ],
     fnCreatedRow: function (nRow, aData, iDataIndex) {
@@ -178,12 +171,12 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
     scrollY: "290px",   //表格容器高度
     scrollCollapse: true,
     ajax: {
-        "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_quality&relevance_type=1"
+        url: "/progress/common/datatablesPre.shtml?tableName=model_quality&relevance_type=1"
     },
     dom: 'lrtip',
     columns: [
         {
-            name: "id",
+            name: "id"
         },
         {
             name: "section"
@@ -239,6 +232,9 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
             }
         }
     ],
+    fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
+    },
     language: {
         "sProcessing":"数据加载中...",
         "lengthMenu": "_MENU_",
