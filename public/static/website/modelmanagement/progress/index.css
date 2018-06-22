@@ -110,13 +110,40 @@ i.fa:before, i.fa:hover:before {
 }
 
 .east {
-    width: 300px;
-}
-
-.north {
-    height: 50px;
+    padding: 0 10px;
+    width: 280px;
+    background-color: #e5e5e5;
 }
 
 .layui-table-view {
     margin: 0;
+}
+.table-title{
+    height: 50px;
+    line-height: 50px;
+}
+.table-title li{
+    margin-left: 29px;
+}
+.table-title li:first-child{
+    margin: 0;
+}
+.table-title li,.table-title span{
+    display: inline-block;
+    vertical-align: middle;
+}
+.table-title span{
+    font-size: 16px;
+    color: #333;
+}
+.table-title span+span{
+    width: 30px;
+    height: 14px;
+    border: 1px solid #333;
+}
+.layui-table th{
+    text-align: center;
+}
+.layui-table-cell{
+    text-align: center;
 }

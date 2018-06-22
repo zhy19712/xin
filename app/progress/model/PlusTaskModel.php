@@ -15,15 +15,15 @@ class PlusTaskModel extends Model
 {
     protected $name = 'progress_plus_task';
 
-    // ht $project_type 1月计划2年计划3总计划
-    public function tasksData($project_type,$uid)
+    // ht $plan_type 1月计划2年计划3总计划
+    public function tasksData($plan_type,$uid)
     {
-        $data = $this->where(['project_type'=>$project_type,'project_uid'=>$uid])->select();
+        $data = $this->where(['plan_type'=>$plan_type,'project_uid'=>$uid])->select();
         $new_data = [];
         foreach ($data as $k=>$v){
             // 父级任务
             if($v['parent_task_uid'] == -1){
-                $new_data[$k]['UID'] = $v['uid']; // 任务唯一标识符
+                $new_data[$k]['UID'] = $v['id']; // 任务唯一标识符
                 $new_data[$k]['ActualDuration'] = $v['actual_duration']; // 实际工期
                 $new_data[$k]['ActualFinish'] = $v['actual_finish']; // 实际完成日期
                 $new_data[$k]['ActualStart'] = $v['actual_start']; // 实际开始日期
@@ -56,7 +56,7 @@ class PlusTaskModel extends Model
                 $new_data[$k]['Work'] = $v['work']; // 工时
 
                 // 子任务
-                $children = $this->assemblyData($data,$v['uid']);
+                $children = $this->assemblyData($data,$v['id']);
                 if(sizeof($children)){
                     $new_data[$k]['children'] = $children;
                 }
@@ -76,7 +76,7 @@ class PlusTaskModel extends Model
         $new_data = [];
         foreach ($data as $k2=>$v2){
             if($v2['parent_task_uid'] == $uid){
-                $new_data[$k2]['UID'] = $v2['uid']; // 任务唯一标识符
+                $new_data[$k2]['UID'] = $v2['id']; // 任务唯一标识符
                 $new_data[$k2]['ActualDuration'] = $v2['actual_duration']; // 实际工期
                 $new_data[$k2]['ActualFinish'] = $v2['actual_finish']; // 实际完成日期
                 $new_data[$k2]['ActualStart'] = $v2['actual_start']; // 实际开始日期
@@ -111,7 +111,7 @@ class PlusTaskModel extends Model
                 $new_data[$k2]['Work'] = $v2['work']; // 工时
 
                 // 子任务
-                $children = $this->assemblyData($data,$v2['uid']);
+                $children = $this->assemblyData($data,$v2['id']);
                 if(sizeof($children)){
                     $new_data[$k2]['children'] = $children;
                 }
@@ -123,6 +123,14 @@ class PlusTaskModel extends Model
             $new_da[] = $v;
         }
         return $new_da;
+    }
+
+    // 获取项目的开始时间和完成时间
+    public function startFinishDate($plan_type,$uid)
+    {
+        // $plan_type 1月计划2年计划3总计划
+        $data = $this->where(['plan_type'=>$plan_type,'project_uid'=>$uid])->field('min(start) as start_date,max(actual_finish) as finish_date')->find();
+        return $data;
     }
 
 }

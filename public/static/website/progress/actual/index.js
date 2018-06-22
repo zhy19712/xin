@@ -1,10 +1,10 @@
-layui.use(['laydate','form'], function(){
+layui.use(['laydate', 'form'], function () {
     laydate = layui.laydate;
     form = layui.form;
 });
 
 //填报列表
-$('#admin_table').DataTable({
+var admin_table = $('#admin_table').DataTable({
     pagingType: "full_numbers",
     processing: true,
     serverSide: true,
@@ -13,41 +13,29 @@ $('#admin_table').DataTable({
     scrollY: "520px",   //表格容器高度
     scrollCollapse: true,
     ajax: {
-        url: "/contract/common/datatablesPre?tableName=section"
+        url: "/progress/common/datatablesPre?tableName=progress_actual"
     },
     dom: 'l<"#add.layui-btn layui-btn-normal layui-btn-sm btn-right btn-space"><"#selectWrap.select-wrap">tip',
     columns: [
         {
-            name: "code"
+            name: "section_name"
         },
         {
-            name: "name"
+            name: "actual_date"
         },
         {
-            name: "money"
+            name: "user_name"
         },
         {
-            name: "builder"
-        },
-        {
-            name: "constructor"
-        },
-        {
-            name: "designer"
-        },
-        {
-            name: "supervisor"
-        },
-        {
-            name: "id"
+            name: "remark"
         }
     ],
     columnDefs: [
         {
-            sWidth:"10%",       //根据按钮个数设置适当的宽度，支持px单位【注：该属性需要和bAutoWidth: false搭配使用】
+            sWidth: "10%",       //根据按钮个数设置适当的宽度，支持px单位【注：该属性需要和bAutoWidth: false搭配使用】
             searchable: false,
             orderable: false,
-            targets: [7],
+            targets: [4],
             render: function (data, type, row) {
                 var html = '<i class="fa fa-eye" title="查看" id="view" onclick="view(this)"></i>';
                 html += '<i class="fa fa-trash" title="删除" onclick="del(this)"></i>';
@@ -55,10 +43,10 @@ $('#admin_table').DataTable({
             }
         }
     ],
-    fnCreatedRow:function (nRow, aData, iDataIndex){
-        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    fnCreatedRow: function (nRow, aData, iDataIndex) {
+        $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
     },
-    fnInitComplete:function (oSettings) {
+    fnInitComplete: function (oSettings) {
         constructingQueryConditions();
     },
     language: {
@@ -120,7 +108,7 @@ function upload() {
         //构建上传功能
         auto: true,
         swf: '/static/public/webupload/Uploader.swf',
-        server: "/admin/common/upload",
+        server: "/admin/common/upload?module=progress&use=actual",
         pick: {
             multiple: false,
             id: "#upload",
@@ -156,51 +144,82 @@ function upload() {
         });
         $('.layui-progress-bar').html(Math.round(percentage * 100) + '%');
     });
-    uploader.on('uploadSuccess', function (file, response) {
+    uploader.on('uploadSuccess', function (file, res) {
         //上传成功
-        $('#uploadListDemo').css('opacity',0);
+        $('#attachment_id').val(res.id);
+        $('#path').val(res.src);
+        $('#uploadListDemo').css('opacity', 0);
     });
 }
 
 //新增弹层
 function addLayer(openType) {
     addIndex = layer.open({
-        title:'新增实时进度',
-        id:'1',
-        type:'1',
-        area:['600px','460px'],
-        content:$('#addLayout'),
-        success:function () {
-            if(openType){
+        title: '新增实时进度',
+        id: '1',
+        type: '1',
+        area: ['600px', '460px'],
+        content: $('#addLayout'),
+        success: function () {
+            if (openType) {
                 laydate.render({
                     elem: '#date',
-                    value:new Date()
+                    value: new Date()
                 });
                 save();
                 upload();
-                $('#addLayout').find('input,textarea').attr('disabled',false);
+                buildSegmentInfo();
+                $('#addLayout').find('input,textarea').attr('disabled', false);
                 $('#upload,.save').show();
-            }else{
-                $('#addLayout').find('input,textarea').attr('disabled',true);
+            } else {
+                $('#addLayout').find('input,textarea').attr('disabled', true);
                 $('#upload,.save').hide();
             }
             //关闭弹层
-            $('#close').click(function(){
+            $('#close').click(function () {
                 layer.close(addIndex);
             });
         }
     });
 }
 
+//构建标段信息
+function buildSegmentInfo() {
+    $.ajax({
+        url: "./addInitialise",
+        type: "post",
+        dataType: "json",
+        success: function (res) {
+            var section = res.data.section;
+            var user_id = res.data.user.user_id;
+            var user_name = res.data.user.user_name;
+            if (res.code == 1) {
+                for (i in section) {
+                    if (section.hasOwnProperty(i)) {
+                        $('#section_id').append('<option value=' + i + '>' + section[i] + '</option>');
+                    }
+                }
+                $('#user_id').val(user_id);
+                $('#user_name').val(user_name);
+                form.render();
+            }
+        }
+    });
+}
+
 //保存新增
 function save() {
-    form.on('submit(save)', function(data){
+    form.on('submit(save)', function (data) {
         $.ajax({
-            url: "",
+            url: "./add",
             type: "post",
             data: data.field,
             dataType: "json",
             success: function (res) {
+                if(res.code==1){
+                    admin_table.ajax.url('/progress/common/datatablesPre?tableName=progress_actual').load();
+                }
+                layer.msg(res.msg);
                 layer.close(addIndex);
             }
         });
@@ -209,7 +228,7 @@ function save() {
 }
 
 //触发弹层
-$('#add').click(function(){
+$('#add').click(function () {
     addLayer(true);
 });
 

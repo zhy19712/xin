@@ -166,6 +166,7 @@
 
 </div>
 
+</body>
 <link href="__PUBLIC__/gantts/scripts/miniui/themes/blue/skin.css" rel="stylesheet" type="text/css" />
 <link href="__PUBLIC__/gantts/scripts/miniui/themes/icons.css" rel="stylesheet" type="text/css" />
 <link href="__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css" rel="stylesheet" type="text/css" />
@@ -179,7 +180,6 @@
 <script src="__PUBLIC__/gantts/scripts/plusproject/js/ProjectServices.js" type="text/javascript"></script>
 <script src="__PUBLIC__/gantts/scripts/ThirdLibs/swfobject/swfobject.js" type="text/javascript"></script>
 
-</body>
 <script src="__WEBSITE__/progress/monthlyplan/index.js" type="text/javascript"></script>
 <script type="text/javascript">
 
@@ -199,13 +199,10 @@
                     }
                     layui.form.render();
                     var idBid = $("#seleBids").val();
-                    console.log(idBid)
                     yearFun(idBid);
                 }
-                //TODO 问问后台res.code ！= 1是怎么提示的
             }
         });
-
     });
     /*年度*/
     function yearFun(id) {
@@ -213,7 +210,7 @@
             url: "/progress/monthlyplan/planYear",
             async : false,
             type: "post",
-            data: {section_id: id},
+            data: {section_id: id,plan_type:1},
             dataType: "json",
             success: function (res) {
                 if(res.code == 1){
@@ -235,7 +232,7 @@
             async : false,
             url: "/progress/monthlyplan/planMonthly",
             type: "post",
-            data: {section_id:set_id,plan_year:year_id},
+            data: {section_id:set_id,plan_year:year_id,plan_type:1},
             dataType: "json",
             success: function (res) {
                 if(res.code == 1){
@@ -244,6 +241,7 @@
                         $("#seleMonthly").append($("<option/>").text(orgs[i]));
                     }
                     layui.form.render();
+                    /*甘特图的获取数据*/
                     load($("#seleBids").val(),$("#testYear").val(),$("#seleMonthly").val());
                 }if(res.code != 1){
                     layer.msg(res.msg)
@@ -275,13 +273,10 @@
     // project.setRowHeight(30);                   //设置行高
     // project.setShowLinkLines(true);             //设置是否显示箭头连线
     // project.setShowCriticalPath(true);          //设置是否显示关键路径
-    //
     // project.setAllowDragDrop(false);             //设置是否允许任务行拖拽
-    // // project.setShowGridLines(true);             //设置是否显示关键路径
-    //
+    // project.setShowGridLines(true);             //设置是否显示关键路径
     // console.log(project.getCalendars());
-    // // var set = project.getCalendars()[0].WeekDays[0]
-    // // project.getCalendars()
+    // var set = project.getCalendars()[0].WeekDays[0]
     // var calendarsArr = [{BaseCalendarUID:"-1",
     // Exceptions:[],
     // IsBaseCalendar:1,
@@ -306,7 +301,7 @@
         ShowTaskWindow(project);
     });
 
-    // //获取数据
+    //获取数据
     // LoadJSONProject("__PUBLIC__/gantts/data/project.txt", project, function () {
     //     var projectStart = mini.get("projectStart");
     //
@@ -322,6 +317,7 @@
                 section_id:sectionId,
                 plan_year:planYear,
                 plan_monthly:monthly,
+                plan_type:1,
             },
             cache: false,
             success: function (text) {
@@ -367,7 +363,7 @@
             e.rowCls = "row_deleted";
         }
     });
-    /*调试*/
+    //1)调试
     function track() {
         TrackProject(project);
     }
@@ -414,7 +410,7 @@
             alert("请选中任务");
         }
     }
-    /*修改*/
+    //5)修改
     function updateTask() {
         var task = project.getSelected();
         if (task) {
@@ -424,6 +420,7 @@
                 $(".mini-tabs-header td:nth-of-type(7)").remove();
                 $(".mini-tabs-header td:nth-of-type(8)").remove();
                 $(".mini-tabs-header td:nth-of-type(9)").remove();
+                $("#fs_actualdate").remove();
             }
         } else {
             alert("请选中任务");

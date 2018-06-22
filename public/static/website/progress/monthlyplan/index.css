@@ -91,28 +91,72 @@
     vertical-align: middle;
 }
 
-/*修改的样式*/
-.mini-panel{
-    height: 450px !important;
+/*!*修改的样式*!*/
+.mini-window{
+    /*height: 470px !important;*/
+    width: 600px !important;
 }
-.mini-panel .mini-panel-viewport{
-    height: 421px !important;
-}
+/*.mini-panel .mini-panel-viewport{*/
+    /*height: 441px !important;*/
+/*}*/
 .mini-panel .mini-panel-viewport .mini-panel-body{
-    height: 374px !important;
+    /*height: 375px !important;*/
+    height: 280px !important;
 }
 .mini-panel .mini-panel-viewport .mini-panel-body .mini-tabs-table .mini-tabs-bodys{
-    height: 348px !important;
+    /*height: 348px !important;*/
+    height: 249px !important;
 }
 
-.mini-panel .mini-panel-header {
+.mini-window>.mini-panel-border>.mini-panel-viewport>div:nth-of-type(2){
+    padding: 5px 20px 10px 20px!important;
+}
+.mini-panel .mini-tabs-scrollCt .mini-tabs-header{
+    width: 545px!important;
+}
+.mini-panel .mini-tabs-table .mini-tabs-bodys{
+    width: 545px!important;
+}
+.mini-panel .mini-panel-title{
+    margin-left: 10pt;
+}
+.mini-panel .mini-panel-header,.mini-panel .mini-panel-toolbar,.mini-panel .mini-panel-toolbar .mini-toolbar,.mini-panel .mini-panel-footer {
     background: #FFFFFF !important;
 }
-.mini-panel .mini-panel-footer {
-    background: #FFFFFF !important;
+.mini-panel .mini-panel-toolbar .mini-toolbar{
+    padding: 8px 0;
 }
 .mini-panel .mini-panel-footer .mini-button {
     background: #009688 !important;
     border: none;
     color: #FFFFFF;
+}
+/*tab*/
+.mini-tab{
+    background: #FFFFFF !important;
+}
+.mini-panel-toolbar #twin_linkbar,.mini-panel-toolbar #twin_resbar{
+    float: right;
+    margin-right: 10px;
+}
+.mini-panel-toolbar #twin_linkbar .mini-button:nth-of-type(1),.mini-panel-toolbar #twin_resbar .mini-button:nth-of-type(1){
+    background: #1E9FFF !important;
+    color: white;
+    border: none !important;
+}
+.mini-panel-toolbar #twin_linkbar .mini-button:nth-of-type(2),.mini-panel-toolbar #twin_resbar .mini-button:nth-of-type(2){
+    background: #FFB800 !important;
+    color: white;
+    border: none !important;
+}
+.mini-grid-body{
+    height: 189px!important;
+}
+/*!*常规的内容*!*/
+
+.mini-panel .mini-tabs-bodys>div:first-child>table{
+    margin: 10px 5px 0 5px;
+}
+.mini-panel .mini-tabs-bodys>div:first-child>table>tbody>tr>td{
+    padding: 8px 0px 0 0;
 }
