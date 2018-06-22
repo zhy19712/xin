@@ -250,8 +250,7 @@
         });
     }
 
-    /*实例化甘特图
------------------------------------------------------------------------------*/
+/*实例化甘特图start-----------------------------------------------------------------------------*/
     var project = new PlusProject();
     project.setStyle("width:100%;height:727px");
     var columns = [];
@@ -365,6 +364,8 @@
         project.frozenColumn(0, 2);
     }
     frozenColumn();
+/*实例化甘特图end-----------------------------------------------------------------------------*/
+
 
     /* 业务代码
 -----------------------------------------------------------------------------*/
@@ -400,7 +401,7 @@
         project.printCSS = "__PUBLIC__/gantts/scripts/miniui/themes/default/miniui.css";
         project.print();
     }
-    //4)/*新增*/
+    //4)新增
     function addTask() {
         var newTask = project.newTask();
         newTask.Name = '<新增任务>';    //初始化任务属性
