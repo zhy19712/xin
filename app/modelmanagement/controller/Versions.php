@@ -310,7 +310,8 @@ class Versions extends Permissions
         $obj = new \COM('WScript.Shell');
         //执行doc解压命令
         $file_path = $res['src'];
-        $flag = $obj->run("winrar e -y -c- $file_path -ad $path",1,true);
+//        $flag = $obj->run("winrar e -y -c- $file_path -ad $path",1,true);
+        $flag = $obj->run("winrar x -y $file_path $path",1,true);
         if($flag == 1){ // 0 是成功 1是失败
             return json(['code'=>-1,'msg'=>'解压文件失败']);
         }
@@ -545,11 +546,17 @@ class Versions extends Permissions
         }
 
         $comp = new CompleteModel();
-        $flag = $comp->insertAll($data);
-        fclose($files);
-        if(!$flag){
-            return ['code' => '-1','msg' => '文件导入失败'];
+//        $flag = $comp->insertAll($data);
+
+        foreach ($data as $v){
+            $flag = $comp->insert($v);
+            if(!$flag){
+                return ['code' => '-1','msg' => '文件导入失败'];
+            }
         }
+
+        return ['code' => '1','msg' => '文件导入成功'];
+//        fclose($files);
     }
 
     /**
@@ -591,11 +598,17 @@ class Versions extends Permissions
         }
 
         $comp = new CompleteGroupModel();
-        $flag = $comp->insertAll($data);
-        fclose($files);
-        if(!$flag){
-            return ['code' => '-1','msg' => '文件导入失败'];
+//        $flag = $comp->insertAll($data);
+
+        foreach ($data as $v){
+            $flag = $comp->insert($v);
+            if(!$flag){
+                return ['code' => '-1','msg' => '文件导入失败'];
+            }
         }
+
+        return ['code' => '1','msg' => '文件导入成功'];
+//        fclose($files);
     }
 
 
@@ -606,8 +619,10 @@ class Versions extends Permissions
      * @return array
      * @author hutao
      */
-    public function qualityInsertTxtContent($filePath)
+    public function qualityInsertTxtContent($filePath='')
     {
+        // http://www.xin.com/modelmanagement/Versions/qualityInsertTxtContent.shtml
+//        $filePath = 'E:\WebServer\Resources\res_fengning_shigong\GolIdTable.txt';
         if(!file_exists($filePath)){
             return ['code' => '-1','msg' => '文件不存在'];
         }
@@ -640,7 +655,6 @@ class Versions extends Permissions
 
         // 'SGZD'施工支洞,'ZD'支洞,'DZTD'地质探洞,'TD'探洞,'SFDW'石方洞挖,'SFMW'石方明挖
         $style_arr = ['SGZD','ZD','DZTD','TD','SFDW','SFMW'];
-
         foreach ($new_contents as $k=>$val){
             $data[$k]['version_number'] = $version_number;
             $data[$k]['section'] = $val[0];
@@ -648,7 +662,7 @@ class Versions extends Permissions
             $data[$k]['parcel'] = trim(next($val));
             $data[$k]['cell'] = trim(next($val));
 
-            if(in_array($style_arr,$data[$k]['cell'])){
+            if(in_array($data[$k]['cell'],$style_arr)){
                 $data[$k]['display_style'] = '2'; // 显示样式:[1从无到有,2从有到无]
             }else{
                 $data[$k]['display_style'] = '1';
@@ -695,11 +709,17 @@ class Versions extends Permissions
         }
 
         $picture = new QualitymassModel();
-        $flag = $picture->insertAll($data);
-        fclose($files);
-        if(!$flag){
-            return ['code' => '-1','msg' => '文件导入失败'];
+//        $flag = $picture->insertAll($data);
+
+        foreach($data as $k=>$v){
+            $flag = $picture->insert($v);
+            if(!$flag){
+                return ['code' => '-1','msg' => '文件导入失败'];
+            }
         }
+
+        return ['code' => '1','msg' => '文件导入成功'];
+//        fclose($files);
     }
 
 }
