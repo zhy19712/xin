@@ -368,12 +368,9 @@
     var menu = new ProjectMenu();
     project.setContextMenu(menu);
     menu.on("opening", function (e) {
-        //修改样式
-        repairStyle();
+
         var project = this.owner;       //PlusProject对象
         var task = project.getSelected();
-        console.log(task)
-        console.log(e)
         if (!task) {
             e.cancel = true;
             return;
@@ -398,7 +395,10 @@
         }
     });
     menu.edit.on("click", function (e) {
+        // console.log(e);
         ShowTaskWindow(project);
+        //修改样式
+        repairStyle();
     });
 
     // 获取数据
