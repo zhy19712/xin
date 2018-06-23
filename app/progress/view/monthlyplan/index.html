@@ -533,12 +533,25 @@
     function removeTask() {
         var task = project.getSelected();
         if (task) {
-            if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
+            layer.confirm("你将删除该任务 ‘" + task.Name +"’ ，是否确认删除？", function () {
                 project.removeTask(task);
-            }
+                //TOdo 还需要对接接口
+                // $.ajax({
+                //     url: "",
+                //     type: "post",
+                //     data: {id: id},
+                //     success: function (res) {
+                //         if (res.code === 1) {
+                //             project.removeTask(task);
+                //             layer.msg(res.msg, {time: 1500, shade: 0.1});
+                //         }else{
+                //             layer.msg(res.msg)
+                //         }
+                //     }
+                // });
+            });
         } else {
             layer.confirm("请选中任务");
-            // alert("请选中任务");
         }
     }
     //5)修改
