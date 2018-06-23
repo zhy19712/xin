@@ -20,4 +20,14 @@ class ModelRelevance extends Permissions
         return $this->fetch('modelRelevance/index');
     }
 
+    /**
+     * 关联模型
+     * @return mixed
+     * @author hutao
+     */
+    public function reportModelRelation()
+    {
+        return $this->fetch('modelRelevance/reportModelRelation');
+    }
+
 }
