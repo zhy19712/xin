@@ -432,7 +432,7 @@
                     var dataProject = mini.decode(text);
                     doSetProjectData(project, dataProject);
                     project.unmask();
-                    alert("数据为空！需要添加哟!")
+                    layer.confirm("数据为空！需要添加哟!")
                 }else if(text.Tasks.length > 0){
                     var dataProject = mini.decode(text);
                         // console.log(dataProject);
@@ -494,17 +494,6 @@
         // var task = e.task;
     });
 
-    project.on("drawcell", function (e) {
-        var task = e.record, column = e.column, field = e.field;
-        //新增
-        if (task._state == "added") {
-            e.rowCls = "row_added";
-        }
-        //删除
-        if (task.Deleted == true) {
-            e.rowCls = "row_deleted";
-        }
-    });
     //1)调试
     function track() {
         TrackProject(project);
@@ -536,7 +525,7 @@
         //     type: "POST",
         //     data: params,
         //     success: function (text) {
-        //         alert("保存成功");
+        //         layer.confirm("保存成功");
         //     }
         // });
     }
@@ -548,8 +537,8 @@
                 project.removeTask(task);
             }
         } else {
-            // layer.confirm("请选中任务");
-            alert("请选中任务");
+            layer.confirm("请选中任务");
+            // alert("请选中任务");
         }
     }
     //5)修改
@@ -560,7 +549,7 @@
             //修改样式
             repairStyle();
         } else {
-            alert("请选中任务");
+            layer.confirm("请选中任务");
         }
     }
     //6)升级
@@ -569,7 +558,7 @@
         if (task) {
             project.upgradeTask(task);
         } else {
-            alert("请先选中任务");
+            layer.confirm("请先选中任务");
         }
     }
     //7)降级
@@ -578,7 +567,7 @@
         if (task) {
             project.downgradeTask(task);
         } else {
-            alert("请先选中任务");
+            layer.confirm("请先选中任务");
         }
     }
     //8)显示关键路径 在上面
@@ -604,7 +593,7 @@
     // //11)更新
     // function updateTask() {
     //     var selectedTask = project.getSelected();
-    //     alert("编辑选中任务:" + selectedTask.Name);
+    //     layer.confirm("编辑选中任务:" + selectedTask.Name);
     // }
     // //112)更改顶部时间刻度
     // function changeTopTimeScale(value) {
@@ -614,6 +603,18 @@
     // function changeBottomTimeScale(value) {
     //     project.setBottomTimeScale(value)
     // }
+    //修改样式
+    // project.on("drawcell", function (e) {
+    //     var task = e.record, column = e.column, field = e.field;
+    //     //新增
+    //     if (task._state == "added") {
+    //         e.rowCls = "row_added";
+    //     }
+    //     //删除
+    //     if (task.Deleted == true) {
+    //         e.rowCls = "row_deleted";
+    //     }
+    // });
 
 
 
