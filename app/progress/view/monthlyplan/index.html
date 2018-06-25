@@ -45,6 +45,7 @@
                 </div>
             </form>
             <div class="layui-inline" style="float: right;margin-top: -37px">
+                <button class="layui-btn layui-btn-normal" onclick="updateRemind()" style="font-size: 16px;">计划更新提醒</button>
                 <button class="layui-btn layui-btn-normal" onclick="remindConfig()" style="font-size: 16px;">提醒配置</button>
                 <button class="layui-btn layui-btn-normal" id="addPlanTask" style="font-size: 16px;">新增月计划</button>
                 <button class="layui-btn layui-btn-warm" onclick="monthlyPlanList()" style="font-size: 16px;">月计划列表</button>
@@ -203,6 +204,51 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: right;">
+                <button class="layui-btn" lay-submit lay-filter="save" id="saveMonthPlan" style="margin-right: 30px">保存</button>
+                <button type="button" class="layui-btn layui-btn-primary close">关闭</button>
+            </div>
+        </div>
+    </form>
+
+    <!--月度计划填报更新提醒-->
+    <form action="" class="layui-form layui-layer-wrap" id="updateRemindLayer" style="display: none;">
+        <div class="layui-form-item" style="margin-left: 79px;">
+            <div class="layui-inline">
+                <div class="layui-input-inline" style="width: 610px;text-align: center; ">
+                    <h2>XXX标段-XX月进度计划更新提醒</h2>
+                    <h2>2018年5月23日</h2>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" style="width: 85px;">负责人:</label>
+                <div class="layui-input-inline" style="width: 610px;">
+                    <div id="remindName" style="line-height: 40px;">XXX</div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" style="width: 85px;">提醒内容:</label>
+                <div class="layui-input-inline" style="width: 610px;">
+                    <span id="remindBid">XXX</span>标段已进入<span id="remindmonth">XX</span>月进度进度计划更新周期，请负责人及时处理并更新XX月进度计划，如果已经更新请忽略本条消息。
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" style="width: 85px;">填报操作:</label>
+                <div class="layui-input-inline" style="width: 610px;line-height: 40px;">
+                    进入<a href="">月计划管理</a>界面，点击新增月计划按钮更新XX月本标段的月度计划。
+                </div>
+            </div>
+        </div>
+
 
 
         <div class="layui-form-item">
