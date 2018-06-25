@@ -146,11 +146,11 @@ function selectDate() {
 
 //触发新增弹层
 $('#add').click(function () {
-    addLayer(true);
+    addLayer();
 });
 
 //新增弹层
-function addLayer(openType) {
+function addLayer() {
     addIndex = layer.open({
         title: '新增实时进度',
         id: '1',
@@ -158,19 +158,22 @@ function addLayer(openType) {
         area: ['600px', '460px'],
         content: $('#addLayout'),
         success: function () {
-            if (openType) {
-                laydate.render({
-                    elem: '#date',
-                    value: new Date()
-                });
-                save();
-                upload();
-                getSegmentAndUserInfo();
-            }
+            laydate.render({
+                elem: '#date',
+                value: new Date()
+            });
+            save();
+            upload();
+            getSegmentAndUserInfo();
             //关闭弹层
             $('#close').click(function () {
                 layer.close(addIndex);
             });
+            uploader.reset();
+            $('#remark').val('');
+            $('#attachment_name').val('');
+            $('#attachment_id').val('');
+            $('#path').val('');
         }
     });
 }

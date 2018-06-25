@@ -1,0 +1,41 @@
+.layui-form {
+    padding: 14px 0;
+}
+
+.layui-form-item {
+    margin: 0;
+}
+
+.layui-form-label {
+    padding: 6px 0 6px 10px;
+    width: auto;
+    line-height: 1;
+    font-size: 14px;
+}
+
+.layui-input-block {
+    margin: 0;
+    min-height: auto;
+}
+
+.layui-form-mid.layui-word-aux.no-position {
+    padding: 6px 0 !important;
+    line-height: 1;
+    font-size: 14px;
+    color: #333 !important;
+}
+
+.layui-form-mid.layui-word-aux.no-position img {
+    margin-left: 10px;
+    width: 200px;
+    height: 150px;
+    border-radius: 4px;
+}
+.node-setting{
+    position: absolute;
+    top: 30px;
+    border: 0;
+}
+.dataTables_scrollHeadInner table.dataTable.no-footer{
+    margin-top: 0;
+}

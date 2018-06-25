@@ -155,7 +155,6 @@ ztree(0, '');
 
 //点击节点
 function zTreeOnClick(event, treeId, treeNode) {
-    console.log(treeNode);
     nodeId = treeNode.add_id;
     node_type = treeNode.node_type;
     selectedTreeNode = treeNode;
@@ -285,7 +284,6 @@ layui.use('element', function () {
                     var tbody = [];
                     var admin_id = res.admin_id;    //当前登录用户ID
                     controlpoint_id = res.relation_form.id;
-                    console.log(controlpoint_id);
                     tbody.push('<tr><th class="table-title" colspan="4">在线填报</th></tr>');
                     tbody.push('<tr>');
                     tbody.push('<th><span class="filename">填报人</span></th>');
@@ -393,7 +391,6 @@ layui.use('element', function () {
                     for (var j = 0; j < res.upload_form_sao.length; j++) {
                         var data = res.upload_form_sao[j];
                         var onLineTableId = data.id;
-                        console.log(data);
                         tbody.push('<tr>');
                         tbody.push('<td><span class="filename">');
                         tbody.push(data.data_name);
@@ -424,7 +421,6 @@ layui.use('element', function () {
                     for (var j = 0; j < res.upload_form_fu.length; j++) {
                         var data = res.upload_form_fu[j];
                         var onLineTableId = data.id;
-                        console.log(data);
                         tbody.push('<tr>');
                         tbody.push('<td><span class="filename">');
                         tbody.push(data.data_name);
@@ -490,7 +486,6 @@ function showPdf(id, url) {
         type: "post",
         data: {id: id},
         success: function (res) {
-            console.log(res);
             if (res.code === 1) {
                 var path = res.path;
                 var houzhui = res.path.split(".");
@@ -667,7 +662,6 @@ function saveAttr(that) {
     var attrId = $(that).attr('attrId');
     var attrKey = $(that).parents('.attrGroup').find('input[name="attrKey"]').val();
     var attrVal = $(that).parents('.attrGroup').find('input[name="attrVal"]').val();
-    console.log(attrVal);
     $.ajax({
         url: "/modelmanagement/Qualitymass/addAttr",
         type: "post",
@@ -716,6 +710,13 @@ modelInfo = function (uObjSubID,number_type) {
         },
         dataType: "json",
         success: function (res) {
+            for(i in res.unit_info){
+                if(res.unit_info.hasOwnProperty(i)){
+                    if(res.unit_info[i]==null){
+                        res.unit_info[i] = '';
+                    }
+                }
+            }
             if(res.unit_info!=null){
                 $('#unitTitle').text(res.unit_info.site);
                 $('#site').text(res.unit_info.site);
