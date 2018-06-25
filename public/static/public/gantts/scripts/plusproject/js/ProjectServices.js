@@ -4,7 +4,8 @@
 var ServicesPath = mini_JSPath + "../plusproject/services/";    //Ajax交互路径（根据实际项目部署路径，需要修改）
 
 var LoadProjectUrl = ServicesPath + 'load.aspx';
-var SaveProjectUrl = ServicesPath + 'save.aspx';
+// var SaveProjectUrl = ServicesPath + 'save.aspx';
+var SaveProjectUrl = '/progress/monthlyplan/monthlyInitialise';
 
 
 function doSetProjectData(project, dataProject) {
