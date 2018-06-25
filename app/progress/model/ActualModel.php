@@ -90,4 +90,13 @@ class ActualModel extends Model
             ->where(['a.section_id'=>$section_id,'a.actual_date'=>['between',[$date_start,$date_end]]])->field('a.actual_date,u.name')->select();
         return $data;
     }
+
+    // 填报记录所属标段
+    public function sectionCode($id)
+    {
+        $code = Db::name('progress_actual')->alias('a')
+            ->join('section s','s.id = a.section_id','left')
+            ->where(['a.id'=>$id])->value('code');
+        return $code;
+    }
 }

@@ -357,7 +357,7 @@ class Monthlyplan extends Permissions
         return json($data);
     }
 
-    // 新增
+    // 新增或修改
     public function tasksAdd()
     {
         // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly 计划类型 plan_type 1月计划2年计划3总计划
