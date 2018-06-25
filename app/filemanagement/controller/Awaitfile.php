@@ -71,7 +71,6 @@ class Awaitfile extends Permissions
             $model = new ProjectmanagementModel();
             $branch_model = new FilebranchModel();
             $id = input("post.id");
-            $id = 1;
             //查询当前的所选的项目名称下的所有目录
             $branch_info = $model->getOne($id);
             $branch_id_list = $branch_info["branch_id"];
@@ -116,7 +115,7 @@ class Awaitfile extends Permissions
      */
     public function getDocumenttypeTree()
     {
-        if(request()->isAjax()) {
+        if(request()->isAjax()){
             //实例化模型类
             $model = new DocumentTypeModel();
             $data = $model->getall();
@@ -148,7 +147,7 @@ class Awaitfile extends Permissions
      */
     public function getDivisionUnitTree()
     {
-        if(request()->isAjax()) {
+        if(request()->isAjax()){
             $id = input("post.id");
             return json(DivisionUnitModel::all(['division_id' => $id]));
         }
@@ -161,7 +160,7 @@ class Awaitfile extends Permissions
      */
     public function getProcedures()
     {
-        if(request()->isAjax()) {
+        if(request()->isAjax()){
             $id = input("post.en_type");//工程类型
             $data = MaterialTrackingDivision::all(['pid' => $id, 'type' => 3]);
             return json(["code"=>1,"data"=>$data]);
