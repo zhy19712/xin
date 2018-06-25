@@ -268,10 +268,11 @@ $('#tableItem_wrapper .dataTables_scrollHeadInner table').append(firstTrTemp.joi
 //获取下拉列表的值
 function dropDown(type,eId) {
     $.ajax({
-        url: "/modelmanagement/qualitymass/dropDown",
+        url: "/progress/common/model_quality_search",
         type: "post",
         data: {
-            type:type
+            type:type,
+            relevance_type:1
         },
         dataType: "json",
         success: function (res) {
