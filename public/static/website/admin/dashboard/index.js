@@ -4,7 +4,9 @@ layui.use(['element','layer'],function () {
   element.on('tab(test1)', function(data){
   })
 });
-
+var cpr_id = '';
+var id = '';
+var currentStep = '';
 //代办事件
 var tableItem = $('#tableItem').DataTable( {
   pagingType: "full_numbers",
@@ -13,6 +15,7 @@ var tableItem = $('#tableItem').DataTable( {
   "order": [[ 1, "desc" ]],
   // scrollY: 600,
   ajax: {
+      // "url":"/approve/common/datatablesPre?tableName=approve&data_id=&data_type=3"
     "url":"/admin/common/datatablesPre?tableName=admin_message_reminding&status=1"
   },
   dom: 'rtlip',
@@ -51,6 +54,9 @@ var tableItem = $('#tableItem').DataTable( {
         }else if(data == 2){
           //单元
           var html = "<a type='button'  class='con_Style' onclick='conedit("+type+","+row[6]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>处理</a>" ;
+        }
+        else if(data == 3){
+            var html = "<a type='button'  class='con_Style' onclick='backedit("+type+","+row[6]+","+row[7].cpr_id+","+row[7].CurrentStep+")'>查看</a>" ;
         }
         return html;
       }
@@ -315,7 +321,139 @@ function conshow(){
   }
 
 }
+//退回信息查看
+function backedit() {
+    console.log(arguments);
+    $('input[name="id"]').val(arguments[1]);
+    $('input[name="cpr_id"]').val(arguments[2]);
+    $('input[name="currentStep"]').val(arguments[3]);
+    $.ajax({
+        type:'get',
+        url:'/admin/dashboard/getrefundData?formId='+arguments[1],
+        success:function (res){
+            if (res.isCreater == '0'){
+                $(".hideInfo").css('display','block');
+                $(".showInfo").css('display','none');
+            }else{
+                $(".hideInfo").css('display','none');
+                $(".showInfo").css('display','block');
+            };
+           if (res.code == '1'){
+               var data = res.basedata;
+               $("#taskName").val(data.taskName);
+               $("#altitude").val(data.altitude);
+               $("#pileNo").val(data.pileNo);
+               $("#backremark").val(res.remark);
+               $("#dwName").val(data.dwName);
+           };
 
+        }
+    });
+    layer.open({
+        type: 1,
+        area:['650px','550px'],
+        content: $('#back_info'),
+        success:function () {
+
+        }
+    });
+    var tableItemChose = $('#tableItemChose').DataTable({
+        pagingType: "full_numbers",
+        processing: true,
+        "scrollY": "220px",
+        "scrollCollapse": "true",
+        serverSide: true,
+        ajax: {
+            "url":"/approve/common/datatablesPre?tableName=approve&dataType=app\\quality\\model\\QualityFormInfoModel\n&dataId="+arguments[1]
+        },
+        dom: 't',
+        columns: [
+            {
+                name: "nickname"
+            },
+            {
+                name: "create_time"
+            },
+            {
+                name: "result"
+            },
+            {
+                name: "mark"
+            }
+        ],
+        columnDefs: [
+            {
+                targets: [0]
+            },
+            {
+                targets:[1],
+                "render": function (data, type, row) {
+                    if (data == null || data == undefined || data == '') return '';
+                    var time = new Date(data*1000);
+                    var y = time.getFullYear();
+                    var M = time.getMonth() + 1;
+                    M = M < 10 ? '0' + M : M;
+                    var d = time.getDate();
+                    d = d < 10 ? ('0' + d) : d;
+                    var h = time.getHours() ;
+                    h = h < 10 ? '0' + h : h;
+                    var m = time.getMinutes();
+                    m = m < 10 ? '0' + m : m;
+                    var s = time.getSeconds();
+                    s = s < 10 ? '0' + s : s;
+                    return y + '-' + M + '-' + d +' '+ h + ':'+ m + ':' + s;
+                }
+            },
+            {
+                targets:[2]
+            },
+            {
+                targets: [3]
+            }
+        ],
+        "destroy": true,
+        language: {
+            "lengthMenu": "_MENU_",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "sFirst": "<<",
+                "sPrevious": "<",
+                "sNext": ">",
+                "sLast": ">>"
+            }
+        },
+        "fnInitComplete": function (oSettings, json) {
+            $('#tableItemChose_length').insertBefore(".mark");
+            $('#tableItemChose_info').insertBefore(".mark");
+            $('#tableItemChose_paginate').insertBefore(".mark");
+        }
+    });
+}
+//退回信息处理
+function backOperation() {
+    id = $('input[name="id"]').val();
+    cpr_id = $('input[name="cpr_id"]').val();
+    currentStep = $('input[name="currentStep"]').val();
+    console.log(id+','+cpr_id+','+currentStep);
+    layer.open({
+        type: 2,
+        title: '在线填报',
+        shadeClose: true,
+        area: ['980px', '90%'],
+        content: '/quality/Qualityform/edit?cpr_id='+ cpr_id + '&id='+ id +'&currentStep=' + currentStep,
+        // content: '/quality/Qualityform/edit?cpr_id=' + cpr_id + '&id=' + id + '&currentStep=0&isView=True',
+        success: function (layero,index) {
+            var body = layer.getChildFrame('body', index);
+            body.contents().find(".date input").val('');
+
+        }
+    });
+    layer.closeAll('page');
+}
 //在线填报-保存并审批按钮
 function approve(id,app,step) {
   console.log(app);

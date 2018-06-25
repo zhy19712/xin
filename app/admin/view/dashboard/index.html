@@ -169,6 +169,59 @@
         <div id="form_container"></div>
     </div>
 </div>
+<form id="back_info" action="" class="layui-form layui-layer-wrap" style="display: none;width: 600px;margin: auto">
+    <input type="hidden" name="cpr_id" id="cpr_id">
+    <input type="hidden" name="id">
+    <input type="hidden" name="currentStep">
+    <div class="layui-form-item">
+        <label class="layui-form-label">任务名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="taskName" id="taskName"  readonly  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-bottom: -20px">
+        <label class="layui-form-label" style="position: relative;bottom: 10px;">工程名称<br>及编号</label>
+        <div class="layui-input-block">
+            <input type="text" name="dwName" id="dwName"  readonly  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">起止桩号</label>
+        <div class="layui-input-block">
+            <input type="text" name="altitude" id="altitude"  readonly  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">起止高程</label>
+        <div class="layui-input-block">
+            <input type="text" name="pileNo" id="pileNo" readonly  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item hideInfo" style="display: none;">
+        <label class="layui-form-label">退回信息</label>
+        <div class="layui-input-block">
+            <input type="text" name="backremark" id="backremark" readonly  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">审批历史</label>
+        <div class="layui-input-block">
+            <table id="tableItemChose" class="table cell-border" cellspacing="0"  width="100%">
+                <thead>
+                    <tr>
+                        <th>审批人</th>
+                        <th>审批日期</th>
+                        <th>审批结果</th>
+                        <th>审批意见</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="layui-form-item showInfo" style="display: none;">
+        <a href="javascript:;" class="layui-btn layui-btn-normal layui-btn-sm" style="float: right;" onclick="backOperation()">处理</a>
+    </div>
+</form>
 {include file="../app/public/common_footer.html"}
 <script src="__WEBSITE__/admin/dashboard/index.js"></script>
 <script>

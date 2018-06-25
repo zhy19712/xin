@@ -144,4 +144,15 @@ class FilebranchModel extends Model
         $data = $this->where("classifyid",$id)->order("id","asc")->select();
         return $data;
     }
+
+    /**
+     * 以当前父级编号为查询条件查询当前的一条数据信息
+     * @param $v
+     * @return array|false|\PDOStatement|string|Model
+     */
+    public function getCodeInfo($v)
+    {
+        $data = $this->field("id")->where("code",$v["parent_code"])->find();
+        return $data;
+    }
 }

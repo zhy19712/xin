@@ -13,6 +13,7 @@ use app\admin\controller\Permissions;
 use app\contract\model\SectionModel;
 use app\modelmanagement\model\QualitymassModel;
 use app\progress\model\ActualModel;
+use think\Db;
 use think\Session;
 
 /**
@@ -34,8 +35,10 @@ class Actual extends Permissions
         if($this->request->isAjax()){
             // 根据当前登陆人的权限获取对应的 -- 标段列表选项
             $section = new SectionModel();
-            $data = $section->sectionList();
-            return json(['code'=>1,'sectionArr'=>$data,'msg'=>'标段列表选项']);
+            $data[0] = '全部';
+            $data1 = $section->sectionList();
+            $new_data = $data+$data1;
+            return json(['code'=>1,'sectionArr'=>$new_data,'msg'=>'标段列表选项']);
         }
         return $this->fetch();
     }
@@ -134,6 +137,9 @@ class Actual extends Permissions
             }
             $actual = new ActualModel();
             $data = $actual->getOne($actual_id);
+            // 标段名称和填报人名称
+            $data['section_name'] = Db::name('section')->where(['id'=>$data['section_id']])->value('name');
+            $data['user_name'] = Db::name('admin')->where(['id'=>$data['user_id']])->value('name');
             return json(['code'=>1,'path'=>$data,'msg'=>'查看']);
         }
     }
@@ -176,6 +182,26 @@ class Actual extends Permissions
             if(!sizeof($id_arr)){
                 return json(['code'=>-1,'msg'=>'缺少构件的编号']);
             }
+
+            /**
+             * 关联模型时，要验证，选择的填报记录所属标段和模型的标段是否一致，
+             * 不一致的时候给出，标段不符提示，并取消本次关联
+             */
+            $check_result = false;
+            $unit = new ActualModel();
+            $code = $unit->sectionCode($id); // 获取填报记录所属标段
+            $node = new QualitymassModel();
+            $code_arr = $node->sectionCode($id_arr); // 获取所有选中的构件的标段
+            foreach ($code_arr as $v){
+                if($code != $v){
+                    $check_result = true;
+                    break;
+                }
+            }
+            if($check_result){
+                return json(['code'=>-1,'msg'=>'所选择的构件中存在其他标段下的构件,与当前关联的单元工程所属标段不符,此次关联无效']);
+            }
+
             $actual = new ActualModel();
             $data['id'] = $id;
             $data['relevance'] = '是'; // 是否关联

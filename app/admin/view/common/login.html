@@ -25,12 +25,17 @@
 
         #login {
             width: 334px;
+            margin: 0 auto;
+
         }
 
         #login .layui-input {
-            height: 40px;
+            height: 50px;
             border-radius: 3px;
             border-color: #9e9fa4;
+        }
+        #login input::-webkit-input-placeholder{
+            font-size: 14px;
         }
 
         input::-webkit-input-placeholder { /*WebKit browsers*/
@@ -49,19 +54,18 @@
         }
 
         .layui-btn {
-            height: 44px;
+            height: 50px;
             color: #fff;
-            font-size: 14px;
+            font-size: 16px;
             border-radius: 6px;
         }
 
         .layadmin-user-login {
-            margin-top: 297px;
-            width: 923px;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 422px;
+            margin-top: 200px;
+            width: 500px;
+            height: 550px;
+            position: absolute;
+            right: 260px;
             padding: 0;
         }
 
@@ -69,11 +73,13 @@
             width: 100%;
             height: 100%;
             margin: 0;
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 10px ;
+
         }
 
         .layadmin-user-login-box {
-            float: right;
-            padding: 114px 47px 0 0;
+            padding: 20px 0 0;
         }
 
         .layui-form-checkbox span {
@@ -89,7 +95,7 @@
             width: 20px;
             height: 22px;
             display: inline-block;
-            margin-top: 7px;
+            margin-top: 13px;
         }
 
         i.layui-icon-username {
@@ -143,17 +149,24 @@
         #downloadexe:hover{
             color: green;
         }
+        .title_h2{
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            line-height: 98px;
+            color: #009688;
+        }
+        .layui-form-item{
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body class="layui-layout-body">
-<div id="LAY_app" style="height: 422px">
+<div id="LAY_app" style="height: 550px">
     <div class="layadmin-user-login" id="LAY-user-login">
 
         <div class="layadmin-user-login-main">
-            <!--<div class="layadmin-user-login-box layadmin-user-login-header">-->
-            <!--<h2>用户登录</h2>-->
-            <!--<p>ThinkPHP5+Layui2</p>-->
-            <!--</div>-->
+            <h2 class="title_h2">帐号登录</h2>
             <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
                 <form class="layui-form" id="login">
                     <div class="layui-form-item">
@@ -168,16 +181,16 @@
                         <input type="password" name="password" lay-verify="required" autocomplete="off"
                                placeholder="请输入密码" class="layui-input" {notempty name="userpass" }value="{$userpass}" {/notempty}>
                     </div>
-                    <!--<div class="layui-form-item">-->
-                        <!--<label class="layadmin-user-login-icon layui-icon layui-icon-vercode"-->
-                               <!--for="LAY-user-login-password"><i class="layui-icon layui-icon-vercode"></i></label>-->
-                        <!--<input type="text" name="captcha" lay-verify="required" autocomplete="off" placeholder="验证码"-->
-                               <!--class="layui-input " style="width:62%;float: left;margin-right:11px;"><img-->
-                            <!--src="{:captcha_src()}" alt="captcha"-->
-                            <!--onclick="this.src='{:captcha_src()}?seed='+Math.random()" height="36" id="captcha"-->
-                            <!--style="margin-top: 1px"/>-->
-                    <!--</div>-->
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" style="margin-bottom: 40px;">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-vercode"
+                               for="LAY-user-login-password"><i class="layui-icon layui-icon-vercode"></i></label>
+                        <input type="text" name="captcha" lay-verify="required" autocomplete="off" placeholder="验证码"
+                               class="layui-input " style="width:62%;float: left;margin-right:11px;"><img
+                            src="{:captcha_src()}" alt="captcha"
+                            onclick="this.src='{:captcha_src()}?seed='+Math.random()" height="48" width="114px" id="captcha"
+                            style="margin-top: 1px"/>
+                    </div>
+                    <div class="layui-form-item" style="margin-bottom: 50px;">
                         <input type="checkbox" name="remember" value="1" {notempty name="usermember" }checked="" {/notempty}>
                         <div class="layui-unselect layui-form-checkbox" lay-skin="primary"
                              style="width: 20px;height: 20px;"><i class="layui-icon"></i></div>
@@ -186,9 +199,9 @@
                     <div class="layui-form-item">
                         <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="login">登 录</button>
                     </div>
-                    <div class="layui-form-item">
-                        <p id="downloadexe"><a href="{:url('admin/common/download')}"  target="_self">点击下载控件管理程序&gt;&gt;</a></p>
-                    </div>
+                    <!--<div class="layui-form-item">-->
+                        <!--<p id="downloadexe"><a href="{:url('admin/common/download')}"  target="_self">点击下载控件管理程序&gt;&gt;</a></p>-->
+                    <!--</div>-->
                     <!--{:token('__token__', 'sha1')}-->
                 </form>
             </div>

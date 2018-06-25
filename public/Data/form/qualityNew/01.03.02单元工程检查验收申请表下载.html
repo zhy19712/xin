@@ -22,21 +22,9 @@
         .btomSpan {
             display: none;
         }
-
-        .contentDiv {
-            padding: 5px;
-            padding-bottom: 15px;
-        }
-
         .dateMargin {
             margin: 5px 0;
         }
-
-        .signName {
-            width: 56mm;
-            height: 20mm;
-        }
-
         .signBtoName {
             width: 26mm;
             height: 15mm;
@@ -50,16 +38,13 @@
             margin-top: -12mm;
             margin-bottom: 2px;
         }
-
-        .textDescribe {
-            padding-top: 5px;
-        }
         input{
             outline: none!important;
             border: none!important;
             max-width: 120px;
             font-size: 12px!important;
             background-color: #ffffff!important;
+            margin-left: 5px!important;
         }
         textarea{
             width: 90% !important;
@@ -67,6 +52,8 @@
             border: none!important;
             resize:none!important;
             background-color: #ffffff!important;
+            margin: 1px!important;
+            text-align: center!important;
         }
         select{
             border: none!important;
@@ -79,13 +66,14 @@
         }
         .tabWidth {
             margin: auto;
-            width: 260mm!important;
+            width: 210mm!important;
         }
-        table td p{
-            line-height: 20px!important;
+        table{
+            table-layout: fixed!important;
         }
+
         #fileTitle{
-            width: 260mm!important;
+            width: 210mm!important;
             height: 100px;
             margin: 0 auto;
             position: relative;
@@ -134,61 +122,61 @@
 
                     </td>
                 </tr>
-                <tr style="height: 22.7pt">
-                    <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 0.25pt; padding-right: 0.62pt; padding-top: 0.25pt; vertical-align: middle">
+                <tr style="height: 30pt">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 0.25pt; padding-right: 0.62pt; padding-top: 0.25pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单位工程名称及编号</span></p>
                     </td>
-                    <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.25pt; vertical-align: middle">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.25pt; vertical-align: middle">
                         <p style="line-height: 10pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 9pt; font-style: normal; text-transform: none">{$DWName}</span><br />
                             <span style="font-family: 仿宋; font-size: 9pt; font-style: normal; text-transform: none">{$DWCode}</span></p>
                     </td>
-                    <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.25pt; vertical-align: middle">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.25pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">合同编号</span></p>
                     </td>
-                    <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.25pt; vertical-align: middle">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 1.5pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.25pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 8pt">{$ContractCode}</span></p>
                     </td>
                 </tr>
-                <tr style="height: 23.75pt">
-                    <td colspan="3" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.25pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
+                <tr style="height: 20pt">
+                    <td colspan="2" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.25pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">分部工程名称及编号</span></p>
                     </td>
-                    <td rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
+                    <td colspan="2" rowspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 10pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 8pt">{$FBName}</span><br />
                             <span style="font-family: 仿宋; font-size: 8pt">{$FBCode}</span></p>
                     </td>
-                    <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止桩号</span></p>
                     </td>
-                    <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: middle">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="text-align:center;line-height: 10pt; margin: 0pt; orphans: 0; widows: 0"><span style="font-family: 仿宋; font-size: 9pt; font-style: normal; text-transform: none">{$PileNo}</span></p>
                     </td>
                 </tr>
-                <tr style="height: 17pt">
-                    <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
+                <tr style="height: 20pt">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">起止高程</span></p>
                     </td>
-                    <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: middle">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 8pt">{$Altitude}</span></p>
                     </td>
                 </tr>
-                <tr style="height: 36.95pt">
-                    <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.25pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
+                <tr style="height: 30pt">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.25pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单元工程名称、部位及编号</span></p>
                     </td>
-                    <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 10pt; margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 8pt">{$DYName}</span><br />
                             <span style="font-family: 仿宋; font-size: 8pt">{$JYPName}</span><br />
                             <span style="font-family: 仿宋; font-size: 8pt">{$DYCode}</span></p>
                     </td>
-                    <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">单元工程量</span></p>
                     </td>
-                    <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: middle">
-                        <textarea id="input_gcl" default="/" step="0" placeholder="" class="comment editInput" style="text-align: center;line-height: 50px"></textarea>
+                    <td colspan="2" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: middle">
+                        <textarea id="input_gcl" default="/" step="0" placeholder="" class="comment editInput" style="text-align: center;line-height: 25px"></textarea>
                     </td>
                 </tr>
-                <tr style="height: 22.7pt">
+                <tr style="height: 30pt">
                     <td colspan="3" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.25pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">施工依据</span></p>
                     </td>
@@ -232,11 +220,11 @@
                         <div class="qianming qianmingBlock" style="margin-left: 56mm;">
                             <img id="img_1" class="signBtoName" src="" step="0" form-required="签名必填。" />
                         </div>
-                        <p style="margin-top: -35px; margin-right: 3px; float: right;">
+                        <p style="margin-top: -39px; margin-right: 3px; float: right;">
                             <span style="font-family: 仿宋; font-size: 10.5pt">时</span>
                         </p>
-                        <input id="input_hgl_2" step="0" type="text" value="" class="form-control wait beizhi_3 editInput" style="padding: 0px; width: 45px; height: 20px; text-align: left; margin-top: -40px; margin-right: 20px; float: right;" form-required="日期必填。">
-                        <div class="form-group div-inline data_2" style="float: right; margin-top: -45px; margin-right: 80px; width: 40mm;">
+                        <input id="input_hgl_2" step="0" type="text" value="" class="form-control wait beizhi_3 editInput" style="padding: 0px; width: 30px; height: 20px; text-align: left; margin-top: -40px; margin-right: 20px; float: right;" form-required="日期必填。">
+                        <div class="form-group div-inline data_2" style="float: right; margin-top: -45px; margin-right: 60px; width: 30mm;">
                             <div class="input-group date dateMargin" style="width: 100%;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
                                 <input id="input_date_3" step="0" type="text" class="form-control" value="" style="height: 20px; padding: 0; text-align: center;" form-required="日期必填。">
@@ -244,7 +232,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr style="height: 14.15pt">
+                <tr style="height: 25pt">
                     <td rowspan="12" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.25pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">随</span></p>
                         <p style="margin: 0pt; orphans: 0; text-align: center; widows: 0"><span style="font-family: 仿宋; font-size: 10.5pt">&#xa0;</span></p>
@@ -273,7 +261,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_1" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">岩石边坡开挖工序质量等级评定表</span></p>
+                            <input id="checkbox_1" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">开挖联合验收表</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_1" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -288,7 +276,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_2" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">岩石边坡开挖地质缺陷处理工序质量等级评定表</span></p>
+                            <input id="checkbox_2" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">地质及施工缺陷处理联合检验认定表</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_3" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -303,7 +291,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_3" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">开挖联合验收表</span></p>
+                            <input id="checkbox_3" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">地质缺陷处理工程量签证单</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_5" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -318,7 +306,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_4" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">地质及施工缺陷处理联合检验认定表</span></p>
+                            <input id="checkbox_4" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">半孔率检查记录表</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_7" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -333,7 +321,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_5" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">地质缺陷处理工程量签证单</span></p>
+                            <input id="checkbox_5" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">声波检测成果表</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_9" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -348,7 +336,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_6" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">半孔率检查记录表</span></p>
+                            <input id="checkbox_6" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">测量成果报审表</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_11" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -363,7 +351,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_7" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">声波检测成果表</span></p>
+                            <input id="checkbox_7" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">施工放样报验单</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_13" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -378,7 +366,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_8" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">测量成果报审表</span></p>
+                            <input id="checkbox_8" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">工程记录照片表</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_15" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -393,7 +381,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_9" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">施工放样报验单</span></p>
+                            <input id="checkbox_9" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">工程建设标准强制性条文执行记录表</span></p>
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_17" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -409,7 +397,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_10" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">工程记录照片表</span></p>
+                            <!--<input id="checkbox_10" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">工程记录照片表</span></p>-->
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_19" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -424,7 +412,7 @@
                     </td>
                     <td colspan="4" style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 0.62pt; padding-right: 0.62pt; padding-top: 0.62pt; vertical-align: middle">
                         <p style="line-height: 12pt; margin: 0pt">
-                            <input id="checkbox_11" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">工程建设标准强制性条文执行记录表</span></p>
+                            <!--<input id="checkbox_11" step="0" type="checkbox" class="zlmc" /><span style="font-family: 仿宋; font-size: 10.5pt">工程建设标准强制性条文执行记录表</span></p>-->
                     </td>
                     <td style="border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 0.75pt; border-left-color: #000000; border-left-style: solid; border-left-width: 0.75pt; border-right-color: #000000; border-right-style: solid; border-right-width: 0.75pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; vertical-align: middle">
                         <textarea id="input_21" default="/" step="0" placeholder="" class="comment"></textarea>
@@ -450,13 +438,13 @@
                             <span style="font-family: 仿宋; font-size: 10.5pt; letter-spacing: 0.05pt">收到本申请表时间</span>
                             <span style="font-family: 仿宋; font-size: 10.5pt">：</span>
                         </p>
-                        <div class="form-group div-inline data_2" style="width: 35mm; margin-bottom: -10px; display: inline-block;">
+                        <div class="form-group div-inline data_2" style="width: 30mm; margin-bottom: -10px; display: inline-block;">
                             <div class="input-group date dateMargin" style="width: 100%;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
                                 <input id="input_date_4" step="1" type="text" class="form-control" value="" style="height: 20px; padding: 0; text-align: center;">
                             </div>
                         </div>
-                        <input id="input_hgl_3" step="1" type="text" value="" class="form-control wait beizhi_3 editInput" style="display: inline; width: 45px; height: 20px; padding: 0px; text-align: left">
+                        <input id="input_hgl_3" step="1" type="text" value="" class="form-control wait beizhi_3 editInput" style="display: inline; width: 30px; height: 20px; padding: 0px; text-align: left">
                         <p style="display: inline-block;">
                             <span style="font-family: 仿宋; font-size: 10.5pt">时</span>
                         </p>
@@ -485,10 +473,8 @@
                     </td>
                 </tr>
                 <tr style="height: 22.5pt">
-                    <td style="border: none; height: 22.5pt; width: 0pt"></td>
                 </tr>
                 <tr style="height: 21.6pt">
-                    <td style="border: none; height: 21.6pt; width: 0pt"></td>
                 </tr>
                 <tr style="height: 27pt">
                     <td colspan="7" style="height: 18mm; border-bottom-color: #000000; border-bottom-style: solid; border-bottom-width: 1.5pt; border-right-color: #000000; border-right-style: solid; border-right-width: 1.5pt; border-top-color: #000000; border-top-style: solid; border-top-width: 0.75pt; padding-left: 1pt; padding-right: 0.25pt; padding-top: 0.62pt; vertical-align: bottom">
@@ -500,11 +486,11 @@
                             <img id="img_2" class="signBtoName" src="" step="1" form-required="签名必填。" />
 
                         </div>
-                        <p style="margin-top: -35px; margin-right: 3px; float: right;">
+                        <p style="margin-top: -39px; margin-right: 3px; float: right;">
                             <span style="font-family: 仿宋; font-size: 10.5pt">时</span>
                         </p>
-                        <input id="input_hgl_4" step="1" type="text" value="" class="form-control wait beizhi_3 editInput" style="padding: 0px; width: 45px; height: 20px; text-align: left; margin-top: -40px; margin-right: 20px; float: right;" form-required="日期必填。">
-                        <div class="form-group div-inline data_2" style="float: right; margin-top: -45px; margin-right: 80px; width: 40mm;">
+                        <input id="input_hgl_4" step="1" type="text" value="" class="form-control wait beizhi_3 editInput" style="padding: 0px; width: 30px; height: 20px; text-align: left; margin-top: -40px; margin-right: 20px; float: right;" form-required="日期必填。">
+                        <div class="form-group div-inline data_2" style="float: right; margin-top: -45px; margin-right: 60px; width: 30mm;">
                             <div class="input-group date dateMargin" style="width: 100%;">
                                 <span class="input-group-addon btomSpan"><i class="fa fa-calendar"></i></span>
                                 <input id="input_date_6" step="1" class="sign_date" style="margin: 2px auto;" type="text"  value="" style="height: 20px; padding: 0; text-align: center;" form-required="日期必填。">

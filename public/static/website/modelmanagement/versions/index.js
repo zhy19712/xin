@@ -12,7 +12,7 @@ var completedTable = $('#completedTable').DataTable({
     columns: [
         {
             name: "id"
-        },{
+        }, {
             name: "resource_name"
         },
         {
@@ -39,23 +39,24 @@ var completedTable = $('#completedTable').DataTable({
             "render": function (data, type, row) {
                 var rowId = row[0];     //序号（主键编号）
                 var status = row[6];    //启用状态  1为启用  0为禁用
-                var className = status==1?'fa-eye':'fa-eye-slash';
-                var html = "<i title='查看' class='fa fa-search' onclick='view(this,"+ rowId +")'></i>";
-                html += "<i title='删除' class='fa fa-trash' onclick='delFile(this,"+ rowId +")'></i>";
-                html += "<i title='禁用' class='fa "+ className +"' onclick='enable("+ rowId +")'></i>";
+                var className = status == 1 ? 'fa-eye' : 'fa-eye-slash';
+                var txt = status == 1 ? '禁用' : '启用';
+                var html = "<i title='查看' class='fa fa-search' onclick='view(this," + rowId + ")'></i>";
+                html += "<i title='删除' class='fa fa-trash' onclick='delFile(this," + rowId + ")'></i>";
+                html += "<i title=" + txt + " class='fa " + className + "' onclick='enable(" + rowId + ")'></i>";
                 return html;
             }
         }
 
     ],
     language: {
-        "sProcessing":"数据加载中...",
+        "sProcessing": "数据加载中...",
         "lengthMenu": "_MENU_",
         "zeroRecords": "没有找到记录",
         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
         "infoEmpty": "无记录",
         "search": "搜索",
-        "sSearchPlaceholder":"请输入关键字",
+        "sSearchPlaceholder": "请输入关键字",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
@@ -85,7 +86,7 @@ var constructionTable = $('#constructionTable').DataTable({
     columns: [
         {
             name: "id"
-        },{
+        }, {
             name: "resource_name"
         },
         {
@@ -112,23 +113,24 @@ var constructionTable = $('#constructionTable').DataTable({
             "render": function (data, type, row) {
                 var rowId = row[0];     //序号（主键编号）
                 var status = row[6];   //启用状态  1为启用  0为禁用
-                var className = status==1?'fa-eye':'fa-eye-slash';
-                var html = "<i title='查看' class='fa fa-search' onclick='view(this,"+ rowId +")'></i>";
-                html += "<i title='删除' class='fa fa-trash' onclick='delFile(this,"+ rowId +")'></i>";
-                html += "<i title='禁用' class='fa "+ className +"' onclick='enable("+ rowId +")'></i>";
+                var className = status == 1 ? 'fa-eye' : 'fa-eye-slash';
+                var txt = status == 1 ? '禁用' : '启用';
+                var html = "<i title='查看' class='fa fa-search' onclick='view(this," + rowId + ")'></i>";
+                html += "<i title='删除' class='fa fa-trash' onclick='delFile(this," + rowId + ")'></i>";
+                html += "<i title="+ txt +" class='fa " + className + "' onclick='enable(" + rowId + ")'></i>";
                 return html;
             }
         }
 
     ],
     language: {
-        "sProcessing":"数据加载中...",
+        "sProcessing": "数据加载中...",
         "lengthMenu": "_MENU_",
         "zeroRecords": "没有找到记录",
         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
         "infoEmpty": "无记录",
         "search": "搜索",
-        "sSearchPlaceholder":"请输入关键字",
+        "sSearchPlaceholder": "请输入关键字",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
@@ -148,16 +150,16 @@ $('.addBtn').html('新增');
 
 //切换模型表
 $('#tt').tabs({
-    onSelect: function(title,index){
+    onSelect: function (title, index) {
         //切换至竣工模型表
-        if(index==0){
+        if (index == 0) {
             model_type = 1;
-            completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type='+ model_type +'').load();
+            completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=' + model_type + '').load();
         }
         //切换至施工模型表
-        if(index==1){
+        if (index == 1) {
             model_type = 2;
-            constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type='+ model_type +'').load();
+            constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=' + model_type + '').load();
         }
     }
 });
@@ -165,24 +167,24 @@ $('#tt').tabs({
 //打开新增模型弹层
 $('.addBtn').click(function () {
     index = layer.open({
-        title:'新增模型',
-        id:'1',
-        type:1,
-        anim:'4',
-        area:['600px','355px'],
-        content:$('#addModelLayer'),
-        success:function () {
+        title: '新增模型',
+        id: '1',
+        type: 1,
+        anim: '4',
+        area: ['600px', '355px'],
+        content: $('#addModelLayer'),
+        success: function () {
             uploadModel();
             $('#save').removeClass('layui-btn-disabled').attr('lay-submit');
         },
-        cancel: function(index){
+        cancel: function (index) {
             $('#addModelLayer').hide();
             layer.close(index);
         }
     });
 });
 
-layui.use('element', function(){
+layui.use('element', function () {
     element = layui.element;
 });
 
@@ -199,15 +201,15 @@ function uploadModel() {
             innerHTML: "上传"
         },
         resize: false,
-        duplicate:true,
+        duplicate: true,
         chunked: true,            //开启分片上传
-        chunkSize: 1024*1024*100,   //每一片的大小
+        chunkSize: 1024 * 1024 * 100,   //每一片的大小
         chunkRetry: 5,          // 如果遇到网络错误,重新上传次数
         threads: 1,               // [默认值：3] 上传并发数。允许同时最大上传进程数。
-        fileNumLimit:500,
-        fileSizeLimit:1024*1024*1024*10,
-        fileSingleSizeLimit:1024*1024*1024*10,
-        formData: {model_type:model_type},
+        fileNumLimit: 500,
+        fileSizeLimit: 1024 * 1024 * 1024 * 10,
+        fileSingleSizeLimit: 1024 * 1024 * 1024 * 10,
+        formData: {model_type: model_type},
         accept: {
             title: 'Rar,Zip',
             extensions: 'rar,zip',
@@ -215,18 +217,18 @@ function uploadModel() {
         },
     });
 
-    uploader.on( 'uploadStart', function( file ) {
+    uploader.on('uploadStart', function (file) {
         console.log(file);
         $.ajax({
             url: "./checkUpload",
             type: "post",
             data: {
-                file_name:file.name
+                file_name: file.name
             },
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                if(res.code == -1){
+                if (res.code == -1) {
                     uploader.reset();
                     layer.msg(res.msg);
                 }
@@ -235,11 +237,11 @@ function uploadModel() {
     });
 
     // 当有文件被添加进队列的时候
-    uploader.on( 'fileQueued', function( file ) {
+    uploader.on('fileQueued', function (file) {
         var $list = $('#thelist');
         $list.html('');
-        $list.append( '<div id="' + file.id + '" class="item">' +
-            '</div>' );
+        $list.append('<div id="' + file.id + '" class="item">' +
+            '</div>');
     });
     // 文件上传过程中创建进度条实时显示。
     uploader.on('uploadProgress', function (file, percentage) {
@@ -257,10 +259,10 @@ function uploadModel() {
             element.progress('upload', percentage * 100 + '%');
         });
         $('.layui-progress-bar').html(Math.round(percentage * 100) + '%');
-        if(percentage * 100 == 100){
-            loading = layer.load(1,{
-                shade: [0.5,'#000'],
-                content:'合并和解压中...请稍后'
+        if (percentage * 100 == 100) {
+            loading = layer.load(1, {
+                shade: [0.5, '#000'],
+                content: '合并和解压中...请稍后'
             });
         }
     });
@@ -271,41 +273,41 @@ function uploadModel() {
             url: "./saveFile",
             type: "post",
             data: {
-                oldName:response.oldName,
-                uploadPath:response.filePaht,
-                extension:response.fileSuffixes,
-                path:response.path
+                oldName: response.oldName,
+                uploadPath: response.filePaht,
+                extension: response.fileSuffixes,
+                path: response.path
             },
             dataType: "json",
             success: function (res) {
-                if(res.code==2){
+                if (res.code == 2) {
                     $('.upload-list').empty();
                     $('#resource_name').val(file.name);
                     $('#save').show();
                     attachment_id = res.id;
                     layer.close(loading);
                     layer.msg(res.msg);
-                }else{
+                } else {
                     layer.msg('合并解压出错,请重新上传');
                 }
             }
         });
     });
 
-    uploader.on( 'uploadError', function( file ) {
+    uploader.on('uploadError', function (file) {
         layer.msg('上传出错');
     });
 }
 
 //保存模型
-layui.use('form', function(){
+layui.use('form', function () {
     var form = layui.form;
-    form.on('submit(save)', function(data){
+    form.on('submit(save)', function (data) {
         data.field.model_type = model_type;
         data.field.attachment_id = attachment_id;
         var load = layer.load(1, {
-            shade: [0.5,'#000'],
-            content:'保存中...请稍后'
+            shade: [0.5, '#000'],
+            content: '保存中...请稍后'
         });
         $.ajax({
             url: "./add",
@@ -313,10 +315,10 @@ layui.use('form', function(){
             data: data.field,
             dataType: "json",
             success: function (res) {
-                if(model_type==1){
+                if (model_type == 1) {
                     completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
                 }
-                if(model_type==2){
+                if (model_type == 2) {
                     constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
                 }
                 $('.upload-list').empty();
@@ -332,7 +334,7 @@ layui.use('form', function(){
 });
 
 //关闭新增模型弹层
-$('#close').click(function(){
+$('#close').click(function () {
     $('#addModelLayer').hide();
     $('#resource_name').val('');
     layer.close(index);
@@ -343,35 +345,36 @@ $('#close').click(function(){
 //查看版本
 function view(rowId) {
     layer.open({
-        title:'查看模型',
-        id:'2',
-        type:2,
-        area:['100%','100%'],
-        content:['./viewmodel','no'],
-        success:function (layero, index) {
+        title: '查看模型',
+        id: '2',
+        type: 2,
+        area: ['100%', '100%'],
+        content: ['./viewmodel', 'no'],
+        success: function (layero, index) {
         },
-        cancel: function(index, layero){
+        cancel: function (index, layero) {
             layer.close(layer.index);
         }
     });
 }
+
 //删除版本
-function delFile(that,rowId) {
-    layer.confirm('确认删除该模型版本?', {icon: 3, title:'提示'}, function(index){
+function delFile(that, rowId) {
+    layer.confirm('确认删除该模型版本?', {icon: 3, title: '提示'}, function (index) {
         $.ajax({
             url: "./del",
             type: "post",
             data: {
-                major_key:rowId
+                major_key: rowId
             },
             dataType: "json",
             success: function (res) {
                 $(that).parents('tr').remove();
                 layer.msg(res.msg);
-                if(model_type==1){
+                if (model_type == 1) {
                     completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
                 }
-                if(model_type==2){
+                if (model_type == 2) {
                     constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
                 }
             }
@@ -380,20 +383,21 @@ function delFile(that,rowId) {
     });
 
 }
+
 //启用版本
 function enable(rowId) {
     $.ajax({
         url: "./enabledORDisable",
         type: "post",
         data: {
-            major_key:rowId
+            major_key: rowId
         },
         dataType: "json",
         success: function (res) {
-            if(model_type==1){
+            if (model_type == 1) {
                 completedTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=1').load();
             }
-            if(model_type==2){
+            if (model_type == 2) {
                 constructionTable.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_version_management&model_type=2').load();
             }
             layer.msg(res.msg);

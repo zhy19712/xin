@@ -9,6 +9,8 @@
 namespace app\progress\controller;
 
 
+use app\contract\model\SectionModel;
+use app\modelmanagement\model\VersionsModel;
 use think\Controller;
 use think\Db;
 
@@ -55,42 +57,53 @@ class Common extends Controller
     // 和 模型管理 --  实时进度关联 -- 列表页面 [多了一列是否关联模型]
     public function progress_actual($draw,$table,$search,$start,$length,$limitFlag,$order,$columns,$columnString)
     {
-        // 前台 不传递值默认查询全部的
+        // 前台 不传递值默认查询  当前用户权限下的全部标段对应的列表数据
         // 传递值就按照所传递的条件查询 --- 所选择的 标段编号 section_id 日期 actual_date
+        // 如果只传递了 标段编号 就 查询这个标段下所有的数据
+        // 传递了2个就按照它们的组合条件查询
         $param = input('param.');
         $section_id = isset($param['section_id']) ? $param['section_id'] : 0; // 标段编号
         $actual_date = isset($param['actual_date']) ? $param['actual_date'] : 0; // 日期
-
+        // 根据当前登陆人的权限获取对应的 -- 标段列表选项
+        $section = new SectionModel();
+        $data = $section->sectionList();
+        $whereVal = [];
+        if($section_id == 0 && $actual_date == 0){
+            if(sizeof($data)){
+                $section_id = array_keys($data);
+            }else{
+                $section_id = [0];
+            }
+            if($actual_date == 0){ // 全部
+                $whereVal = ['section_id'=>['in',$section_id]];
+            }else{ // 全部 和 日期
+                $whereVal = ['section_id'=>['in',$section_id],'actual_date'=>$actual_date];
+            }
+        }else if($section_id && $actual_date == 0) { // 标段
+            if($actual_date == 0) { // 标段
+                $whereVal = ['section_id'=>['in',[$section_id]]];
+            }else{  // 标段 和 日期
+                $whereVal = ['section_id'=>['in',[$section_id]],'actual_date'=>$actual_date];
+            }
+        }
         //查询
         //条件过滤后记录数 必要
         $recordsFiltered = 0;
         //表的总记录数 必要
-        $recordsTotal = Db::name($table)->count();
-        if($section_id && $actual_date){
-            $recordsTotal = Db::name($table)->where(['section_id'=>$section_id,'actual_date'=>$actual_date])->count();
-        }
+        $recordsTotal = Db::name($table)->where($whereVal)->count();
         $recordsFilteredResult = array();
         if(strlen($search)>0){
             //有搜索条件的情况
-            if($limitFlag){
-                //*****多表查询join改这里******
-                $recordsFilteredResult = Db::name($table)->alias('p')
-                    ->join('section s', 's.id = p.section_id', 'left')
-                    ->join('admin a', 'a.id = p.user_id', 'left')
-                    ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.relevance')
-                    ->where(['section_id'=>$section_id,'actual_date'=>$actual_date])
-                    ->order($order)->limit(intval($start),intval($length))->select();
-                $recordsFiltered = sizeof($recordsFilteredResult);
-            }
         }else{
             //没有搜索条件的情况
             if($limitFlag){
                 $recordsFilteredResult =  Db::name($table)->alias('p')
                     ->join('section s', 's.id = p.section_id', 'left')
                     ->join('admin a', 'a.id = p.user_id', 'left')
-                    ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.relevance')
+                    ->field('s.name as section_name,p.actual_date,a.name as user_name,p.remark,p.id,p.relevance')
+                    ->where($whereVal)
                     ->order($order)->limit(intval($start),intval($length))->select();
-                $recordsFiltered = $recordsTotal;
+               $recordsFiltered = $recordsTotal;
             }
         }
         $temp = array();
@@ -113,12 +126,23 @@ class Common extends Controller
     //TODO 月进度表
     public function model_quality($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
         $param = input('param.');
         $relevance_type = isset($param['relevance_type']) ? $param['relevance_type'] : 1; // 默认 1 表示是实时进度关联 2 表示月进度关联
+        $relevance_id = isset($param['relevance_id']) ? $param['relevance_id'] : 0; // 默认 0 查询全部
          if($relevance_type == 1){
-            $search_data = ['q.actual_id'=>['neq',0]];
+            if($relevance_id){
+                $search_data = ['q.version_number'=>$version_number,'q.actual_id'=>['eq',$relevance_id]];
+            }else{
+                $search_data = ['q.version_number'=>$version_number,'q.actual_id'=>['neq',0]];
+            }
         }else{
-            $search_data = ['q.mon_progress_id'=>['neq',0]];
+           if($relevance_id){
+               $search_data = ['q.version_number'=>$version_number,'q.mon_progress_id'=>['eq',$relevance_id]];
+           }else{
+               $search_data = ['q.version_number'=>$version_number,'q.mon_progress_id'=>['neq',0]];
+           }
         }
         //查询
         //条件过滤后记录数 必要
@@ -168,7 +192,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
@@ -184,6 +210,8 @@ class Common extends Controller
     public function model_quality_search($draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         $table = 'model_quality';
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
 
         // 前台 可以选择组合传递的参数有
         // section 标段 unit 单位 parcel 分部 cell 单元
@@ -256,6 +284,7 @@ class Common extends Controller
          *  OR (zhuanghao1name="CX" AND zhuanghao1 BETWEEN 0 and data2 AND zhuanghao2name="CX" AND zhuanghao2 BETWEEN 0 and data2)
          *
          */
+        $search_data['q.version_number'] = $version_number;
         if($section){
             $search_data['q.section'] = $section;
         }
@@ -291,8 +320,8 @@ class Common extends Controller
             }else{
                 $search_data['q.pile_val_1'] = [["egt",0],["elt",$pile_val_1]];
                 $search_data['q.pile_val_2'] = [["egt",0],["elt",$pile_val_2]];
-                $search_data_1 = "q.pile_number_1 = '" . $pile_number_1 . "' and q.pile_number_2 = '" . $pile_number_1 . "' and 0 <= q.pile_val_1 <= " . $pile_val_1 . " and  0 <= q.pile_val_2 <= " . $pile_val_1;
-                $search_data_2 = "q.pile_number_1 = '" . $pile_number_2 . "' and q.pile_number_2 = '" . $pile_number_2 . "' and 0 <= q.pile_val_1 <= " . $pile_val_2 . " and  0 <= q.pile_val_2 <= " . $pile_val_2;
+                $search_data_1 = "q.version_number = '" . $version_number ."' and q.pile_number_1 = '" . $pile_number_1 . "' and q.pile_number_2 = '" . $pile_number_1 . "' and 0 <= q.pile_val_1 <= " . $pile_val_1 . " and  0 <= q.pile_val_2 <= " . $pile_val_1;
+                $search_data_2 = "q.version_number = '" . $version_number ."' and q.pile_number_1 = '" . $pile_number_2 . "' and q.pile_number_2 = '" . $pile_number_2 . "' and 0 <= q.pile_val_1 <= " . $pile_val_2 . " and  0 <= q.pile_val_2 <= " . $pile_val_2;
             }
         }
         if(($pile_number_3 != '' && $pile_val_3 != '') && $pile_val_4 == ''){
@@ -317,8 +346,8 @@ class Common extends Controller
             }else{
                 $search_data['q.pile_val_3'] = [["egt",0],["elt",$pile_val_3]];
                 $search_data['q.pile_val_4'] = [["egt",0],["elt",$pile_val_4]];
-                $search_data_1 .= "q.pile_number_3 = '" . $pile_number_3 . "' and q.pile_number_4 = '" . $pile_number_3 . "' and 0 <= q.pile_val_1 <= " . $pile_val_3 . " and  0 <= q.pile_val_2 <= " . $pile_val_3;
-                $search_data_2 .= "q.pile_number_3 = '" . $pile_number_4 . "' and q.pile_number_4 = '" . $pile_number_4 . "' and 0 <= q.pile_val_1 <= " . $pile_val_4 . " and  0 <= q.pile_val_2 <= " . $pile_val_4;
+                $search_data_1 .= "q.version_number = '" . $version_number ."' and q.pile_number_3 = '" . $pile_number_3 . "' and q.pile_number_4 = '" . $pile_number_3 . "' and 0 <= q.pile_val_1 <= " . $pile_val_3 . " and  0 <= q.pile_val_2 <= " . $pile_val_3;
+                $search_data_2 .= "q.version_number = '" . $version_number ."' and q.pile_number_3 = '" . $pile_number_4 . "' and q.pile_number_4 = '" . $pile_number_4 . "' and 0 <= q.pile_val_1 <= " . $pile_val_4 . " and  0 <= q.pile_val_2 <= " . $pile_val_4;
             }
         }
         if($el_start){
@@ -341,15 +370,15 @@ class Common extends Controller
                 if($relevance_type == 1){
                     $recordsFilteredResult = Db::name($table)->alias('q')
                         ->join('progress_actual a', 'a.id = q.actual_id', 'left')
-                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id')
+                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id,q.model_id')
                         ->where($search_data)
                         ->whereOr($search_data_1)
                         ->whereOr($search_data_2)
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('q')
-                        ->join('progress_actual a', 'a.id = q.actual_id', 'left')
-                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id')
+                        ->join('progress_plus_task t', 't.id = q.mon_progress_id', 'left')
+                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,t.name,t.id as mon_progress_id,q.model_id')
                         ->where($search_data)
                         ->whereOr($search_data_1)
                         ->whereOr($search_data_2)
@@ -364,12 +393,14 @@ class Common extends Controller
                 if($relevance_type == 1){
                     $recordsFilteredResult = Db::name($table)->alias('q')
                         ->join('progress_actual a', 'a.id = q.actual_id', 'left')
-                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id')
+                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id,q.model_id')
+                        ->where('q.version_number',$version_number)
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('q')
-                        ->join('progress_actual a', 'a.id = q.actual_id', 'left')
-                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id')
+                        ->join('progress_plus_task t', 't.id = q.mon_progress_id', 'left')
+                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,t.name,t.id as mon_progress_id,q.model_id')
+                        ->where('q.version_number',$version_number)
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
                 $recordsFiltered = $recordsTotal;
@@ -380,7 +411,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];
@@ -430,7 +463,9 @@ class Common extends Controller
         foreach ($recordsFilteredResult as $key => $value) {
             $length = sizeof($columns);
             for ($i = 0; $i < $length; $i++) {
-                array_push($temp, $value[$columns[$i]['name']]);
+                if($columns[$i]['name']){
+                    array_push($temp, $value[$columns[$i]['name']]);
+                }
             }
             $infos[] = $temp;
             $temp = [];

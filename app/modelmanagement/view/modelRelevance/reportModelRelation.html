@@ -1,0 +1,166 @@
+{include file="../app/public/common_header.html"}
+<link rel="stylesheet" href="__WEBSITE__/modelmanagement/qualitymass/index.css">
+<link rel="stylesheet" href="__WEBSITE__/modelmanagement/modelRelevance/reportModelRelation.css">
+<div data-options="region:'north',collapsible:false" style="height:45%;">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'west',title:'实时日进度信息',collapsible:false" style="width:260px;">
+            <div class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">标段：</label>
+                    <div class="layui-input-block">
+                        <div class="layui-form-mid layui-word-aux no-position" id="section_id"><p></p></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">日期：</label>
+                    <div class="layui-input-block">
+                        <div class="layui-form-mid layui-word-aux no-position" id="actual_date"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">填报人：</label>
+                    <div class="layui-input-block">
+                        <div class="layui-form-mid layui-word-aux no-position" id="user_name"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注：</label>
+                    <div class="layui-input-block">
+                        <div class="layui-form-mid layui-word-aux no-position" id="remark"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">旁站记录表照片：</label>
+                    <div class="layui-input-block">
+                        <div class="layui-form-mid layui-word-aux no-position" id="attachment_name">
+                            <img layer-pid="1" layer-src="" src="" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'center'" style="margin-left: 20px;">
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
+            <!-- 初始化 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+                var modelPath = "http://zzbhidi.f3322.net:8008/default.aspx?dir=url_res02&path=";
+                $.ajax({
+                    url: "/modelmanagement/qualitymass/resourcePagName",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        model_type: 2
+                    },
+                    success: function (res) {
+                        //模型名称
+                        var modelName = res.pag_name;
+                        if(modelName==null){
+                            layer.alert('未注册控件,请前往注册!', {icon: 2, title: '提示', anim: 2}, function (index) {
+                                $.ajax({
+                                    url: "{:url('admin/common/logout')}"
+                                    , success: function (res) {
+                                        if (res.code == 1) {
+                                            setTimeout(function () {
+                                                parent.location.reload();
+                                            }, 2000);
+                                        }
+                                    }
+                                })
+                            });
+                            return false;
+                        }
+                        RealBimOcx.SwitchBIMSceneSimple(modelPath, modelName);
+                    }
+                });
+                RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+            </script>
+            <!-- 初始化完成 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                    RealBimOcx.SetSceHugeObjVisible(true);
+                    RealBimOcx.SetSysUIRgnVisible("lt",0);
+                    var currentVarsion = RealBimOcx.GetVersion();
+                    $.ajax({
+                        url: "/modelmanagement/qualitymass/resourcePagName",
+                        type: "post",
+                        data: {
+                            model_type: 2
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            var modelName = res.pag_name;
+                            if(modelName==null){
+                                return false;
+                            }
+                            if(res.code==1){
+                                var serverVarsion = res.new_version_number;
+                                console.log('当前版本：'+currentVarsion);
+                                console.log('最新版本：'+serverVarsion);
+                                if(serverVarsion!=currentVarsion){
+                                    layer.alert('控件版本太低,请前往更新!', {icon: 2, title: '提示', anim: 2}, function (index) {
+                                        $.ajax({
+                                            url: "{:url('admin/common/logout')}"
+                                            , success: function (res) {
+                                                if (res.code == 1) {
+                                                    setTimeout(function () {
+                                                        parent.location.reload();
+                                                    }, 2000);
+                                                }
+                                            }
+                                        })
+                                    });
+                                    return false;
+                                }
+                            }else{
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }
+                RealBimOcx.SetSuitableCam();
+            </script>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center'">
+    <div class="node-setting">
+        <input type="radio" name="nodeRelationTab" id="alreadyTab">
+        <label for="alreadyTab">已关联构件</label>
+        <input type="radio" name="nodeRelationTab" id="noteverTab">
+        <label for="noteverTab">未关联构件</label>
+        <input type="radio" name="nodeRelationTab" id="allTab">
+        <label for="noteverTab">全部</label>
+    </div>
+    <table id="tableItem" class="table cell-border" cellspacing="0"  width="100%">
+        <thead>
+        <tr>
+            <th>
+                <input type="checkbox" id="all_checked">
+            </th>
+            <th>标段</th>
+            <th>单位</th>
+            <th>分部</th>
+            <th>单元</th>
+            <th>桩号1</th>
+            <th>桩号1</th>
+            <th>桩号2</th>
+            <th>桩号2</th>
+            <th>桩号3</th>
+            <th>桩号3</th>
+            <th>桩号4</th>
+            <th>桩号4</th>
+            <th>高程起</th>
+            <th>高程止</th>
+            <th>已关联节点</th>
+            <th class="layui-hide">单元工程编号</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+{include file="../app/public/common_footer.html"}
+<script src="__WEBSITE__/modelmanagement/modelRelevance/reportModelRelation.js"></script>
+</body>
+</html>

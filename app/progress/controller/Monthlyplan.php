@@ -53,7 +53,10 @@ class Monthlyplan extends Permissions
             // 前台需要 传递 标段编号 section_id  计划类型 plan_type 1月计划2年计划3总计划
             $param = input('param.');
             $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
-            $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
+            $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+            if($section_id == 0){
+                return json(['code'=>1,'data'=>[],'msg'=>'年度下拉选项']);
+            }
             if(empty($plan_type) || empty($section_id)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
@@ -76,7 +79,10 @@ class Monthlyplan extends Permissions
             $param = input('param.');
             $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
             $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-            $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
+            $plan_year = isset($param['plan_year']) ? $param['plan_year'] : -1;
+            if($plan_year == 0){
+                return json(['code'=>1,'data'=>[],'msg'=>'月度下拉选项']);
+            }
             if(empty($plan_type) || empty($section_id) || empty($plan_year)){
                 return json(['code' => '-1','msg' => '缺少参数']);
             }
@@ -288,10 +294,27 @@ class Monthlyplan extends Permissions
     {
         // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly 计划类型 plan_type 1月计划2年计划3总计划
         $param = input('param.');
-        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
-        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
+        $section_id = isset($param['section_id']) ? $param['section_id'] : -1;
+        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : -1;
+        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : -1;
         $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
+        if($section_id == 0 || $plan_year == 0 || $plan_monthly == 0){
+            $data['UID'] = ''; // 计划的唯一标识符
+            $data['Name'] = ''; // 计划名称
+            $data['CalendarUID'] = 1; // 日历数据
+            $calendars = '[{"WeekDays": [{"DayWorking": 1,"DayType": 1},{"DayWorking": 1,"DayType": 2,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 3,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 4,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 5,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00"}]},
+                              {"DayWorking": 1,"DayType": 6,"WorkingTimes": [{"FromTime": "08:00:00","ToTime": "12:00:00"},{"FromTime": "13:00:00","ToTime": "17:00:00" }]},
+                              {"DayWorking": 1,"DayType": 7}],"Name": "标准","UID": "1","BaseCalendarUID": "-1","IsBaseCalendar": 1,"Exceptions": []}]';
+            $data['Calendars'] = json_decode($calendars); // 日历设置数据 json 格式的数据 [主要作用:设置周六日为工作日]
+            $data['Tasks'] = []; // $plan_type 1月计划2年计划3总计划
+            // 存在任务,就获取任务里的时间
+            $data['StartDate'] = date('Y-m-d').'T08:00:00'; // 开始时间
+            $data['FinishDate'] = date('Y-m-d',strtotime("+1 year")).'T59:59:59'; // 完成日期
+            return json($data);
+        }
         if(empty($section_id) || empty($plan_year) || empty($plan_monthly) || empty($plan_type)){
             return json(['code' => -1,'msg' => '缺少参数']);
         }
@@ -327,23 +350,63 @@ class Monthlyplan extends Permissions
             $data['StartDate'] = date('Y-m-d').'T08:00:00'; // 开始时间
             $data['FinishDate'] = date('Y-m-d',strtotime("+1 year")).'T59:59:59'; // 完成日期
         }
-        // todo 资源集合
-        $data['Resources'] = json_decode(''); // 资源集合
         return json($data);
     }
 
-    // 新增
+    // 新增或修改
     public function tasksAdd()
     {
-        // 前台传递的参数:标段编号 section_id 年度  plan_year 月度 plan_monthly 计划类型 plan_type 1月计划2年计划3总计划
+        // 前台传递的参数:计划类型 plan_type [1月计划2年计划3总计划]  和 甘特图json数据 json_data
         $param = input('param.');
-        $section_id = isset($param['section_id']) ? $param['section_id'] : 0;
-        $plan_year = isset($param['plan_year']) ? $param['plan_year'] : 0;
-        $plan_monthly = isset($param['plan_monthly']) ? $param['plan_monthly'] : 0;
         $plan_type = isset($param['plan_type']) ? $param['plan_type'] : 0;
-        if(empty($section_id) || empty($plan_year) || empty($plan_monthly) || empty($plan_type)){
-            return json(['code' => -1,'msg' => '缺少参数']);
+        // 甘特图json数据
+        $json_data = isset($param['json_data']) ? $param['json_data'] : '';
+        if(empty($plan_type) || empty($json_data)) {
+            return json(['code' => -1, 'msg' => '缺少参数']);
         }
+        $object_data = json_decode($json_data,true);
+        $data = [];
+        // 任务数据
+        $Tasks = $object_data['Tasks'];
+        // 循环取出每一行的任务数据
+        foreach ($Tasks as $k=>$v){
+            $data[$k]['plan_type'] = $plan_type; // 1月计划2年计划3总计划
+            // 任务唯一标识符,用于判断是新增还是修改
+            $data[$k]['id'] = $v['UID'];
+            // 自带参数
+            $data[$k]['wbs'] = $v['WBS']; // WBS编码
+            $data[$k]['name'] = $v['Name']; // 任务名称
+            // 自定义列
+            $data[$k]['unit'] = $v['Unit']; // 单位
+            $data[$k]['quantities'] = $v['Quantities']; // 工程量
+            // 自带参数
+            $data[$k]['duration'] = $v['Duration']; // 工期
+            $data[$k]['start'] = $v['Start']; // 开始日期
+            $data[$k]['finish'] = $v['Finish']; // 完成日期
+            // 未显示参数
+            $data[$k]['order_number'] = $v['ID']; // 序号(是一个数字,体现任务的前后顺序)
+            $data[$k]['parent_task_uid'] = $v['ParentTaskUID']; // 父任务UID(体现树形结构)
+            $data[$k]['milestone'] = $v['Milestone']; // 里程碑
+            // [{"TaskUID": "3","LinkLag": 0,"LagFormat": 7,"Type": 1,"PredecessorUID": "35"}]
+            $data[$k]['predecessor_link'] = json_encode($v['PredecessorLink']); // 前置任务（JSON字符串）。如"[{PredecessorUID: 2,Type: 1,LinkLag: 0}, ...]"
+            $data[$k]['project_uid'] = $v['ProjectUID']; // 计划UID
+        }
+
+        // 筛选出新增任务和修改任务
+        foreach ($data as $k=>$v){
+            if($v['id']){
+                $tasks = new PlusTaskModel();
+                $flag = $tasks->editTb($v);
+            }else{
+                $tasks = new PlusTaskModel();
+                $flag = $tasks->insertTb($v);
+            }
+            if($flag['code'] == -1){
+                return json($flag);
+            }
+        }
+
+        return json(['code'=>1,'msg'=>'保存成功']);
     }
 
 }
