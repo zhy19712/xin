@@ -239,8 +239,10 @@ class Awaitfile extends Permissions
             return ['code' => -1,'msg' => $e->getMessage()];
         }
     }
+
     /**
-     * 新增或编辑待整理文件
+     * 新增待整理文件
+     * @return mixed
      */
     public function addoredit()
     {
