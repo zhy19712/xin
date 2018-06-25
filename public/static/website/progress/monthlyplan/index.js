@@ -175,3 +175,51 @@ function monthlyPlanList() {
     });
 }
 
+//提醒配置
+function remindConfig() {
+    if($("#seleBids").val() != ''){
+        var index = layer.open({
+            title: $("#seleBids option:selected").text()+'标段-月进度填报提醒配置',
+            id:'1003',
+            type:'1',
+            area:['760px','350px'],
+            content:$('#remConfiglayer'),
+            success:function () {
+                $("#secName").val($("#seleBids option:selected").text());
+                $("#sec_id").val($("#seleBids").val());
+            },
+            yes:function () {
+
+            },
+            cancel: function(index, layero){
+                layer.close(layer.index);
+                $("#addPlan input[name='plan_name']").val("");
+                $("#addPlan input[name='report_id']").val("");
+                $("textarea").val("");
+                $("#coverId").val(0);
+                $("#saveMonthPlan").text("保存");
+            }
+        });
+    }else {
+        layer.msg("请选择标段！")
+    }
+};
+layui.use(['form', 'layedit', 'laydate'], function () {
+    var form = layui.form;
+    var laydate = layui.laydate;
+    var layer = layui.layer;
+    //月选择器
+    laydate.render({
+        elem: '#dateUpdate'
+        ,format: 'd' //可任意组合
+        ,value: new Date().getDate() //必须遵循format参数设定的格式
+    });
+
+    //月选择器
+    laydate.render({
+        elem: '#fillUpdate'
+        ,format: 'd' //可任意组合
+        ,value: new Date().getDate() //必须遵循format参数设定的格式
+    });
+
+});

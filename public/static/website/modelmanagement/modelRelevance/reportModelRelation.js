@@ -54,7 +54,7 @@ $('#allTab').on('ifChecked', function(event){
 });
 //筛选方法
 function model_quality(model_type) {
-    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
+    tableItem.ajax.url('/progress/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
 }
 
 //模型构件列表
@@ -68,7 +68,7 @@ function tableItemFun(model_type) {
         "scrollCollapse": "true",
         "paging": "false",
         ajax: {
-            "url": "/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search"+searchData+"&model_type="+model_type
+            "url": "/progress/common/datatablesPre.shtml?tableName=model_quality_search"+searchData+"&model_type="+model_type
         },
         dom: 'l<"radioWrap"><".alreadyBtn layui-btn layui-btn-normal btn-right table-btn">rtip',
         columns: [
@@ -122,10 +122,10 @@ function tableItemFun(model_type) {
                 name: "el_cease"
             },
             {
-                name: "site"
+                name: "actual_date"
             },
             {
-                name: "uid"
+                name: "actual_id"
             }
         ],
         columnDefs: [
@@ -198,7 +198,7 @@ function tableItemFun(model_type) {
             dataType: "json",
             success: function (res) {
                 idArr.length=0;
-                tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
+                tableItem.ajax.url('/progress/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
                 layer.msg(res.msg);
                 $('#all_checked').prop("checked",false);
             }
@@ -356,7 +356,7 @@ function change(that) {
     searchData = '&section='+section+'&unit='+unit+'&parcel='+parcel+'&cell='+cell+'&pile_number_1='+pile_number_1+
         '&pile_val_1='+pile_val_1+'&pile_number_2='+pile_number_2+'&pile_val_2='+pile_val_2+'&pile_number_3='+pile_number_3+
         '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease;
-    tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
+    tableItem.ajax.url('/progress/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
 }
 
 
