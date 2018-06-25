@@ -103,14 +103,14 @@ class PlanModel extends Model
     // 根据选择的标段获取年度
     public function planYearList($plan_type,$section_id)
     {
-        $data = $this->where(['plan_type'=>$plan_type,'section_id'=>$section_id])->order('plan_year desc')->column('plan_year');
+        $data = $this->where(['plan_type'=>$plan_type,'section_id'=>$section_id])->group('plan_year')->order('plan_year desc')->column('plan_year');
         return $data;
     }
 
     // 根据选择的标段和年度获取月度
     public function planMonthlyList($plan_type,$section_id,$plan_year)
     {
-        $data = $this->where(['plan_type'=>$plan_type,'section_id'=>$section_id,'plan_year'=>$plan_year])->order('plan_monthly desc')->column('plan_monthly');
+        $data = $this->where(['plan_type'=>$plan_type,'section_id'=>$section_id,'plan_year'=>$plan_year])->group('plan_monthly')->order('plan_monthly desc')->column('plan_monthly');
         return $data;
     }
 
