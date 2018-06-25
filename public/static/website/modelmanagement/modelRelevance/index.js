@@ -3,7 +3,7 @@ layui.use(['laydate', 'form'], function () {
     form = layui.form;
 });
 
-function getScrollbarWidth() {
+/*function getScrollbarWidth() {
     var oP = document.createElement('p'),
         styles = {
             width: '100px',
@@ -15,7 +15,7 @@ function getScrollbarWidth() {
     scrollbarWidth = oP.offsetWidth - oP.clientWidth;
     oP.remove();
     return scrollbarWidth;
-}
+}*/
 
 //构建填报列表
 var admin_table = $('#admin_table').DataTable({
@@ -58,7 +58,7 @@ var admin_table = $('#admin_table').DataTable({
             targets: [5],
             render: function (data, type, row) {
                 var rowId = row[5];
-                return '<i href="" title="关联模型" class="layui-btn layui-btn-xs" id="view" onclick="relation('+ rowId +')">关联模型</i>';
+                return '<i href="" title="关联模型" class="layui-btn layui-btn-xs" id="view" onclick="relation(' + rowId + ')">关联模型</i>';
             }
         }
     ],
@@ -85,7 +85,6 @@ var admin_table = $('#admin_table').DataTable({
         }
     }
 });
-
 
 //构建查询条件
 function constructingQueryConditions() {
@@ -115,7 +114,7 @@ function fillSearchSegment() {
         success: function (res) {
             console.log(res);
             $('#segment').empty();
-            if(res.code==1){
+            if (res.code == 1) {
                 for (i in res.sectionArr) {
                     if (res.sectionArr.hasOwnProperty(i)) {
                         $('#segment').append('<option value=' + i + '>' + res.sectionArr[i] + '</option>');
@@ -132,14 +131,14 @@ function fillSearchSegment() {
 //根据选择的标段获取对应的日期区间范围
 function dateScope() {
     var section_id = $('dd.layui-this').attr('lay-value');
-    $('#startDate').attr('segmentId',section_id);
-    form.on('select(searchSegment)', function(data){
-        $('#startDate').attr('segmentId',data.value);
+    $('#startDate').attr('segmentId', section_id);
+    form.on('select(searchSegment)', function (data) {
+        $('#startDate').attr('segmentId', data.value);
         $.ajax({
             url: "/progress/actual/dateScope",
             type: "post",
             data: {
-                section_id:data.value
+                section_id: data.value
             },
             dataType: "json",
             success: function (res) {
@@ -154,9 +153,9 @@ function selectDate() {
     laydate.render({
         //构建起止时间
         elem: '#startDate',
-        done: function(value, date, endDate){
+        done: function (value, date, endDate) {
             var section_id = $('#startDate').attr('segmentId');
-            admin_table.ajax.url('/progress/common/datatablesPre?tableName=progress_actual&section_id='+section_id+'&actual_date='+value).load();
+            admin_table.ajax.url('/progress/common/datatablesPre?tableName=progress_actual&section_id=' + section_id + '&actual_date=' + value).load();
         }
     });
 }
@@ -227,7 +226,7 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
             "searchable": false,
             "orderable": false,
             "targets": [15],
-            "render" :  function(data,type,row) {
+            "render": function (data, type, row) {
                 return '<i class="layui-btn layui-btn-xs" onclick="relieve(this)">解除</i>';
             }
         }
@@ -236,13 +235,13 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
         $.fn.dataTable.tables({visible: true, api: true}).columns.adjust();
     },
     language: {
-        "sProcessing":"数据加载中...",
+        "sProcessing": "数据加载中...",
         "lengthMenu": "_MENU_",
         "zeroRecords": "没有找到记录",
         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
         "infoEmpty": "无记录",
         "search": "搜索",
-        "sSearchPlaceholder":"请输入关键字",
+        "sSearchPlaceholder": "请输入关键字",
         "infoFiltered": "(从 _MAX_ 条记录过滤)",
         "paginate": {
             "sFirst": "<<",
@@ -252,3 +251,17 @@ var alreadyRelationModelTable = $('#alreadyRelationModelTable').DataTable({
         }
     }
 });
+
+//关联模型跳转
+function relation(actual_id) {
+    layer.open({
+        tittlel: '关联模型',
+        type: 2,
+        area: ['100%', '100%'],
+        content: ['./reportModelRelation', 'no'],
+        success: function (layero, index) {
+            var iframe = window['layui-layer-iframe' + index];
+            iframe.getSegmentInfo(actual_id);
+        }
+    });
+}

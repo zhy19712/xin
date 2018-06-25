@@ -66,7 +66,7 @@ function LoadProject(params, project, callback) {
 
             //加载时自动排程，如果有变动，需要提示
 //            if (project.isChanged()) {
-//                alert("项目数据加载时自动调整");
+//                layer.confirm("项目数据加载时自动调整");
 //            }
 
             //
@@ -74,7 +74,7 @@ function LoadProject(params, project, callback) {
             project.unmask();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("加载失败, 错误码：" + textStatus);
+            layer.confirm("加载失败, 错误码：" + textStatus);
             project.unmask();
         }
     });
@@ -96,13 +96,13 @@ function SaveProject(project, callback, params) {
         type: "post",
         data: params,
         success: function (text) {
-            alert("保存成功,项目UID：" + text);
+            layer.msg("保存成功,项目UID：" + text);
             project.acceptChanges();
             if (callback) callback(project);
             project.unmask();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("保存失败, 错误码：" + textStatus);
+            layer.confirm("保存失败, 错误码：" + textStatus);
             project.unmask();
         }
     });
@@ -141,7 +141,7 @@ function LoadJSONProject(url, project, callback) {
 
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("加载失败, 错误码：" + textStatus);
+            layer.confirm("加载失败, 错误码：" + textStatus);
             project.unmask();
         }
     });
@@ -167,7 +167,7 @@ function ShowTaskWindow(project, tabName) {
                         var taskData = taskWindow.getData();
                         project.updateTask(task, taskData);
                     } catch (ex) {
-                        alert("error:"+ex.message);
+                        layer.confirm("error:"+ex.message);
                         return false;
                     }
                 }
@@ -177,7 +177,7 @@ function ShowTaskWindow(project, tabName) {
                 taskWindow.activeTab(tabName);
             }
     } else {
-        alert("请先选择任务");
+        layer.confirm("请先选择任务");
     }
 }
 

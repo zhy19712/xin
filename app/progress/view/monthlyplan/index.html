@@ -58,6 +58,7 @@
             <button class="layui-btn" onclick="updateTask()"><i class="fa fa-edit" title="修改"></i>&nbsp;&nbsp;修改</button>
             <button class="layui-btn" onclick="upgradeTask()"><i class="fa fa-arrow-up" title="升级"></i>&nbsp;&nbsp;升级</button>
             <button class="layui-btn" onclick="downgradeTask()"><i class="fa fa-arrow-down" title="降级"></i>&nbsp;&nbsp;降级</button>
+            <input type="checkbox" id="trackcheck" onclick="oncheckedchanged(this)"/><label for="trackcheck">跟踪甘特图</label>
             <div class="layui-inline layuiRight">
                 <form class="layui-form" action="" style="width: 140px;display: inline-block">
                     <div class="layui-inline">
@@ -366,8 +367,38 @@
     //创建右键菜单
     var menu = new ProjectMenu();
     project.setContextMenu(menu);
+    menu.on("opening", function (e) {
+
+        var project = this.owner;       //PlusProject对象
+        var task = project.getSelected();
+        if (!task) {
+            e.cancel = true;
+            return;
+        }
+
+        //显示和可编辑所有菜单项
+        this.goto.hide();//转到任务
+        this.add.show();
+        this.edit.show();
+        this.remove.show();
+
+        this.upgrade.enable();
+        this.downgrade.enable();
+
+        if (task.Summary) {
+            this.edit.hide();
+            this.remove.hide();
+            this.upgrade.disable();
+            this.downgrade.disable();
+        } else {
+            this.add.hide();
+        }
+    });
     menu.edit.on("click", function (e) {
+        // console.log(e);
         ShowTaskWindow(project);
+        //修改样式
+        repairStyle();
     });
 
     // 获取数据
@@ -398,13 +429,13 @@
                 // project.unmask();
                 // console.log(text);
                 if(text.Tasks.length == 0){
-                    alert("数据为空！需要添加哟!")
                     var dataProject = mini.decode(text);
                     doSetProjectData(project, dataProject);
                     project.unmask();
+                    layer.confirm("数据为空！需要添加哟!")
                 }else if(text.Tasks.length > 0){
                     var dataProject = mini.decode(text);
-                        console.log(dataProject);
+                        // console.log(dataProject);
                     doSetProjectData(project, dataProject);
 
                     project.unmask();
@@ -424,23 +455,45 @@
     /* 业务代码
 -----------------------------------------------------------------------------*/
 
+    //修该样式
+    function repairStyle() {
+        /*删除后面3个tab*/
+        if($(".mini-tabs-header td:nth-of-type(8)").text() == "高级" || $(".mini-tabs-header td:nth-of-type(9)").text() == "备注" || $(".mini-tabs-header td:nth-of-type(10)").text() == "自定义Tab"){
+            $(".mini-tabs-header td:nth-of-type(1)").remove();
+            $(".mini-tabs-header td:nth-of-type(7)").remove();
+            $(".mini-tabs-header td:nth-of-type(8)").remove();
+            $(".mini-tabs-header td:nth-of-type(9)").remove();
+            $("#fs_actualdate").remove();
+        }
+        /*添加里程碑*/
+        $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys fieldset").next("div").html("");
+        $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys fieldset").after(
+            '<div style="margin-top:8px;margin-left: 7px;">' +
+            '     <span class="mini-checkbox" id="twin_milestone" style="border-width: 0px; padding: 0px;"><input id="mini-86$check" name="mini-86" type="checkbox" class="mini-checkbox-check"><label for="mini-86$check" onclick="return false;">标记为里程碑</label></span>' +
+            '</div>')
+        /*修改内容*/
+        // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(1)").css({"width":"86px","text-align":"right"});
+        // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(3)").css({"width":"86px","text-align":"right"});
+
+        //第一行tr
+        $(".mini-window>.mini-panel-border>.mini-panel-viewport>.mini-panel-body>.mini-tabs>.mini-tabs-table>tbody>tr:nth-of-type(1)>td:nth-of-type(2)>.mini-tabs-bodys>.mini-tabs-body>table>tbody>tr:nth-of-type(1)>td:nth-of-type(3)").text("计划工期（天）");
+        $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
+        //第三行tr
+        $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(3)>td:nth-of-type(1)").text("工期：");
+        $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(3)>td:nth-of-type(3)").text("单位：");
+        //第二行删除
+        $(".mini-window>.mini-panel-border>.mini-panel-viewport>.mini-panel-body>.mini-tabs>.mini-tabs-table>tbody>tr:nth-of-type(1)>td:nth-of-type(2)>.mini-tabs-bodys>.mini-tabs-body>table>tbody>tr:nth-of-type(2)").css({"display":"none"});
+        $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body fieldset").css({"border":"none"});
+        $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body fieldset>legend").remove();
+        // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
+    }
+
     project.on('itemdragstart', function (e) {
         // console.log(e);
         // var project = e.source;
         // var task = e.task;
     });
 
-    project.on("drawcell", function (e) {
-        var task = e.record, column = e.column, field = e.field;
-        //新增
-        if (task._state == "added") {
-            e.rowCls = "row_added";
-        }
-        //删除
-        if (task.Deleted == true) {
-            e.rowCls = "row_deleted";
-        }
-    });
     //1)调试
     function track() {
         TrackProject(project);
@@ -472,7 +525,7 @@
         //     type: "POST",
         //     data: params,
         //     success: function (text) {
-        //         alert("保存成功");
+        //         layer.confirm("保存成功");
         //     }
         // });
     }
@@ -480,12 +533,25 @@
     function removeTask() {
         var task = project.getSelected();
         if (task) {
-            if (confirm("确定删除任务 \"" + task.Name + "\" ？")) {
+            layer.confirm("你将删除该任务 ‘" + task.Name +"’ ，是否确认删除？", function () {
                 project.removeTask(task);
-            }
+                //TOdo 还需要对接接口
+                // $.ajax({
+                //     url: "",
+                //     type: "post",
+                //     data: {id: id},
+                //     success: function (res) {
+                //         if (res.code === 1) {
+                //             project.removeTask(task);
+                //             layer.msg(res.msg, {time: 1500, shade: 0.1});
+                //         }else{
+                //             layer.msg(res.msg)
+                //         }
+                //     }
+                // });
+            });
         } else {
-            // layer.confirm("请选中任务");
-            alert("请选中任务");
+            layer.confirm("请选中任务");
         }
     }
     //5)修改
@@ -493,37 +559,10 @@
         var task = project.getSelected();
         if (task) {
             ShowTaskWindow(project);
-            /*删除后面3个tab*/
-            if($(".mini-tabs-header td:nth-of-type(8)").text() == "高级" || $(".mini-tabs-header td:nth-of-type(9)").text() == "备注" || $(".mini-tabs-header td:nth-of-type(10)").text() == "自定义Tab"){
-                $(".mini-tabs-header td:nth-of-type(1)").remove();
-                $(".mini-tabs-header td:nth-of-type(7)").remove();
-                $(".mini-tabs-header td:nth-of-type(8)").remove();
-                $(".mini-tabs-header td:nth-of-type(9)").remove();
-                $("#fs_actualdate").remove();
-            }
-            /*添加里程碑*/
-            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys fieldset").after(
-                '<div style="margin-top:8px;margin-left: 7px;">' +
-                '     <span class="mini-checkbox" id="twin_milestone" style="border-width: 0px; padding: 0px;"><input id="mini-86$check" name="mini-86" type="checkbox" class="mini-checkbox-check"><label for="mini-86$check" onclick="return false;">标记为里程碑</label></span>' +
-                '</div>')
-            /*修改内容*/
-            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(1)").css({"width":"86px","text-align":"right"});
-            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr>td:nth-of-type(3)").css({"width":"86px","text-align":"right"});
-
-            //第一行tr
-            $(".mini-window>.mini-panel-border>.mini-panel-viewport>.mini-panel-body>.mini-tabs>.mini-tabs-table>tbody>tr:nth-of-type(1)>td:nth-of-type(2)>.mini-tabs-bodys>.mini-tabs-body>table>tbody>tr:nth-of-type(1)>td:nth-of-type(3)").text("计划工期（天）");
-            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
-            //第二行tr
-            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(2)>td:nth-of-type(1)").text("单位：");
-            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(2)>td:nth-of-type(3)").text("工程量：");
-            //第三行删除
-            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(3)").remove();
-            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body fieldset").css({"border":"none"});
-            $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body fieldset>legend").remove();
-            // $(".mini-window .mini-panel-viewport .mini-tabs .mini-tabs-table .mini-tabs-bodys>.mini-tabs-body table tbody tr:nth-of-type(1)>td:nth-of-type(3)").css({"width":"86px"});
-
+            //修改样式
+            repairStyle();
         } else {
-            alert("请选中任务");
+            layer.confirm("请选中任务");
         }
     }
     //6)升级
@@ -532,7 +571,7 @@
         if (task) {
             project.upgradeTask(task);
         } else {
-            alert("请先选中任务");
+            layer.confirm("请先选中任务");
         }
     }
     //7)降级
@@ -541,7 +580,7 @@
         if (task) {
             project.downgradeTask(task);
         } else {
-            alert("请先选中任务");
+            layer.confirm("请先选中任务");
         }
     }
     //8)显示关键路径 在上面
@@ -556,11 +595,18 @@
     function zoomOut() {
         project.zoomOut();
     }
+    //跟踪肝特图
+    function oncheckedchanged(ck) {
+        var checked = ck.checked;
+        project.setViewModel(checked ? "track" : "gantt");
+    }
+
+
 
     // //11)更新
     // function updateTask() {
     //     var selectedTask = project.getSelected();
-    //     alert("编辑选中任务:" + selectedTask.Name);
+    //     layer.confirm("编辑选中任务:" + selectedTask.Name);
     // }
     // //112)更改顶部时间刻度
     // function changeTopTimeScale(value) {
@@ -570,6 +616,18 @@
     // function changeBottomTimeScale(value) {
     //     project.setBottomTimeScale(value)
     // }
+    //修改样式
+    // project.on("drawcell", function (e) {
+    //     var task = e.record, column = e.column, field = e.field;
+    //     //新增
+    //     if (task._state == "added") {
+    //         e.rowCls = "row_added";
+    //     }
+    //     //删除
+    //     if (task.Deleted == true) {
+    //         e.rowCls = "row_deleted";
+    //     }
+    // });
 
 
 
