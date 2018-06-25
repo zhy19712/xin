@@ -287,13 +287,25 @@ function view(actual_id) {
         },
         dataType: "json",
         success: function (res) {
-            layer.open({
-                    title:'旁站记录表照片',
-                    id:'1',
-                    type:'1',
-                    area: ['100%', '100%'],
-                    content:'<div style="margin-top: -20px;width: 100%;height: 100%;text-align: center;"><img src='+ res.path.path +'></div>'
-                });
+            layer.photos({
+                photos: {
+                    "title": "", //相册标题
+                    "id": 1, //相册id
+                    "start": 0, //初始显示的图片序号，默认0
+                    "data": [   //相册包含的图片，数组格式
+                        {
+                            "alt": "旁站记录表照片",
+                            "pid": 666, //图片id
+                            "src": res.path.path, //原图地址
+                            "thumb": "" //缩略图地址
+                        }
+                    ]
+                },
+                anim: Math.floor(Math.random()*7),
+                shade: [0.8, '#333'],
+                shadeClose:true,
+                closeBtn:1
+            });
         }
     });
 }
