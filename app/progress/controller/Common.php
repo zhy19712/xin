@@ -130,10 +130,19 @@ class Common extends Controller
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
         $param = input('param.');
         $relevance_type = isset($param['relevance_type']) ? $param['relevance_type'] : 1; // 默认 1 表示是实时进度关联 2 表示月进度关联
+        $relevance_id = isset($param['relevance_id']) ? $param['relevance_type'] : 0; // 默认 0 查询全部
          if($relevance_type == 1){
-            $search_data = ['q.version_number'=>$version_number,'q.actual_id'=>['neq',0]];
+            if($relevance_id){
+                $search_data = ['q.version_number'=>$version_number,'q.actual_id'=>['eq',$relevance_id]];
+            }else{
+                $search_data = ['q.version_number'=>$version_number,'q.actual_id'=>['neq',0]];
+            }
         }else{
-            $search_data = ['q.version_number'=>$version_number,'q.mon_progress_id'=>['neq',0]];
+           if($relevance_id){
+               $search_data = ['q.version_number'=>$version_number,'q.mon_progress_id'=>['eq',$relevance_id]];
+           }else{
+               $search_data = ['q.version_number'=>$version_number,'q.mon_progress_id'=>['neq',0]];
+           }
         }
         //查询
         //条件过滤后记录数 必要
