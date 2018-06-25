@@ -28,8 +28,11 @@ class Qualityform extends Permissions
               ->find();
           //工序
           $procedure = Db::name('norm_materialtrackingdivision')
-              ->where('id', $info['ProcedureId'])
-              ->value('name');
+                      ->where('id', $info['ProcedureId'])
+                      ->value('name');
+          $cpr_id = Db::name("quality_division_controlpoint_relation")
+                     ->where (["control_id"=>$info['ControlPointId'],'division_id'=>$info['DivisionId'],'type'=>1])
+                     ->value("id");
 
           //表头信息
           $qualityModel = new QualityFormInfoModel();
@@ -40,6 +43,7 @@ class Qualityform extends Permissions
           $baseData['fbName'] = $output['FBName'] . $output['FBCode'];//分部名称
           $baseData['dyName'] = $output['DYName'] . $output['DYCode'];//单元名称
           $baseData['unitId'] = $info['DivisionId'];//单元工程段号
+          $baseData['cpr_id'] = $info['cpr_id'];
           $baseData['procedureName'] = $procedure;//工序
           $form_data = unserialize($info['form_data']);
           return json(['basedata' => $baseData, 'form_data' => $form_data]);
@@ -83,7 +87,8 @@ class Qualityform extends Permissions
             $baseData['dwName'] = $output['DWName'] . $output['DWCode'];//单位名称
             $baseData['fbName'] = $output['FBName'] . $output['FBCode'];//分部名称
             $baseData['dyName'] = $output['DYName'] . $output['DYCode'];//单元名称
-            $baseData['unitId'] = $relation['division_id'];//单元工程段号
+            $baseData['unitId'] = $relation['division_id'];
+            $baseData['cpr_id'] = $dataId;//单元工程段号
             $baseData['procedureName'] = $procedure;//工序
             $form_data = "";
             return json(['basedata' => $baseData, 'form_data' => $form_data]);
