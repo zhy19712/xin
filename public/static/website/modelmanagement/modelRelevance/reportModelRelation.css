@@ -15,14 +15,21 @@
 
 .layui-input-block {
     margin: 0;
-    min-height: auto;
+    min-height: 26px;
 }
 
 .layui-form-mid.layui-word-aux.no-position {
     padding: 6px 0 !important;
+    margin-right: 0;
+    width: 190px;
     line-height: 1;
     font-size: 14px;
     color: #333 !important;
+}
+
+.layui-form-mid.layui-word-aux.no-position p {
+    line-height: 18px;
+    margin-top: -2px;
 }
 
 .layui-form-mid.layui-word-aux.no-position img {
@@ -31,11 +38,23 @@
     height: 150px;
     border-radius: 4px;
 }
-.node-setting{
+
+.node-setting {
     position: absolute;
-    top: 30px;
+    top: 5px;
+    padding: 10px 0;
     border: 0;
+    z-index: 10;
 }
-.dataTables_scrollHeadInner table.dataTable.no-footer{
+
+.dataTables_scrollHeadInner table.dataTable.no-footer {
     margin-top: 0;
+}
+
+.panel-body-noheader {
+    border: none;
+}
+
+.table-btn {
+    margin: 10px 0;
 }

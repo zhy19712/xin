@@ -14,9 +14,9 @@ function getSegmentInfo(actual_id) {
         },
         dataType: "json",
         success: function (res) {
-            $('#section_id').text(res.path.attachment_id);
+            $('#section_id p').text(res.path.section_name);
             $('#actual_date').text(res.path.actual_date);
-            $('#user_name').text();
+            $('#user_name').text(res.path.user_name);
             $('#remark').text(res.path.remark);
             $('#attachment_name').find('img').attr('src',res.path.path);
         }
