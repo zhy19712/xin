@@ -130,7 +130,7 @@ class Common extends Controller
         $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
         $param = input('param.');
         $relevance_type = isset($param['relevance_type']) ? $param['relevance_type'] : 1; // 默认 1 表示是实时进度关联 2 表示月进度关联
-        $relevance_id = isset($param['relevance_id']) ? $param['relevance_type'] : 0; // 默认 0 查询全部
+        $relevance_id = isset($param['relevance_id']) ? $param['relevance_id'] : 0; // 默认 0 查询全部
          if($relevance_type == 1){
             if($relevance_id){
                 $search_data = ['q.version_number'=>$version_number,'q.actual_id'=>['eq',$relevance_id]];
@@ -370,7 +370,7 @@ class Common extends Controller
                 if($relevance_type == 1){
                     $recordsFilteredResult = Db::name($table)->alias('q')
                         ->join('progress_actual a', 'a.id = q.actual_id', 'left')
-                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id')
+                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id,q.model_id')
                         ->where($search_data)
                         ->whereOr($search_data_1)
                         ->whereOr($search_data_2)
@@ -378,7 +378,7 @@ class Common extends Controller
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('q')
                         ->join('progress_plus_task t', 't.id = q.mon_progress_id', 'left')
-                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,t.name,t.id as actual_id')
+                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,t.name,t.id as mon_progress_id,q.model_id')
                         ->where($search_data)
                         ->whereOr($search_data_1)
                         ->whereOr($search_data_2)
@@ -393,13 +393,13 @@ class Common extends Controller
                 if($relevance_type == 1){
                     $recordsFilteredResult = Db::name($table)->alias('q')
                         ->join('progress_actual a', 'a.id = q.actual_id', 'left')
-                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id')
+                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,a.actual_date,a.id as actual_id,q.model_id')
                         ->where('q.version_number',$version_number)
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }else{
                     $recordsFilteredResult = Db::name($table)->alias('q')
                         ->join('progress_plus_task t', 't.id = q.mon_progress_id', 'left')
-                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,t.name,t.id as mon_progress_id')
+                        ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,t.name,t.id as mon_progress_id,q.model_id')
                         ->where('q.version_number',$version_number)
                         ->order($order)->limit(intval($start), intval($length))->select();
                 }
