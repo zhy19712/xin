@@ -31,7 +31,6 @@ class Branchcatalog extends Permissions
         return $this->fetch();
     }
 
-
     /*
      * 项目分类树
      * @return mixed|\think\response\Json
@@ -154,7 +153,7 @@ class Branchcatalog extends Permissions
                     {
                         if(!empty($v["parent_code"]))
                         {
-                            $info = Db::name("file_branch_directory")->field("id")->where("code",$v["parent_code"])->find();
+                            $info = $model->getCodeInfo($v);
                             $param = [
                                 "id" => $v["id"],
                                 "pid" => $info["id"]
