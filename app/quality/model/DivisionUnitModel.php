@@ -5,10 +5,7 @@
  * Date: 2018/4/3
  * Time: 11:20
  */
-
 namespace app\quality\model;
-
-
 use think\Db;
 use think\exception\PDOException;
 use think\Model;
