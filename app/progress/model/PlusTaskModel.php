@@ -9,11 +9,41 @@
 namespace app\progress\model;
 
 
+use think\exception\PDOException;
 use think\Model;
 
 class PlusTaskModel extends Model
 {
     protected $name = 'progress_plus_task';
+
+    public function insertTb($param)
+    {
+        try {
+            $result = $this->allowField(true)->save($param);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'data' => [], 'msg' => '添加成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => -1, 'msg' => $e->getMessage()];
+        }
+    }
+
+    public function editTb($param)
+    {
+        try {
+            $result = $this->allowField(true)->save($param, ['id' => $param['id']]);
+            if (false === $result) {
+                return ['code' => -1, 'msg' => $this->getError()];
+            } else {
+                return ['code' => 1, 'msg' => '编辑成功'];
+            }
+        } catch (PDOException $e) {
+            return ['code' => 0, 'msg' => $e->getMessage()];
+        }
+    }
+
 
     // ht $plan_type 1月计划2年计划3总计划
     public function tasksData($plan_type,$uid)

@@ -3,6 +3,7 @@
 namespace app\modelmanagement\controller;
 
 
+use app\modelmanagement\model\VersionsModel;
 use think\Controller;
 use think\Db;
 
@@ -160,6 +161,8 @@ class Common extends Controller
     public function model_quality_search($id, $draw, $table, $search, $start, $length, $limitFlag, $order, $columns, $columnString)
     {
         $table = 'model_quality';
+        $version = new VersionsModel();
+        $version_number = $version->statusOpen(2); // 当前启用的版本号 1 全景3D模型(竣工模型) 和 2 质量模型(施工模型)
 
         // 前台 可以选择组合传递的参数有
         // section 标段 unit 单位 parcel 分部 cell 单元
@@ -223,6 +226,7 @@ class Common extends Controller
          *  OR (zhuanghao1name="CX" AND zhuanghao1 BETWEEN 0 and data2 AND zhuanghao2name="CX" AND zhuanghao2 BETWEEN 0 and data2)
          *
          */
+        $search_data['q.version_number'] = $version_number;
         if($section){
             $search_data['q.section'] = $section;
         }
@@ -258,8 +262,8 @@ class Common extends Controller
             }else{
                 $search_data['q.pile_val_1'] = [["egt",0],["elt",$pile_val_1]];
                 $search_data['q.pile_val_2'] = [["egt",0],["elt",$pile_val_2]];
-                $search_data_1 = "q.pile_number_1 = '" . $pile_number_1 . "' and q.pile_number_2 = '" . $pile_number_1 . "' and 0 <= q.pile_val_1 <= " . $pile_val_1 . " and  0 <= q.pile_val_2 <= " . $pile_val_1;
-                $search_data_2 = "q.pile_number_1 = '" . $pile_number_2 . "' and q.pile_number_2 = '" . $pile_number_2 . "' and 0 <= q.pile_val_1 <= " . $pile_val_2 . " and  0 <= q.pile_val_2 <= " . $pile_val_2;
+                $search_data_1 = "q.version_number = '" . $version_number . "' and q.pile_number_1 = '" . $pile_number_1 . "' and q.pile_number_2 = '" . $pile_number_1 . "' and 0 <= q.pile_val_1 <= " . $pile_val_1 . " and  0 <= q.pile_val_2 <= " . $pile_val_1;
+                $search_data_2 = "q.version_number = '" . $version_number . "' and q.pile_number_1 = '" . $pile_number_2 . "' and q.pile_number_2 = '" . $pile_number_2 . "' and 0 <= q.pile_val_1 <= " . $pile_val_2 . " and  0 <= q.pile_val_2 <= " . $pile_val_2;
             }
         }
         if(($pile_number_3 != '' && $pile_val_3 != '') && $pile_val_4 == ''){
@@ -284,8 +288,8 @@ class Common extends Controller
             }else{
                 $search_data['q.pile_val_3'] = [["egt",0],["elt",$pile_val_3]];
                 $search_data['q.pile_val_4'] = [["egt",0],["elt",$pile_val_4]];
-                $search_data_1 .= "q.pile_number_3 = '" . $pile_number_3 . "' and q.pile_number_4 = '" . $pile_number_3 . "' and 0 <= q.pile_val_1 <= " . $pile_val_3 . " and  0 <= q.pile_val_2 <= " . $pile_val_3;
-                $search_data_2 .= "q.pile_number_3 = '" . $pile_number_4 . "' and q.pile_number_4 = '" . $pile_number_4 . "' and 0 <= q.pile_val_1 <= " . $pile_val_4 . " and  0 <= q.pile_val_2 <= " . $pile_val_4;
+                $search_data_1 .= "q.version_number = '" . $version_number . "' and q.pile_number_3 = '" . $pile_number_3 . "' and q.pile_number_4 = '" . $pile_number_3 . "' and 0 <= q.pile_val_1 <= " . $pile_val_3 . " and  0 <= q.pile_val_2 <= " . $pile_val_3;
+                $search_data_2 .= "q.version_number = '" . $version_number . "' and q.pile_number_3 = '" . $pile_number_4 . "' and q.pile_number_4 = '" . $pile_number_4 . "' and 0 <= q.pile_val_1 <= " . $pile_val_4 . " and  0 <= q.pile_val_2 <= " . $pile_val_4;
             }
         }
         if($el_start){
@@ -321,6 +325,7 @@ class Common extends Controller
                 $recordsFilteredResult = Db::name($table)->alias('q')
                     ->join('quality_unit u', 'u.id = q.unit_id', 'left')
                     ->field('q.id,q.section,q.unit,q.parcel,q.cell,q.pile_number_1,q.pile_val_1,q.pile_number_2,q.pile_val_2,q.pile_number_3,q.pile_val_3,q.pile_number_4,q.pile_val_4,q.el_start,q.el_cease,u.site,u.id as uid')
+                    ->where('q.version_number',$version_number)
                     ->order($order)->limit(intval($start), intval($length))->select();
                 $recordsFiltered = $recordsTotal;
             }
