@@ -44,18 +44,20 @@ class Awaitfile extends Permissions
      */
     public function getAllCategory()
     {
-        //实例化模型类
-        $model = new ProjectmanagementModel();
-        $category = $model->getAllCategory();
-        //定义一个空数组
-        if(!empty($category))
-        {
-            $data = $category;
-        }else
-        {
-            $data = [];
+        if(request()->isAjax()){
+            //实例化模型类
+            $model = new ProjectmanagementModel();
+            $category = $model->getAllCategory();
+            //定义一个空数组
+            if(!empty($category))
+            {
+                $data = $category;
+            }else
+            {
+                $data = [];
+            }
+            return json(["code"=>1,"data"=>$data]);
         }
-        return json(["code"=>1,"data"=>$data]);
     }
 
     /**
@@ -69,7 +71,6 @@ class Awaitfile extends Permissions
             $model = new ProjectmanagementModel();
             $branch_model = new FilebranchModel();
             $id = input("post.id");
-            $id = 1;
             //查询当前的所选的项目名称下的所有目录
             $branch_info = $model->getOne($id);
             $branch_id_list = $branch_info["branch_id"];
@@ -114,7 +115,7 @@ class Awaitfile extends Permissions
      */
     public function getDocumenttypeTree()
     {
-        if(request()->isAjax()) {
+        if(request()->isAjax()){
             //实例化模型类
             $model = new DocumentTypeModel();
             $data = $model->getall();
@@ -143,13 +144,11 @@ class Awaitfile extends Permissions
      * 获取检验批列表
      * @param $id
      * @return \think\response\Json
-     * @throws \think\exception\DbException
      */
     public function getDivisionUnitTree()
     {
-        if(request()->isAjax()) {
+        if(request()->isAjax()){
             $id = input("post.id");
-//            $id = 4;
             return json(DivisionUnitModel::all(['division_id' => $id]));
         }
     }
@@ -158,20 +157,19 @@ class Awaitfile extends Permissions
      * 获取工序列表
      * @param $id
      * @return \think\response\Json
-     * @throws \think\exception\DbException
      */
     public function getProcedures()
     {
-//        if(request()->isAjax()) {
+        if(request()->isAjax()){
             $id = input("post.en_type");//工程类型
-        $id = 4;
             $data = MaterialTrackingDivision::all(['pid' => $id, 'type' => 3]);
             return json(["code"=>1,"data"=>$data]);
-//        }
+        }
     }
 
     /**
      * 添加电子文件挂接
+     * @return array
      */
     public function electronicFileHang()
     {

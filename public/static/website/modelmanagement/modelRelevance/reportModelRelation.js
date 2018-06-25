@@ -14,11 +14,11 @@ function getSegmentInfo(actual_id) {
         },
         dataType: "json",
         success: function (res) {
-            $('#section_id').text(res.path.attachment_id);
+            $('#section_id p').text(res.path.section_name);
             $('#actual_date').text(res.path.actual_date);
-            $('#user_name').text();
+            $('#user_name').text(res.path.user_name);
             $('#remark').text(res.path.remark);
-            $('#attachment_name').find('img').attr('src',res.path.path);
+            $('#attachment_name').attr('uid',res.path.id).find('img').attr('src',res.path.path);
         }
     });
 }
@@ -268,10 +268,11 @@ $('#tableItem_wrapper .dataTables_scrollHeadInner table').append(firstTrTemp.joi
 //获取下拉列表的值
 function dropDown(type,eId) {
     $.ajax({
-        url: "/modelmanagement/qualitymass/dropDown",
+        url: "/progress/common/model_quality_search",
         type: "post",
         data: {
-            type:type
+            type:type,
+            relevance_type:1
         },
         dataType: "json",
         success: function (res) {
@@ -357,3 +358,38 @@ function change(that) {
         '&pile_val_3='+pile_val_3+'&pile_number_4='+pile_number_4+'&pile_val_4='+pile_val_4+'&el_start='+el_start+'&el_cease='+el_cease;
     tableItem.ajax.url('/modelmanagement/common/datatablesPre.shtml?tableName=model_quality_search'+searchData+'&model_type='+model_type).load();
 }
+
+
+//查看图片
+$('#attachment_name').click(function(){
+    var actual_id = $(this).attr('uid');
+    $.ajax({
+        url: "/progress/actual/preview",
+        type: "post",
+        data: {
+            actual_id:actual_id
+        },
+        dataType: "json",
+        success: function (res) {
+            layer.photos({
+                photos: {
+                    "title": "", //相册标题
+                    "id": 1, //相册id
+                    "start": 0, //初始显示的图片序号，默认0
+                    "data": [   //相册包含的图片，数组格式
+                        {
+                            "alt": "旁站记录表照片",
+                            "pid": 666, //图片id
+                            "src": res.path.path, //原图地址
+                            "thumb": "" //缩略图地址
+                        }
+                    ]
+                },
+                anim: Math.floor(Math.random()*7),
+                shade: [0.8, '#333'],
+                shadeClose:true,
+                closeBtn:1
+            });
+        }
+    });
+});

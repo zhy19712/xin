@@ -1,13 +1,27 @@
 .ztree-title i.fa{
     width: 18%;
 }
+.ztree{
+    margin-top: 30px;
+}
+.ztree-title i.fa-sitemap:before,.ztree-title i.fa-arrow-circle-up:before{
+    color: #009688;
+}
+.ztree-title i.fa-pencil:before,.ztree-title i.fa-plus-square:before{
+    color: #d85c74;
+}
+.ztree-title i.fa-arrow-circle-down:before{
+    color: #dca107;
+}
 .btn {
     line-height: 0.82857;
     border-radius: 60px;
-    margin-right: 5px;
+    margin: 4px 5px 4px 0;
     float: right;
 }
-
+.layui-disabled, .layui-disabled:hover{
+    color:#545454 !important;
+}
 
 .btn i.fa:before,#branchform i.fa:before,#excel i.fa:before{
     color: #ffffff;
@@ -17,12 +31,19 @@
     font-size: 12px;
     border-color:#ccc;
     overflow: auto;
+    margin:5px;
 }
 #tableItem tr{
     height: 28px;
 }
+#tableItem thead tr{
+    background-color: #F1F1F1;
+}
+#tableItem tbody td{
+    border: 1px solid #ddd;
+}
 #tableItem thead th{
-    border-right: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-collapse: collapse;
     text-align: center;
     width: 33.3%;
@@ -37,7 +58,16 @@
 table.treetable thead{
     background: none;
 }
-
+#tableItem i.fa{
+    width: 40px;
+    height: 26px;
+    line-height: 26px;
+    background: #009688;
+    margin: 0 1px 1px 0;
+}
+#tableItem i.fa:before{
+    color: #fff;
+}
 .select-color{
     background-color: #FDD5B5!important;
 }
@@ -50,4 +80,14 @@ table.treetable thead{
 }
 .layui-laypage>:last-child{
     margin-right: 10px!important;
+}
+
+.layui-form-mid.layui-word-aux{
+    position: relative;
+}
+.layui-form-mid.layui-word-aux .layui-btn{
+    padding: 0 18px;
+}
+.tbcontainer{
+    border: none;
 }

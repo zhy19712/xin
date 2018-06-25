@@ -338,7 +338,7 @@ function getTable(id,length,page){
   })
 }
 
-$("#tableItem").treetable({ expandable: true, initialState :"expanded" }).show();
+$("#tableItem").treetable({ expandable: true, initialState :"expanded"}).show();
 
 //获取点击行
 $("#tableItem").delegate("tbody tr","click",function (e) {
