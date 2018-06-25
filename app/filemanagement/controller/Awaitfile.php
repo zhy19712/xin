@@ -44,18 +44,20 @@ class Awaitfile extends Permissions
      */
     public function getAllCategory()
     {
-        //实例化模型类
-        $model = new ProjectmanagementModel();
-        $category = $model->getAllCategory();
-        //定义一个空数组
-        if(!empty($category))
-        {
-            $data = $category;
-        }else
-        {
-            $data = [];
+        if(request()->isAjax()){
+            //实例化模型类
+            $model = new ProjectmanagementModel();
+            $category = $model->getAllCategory();
+            //定义一个空数组
+            if(!empty($category))
+            {
+                $data = $category;
+            }else
+            {
+                $data = [];
+            }
+            return json(["code"=>1,"data"=>$data]);
         }
-        return json(["code"=>1,"data"=>$data]);
     }
 
     /**
@@ -143,13 +145,11 @@ class Awaitfile extends Permissions
      * 获取检验批列表
      * @param $id
      * @return \think\response\Json
-     * @throws \think\exception\DbException
      */
     public function getDivisionUnitTree()
     {
         if(request()->isAjax()) {
             $id = input("post.id");
-//            $id = 4;
             return json(DivisionUnitModel::all(['division_id' => $id]));
         }
     }
@@ -158,20 +158,19 @@ class Awaitfile extends Permissions
      * 获取工序列表
      * @param $id
      * @return \think\response\Json
-     * @throws \think\exception\DbException
      */
     public function getProcedures()
     {
-//        if(request()->isAjax()) {
+        if(request()->isAjax()) {
             $id = input("post.en_type");//工程类型
-        $id = 4;
             $data = MaterialTrackingDivision::all(['pid' => $id, 'type' => 3]);
             return json(["code"=>1,"data"=>$data]);
-//        }
+        }
     }
 
     /**
      * 添加电子文件挂接
+     * @return array
      */
     public function electronicFileHang()
     {
